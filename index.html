@@ -434,6 +434,13 @@
   .sim-note { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--line); font-size: 0.86rem; }
   .sim-note ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
   .sim-note li { margin-bottom: 0.3rem; }
+  .ng-item { padding: 0.5rem 0; border-bottom: 1px dashed var(--line); }
+  .ng-item:last-child { border-bottom: none; }
+  .ng-name { font-weight: 600; }
+  .ng-reason, .ng-alt { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.2rem; }
+  .ineligible-detail { line-height: 1.6; }
+  .sim-sources { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px dashed var(--line); display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .sim-sources a.src-link { margin-top: 0; }
 
   /* ---------- Ranking cards ---------- */
   .rank-list { display: flex; flex-direction: column; gap: 0.9rem; }
@@ -1043,6 +1050,47 @@
   };
   var WAGE_REQUIRED = { kaizen: true, career: true, monodukuri: true };
 
+  // 「対象外の分類」表示で使う、対象になる機器・経費の具体例と根拠となる公的ソース。
+  // 出典は各制度公式サイト・公募要領、および中小企業省力化投資補助金は中小企業庁担当者インタビュー記事（2026年7月時点で自己チェック済み）
+  var PROGRAM_INELIGIBLE_INFO = {
+    ai: {
+      eligible: "予約・顧客管理・会計・受発注等の業務ソフトウェア購入費、クラウドサービス利用料（最大2年分）、導入コンサルティング費など、ITツール・ソフトウェアの導入費全般が対象です。",
+      sources: [{ label: "IT導入補助金2026 公式サイト（通常枠）", url: "https://it-shien.smrj.go.jp/applicant/subsidy/normal/" }]
+    },
+    jizoku: {
+      eligible: "Webサイト制作・広報費、展示会等出展費、店舗改装等の機械装置等費、開発費、委託・外注費など、販路開拓に資する取り組み全般が対象です。",
+      sources: [{ label: "小規模事業者持続化補助金 第20回公募要領", url: "https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" }]
+    },
+    kaizen: {
+      eligible: "生産性向上に資する設備・機器（施術機器、什器、POSレジ等）の導入費が対象です。ただし事業場内最低賃金の引き上げとセットで実施することが必須条件です。",
+      sources: [{ label: "業務改善助成金 厚生労働省 公式ページ", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" }]
+    },
+    shoryokuka: {
+      eligibleGeneral: "自動化・省人化に資する機械装置・システムの導入費が対象です。ただし「情報システムの構築・購入費は、導入する設備と一体的に省力化を実現するものであること」が条件とされており、設備を伴わない業務ソフト・クラウドサービス単体（予約管理・顧客管理システム等）は対象になりにくいとされています。",
+      eligibleCatalog: "中小企業庁の登録カタログに掲載されたハードウェア製品のみが対象です。主なカテゴリは、券売機・自動精算機・セルフレジ・自動チェックイン機、配膳・清掃・受付案内ロボット、AGV／AMR等の搬送自動化設備、産業用ロボット・自動加工機、在庫管理・勤怠シフト管理システム等の業務用IoT機器、一部の美容機器（脱毛機器等）です。予約管理・顧客管理ソフトなど、ハードウェアを伴わない業務システム単体は登録カテゴリに含まれていません。",
+      sourcesGeneral: [
+        { label: "中小企業省力化投資補助金＜一般型＞ 公式サイト", url: "https://shoryokuka.smrj.go.jp/ippan/" },
+        { label: "中小企業庁 担当者インタビュー「より活用しやすく！令和7年中小企業省力化投資補助金」", url: "https://mirasapo-plus.go.jp/hint/27807/" }
+      ],
+      sourcesCatalog: [
+        { label: "中小企業庁 担当者インタビュー「カタログ注文型」", url: "https://mirasapo-plus.go.jp/hint/24088/" },
+        { label: "製品カタログ（カタログ注文型）公式ページ", url: "https://shoryokuka.smrj.go.jp/catalog/product_catalog/" }
+      ]
+    },
+    food_labor: {
+      eligible: "調理・接客・店舗管理の各領域における自動化・省力化設備・システムのリース費用が対象です（購入・レンタルは対象外）。",
+      sources: [{ label: "農林水産省 公式ページ", url: "https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" }]
+    },
+    kanko_shoryokuka: {
+      eligible: "自動チェックイン機、PMS（宿泊管理システム）、配膳ロボット、清掃支援設備等、宿泊施設向けの省力化・省人化設備が対象です。",
+      sources: [{ label: "観光庁 特設サイト", url: "https://kanko-jinzai.go.jp/" }]
+    },
+    monodukuri: {
+      eligible: "機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウドサービス利用費等、革新的な新製品・新サービスの開発や新市場進出に資する経費が対象です。",
+      sources: [{ label: "新事業進出・ものづくり商業サービス補助金 公式サイト", url: "https://shinjigyou-monodukuri.smrj.go.jp/" }]
+    }
+  };
+
   function fmtMan(n) {
     return (Math.round(n * 10) / 10).toLocaleString('ja-JP') + '万円';
   }
@@ -1168,7 +1216,7 @@
       "items": ["キャッシュレス決済（クレジット・電子マネー・QR）導入","POSレジシステム導入（売上・在庫連動）","会計クラウドソフトとの自動連携","電子インボイス対応","セルフレジ・自動精算機の導入","施術メニュー別売上分析ダッシュボード導入","スタッフ別売上・指名料の自動集計","月額制メニュー（サブスク）課金システム導入","電子マネーギフトカード・プリペイド発行","経費精算・請求書処理の自動化"],
       "equipment": ["POSレジ本体・キャッシュドロワー","キャッシュレス決済端末","クラウド会計ソフト"],
       "costLines": [["POSレジ本体","25万円"],["決済端末×2台","10万円"],["会計ソフト年額","6万円"],["初年度概算合計","41万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金（ソフト部分）"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金（ソフト部分）"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（セルフレジ・自動精算機等）"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": ["キャッシュレス決済でレジ処理時間が56秒→29秒（約48%減）、会計業務時間全体で約35%短縮したデータがある（経済産業省関連調査等）","レジ締め作業が40分→5分に短縮された事例も報告されている","参考：1日30組対応の場合、会計対応だけで月10時間前後の削減が見込める試算"]
     },
@@ -1220,7 +1268,7 @@
       "items": ["スタッフ研修用eラーニングシステム導入","技術動画マニュアルのアーカイブ化","シフト管理システムのクラウド化","勤怠管理システム導入（打刻・残業管理）","評価制度・キャリアパス管理システム導入","新人教育用シミュレーター（練習キット）導入","社内チャットツール導入","資格取得支援・研修受講管理","メンタルヘルス相談窓口（EAP）導入","業務マニュアルのクラウド共有化"],
       "equipment": ["eラーニングシステム","クラウド勤怠・シフト管理システム"],
       "costLines": [["年間概算合計","25万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"career","label":"キャリアアップ助成金"},{"key":"jinzai","label":"人材開発支援助成金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"career","label":"キャリアアップ助成金"},{"key":"jinzai","label":"人材開発支援助成金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（勤怠・シフト管理システム）"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": ["美容業界（生活関連サービス業）の離職率は全産業ワースト2位。新卒就職者の1年以内離職率は約30%、3年以内は約50%（厚生労働省調査）","教育・研修制度の充実は定着率向上に寄与するとされる（定性的傾向）","参考：美容師1名の採用コストは数十万円規模といわれ、定着支援投資はその代替コストと比較検討できる"]
     },
@@ -1246,7 +1294,7 @@
       "items": ["薬剤・消耗品の在庫管理システム導入","在庫連動の発注自動化","バーコード／RFIDによる商材管理","店販品のPOS連携管理","使用期限管理アラートシステム","仕入れ先比較・コスト管理システム導入","薬剤使用量の自動記録・原価管理","消耗品のサブスク型定期購入システム","在庫ロス分析ツール導入","複数店舗間の在庫融通管理システム"],
       "equipment": ["在庫管理システム","バーコード／RFID読取機器"],
       "costLines": [["初期投資概算合計","28万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"jizoku","label":"小規模事業者持続化補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"jizoku","label":"小規模事業者持続化補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（在庫管理・読取機器）"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": ["在庫管理システム導入により棚卸作業を大幅短縮（一事例では棚卸を30分程度で完了）（美容室在庫管理事例）","過剰在庫・期限切れ廃棄ロスの削減、店販品の販売機会損失の防止に寄与"]
     },
@@ -1475,7 +1523,7 @@
       ],
       "equipment": ["IoT温度管理センサー", "換気・空気清浄設備", "アレルゲン表示管理システム", "衛生管理チェックアプリ"],
       "costLines": [["IoT温度管理センサー導入費","20万円"],["消毒・換気設備導入費","25万円"],["衛生管理研修・認証取得費","15万円"],["年間概算合計","60万円"]],
-      "programs": [{"key":"kaizen","label":"業務改善助成金"},{"key":"ai","label":"デジタル化・AI導入補助金"}],
+      "programs": [{"key":"kaizen","label":"業務改善助成金"},{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（IoT温度管理センサー）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "IoT温度管理センサーの導入により記録作業の自動化と衛生事故リスクの低減が期待できるとされる（業界目安）",
@@ -1503,7 +1551,7 @@
       ],
       "equipment": ["クラウド会計ソフト", "勤怠・シフト管理システム", "給与計算クラウドサービス", "社内情報共有ツール"],
       "costLines": [["クラウド会計・勤怠システム導入費","15万円"],["システム月額利用料×12ヶ月","18万円"],["電子帳簿保存法対応費","9万円"],["年間概算合計","42万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"food_labor","label":"飲食業労働生産性向上支援補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"food_labor","label":"飲食業労働生産性向上支援補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（勤怠・シフト管理システム）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "クラウド勤怠・給与計算システムの導入により事務作業時間の削減が期待できるとされる（業界目安）",
@@ -1531,7 +1579,7 @@
       ],
       "equipment": ["LED照明設備", "省エネ型冷蔵・冷凍庫", "高効率空調機器", "IoTエネルギー管理システム(BEMS)"],
       "costLines": [["LED照明・空調更新費","60万円"],["省エネ型冷蔵・冷凍設備導入費","50万円"],["IoTエネルギー管理システム導入費","20万円"],["年間概算合計","130万円"]],
-      "programs": [{"key":"kaizen","label":"業務改善助成金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"}],
+      "programs": [{"key":"kaizen","label":"業務改善助成金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "約45席規模の飲食店でLED照明導入前と比べ電気代が約86%削減された事例がある",
@@ -1559,7 +1607,7 @@
       ],
       "equipment": ["統合店舗管理システム", "店舗別収益分析ダッシュボード", "共通会員・ポイント基盤", "エリアマネージャー向け管理アプリ"],
       "costLines": [["統合管理システム導入費","50万円"],["店舗間物流・仕入れ一元化費用","40万円"],["システム月額利用料×12ヶ月","20万円"],["年間概算合計","110万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "複数店舗のデータ一元管理により本部での経営判断のスピードが向上するとされる（業界目安）",
@@ -1721,7 +1769,7 @@
       ],
       "equipment": ["自動噴霧除菌システム", "CO2センサー・空気清浄機", "非接触検温器", "水質モニタリング機器"],
       "costLines": [["自動噴霧除菌システム導入", "45万円"], ["CO2センサー・空気清浄機(5台)", "38万円"], ["水質モニタリング機器導入", "22万円"], ["年間概算合計", "105万円"]],
-      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}],
+      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金（自動噴霧除菌・水質モニタリング機器）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "衛生管理の見える化・第三者認証取得は口コミ評価やリピート率の向上に寄与するとされる（業界目安）",
@@ -1802,7 +1850,7 @@
       ],
       "equipment": ["eラーニングシステム", "研修動画教材", "人事評価クラウドツール", "勤怠・シフト管理システム"],
       "costLines": [["eラーニングシステム導入・月額×12ヶ月", "24万円"], ["外部研修・講師委託費", "35万円"], ["資格取得支援・教材費", "18万円"], ["年間概算合計", "77万円"]],
-      "programs": [{"key": "career", "label": "キャリアアップ助成金"}, {"key": "jinzai", "label": "人材開発支援助成金"}],
+      "programs": [{"key": "career", "label": "キャリアアップ助成金"}, {"key": "jinzai", "label": "人材開発支援助成金"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金（勤怠・シフト管理システム）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "正社員化と教育投資の組み合わせは離職率の低下・定着率向上に寄与するとされる（業界目安）",
@@ -1829,7 +1877,7 @@
       ],
       "equipment": ["クラウド会計・給与システム", "勤怠管理システム", "電子契約サービス", "経営ダッシュボードツール"],
       "costLines": [["クラウド会計・給与システム月額×12ヶ月", "30万円"], ["勤怠管理システム月額×12ヶ月", "18万円"], ["電子契約・セキュリティ対策費", "20万円"], ["年間概算合計", "68万円"]],
-      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "jizoku", "label": "小規模事業者持続化補助金"}],
+      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "jizoku", "label": "小規模事業者持続化補助金"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金（勤怠管理システム）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "クラウド会計・勤怠管理システムの導入は経理・労務業務の工数削減に寄与するとされる（業界目安）",
@@ -1856,7 +1904,7 @@
       ],
       "equipment": ["LED照明", "高効率空調・ヒートポンプ", "BEMS(エネルギー管理システム)", "太陽光発電設備"],
       "costLines": [["LED照明・空調設備更新費", "280万円"], ["BEMS導入費", "45万円"], ["節水設備更新費", "35万円"], ["年間概算合計", "360万円"]],
-      "programs": [{"key": "kaizen", "label": "業務改善助成金"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}],
+      "programs": [{"key": "kaizen", "label": "業務改善助成金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "LED化・高効率空調への更新は光熱費削減に寄与するとされる（業界目安）",
@@ -2019,7 +2067,7 @@
       ],
       "equipment": ["クラウド在庫管理システム", "ハンディターミナル(バーコード/RFID)", "Web受発注システム", "EDIシステム"],
       "costLines": [["在庫管理システム初期導入費", "25万円"], ["月額利用料×12ヶ月", "30万円"], ["ハンディターミナル購入(3台)", "15万円"], ["年間概算合計", "70万円"]],
-      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "jizoku", "label": "小規模事業者持続化補助金"}],
+      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "jizoku", "label": "小規模事業者持続化補助金"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金（ハンディターミナル等）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "バーコード・RFID化により棚卸作業時間の大幅な削減が期待できる（業界目安）",
@@ -2103,7 +2151,7 @@
       ],
       "equipment": ["高効率生産設備", "LED照明・省エネ空調", "エネルギーマネジメントシステム(FEMS)", "デマンドコントローラー"],
       "costLines": [["高効率設備更新費(一部)", "300万円"], ["LED照明・空調更新", "100万円"], ["FEMS導入費", "60万円"], ["デマンドコントローラー", "40万円"], ["概算合計(初期投資)", "500万円"]],
-      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}],
+      "programs": [{"key": "kaizen", "label": "業務改善助成金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "老朽設備を高効率機に更新することで、電力使用量・生産コストの削減が期待できる（業界目安）",
@@ -2266,7 +2314,7 @@
       ],
       "equipment": ["360度VR撮影カメラ", "VR内見配信プラットフォーム", "オンライン内見用タブレット・Web会議ツール", "内見予約管理システム"],
       "costLines": [["360度VRカメラ購入","15万円"],["VR配信プラットフォーム月額×12ヶ月","30万円"],["オンライン内見用タブレット等","10万円"],["年間概算合計","55万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "VR内見活用で成約率が40%から60%へ1.5倍向上した不動産事業者の事例がある（Spacely導入事例）",
@@ -2322,7 +2370,7 @@
       ],
       "equipment": ["クラウド賃貸管理システム", "家賃入金消込・ファームバンキング連携ツール", "入居者向けチャットボット", "モバイル点検・報告アプリ"],
       "costLines": [["賃貸管理システム初期費","12万円"],["月額利用料×12ヶ月","36万円"],["チャットボット・入居者ポータル","17万円"],["年間概算合計","65万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "賃貸管理システム導入で事務作業時間が月80時間から8時間へ削減された事例がある（業界導入事例）",
@@ -2403,7 +2451,7 @@
       ],
       "equipment": ["LED照明・人感センサー設備", "宅配ボックス", "共用部Wi-Fiルーター", "IoT家電・BEMS/HEMS機器"],
       "costLines": [["LED照明・センサー設置","40万円"],["宅配ボックス設置","35万円"],["共用部Wi-Fi・IoT機器導入","25万円"],["省エネ診断・提案費","20万円"],["年間概算合計","120万円"]],
-      "programs": [{"key":"shoryokuka","label":"中小企業省力化投資補助金"},{"key":"kaizen","label":"業務改善助成金"}],
+      "programs": [{"key":"kaizen","label":"業務改善助成金"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "宅配ボックスやWi-Fi無料化等の設備投資は入居希望者の物件選定基準として重視される傾向があり空室期間短縮に寄与するとされる（業界目安）",
@@ -2704,7 +2752,7 @@
       ],
       "equipment": ["チャットボット/IVRシステム", "勤怠・シフト管理クラウド", "電子契約サービス", "ビジネスチャットツール"],
       "costLines": [["チャットボット・IVR導入費","10万円"],["勤怠管理クラウド年間利用料","12万円"],["電子契約サービス年間利用料","10万円"],["ビジネスチャットツール利用料","6万円"],["年間概算合計","38万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金（勤怠・シフト管理システム）"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "チャットボット・IVR導入による電話対応時間の削減効果は、他業種を含む一般的な業務効率化事例として広く報告されている",
@@ -3175,14 +3223,39 @@
     }
 
     if (ngList.length > 0) {
-      var ngNames = ngList.map(function (k) {
+      var ngDetail = ngList.map(function (k) {
+        var cat = categoriesMap[k];
         var sug = categoryOkPrograms[k].map(function (p) { return PROGRAMS[p].name; }).join('、');
-        return categoriesMap[k].name + '（利用できる制度：' + sug + '）';
-      }).join('<br>');
+        return '<div class="ng-item">' +
+          '<div class="ng-name">' + cat.name + '</div>' +
+          '<div class="ng-reason">対象外の理由：本カテゴリで想定する機器・システム（' + cat.equipment.join('・') + '）は、上記の対象経費区分に該当しないため</div>' +
+          '<div class="ng-alt">利用できる制度：' + sug + '</div>' +
+        '</div>';
+      }).join('');
+
+      var ineligibleInfo = PROGRAM_INELIGIBLE_INFO[progKey];
+      var eligibleText = '';
+      var sourcesList = [];
+      if (ineligibleInfo) {
+        if (progKey === 'shoryokuka') {
+          var isCatalog = track && track.key === 'catalog';
+          eligibleText = isCatalog ? ineligibleInfo.eligibleCatalog : ineligibleInfo.eligibleGeneral;
+          sourcesList = isCatalog ? ineligibleInfo.sourcesCatalog : ineligibleInfo.sourcesGeneral;
+        } else {
+          eligibleText = ineligibleInfo.eligible;
+          sourcesList = ineligibleInfo.sources;
+        }
+      }
+      var sourcesHTML = sourcesList.map(function (s) {
+        return '<a class="src-link" href="' + s.url + '" target="_blank" rel="noopener noreferrer">' + s.label + ' ↗</a>';
+      }).join('');
+
       html += '<div class="sim-panel alert" style="margin-top:' + (okList.length > 0 ? '0.8rem' : '0') + ';">' +
         '<div class="sim-headline">✕ 対象外の分類</div>' +
         '<p style="margin:0.6rem 0 0;">' + prog.name + 'の対象経費は「' + EXPENSE_DESC[progKey] + '」のため、次の分類は対象外です。</p>' +
-        '<div class="sim-note">' + ngNames + '</div>' +
+        '<div class="sim-note">' + ngDetail + '</div>' +
+        (eligibleText ? '<div class="sim-note ineligible-detail"><strong>対象になる機器・経費の例' + (progKey === 'shoryokuka' ? '（' + (track ? track.label : '一般型') + '）' : '') + '：</strong>' + eligibleText + '</div>' : '') +
+        (sourcesHTML ? '<div class="sim-sources">' + sourcesHTML + '</div>' : '') +
       '</div>';
     }
 
