@@ -324,6 +324,13 @@
   }
   .cond-head .stack { flex: 1; min-width: 0; }
   .cond-card .tier-list { margin-top: 0.4rem; max-width: 26rem; }
+  .cond-card-extra { display: none; border-color: var(--accent); }
+  .cond-card-extra .cond-head { position: relative; }
+  .cond-card-extra-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--accent); background: var(--accent-wash); border-radius: 100px;
+    padding: 0.15rem 0.6rem; margin-bottom: 0.5rem;
+  }
 
   .threshold-box {
     background: var(--accent-wash);
@@ -522,7 +529,7 @@
       </div>
       <div class="stat">
         <div class="k">掲載制度数</div>
-        <div class="v tabular">6<small> 制度</small></div>
+        <div class="v tabular"><span id="heroProgramCount">6</span><small> 制度</small></div>
         <div class="d">公募が終了した制度は掲載から除外</div>
       </div>
       <div class="stat">
@@ -555,13 +562,13 @@
 
   <section id="conditions">
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>導入のための条件</h2></div>
-    <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>主要6制度に整理した。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示す。</p>
+    <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有制度に整理した。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示す。</p>
 
     <div class="threshold-box">
       <div class="k">選択中の業種における中小企業・小規模事業者の基準</div>
       <div class="threshold-grid">
         <div class="t-item"><div class="t-k">小規模事業者持続化補助金の対象基準</div><div class="t-v" id="thresholdSmallBiz">5人以下</div></div>
-        <div class="t-item"><div class="t-k">中小企業者の基準（他5制度の目安）</div><div class="t-v" id="thresholdSme">資本金5,000万円以下または従業員100人以下</div></div>
+        <div class="t-item"><div class="t-k">中小企業者の基準（他制度の目安）</div><div class="t-v" id="thresholdSme">資本金5,000万円以下または従業員100人以下</div></div>
       </div>
       <div class="employee-select-row">
         <label for="employeeSizeCond">自社の常時使用従業員数を選択（小規模事業者である必要はありません）</label>
@@ -578,14 +585,7 @@
 
     <div class="picker">
       <label for="programSelect">制度を選択して詳細を表示（プルダウン見出し = 制度名＋上限額）</label>
-      <select id="programSelect" onchange="renderProgram(this.value)">
-        <option value="ai">デジタル化・AI導入補助金2026（上限450万円）</option>
-        <option value="jizoku">小規模事業者持続化補助金＜通常枠＞（上限50万円）</option>
-        <option value="kaizen">業務改善助成金（上限450万円／特例600万円）</option>
-        <option value="shoryokuka">中小企業省力化投資補助金＜一般型＞（上限750万円／特例1,000万円）</option>
-        <option value="career">キャリアアップ助成金（正社員化コース）（上限140万円／人）</option>
-        <option value="jinzai">人材開発支援助成金（人材育成支援コース）（上限1,000万円／年）</option>
-      </select>
+      <select id="programSelect" onchange="renderProgram(this.value)"></select>
       <div class="program-detail" id="programDetail"></div>
     </div>
 
@@ -684,9 +684,81 @@
         </div>
       </div>
 
+      <div class="cond-card cond-card-extra" data-industry-only="food">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">飲食業労働生産性向上支援補助金</span><span class="sub">農林水産省・厚生労働省</span></div>
+          <a class="src-link" href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページを見る ↗</a>
+        </div>
+        <div class="cond-card-extra-tag">飲食業限定の制度</div>
+        <div class="pd-grid">
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小・中堅規模の飲食店（他業種は対象外）</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">調理・接客・店舗管理の各領域における自動化・省力化設備・システム。<strong style="color:var(--rust);">リース契約に限る（購入・レンタルは対象外）</strong></div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">定額（10/10、全額補助）</div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">1領域100万〜500万円<span class="sub">3領域併願で最大1,500万円</span></div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし<span class="sub">公募要領に賃上げ必須要件の記載はない</span></span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">2026年度分は選定手続き中</span></div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">2026年度は3/26〜4/10・4/1〜5/29で終了。次回は未発表</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2026年度新設。年度内複数回の公募実績があり継続の可能性は高いが確定情報ではない</div></div>
+        </div>
+      </div>
+
+      <div class="cond-card cond-card-extra" data-industry-only="lodging">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">観光地・観光産業における省力化投資補助事業</span><span class="sub">観光庁</span></div>
+          <a class="src-link" href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイトを見る ↗</a>
+        </div>
+        <div class="cond-card-extra-tag">宿泊業限定の制度</div>
+        <div class="pd-grid">
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">旅館業法第3条第1項の許可を受けた宿泊事業者（風俗営業・住宅宿泊事業＝民泊は対象外）。地域（DMO・自治体等）と連携した取組が要件</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動チェックイン機、PMS、配膳ロボット、清掃支援設備等の省力化・省人化設備</div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2</div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">1施設あたり1,000万円</div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし</span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は3/27〜5/29で終了。二次公募の実施可否は検討中</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧・人材不足対策事業からの継続制度。次年度以降の実施可否は予算措置次第</div></div>
+        </div>
+      </div>
+
+      <div class="cond-card cond-card-extra" data-industry-only="manufacturing">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">新事業進出・ものづくり商業サービス補助金</span><span class="sub">旧ものづくり補助金＋新事業進出補助金の統合制度</span></div>
+          <a class="src-link" href="https://shinjigyou-monodukuri.smrj.go.jp/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a>
+        </div>
+        <div class="cond-card-extra-tag">製造業と相性が良い制度</div>
+        <div class="pd-grid">
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・中堅企業者（基準は上記ボックス参照）</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウド利用費等</div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">特例2/3。グローバル枠は2/3</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">7,000万円<span class="sub">特例9,000万円</span></div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">給与支給総額+3.5%以上／事業場内最低賃金+30円以上を3〜5年維持</span></span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">第1回公募のため実績なし</span></div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第1回公募<span class="sub">2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧ものづくり補助金（2026年5月公募終了）と新事業進出補助金の統合により2026年度新設。継続実施見込みだが次年度以降の詳細は未定</div></div>
+        </div>
+      </div>
+
+      <div class="cond-card cond-card-extra" data-industry-only="realestate">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">空き家対策モデル事業</span><span class="sub">国土交通省</span></div>
+          <a class="src-link" href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000131.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページを見る ↗</a>
+        </div>
+        <div class="cond-card-extra-tag">不動産業と相性が良い制度</div>
+        <div class="pd-grid">
+          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">民間事業者（不動産事業者を含む）・NPO・地方公共団体等の提案主体。<strong style="color:var(--accent);">他制度と異なり、個別の設備導入費ではなく先進的な空き家対策の事業提案に対する競争的な公募</strong>である点に注意</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">空き家の改修・除却工事（ハード事業）、相談体制構築等の事業スキーム構築（ソフト事業）</div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">工事費は最大2/5<span class="sub">ソフト事業は定額</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">提案内容により異なる</div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>対象外</span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">競争的提案公募型<span class="sub">令和8年度は36件採択</span></div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は5/20正午締切。採択発表は7月上旬予定。次年度は例年3〜5月頃見込み</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">国土交通省が毎年度実施。次年度以降も継続実施が見込まれる</div></div>
+        </div>
+      </div>
+
     </div>
-    <p class="section-sub" style="margin-top:0.8rem;">中小企業新事業進出補助金（旧・事業再構築補助金の後継）は第4回公募が2026年6月19日18:00に締め切られ、今後は「ものづくり補助金」と統合された新制度へ移行する予定のため本表からは除外している。統合後の新制度の詳細が公表され次第、掲載を検討する。</p>
-    <p class="section-sub" style="margin-top:0.6rem;">「補助金」（デジタル化・AI導入、小規模事業者持続化、業務改善、省力化投資）は予算上限のある競争審査型で採択率が変動するのに対し、「助成金」（キャリアアップ、人材開発支援）は要件を満たせば原則支給される制度である点に留意。</p>
+    <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合はカードが追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
+    <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算上限のある競争審査型で採択率が変動するのに対し、「助成金」は要件を満たせば原則支給される制度である点に留意。</p>
   </section>
 
   <section id="ranking">
@@ -716,14 +788,7 @@
       <div class="sim-grid">
         <div>
           <label for="simProgram">① 使いたい制度</label>
-          <select id="simProgram" onchange="runSimulation()">
-            <option value="ai">デジタル化・AI導入補助金2026（上限450万円）</option>
-            <option value="jizoku">小規模事業者持続化補助金＜通常枠＞（上限50万円）</option>
-            <option value="kaizen">業務改善助成金（上限450万円／特例600万円）</option>
-            <option value="shoryokuka">中小企業省力化投資補助金＜一般型＞（上限750万〜8,000万円）</option>
-            <option value="career">キャリアアップ助成金（正社員化コース）（上限140万円／人）</option>
-            <option value="jinzai">人材開発支援助成金（人材育成支援コース）（上限1,000万円／年）</option>
-          </select>
+          <select id="simProgram" onchange="runSimulation()"></select>
         </div>
         <div>
           <label for="simEmployees">② 常時使用する従業員数</label>
@@ -851,6 +916,66 @@
       linkLabel: "厚生労働省 公式ページを見る",
       schedule: "通年受付。公募型ではなく随時支給",
       continuity: "恒久的な制度として毎年度実施。次年度も継続見込み（一回限りの制度ではない）"
+    },
+    food_labor: {
+      name: "飲食業労働生産性向上支援補助金（農林水産省）",
+      industryOnly: "food",
+      scale: "中小・中堅規模の飲食店（美容業等の他業種は対象外）",
+      expense: "調理・接客・店舗管理の各領域における自動化・省力化設備・システムの導入費。<strong>リース契約に限る（購入・レンタルは対象外）</strong>という制約に注意",
+      rate: "定額（10/10、全額補助）",
+      cap: "1領域あたり100万〜500万円（調理・接客・店舗管理の3領域併願可、最大1,500万円）",
+      wage: "公募要領上、明確な賃上げ必須要件の記載なし（要最新の公募要領確認）",
+      acceptance: "2026年度分は選定手続き中。採択率は非公表",
+      note: "モバイルオーダー・キャッシュレス決済、厨房設備・調理効率化、バックオフィス効率化の各分類と対象領域が重なる。ただし機器は必ずリース契約で導入する必要がある点に留意。",
+      link: "https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html",
+      linkLabel: "農林水産省 公式ページを見る",
+      schedule: "2026年度は3/26〜4/10（再公募）および4/1〜5/29の期間で受付終了。次回スケジュールは本稿時点で未発表",
+      continuity: "2026年度に農林水産省・厚生労働省が新設した補助金。年度内に複数回の公募が行われた実績があり、次年度以降も継続実施される可能性が高いとみられるが確定情報ではない"
+    },
+    kanko_shoryokuka: {
+      name: "観光地・観光産業における省力化投資補助事業（観光庁）",
+      industryOnly: "lodging",
+      scale: "旅館業法第3条第1項の許可を受けた宿泊事業者（風俗営業・住宅宿泊事業＝民泊は対象外）。地域（DMO・自治体等）と連携した人手不足対策の取組が要件",
+      expense: "自動チェックイン機、PMS（宿泊管理システム）、配膳ロボット、清掃支援設備等の省力化・省人化設備",
+      rate: "1/2",
+      cap: "1施設あたり上限1,000万円",
+      wage: "明記なし（賃上げは必須要件ではない）",
+      acceptance: "非公表",
+      note: "フロント・チェックイン自動化、客室清掃・リネン管理効率化、レストラン・館内設備の効率化の各分類と対象設備が重なる。",
+      link: "https://kanko-jinzai.go.jp/",
+      linkLabel: "観光庁 特設サイトを見る",
+      schedule: "令和8年度は2026年3月27日13:00〜5月29日17:00で受付終了。二次公募の実施可否は申請状況を踏まえて検討中（2026年7月時点で未確定）",
+      continuity: "旧・人材不足対策事業からの継続制度。毎年度実施されているが、次年度以降の実施可否・内容は予算措置次第"
+    },
+    monodukuri: {
+      name: "新事業進出・ものづくり商業サービス補助金",
+      industryOnly: "manufacturing",
+      scale: "中小企業者・中堅企業者。旧ものづくり補助金と旧新事業進出補助金（ともに公募終了）の統合後継制度",
+      expense: "機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウドサービス利用費、原材料費、広告宣伝・販売促進費等（枠により建物費・海外旅費等も対象）",
+      rate: "1/2（特例2/3）。グローバル枠は2/3",
+      cap: "上限7,000万円（特例9,000万円）",
+      wage: "必須。補助事業終了後3〜5年の事業計画で、給与支給総額の年平均成長率+3.5%以上、事業場内最低賃金が地域別最低賃金より+30円以上高い水準を維持する計画が必要",
+      acceptance: "第1回公募のため非公表",
+      note: "産業用ロボット・協働ロボット導入、品質管理・検査工程の自動化など、製造業の大型設備投資と相性が良い。",
+      link: "https://shinjigyou-monodukuri.smrj.go.jp/",
+      linkLabel: "公式サイトを見る",
+      schedule: "第1回公募：2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切",
+      continuity: "旧ものづくり補助金（2026年5月公募終了）と新事業進出補助金の統合により2026年度新設。継続実施される見込みだが、統合直後のため次年度以降の詳細は未定"
+    },
+    akiya: {
+      name: "空き家対策モデル事業（国土交通省）",
+      industryOnly: "realestate",
+      scale: "民間事業者（不動産事業者を含む）・NPO・地方公共団体等の提案主体。<strong>個別の設備導入費ではなく、先進的な空き家対策の事業提案に対する競争的な公募</strong>である点が他制度と大きく異なる",
+      expense: "空き家の改修・除却工事（ハード事業）、相談体制構築・情報発信等の事業スキーム構築（ソフト事業）",
+      rate: "工事費は最大2/5、ソフト事業は定額（提案内容により異なる）",
+      cap: "提案内容・規模により異なる（公募要領を要確認）",
+      wage: "対象外（賃上げ要件はない）",
+      acceptance: "競争的な提案公募型。令和8年度は36件採択",
+      note: "本表の「業務改善」分類とは性質が異なり、日常的な設備導入というより新たな空き家活用ビジネスモデルの提案が対象。",
+      link: "https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000131.html",
+      linkLabel: "国土交通省 公式ページを見る",
+      schedule: "令和8年度は2026年5月20日正午締切で受付終了。採択発表は7月上旬予定。次年度の公募時期は例年3〜5月頃の見込み",
+      continuity: "国土交通省が毎年度実施している事業。次年度以降も継続実施が見込まれる"
     }
   };
 
@@ -874,13 +999,14 @@
       '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>';
   }
 
-  var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5 };
+  var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, food_labor: 1.0, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
 
-  var CAP = { ai: 450, jizoku: 50, kaizen: 450, shoryokuka: 750, career: 140, jinzai: 1000 };
+  var CAP = { ai: 450, jizoku: 50, kaizen: 450, shoryokuka: 750, career: 140, jinzai: 1000, food_labor: 1500, kanko_shoryokuka: 1000, monodukuri: 7000 };
   var CAP_TEXT = {
     ai: "450万円", jizoku: "50万円（通常枠。賃金引上げ枠は200万円）", kaizen: "450万円（特例600万円）",
     shoryokuka: "750万円（特例1,000万円）",
-    career: "140万円／人", jinzai: "1,000万円／年（事業所）"
+    career: "140万円／人", jinzai: "1,000万円／年（事業所）",
+    food_labor: "1,500万円（3領域合計）", kanko_shoryokuka: "1,000万円／施設", monodukuri: "7,000万円（特例9,000万円）"
   };
   var EXPENSE_DESC = {
     ai: "予約管理・会計等のソフトウェア購入費やクラウド利用料",
@@ -888,9 +1014,13 @@
     kaizen: "賃上げとセットで行う生産性向上設備投資",
     shoryokuka: "自動化・省人化機器の導入費",
     career: "正社員転換に伴う人件費相当",
-    jinzai: "研修・訓練費用および訓練期間中の賃金"
+    jinzai: "研修・訓練費用および訓練期間中の賃金",
+    food_labor: "調理・接客・店舗管理領域の省力化設備（リース契約に限る）",
+    kanko_shoryokuka: "宿泊施設の省力化・省人化設備",
+    monodukuri: "大型設備投資・技術導入費等",
+    akiya: "空き家の改修・除却工事や事業スキーム構築（個別設備費ではない）"
   };
-  var WAGE_REQUIRED = { kaizen: true, career: true };
+  var WAGE_REQUIRED = { kaizen: true, career: true, monodukuri: true };
 
   function fmtMan(n) {
     return (Math.round(n * 10) / 10).toLocaleString('ja-JP') + '万円';
@@ -1090,7 +1220,7 @@
       ],
       "equipment": ["QRオーダー/タブレット端末", "キャッシュレス決済端末", "POSレジ", "キッチンディスプレイシステム(KDS)"],
       "costLines": [["タブレット・QRオーダー端末導入費","20万円"],["決済端末・手数料関連費用(年間概算)","15万円"],["システム月額利用料×12ヶ月","10万円"],["年間概算合計","45万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"shoryokuka","label":"中小企業省力化投資補助金"},{"key":"food_labor","label":"飲食業労働生産性向上支援補助金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "MAIDO MOBILE導入店舗では最大5割の受注をセルフ化、初期費用をかけず7割セルフ化した店舗も（MAIDO SYSTEM調べ）",
@@ -1174,7 +1304,7 @@
       ],
       "equipment": ["配膳・下膳ロボット", "スチームコンベクションオーブン", "自動洗浄機", "真空調理機器"],
       "costLines": [["自動調理機器(スチコン等)導入費","100万円"],["配膳ロボット導入費","60万円"],["保守・メンテナンス費(年間)","20万円"],["年間概算合計","180万円"]],
-      "programs": [{"key":"shoryokuka","label":"中小企業省力化投資補助金"},{"key":"kaizen","label":"業務改善助成金"}],
+      "programs": [{"key":"shoryokuka","label":"中小企業省力化投資補助金"},{"key":"kaizen","label":"業務改善助成金"},{"key":"food_labor","label":"飲食業労働生産性向上支援補助金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "配膳ロボット導入により1日平均100回分・約1.5km相当の配膳業務を代替した事例があり、テーブルリセット時間の短縮で空席率が6.6%から2.7%に減少した事例も",
@@ -1286,7 +1416,7 @@
       ],
       "equipment": ["クラウド会計ソフト", "勤怠・シフト管理システム", "給与計算クラウドサービス", "社内情報共有ツール"],
       "costLines": [["クラウド会計・勤怠システム導入費","15万円"],["システム月額利用料×12ヶ月","18万円"],["電子帳簿保存法対応費","9万円"],["年間概算合計","42万円"]],
-      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"}],
+      "programs": [{"key":"ai","label":"デジタル化・AI導入補助金"},{"key":"food_labor","label":"飲食業労働生産性向上支援補助金"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "クラウド勤怠・給与計算システムの導入により事務作業時間の削減が期待できるとされる（業界目安）",
@@ -1421,7 +1551,7 @@
       ],
       "equipment": ["自動チェックイン機(キオスク端末)", "スマートロック", "自動精算機", "AIチャットボット"],
       "costLines": [["自動チェックイン機導入費(1台)", "98万円"], ["スマートロック・キーシステム(10室分)", "35万円"], ["保守・クラウド利用料×12ヶ月", "25万円"], ["年間概算合計", "158万円"]],
-      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "kaizen", "label": "業務改善助成金"}],
+      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "kanko_shoryokuka", "label": "観光庁 省力化投資補助事業"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "自動チェックイン機導入で1件あたりのフロント対応時間を3分短縮でき、50室・稼働率70%規模の施設では年間約450時間の削減が可能との試算がある",
@@ -1476,7 +1606,7 @@
       ],
       "equipment": ["清掃管理システム(PMS連携)", "清掃ロボット", "RFIDリネン管理システム", "タブレット端末"],
       "costLines": [["清掃管理システム導入・月額×12ヶ月", "36万円"], ["清掃ロボット(共用部用)購入費", "120万円"], ["RFIDリネン管理タグ・リーダー導入", "28万円"], ["年間概算合計", "184万円"]],
-      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}],
+      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "kanko_shoryokuka", "label": "観光庁 省力化投資補助事業"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "AI清掃ロボット導入で共用部清掃を自動化し、清掃スタッフの業務負担を30%軽減、客室稼働率の高い日でも清掃完了までの時間を平均1時間短縮した事例がある",
@@ -1558,7 +1688,7 @@
       ],
       "equipment": ["配膳ロボット", "セルフオーダー端末", "キッチンPOSシステム", "IoT設備管理システム"],
       "costLines": [["配膳ロボット導入費(1台)", "110万円"], ["セルフオーダー端末(5台)", "45万円"], ["キッチンPOS・在庫管理システム", "32万円"], ["年間概算合計", "187万円"]],
-      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}],
+      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "kanko_shoryokuka", "label": "観光庁 省力化投資補助事業"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "配膳ロボット導入は朝食・レストランのホール業務負担軽減に有効とされる（業界目安）",
@@ -1746,7 +1876,7 @@
       ],
       "equipment": ["産業用ロボットアーム", "協働ロボット(コボット)", "AGV/AMR(自動搬送車)", "ロボット制御システム・安全柵"],
       "costLines": [["協働ロボット本体", "400万円"], ["エンドエフェクタ・治具", "80万円"], ["安全柵・安全センサー", "70万円"], ["設置・ティーチング費", "150万円"], ["保守契約(初年度)", "50万円"], ["概算合計(初期投資+初年度保守)", "750万円"]],
-      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "kaizen", "label": "業務改善助成金"}],
+      "programs": [{"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "kaizen", "label": "業務改善助成金"}, {"key": "monodukuri", "label": "新事業進出・ものづくり商業サービス補助金"}],
       "effectTitle": "期待できる効果（業界目安）",
       "effectBullets": [
         "東北経済産業局の事例集では、伝統工芸品製造業がロボット導入により重筋作業の負担軽減と生産性向上を両立させた事例が報告されている（出典: 東北経済産業局「中小製造業における省力化事例集」2025年6月）",
@@ -1774,7 +1904,7 @@
       ],
       "equipment": ["AI外観検査システム", "画像検査用カメラ・照明装置", "三次元測定機", "検査記録管理クラウド"],
       "costLines": [["AI外観検査システム導入費", "220万円"], ["カメラ・照明等周辺機器", "80万円"], ["月額ライセンス利用料×12ヶ月", "50万円"], ["年間概算合計", "350万円"]],
-      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金"}],
+      "programs": [{"key": "ai", "label": "デジタル化・AI導入補助金2026"}, {"key": "shoryokuka", "label": "中小企業省力化投資補助金"}, {"key": "monodukuri", "label": "新事業進出・ものづくり商業サービス補助金"}],
       "effectTitle": "期待できる効果（参考値）",
       "effectBullets": [
         "AI外観検査導入により、従来目視検査の見逃し約20%からほぼ0%へ改善し、検査員を配置転換しながら約3割の増産に対応した事例が報告されている（出典: フューチャーアーティザン コラム、富山小林製薬の事例）",
@@ -2580,7 +2710,7 @@
 
   function getCompat(industryKey) {
     var map = getCategoriesMap(industryKey);
-    var compat = { ai: {}, jizoku: {}, kaizen: {}, shoryokuka: {}, career: {}, jinzai: {} };
+    var compat = { ai: {}, jizoku: {}, kaizen: {}, shoryokuka: {}, career: {}, jinzai: {}, food_labor: {}, kanko_shoryokuka: {}, monodukuri: {}, akiya: {} };
     Object.keys(map).forEach(function (ck) {
       map[ck].programs.forEach(function (p) {
         if (RATE_BASE[p.key] !== undefined) compat[p.key][ck] = RATE_BASE[p.key];
@@ -2665,6 +2795,49 @@
     document.getElementById('catCheckGrid').innerHTML = html;
   }
 
+  var UNIVERSAL_PROGRAM_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai'];
+  var OPTION_LABEL = {
+    ai: "デジタル化・AI導入補助金2026（上限450万円）",
+    jizoku: "小規模事業者持続化補助金＜通常枠＞（上限50万円）",
+    kaizen: "業務改善助成金（上限450万円／特例600万円）",
+    shoryokuka: "中小企業省力化投資補助金＜一般型＞（上限750万〜8,000万円）",
+    career: "キャリアアップ助成金（正社員化コース）（上限140万円／人）",
+    jinzai: "人材開発支援助成金（人材育成支援コース）（上限1,000万円／年）",
+    food_labor: "飲食業労働生産性向上支援補助金（上限1,500万円）",
+    kanko_shoryokuka: "観光地・観光産業における省力化投資補助事業（上限1,000万円／施設）",
+    monodukuri: "新事業進出・ものづくり商業サービス補助金（上限7,000万円／特例9,000万円）",
+    akiya: "空き家対策モデル事業（上限は提案内容により異なる）"
+  };
+
+  function getAvailablePrograms(industryKey) {
+    var keys = UNIVERSAL_PROGRAM_KEYS.slice();
+    Object.keys(PROGRAMS).forEach(function (k) {
+      if (PROGRAMS[k].industryOnly === industryKey) keys.push(k);
+    });
+    return keys;
+  }
+
+  function updateIndustrySpecificCards(industryKey) {
+    document.querySelectorAll('.cond-card-extra').forEach(function (card) {
+      card.style.display = (card.getAttribute('data-industry-only') === industryKey) ? '' : 'none';
+    });
+  }
+
+  function renderProgramSelects(industryKey) {
+    var keys = getAvailablePrograms(industryKey);
+    var optionsHTML = keys.map(function (k) {
+      return '<option value="' + k + '">' + OPTION_LABEL[k] + '</option>';
+    }).join('');
+    var sel1 = document.getElementById('programSelect');
+    var sel2 = document.getElementById('simProgram');
+    var prevSel1 = sel1.value;
+    var prevSel2 = sel2.value;
+    sel1.innerHTML = optionsHTML;
+    sel2.innerHTML = optionsHTML;
+    sel1.value = keys.indexOf(prevSel1) !== -1 ? prevSel1 : 'ai';
+    sel2.value = keys.indexOf(prevSel2) !== -1 ? prevSel2 : 'ai';
+  }
+
   function renderIndustryChrome(industryKey) {
     var ind = INDUSTRIES[industryKey];
     document.querySelectorAll('.ind-label').forEach(function (el) { el.textContent = ind.label; });
@@ -2680,6 +2853,8 @@
     if (tSme) tSme.textContent = '資本金' + ind.smeCapitalThreshold + '以下または従業員' + ind.smeEmployeeThreshold + '人以下';
     var topSelect = document.getElementById('industrySelectTop');
     if (topSelect) topSelect.value = industryKey;
+    var countEl = document.getElementById('heroProgramCount');
+    if (countEl) countEl.textContent = getAvailablePrograms(industryKey).length;
   }
 
   var TIER_MAX = { t5: 5, t20: 20, t50: 50, t100: 100, t101: 999 };
@@ -2730,7 +2905,10 @@
     renderRankingHTML(key);
     renderEquipmentHTML(key);
     renderCategoryCheckboxes(key);
+    renderProgramSelects(key);
+    updateIndustrySpecificCards(key);
     updateEligibilityBadges();
+    renderProgram(document.getElementById('programSelect').value);
     runSimulation();
   }
 
@@ -2773,12 +2951,10 @@
       capValue = SHORYOKUKA_CAP_BY_TIER[tier];
     }
 
-    if (progKey === 'career' || progKey === 'jinzai') {
+    if (progKey === 'career' || progKey === 'jinzai' || progKey === 'akiya') {
       var trainingCatKey = null;
       Object.keys(categoryOkPrograms).forEach(function (ck) {
-        if (categoryOkPrograms[ck].indexOf('career') !== -1 || categoryOkPrograms[ck].indexOf('jinzai') !== -1) {
-          if (categoryOkPrograms[ck].indexOf(progKey) !== -1) trainingCatKey = ck;
-        }
+        if (categoryOkPrograms[ck].indexOf(progKey) !== -1) trainingCatKey = ck;
       });
       var hasTrainingCat = trainingCatKey !== null && catKeys.indexOf(trainingCatKey) !== -1;
       var othersCareer = catKeys.filter(function (k) { return k !== trainingCatKey; });
