@@ -388,8 +388,24 @@
   a.src-link:hover, a.src-link:focus-visible { border-bottom-color: var(--accent); }
 
   /* ---------- Simulator ---------- */
-  .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .sim-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
+  @media (max-width: 860px) { .sim-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) { .sim-grid { grid-template-columns: 1fr; } }
+
+  .track-none {
+    font-size: 0.9rem; color: var(--ink-faint);
+    padding: 0.7rem 0.9rem; border: 1px dashed var(--line); border-radius: 6px;
+  }
+  #simTrackContainer select {
+    width: 100%; font: inherit; font-size: 0.98rem;
+    padding: 0.7rem 2.4rem 0.7rem 0.9rem;
+    border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23887d63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.8rem center;
+    background-size: 1rem; color: var(--ink);
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+  }
+  #simTrackContainer select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .track-desc { font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.4rem; }
 
   .cat-check-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem;
@@ -597,7 +613,7 @@
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者が対象。<strong>中小企業者の基準（上記ボックス参照）の範囲内なら6人以上でも対象</strong>で、この制度自体には従業員数による上限額の変動はない</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2以内<span class="sub">要件充足で2/3</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">5万〜450万円</div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">5万〜450万円<span class="sub">通常枠。ほかにインボイス枠(対応類型・上限350万円)、セキュリティ対策推進枠(上限150万円)等があり、概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金未満雇用者要件で補助率優遇</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">43.9%<span class="sub">2026年1次・通常枠</span></div></div>
           <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>通年・複数回締切<span class="sub">次回：3次締切 2026年7月21日17:00／4次締切 8月25日</span></span></div></div>
@@ -611,7 +627,7 @@
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>「小規模事業者持続化補助金の対象基準」（上記ボックス参照）以下の常時使用従業員数</strong>が対象。個人事業主も対象。<strong style="color:var(--rust);">基準を超える場合は「小規模事業者」に該当せず対象外</strong>（この場合はデジタル化・AI導入補助金や省力化投資補助金を検討）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">上限50万円<span class="sub">賃上げ枠で200万円（いずれも対象基準以下が前提）</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">上限50万円<span class="sub">賃金引上げ枠で200万円、インボイス特例併用で250万円（いずれも対象基準以下が前提）。概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>通常枠は任意<span class="sub">賃金引上げ枠を選ぶ場合は必須</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">51.1%<span class="sub">第19回（採択発表待ち）</span></div></div>
           <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>現在受付中の回なし<span class="sub">第20回：2026年11月5日〜12月15日17:00</span></span></div></div>
@@ -625,7 +641,7 @@
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong>時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">3/4〜4/5</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">450万円<span class="sub">特例600万円。引き上げる従業員数が多いほど上限額は高くなる</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">450万円<span class="sub">特例600万円。50円／70円／90円の3コースがあり、コースと引き上げ人数に応じて上限額が変動（概算シミュレーターでコース別に試算可能）</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">50円以上の賃上げが前提条件</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
           <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付前<span class="sub">2026年9月1日開始／締切は最低賃金発効日前日か11月30日の早い方</span></span></div></div>
@@ -648,6 +664,7 @@
               <li><span>51〜100人</span><span class="tabular">5,000万円<span class="sub">（特例6,500万円）</span></span></li>
               <li><span>101人以上</span><span class="tabular">8,000万円<span class="sub">（特例1億円）</span></span></li>
             </ul>
+            <p class="track-desc" style="margin-top:0.6rem;">上記は「一般型」。ほかに登録済みの汎用製品から選ぶだけで申請できる「カタログ注文型」（上限は5人以下500万円〜21人以上1,000万円）があり、概算シミュレーターで両方を試算できる。</p>
           </div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金引上げ特例で補助率優遇</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">直近公募分は未公表</span></div></div>
@@ -730,7 +747,7 @@
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・中堅企業者（基準は上記ボックス参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウド利用費等</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">特例2/3。グローバル枠は2/3</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">7,000万円<span class="sub">特例9,000万円</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">750万〜7,000万円<span class="sub">3つの申請枠（革新的新製品・サービス枠／新事業進出枠／グローバル枠）で対象・上限額が異なる。概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">給与支給総額+3.5%以上／事業場内最低賃金+30円以上を3〜5年維持</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">第1回公募のため実績なし</span></div></div>
           <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第1回公募<span class="sub">2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切</span></span></div></div>
@@ -788,7 +805,11 @@
       <div class="sim-grid">
         <div>
           <label for="simProgram">① 使いたい制度</label>
-          <select id="simProgram" onchange="runSimulation()"></select>
+          <select id="simProgram" onchange="onSimProgramChange()"></select>
+        </div>
+        <div>
+          <label>申請枠（複数ある制度のみ選択可）</label>
+          <div id="simTrackContainer" class="track-none">通常適用のみ（複数の申請枠はなし）</div>
         </div>
         <div>
           <label for="simEmployees">② 常時使用する従業員数</label>
@@ -838,10 +859,10 @@
       scale: "中小企業・小規模事業者。中小企業者の基準は業種により異なる（「導入のための条件」の基準ボックスを参照）。基準内であれば従業員規模を問わず対象",
       expense: "予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費",
       rate: "1/2以内（要件充足で2/3）",
-      cap: "5万〜450万円",
+      cap: "5万〜450万円（通常枠）",
       wage: "必須ではない（全従業員の30%以上が最低賃金未満で雇用の場合など要件充足で補助率を2/3に優遇）",
       acceptance: "43.9%（2026年1次・通常枠）。全体では46.3%。2025年度は年間30〜50%で推移",
-      note: "予約・顧客管理DXやバックオフィス効率化など、ソフト・クラウド費用が中心の分類が主な対象。",
+      note: "予約・顧客管理DXやバックオフィス効率化など、ソフト・クラウド費用が中心の分類が主な対象。通常枠のほかインボイス枠（対応類型・上限350万円）、セキュリティ対策推進枠（上限150万円）があり、概算シミュレーターで枠ごとに試算可能。",
       link: "https://it-shien.smrj.go.jp/applicant/subsidy/normal/",
       linkLabel: "公式サイト（通常枠）を見る",
       schedule: "通年で複数回の締切を設定。次回：3次締切 2026年7月21日17:00／4次締切 2026年8月25日（予算上限に達した枠は早期終了の可能性あり）",
@@ -852,10 +873,10 @@
       scale: "「小規模事業者」の基準（業種により5人以下または20人以下。「導入のための条件」の基準ボックスを参照）以下の常時使用従業員数の事業者が対象（個人事業主も対象）",
       expense: "機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費",
       rate: "2/3以内",
-      cap: "上限50万円（賃上げ枠等の特例で200万円まで増額）",
-      wage: "通常枠は任意。「賃金引上げ枠」を選ぶ場合は事業場内最低賃金の引き上げが必須",
+      cap: "通常枠50万円／賃金引上げ枠200万円／賃金引上げ＋インボイス特例併用250万円",
+      wage: "通常枠は任意。「賃金引上げ枠」を選ぶ場合は事業場内最低賃金の引き上げ（給与支給総額年平均3.0%以上増加）が必須",
       acceptance: "51.1%（第19回）。直近は概ね45〜51%で推移（公募回により変動）",
-      note: "広報費・Web関連費や機械装置等費が中心の分類と相性が良い。",
+      note: "広報費・Web関連費や機械装置等費が中心の分類と相性が良い。3つの枠があり、概算シミュレーターで枠ごとに試算可能。",
       link: "https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html",
       linkLabel: "第20回公募要領を見る",
       schedule: "現在受付中の回はなし。第19回（2026年3月6日〜4月30日）は採択発表待ち。第20回は2026年11月5日〜12月15日17:00に受付予定",
@@ -866,10 +887,10 @@
       scale: "中小企業・小規模事業者（基準は業種により異なる。「導入のための条件」の基準ボックスを参照）で、事業場内最低賃金が改定後の地域別最低賃金を下回る事業場。従業員規模を問わず対象",
       expense: "生産性向上に資する設備・機器の導入費（施術機器、什器、POSレジ等）",
       rate: "3/4（賃上げ後の事業場内最低賃金1,000円以上）〜4/5（1,000円未満）",
-      cap: "450万円（一般）／600万円（特例）",
+      cap: "50円コース40万円／70円コース50万円／90円コース100万〜600万円（1人引き上げ時の目安。人数・特例で変動）",
       wage: "必須。事業場内最低賃金を50円以上引き上げることが前提条件",
       acceptance: "審査による競争選抜ではなく要件充足型のため「採択率」の概念は基本的になし。要件を満たせば原則支給",
-      note: "大型設備投資が中心の分類との親和性が高いが、賃上げの実施が前提。",
+      note: "大型設備投資が中心の分類との親和性が高いが、賃上げの実施が前提。3つのコースがあり、概算シミュレーターでコースごとに試算可能。",
       link: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html",
       linkLabel: "厚生労働省 公式ページを見る",
       schedule: "受付前。2026年9月1日開始予定。締切は地域別最低賃金の発効日前日または2026年11月30日のいずれか早い方",
@@ -880,10 +901,10 @@
       scale: "中小企業者・小規模事業者（GビズIDプライムが必須）。従業員数に応じて上限額が変動（5人以下〜101人以上まで対応）",
       expense: "自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）",
       rate: "中小企業1/2（小規模事業者・再生事業者2/3）。最低賃金引上げ特例適用で2/3に優遇",
-      cap: "5人以下750万円／6〜20人1,500万円／21〜50人3,000万円／51〜100人5,000万円／101人以上8,000万円（各区分とも大幅賃上げ時は増額）",
+      cap: "一般型：5人以下750万円〜101人以上8,000万円（各区分とも大幅賃上げ時は増額）／カタログ注文型：5人以下500万円〜21人以上1,000万円",
       wage: "必須ではない。最低賃金引上げ特例（全従業員の30%以上が地域別最低賃金+50円以内）で補助率優遇",
       acceptance: "公募回により変動。第7回公募は2026年7月1日〜31日受付、採択率は未公表",
-      note: "自動化・省人化機器が中心の分類が対象になりやすい。",
+      note: "自動化・省人化機器が中心の分類が対象になりやすい。一般型・カタログ注文型の2類型があり、概算シミュレーターで両方を試算可能。",
       link: "https://shoryokuka.smrj.go.jp/ippan/",
       linkLabel: "公式サイトを見る",
       schedule: "第7回受付中：2026年7月1日〜7月31日17:00（採択発表は11月中旬予定）。第8回は例年通りなら10月頃開始見込み",
@@ -953,10 +974,10 @@
       scale: "中小企業者・中堅企業者。旧ものづくり補助金と旧新事業進出補助金（ともに公募終了）の統合後継制度",
       expense: "機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウドサービス利用費、原材料費、広告宣伝・販売促進費等（枠により建物費・海外旅費等も対象）",
       rate: "1/2（特例2/3）。グローバル枠は2/3",
-      cap: "上限7,000万円（特例9,000万円）",
+      cap: "革新的新製品・サービス枠750万〜3,500万円／新事業進出枠2,500万〜9,000万円／グローバル枠2,500万〜9,000万円（いずれも従業員規模により変動）",
       wage: "必須。補助事業終了後3〜5年の事業計画で、給与支給総額の年平均成長率+3.5%以上、事業場内最低賃金が地域別最低賃金より+30円以上高い水準を維持する計画が必要",
       acceptance: "第1回公募のため非公表",
-      note: "産業用ロボット・協働ロボット導入、品質管理・検査工程の自動化など、製造業の大型設備投資と相性が良い。",
+      note: "産業用ロボット・協働ロボット導入、品質管理・検査工程の自動化など、製造業の大型設備投資と相性が良い。3つの枠があり、概算シミュレーターで枠ごとに試算可能。",
       link: "https://shinjigyou-monodukuri.smrj.go.jp/",
       linkLabel: "公式サイトを見る",
       schedule: "第1回公募：2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切",
@@ -1033,6 +1054,72 @@
   var SHORYOKUKA_CAP_TEXT_BY_TIER = {
     t5: "750万円（特例1,000万円）", t20: "1,500万円（特例2,000万円）", t50: "3,000万円（特例4,000万円）",
     t100: "5,000万円（特例6,500万円）", t101: "8,000万円（特例1億円）"
+  };
+
+  // 通常枠以外の申請枠を持つ制度。tierを持つcapByTierはEMPLOYEE_TIER(t5/t20/t50/t100/t101)に対応。
+  // 出典: 中小企業庁・各制度公式サイトの公募要領（2026年7月時点の情報を基に自己チェック済み）
+  var PROGRAM_TRACKS = {
+    jizoku: {
+      default: 'normal',
+      options: [
+        { key: 'normal', label: '通常枠', cap: 50, capText: '50万円', wageRequired: false,
+          desc: '' },
+        { key: 'wage', label: '賃金引上げ枠', cap: 200, capText: '200万円（通常枠50万円＋賃金引上げ特例150万円）', wageRequired: true,
+          desc: '給与支給総額を年平均3.0%以上増加させることが要件' },
+        { key: 'wage_invoice', label: '賃金引上げ＋インボイス特例併用', cap: 250, capText: '250万円（賃金引上げ特例150万円＋インボイス特例50万円を併用）', wageRequired: true,
+          desc: '賃金引上げ特例とインボイス特例の両方の要件を満たす場合' }
+      ]
+    },
+    ai: {
+      default: 'normal',
+      options: [
+        { key: 'normal', label: '通常枠', cap: 450, capText: '450万円',
+          desc: '' },
+        { key: 'invoice', label: 'インボイス枠（インボイス対応類型）', cap: 350, capText: '350万円', rate: 0.667,
+          desc: '会計・受発注・決済ソフトやPC・タブレット、レジ・券売機等の導入費が対象。補助率はその他事業者2/3、小規模事業者は3/4に優遇' },
+        { key: 'security', label: 'セキュリティ対策推進枠', cap: 150, capText: '150万円', rate: 0.5,
+          desc: '「サイバーセキュリティお助け隊サービス」の利用料（最大2年分）が対象。補助率は中小企業1/2、小規模事業者は2/3に優遇' }
+      ]
+    },
+    kaizen: {
+      default: 'c90',
+      options: [
+        { key: 'c50', label: '50円コース', cap: 40, capText: '40万円（1人引き上げ時の目安）',
+          desc: '事業場内最低賃金を50円以上引き上げるコース' },
+        { key: 'c70', label: '70円コース', cap: 50, capText: '50万円（1人引き上げ時の目安）',
+          desc: '事業場内最低賃金を70円以上引き上げるコース' },
+        { key: 'c90', label: '90円コース', cap: 100, capText: '100万円（1人引き上げ時の目安）〜最大600万円（10人以上・特例事業者）',
+          desc: '事業場内最低賃金を90円以上引き上げるコース。引き上げる人数が多いほど上限額が上昇し、一般事業者は最大450万円（7人以上）、特例事業者は最大600万円（10人以上）' }
+      ]
+    },
+    shoryokuka: {
+      default: 'general',
+      options: [
+        { key: 'general', label: '一般型', capByTier: { t5: 750, t20: 1500, t50: 3000, t100: 5000, t101: 8000 },
+          capTextByTier: { t5: '750万円（特例1,000万円）', t20: '1,500万円（特例2,000万円）', t50: '3,000万円（特例4,000万円）', t100: '5,000万円（特例6,500万円）', t101: '8,000万円（特例1億円）' },
+          desc: 'カタログに掲載されていない設備も含め自由に選定できる一方、事業計画書の作成が必要' },
+        { key: 'catalog', label: 'カタログ注文型', capByTier: { t5: 500, t20: 750, t50: 1000, t100: 1000, t101: 1000 },
+          capTextByTier: { t5: '500万円（特例750万円）', t20: '750万円（特例1,000万円）', t50: '1,000万円（特例1,500万円）', t100: '1,000万円（特例1,500万円）', t101: '1,000万円（特例1,500万円）' },
+          desc: '登録済みの汎用製品をカタログから選ぶだけで申請可能。事業計画書の作成は不要で随時申請できる' }
+      ]
+    },
+    monodukuri: {
+      default: 'innovative',
+      options: [
+        { key: 'innovative', label: '革新的新製品・サービス枠', rate: 0.5,
+          capByTier: { t5: 750, t20: 1000, t50: 1500, t100: 2500, t101: 2500 },
+          capTextByTier: { t5: '750万円（特例850万円）', t20: '1,000万円（特例1,250万円）', t50: '1,500万円（特例2,500万円）', t100: '2,500万円（特例3,500万円）', t101: '2,500万円（特例3,500万円、51人以上は同額）' },
+          desc: '革新的な新製品・新サービスの開発が対象。実施期間の目安は10か月' },
+        { key: 'newbiz', label: '新事業進出枠', rate: 0.5,
+          capByTier: { t5: 2500, t20: 2500, t50: 4000, t100: 5500, t101: 7000 },
+          capTextByTier: { t5: '2,500万円（特例3,000万円、1〜20人は同額）', t20: '2,500万円（特例3,000万円）', t50: '4,000万円（特例5,000万円）', t100: '5,500万円（特例7,000万円）', t101: '7,000万円（特例9,000万円）' },
+          desc: '既存事業と異なる新市場・高付加価値事業への進出が対象。実施期間の目安は14か月' },
+        { key: 'global', label: 'グローバル枠', rate: 0.667,
+          capByTier: { t5: 2500, t20: 2500, t50: 4000, t100: 5500, t101: 7000 },
+          capTextByTier: { t5: '2,500万円（特例3,000万円、1〜20人は同額）', t20: '2,500万円（特例3,000万円）', t50: '4,000万円（特例5,000万円）', t100: '5,500万円（特例7,000万円）', t101: '7,000万円（特例9,000万円）' },
+          desc: '海外市場開拓（輸出）に向けた国内体制強化が対象。補助率は一律2/3で他の2枠より高い' }
+      ]
+    }
   };
 
   var INDUSTRIES = {
@@ -2899,6 +2986,52 @@
     runSimulation();
   }
 
+  function renderTrackSelect(progKey) {
+    var container = document.getElementById('simTrackContainer');
+    var trackDef = PROGRAM_TRACKS[progKey];
+    if (!trackDef) {
+      container.className = 'track-none';
+      container.innerHTML = '通常適用のみ（複数の申請枠はなし）';
+      return;
+    }
+    var optionsHTML = trackDef.options.map(function (o) {
+      return '<option value="' + o.key + '">' + o.label + '</option>';
+    }).join('');
+    container.className = '';
+    container.innerHTML = '<select id="simTrack" onchange="onSimTrackChange()">' + optionsHTML + '</select><div class="track-desc" id="simTrackDesc"></div>';
+    document.getElementById('simTrack').value = trackDef.default;
+    updateTrackDesc(progKey);
+  }
+
+  function updateTrackDesc(progKey) {
+    var trackDef = PROGRAM_TRACKS[progKey];
+    var descEl = document.getElementById('simTrackDesc');
+    if (!trackDef || !descEl) return;
+    var track = getSelectedTrack(progKey);
+    descEl.textContent = track && track.desc ? track.desc : '';
+  }
+
+  function getSelectedTrack(progKey) {
+    var trackDef = PROGRAM_TRACKS[progKey];
+    if (!trackDef) return null;
+    var sel = document.getElementById('simTrack');
+    var key = sel ? sel.value : trackDef.default;
+    var found = trackDef.options.filter(function (o) { return o.key === key; })[0];
+    return found || trackDef.options[0];
+  }
+
+  function onSimProgramChange() {
+    var progKey = document.getElementById('simProgram').value;
+    renderTrackSelect(progKey);
+    runSimulation();
+  }
+
+  function onSimTrackChange() {
+    var progKey = document.getElementById('simProgram').value;
+    updateTrackDesc(progKey);
+    runSimulation();
+  }
+
   function switchIndustry(key) {
     currentIndustry = key;
     renderIndustryChrome(key);
@@ -2906,6 +3039,7 @@
     renderEquipmentHTML(key);
     renderCategoryCheckboxes(key);
     renderProgramSelects(key);
+    renderTrackSelect(document.getElementById('simProgram').value);
     updateIndustrySpecificCards(key);
     updateEligibilityBadges();
     renderProgram(document.getElementById('programSelect').value);
@@ -2946,9 +3080,25 @@
       return;
     }
 
+    var track = getSelectedTrack(progKey);
     var capValue = CAP[progKey];
-    if (progKey === 'shoryokuka') {
+    var capText = CAP_TEXT[progKey];
+    var trackRateOverride = null;
+    var trackWageOverride = null;
+    if (progKey === 'shoryokuka' && !track) {
       capValue = SHORYOKUKA_CAP_BY_TIER[tier];
+      capText = SHORYOKUKA_CAP_TEXT_BY_TIER[tier];
+    }
+    if (track) {
+      if (track.capByTier) {
+        capValue = track.capByTier[tier];
+        capText = (track.capTextByTier && track.capTextByTier[tier]) ? track.capTextByTier[tier] : fmtMan(capValue);
+      } else if (track.cap !== undefined) {
+        capValue = track.cap;
+        capText = track.capText || fmtMan(track.cap);
+      }
+      if (track.rate !== undefined) trackRateOverride = track.rate;
+      if (track.wageRequired !== undefined) trackWageOverride = track.wageRequired;
     }
 
     if (progKey === 'career' || progKey === 'jinzai' || progKey === 'akiya') {
@@ -2990,7 +3140,7 @@
       if (rate === undefined) {
         ngList.push(k);
       } else {
-        okList.push({ key: k, rate: rate, cost: categoriesMap[k].cost });
+        okList.push({ key: k, rate: (trackRateOverride !== null ? trackRateOverride : rate), cost: categoriesMap[k].cost });
       }
     });
 
@@ -3000,10 +3150,11 @@
       var totalRaw = okList.reduce(function (sum, o) { return sum + o.cost * o.rate; }, 0);
       var totalCapped = Math.min(totalRaw, capValue);
       var wasCapped = totalRaw > capValue;
-      var capText = progKey === 'shoryokuka' ? SHORYOKUKA_CAP_TEXT_BY_TIER[tier] : CAP_TEXT[progKey];
+      var effectiveWageRequired = trackWageOverride !== null ? trackWageOverride : WAGE_REQUIRED[progKey];
+      var trackLabelText = track ? '（' + track.label + '）' : '';
 
       html += '<div class="sim-panel ok">' +
-        '<div class="sim-headline">◎ 概算受給額</div>' +
+        '<div class="sim-headline">◎ 概算受給額' + trackLabelText + '</div>' +
         '<div class="sim-big tabular">' + fmtMan(totalCapped) + '</div>' +
         '<div class="sim-calc">選択した従業員規模：' + tierLabel + '（制度上限額 ' + capText + '）</div>' +
         '<div class="sim-note"><ul>';
@@ -3013,7 +3164,7 @@
       if (wasCapped) {
         html += '<li>試算合計 ' + fmtMan(Math.round(totalRaw * 10) / 10) + 'が制度上限額により ' + fmtMan(totalCapped) + ' に圧縮されました。</li>';
       }
-      if (WAGE_REQUIRED[progKey]) {
+      if (effectiveWageRequired) {
         html += '<li><strong>賃金上昇（引き上げ）の実施が前提条件です。</strong>要件を満たさない場合は申請できません。</li>';
       }
       if (tier === 't101') {
