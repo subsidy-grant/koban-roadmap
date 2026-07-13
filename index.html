@@ -338,6 +338,31 @@
   .t-item .t-v { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.15rem; }
   .t-note { font-size: 0.8rem; color: var(--ink-faint); margin: 0.8rem 0 0; max-width: none; }
 
+  .employee-select-row { margin-top: 1rem; max-width: 24rem; }
+  .employee-select-row label {
+    display: block; font-size: 0.75rem; color: var(--ink-soft); margin-bottom: 0.4rem;
+  }
+  .employee-select-row select {
+    width: 100%; font: inherit; font-size: 0.95rem; font-weight: 600;
+    padding: 0.6rem 2.2rem 0.6rem 0.8rem;
+    border: 1px solid var(--accent); border-radius: 6px;
+    background: var(--paper) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23a8752f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.8rem center;
+    background-size: 1rem;
+    color: var(--ink);
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+  }
+  .employee-select-row select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .elig-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.76rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+    margin-left: 0.6rem;
+  }
+  .elig-badge.ok { background: var(--sage-wash); color: var(--sage); }
+  .elig-badge.ng { background: var(--rust-wash); color: var(--rust); }
+  .elig-badge.warn { background: var(--accent-wash); color: var(--accent); }
+
   .effect-box { margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px dashed var(--line); }
   .effect-box h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-faint); margin-bottom: 0.6rem; font-weight: 600; }
   .effect-box ul { margin: 0; padding-left: 1.1rem; font-size: 0.87rem; }
@@ -473,7 +498,7 @@
 <body>
 <header class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Subsidy &amp; Grant Roadmap — 美容業</div>
+    <div class="eyebrow">Subsidy &amp; Grant Roadmap — <span class="ind-label">美容業</span></div>
     <h1>補助金・助成金活用<br>業務改善ロードマップ</h1>
     <p class="lede">業種を選択すると、その業種向けの導入条件・業務改善策・必要機材・概算シミュレーターに切り替わる。公募が継続中または今後予定されている国の制度のみを掲載し、随時アップデートする。</p>
 
@@ -538,7 +563,17 @@
         <div class="t-item"><div class="t-k">小規模事業者持続化補助金の対象基準</div><div class="t-v" id="thresholdSmallBiz">5人以下</div></div>
         <div class="t-item"><div class="t-k">中小企業者の基準（他5制度の目安）</div><div class="t-v" id="thresholdSme">資本金5,000万円以下または従業員100人以下</div></div>
       </div>
-      <p class="t-note">下表・シミュレーターの「6人以上は対象外」等の記載は、上記の業種別基準に基づき自動的に判定される。</p>
+      <div class="employee-select-row">
+        <label for="employeeSizeCond">自社の常時使用従業員数を選択（小規模事業者である必要はありません）</label>
+        <select id="employeeSizeCond" onchange="onEmployeeSizeCondChange(this.value)">
+          <option value="t5">5人以下</option>
+          <option value="t20">6〜20人</option>
+          <option value="t50">21〜50人</option>
+          <option value="t100">51〜100人</option>
+          <option value="t101">101人以上</option>
+        </select>
+      </div>
+      <p class="t-note">選択すると、下の各制度カードに自社が対象かどうかのバッジが表示される。この選択は「概算シミュレーター」の従業員数選択と連動する。</p>
     </div>
 
     <div class="picker">
@@ -557,7 +592,7 @@
     <div class="cond-list">
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill ai">デジタル化・AI導入補助金2026</span><span class="sub">旧IT導入補助金／通常枠</span></div><a class="src-link" href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）を見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill ai">デジタル化・AI導入補助金2026</span><span class="sub">旧IT導入補助金／通常枠</span></div><a class="src-link" href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）を見る ↗</a><span class="elig-badge" id="eligBadge-ai"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者が対象。<strong>中小企業者の基準（上記ボックス参照）の範囲内なら6人以上でも対象</strong>で、この制度自体には従業員数による上限額の変動はない</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費</div></div>
@@ -571,7 +606,7 @@
       </div>
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill jizoku">小規模事業者持続化補助金</span><span class="sub">＜一般型・通常枠＞（第20回）</span></div><a class="src-link" href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">第20回公募要領を見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill jizoku">小規模事業者持続化補助金</span><span class="sub">＜一般型・通常枠＞（第20回）</span></div><a class="src-link" href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">第20回公募要領を見る ↗</a><span class="elig-badge" id="eligBadge-jizoku"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>「小規模事業者持続化補助金の対象基準」（上記ボックス参照）以下の常時使用従業員数</strong>が対象。個人事業主も対象。<strong style="color:var(--rust);">基準を超える場合は「小規模事業者」に該当せず対象外</strong>（この場合はデジタル化・AI導入補助金や省力化投資補助金を検討）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
@@ -585,7 +620,7 @@
       </div>
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill kaizen">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill kaizen">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-kaizen"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong>時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
@@ -599,7 +634,7 @@
       </div>
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill alt">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill alt">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a><span class="elig-badge" id="eligBadge-shoryokuka"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（GビズIDプライム必須）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）</div></div>
@@ -622,7 +657,7 @@
       </div>
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill alt">キャリアアップ助成金</span><span class="sub">正社員化コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill alt">キャリアアップ助成金</span><span class="sub">正社員化コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-career"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">有期雇用労働者等を正社員化する事業主。事業所あたり年20名まで。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）か大企業かで支給額が異なる</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">正社員転換に伴う人件費相当（設備投資ではない）</div></div>
@@ -636,7 +671,7 @@
       </div>
 
       <div class="cond-card">
-        <div class="cond-head"><div class="stack"><span class="pill alt">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a></div>
+        <div class="cond-head"><div class="stack"><span class="pill alt">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-jinzai"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に10時間以上の訓練を実施する事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修・訓練費用、訓練期間中の賃金</div></div>
@@ -692,7 +727,7 @@
         </div>
         <div>
           <label for="simEmployees">② 常時使用する従業員数</label>
-          <select id="simEmployees" onchange="runSimulation()">
+          <select id="simEmployees" onchange="onSimEmployeesChange(this.value)">
             <option value="t5">5人以下</option>
             <option value="t20">6〜20人</option>
             <option value="t50">21〜50人</option>
@@ -2647,12 +2682,55 @@
     if (topSelect) topSelect.value = industryKey;
   }
 
+  var TIER_MAX = { t5: 5, t20: 20, t50: 50, t100: 100, t101: 999 };
+  var ELIG_LABEL = { ok: '✓ 対象', ng: '✕ 対象外', warn: '△ 要確認' };
+
+  function computeEligibility(progKey, tier, ind) {
+    var tierMax = TIER_MAX[tier];
+    if (progKey === 'jizoku') {
+      return tierMax <= ind.smallBizThreshold ? 'ok' : 'ng';
+    }
+    if (progKey === 'shoryokuka' || progKey === 'career' || progKey === 'jinzai') {
+      return 'ok';
+    }
+    // ai, kaizen: 中小企業者の一般的な従業員数基準（業種ごとに異なる）を参照
+    if (tier === 't101') return 'warn';
+    return tierMax <= ind.smeEmployeeThreshold ? 'ok' : 'warn';
+  }
+
+  function updateEligibilityBadges() {
+    var sel = document.getElementById('employeeSizeCond');
+    if (!sel) return;
+    var tier = sel.value;
+    var ind = INDUSTRIES[currentIndustry];
+    ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai'].forEach(function (progKey) {
+      var badge = document.getElementById('eligBadge-' + progKey);
+      if (!badge) return;
+      var result = computeEligibility(progKey, tier, ind);
+      badge.className = 'elig-badge ' + result;
+      badge.textContent = ELIG_LABEL[result];
+    });
+  }
+
+  function onEmployeeSizeCondChange(value) {
+    document.getElementById('simEmployees').value = value;
+    updateEligibilityBadges();
+    runSimulation();
+  }
+
+  function onSimEmployeesChange(value) {
+    document.getElementById('employeeSizeCond').value = value;
+    updateEligibilityBadges();
+    runSimulation();
+  }
+
   function switchIndustry(key) {
     currentIndustry = key;
     renderIndustryChrome(key);
     renderRankingHTML(key);
     renderEquipmentHTML(key);
     renderCategoryCheckboxes(key);
+    updateEligibilityBadges();
     runSimulation();
   }
 
