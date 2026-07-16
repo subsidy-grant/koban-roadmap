@@ -3588,15 +3588,19 @@
   }
 
   // ---------- お気に入り保存（localStorage） ----------
+  // キーは 'koban_' で名前空間化している。GitHub Pagesの同一オリジン（subsidy-grant.github.io）上に
+  // joseikin-navi等の姉妹サイトが同居しており、localStorageはパスではなくオリジン単位で共有されるため、
+  // 素の 'savedPrograms' キーのままだと他サイトのお気に入りと混ざってしまう
+  var FAV_STORAGE_KEY = 'koban_savedPrograms';
   function getFavorites() {
     try {
-      var raw = localStorage.getItem('savedPrograms');
+      var raw = localStorage.getItem(FAV_STORAGE_KEY);
       return raw ? JSON.parse(raw) : [];
     } catch (e) { return []; }
   }
 
   function saveFavoritesList(arr) {
-    try { localStorage.setItem('savedPrograms', JSON.stringify(arr)); } catch (e) {}
+    try { localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(arr)); } catch (e) {}
   }
 
   function toggleFavorite(key) {
