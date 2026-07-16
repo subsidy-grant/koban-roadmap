@@ -336,7 +336,8 @@
   }
   .cond-card.is-open .cond-head::after { transform: rotate(180deg); }
   .cond-card:not(.is-open) .pd-grid, .cond-card:not(.is-open) .cond-faq { display: none; }
-  .cond-head .stack { flex: 1; min-width: 0; }
+  .cond-head .stack { flex: 1 1 auto; min-width: 10rem; }
+  .cond-head a.src-link { flex-shrink: 1; min-width: 0; }
   .cond-card .tier-list { margin-top: 0.4rem; max-width: 26rem; }
   .cond-card-extra { display: none; border-color: var(--accent); }
   .cond-card-extra .cond-head { position: relative; }
