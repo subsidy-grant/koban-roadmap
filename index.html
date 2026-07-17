@@ -493,6 +493,12 @@
     font-size: 0.85rem; line-height: 1; padding: 0.1rem;
   }
   .fav-chip button:hover { color: var(--rust); }
+  .print-orientation {
+    display: flex; align-items: center; gap: 0.8rem; margin-left: auto;
+    font-size: 0.82rem; color: var(--ink-soft);
+  }
+  .print-orientation label { display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; }
+  .print-orientation input[type="radio"] { accent-color: var(--accent); cursor: pointer; }
   .fav-print-btn {
     appearance: none; border: 1px solid var(--accent); background: var(--paper); color: var(--accent);
     border-radius: 6px; padding: 0.4rem 0.8rem; font-size: 0.82rem; cursor: pointer; margin-left: auto;
@@ -518,7 +524,6 @@
 
   /* ---------- 印刷（お気に入りのみ） ---------- */
   #printArea { display: none; }
-  @page { size: portrait; margin: 1.5cm; }
   @media print {
     /* visibility:hiddenだと非表示要素も レイアウト上の高さを保持してしまい、
        印刷範囲が実際の内容よりはるかに長くなる（空白ページが大量に出る）ため、
@@ -613,6 +618,9 @@
 
   ::selection { background: var(--accent-soft); }
 </style>
+<style id="printOrientationStyle">
+  @page { size: portrait; margin: 1.5cm; }
+</style>
 </head>
 <body>
 <header class="hero">
@@ -670,6 +678,10 @@
     <span class="fav-panel-label">☆ お気に入り</span>
     <span class="fav-empty-hint" id="favEmptyHint">まだお気に入りに登録した制度はありません。制度カードや概算シミュレーターの☆ボタンから登録できます。</span>
     <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
+    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
+      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
+      <label><input type="radio" name="printOrientation" value="landscape">横</label>
+    </div>
     <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
   </div>
 </div>
@@ -3681,6 +3693,12 @@
       '</div>';
     });
     area.innerHTML = html;
+
+    var orientationInput = document.querySelector('input[name="printOrientation"]:checked');
+    var orientation = orientationInput ? orientationInput.value : 'portrait';
+    var styleEl = document.getElementById('printOrientationStyle');
+    if (styleEl) styleEl.textContent = '@page { size: ' + orientation + '; margin: 1.5cm; }';
+
     window.print();
   }
 
