@@ -518,10 +518,13 @@
 
   /* ---------- 印刷（お気に入りのみ） ---------- */
   #printArea { display: none; }
+  @page { size: portrait; margin: 1.5cm; }
   @media print {
-    body * { visibility: hidden; }
-    #printArea, #printArea * { visibility: visible; }
-    #printArea { display: block; position: absolute; top: 0; left: 0; width: 100%; padding: 2rem; background: #fff; color: #000; }
+    /* visibility:hiddenだと非表示要素も レイアウト上の高さを保持してしまい、
+       印刷範囲が実際の内容よりはるかに長くなる（空白ページが大量に出る）ため、
+       display:noneで#printArea以外のbody直下の要素を完全に高さごと除去する */
+    body > *:not(#printArea) { display: none !important; }
+    #printArea { display: block; width: 100%; padding: 0; background: #fff; color: #000; }
   }
   .print-card { border: 1px solid #999; border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: 1rem; break-inside: avoid; }
   .print-card h3 { margin: 0 0 0.6rem; }
