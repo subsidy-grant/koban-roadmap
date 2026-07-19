@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOTYPE 07 勤怠・シフト管理ダッシュボード | 美容業 改善計画60選</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header a{color:#f5efe6;font-size:12px}
+  main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
+  h1{font-size:1.25rem;margin-bottom:4px}
+  .sub{color:var(--sub);font-size:0.85rem;margin-bottom:20px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .k{font-size:11px;color:var(--sub);font-weight:600}
+  .kpi .v{font-size:1.5rem;font-weight:800;margin:2px 0;color:var(--accent);font-variant-numeric:tabular-nums}
+  .kpi .d{font-size:11px;color:var(--green);font-weight:600}
+  .grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:0.83rem}
+  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:7px 8px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tr.new{background:#f3efe7;animation:flash 1.4s ease}
+  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
+  .side ul{list-style:none}
+  .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
+  .side li:last-child{border-bottom:none}
+  .side li::before{content:"●";position:absolute;left:4px;color:var(--accent);font-size:8px;top:12px}
+  .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
+  button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
+  button.demo:hover{opacity:0.9}
+  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+</style></head>
+<body>
+<header>
+  <span><span class="badge">PROTOTYPE No.07</span>　美容業／07 人材育成・定着支援</span>
+  <span><a href="plan-07.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+</header>
+<main>
+  <h1>勤怠・シフト管理ダッシュボード</h1>
+  <p class="sub">クラウド勤怠・シフト管理システムの導入による労務管理の自動化 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">本日の出勤</div><div class="v">6/8名</div><div class="d">全員打刻済み</div></div><div class="kpi"><div class="k">今月の残業</div><div class="v">計12時間</div><div class="d">上限まで余裕</div></div><div class="kpi"><div class="k">有給取得率</div><div class="v">62%</div><div class="d">+18pt 前年比</div></div><div class="kpi"><div class="k">シフト充足率</div><div class="v">98%</div><div class="d">来週分確定</div></div></div>
+  <div class="grid">
+    <div class="panel">
+      <h2>本日の勤怠状況</h2>
+      <table><thead><tr><th>スタッフ</th><th>出勤</th><th>退勤予定</th><th>状態</th></tr></thead><tbody id="mainTable"><tr><td>田中（店長）</td><td>9:12</td><td>19:00</td><td>勤務中</td></tr><tr><td>佐藤</td><td>9:45</td><td>19:00</td><td>勤務中</td></tr><tr><td>鈴木</td><td>10:00</td><td>18:00</td><td>勤務中</td></tr><tr><td>高橋（パート）</td><td>10:00</td><td>15:00</td><td>退勤済み</td></tr><tr><td>伊藤</td><td>12:00</td><td>20:00</td><td>勤務中</td></tr></tbody></table>
+    </div>
+    <div class="panel side">
+      <h2>アラート・申請</h2>
+      <ul><li>残業アラート: なし</li><li>シフト希望 未提出: 1名（リマインド済み）</li><li>有給申請: 1件 承認待ち</li><li>打刻修正申請: 0件</li></ul>
+    </div>
+  </div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ シフト案を自動生成</button></div>
+  <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
+  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+  var demoRow = ["来週シフト", "自動生成", "希望反映率 96%", "承認待ち"];
+  var demoUsed = 0;
+  function runDemo() {
+    var tbody = document.getElementById('mainTable');
+    var tr = document.createElement('tr');
+    tr.className = 'new';
+    demoRow.forEach(function (c) {
+      var td = document.createElement('td');
+      td.textContent = c;
+      tr.appendChild(td);
+    });
+    tbody.insertBefore(tr, tbody.firstChild);
+    demoUsed++;
+    var toast = document.getElementById('toast');
+    toast.textContent = '来週のシフト案を自動生成しました（店長の確認後に確定・全員へ通知）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+  }
+</script>
+</body></html>

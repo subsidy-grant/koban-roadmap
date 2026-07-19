@@ -39,7 +39,9 @@
   "D": 5,
   "weighted": 4.435,
   "rank": 2,
-  "selected": false
+  "selected": true,
+  "planNo": 9,
+  "stage2Note": "機械スコア最上位グループ。低コストで棚卸短縮の定量事例があり、廃棄ロスという「見えない損失」を直接削減できる点を評価"
  },
  {
   "catRank": 9,
@@ -273,7 +275,9 @@
   "D": 5,
   "weighted": 4.2,
   "rank": 13,
-  "selected": false
+  "selected": true,
+  "planNo": 7,
+  "stage2Note": "離職率ワースト級の業界課題（定着）に直結する労務基盤。省力化投資補助金カタログの登録カテゴリでもあり制度適合が広い"
  },
  {
   "catRank": 7,
@@ -380,7 +384,9 @@
   "D": 5,
   "weighted": 4.075,
   "rank": 18,
-  "selected": false
+  "selected": true,
+  "planNo": 1,
+  "stage2Note": "総合スコア上位・コスト最小クラスで効果エビデンスが最も厚い。分類の中核施策で費用帰属も明確なため筆頭採択"
  },
  {
   "catRank": 1,
@@ -719,7 +725,9 @@
   "D": 5,
   "weighted": 3.8,
   "rank": 35,
-  "selected": false
+  "selected": true,
+  "planNo": 2,
+  "stage2Note": "広告費をかけ続けるWeb広告よりも、低コストで持続的な集客資産になる点を評価。運用ツール費のみで始められ小規模店に適合"
  },
  {
   "catRank": 2,
@@ -877,7 +885,9 @@
   "D": 3,
   "weighted": 3.775,
   "rank": 43,
-  "selected": false
+  "selected": true,
+  "planNo": 3,
+  "stage2Note": "省力化投資補助金カタログ注文型の代表対象カテゴリ（自動精算機・セルフレジ）に合致し、事業計画書なしで申請できる導入ハードルの低さを評価"
  },
  {
   "catRank": 3,
@@ -1135,7 +1145,9 @@
   "D": 3,
   "weighted": 3.11,
   "rank": 56,
-  "selected": false
+  "selected": true,
+  "planNo": 5,
+  "stage2Note": "業務改善助成金の対象経費例（施術機器）に明記された王道の設備投資。賃上げとセットの制度設計が人材定着にも効く点を評価"
  },
  {
   "catRank": 5,
@@ -1301,7 +1313,9 @@
   "D": 5,
   "weighted": 3.0,
   "rank": 64,
-  "selected": false
+  "selected": true,
+  "planNo": 8,
+  "stage2Note": "全店に毎月必ず発生する業務で削減効果が確実に反復する。勤怠システム（PLAN 07）との連携で効果が積み上がる基盤施策"
  },
  {
   "catRank": 8,
@@ -1591,7 +1605,9 @@
   "D": 3,
   "weighted": 2.84,
   "rank": 79,
-  "selected": false
+  "selected": true,
+  "planNo": 4,
+  "stage2Note": "接客品質分類の中で唯一「体験として試作できる」施策でプロトタイプ適性が最高。タブレット+ソフトのみで始められ費用帰属も明確"
  },
  {
   "catRank": 4,
@@ -1727,7 +1743,9 @@
   "D": 2,
   "weighted": 2.51,
   "rank": 86,
-  "selected": false
+  "selected": true,
+  "planNo": 6,
+  "stage2Note": "法令遵守と信頼の基盤で全店に普遍的に必要。単体施策では費用が特定できないため、分類の中核3設備の一括整備として計画化"
  },
  {
   "catRank": 6,
@@ -1921,7 +1939,9 @@
   "D": 2,
   "weighted": 2.33,
   "rank": 96,
-  "selected": false
+  "selected": true,
+  "planNo": 10,
+  "stage2Note": "電気代高騰下で削減効果が確実に持続する設備投資。効果が電力量で実測でき、モデル検証しやすい点を評価（回収は中長期）"
  },
  {
   "catRank": 10,
