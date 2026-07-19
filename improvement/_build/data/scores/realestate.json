@@ -1,0 +1,1972 @@
+[
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 0,
+  "item": "賃貸借契約・売買契約の電子契約システム導入",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 1,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 1,
+  "item": "IT重説（重要事項説明のオンライン実施）環境整備",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 2,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 2,
+  "item": "電子印鑑・電子署名の運用ルール策定",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 3,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 3,
+  "item": "契約書テンプレートのクラウド化・自動生成",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 4,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 4,
+  "item": "契約締結状況の進捗管理ダッシュボード導入",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 5,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 5,
+  "item": "本人確認（eKYC）システムとの連携",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 6,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 6,
+  "item": "契約関連書類のペーパーレス保管・検索システム化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 7,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 7,
+  "item": "重要事項説明書の自動作成ツール導入",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 8,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 8,
+  "item": "契約更新・解約手続きのオンライン化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 9,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 電子契約・IT重説導入",
+  "itemIdx": 9,
+  "item": "電子契約に伴う社内規程・重説マニュアル整備",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.16,
+  "rank": 10,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 1,
+  "item": "オンライン内見（ビデオ通話案内）の仕組み構築",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 11,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 2,
+  "item": "VR内見予約システムのWebサイト連携",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 12,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 4,
+  "item": "遠方顧客向けオンライン接客フローの整備",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 13,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 6,
+  "item": "内見動画のアーカイブ化・再利用管理",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 14,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 7,
+  "item": "内見後アンケートのデジタル化・追客連携",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 15,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 9,
+  "item": "内見件数・成約率のデータ分析による改善サイクル構築",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.0,
+  "rank": 16,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 0,
+  "item": "クラウド型賃貸管理システムの導入",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 17,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 1,
+  "item": "家賃入金確認・消込の自動化（ファームバンキング連携）",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 18,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 3,
+  "item": "オーナー向け収支報告のオンライン提供",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 19,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 4,
+  "item": "更新・解約手続きのオンライン化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 20,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 5,
+  "item": "滞納督促の自動通知システム導入",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 21,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 6,
+  "item": "入居者専用ポータルサイト・アプリの整備",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 22,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 7,
+  "item": "修繕業者手配・進捗管理のシステム化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 23,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 8,
+  "item": "退去立会い・原状回復査定の写真管理デジタル化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 24,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 9,
+  "item": "管理物件の巡回点検記録のモバイル化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 3.875,
+  "rank": 25,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 1,
+  "item": "スマホ予約連動型の解錠システム導入",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 26,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 3,
+  "item": "内見者の本人確認・予約システム連携",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 27,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 4,
+  "item": "スマートロック利用ログの一元管理",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 28,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 8,
+  "item": "管理物件全体のIoT鍵台帳デジタル化",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 29,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 0,
+  "item": "360度パノラマVR内見コンテンツの制作・導入",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.7,
+  "rank": 30,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 3,
+  "item": "内見スケジュール自動調整・カレンダー連携",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.7,
+  "rank": 31,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 5,
+  "item": "VR撮影用360度カメラ・機材の導入",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.7,
+  "rank": 32,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 内見・VR案内効率化",
+  "itemIdx": 8,
+  "item": "空室物件のVRコンテンツ常時公開による問い合わせ増施策",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.7,
+  "rank": 33,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 賃貸管理・入居者対応DX",
+  "itemIdx": 2,
+  "item": "入居者からの問い合わせ・修繕依頼のチャットボット対応",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.575,
+  "rank": 34,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 2,
+  "item": "無人内見（セルフ内見）運用フローの構築",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 35,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 6,
+  "item": "内見予約Webフォームと解錠権限の自動連携",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 36,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 7,
+  "item": "退去後の鍵交換レス運用（暗証番号リセット）",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 37,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 9,
+  "item": "セルフ内見利用者向け操作案内動画の整備",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 38,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 0,
+  "item": "スマートロックの管理物件への設置",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 2,
+  "weighted": 3.35,
+  "rank": 39,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 スマートロック・無人内見IoT化",
+  "itemIdx": 5,
+  "item": "空室物件への防犯カメラ・センサー設置",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 2,
+  "weighted": 3.35,
+  "rank": 40,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 0,
+  "item": "不動産CRM・顧客管理システムの導入",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 41,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 1,
+  "item": "物件情報の一元管理・自動更新システム構築",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 42,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 3,
+  "item": "物件検索・レインズ連携の自動化",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 43,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 5,
+  "item": "AIによる物件マッチング・レコメンド機能導入",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 44,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 6,
+  "item": "見込み客の追客（フォローアップ）自動メール配信",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 45,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 7,
+  "item": "社内情報共有チャットツールの導入",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 46,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 8,
+  "item": "顧客満足度アンケートのデジタル収集・分析",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 47,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 9,
+  "item": "個人情報管理のクラウドセキュリティ強化",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 48,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 4,
+  "item": "口コミ・レビュー管理システムの導入",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 49,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 6,
+  "item": "ポータルサイト掲載情報のAI自動最適化",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 50,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 8,
+  "item": "広告効果測定・アクセス解析ツールの導入",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 51,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 9,
+  "item": "チラシ・DMのデジタル化とWeb誘導連携",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 52,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 0,
+  "item": "クラウド会計ソフトの導入・銀行口座連携",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 53,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 1,
+  "item": "請求書・領収書の電子発行システム導入",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 54,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 2,
+  "item": "経費精算のクラウド化・キャッシュレス対応",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 55,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 3,
+  "item": "家賃保証会社・仲介手数料の入金管理自動化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 56,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 5,
+  "item": "月次決算業務のクラウド化・早期化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 57,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 6,
+  "item": "税理士とのデータ連携・オンライン共有",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 58,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 7,
+  "item": "支払調書・年末調整のデジタル処理",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 59,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 8,
+  "item": "契約金・預り金の管理台帳のシステム化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 60,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 9,
+  "item": "オーナー送金・精算処理の自動化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 61,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 8,
+  "item": "エネルギーマネジメントシステム（BEMS/HEMS）の提案",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 62,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 0,
+  "item": "レンタル在庫管理システムの導入",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 63,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 1,
+  "item": "貸出・返却状況のバーコード/QRコード管理",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 64,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 2,
+  "item": "レンタル品予約のWeb受付システム構築",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 65,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 3,
+  "item": "在庫の稼働率分析による仕入れ最適化",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 66,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 4,
+  "item": "レンタル品のメンテナンス・点検履歴管理",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 67,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 5,
+  "item": "配送・回収業務のルート最適化ツール導入",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 68,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 6,
+  "item": "長期延滞・未返却の自動督促システム",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 69,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 7,
+  "item": "レンタル料金請求・決済のオンライン化",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 70,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 8,
+  "item": "貸出契約書の電子化・自動発行",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 71,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 物品賃貸業務・在庫管理DX",
+  "itemIdx": 9,
+  "item": "GPS/IoTタグによる貸出物品の位置管理",
+  "cost": 48,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 72,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 2,
+  "item": "反響（問い合わせ）の自動振り分け・対応漏れ防止",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 73,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 物件情報・顧客管理DX",
+  "itemIdx": 4,
+  "item": "顧客対応履歴・商談進捗の可視化",
+  "cost": 60,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 74,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 0,
+  "item": "自社物件検索サイトのリニューアル・SEO対策",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 75,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 1,
+  "item": "Web広告（リスティング・SNS広告）の運用強化",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 76,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 2,
+  "item": "SNS（Instagram・YouTube等）での物件紹介発信",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 77,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 3,
+  "item": "MEO（マップ検索）対策による来店誘導",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 78,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 5,
+  "item": "物件紹介動画・ドローン空撮コンテンツの制作",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 79,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 Web集客・広告マーケティング",
+  "itemIdx": 7,
+  "item": "LINE公式アカウントによる顧客接点強化",
+  "cost": 50,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 80,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 入出金・会計バックオフィス効率化",
+  "itemIdx": 4,
+  "item": "インボイス制度対応の請求書フォーマット整備",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 81,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 0,
+  "item": "共用部LED照明・人感センサーの導入",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 82,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 3,
+  "item": "IoT家電（スマートスピーカー等）標準装備化",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 83,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 5,
+  "item": "省エネ診断・EPC（エネルギー消費性能）表示への対応",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 84,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 6,
+  "item": "共用部Wi-Fi無料化による物件付加価値向上",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 85,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 9,
+  "item": "ペット可・DIY可等の付加価値プラン開発支援",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 86,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 1,
+  "item": "宅配ボックスの設置による空室対策",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.41,
+  "rank": 87,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 2,
+  "item": "高断熱窓・省エネ設備への改修提案",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.41,
+  "rank": 88,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 4,
+  "item": "太陽光発電・蓄電池設備の提案営業",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.41,
+  "rank": 89,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 物件付加価値・省エネ設備投資",
+  "itemIdx": 7,
+  "item": "防犯カメラ・オートロックの後付け設置提案",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "kaizen"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.41,
+  "rank": 90,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 1,
+  "item": "賃貸不動産経営管理士等の資格取得奨励",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.3,
+  "rank": 91,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 5,
+  "item": "ITツール活用研修（CRM・電子契約操作等）",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.3,
+  "rank": 92,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 0,
+  "item": "宅地建物取引士資格取得支援・研修の実施",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 93,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 2,
+  "item": "接客・重説トークのロールプレイ研修",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 94,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 3,
+  "item": "契約社員・パートの正社員登用制度整備",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 95,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 4,
+  "item": "新人向けOJT・マニュアル動画の整備",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 96,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 6,
+  "item": "評価制度・キャリアパスの明確化",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 97,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 7,
+  "item": "従業員満足度調査の定期実施",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 98,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 8,
+  "item": "営業成績に応じたインセンティブ制度設計",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 99,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 人材育成・定着支援",
+  "itemIdx": 9,
+  "item": "外国人材・シニア人材の受け入れ体制整備",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 0.0,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.0,
+  "rank": 100,
+  "selected": false
+ }
+]

@@ -1,0 +1,2022 @@
+[
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 0,
+  "item": "生徒情報・出欠管理システムの導入",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 1,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 1,
+  "item": "保護者向け専用アプリ・LINE公式アカウントでの連絡一元化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 2,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 2,
+  "item": "授業予約・振替管理のオンライン化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 3,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 3,
+  "item": "面談記録・カルテのデジタル管理",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 4,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 5,
+  "item": "兄弟姉妹・複数教室の一括管理",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 5,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 6,
+  "item": "生徒の目標・進捗管理ダッシュボード整備",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 6,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 7,
+  "item": "保護者アンケート・満足度調査のオンライン化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 7,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 2,
+  "item": "会計・請求ソフトとの連携による自動仕訳",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 8,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 3,
+  "item": "未収金アラート・督促の自動化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 9,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 5,
+  "item": "教材費・季節講習費のオンライン決済対応",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 10,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 7,
+  "item": "講師給与計算・振込のシステム化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 11,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 8,
+  "item": "経費精算・レシート管理のクラウド化",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 5,
+  "weighted": 4.15,
+  "rank": 12,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 0,
+  "item": "ICカード・QRコードによる入退室記録システム導入",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 13,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 4,
+  "item": "台風・地震時の安否確認システム導入",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 14,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 5,
+  "item": "送迎バス・駐輪場の安全管理体制構築",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 15,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 8,
+  "item": "避難訓練・防災マニュアルのデジタル化",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 16,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 9,
+  "item": "入退室データを活用した出席率分析",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 17,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 0,
+  "item": "Web会議システムを活用したライブオンライン授業の実施",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 18,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 1,
+  "item": "録画授業・映像教材のオンデマンド配信",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 19,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 3,
+  "item": "AI搭載型演習・自動採点システムの活用",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 20,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 5,
+  "item": "実物投影機・電子黒板の導入",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 21,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 7,
+  "item": "欠席者向け補講動画の自動配信",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 22,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 8,
+  "item": "保護者向け授業参観・進捗共有のオンライン化",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 23,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 9,
+  "item": "映像教材のアーカイブ・検索システム整備",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.06,
+  "rank": 24,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 4,
+  "item": "請求書・月謝明細の自動発行",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 25,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 8,
+  "item": "入塾・退塾手続きのペーパーレス化",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 26,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 生徒・保護者管理システム構築",
+  "itemIdx": 9,
+  "item": "複数拠点間での生徒情報共有体制構築",
+  "cost": 45,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 27,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 0,
+  "item": "クレジットカード・口座振替による月謝自動引き落とし導入",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 28,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 1,
+  "item": "スマホ決済(QRコード等)への対応",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 29,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 4,
+  "item": "兄弟割引・キャンペーン料金の自動計算設定",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 30,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 6,
+  "item": "領収書・明細のPDF自動発行",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 31,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 決済・会計管理効率化",
+  "itemIdx": 9,
+  "item": "月次収支レポートの自動作成",
+  "cost": 40,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.85,
+  "rank": 32,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 1,
+  "item": "保護者へのLINE・メール自動通知連携",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.76,
+  "rank": 33,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 3,
+  "item": "非常通報ボタン・警備会社連携の整備",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.76,
+  "rank": 34,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 7,
+  "item": "感染症対策(換気・消毒設備)の整備",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.76,
+  "rank": 35,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 2,
+  "item": "デジタル教材・タブレット学習システムの導入",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.76,
+  "rank": 36,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 6,
+  "item": "遠隔講師によるハイブリッド授業体制の構築",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.76,
+  "rank": 37,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 2,
+  "item": "教室内・入口への防犯カメラ設置",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 3.61,
+  "rank": 38,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 入退室管理・安全対策",
+  "itemIdx": 6,
+  "item": "不審者対策のオートロック・インターホン設置",
+  "cost": 70,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku",
+   "kaizen"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 3.61,
+  "rank": 39,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 オンライン授業・映像教材DX",
+  "itemIdx": 4,
+  "item": "オンライン自習室・質問対応チャットの設置",
+  "cost": 120,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 3.61,
+  "rank": 40,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 0,
+  "item": "デジタル教材・問題集データベースの整備",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 41,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 1,
+  "item": "カリキュラム進捗管理システムの導入",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 42,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 2,
+  "item": "プリント・教材の電子データ化とクラウド共有",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 43,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 5,
+  "item": "デジタル教材の一括契約による著作権処理の簡素化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 44,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 8,
+  "item": "教材在庫・発注管理のシステム化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 45,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 9,
+  "item": "生徒レベル別教材自動選定システムの活用",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.86,
+  "rank": 46,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 0,
+  "item": "AI診断による個別学習カリキュラムの自動作成",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 47,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 2,
+  "item": "学習履歴・弱点分析ダッシュボードの活用",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 48,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 3,
+  "item": "AI教材による自動採点・苦手単元抽出",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 49,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 4,
+  "item": "志望校合格可能性判定システムの導入",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 50,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 5,
+  "item": "学習時間記録アプリによる家庭学習の可視化",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 51,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 6,
+  "item": "講師間での生徒情報・指導方針共有システム",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 52,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 8,
+  "item": "成績推移レポートの自動配信",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 53,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 2,
+  "item": "シフト管理・勤怠管理のクラウド化",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 54,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 3,
+  "item": "採用・面接日程調整のオンライン化",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 55,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 4,
+  "item": "契約書・重要事項説明書の電子契約化",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 56,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 6,
+  "item": "郵送物のペーパーレス化(メール・アプリ通知移行)",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 57,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 7,
+  "item": "備品・消耗品発注のシステム化",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 58,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 8,
+  "item": "マニュアル・業務手順のデジタル化",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.8,
+  "rank": 59,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 3,
+  "item": "無料体験授業・模試のオンライン予約受付",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.66,
+  "rank": 60,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 5,
+  "item": "口コミ・紹介制度のデジタル化",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.66,
+  "rank": 61,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 7,
+  "item": "チラシ・ポスティングの効果測定データ分析",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.66,
+  "rank": 62,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 8,
+  "item": "入塾説明会のオンライン開催",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.66,
+  "rank": 63,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 3,
+  "item": "オンライン研修プラットフォームの活用",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.6,
+  "rank": 64,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 3,
+  "item": "講師間での指導案・板書データ共有",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 65,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 4,
+  "item": "オンデマンド印刷機導入による教材印刷の効率化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 66,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 6,
+  "item": "季節講習・特別カリキュラムのテンプレート化",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 67,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 教材・カリキュラム管理DX",
+  "itemIdx": 7,
+  "item": "eラーニング教材と紙教材のハイブリッド運用設計",
+  "cost": 65,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.56,
+  "rank": 68,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 1,
+  "item": "模試・定期テスト結果のデータベース化",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 69,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 7,
+  "item": "保護者面談資料の自動生成",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 70,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 成績・学習データ分析とAI活用",
+  "itemIdx": 9,
+  "item": "学力データを活用したクラス編成の最適化",
+  "cost": 55,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 71,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 0,
+  "item": "電話対応の自動音声・IVR導入",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 72,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 1,
+  "item": "チャットボットによる保護者問い合わせ一次対応",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 73,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 5,
+  "item": "社内連絡・情報共有のビジネスチャット導入",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 74,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス効率化",
+  "itemIdx": 9,
+  "item": "各教室拠点間の情報共有ワークフロー整備",
+  "cost": 38,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.5,
+  "rank": 75,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 0,
+  "item": "塾専用ホームページ・ランディングページのリニューアル",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 76,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 1,
+  "item": "MEO対策(Googleビジネスプロフィール最適化)",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 77,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 2,
+  "item": "リスティング広告・SNS広告の運用",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 78,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 4,
+  "item": "LINE公式アカウントを活用した友だち登録キャンペーン",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 79,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 6,
+  "item": "塾ブログ・YouTube動画による情報発信",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 80,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 集客・入塾促進マーケティング",
+  "itemIdx": 9,
+  "item": "卒塾生・保護者の声を活用した実績訴求コンテンツ制作",
+  "cost": 90,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 81,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 2,
+  "item": "防音・照明環境の改善",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 82,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 5,
+  "item": "ウォーターサーバー・休憩スペースの整備",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 83,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 7,
+  "item": "消火設備・防災用品の更新",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 84,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 8,
+  "item": "教室レイアウトのリニューアル(集中しやすい動線設計)",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 85,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 9,
+  "item": "老朽化した机・椅子・什器の入れ替え",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.36,
+  "rank": 86,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 0,
+  "item": "新人講師向け指導マニュアル・研修動画の整備",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 87,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 1,
+  "item": "授業力向上研修(模擬授業・フィードバック)の定期実施",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 88,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 2,
+  "item": "正社員化・待遇改善によるベテラン講師の定着促進",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 89,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 4,
+  "item": "講師評価制度・キャリアパスの整備",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 90,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 5,
+  "item": "教科研究会・外部研修への参加支援",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 91,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 6,
+  "item": "アルバイト講師向け接遇・保護者対応研修",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 92,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 7,
+  "item": "ハラスメント防止・コンプライアンス研修",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 93,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 8,
+  "item": "講師間メンター制度の導入",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 94,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 講師採用・育成・研修体制",
+  "itemIdx": 9,
+  "item": "採用ブランディング(講師採用サイト・SNS発信)強化",
+  "cost": 80,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai"
+  ],
+  "E": 1,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.3,
+  "rank": 95,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 0,
+  "item": "空調・換気設備の省エネ・高性能化",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.21,
+  "rank": 96,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 1,
+  "item": "自習室・個別ブースの増設",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.21,
+  "rank": 97,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 3,
+  "item": "バリアフリー化・段差解消工事",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.21,
+  "rank": 98,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 4,
+  "item": "自動清掃ロボットの導入",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.21,
+  "rank": 99,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 教室環境・設備整備",
+  "itemIdx": 6,
+  "item": "自動ドア・LED照明への省エネ工事",
+  "cost": 150,
+  "unit": "万円/年間",
+  "programs": [
+   "shoryokuka",
+   "kaizen",
+   "jizoku"
+  ],
+  "E": 1,
+  "C": 2,
+  "S": 3.8,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.21,
+  "rank": 100,
+  "selected": false
+ }
+]

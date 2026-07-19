@@ -1,0 +1,2002 @@
+[
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 0,
+  "item": "薬剤・消耗品の在庫管理システム導入",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 1,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 1,
+  "item": "在庫連動の発注自動化",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 2,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 2,
+  "item": "バーコード／RFIDによる商材管理",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 3,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 3,
+  "item": "店販品のPOS連携管理",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 4,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 4,
+  "item": "使用期限管理アラートシステム",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 5,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 5,
+  "item": "仕入れ先比較・コスト管理システム導入",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 6,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 6,
+  "item": "薬剤使用量の自動記録・原価管理",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 7,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 7,
+  "item": "消耗品のサブスク型定期購入システム",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 8,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 8,
+  "item": "在庫ロス分析ツール導入",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 9,
+  "selected": false
+ },
+ {
+  "catRank": 9,
+  "catName": "09 商材・在庫管理の効率化",
+  "itemIdx": 9,
+  "item": "複数店舗間の在庫融通管理システム",
+  "cost": 28,
+  "unit": "万円/初期投資",
+  "programs": [
+   "ai",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 3.3,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.435,
+  "rank": 10,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 0,
+  "item": "スタッフ研修用eラーニングシステム導入",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 11,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 2,
+  "item": "シフト管理システムのクラウド化",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 12,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 3,
+  "item": "勤怠管理システム導入（打刻・残業管理）",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 13,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 4,
+  "item": "評価制度・キャリアパス管理システム導入",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 14,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 6,
+  "item": "社内チャットツール導入",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 15,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 7,
+  "item": "資格取得支援・研修受講管理",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 16,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 9,
+  "item": "業務マニュアルのクラウド共有化",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 4.2,
+  "rank": 17,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 0,
+  "item": "オンライン予約システム導入（24時間WEB予約）",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 18,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 1,
+  "item": "予約台帳のクラウド化・一元管理",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 19,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 2,
+  "item": "顧客カルテの電子化（施術履歴・使用薬剤の記録）",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 20,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 5,
+  "item": "顧客データ分析によるリピート予測・DM自動配信",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 21,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 6,
+  "item": "AIによる来店需要予測・最適スタッフ配置",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 22,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 7,
+  "item": "電子カルテと施術メニューの連携（アレルギー・薬剤禁忌アラート）",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 23,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 8,
+  "item": "顧客ランク（会員グレード）管理システム導入",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 24,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 9,
+  "item": "多店舗展開時の予約・顧客情報統合管理",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 25,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 2,
+  "item": "会計クラウドソフトとの自動連携",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 26,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 3,
+  "item": "電子インボイス対応",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 27,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 5,
+  "item": "施術メニュー別売上分析ダッシュボード導入",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 28,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 7,
+  "item": "月額制メニュー（サブスク）課金システム導入",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 29,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 8,
+  "item": "電子マネーギフトカード・プリペイド発行",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 30,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 9,
+  "item": "経費精算・請求書処理の自動化",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 5,
+  "weighted": 4.075,
+  "rank": 31,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 1,
+  "item": "技術動画マニュアルのアーカイブ化",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.9,
+  "rank": 32,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 5,
+  "item": "新人教育用シミュレーター（練習キット）導入",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.9,
+  "rank": 33,
+  "selected": false
+ },
+ {
+  "catRank": 7,
+  "catName": "07 人材育成・定着支援",
+  "itemIdx": 8,
+  "item": "メンタルヘルス相談窓口（EAP）導入",
+  "cost": 25,
+  "unit": "万円/年間",
+  "programs": [
+   "ai",
+   "career",
+   "jinzai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.9,
+  "rank": 34,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 2,
+  "item": "Googleビジネスプロフィール最適化・口コミ管理",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 35,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 6,
+  "item": "デジタルサイネージによる店内メニュー訴求",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 36,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 7,
+  "item": "紹介プログラム（リファラル）のデジタル管理",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 37,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 8,
+  "item": "メールマガジン・ステップメール自動配信",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.8,
+  "rank": 38,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 3,
+  "item": "LINE公式アカウントでの予約受付・自動リマインド",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 39,
+  "selected": false
+ },
+ {
+  "catRank": 1,
+  "catName": "01 予約・顧客管理DX",
+  "itemIdx": 4,
+  "item": "無断キャンセル対策（予約金決済・自動SMSリマインド）",
+  "cost": 33,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 40,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 0,
+  "item": "キャッシュレス決済（クレジット・電子マネー・QR）導入",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 41,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 1,
+  "item": "POSレジシステム導入（売上・在庫連動）",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 42,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 4,
+  "item": "セルフレジ・自動精算機の導入",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 43,
+  "selected": false
+ },
+ {
+  "catRank": 3,
+  "catName": "03 キャッシュレス・会計効率化",
+  "itemIdx": 6,
+  "item": "スタッフ別売上・指名料の自動集計",
+  "cost": 41,
+  "unit": "万円/初年度",
+  "programs": [
+   "ai",
+   "shoryokuka"
+  ],
+  "E": 5,
+  "C": 4,
+  "S": 2.5,
+  "P": 3.5,
+  "D": 3,
+  "weighted": 3.775,
+  "rank": 44,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 0,
+  "item": "公式ホームページ・予約サイトのリニューアル",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 45,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 1,
+  "item": "Instagram／TikTok等SNS運用体制の構築",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 46,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 3,
+  "item": "MEO（地図検索）対策",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 47,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 4,
+  "item": "Web広告（リスティング・SNS広告）運用",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 48,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 5,
+  "item": "美容ポータルサイトへの掲載強化",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 49,
+  "selected": false
+ },
+ {
+  "catRank": 2,
+  "catName": "02 マーケティング・集客DX",
+  "itemIdx": 9,
+  "item": "施術事例（Before/After）動画コンテンツ制作体制",
+  "cost": 110,
+  "unit": "万円/年間",
+  "programs": [
+   "jizoku",
+   "ai"
+  ],
+  "E": 5,
+  "C": 3,
+  "S": 2.5,
+  "P": 3,
+  "D": 3,
+  "weighted": 3.5,
+  "rank": 50,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 6,
+  "item": "カラーリング剤自動調合システム導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 5,
+  "weighted": 3.41,
+  "rank": 51,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 3,
+  "item": "AIによるパーソナルカラー診断ツール",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.14,
+  "rank": 52,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 5,
+  "item": "顧客満足度アンケートのデジタル収集・分析",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.14,
+  "rank": 53,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 8,
+  "item": "アレルギーテスト記録のデジタル管理",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.14,
+  "rank": 54,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 9,
+  "item": "VIP顧客向け特別サービス管理システム",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.14,
+  "rank": 55,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 0,
+  "item": "最新ヘアケア機器（炭酸泉・スチーマー等）導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 56,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 1,
+  "item": "頭皮ケア専用機器（育毛・スカルプケア）導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 57,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 2,
+  "item": "高性能ドライヤー・アイロン等の技術機器更新",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 58,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 3,
+  "item": "まつげエクステ・ネイル用高精度機器導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 59,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 4,
+  "item": "ヘッドスパ専用リクライニングチェア導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 60,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 5,
+  "item": "脱毛・美顔器等エステ機器導入（複合サロン化）",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 61,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 7,
+  "item": "デジタル温度・時間管理付きパーマ機器導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 62,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 8,
+  "item": "施術用UV／LED照射機器の更新",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 3,
+  "weighted": 3.11,
+  "rank": 63,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 0,
+  "item": "給与計算クラウドシステム導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 64,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 1,
+  "item": "社会保険手続きの電子申請対応",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 65,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 2,
+  "item": "労務管理（36協定・有給管理）システム導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 66,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 3,
+  "item": "契約書・書類の電子化（ペーパーレス化）",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 67,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 4,
+  "item": "マイナンバー管理システム導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 68,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 5,
+  "item": "経営分析・予実管理ダッシュボード導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 69,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 6,
+  "item": "補助金・助成金申請管理システム導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 70,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 7,
+  "item": "クラウドストレージによる文書管理",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 71,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 8,
+  "item": "RPAによる定型業務自動化",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 72,
+  "selected": false
+ },
+ {
+  "catRank": 8,
+  "catName": "08 バックオフィス・労務管理の効率化",
+  "itemIdx": 9,
+  "item": "BCP（事業継続計画）策定支援ツール導入",
+  "cost": 20,
+  "unit": "万円/年間",
+  "programs": [
+   "ai"
+  ],
+  "E": 1,
+  "C": 5,
+  "S": 2.5,
+  "P": 3,
+  "D": 5,
+  "weighted": 3.0,
+  "rank": 73,
+  "selected": false
+ },
+ {
+  "catRank": 5,
+  "catName": "05 施術技術・最新機器導入",
+  "itemIdx": 9,
+  "item": "自動洗髪機（ロボットシャンプー台）導入",
+  "cost": 200,
+  "unit": "万円/初期投資",
+  "programs": [
+   "kaizen",
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 3.8,
+  "P": 4,
+  "D": 2,
+  "weighted": 2.96,
+  "rank": 74,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 1,
+  "item": "空気清浄機・換気システムの導入",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 75,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 7,
+  "item": "衛生管理チェックリストのデジタル化",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 76,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 8,
+  "item": "タオル・リネン類の管理システム導入",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 5,
+  "weighted": 2.96,
+  "rank": 77,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 0,
+  "item": "タブレットを使ったデジタルカウンセリングシート導入",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 78,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 1,
+  "item": "AR／画像シミュレーションによるヘアスタイル提案",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 79,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 2,
+  "item": "肌診断・頭皮診断機器の導入",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 80,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 4,
+  "item": "インバウンド対応（多言語タブレット）",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 81,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 6,
+  "item": "接客マニュアルの動画教材化",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 82,
+  "selected": false
+ },
+ {
+  "catRank": 4,
+  "catName": "04 接客・カウンセリング品質向上",
+  "itemIdx": 7,
+  "item": "カウンセリング内容の音声記録・自動テキスト化",
+  "cost": 115,
+  "unit": "万円/初年度",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 3,
+  "S": 2.2,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.84,
+  "rank": 83,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 3,
+  "item": "使い捨て器具・ディスポーザブル製品への切替",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 84,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 4,
+  "item": "紫外線殺菌ボックスの導入",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.66,
+  "rank": 85,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 0,
+  "item": "高性能オートクレーブ（滅菌器）導入",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.51,
+  "rank": 86,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 2,
+  "item": "非接触型検温・消毒設備の設置",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.51,
+  "rank": 87,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 5,
+  "item": "施術部位ごとのパーテーション設置",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.51,
+  "rank": 88,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 6,
+  "item": "手指消毒自動ディスペンサー設置",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.51,
+  "rank": 89,
+  "selected": false
+ },
+ {
+  "catRank": 6,
+  "catName": "06 衛生管理・感染症対策",
+  "itemIdx": 9,
+  "item": "店内清掃ロボットの導入",
+  "cost": 60,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku",
+   "shoryokuka"
+  ],
+  "E": 1,
+  "C": 4,
+  "S": 3.3,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.51,
+  "rank": 90,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 1,
+  "item": "LED照明への切替",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.48,
+  "rank": 91,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 3,
+  "item": "待合スペースの快適化（什器・Wi-Fi環境整備）",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.48,
+  "rank": 92,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 5,
+  "item": "施術チェア・シャンプー台の更新",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.48,
+  "rank": 93,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 6,
+  "item": "防犯カメラ・セキュリティシステム導入",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.48,
+  "rank": 94,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 9,
+  "item": "店内Wi-Fi・充電設備の整備",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 3,
+  "weighted": 2.48,
+  "rank": 95,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 0,
+  "item": "省エネ空調設備への更新",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.33,
+  "rank": 96,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 2,
+  "item": "バリアフリー改装（段差解消・手すり設置）",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.33,
+  "rank": 97,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 4,
+  "item": "トイレの改装（温水洗浄便座・多目的化）",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.33,
+  "rank": 98,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 7,
+  "item": "キッズスペース設置（託児対応）",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.33,
+  "rank": 99,
+  "selected": false
+ },
+ {
+  "catRank": 10,
+  "catName": "10 店舗環境・省エネ・什器整備",
+  "itemIdx": 8,
+  "item": "太陽光発電・節水設備の導入",
+  "cost": 180,
+  "unit": "万円/初期投資",
+  "programs": [
+   "jizoku"
+  ],
+  "E": 3,
+  "C": 2,
+  "S": 1.4,
+  "P": 3,
+  "D": 2,
+  "weighted": 2.33,
+  "rank": 100,
+  "selected": false
+ }
+]
