@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOTYPE 08 クラウド勤怠・シフト管理ダッシュボード | 飲食業 改善計画60選</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header a{color:#f5efe6;font-size:12px}
+  main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
+  h1{font-size:1.25rem;margin-bottom:4px}
+  .sub{color:var(--sub);font-size:0.85rem;margin-bottom:20px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .k{font-size:11px;color:var(--sub);font-weight:600}
+  .kpi .v{font-size:1.5rem;font-weight:800;margin:2px 0;color:var(--accent);font-variant-numeric:tabular-nums}
+  .kpi .d{font-size:11px;color:var(--green);font-weight:600}
+  .grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:0.83rem}
+  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:7px 8px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tr.new{background:#f3efe7;animation:flash 1.4s ease}
+  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
+  .side ul{list-style:none}
+  .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
+  .side li:last-child{border-bottom:none}
+  .side li::before{content:"●";position:absolute;left:4px;color:var(--accent);font-size:8px;top:12px}
+  .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
+  button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
+  button.demo:hover{opacity:0.9}
+  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+</style></head>
+<body>
+<header>
+  <span><span class="badge">PROTOTYPE No.08</span>　飲食業／08 バックオフィス効率化</span>
+  <span><a href="plan-08.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+</header>
+<main>
+  <h1>クラウド勤怠・シフト管理ダッシュボード</h1>
+  <p class="sub">クラウド勤怠・シフト管理システム導入によるバックオフィス業務の削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">今月のシフト充足率</div><div class="v">98%</div><div class="d">+14pt 導入前比</div></div><div class="kpi"><div class="k">自動生成の希望反映率</div><div class="v">91%</div><div class="d">手動調整9%のみ</div></div><div class="kpi"><div class="k">打刻移行率</div><div class="v">100%</div><div class="d">全12名</div></div><div class="kpi"><div class="k">代打募集の平均充足時間</div><div class="v">48分</div><div class="d">-3.2時間 導入前比</div></div></div>
+  <div class="grid">
+    <div class="panel">
+      <h2>今週のシフト一覧（抜粋）</h2>
+      <table><thead><tr><th>日付</th><th>時間帯</th><th>担当</th><th>状態</th></tr></thead><tbody id="mainTable"><tr><td>7/21(月)</td><td>11:00-15:00</td><td>山田・鈴木</td><td>確定</td></tr><tr><td>7/21(月)</td><td>17:00-22:00</td><td>佐藤・田中・伊藤</td><td>確定</td></tr><tr><td>7/22(火)</td><td>11:00-15:00</td><td>高橋・渡辺</td><td>確定</td></tr><tr><td>7/23(水)</td><td>17:00-22:00</td><td>山田・伊藤</td><td>代打募集中</td></tr><tr><td>7/24(木)</td><td>11:00-15:00</td><td>鈴木・佐藤</td><td>確定</td></tr></tbody></table>
+    </div>
+    <div class="panel side">
+      <h2>今月の勤怠サマリー</h2>
+      <ul><li>総労働時間: 1,240時間</li><li>残業時間: 12時間（要確認1件）</li><li>有給取得: 3件申請済み</li><li>給与データ: 25日に自動出力予定</li></ul>
+    </div>
+  </div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 代打募集をシミュレート</button></div>
+  <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
+  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+  var demoRow = ["7/23(水)", "17:00-22:00", "山田・新規募集中", "アプリ内一斉通知済み"];
+  var demoUsed = 0;
+  function runDemo() {
+    var tbody = document.getElementById('mainTable');
+    var tr = document.createElement('tr');
+    tr.className = 'new';
+    demoRow.forEach(function (c) {
+      var td = document.createElement('td');
+      td.textContent = c;
+      tr.appendChild(td);
+    });
+    tbody.insertBefore(tr, tbody.firstChild);
+    demoUsed++;
+    var toast = document.getElementById('toast');
+    toast.textContent = '代打募集を送信しました（対応可能なスタッフに通知）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+  }
+</script>
+</body></html>

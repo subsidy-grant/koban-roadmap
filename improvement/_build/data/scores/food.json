@@ -18,7 +18,9 @@
   "D": 5,
   "weighted": 4.65,
   "rank": 1,
-  "selected": false
+  "selected": true,
+  "planNo": 1,
+  "stage2Note": "総合スコア上位・導入コストが最小クラスで効果エビデンス（人件費24万円/月削減試算）が最も厚い。分類の中核施策で費用帰属も明確なため筆頭採択"
  },
  {
   "catRank": 1,
@@ -102,7 +104,9 @@
   "D": 5,
   "weighted": 4.41,
   "rank": 5,
-  "selected": false
+  "selected": true,
+  "planNo": 2,
+  "stage2Note": "飲食業の利益を最も圧迫する食材原価・廃棄ロスに直接効き、スシロー75%減・ローソン1割減など効果エビデンスが業界最高水準。費用対効果の高さで採択"
  },
  {
   "catRank": 2,
@@ -604,7 +608,9 @@
   "D": 2,
   "weighted": 3.8,
   "rank": 29,
-  "selected": false
+  "selected": true,
+  "planNo": 4,
+  "stage2Note": "省力化投資補助金カタログ注文型の代表対象カテゴリ（配膳ロボット）に合致し、事業計画書なしで申請できる導入ハードルの低さと実証済みの効果データを評価"
  },
  {
   "catRank": 4,
@@ -625,7 +631,9 @@
   "D": 2,
   "weighted": 3.8,
   "rank": 30,
-  "selected": false
+  "selected": true,
+  "planNo": 5,
+  "stage2Note": "業務改善助成金の対象経費例（生産性向上に資する設備・機器）に明記された王道の設備投資。賃上げとセットの制度設計が人材定着にも効く点を評価し、配膳ロボットとは異なる厨房内工程を選定して重複を回避"
  },
  {
   "catRank": 4,
@@ -665,7 +673,9 @@
   "D": 3,
   "weighted": 3.71,
   "rank": 32,
-  "selected": false
+  "selected": true,
+  "planNo": 9,
+  "stage2Note": "「電気代86%削減」「年間83万円削減」など極めて具体的な効果事例があり、費用対効果・回収期間の見通しが立てやすい。業務改善助成金との適合度も高く採択"
  },
  {
   "catRank": 9,
@@ -859,7 +869,9 @@
   "D": 5,
   "weighted": 3.3,
   "rank": 42,
-  "selected": false
+  "selected": true,
+  "planNo": 8,
+  "stage2Note": "アルバイト比率が高い飲食業では毎月のシフト調整・勤怠集計の負荷が特に大きく、費用対効果が読みやすい。飲食業労働生産性向上支援補助金（店舗管理領域）の対象領域とも合致"
  },
  {
   "catRank": 8,
@@ -1131,7 +1143,9 @@
   "D": 5,
   "weighted": 2.96,
   "rank": 55,
-  "selected": false
+  "selected": true,
+  "planNo": 3,
+  "stage2Note": "ノーショー対策と客数の底上げに早期に効果が出やすい分類の中核施策。小規模事業者持続化補助金との適合度が高くコスト効率でも上位に位置づけ"
  },
  {
   "catRank": 3,
@@ -1332,7 +1346,9 @@
   "D": 3,
   "weighted": 2.76,
   "rank": 65,
-  "selected": false
+  "selected": true,
+  "planNo": 7,
+  "stage2Note": "HACCPに沿った衛生管理の記録義務に直接応え、省力化投資補助金カタログ対象（IoT温度管理センサー）にも合致する。手作業の検温・記録から解放される導入効果が明確"
  },
  {
   "catRank": 7,
@@ -1536,7 +1552,9 @@
   "D": 3,
   "weighted": 2.66,
   "rank": 75,
-  "selected": false
+  "selected": true,
+  "planNo": 6,
+  "stage2Note": "広告費をかけ続けるグルメサイト掲載よりも低コストで持続的な集客資産になる点を評価。運用ツール費のみで始められ小規模店に適合"
  },
  {
   "catRank": 6,
@@ -1656,7 +1674,9 @@
   "D": 5,
   "weighted": 2.6,
   "rank": 81,
-  "selected": false
+  "selected": true,
+  "planNo": 10,
+  "stage2Note": "単店経営が多い中小飲食事業者では対象範囲が限られるため優先度は最下位だが、複数店舗展開を見据えた事業者向けの選択肢として1案は確保。ソフトウェア中心でデジタル化・AI導入補助金との適合度が高い"
  },
  {
   "catRank": 10,
