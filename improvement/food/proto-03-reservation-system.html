@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 03 予約管理ダッシュボード | 飲食業 改善計画60選</title>
+<title>PROTOTYPE 03 予約管理ダッシュボード | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -9,6 +9,7 @@
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header .arch{background:rgba(255,255,255,0.14);color:#f5efe6;font-size:10px;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:6px}
   header a{color:#f5efe6;font-size:12px}
   main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
   h1{font-size:1.25rem;margin-bottom:4px}
@@ -23,12 +24,6 @@
   @media(max-width:860px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
   .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
-  table{width:100%;border-collapse:collapse;font-size:0.83rem}
-  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
-  td{padding:7px 8px;border-bottom:1px solid var(--line)}
-  tr:last-child td{border-bottom:none}
-  tr.new{background:#f3efe7;animation:flash 1.4s ease}
-  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
   .side ul{list-style:none}
   .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
   .side li:last-child{border-bottom:none}
@@ -36,29 +31,30 @@
   .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
   button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
   button.demo:hover{opacity:0.9}
-  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+  @keyframes flash{from{background:#e9dfc8}to{background:transparent}}
+
+  .timeline{position:relative;padding-left:26px}
+  .timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--line)}
+  .tcard{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:10px}
+  .tcard::before{content:"";position:absolute;left:-24px;top:16px;width:11px;height:11px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+  .tcard .time{font-weight:800;color:var(--accent);font-size:0.92rem;font-variant-numeric:tabular-nums}
+  .tcard .desc{font-size:0.86rem;color:var(--ink);margin-top:2px}
+  .tcard .desc span{color:var(--sub)}
+  .tcard .pill{float:right;font-size:0.7rem;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--sage-wash,#eef1ea);color:var(--green)}
+  .tcard.new{animation:flash 1.4s ease}
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.03</span>　飲食業／03 予約・顧客管理DX</span>
-  <span><a href="plan-03.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.03</span><span class="arch">予約・シフト台帳型</span>　飲食業／03 予約・顧客管理DX</span>
+  <span><a href="plan-03.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
   <h1>予約管理ダッシュボード</h1>
   <p class="sub">飲食店向け予約管理システム導入によるノーショー対策と予約業務の効率化 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">本日の予約</div><div class="v">12件</div><div class="d">うちコース8件</div></div><div class="kpi"><div class="k">ネット予約比率</div><div class="v">58%</div><div class="d">+22pt 今月</div></div><div class="kpi"><div class="k">無断キャンセル</div><div class="v">0件</div><div class="d">今月累計2件</div></div><div class="kpi"><div class="k">事前決済完了</div><div class="v">8件</div><div class="d">コース予約全件</div></div></div>
-  <div class="grid">
-    <div class="panel">
-      <h2>本日の予約一覧</h2>
-      <table><thead><tr><th>時刻</th><th>顧客</th><th>人数</th><th>内容</th><th>状態</th></tr></thead><tbody id="mainTable"><tr><td>18:00</td><td>田中様</td><td>2名</td><td>Aコース</td><td>決済済み</td></tr><tr><td>18:30</td><td>佐藤様</td><td>4名</td><td>アラカルト</td><td>確定</td></tr><tr><td>19:00</td><td>鈴木様</td><td>2名</td><td>Bコース</td><td>決済済み</td></tr><tr><td>19:30</td><td>高橋様</td><td>6名</td><td>貸切コース</td><td>決済済み</td></tr><tr><td>20:00</td><td>伊藤様</td><td>2名</td><td>アラカルト</td><td>確定</td></tr></tbody></table>
-    </div>
-    <div class="panel side">
-      <h2>自動リマインド送信状況</h2>
-      <ul><li>明日の予約 9件に送信予約済み</li><li>本日 15:00 送信完了（4件）</li><li>コース予約は決済リンクを同時送付</li><li>キャンセル待ち登録 1件</li></ul>
-    </div>
-  </div>
+  <div class="kpis"><div class="kpi"><div class="k">本日の予約</div><div class="v">12件</div><div class="d">うちコース8件</div></div><div class="kpi"><div class="k">ネット予約比率</div><div class="v">58%</div><div class="d">+22pt 今月</div></div><div class="kpi"><div class="k">無断キャンセル</div><div class="v">0件</div><div class="d">今月累計2件</div></div><div class="kpi"><div class="k">事前決済完了</div><div class="v">8件</div><div class="d">コース予約全件</div></div></div><div class="grid"><div class="panel"><h2>本日の予約一覧（顧客・人数・内容）</h2><div class="timeline" id="mainList"><div class="tcard"><span class="pill">決済済み</span><div class="time">18:00</div><div class="desc">田中様 ／ 2名 ／ Aコース</div></div><div class="tcard"><span class="pill">確定</span><div class="time">18:30</div><div class="desc">佐藤様 ／ 4名 ／ アラカルト</div></div><div class="tcard"><span class="pill">決済済み</span><div class="time">19:00</div><div class="desc">鈴木様 ／ 2名 ／ Bコース</div></div><div class="tcard"><span class="pill">決済済み</span><div class="time">19:30</div><div class="desc">高橋様 ／ 6名 ／ 貸切コース</div></div><div class="tcard"><span class="pill">確定</span><div class="time">20:00</div><div class="desc">伊藤様 ／ 2名 ／ アラカルト</div></div></div></div><div class="panel side"><h2>自動リマインド送信状況</h2><ul><li>明日の予約 9件に送信予約済み</li><li>本日 15:00 送信完了（4件）</li><li>コース予約は決済リンクを同時送付</li><li>キャンセル待ち登録 1件</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 新規ネット予約をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
@@ -66,17 +62,22 @@
 <div class="toast" id="toast"></div>
 <script>
   var demoRow = ["20:30", "新規のお客様", "2名", "Aコース", "決済済み"];
+  var demoCols = ["時刻", "顧客", "人数", "内容", "状態"];
   var demoUsed = 0;
+  
+  function addDemo(cols, row) {
+    var list = document.getElementById('mainList');
+    var el = document.createElement('div');
+    el.className = 'tcard new';
+    var status = row[row.length - 1];
+    var mid = row.slice(1, row.length - 1).join(' ／ ');
+    el.innerHTML = '<span class="pill">' + esc(status) + '</span><div class="time">' + esc(row[0]) + '</div><div class="desc">' + esc(mid) + '</div>';
+    list.insertBefore(el, list.firstChild);
+  }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
   function runDemo() {
-    var tbody = document.getElementById('mainTable');
-    var tr = document.createElement('tr');
-    tr.className = 'new';
-    demoRow.forEach(function (c) {
-      var td = document.createElement('td');
-      td.textContent = c;
-      tr.appendChild(td);
-    });
-    tbody.insertBefore(tr, tbody.firstChild);
+    addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
     toast.textContent = 'ネット予約を受け付けました（台帳に自動反映・決済完了）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');

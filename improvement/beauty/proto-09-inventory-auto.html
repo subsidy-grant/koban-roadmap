@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 09 在庫・自動発注ダッシュボード | 美容業 改善計画60選</title>
+<title>PROTOTYPE 09 在庫・自動発注ダッシュボード | 美容業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -9,6 +9,7 @@
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header .arch{background:rgba(255,255,255,0.14);color:#f5efe6;font-size:10px;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:6px}
   header a{color:#f5efe6;font-size:12px}
   main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
   h1{font-size:1.25rem;margin-bottom:4px}
@@ -23,12 +24,6 @@
   @media(max-width:860px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
   .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
-  table{width:100%;border-collapse:collapse;font-size:0.83rem}
-  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
-  td{padding:7px 8px;border-bottom:1px solid var(--line)}
-  tr:last-child td{border-bottom:none}
-  tr.new{background:#f3efe7;animation:flash 1.4s ease}
-  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
   .side ul{list-style:none}
   .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
   .side li:last-child{border-bottom:none}
@@ -36,29 +31,26 @@
   .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
   button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
   button.demo:hover{opacity:0.9}
-  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+  @keyframes flash{from{background:#e9dfc8}to{background:transparent}}
+
+  table{width:100%;border-collapse:collapse;font-size:0.83rem}
+  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:7px 8px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tr.new{animation:flash 1.4s ease}
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.09</span>　美容業／09 商材・在庫管理の効率化</span>
-  <span><a href="plan-09.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.09</span><span class="arch">分析ダッシュボード型</span>　美容業／09 商材・在庫管理の効率化</span>
+  <span><a href="plan-09.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
   <h1>在庫・自動発注ダッシュボード</h1>
   <p class="sub">在庫管理・自動発注システムの導入による薬剤ロスと棚卸作業の削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">管理品目</div><div class="v">203 SKU</div><div class="d">台帳登録済み</div></div><div class="kpi"><div class="k">要発注</div><div class="v">4品目</div><div class="d">発注案 自動生成</div></div><div class="kpi"><div class="k">期限30日以内</div><div class="v">6品目</div><div class="d">先出しアラート</div></div><div class="kpi"><div class="k">今月の廃棄</div><div class="v">0.8万円</div><div class="d">-60% 導入前比</div></div></div>
-  <div class="grid">
-    <div class="panel">
-      <h2>発注アラート（自動生成された発注案）</h2>
-      <table><thead><tr><th>品目</th><th>現在庫</th><th>発注点</th><th>発注案</th></tr></thead><tbody id="mainTable"><tr><td>カラー剤 N-8</td><td>3個</td><td>5個</td><td>12個</td></tr><tr><td>シャンプー(店販)</td><td>2本</td><td>4本</td><td>10本</td></tr><tr><td>パーマ液 2剤</td><td>4本</td><td>6本</td><td>12本</td></tr><tr><td>トリートメント(業務用)</td><td>1本</td><td>3本</td><td>6本</td></tr></tbody></table>
-    </div>
-    <div class="panel side">
-      <h2>期限アラート</h2>
-      <ul><li>カラー剤 A-6: 期限まで18日（先出し指示）</li><li>ブリーチ剤: 期限まで25日</li><li>店販オイル: 期限まで28日</li><li>先月の期限切れ廃棄: 2品目 0.8万円</li></ul>
-    </div>
-  </div>
+  <div class="kpis"><div class="kpi"><div class="k">管理品目</div><div class="v">203 SKU</div><div class="d">台帳登録済み</div></div><div class="kpi"><div class="k">要発注</div><div class="v">4品目</div><div class="d">発注案 自動生成</div></div><div class="kpi"><div class="k">期限30日以内</div><div class="v">6品目</div><div class="d">先出しアラート</div></div><div class="kpi"><div class="k">今月の廃棄</div><div class="v">0.8万円</div><div class="d">-60% 導入前比</div></div></div><div class="grid"><div class="panel"><h2>発注アラート（自動生成された発注案）</h2><table><thead><tr><th>品目</th><th>現在庫</th><th>発注点</th><th>発注案</th></tr></thead><tbody id="mainList"><tr><td>カラー剤 N-8</td><td>3個</td><td>5個</td><td>12個</td></tr><tr><td>シャンプー(店販)</td><td>2本</td><td>4本</td><td>10本</td></tr><tr><td>パーマ液 2剤</td><td>4本</td><td>6本</td><td>12本</td></tr><tr><td>トリートメント(業務用)</td><td>1本</td><td>3本</td><td>6本</td></tr></tbody></table></div><div class="panel side"><h2>期限アラート</h2><ul><li>カラー剤 A-6: 期限まで18日（先出し指示）</li><li>ブリーチ剤: 期限まで25日</li><li>店販オイル: 期限まで28日</li><li>先月の期限切れ廃棄: 2品目 0.8万円</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 発注案を承認して発注</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
@@ -66,17 +58,19 @@
 <div class="toast" id="toast"></div>
 <script>
   var demoRow = ["カラー剤 N-8", "3個→15個", "発注済み", "納品予定 7/22"];
+  var demoCols = ["品目", "現在庫", "発注点", "発注案"];
   var demoUsed = 0;
-  function runDemo() {
-    var tbody = document.getElementById('mainTable');
+  
+  function addDemo(cols, row) {
+    var tbody = document.getElementById('mainList');
     var tr = document.createElement('tr');
     tr.className = 'new';
-    demoRow.forEach(function (c) {
-      var td = document.createElement('td');
-      td.textContent = c;
-      tr.appendChild(td);
-    });
+    row.forEach(function (c) { var td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
     tbody.insertBefore(tr, tbody.firstChild);
+  }
+
+  function runDemo() {
+    addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
     toast.textContent = '発注を確定しました（仕入先へ発注データを送信）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 03 セルフレジ売上ダッシュボード | 美容業 改善計画10選</title>
+<title>PROTOTYPE 06 キッチンディスプレイシステム(KDS) | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -48,21 +48,21 @@
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.03</span><span class="arch">レジ・伝票型</span>　美容業／03 キャッシュレス・会計効率化</span>
-  <span><a href="plan-03.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.06</span><span class="arch">レジ・伝票型</span>　飲食業／01 モバイルオーダー・キャッシュレス決済</span>
+  <span><a href="plan-06.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
-  <h1>セルフレジ売上ダッシュボード</h1>
-  <p class="sub">セルフレジ・自動精算機の導入によるレジ業務の省人化とレジ締めの自動化 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="register"><div><div class="label">本日の売上</div><div class="amount">186,500円</div></div><div style="text-align:right"><div class="label">前回比</div><div style="font-weight:700;color:#f5efe6">31組</div></div></div><div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi"><div class="k">キャッシュレス比率</div><div class="v">58%</div><div class="d">+3pt 前週</div></div><div class="kpi"><div class="k">レジ締め予測</div><div class="v">5分</div><div class="d">自動集計済み</div></div><div class="kpi"><div class="k">現金過不足</div><div class="v">0円</div><div class="d">30日連続</div></div></div><div class="grid"><div class="panel"><h2>本日の精算履歴</h2><div class="tickets" id="mainList"><div class="ticket"><div><div class="main">17:45 ／ 8,800円 ／ クレジット</div></div><span class="status">セルフ</span></div><div class="ticket"><div><div class="main">17:20 ／ 12,100円 ／ QRコード</div></div><span class="status">セルフ</span></div><div class="ticket"><div><div class="main">16:50 ／ 6,600円 ／ 現金</div></div><span class="status">セルフ</span></div><div class="ticket"><div><div class="main">16:10 ／ 9,900円 ／ 電子マネー</div></div><span class="status">セルフ</span></div><div class="ticket"><div><div class="main">15:40 ／ 15,400円 ／ クレジット</div></div><span class="status">セルフ</span></div></div></div><div class="panel side"><h2>レジ締めステータス</h2><ul><li>現金在高: 自動計数済み（誤差0円）</li><li>売上集計: リアルタイム完了</li><li>会計ソフト連携: 22:00 自動送信予定</li><li>釣銭準備金: 補充不要</li></ul></div></div>
-  <div class="actions"><button class="demo" onclick="runDemo()">▶ 精算をシミュレート</button></div>
+  <h1>キッチンディスプレイシステム(KDS)</h1>
+  <p class="sub">キッチンディスプレイシステム(KDS)導入による厨房伝達の正確化と提供スピード向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="register"><div><div class="label">表示中の注文</div><div class="amount">8件</div></div><div style="text-align:right"><div class="label">前回比</div><div style="font-weight:700;color:#f5efe6">平均待ち4分</div></div></div><div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi"><div class="k">本日の提供件数</div><div class="v">142件</div><div class="d">遅延0件</div></div><div class="kpi"><div class="k">平均提供時間</div><div class="v">9.2分</div><div class="d">-4.8分 導入前比</div></div><div class="kpi"><div class="k">伝票紛失</div><div class="v">0件</div><div class="d">導入後累計0件</div></div></div><div class="grid"><div class="panel"><h2>厨房モニター表示（現在の注文）</h2><div class="tickets" id="mainList"><div class="ticket"><div><div class="main">2分 ／ 5番 ／ 麻婆豆腐+ライス ／ -</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">4分 ／ 3番 ／ 酢豚定食 ／ エビアレルギー注意</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">6分 ／ 8番 ／ 餃子+チャーハン ／ -</div></div><span class="status">仕上げ</span></div><div class="ticket"><div><div class="main">1分 ／ 12番 ／ 青椒肉絲 ／ -</div></div><span class="status">受付済み</span></div><div class="ticket"><div><div class="main">7分 ／ 2番 ／ 回鍋肉定食 ／ -</div></div><span class="status">仕上げ</span></div></div></div><div class="panel side"><h2>本日の稼働サマリー</h2><ul><li>平均調理時間: 8.4分</li><li>特記事項の表示: 3件（全件対応済み）</li><li>遅延アラート: 0件</li><li>紙伝票の使用: 0件（本日）</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 調理完了をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
-  var demoRow = ["18:05", "7,700円", "QRコード", "セルフ"];
-  var demoCols = ["時刻", "金額", "決済方法", "処理"];
+  var demoRow = ["8番", "餃子+チャーハン", "-", "提供準備完了"];
+  var demoCols = ["経過時間", "テーブル", "内容", "特記事項", "状態"];
   var demoUsed = 0;
   
   function addDemo(cols, row) {
@@ -80,7 +80,7 @@
     addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
-    toast.textContent = 'セルフ精算が完了しました（売上に自動計上）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.textContent = '調理完了を記録しました（ホールへ提供準備完了を通知）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
     toast.classList.add('show');
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);

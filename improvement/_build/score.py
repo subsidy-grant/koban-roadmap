@@ -183,7 +183,7 @@ def render_pdca(data, all_scores):
     parts.append('<title>改善プラン選定の考え方（PDCA・スコアリング） | 補助金活用 業務改善ロードマップ</title>')
     parts.append('<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">')
     parts.append("<style>" + PDCA_CSS + "</style></head><body><main>")
-    parts.append('<p class="back"><a href="index.html">← 改善プラン60選 トップへ</a> ／ <a href="../index.html">ロードマップ本体へ</a></p>')
+    parts.append('<p class="back"><a href="index.html">← 改善プラン10選 トップへ</a> ／ <a href="../index.html">ロードマップ本体へ</a></p>')
     parts.append("<h1>改善プラン選定の考え方</h1>")
     parts.append('<p class="sub">6業種×100施策（計600施策）から、費用対効果・業務改善効率の高い各10案（計60案）をどう選んだかの全記録。'
                  "スコアは機械的に再計算可能で、編集判断はすべて採択理由として明記しています。</p>")

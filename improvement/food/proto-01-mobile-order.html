@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 01 モバイルオーダー運用ダッシュボード | 飲食業 改善計画60選</title>
+<title>PROTOTYPE 01 モバイルオーダー運用ダッシュボード | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -9,6 +9,7 @@
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header .arch{background:rgba(255,255,255,0.14);color:#f5efe6;font-size:10px;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:6px}
   header a{color:#f5efe6;font-size:12px}
   main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
   h1{font-size:1.25rem;margin-bottom:4px}
@@ -23,12 +24,6 @@
   @media(max-width:860px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
   .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
-  table{width:100%;border-collapse:collapse;font-size:0.83rem}
-  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
-  td{padding:7px 8px;border-bottom:1px solid var(--line)}
-  tr:last-child td{border-bottom:none}
-  tr.new{background:#f3efe7;animation:flash 1.4s ease}
-  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
   .side ul{list-style:none}
   .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
   .side li:last-child{border-bottom:none}
@@ -36,29 +31,30 @@
   .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
   button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
   button.demo:hover{opacity:0.9}
-  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+  @keyframes flash{from{background:#e9dfc8}to{background:transparent}}
+
+  .register{background:var(--ink);color:#f5efe6;border-radius:14px;padding:20px 22px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .register .label{font-size:0.78rem;color:#cfc7ba}
+  .register .amount{font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums;color:#fff}
+  .tickets{display:flex;flex-direction:column;gap:10px}
+  .ticket{background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .ticket .main{font-size:0.88rem;font-weight:700}
+  .ticket .sub2{font-size:0.76rem;color:var(--sub);margin-top:2px}
+  .ticket .status{font-size:0.72rem;font-weight:700;padding:3px 11px;border-radius:99px;background:var(--accent);color:#fff;white-space:nowrap}
+  .ticket.new{animation:flash 1.4s ease}
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.01</span>　飲食業／01 モバイルオーダー・キャッシュレス決済</span>
-  <span><a href="plan-01.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.01</span><span class="arch">レジ・伝票型</span>　飲食業／01 モバイルオーダー・キャッシュレス決済</span>
+  <span><a href="plan-01.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
   <h1>モバイルオーダー運用ダッシュボード</h1>
   <p class="sub">モバイルオーダー（セルフオーダー）システム導入によるホール業務の省力化と客単価向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">本日の注文数</div><div class="v">186件</div><div class="d">+34 前週比</div></div><div class="kpi"><div class="k">セルフオーダー比率</div><div class="v">68%</div><div class="d">+12pt 今月</div></div><div class="kpi"><div class="k">平均提供時間</div><div class="v">7.4分</div><div class="d">-4.6分 導入前比</div></div><div class="kpi"><div class="k">追加注文率</div><div class="v">31%</div><div class="d">+9pt 今月</div></div></div>
-  <div class="grid">
-    <div class="panel">
-      <h2>本日の注文状況</h2>
-      <table><thead><tr><th>時刻</th><th>テーブル</th><th>内容</th><th>経路</th><th>状態</th></tr></thead><tbody id="mainTable"><tr><td>12:05</td><td>3番</td><td>日替わり定食+味噌汁</td><td>セルフ</td><td>提供済み</td></tr><tr><td>12:10</td><td>7番</td><td>唐揚げ定食</td><td>セルフ</td><td>調理中</td></tr><tr><td>12:12</td><td>5番</td><td>焼魚定食</td><td>店員</td><td>提供済み</td></tr><tr><td>12:15</td><td>2番</td><td>麻婆豆腐定食+ライス大盛</td><td>セルフ</td><td>調理中</td></tr><tr><td>12:18</td><td>9番</td><td>本日のカレー</td><td>セルフ</td><td>受付済み</td></tr></tbody></table>
-    </div>
-    <div class="panel side">
-      <h2>厨房KDS連携状況</h2>
-      <ul><li>未処理オーダー: 3件</li><li>平均調理時間: 6.2分</li><li>紙伝票の使用: 0件（本日）</li><li>端末エラー通知: なし</li></ul>
-    </div>
-  </div>
+  <div class="register"><div><div class="label">本日の注文数</div><div class="amount">186件</div></div><div style="text-align:right"><div class="label">前回比</div><div style="font-weight:700;color:#f5efe6">+34 前週比</div></div></div><div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi"><div class="k">セルフオーダー比率</div><div class="v">68%</div><div class="d">+12pt 今月</div></div><div class="kpi"><div class="k">平均提供時間</div><div class="v">7.4分</div><div class="d">-4.6分 導入前比</div></div><div class="kpi"><div class="k">追加注文率</div><div class="v">31%</div><div class="d">+9pt 今月</div></div></div><div class="grid"><div class="panel"><h2>本日の注文状況</h2><div class="tickets" id="mainList"><div class="ticket"><div><div class="main">12:05 ／ 3番 ／ 日替わり定食+味噌汁 ／ セルフ</div></div><span class="status">提供済み</span></div><div class="ticket"><div><div class="main">12:10 ／ 7番 ／ 唐揚げ定食 ／ セルフ</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">12:12 ／ 5番 ／ 焼魚定食 ／ 店員</div></div><span class="status">提供済み</span></div><div class="ticket"><div><div class="main">12:15 ／ 2番 ／ 麻婆豆腐定食+ライス大盛 ／ セルフ</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">12:18 ／ 9番 ／ 本日のカレー ／ セルフ</div></div><span class="status">受付済み</span></div></div></div><div class="panel side"><h2>厨房KDS連携状況</h2><ul><li>未処理オーダー: 3件</li><li>平均調理時間: 6.2分</li><li>紙伝票の使用: 0件（本日）</li><li>端末エラー通知: なし</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 新規オーダーをシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
@@ -66,17 +62,22 @@
 <div class="toast" id="toast"></div>
 <script>
   var demoRow = ["12:22", "4番", "生姜焼き定食+サラダ追加", "セルフ", "受付済み"];
+  var demoCols = ["時刻", "テーブル", "内容", "経路", "状態"];
   var demoUsed = 0;
+  
+  function addDemo(cols, row) {
+    var list = document.getElementById('mainList');
+    var el = document.createElement('div');
+    el.className = 'ticket new';
+    var status = row[row.length - 1];
+    var sub2 = row.slice(0, row.length - 1).join(' ／ ');
+    el.innerHTML = '<div><div class="main">' + esc(sub2) + '</div></div><span class="status">' + esc(status) + '</span>';
+    list.insertBefore(el, list.firstChild);
+  }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
   function runDemo() {
-    var tbody = document.getElementById('mainTable');
-    var tr = document.createElement('tr');
-    tr.className = 'new';
-    demoRow.forEach(function (c) {
-      var td = document.createElement('td');
-      td.textContent = c;
-      tr.appendChild(td);
-    });
-    tbody.insertBefore(tr, tbody.firstChild);
+    addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
     toast.textContent = 'オーダーを受け付けました（厨房KDSに自動表示）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');

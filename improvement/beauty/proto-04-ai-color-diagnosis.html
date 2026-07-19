@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROTOTYPE 04 AIパーソナルカラー診断 | 美容業 改善計画10選</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header .arch{background:rgba(255,255,255,0.14);color:#f5efe6;font-size:10px;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:6px}
+  header a{color:#f5efe6;font-size:12px}
+  main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
+  h1{font-size:1.25rem;margin-bottom:4px}
+  .sub{color:var(--sub);font-size:0.85rem;margin-bottom:20px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .k{font-size:11px;color:var(--sub);font-weight:600}
+  .kpi .v{font-size:1.5rem;font-weight:800;margin:2px 0;color:var(--accent);font-variant-numeric:tabular-nums}
+  .kpi .d{font-size:11px;color:var(--green);font-weight:600}
+  .grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
+  .side ul{list-style:none}
+  .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
+  .side li:last-child{border-bottom:none}
+  .side li::before{content:"●";position:absolute;left:4px;color:var(--accent);font-size:8px;top:12px}
+  .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
+  button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
+  button.demo:hover{opacity:0.9}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+  @keyframes flash{from{background:#e9dfc8}to{background:transparent}}
+
+  .hero2{background:linear-gradient(135deg,var(--card),var(--bg));border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;gap:20px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  .hero2 .photo{width:88px;height:88px;border-radius:16px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0}
+  .hero2 .r1{font-size:0.75rem;color:var(--sub)}
+  .hero2 .r2{font-size:1.35rem;font-weight:800;color:var(--accent);margin:2px 0}
+  .hero2 .r3{font-size:0.95rem;color:var(--ink)}
+  .histrow{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+  .hcard{flex:0 0 auto;width:150px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .hcard .t1{font-size:0.7rem;color:var(--sub)}
+  .hcard .t2{font-size:0.82rem;font-weight:700;margin-top:3px}
+  .hcard .t3{font-size:0.76rem;color:var(--sub);margin-top:2px}
+  .hero2.new{animation:flash 1.6s ease}
+</style></head>
+<body>
+<header>
+  <span><span class="badge">PROTOTYPE No.04</span><span class="arch">診断・提案型</span>　美容業／04 接客・カウンセリング品質向上</span>
+  <span><a href="plan-04.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+</header>
+<main>
+  <h1>AIパーソナルカラー診断</h1>
+  <p class="sub">AIパーソナルカラー診断ツール導入によるカウンセリング精度向上と指名率アップ — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">本日の診断数</div><div class="v">8件</div><div class="d">カラー客の80%</div></div><div class="kpi"><div class="k">指名率</div><div class="v">39%</div><div class="d">+7pt 導入前比</div></div><div class="kpi"><div class="k">診断済みカルテ</div><div class="v">186件</div><div class="d">累計</div></div><div class="kpi"><div class="k">提案やり直し</div><div class="v">0件</div><div class="d">今月</div></div></div><div class="hero2" id="heroCard"><div class="photo">🎨</div><div><div class="r1">最新の本日の診断結果（16:30）</div><div class="r2">サマー系（ブルベ）</div><div class="r3">提案：アッシュベージュ</div></div></div><div class="grid"><div class="panel"><h2>過去の本日の診断結果</h2><div class="histrow" id="mainList"><div class="hcard"><div class="t1">15:00</div><div class="t2">オータム系（イエベ）</div><div class="t3">キャラメルブラウン</div></div><div class="hcard"><div class="t1">13:30</div><div class="t2">ウィンター系（ブルベ）</div><div class="t3">ダークアッシュ</div></div><div class="hcard"><div class="t1">11:00</div><div class="t2">スプリング系（イエベ）</div><div class="t3">ゴールドブラウン</div></div><div class="hcard"><div class="t1">10:00</div><div class="t2">サマー系（ブルベ）</div><div class="t3">ラベンダーグレージュ</div></div></div></div><div class="panel side"><h2>診断タイプの内訳（今月）</h2><ul><li>サマー系: 28%</li><li>オータム系: 24%</li><li>ウィンター系: 26%</li><li>スプリング系: 22%</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 診断をシミュレート</button></div>
+  <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
+  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+  var demoRow = ["17:15", "新規のお客様", "オータム系（イエベ）", "テラコッタブラウン"];
+  var demoCols = ["時刻", "顧客", "診断結果", "提案カラー"];
+  var demoUsed = 0;
+  
+  function addDemo(cols, row) {
+    var hero = document.getElementById('heroCard');
+    hero.classList.remove('new'); void hero.offsetWidth; hero.classList.add('new');
+    hero.querySelector('.r1').textContent = '最新の診断（' + row[0] + '）';
+    hero.querySelector('.r2').textContent = row[row.length - 2] || row[1];
+    hero.querySelector('.r3').textContent = '提案：' + row[row.length - 1];
+  }
+
+  function runDemo() {
+    addDemo(demoCols, demoRow);
+    demoUsed++;
+    var toast = document.getElementById('toast');
+    toast.textContent = '診断が完了しました（提案カラーをカルテに保存）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+  }
+</script>
+</body></html>

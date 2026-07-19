@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 05 高付加価値メニュー実績ボード | 美容業 改善計画10選</title>
+<title>PROTOTYPE 08 薬剤・消耗品 在庫管理ダッシュボード | 美容業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -44,21 +44,21 @@
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.05</span><span class="arch">分析ダッシュボード型</span>　美容業／05 施術技術・最新機器導入</span>
-  <span><a href="plan-05.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.08</span><span class="arch">分析ダッシュボード型</span>　美容業／09 商材・在庫管理の効率化</span>
+  <span><a href="plan-08.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
-  <h1>高付加価値メニュー実績ボード</h1>
-  <p class="sub">炭酸泉・スチーマー等の最新ヘアケア機器導入による高付加価値メニューの展開 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">今月の客単価</div><div class="v">6,340円</div><div class="d">+340円 導入前比</div></div><div class="kpi"><div class="k">上位メニュー比率</div><div class="v">19%</div><div class="d">+14pt</div></div><div class="kpi"><div class="k">機器稼働率</div><div class="v">64%</div><div class="d">炭酸泉・スパ</div></div><div class="kpi"><div class="k">月間増収ペース</div><div class="v">+10.2万円</div><div class="d">目標15万円</div></div></div><div class="grid"><div class="panel"><h2>本日の上位メニュー実績</h2><table><thead><tr><th>時刻</th><th>メニュー</th><th>単価</th><th>担当</th></tr></thead><tbody id="mainList"><tr><td>16:00</td><td>炭酸泉スパ+カット</td><td>8,800円</td><td>田中</td></tr><tr><td>14:30</td><td>髪質改善トリートメント</td><td>12,100円</td><td>佐藤</td></tr><tr><td>13:00</td><td>ヘッドスパ45分</td><td>7,150円</td><td>鈴木</td></tr><tr><td>11:30</td><td>炭酸泉+カラー</td><td>9,900円</td><td>田中</td></tr><tr><td>10:00</td><td>スチームトリートメント</td><td>8,250円</td><td>高橋</td></tr></tbody></table></div><div class="panel side"><h2>機器稼働状況</h2><ul><li>炭酸泉装置: 稼働中（本日7件）</li><li>スチーマー: 待機中（本日5件）</li><li>ヘッドスパチェア: 稼働中（本日4件）</li><li>カラー自動調合機: 本日12回使用</li></ul></div></div>
-  <div class="actions"><button class="demo" onclick="runDemo()">▶ 上位メニュー成約をシミュレート</button></div>
+  <h1>薬剤・消耗品 在庫管理ダッシュボード</h1>
+  <p class="sub">薬剤・消耗品の在庫管理システム導入による棚卸時間短縮と発注ミスの防止 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">在庫登録品目</div><div class="v">118品目</div><div class="d">全体の98%</div></div><div class="kpi"><div class="k">期限アラート</div><div class="v">3件</div><div class="d">30日以内に期限到達</div></div><div class="kpi"><div class="k">今月の廃棄</div><div class="v">1件</div><div class="d">-3件 導入前比</div></div><div class="kpi"><div class="k">棚卸所要時間</div><div class="v">28分</div><div class="d">-152分 導入前比</div></div></div><div class="grid"><div class="panel"><h2>在庫アラート一覧</h2><table><thead><tr><th>商材名</th><th>残数</th><th>使用期限</th><th>状態</th></tr></thead><tbody id="mainList"><tr><td>カラー剤（アッシュ系）</td><td>3本</td><td>8/20</td><td>要発注</td></tr><tr><td>トリートメント剤A</td><td>12本</td><td>2027/3</td><td>十分</td></tr><tr><td>パーマ液（1剤）</td><td>2本</td><td>9/5</td><td>要発注</td></tr><tr><td>シャンプー（業務用）</td><td>8本</td><td>2027/1</td><td>十分</td></tr><tr><td>ヘアマニキュア</td><td>1本</td><td>8/10</td><td>緊急発注</td></tr></tbody></table></div><div class="panel side"><h2>今週の入出庫ログ</h2><ul><li>入荷スキャン: 24件</li><li>使用スキャン: 186件</li><li>発注提案: 3件（自動生成）</li><li>棚卸実施: 7/15（28分で完了）</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 入荷をスキャンする</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
-  var demoRow = ["17:30", "炭酸泉スパ+髪質改善", "13,200円", "佐藤"];
-  var demoCols = ["時刻", "メニュー", "単価", "担当"];
+  var demoRow = ["本日", "カラー剤（アッシュ系）", "+10本", "在庫反映済み"];
+  var demoCols = ["商材名", "残数", "使用期限", "状態"];
   var demoUsed = 0;
   
   function addDemo(cols, row) {
@@ -73,7 +73,7 @@
     addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
-    toast.textContent = '上位メニューが成約しました（客単価・稼働率を更新）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.textContent = '入荷スキャンを記録しました（在庫数を自動更新）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
     toast.classList.add('show');
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);

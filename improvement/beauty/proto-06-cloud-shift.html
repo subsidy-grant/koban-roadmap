@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 07 勤怠・シフト管理ダッシュボード | 美容業 改善計画10選</title>
+<title>PROTOTYPE 06 クラウドシフト管理ダッシュボード | 美容業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -48,21 +48,21 @@
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.07</span><span class="arch">予約・シフト台帳型</span>　美容業／07 人材育成・定着支援</span>
-  <span><a href="plan-07.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.06</span><span class="arch">予約・シフト台帳型</span>　美容業／07 人材育成・定着支援</span>
+  <span><a href="plan-06.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
-  <h1>勤怠・シフト管理ダッシュボード</h1>
-  <p class="sub">クラウド勤怠・シフト管理システムの導入による労務管理の自動化 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">本日の出勤</div><div class="v">6/8名</div><div class="d">全員打刻済み</div></div><div class="kpi"><div class="k">今月の残業</div><div class="v">計12時間</div><div class="d">上限まで余裕</div></div><div class="kpi"><div class="k">有給取得率</div><div class="v">62%</div><div class="d">+18pt 前年比</div></div><div class="kpi"><div class="k">シフト充足率</div><div class="v">98%</div><div class="d">来週分確定</div></div></div><div class="grid"><div class="panel"><h2>本日の勤怠状況（出勤・退勤予定）</h2><div class="timeline" id="mainList"><div class="tcard"><span class="pill">勤務中</span><div class="time">田中（店長）</div><div class="desc">9:12 ／ 19:00</div></div><div class="tcard"><span class="pill">勤務中</span><div class="time">佐藤</div><div class="desc">9:45 ／ 19:00</div></div><div class="tcard"><span class="pill">勤務中</span><div class="time">鈴木</div><div class="desc">10:00 ／ 18:00</div></div><div class="tcard"><span class="pill">退勤済み</span><div class="time">高橋（パート）</div><div class="desc">10:00 ／ 15:00</div></div><div class="tcard"><span class="pill">勤務中</span><div class="time">伊藤</div><div class="desc">12:00 ／ 20:00</div></div></div></div><div class="panel side"><h2>アラート・申請</h2><ul><li>残業アラート: なし</li><li>シフト希望 未提出: 1名（リマインド済み）</li><li>有給申請: 1件 承認待ち</li><li>打刻修正申請: 0件</li></ul></div></div>
-  <div class="actions"><button class="demo" onclick="runDemo()">▶ シフト案を自動生成</button></div>
+  <h1>クラウドシフト管理ダッシュボード</h1>
+  <p class="sub">シフト管理システムのクラウド化による人員配置の最適化と店長業務の削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">今月のシフト充足率</div><div class="v">97%</div><div class="d">+18pt 導入前比</div></div><div class="kpi"><div class="k">自動生成の希望反映率</div><div class="v">89%</div><div class="d">手動調整11%のみ</div></div><div class="kpi"><div class="k">スマホ入力移行率</div><div class="v">100%</div><div class="d">全8名</div></div><div class="kpi"><div class="k">代打募集の平均充足時間</div><div class="v">52分</div><div class="d">-3.1時間 導入前比</div></div></div><div class="grid"><div class="panel"><h2>今週のシフト一覧（抜粋）（時間帯・担当）</h2><div class="timeline" id="mainList"><div class="tcard"><span class="pill">確定</span><div class="time">7/21(月)</div><div class="desc">10:00-19:00 ／ 山田・鈴木</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/22(火)</div><div class="desc">10:00-19:00 ／ 佐藤・田中</div></div><div class="tcard"><span class="pill">代打募集中</span><div class="time">7/23(水)</div><div class="desc">10:00-19:00 ／ 高橋・伊藤</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/24(木)</div><div class="desc">10:00-19:00 ／ 山田・渡辺</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/25(金)</div><div class="desc">10:00-20:00 ／ 鈴木・佐藤・田中</div></div></div></div><div class="panel side"><h2>今月の運用サマリー</h2><ul><li>総シフト枠: 186枠</li><li>希望反映率: 89%</li><li>代打成立: 3件（平均52分）</li><li>次回シフト締切: 25日</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 代打募集をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
-  var demoRow = ["来週シフト", "自動生成", "希望反映率 96%", "承認待ち"];
-  var demoCols = ["スタッフ", "出勤", "退勤予定", "状態"];
+  var demoRow = ["7/23(水)", "10:00-19:00", "山田・新規募集中", "アプリ内一斉通知済み"];
+  var demoCols = ["日付", "時間帯", "担当", "状態"];
   var demoUsed = 0;
   
   function addDemo(cols, row) {
@@ -80,7 +80,7 @@
     addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
-    toast.textContent = '来週のシフト案を自動生成しました（店長の確認後に確定・全員へ通知）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.textContent = '代打募集を送信しました（対応可能なスタッフに通知）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
     toast.classList.add('show');
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);

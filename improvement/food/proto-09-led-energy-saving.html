@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 09 省エネ効果モニタリングダッシュボード | 飲食業 改善計画60選</title>
+<title>PROTOTYPE 09 省エネ効果モニタリングダッシュボード | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -9,6 +9,7 @@
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   header .badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 12px}
+  header .arch{background:rgba(255,255,255,0.14);color:#f5efe6;font-size:10px;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:6px}
   header a{color:#f5efe6;font-size:12px}
   main{max-width:1150px;margin:0 auto;padding:26px 20px 60px}
   h1{font-size:1.25rem;margin-bottom:4px}
@@ -23,12 +24,6 @@
   @media(max-width:860px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
   .panel h2{font-size:0.95rem;margin-bottom:10px;color:var(--accent)}
-  table{width:100%;border-collapse:collapse;font-size:0.83rem}
-  th{text-align:left;font-size:0.7rem;color:var(--sub);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
-  td{padding:7px 8px;border-bottom:1px solid var(--line)}
-  tr:last-child td{border-bottom:none}
-  tr.new{background:#f3efe7;animation:flash 1.4s ease}
-  @keyframes flash{from{background:#e9dfc8}to{background:#f3efe7}}
   .side ul{list-style:none}
   .side li{padding:7px 0 7px 20px;position:relative;font-size:0.82rem;border-bottom:1px dashed var(--line)}
   .side li:last-child{border-bottom:none}
@@ -36,29 +31,33 @@
   .actions{margin:18px 0;display:flex;gap:10px;flex-wrap:wrap}
   button.demo{font:inherit;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;cursor:pointer;font-size:0.9rem}
   button.demo:hover{opacity:0.9}
-  .toast{position:fixed;bottom:24px;left:50%%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#f5efe6;padding:12px 22px;border-radius:10px;font-size:0.85rem;transition:transform .3s ease;z-index:99;max-width:90vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .disclaimer{margin-top:26px;font-size:0.72rem;color:var(--sub);border-top:1px solid var(--line);padding-top:12px}
+  @keyframes flash{from{background:#e9dfc8}to{background:transparent}}
+
+  .gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  @media(max-width:860px){.gauges{grid-template-columns:repeat(2,1fr)}}
+  .gwrap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .ring{width:82px;height:82px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--accent) calc(var(--pct)*1%), var(--line) 0)}
+  .ring .hole{width:60px;height:60px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:800;color:var(--ink)}
+  .gwrap .k{font-size:11px;color:var(--sub);font-weight:600}
+  .readings{display:flex;flex-direction:column;gap:8px}
+  .reading{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+  .reading .dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 25%, transparent)}
+  .reading .r1{font-weight:700;font-size:0.85rem;min-width:130px}
+  .reading .r2{color:var(--sub);font-size:0.8rem;flex:1}
+  .reading.new{animation:flash 1.4s ease}
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.09</span>　飲食業／09 店舗環境・省エネ</span>
-  <span><a href="plan-09.html">📄 事業計画書を見る</a>　<a href="../index.html">← 60選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.09</span><span class="arch">IoT監視・計測型</span>　飲食業／09 店舗環境・省エネ</span>
+  <span><a href="plan-09.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
   <h1>省エネ効果モニタリングダッシュボード</h1>
   <p class="sub">LED照明への切替による電気料金削減と厨房環境の改善 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">今月の電気料金</div><div class="v">13.8万円</div><div class="d">-8.2万円 導入前比</div></div><div class="kpi"><div class="k">削減率</div><div class="v">37%</div><div class="d">目標41%に対し進捗良好</div></div><div class="kpi"><div class="k">累計削減額</div><div class="v">24.6万円</div><div class="d">導入から3ヶ月</div></div><div class="kpi"><div class="k">照明交換件数</div><div class="v">1件</div><div class="d">今月（人感センサー故障）</div></div></div>
-  <div class="grid">
-    <div class="panel">
-      <h2>エリア別消費電力（本日）</h2>
-      <table><thead><tr><th>エリア</th><th>旧照明想定</th><th>LED実績</th><th>削減率</th></tr></thead><tbody id="mainTable"><tr><td>客席</td><td>18.2kWh</td><td>6.8kWh</td><td>63%減</td></tr><tr><td>厨房</td><td>24.5kWh</td><td>11.2kWh</td><td>54%減</td></tr><tr><td>看板・外灯</td><td>8.0kWh</td><td>2.1kWh</td><td>74%減</td></tr><tr><td>バックヤード</td><td>6.5kWh</td><td>1.4kWh</td><td>78%減</td></tr><tr><td>合計</td><td>57.2kWh</td><td>21.5kWh</td><td>62%減</td></tr></tbody></table>
-    </div>
-    <div class="panel side">
-      <h2>今月の省エネサマリー</h2>
-      <ul><li>空調の夏季稼働時間: -8%（前年同月比）</li><li>CO2削減量: 約142kg（試算）</li><li>人感センサー作動: 1日平均34回</li><li>次回メンテナンス確認: 来月</li></ul>
-    </div>
-  </div>
+  <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">13.8万円</div></div><div class="k">今月の電気料金</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-8.2万円 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">37%</div></div><div class="k">削減率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">目標41%に対し進捗良好</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">24.6万円</div></div><div class="k">累計削減額</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">導入から3ヶ月</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">1件</div></div><div class="k">照明交換件数</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">今月（人感センサー故障）</div></div></div><div class="grid"><div class="panel"><h2>エリア別消費電力（本日）</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">客席</span><span class="r2">18.2kWh ／ 6.8kWh ／ 63%減</span></div><div class="reading"><span class="dot"></span><span class="r1">厨房</span><span class="r2">24.5kWh ／ 11.2kWh ／ 54%減</span></div><div class="reading"><span class="dot"></span><span class="r1">看板・外灯</span><span class="r2">8.0kWh ／ 2.1kWh ／ 74%減</span></div><div class="reading"><span class="dot"></span><span class="r1">バックヤード</span><span class="r2">6.5kWh ／ 1.4kWh ／ 78%減</span></div><div class="reading"><span class="dot"></span><span class="r1">合計</span><span class="r2">57.2kWh ／ 21.5kWh ／ 62%減</span></div></div></div><div class="panel side"><h2>今月の省エネサマリー</h2><ul><li>空調の夏季稼働時間: -8%（前年同月比）</li><li>CO2削減量: 約142kg（試算）</li><li>人感センサー作動: 1日平均34回</li><li>次回メンテナンス確認: 来月</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 本日の削減効果を集計</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
@@ -66,17 +65,24 @@
 <div class="toast" id="toast"></div>
 <script>
   var demoRow = ["本日合計", "57.2kWh想定", "21.5kWh実績", "62%減"];
+  var demoCols = ["エリア", "旧照明想定", "LED実績", "削減率"];
   var demoUsed = 0;
-  function runDemo() {
-    var tbody = document.getElementById('mainTable');
-    var tr = document.createElement('tr');
-    tr.className = 'new';
-    demoRow.forEach(function (c) {
-      var td = document.createElement('td');
-      td.textContent = c;
-      tr.appendChild(td);
+  
+  function addDemo(cols, row) {
+    var list = document.getElementById('mainList');
+    var el = document.createElement('div');
+    el.className = 'reading new';
+    el.innerHTML = '<span class="dot"></span><span class="r1">' + esc(row[0]) + '</span><span class="r2">' + esc(row.slice(1).join(' ／ ')) + '</span>';
+    list.insertBefore(el, list.firstChild);
+    document.querySelectorAll('.ring').forEach(function (r) {
+      var cur = parseInt(getComputedStyle(r).getPropertyValue('--pct')) || 60;
+      r.style.setProperty('--pct', Math.min(99, cur + 3));
     });
-    tbody.insertBefore(tr, tbody.firstChild);
+  }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function runDemo() {
+    addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
     toast.textContent = '本日の消費電力データを集計しました（ダッシュボードに反映）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');

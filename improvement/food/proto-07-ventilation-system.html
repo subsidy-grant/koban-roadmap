@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 04 配膳ロボット運用ダッシュボード | 飲食業 改善計画10選</title>
+<title>PROTOTYPE 07 厨房環境モニタリングダッシュボード | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
@@ -51,21 +51,21 @@
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.04</span><span class="arch">IoT監視・計測型</span>　飲食業／04 厨房設備・調理効率化(省力化機器)</span>
-  <span><a href="plan-04.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.07</span><span class="arch">IoT監視・計測型</span>　飲食業／07 衛生管理・HACCP対応</span>
+  <span><a href="plan-07.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
-  <h1>配膳ロボット運用ダッシュボード</h1>
-  <p class="sub">配膳・下膳ロボット導入によるホール業務の省人化と提供スピードの向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">247回</div></div><div class="k">本日の配膳回数</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">ロボット比率82%</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">2.9%</div></div><div class="k">空席率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-3.7pt 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">2.1分</div></div><div class="k">平均リセット時間</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-1.9分 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">91%</div></div><div class="k">稼働率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">本日平均</div></div></div><div class="grid"><div class="panel"><h2>配膳ロボット稼働ログ</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">12:05</span><span class="r2">12番 ／ ハンバーグセット×2 ／ 1分40秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:08</span><span class="r2">5番 ／ パスタランチ×3 ／ 2分10秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:12</span><span class="r2">18番 ／ 下膳（12番） ／ 1分30秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:15</span><span class="r2">9番 ／ ドリンクバー案内 ／ 1分20秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:18</span><span class="r2">3番 ／ キッズプレート×1 ／ 1分50秒 ／ 配送中</span></div></div></div><div class="panel side"><h2>本日の稼働サマリー</h2><ul><li>ロボット1: 走行距離 4.2km</li><li>ロボット2: 走行距離 3.8km</li><li>エラー通知: なし</li><li>バッテリー残量: 68% / 74%</li></ul></div></div>
-  <div class="actions"><button class="demo" onclick="runDemo()">▶ 配膳をシミュレート</button></div>
+  <h1>厨房環境モニタリングダッシュボード</h1>
+  <p class="sub">空気清浄・換気システム導入による衛生対策の強化と厨房環境の改善 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">31.8℃</div></div><div class="k">現在の厨房内温度</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-8.2℃ 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">94%</div></div><div class="k">換気ユニット稼働率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">ピーク時自動増速</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">0件</div></div><div class="k">客席への煙流入</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">導入後累計0件</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">良好</div></div><div class="k">フィルター状態</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">次回交換まで18日</div></div></div><div class="grid"><div class="panel"><h2>本日の厨房環境ログ</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">11:00</span><span class="r2">28.4℃ ／ 中 ／ ランチ準備</span></div><div class="reading"><span class="dot"></span><span class="r1">12:30</span><span class="r2">31.2℃ ／ 強（自動） ／ ピーク帯</span></div><div class="reading"><span class="dot"></span><span class="r1">14:00</span><span class="r2">29.1℃ ／ 中 ／ アイドルタイム</span></div><div class="reading"><span class="dot"></span><span class="r1">18:00</span><span class="r2">30.8℃ ／ 強（自動） ／ ディナー開始</span></div><div class="reading"><span class="dot"></span><span class="r1">19:30</span><span class="r2">31.8℃ ／ 強（自動） ／ ピーク帯</span></div></div></div><div class="panel side"><h2>今月の環境改善サマリー</h2><ul><li>平均厨房内温度: 30.2℃（前年同月-8.6℃）</li><li>客からの煙・匂い指摘: 0件</li><li>フィルター清掃: 月2回（前は週2回）</li><li>スタッフ休憩延長対応: 0件</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 換気強度を自動調整</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
-  var demoRow = ["12:22", "7番", "日替わりランチ×2", "1分45秒", "配送中"];
-  var demoCols = ["時刻", "テーブル", "内容", "所要時間", "状態"];
+  var demoRow = ["現在", "32.4℃検知", "強へ自動切替", "厨房内温度を抑制"];
+  var demoCols = ["時刻", "厨房内温度", "換気強度", "備考"];
   var demoUsed = 0;
   
   function addDemo(cols, row) {
@@ -85,7 +85,7 @@
     addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
-    toast.textContent = '配膳ロボットが出発しました（到着まで約2分）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.textContent = '厨房内温度の上昇を検知し、換気強度を自動的に強へ切り替えました' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
     toast.classList.add('show');
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);

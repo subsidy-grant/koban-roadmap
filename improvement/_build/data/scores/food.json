@@ -83,7 +83,9 @@
   "D": 5,
   "weighted": 4.65,
   "rank": 4,
-  "selected": false
+  "selected": true,
+  "planNo": 6,
+  "stage2Note": "機械スコア100施策中4位。モバイルオーダー(PLAN01)の厨房側の受け皿となる施策で、注文〜調理〜提供の一連の流れを完結させる補完案として同分類から2案目を採択"
  },
  {
   "catRank": 2,
@@ -892,7 +894,9 @@
   "D": 5,
   "weighted": 3.3,
   "rank": 43,
-  "selected": false
+  "selected": true,
+  "planNo": 10,
+  "stage2Note": "機械スコア100施策中43位。アルバイト比率の高い飲食業では給与計算の事務負荷が特に大きく、クラウド勤怠(PLAN08)と連携させることで効果が最大化するため、同分類から2案目を採択"
  },
  {
   "catRank": 8,
@@ -1060,7 +1064,9 @@
   "D": 5,
   "weighted": 3.06,
   "rank": 51,
-  "selected": false
+  "selected": true,
+  "planNo": 7,
+  "stage2Note": "機械スコア100施策中51位で上位帯を確保。HACCP対応分類の中でも厨房環境の改善という即効性のある効果が見込め、費目（消毒・換気設備導入費）とも明確に対応するため採択"
  },
  {
   "catRank": 7,
@@ -1346,9 +1352,7 @@
   "D": 3,
   "weighted": 2.76,
   "rank": 65,
-  "selected": true,
-  "planNo": 7,
-  "stage2Note": "HACCPに沿った衛生管理の記録義務に直接応え、省力化投資補助金カタログ対象（IoT温度管理センサー）にも合致する。手作業の検温・記録から解放される導入効果が明確"
+  "selected": false
  },
  {
   "catRank": 7,
@@ -1552,9 +1556,7 @@
   "D": 3,
   "weighted": 2.66,
   "rank": 75,
-  "selected": true,
-  "planNo": 6,
-  "stage2Note": "広告費をかけ続けるグルメサイト掲載よりも低コストで持続的な集客資産になる点を評価。運用ツール費のみで始められ小規模店に適合"
+  "selected": false
  },
  {
   "catRank": 6,
@@ -1674,9 +1676,7 @@
   "D": 5,
   "weighted": 2.6,
   "rank": 81,
-  "selected": true,
-  "planNo": 10,
-  "stage2Note": "単店経営が多い中小飲食事業者では対象範囲が限られるため優先度は最下位だが、複数店舗展開を見据えた事業者向けの選択肢として1案は確保。ソフトウェア中心でデジタル化・AI導入補助金との適合度が高い"
+  "selected": false
  },
  {
   "catRank": 10,

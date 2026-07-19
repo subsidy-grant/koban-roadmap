@@ -80,11 +80,11 @@ def main():
     parts = []
     parts.append('<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">')
     parts.append('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
-    parts.append("<title>業種別・改善計画 厳選60選 | 補助金活用 業務改善ロードマップ</title>")
+    parts.append("<title>業種別・改善計画 厳選10選 | 補助金活用 業務改善ロードマップ</title>")
     parts.append('<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">')
     parts.append("<style>" + CSS + "</style></head><body><main>")
     parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>')
-    parts.append("<h1>業種別・改善計画 厳選60選</h1>")
+    parts.append("<h1>業種別・改善計画 厳選10選</h1>")
     parts.append('<p class="sub">6業種×100施策（計600施策）を費用対効果・業務改善効率でスコアリングし、各業種10案に厳選。'
                  "各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。"
                  '選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>')

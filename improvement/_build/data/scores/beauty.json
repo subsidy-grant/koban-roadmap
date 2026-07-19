@@ -18,7 +18,9 @@
   "D": 5,
   "weighted": 4.435,
   "rank": 1,
-  "selected": false
+  "selected": true,
+  "planNo": 8,
+  "stage2Note": "機械スコア100施策中1位（同分類内は複数施策が同点首位）。分類の中核施策で費用帰属も明確なため、在庫連動発注自動化（PLAN09）と対をなす在庫管理の入口施策として2案目を採択"
  },
  {
   "catRank": 9,
@@ -253,7 +255,9 @@
   "D": 5,
   "weighted": 4.2,
   "rank": 12,
-  "selected": false
+  "selected": true,
+  "planNo": 6,
+  "stage2Note": "機械スコア上位帯（100施策中12位）。人材育成・定着支援分類の中でも導入障壁が最も低く、勤怠管理システム（PLAN07）と補完関係にある施策として2案目を採択"
  },
  {
   "catRank": 7,
@@ -539,7 +543,9 @@
   "D": 5,
   "weighted": 4.075,
   "rank": 26,
-  "selected": false
+  "selected": true,
+  "planNo": 10,
+  "stage2Note": "機械スコア上位帯（100施策中26位）。セルフレジ（PLAN03）で発生する売上データを会計処理まで自動化する後工程として、同分類から2案目を採択し費用対効果の高い会計DXを完結させる"
  },
  {
   "catRank": 3,
@@ -1067,7 +1073,9 @@
   "D": 5,
   "weighted": 3.14,
   "rank": 52,
-  "selected": false
+  "selected": true,
+  "planNo": 4,
+  "stage2Note": "機械スコア上位帯（100施策中52位）内で最も試作システムとしての具体性が高い接客系施策。タブレット診断という体験提示のしやすさも評価し採択"
  },
  {
   "catRank": 4,
@@ -1313,9 +1321,7 @@
   "D": 5,
   "weighted": 3.0,
   "rank": 64,
-  "selected": true,
-  "planNo": 8,
-  "stage2Note": "全店に毎月必ず発生する業務で削減効果が確実に反復する。勤怠システム（PLAN 07）との連携で効果が積み上がる基盤施策"
+  "selected": false
  },
  {
   "catRank": 8,
@@ -1605,9 +1611,7 @@
   "D": 3,
   "weighted": 2.84,
   "rank": 79,
-  "selected": true,
-  "planNo": 4,
-  "stage2Note": "接客品質分類の中で唯一「体験として試作できる」施策でプロトタイプ適性が最高。タブレット+ソフトのみで始められ費用帰属も明確"
+  "selected": false
  },
  {
   "catRank": 4,
@@ -1743,9 +1747,7 @@
   "D": 2,
   "weighted": 2.51,
   "rank": 86,
-  "selected": true,
-  "planNo": 6,
-  "stage2Note": "法令遵守と信頼の基盤で全店に普遍的に必要。単体施策では費用が特定できないため、分類の中核3設備の一括整備として計画化"
+  "selected": false
  },
  {
   "catRank": 6,
@@ -1939,9 +1941,7 @@
   "D": 2,
   "weighted": 2.33,
   "rank": 96,
-  "selected": true,
-  "planNo": 10,
-  "stage2Note": "電気代高騰下で削減効果が確実に持続する設備投資。効果が電力量で実測でき、モデル検証しやすい点を評価（回収は中長期）"
+  "selected": false
  },
  {
   "catRank": 10,

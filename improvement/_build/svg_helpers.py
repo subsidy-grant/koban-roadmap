@@ -13,15 +13,16 @@ def esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def bar_before_after(title, rows, accent=GREEN, w=320, h=195, legend="■導入前 ■導入後"):
-    """rows: [(label, before, after)] 最大4組の縦棒before/after比較"""
+def bar_before_after(title, rows, accent=GREEN, w=320, h=195):
+    """rows: [(label, before, after)] 最大4組の縦棒before/after比較。
+    色の凡例はバー色と連動した数値ラベル（薄色=導入前／濃色太字=導入後）で示すため、
+    タイトルの長さに関わらず衝突しないようテキスト凡例は置かない。"""
     n = len(rows)
     maxv = max(max(r[1], r[2]) for r in rows) or 1
     plot_h, base_y = 130.0, 160
     group_w = (w - 60) / n
     out = [f'<svg viewBox="0 0 {w} {h}" width="100%" role="img" aria-label="{esc(title)}">']
     out.append(f'<text x="10" y="16" font-size="11" font-weight="bold" fill="{INK}">{esc(title)}</text>')
-    out.append(f'<text x="{w-120}" y="16" font-size="8.5" fill="{SUB}">{esc(legend)}</text>')
     out.append(f'<line x1="44" y1="{base_y}" x2="{w-8}" y2="{base_y}" stroke="{LINE}"/>')
     bw = min(24.5, group_w / 3)
     for i, (label, before, after) in enumerate(rows):

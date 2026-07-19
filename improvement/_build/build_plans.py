@@ -27,41 +27,41 @@ CSS_TMPL = """
   @page { size: A4 portrait; margin: 0; }
   :root{--ink:#26221e;--sub:#6f675e;--line:#d9d2c8;--accent:__SCHEME__;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--scheme:__SCHEME__}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--ink);background:#e8e4de;line-height:1.6;font-size:10.2pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--ink);background:#e8e4de;line-height:1.55;font-size:11.2pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .toolbar{background:#26221e;color:#f5efe6;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;font-size:12px;position:sticky;top:0;z-index:9;gap:10px;flex-wrap:wrap}
   .toolbar a{color:#f5efe6}
   .toolbar button{font:inherit;font-weight:700;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer}
-  .page{width:210mm;min-height:297mm;background:#fff;margin:14px auto;padding:16mm 15mm 12mm;position:relative;display:flex;flex-direction:column;box-shadow:0 2px 12px #0002}
-  .ph{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid var(--scheme);padding-bottom:6px;margin-bottom:10px}
-  .ph-t{font-size:15pt;font-weight:800;color:var(--accent)}
-  .ph-n{font-size:9pt;color:var(--sub);font-weight:700}
+  .page{width:210mm;min-height:297mm;background:#fff;margin:14px auto;padding:14mm 13mm 10mm;position:relative;display:flex;flex-direction:column;box-shadow:0 2px 12px #0002}
+  .ph{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid var(--scheme);padding-bottom:5px;margin-bottom:8px}
+  .ph-t{font-size:16pt;font-weight:800;color:var(--accent)}
+  .ph-n{font-size:10pt;color:var(--sub);font-weight:700}
   .pbody{flex:1}
-  .pf{display:flex;justify-content:space-between;font-size:7.5pt;color:var(--sub);border-top:1px solid var(--line);padding-top:5px;margin-top:8px}
-  h1{font-size:17pt;line-height:1.35;margin:6px 0;color:var(--ink)}
-  h3{font-size:11pt;color:var(--accent);margin:10px 0 6px;padding-left:8px;border-left:4px solid var(--scheme)}
-  .hero{background:linear-gradient(135deg,#faf6f0,#f2eadd);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:10px}
-  .hero-badge{display:inline-block;color:#fff;font-size:9pt;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:8px;background:var(--scheme)}
-  .hero-sub{font-size:10pt;color:var(--sub);margin-top:6px}
-  .split{display:flex;gap:12px;margin:8px 0}
+  .pf{display:flex;justify-content:space-between;font-size:8.5pt;color:var(--sub);border-top:1px solid var(--line);padding-top:4px;margin-top:6px}
+  h1{font-size:18pt;line-height:1.3;margin:5px 0;color:var(--ink)}
+  h3{font-size:12pt;color:var(--accent);margin:8px 0 5px;padding-left:8px;border-left:4px solid var(--scheme)}
+  .hero{background:linear-gradient(135deg,#faf6f0,#f2eadd);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:8px}
+  .hero-badge{display:inline-block;color:#fff;font-size:10pt;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:6px;background:var(--scheme)}
+  .hero-sub{font-size:11pt;color:var(--sub);margin-top:5px}
+  .split{display:flex;gap:10px;margin:6px 0}
   .half{flex:1;min-width:0}
-  .lead{font-size:10pt;margin:6px 0;text-align:justify}
-  .callout{background:#f7f3ec;border-left:4px solid var(--scheme);border-radius:0 8px 8px 0;padding:9px 12px;font-size:9.3pt;margin:8px 0;text-align:justify}
-  .callout.small{font-size:8.8pt;padding:8px 10px}
-  .figbox{background:#fcfaf6;border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;text-align:center}
+  .lead{font-size:11pt;margin:5px 0;text-align:justify}
+  .callout{background:#f7f3ec;border-left:4px solid var(--scheme);border-radius:0 8px 8px 0;padding:7px 10px;font-size:10.3pt;margin:6px 0;text-align:justify}
+  .callout.small{font-size:9.8pt;padding:6px 9px}
+  .figbox{background:#fcfaf6;border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0;text-align:center}
   .figbox svg{max-width:440px;height:auto}
   .half .figbox svg{max-width:330px}
-  table{width:100%;border-collapse:collapse;font-size:9pt;margin:6px 0}
-  .kv td{padding:4px 8px;border-bottom:1px solid var(--line)}
-  .kv td:first-child{color:var(--sub);width:42%;font-size:8.6pt}
-  .data th{background:#efe9e0;padding:5px 8px;text-align:left;font-size:8.6pt;border:1px solid var(--line)}
-  .data td{padding:5px 8px;border:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-size:10pt;margin:5px 0}
+  .kv td{padding:3px 8px;border-bottom:1px solid var(--line)}
+  .kv td:first-child{color:var(--sub);width:42%;font-size:9.6pt}
+  .data th{background:#efe9e0;padding:4px 8px;text-align:left;font-size:9.6pt;border:1px solid var(--line)}
+  .data td{padding:4px 8px;border:1px solid var(--line)}
   .data .num{text-align:right;font-variant-numeric:tabular-nums}
   .data .sum{font-weight:800;background:#faf7f2}
-  .ul{list-style:none;font-size:9.2pt}
-  .ul li{padding:4px 0 4px 18px;position:relative}
+  .ul{list-style:none;font-size:10.2pt}
+  .ul li{padding:3px 0 3px 18px;position:relative}
   .ul li::before{content:"▪";position:absolute;left:2px;color:var(--sub)}
   .ul.on li::before{content:"✓";color:var(--green);font-weight:800}
-  .note{font-size:8pt;color:var(--sub);margin-top:6px;text-align:justify}
+  .note{font-size:9pt;color:var(--sub);margin-top:5px;text-align:justify}
   @media print{body{background:#fff}.toolbar{display:none}.page{margin:0;box-shadow:none;page-break-after:always}.page:last-child{page-break-after:auto}}
 """
 
@@ -279,7 +279,7 @@ def build_plan_html(pl, scheme, industry_label):
     css = CSS_TMPL.replace("__SCHEME__", scheme)
     toolbar = (f'<div class="toolbar"><span>📄 事業計画書 PLAN {pl["no"]:02d}（{esc(industry_label)}）'
                f'— {esc(sub["label"])} / A4×10ページ</span>'
-               f'<span><a href="../index.html">← 60選トップ</a>　'
+               f'<span><a href="../index.html">← 10選トップ</a>　'
                '<button onclick="window.print()">🖨 印刷 / PDF保存</button></span></div>')
     return ('<!DOCTYPE html>\n<html lang="ja"><head><meta charset="UTF-8">'
             '<meta name="viewport" content="width=device-width, initial-scale=1.0">'

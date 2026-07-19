@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROTOTYPE 05 高付加価値メニュー実績ボード | 美容業 改善計画10選</title>
+<title>PROTOTYPE 10 給与計算自動化ダッシュボード | 飲食業 改善計画10選</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#a4453c;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   header{background:var(--ink);color:#f5efe6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -44,21 +44,21 @@
 </style></head>
 <body>
 <header>
-  <span><span class="badge">PROTOTYPE No.05</span><span class="arch">分析ダッシュボード型</span>　美容業／05 施術技術・最新機器導入</span>
-  <span><a href="plan-05.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><span class="badge">PROTOTYPE No.10</span><span class="arch">分析ダッシュボード型</span>　飲食業／08 バックオフィス効率化</span>
+  <span><a href="plan-10.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
 </header>
 <main>
-  <h1>高付加価値メニュー実績ボード</h1>
-  <p class="sub">炭酸泉・スチーマー等の最新ヘアケア機器導入による高付加価値メニューの展開 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
-  <div class="kpis"><div class="kpi"><div class="k">今月の客単価</div><div class="v">6,340円</div><div class="d">+340円 導入前比</div></div><div class="kpi"><div class="k">上位メニュー比率</div><div class="v">19%</div><div class="d">+14pt</div></div><div class="kpi"><div class="k">機器稼働率</div><div class="v">64%</div><div class="d">炭酸泉・スパ</div></div><div class="kpi"><div class="k">月間増収ペース</div><div class="v">+10.2万円</div><div class="d">目標15万円</div></div></div><div class="grid"><div class="panel"><h2>本日の上位メニュー実績</h2><table><thead><tr><th>時刻</th><th>メニュー</th><th>単価</th><th>担当</th></tr></thead><tbody id="mainList"><tr><td>16:00</td><td>炭酸泉スパ+カット</td><td>8,800円</td><td>田中</td></tr><tr><td>14:30</td><td>髪質改善トリートメント</td><td>12,100円</td><td>佐藤</td></tr><tr><td>13:00</td><td>ヘッドスパ45分</td><td>7,150円</td><td>鈴木</td></tr><tr><td>11:30</td><td>炭酸泉+カラー</td><td>9,900円</td><td>田中</td></tr><tr><td>10:00</td><td>スチームトリートメント</td><td>8,250円</td><td>高橋</td></tr></tbody></table></div><div class="panel side"><h2>機器稼働状況</h2><ul><li>炭酸泉装置: 稼働中（本日7件）</li><li>スチーマー: 待機中（本日5件）</li><li>ヘッドスパチェア: 稼働中（本日4件）</li><li>カラー自動調合機: 本日12回使用</li></ul></div></div>
-  <div class="actions"><button class="demo" onclick="runDemo()">▶ 上位メニュー成約をシミュレート</button></div>
+  <h1>給与計算自動化ダッシュボード</h1>
+  <p class="sub">給与計算システムの自動化によるアルバイト多数店舗の労務事務削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <div class="kpis"><div class="kpi"><div class="k">今月の計算対象</div><div class="v">16名</div><div class="d">全員自動計算済み</div></div><div class="kpi"><div class="k">給与計算作業時間</div><div class="v">1.6時間</div><div class="d">-8.4時間 導入前比</div></div><div class="kpi"><div class="k">計算ミス</div><div class="v">0件</div><div class="d">今月累計0件</div></div><div class="kpi"><div class="k">電子明細配信</div><div class="v">16名</div><div class="d">配信完了</div></div></div><div class="grid"><div class="panel"><h2>今月の給与計算サマリー（抜粋）</h2><table><thead><tr><th>氏名</th><th>総労働時間</th><th>深夜割増</th><th>支給額</th><th>状態</th></tr></thead><tbody id="mainList"><tr><td>山田（社員）</td><td>168時間</td><td>8時間</td><td>285,400円</td><td>確定</td></tr><tr><td>佐藤（バイト）</td><td>62時間</td><td>4時間</td><td>84,600円</td><td>確定</td></tr><tr><td>田中（バイト）</td><td>58時間</td><td>2時間</td><td>78,200円</td><td>確定</td></tr><tr><td>伊藤（バイト）</td><td>71時間</td><td>6時間</td><td>96,800円</td><td>確定</td></tr><tr><td>高橋（バイト）</td><td>45時間</td><td>0時間</td><td>58,500円</td><td>確定</td></tr></tbody></table></div><div class="panel side"><h2>今月の処理サマリー</h2><ul><li>自動計算完了: 16名全員</li><li>振込データ: 25日に自動生成予定</li><li>電子明細未確認: 2名</li><li>次回法改正チェック: 来月</li></ul></div></div>
+  <div class="actions"><button class="demo" onclick="runDemo()">▶ 給与計算を実行</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
   表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
-  var demoRow = ["17:30", "炭酸泉スパ+髪質改善", "13,200円", "佐藤"];
-  var demoCols = ["時刻", "メニュー", "単価", "担当"];
+  var demoRow = ["新規スタッフ", "24時間", "0時間", "31,200円", "確定"];
+  var demoCols = ["氏名", "総労働時間", "深夜割増", "支給額", "状態"];
   var demoUsed = 0;
   
   function addDemo(cols, row) {
@@ -73,7 +73,7 @@
     addDemo(demoCols, demoRow);
     demoUsed++;
     var toast = document.getElementById('toast');
-    toast.textContent = '上位メニューが成約しました（客単価・稼働率を更新）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
+    toast.textContent = '給与計算が完了しました（電子明細を自動配信）' + (demoUsed > 1 ? '（' + demoUsed + '回目）' : '');
     toast.classList.add('show');
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
