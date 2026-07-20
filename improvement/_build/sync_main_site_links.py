@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """data/plans/*.json から「業種別・改善計画10選」の事業計画書/プロトタイプへのリンク表を作り、
-本体サイト index.html の 03 必要機材・システム一覧 に埋め込む(冪等・マーカーコメントで置換)。
+本体サイト index.html の 02 業務改善10分類ランキング(各カード内)に埋め込む(冪等・マーカーコメントで置換)。
 実行: python3 sync_main_site_links.py
 """
 import json

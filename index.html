@@ -234,12 +234,7 @@
 
   p { max-width: 68ch; }
 
-  /* ---------- Tables ---------- */
-  .table-wrap { position: relative; border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); }
-  .table-scroll { overflow-x: auto; border-radius: inherit; }
-  table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.92rem; }
-
-  /* ---------- Scroll-fade hint (nav tabs / equipment table on narrow screens) ---------- */
+  /* ---------- Scroll-fade hint (nav tabs on narrow screens) ---------- */
   .scroll-fade {
     position: absolute; top: 0; right: 0; bottom: 0; width: 2.4rem;
     background: linear-gradient(to right, transparent, var(--paper-raised));
@@ -249,7 +244,6 @@
   .scroll-fade.is-visible { opacity: 1; }
   .toc-fade { background: linear-gradient(to right, transparent, var(--paper)); border-radius: 0; }
 
-  .equip-links { display: flex; flex-direction: column; gap: 0.4rem; }
   a.equip-link {
     display: inline-flex; align-items: center; gap: 0.35rem;
     font-size: 0.82rem; color: var(--accent); text-decoration: none;
@@ -257,20 +251,6 @@
     background: var(--paper); white-space: nowrap; min-height: 1.9rem;
   }
   a.equip-link:hover, a.equip-link:focus-visible { border-color: var(--accent); background: var(--accent-soft); }
-  thead th {
-    text-align: left;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--line);
-    white-space: nowrap;
-  }
-  tbody td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--sage-wash); }
-  td.num, th.num { text-align: right; }
 
   .pill {
     display: inline-block;
@@ -365,6 +345,13 @@
     color: var(--accent); background: var(--accent-wash); border-radius: 100px;
     padding: 0.15rem 0.6rem; margin-bottom: 0.5rem;
   }
+  .cond-card-prefecture { display: none; border-color: var(--sage); }
+  .cond-card-prefecture .cond-head { position: relative; }
+  .cond-card-prefecture-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--sage); background: var(--sage-wash); border-radius: 100px;
+    padding: 0.15rem 0.6rem; margin-bottom: 0.5rem;
+  }
 
   .threshold-box {
     background: var(--accent-wash);
@@ -375,6 +362,16 @@
   }
   .threshold-box > .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); font-weight: 600; margin-bottom: 0.9rem; }
   .t-note { font-size: 0.8rem; color: var(--ink-faint); margin: 1rem 0 0; max-width: none; }
+  .prefecture-row { max-width: 28rem; }
+  .prefecture-row label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .prefecture-row select {
+    width: 100%; font: inherit; font-size: 0.95rem;
+    padding: 0.6rem 2.2rem 0.6rem 0.85rem;
+    border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23887d63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.75rem center;
+    background-size: 0.95rem; color: var(--ink); appearance: none; -webkit-appearance: none; cursor: pointer;
+  }
+  .prefecture-row select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
   .slider-row { max-width: 28rem; }
   .slider-row + .slider-row { margin-top: 1.3rem; }
@@ -627,6 +624,8 @@
   .cost-box .line { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed var(--line); }
   .cost-box .line:last-child { border-bottom: none; font-weight: 600; }
   .pill-row { margin-top: 0.8rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .rank-links { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px dashed var(--line); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .rank-links-label { font-size: 0.76rem; color: var(--ink-faint); flex-basis: 100%; }
 
   footer {
     border-top: 1px solid var(--line);
@@ -688,7 +687,6 @@
       <a href="#conditions">導入条件</a>
       <a href="#ranking">業務改善10分類</a>
       <a href="#improvement-cta">改善計画10選</a>
-      <a href="#equipment">必要機材一覧</a>
       <a href="#simulator">概算シミュレーター</a>
       <a href="#notes">留意事項</a>
     </div>
@@ -732,7 +730,14 @@
         <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
         <input type="range" id="capitalSlider" min="0" max="7" step="1" value="2" oninput="onCapitalSliderInput(this.value)">
       </div>
-      <p class="t-note">入力すると、下の各制度カードに自社が対象かどうかのバッジが表示される。この選択は「概算シミュレーター」の従業員数選択と連動する。</p>
+      <div class="prefecture-row" style="margin-top:1.3rem;">
+        <label for="prefectureSelect">本社所在地の都道府県（任意）</label>
+        <select id="prefectureSelect" onchange="onPrefectureChange(this.value)">
+          <option value="">選択しない（全国共通の6制度のみ表示）</option>
+          <option value="tokyo">東京都</option>
+        </select>
+      </div>
+      <p class="t-note">入力すると、下の各制度カードに自社が対象かどうかのバッジが表示される。この選択は「概算シミュレーター」の従業員数選択と連動する。都道府県を選択すると、その自治体独自の制度カードが下に追加表示され、概算シミュレーターの対象制度にも加わる（現時点では東京都のみ対応。他道府県は順次追加予定）。</p>
     </div>
 
     <div class="picker">
@@ -919,14 +924,75 @@
         <div class="cond-faq" id="condFaq-akiya"></div>
       </div>
 
+      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_sogyo">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">創業助成事業</span><span class="sub">東京都・東京都中小企業振興公社（TOKYO創業ステーション）</span></div>
+          <a class="src-link" href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション 公式ページを見る ↗</a>
+          <span class="elig-badge" id="eligBadge-tokyo_sogyo"></span>
+        </div>
+        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
+        <div class="pd-grid">
+          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内で創業予定の個人、または創業から5年未満の中小企業者等（申請時点で、個人事業主または法人の代表者として経営に従事している期間が通算5年未満であること）</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">賃借料・広告費・器具備品購入費・産業財産権出願導入費・専門家指導費等の事業費、従業員人件費、市場調査・分析費</div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">400万円<span class="sub">下限100万円。事業費・人件費分は上限300万円、委託費分は上限100万円の内訳制約あり</span></div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">審査による選考制。応募状況により変動</span></div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月29日〜10月8日<span class="sub">第1回（4/7〜4/16）は受付終了</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">東京都・東京都中小企業振興公社が例年実施。次年度以降も継続実施が見込まれる</div></div>
+        </div>
+        <div class="cond-faq" id="condFaq-tokyo_sogyo"></div>
+      </div>
+
+      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_digital">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">中小企業デジタル導入促進補助事業</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
+          <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
+          <span class="elig-badge" id="eligBadge-tokyo_digital"></span>
+        </div>
+        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
+        <div class="pd-grid">
+          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業者等（会社・個人事業主・中小企業団体）。従業員規模を問わず対象</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">新たに導入するデジタルツール（ソフトウェア・クラウドサービス）本体費、および初期設定・カスタマイズ・運用保守サポート費。<strong style="color:var(--accent);">ハード機器本体・OS・汎用セキュリティソフト等は対象外</strong></div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2以内<span class="sub">小規模事業者、または環境負荷軽減に資するツールは2/3以内</span></div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">150万円<span class="sub">下限5万円</span></div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月頃受付開始予定<span class="sub">第1回（6/11〜7/3）は受付終了</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
+        </div>
+        <div class="cond-faq" id="condFaq-tokyo_digital"></div>
+      </div>
+
+      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_soui">
+        <div class="cond-head">
+          <div class="stack"><span class="pill alt">創意工夫チャレンジ促進事業（業務改善コース）</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
+          <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
+          <span class="elig-badge" id="eligBadge-tokyo_soui"></span>
+        </div>
+        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
+        <div class="pd-grid">
+          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業等で、<strong style="color:var(--rust);">直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している事業者</strong>が対象。業績が堅調な事業者は対象外</div></div>
+          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目<span class="sub">市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可</span></div></div>
+          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
+          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">600万円</div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある</span></span></div></div>
+          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
+          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：8/3〜8/14 16時<span class="sub">第3回：11/2〜11/13 16時／第4回：令和9年2/1〜2/12 16時</span></span></div></div>
+          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
+        </div>
+        <div class="cond-faq" id="condFaq-tokyo_soui"></div>
+      </div>
+
     </div>
     <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合はカードが追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
     <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算上限のある競争審査型で採択率が変動するのに対し、「助成金」は要件を満たせば原則支給される制度である点に留意。</p>
+    <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度のカードが上記に追加表示される（現時点では東京都のみ調査済み。他の道府県は今後順次追加予定）。</p>
   </section>
 
   <section id="ranking">
     <div class="section-head"><span class="section-no jp-serif">02</span><h2>業務改善内容 — 10分類ランキング</h2></div>
-    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される細かな業務改善策を100個洗い出し、テーマごとに10分類へ集約。経営における効果の即効性・波及範囲をもとに優先順位を付けた。各カードを開くと、分類内の10施策・必要機材・概算費用・対象制度が確認できる。</p>
+    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される細かな業務改善策を100個洗い出し、テーマごとに10分類へ集約。経営における効果の即効性・波及範囲をもとに優先順位を付けた。各カードを開くと、分類内の10施策・必要機材・概算費用・対象制度に加え、該当する<strong>事業計画書・試作デモ</strong>（ある分類のみ）を確認できる。</p>
 
     <div class="rank-list" id="rankList"></div>
   </section>
@@ -937,24 +1003,8 @@
     <p style="margin-top:0.8rem;"><a class="src-link" href="improvement/">改善計画10選を見る ↗</a>　<a class="src-link" href="improvement/pdca.html">選定の考え方（スコアリング全記録）↗</a></p>
   </section>
 
-  <section id="equipment">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>必要機材・システム 一覧</h2></div>
-    <p class="section-sub">10分類・100施策に対して今後開発・調達の対象となりうる機器／アプリ／システム／設備を分類別に整理した。</p>
-    <div class="table-wrap">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr><th>分類</th><th>主要な機器・システム・アプリ</th><th class="num">概算費用</th><th>事業計画書・試作</th></tr>
-          </thead>
-          <tbody id="equipmentBody"></tbody>
-        </table>
-      </div>
-      <div class="scroll-fade" aria-hidden="true"></div>
-    </div>
-  </section>
-
   <section id="simulator">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>概算シミュレーター</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>概算シミュレーター</h2></div>
     <p class="section-sub">使いたい制度・従業員数・業務改善の分類（複数選択可）を選ぶと、見込める補助金・助成金の概算受給額を試算する。対象経費の種類が一致しない分類はアラートで表示する。</p>
 
     <div class="picker">
@@ -983,7 +1033,7 @@
   </section>
 
   <section id="notes">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>留意事項</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>留意事項</h2></div>
     <p>補助金・助成金の活用にあたっては、以下の点に留意すること。</p>
     <ul class="item-list" style="max-width:68ch;">
       <li>同一の経費に対して複数の制度から重複して受給することはできない。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要がある</li>
@@ -1147,6 +1197,51 @@
       linkLabel: "国土交通省 公式ページを見る",
       schedule: "令和8年度は2026年5月20日正午締切で受付終了。採択発表は7月上旬予定。次年度の公募時期は例年3〜5月頃の見込み",
       continuity: "国土交通省が毎年度実施している事業。次年度以降も継続実施が見込まれる"
+    },
+    tokyo_sogyo: {
+      name: "創業助成事業（東京都・東京都中小企業振興公社）",
+      prefecture: "tokyo",
+      scale: "都内で創業予定の個人、または創業から5年未満の中小企業者等（申請時点で、個人事業主または法人の代表者として経営に従事している期間が通算5年未満であること）",
+      expense: "賃借料・広告費・器具備品購入費・産業財産権出願導入費・専門家指導費等の事業費、従業員人件費、市場調査・分析費",
+      rate: "2/3以内",
+      cap: "上限400万円（下限100万円）。<strong>事業費・人件費分は上限300万円、委託費分は上限100万円という内訳の制約がある</strong>",
+      wage: "特になし（賃金上昇は交付要件ではない）",
+      acceptance: "非公表（審査による選考制。応募状況により変動）",
+      note: "都内で新規開業する、または開業5年未満の事業者が対象。既存店舗の設備更新が中心の分類よりも、新規開業時の初期費用に充当するケースと相性が良い。",
+      link: "https://startup-station.jp/m2/services/sogyokassei/",
+      linkLabel: "TOKYO創業ステーション 公式ページを見る",
+      schedule: "第2回：令和8年9月29日〜10月8日（第1回 4月7日〜4月16日は受付終了）",
+      continuity: "東京都・東京都中小企業振興公社が例年実施している制度。次年度以降も継続実施が見込まれる（一回限りの制度ではない）"
+    },
+    tokyo_digital: {
+      name: "中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）",
+      prefecture: "tokyo",
+      scale: "都内中小企業者等（会社・個人事業主・中小企業団体）。従業員規模を問わず対象",
+      expense: "新たに導入するデジタルツール（ソフトウェア・クラウドサービス）本体費、および導入にかかる初期設定・カスタマイズ・運用保守サポート費。<strong>ハード機器本体・OS・汎用セキュリティソフト等は対象外</strong>",
+      rate: "1/2以内（小規模事業者、または環境負荷軽減に資するツール導入の場合は2/3以内）",
+      cap: "上限150万円（下限5万円）",
+      wage: "特になし（賃金上昇は交付要件ではない）",
+      acceptance: "非公表",
+      note: "会計・受発注・出退勤管理ソフト等の業務改善ソフトウェアが対象例として挙げられている。国の「デジタル化・AI導入補助金」と対象経費が近く、都内事業者はどちらが有利か比較検討する価値がある。申請は電子申請システム「Jグランツ」、事前に「GビズID」の取得が必要。",
+      link: "https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html",
+      linkLabel: "東京都中小企業振興公社 公式ページを見る",
+      schedule: "第2回は令和8年9月頃受付開始予定（第1回 6月11日〜7月3日は受付終了）",
+      continuity: "東京都・東京都中小企業振興公社が年複数回の公募を継続実施中。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
+    },
+    tokyo_soui: {
+      name: "経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）",
+      prefecture: "tokyo",
+      scale: "都内中小企業等で、<strong>直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している事業者</strong>が対象。業績が堅調な事業者は対象外",
+      expense: "原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目（市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可）",
+      rate: "2/3以内",
+      cap: "上限600万円",
+      wage: "業務改善コースでは必須ではない（賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある）",
+      acceptance: "非公表",
+      note: "物価高騰などで直近の収益が悪化している事業者の立て直しを想定した制度。専門家（アドバイザー）による経営改善支援もあわせて受けられる。",
+      link: "https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/",
+      linkLabel: "東京都中小企業振興公社 公式ページを見る",
+      schedule: "第2回：令和8年8月3日〜8月14日16時／第3回：11月2日〜11月13日16時／第4回：令和9年2月1日〜2月12日16時",
+      continuity: "東京都・東京都中小企業振興公社が年複数回の公募を継続実施中。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
     }
   };
 
@@ -1172,12 +1267,13 @@
 
   var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, food_labor: 1.0, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
 
-  var CAP = { ai: 450, jizoku: 50, kaizen: 450, shoryokuka: 750, career: 140, jinzai: 1000, food_labor: 1500, kanko_shoryokuka: 1000, monodukuri: 7000 };
+  var CAP = { ai: 450, jizoku: 50, kaizen: 450, shoryokuka: 750, career: 140, jinzai: 1000, food_labor: 1500, kanko_shoryokuka: 1000, monodukuri: 7000, tokyo_sogyo: 400, tokyo_digital: 150, tokyo_soui: 600 };
   var CAP_TEXT = {
     ai: "450万円", jizoku: "50万円（通常枠。賃金引上げ枠は200万円）", kaizen: "450万円（特例600万円）",
     shoryokuka: "750万円（特例1,000万円）",
     career: "140万円／人", jinzai: "1,000万円／年（事業所）",
-    food_labor: "1,500万円（3領域合計）", kanko_shoryokuka: "1,000万円／施設", monodukuri: "7,000万円（特例9,000万円）"
+    food_labor: "1,500万円（3領域合計）", kanko_shoryokuka: "1,000万円／施設", monodukuri: "7,000万円（特例9,000万円）",
+    tokyo_sogyo: "400万円（下限100万円）", tokyo_digital: "150万円（下限5万円）", tokyo_soui: "600万円"
   };
   var EXPENSE_DESC = {
     ai: "予約管理・会計等のソフトウェア購入費やクラウド利用料",
@@ -1189,7 +1285,10 @@
     food_labor: "調理・接客・店舗管理領域の省力化設備（リース契約に限る）",
     kanko_shoryokuka: "宿泊施設の省力化・省人化設備",
     monodukuri: "大型設備投資・技術導入費等",
-    akiya: "空き家の改修・除却工事や事業スキーム構築（個別設備費ではない）"
+    akiya: "空き家の改修・除却工事や事業スキーム構築（個別設備費ではない）",
+    tokyo_sogyo: "創業初期の賃借料・広告費・器具備品購入費や人件費等",
+    tokyo_digital: "デジタルツール（ソフトウェア・クラウド）本体費および導入関連費",
+    tokyo_soui: "原材料・副資材費、機械装置・工具器具費等の業務改善経費（収益悪化事業者向け）"
   };
   var WAGE_REQUIRED = { kaizen: true, career: true, monodukuri: true };
 
@@ -1333,6 +1432,27 @@
       { q: "補助率はどのくらいですか？", a: "工事費は最大2/5、ソフト事業は定額です。" },
       { q: "採択されやすいですか？", a: "競争的な提案公募型で、令和8年度は36件の採択実績があります。" },
       { q: "毎年実施されていますか？", a: "国土交通省が毎年度実施していますが、次年度の公募時期・内容は例年3〜5月頃を目安に公式サイトで確認が必要です。" }
+    ],
+    tokyo_sogyo: [
+      { q: "いつから創業した事業者が対象ですか？", a: "都内で創業を予定している方、または申請時点で個人事業主としての開業や法人代表者への就任から通算5年未満の中小企業者等が対象です。" },
+      { q: "個人事業主でも申請できますか？", a: "可能です。都内での創業予定者、または開業から5年未満の個人事業主も対象です。" },
+      { q: "対象経費にはどのようなものがありますか？", a: "賃借料・広告費・器具備品購入費・産業財産権の出願導入費・専門家指導費等の事業費に加え、従業員人件費、市場調査・分析費が対象です。" },
+      { q: "上限額はいくらですか？", a: "全体で上限400万円（下限100万円）です。ただし事業費・人件費分は上限300万円、委託費分は上限100万円という内訳の制約があります。" },
+      { q: "次回の申請はいつですか？", a: "第2回は令和8年9月29日〜10月8日の受付予定です（第1回は4月7日〜4月16日で終了）。公募スケジュールは変更されることがあるため公式サイトで確認してください。" }
+    ],
+    tokyo_digital: [
+      { q: "パソコンやタブレット本体の購入費は対象になりますか？", a: "原則対象外です。対象はソフトウェア・クラウドサービス本体費と、それに連携する専用ハードウェアの導入・初期設定・保守費用等に限られます。" },
+      { q: "補助率はどのくらいですか？", a: "対象経費の1/2以内です。小規模事業者、または環境負荷軽減に資するツールを導入する場合は2/3以内に優遇されます。" },
+      { q: "上限額・下限額はいくらですか？", a: "上限150万円、下限5万円です。" },
+      { q: "どのように申請しますか？", a: "電子申請システム「Jグランツ」を利用し、事前に取得した「GビズID」でログインして申請します。" },
+      { q: "次回の公募はいつですか？", a: "第2回は令和8年9月頃に受付開始予定です（第1回は6月11日〜7月3日で終了）。詳細は公式サイトで確認してください。" }
+    ],
+    tokyo_soui: [
+      { q: "どんな事業者でも申請できますか？", a: "できません。直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している都内中小企業等が対象です。業績が堅調な場合は対象外です。" },
+      { q: "賃上げは必須ですか？", a: "業務改善コースでは必須要件ではありません。賃金引き上げを行う場合は別枠の「賃上げ優先コース」が用意されています。" },
+      { q: "対象経費にはどのようなものがありますか？", a: "原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権の出願導入費など10項目が対象です。市場調査費・専門家指導費・販売促進費等はそれ単独では申請できません。" },
+      { q: "補助率・上限額はどのくらいですか？", a: "対象経費の2/3以内、上限600万円です。" },
+      { q: "次回の申請はいつですか？", a: "第2回は令和8年8月3日〜8月14日16時、第3回は11月2日〜11月13日16時、第4回は令和9年2月1日〜2月12日16時の受付予定です。" }
     ]
   };
 
@@ -3189,6 +3309,8 @@
   /* IMPROVEMENT_PLANS:END */
 
   var currentIndustry = 'beauty';
+  var currentPrefecture = '';
+  var PREFECTURE_PROGRAM_KEYS = { tokyo: ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'] };
 
   function catKey(i) { return 'cat' + String(i + 1).padStart(2, '0'); }
 
@@ -3232,6 +3354,7 @@
 
   function renderRankingHTML(industryKey) {
     var ind = INDUSTRIES[industryKey];
+    var planMap = (typeof IMPROVEMENT_PLANS !== 'undefined' && IMPROVEMENT_PLANS[industryKey]) || {};
     var html = '';
     ind.categories.forEach(function (cat, idx) {
       var startNum = idx * 10 + 1;
@@ -3246,6 +3369,10 @@
       }).join('');
       var effectHTML = cat.effectBullets.map(function (b) { return '<li>' + b + '</li>'; }).join('');
       var openAttr = (idx === 0) ? ' open' : '';
+      var plan = planMap[String(idx + 1)];
+      var planLinksHTML = plan
+        ? '<div class="rank-links"><span class="rank-links-label">改善計画10選の関連資料</span><a class="equip-link" href="' + plan.planUrl + '">📄 事業計画書を見る</a><a class="equip-link" href="' + plan.protoUrl + '">🖥 試作デモを見る</a></div>'
+        : '';
       html += '<details class="rank-card"' + openAttr + '>' +
         '<summary>' +
           '<span class="rank-num tabular">' + String(idx + 1).padStart(2, '0') + '</span>' +
@@ -3260,6 +3387,7 @@
               '<div class="equip-box"><h4>必要な機器・システム・アプリ</h4><ul>' + equipHTML + '</ul></div>' +
               '<div class="cost-box"><h4>概算費用</h4>' + costHTML + '</div>' +
               '<div class="pill-row">' + pillHTML + '</div>' +
+              planLinksHTML +
             '</div>' +
           '</div>' +
           '<div class="effect-box"><h4>' + cat.effectTitle + '</h4><ul>' + effectHTML + '</ul></div>' +
@@ -3267,20 +3395,6 @@
       '</details>';
     });
     document.getElementById('rankList').innerHTML = html;
-  }
-
-  function renderEquipmentHTML(industryKey) {
-    var ind = INDUSTRIES[industryKey];
-    var planMap = (typeof IMPROVEMENT_PLANS !== 'undefined' && IMPROVEMENT_PLANS[industryKey]) || {};
-    var html = ind.equipmentTable.map(function (row) {
-      var catRank = String(parseInt(row[0], 10));
-      var plan = planMap[catRank];
-      var linkCell = plan
-        ? '<div class="equip-links"><a class="equip-link" href="' + plan.planUrl + '">📄 計画書</a><a class="equip-link" href="' + plan.protoUrl + '">🖥 試作を見る</a></div>'
-        : '<span style="color:var(--muted, #8a8478);font-size:0.85em;">—</span>';
-      return '<tr><td>' + row[0] + '</td><td>' + row[1] + '</td><td class="num tabular">' + row[2] + '万円</td><td>' + linkCell + '</td></tr>';
-    }).join('');
-    document.getElementById('equipmentBody').innerHTML = html;
   }
 
   function renderCategoryCheckboxes(industryKey) {
@@ -3303,7 +3417,10 @@
     food_labor: "飲食業労働生産性向上支援補助金（上限1,500万円）",
     kanko_shoryokuka: "観光地・観光産業における省力化投資補助事業（上限1,000万円／施設）",
     monodukuri: "新事業進出・ものづくり商業サービス補助金（上限7,000万円／特例9,000万円）",
-    akiya: "空き家対策モデル事業（上限は提案内容により異なる）"
+    akiya: "空き家対策モデル事業（上限は提案内容により異なる）",
+    tokyo_sogyo: "【東京都】創業助成事業（上限400万円）",
+    tokyo_digital: "【東京都】中小企業デジタル導入促進補助事業（上限150万円）",
+    tokyo_soui: "【東京都】創意工夫チャレンジ促進事業・業務改善コース（上限600万円）"
   };
 
   function getAvailablePrograms(industryKey) {
@@ -3311,13 +3428,33 @@
     Object.keys(PROGRAMS).forEach(function (k) {
       if (PROGRAMS[k].industryOnly === industryKey) keys.push(k);
     });
+    if (currentPrefecture && PREFECTURE_PROGRAM_KEYS[currentPrefecture]) {
+      keys = keys.concat(PREFECTURE_PROGRAM_KEYS[currentPrefecture]);
+    }
     return keys;
   }
 
   function updateIndustrySpecificCards(industryKey) {
     document.querySelectorAll('.cond-card-extra').forEach(function (card) {
-      card.style.display = (card.getAttribute('data-industry-only') === industryKey) ? '' : 'none';
+      card.style.display = (card.getAttribute('data-industry-only') === industryKey) ? 'block' : 'none';
     });
+  }
+
+  function updatePrefectureCards() {
+    document.querySelectorAll('.cond-card-prefecture').forEach(function (card) {
+      card.style.display = (currentPrefecture && card.getAttribute('data-prefecture') === currentPrefecture) ? 'block' : 'none';
+    });
+  }
+
+  function onPrefectureChange(value) {
+    currentPrefecture = value;
+    updatePrefectureCards();
+    renderProgramSelects(currentIndustry);
+    renderTrackSelect(document.getElementById('simProgram').value);
+    updateEligibilityBadges();
+    renderIndustryChrome(currentIndustry);
+    initProgramFaq();
+    runSimulation();
   }
 
   function renderProgramSelects(industryKey) {
@@ -3383,13 +3520,17 @@
     if (progKey === 'shoryokuka' || progKey === 'career' || progKey === 'jinzai') {
       return 'ok';
     }
-    // ai, kaizen: 中小企業者の基準（資本金または従業員数のいずれかを満たせばよい）を参照
+    if (progKey === 'tokyo_sogyo' || progKey === 'tokyo_soui') {
+      // 創業からの年数・直近の営業利益の増減は本サイトの入力項目にないため、機械判定せず「要確認」に統一
+      return 'warn';
+    }
+    // ai, kaizen, tokyo_digital: 中小企業者の基準（資本金または従業員数のいずれかを満たせばよい）を参照
     return isChusho(employeeCount, capitalYen, ind) ? 'ok' : 'warn';
   }
 
   function updateEligibilityBadges() {
     var ind = INDUSTRIES[currentIndustry];
-    ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai'].forEach(function (progKey) {
+    ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'].forEach(function (progKey) {
       var badge = document.getElementById('eligBadge-' + progKey);
       if (!badge) return;
       var result = computeEligibility(progKey, currentEmployeeCount, currentCapitalYen, ind);
@@ -3476,7 +3617,6 @@
     currentIndustry = key;
     renderIndustryChrome(key);
     renderRankingHTML(key);
-    renderEquipmentHTML(key);
     renderCategoryCheckboxes(key);
     renderProgramSelects(key);
     renderTrackSelect(document.getElementById('simProgram').value);
@@ -3577,7 +3717,7 @@
       if (track.wageRequired !== undefined) trackWageOverride = track.wageRequired;
     }
 
-    if (progKey === 'career' || progKey === 'jinzai' || progKey === 'akiya') {
+    if (progKey === 'career' || progKey === 'jinzai' || progKey === 'akiya' || progKey === 'tokyo_sogyo' || progKey === 'tokyo_digital' || progKey === 'tokyo_soui') {
       var headlineHtml = '';
       if (progKey === 'career') {
         var headCount = Math.min(currentEmployeeCount, 20);
@@ -3850,10 +3990,10 @@
   initFavoriteStars();
   renderFavPanel();
   renderProgram('ai');
+  updatePrefectureCards();
   switchIndustry('beauty');
 
   setupScrollFade(document.querySelector('nav.toc .toc-scroll'), document.querySelector('nav.toc .toc-fade'));
-  setupScrollFade(document.querySelector('#equipment .table-scroll'), document.querySelector('#equipment .scroll-fade:not(.toc-fade)'));
 </script>
 
 </body>
