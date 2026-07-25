@@ -17,73 +17,73 @@
   }
 
   :root {
-    --paper: #eef0ea;
-    --paper-raised: #f8f9f4;
-    --ink: #1b2420;
-    --ink-soft: #4a564d;
-    --ink-faint: #636e67;
-    --accent: #906428;
-    --accent-soft: #e7d3ac;
-    --accent-wash: #f2e9d6;
-    --sage: #5f7360;
-    --sage-wash: #e2e8de;
-    --rust: #b43023;
-    --rust-wash: #ecdcd2;
-    --line: #d5cfbf;
-    --shadow: rgba(27, 36, 32, 0.10);
+    --paper: #f4f5f7;
+    --paper-raised: #ffffff;
+    --ink: #1b2333;
+    --ink-soft: #48536a;
+    --ink-faint: #7c869c;
+    --accent: #2b4c7e;
+    --accent-soft: #c3d2e8;
+    --accent-wash: #e7edf6;
+    --sage: #2f6b4f;
+    --sage-wash: #dcefe2;
+    --rust: #b0342a;
+    --rust-wash: #f7ded8;
+    --line: #dde1e8;
+    --shadow: rgba(27, 35, 51, 0.10);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #12181a;
-      --paper-raised: #182020;
-      --ink: #ece8e0;
-      --ink-soft: #b7bdb0;
-      --ink-faint: #838f83;
-      --accent: #dcab5c;
-      --accent-soft: #4d3c1f;
-      --accent-wash: #2b2313;
-      --sage: #93a88d;
-      --sage-wash: #202823;
-      --rust: #d89c64;
-      --rust-wash: #2c211d;
-      --line: #2c342e;
-      --shadow: rgba(0, 0, 0, 0.4);
+      --paper: #10141c;
+      --paper-raised: #161b26;
+      --ink: #e8ebf1;
+      --ink-soft: #b7c0d1;
+      --ink-faint: #818da3;
+      --accent: #7fa4d9;
+      --accent-soft: #24344f;
+      --accent-wash: #1a2740;
+      --sage: #7fbf9c;
+      --sage-wash: #16261d;
+      --rust: #e0897a;
+      --rust-wash: #2e1c17;
+      --line: #262d3c;
+      --shadow: rgba(0, 0, 0, 0.45);
     }
   }
 
   :root[data-theme="dark"] {
-    --paper: #12181a;
-    --paper-raised: #182020;
-    --ink: #ece8e0;
-    --ink-soft: #b7bdb0;
-    --ink-faint: #838f83;
-    --accent: #dcab5c;
-    --accent-soft: #4d3c1f;
-    --accent-wash: #2b2313;
-    --sage: #93a88d;
-    --sage-wash: #202823;
-    --rust: #d89c64;
-    --rust-wash: #2c211d;
-    --line: #2c342e;
-    --shadow: rgba(0, 0, 0, 0.4);
+    --paper: #10141c;
+    --paper-raised: #161b26;
+    --ink: #e8ebf1;
+    --ink-soft: #b7c0d1;
+    --ink-faint: #818da3;
+    --accent: #7fa4d9;
+    --accent-soft: #24344f;
+    --accent-wash: #1a2740;
+    --sage: #7fbf9c;
+    --sage-wash: #16261d;
+    --rust: #e0897a;
+    --rust-wash: #2e1c17;
+    --line: #262d3c;
+    --shadow: rgba(0, 0, 0, 0.45);
   }
 
   :root[data-theme="light"] {
-    --paper: #eef0ea;
-    --paper-raised: #f8f9f4;
-    --ink: #1b2420;
-    --ink-soft: #4a564d;
-    --ink-faint: #636e67;
-    --accent: #906428;
-    --accent-soft: #e7d3ac;
-    --accent-wash: #f2e9d6;
-    --sage: #5f7360;
-    --sage-wash: #e2e8de;
-    --rust: #b43023;
-    --rust-wash: #ecdcd2;
-    --line: #d5cfbf;
-    --shadow: rgba(27, 36, 32, 0.10);
+    --paper: #f4f5f7;
+    --paper-raised: #ffffff;
+    --ink: #1b2333;
+    --ink-soft: #48536a;
+    --ink-faint: #7c869c;
+    --accent: #2b4c7e;
+    --accent-soft: #c3d2e8;
+    --accent-wash: #e7edf6;
+    --sage: #2f6b4f;
+    --sage-wash: #dcefe2;
+    --rust: #b0342a;
+    --rust-wash: #f7ded8;
+    --line: #dde1e8;
+    --shadow: rgba(27, 35, 51, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -272,9 +272,10 @@
 
   .wage-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; }
   .wage-flag .dot2 { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
+  .wage-flag.req { color: var(--rust); font-weight: 700; }
   .wage-flag.req .dot2 { background: var(--rust); }
   .wage-flag.opt .dot2 { background: var(--ink-faint); }
-  .wage-flag .sub { color: var(--ink-faint); font-size: 0.78rem; display: block; }
+  .wage-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-weight: 400; display: block; }
 
   .sched-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; }
   .sched-flag .dot2 { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
@@ -309,6 +310,7 @@
   .pd-item .v { font-size: 0.92rem; line-height: 1.6; }
   .pd-item .v .sub { display: block; font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.15rem; }
   .pd-item-wide { grid-column: 1 / -1; }
+  .req-strong { color: var(--rust); font-weight: 700; }
   .pd-note { margin-top: 1rem; font-size: 0.84rem; color: var(--ink-soft); background: var(--sage-wash); border-radius: 6px; padding: 0.7rem 0.9rem; }
 
   /* ---------- Condition cards (01) ---------- */
@@ -777,7 +779,7 @@
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
           <div class="pd-item"><div class="k">上限額</div><div class="v tabular">上限50万円<span class="sub">賃金引上げ枠で200万円、インボイス特例併用で250万円（いずれも対象基準以下が前提）。概算シミュレーターで枠ごとに試算できる</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>通常枠は任意<span class="sub">賃金引上げ枠を選ぶ場合は必須</span></span></div></div>
+          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>通常枠は任意<span class="sub">賃金引上げ枠を選ぶ場合は<strong class="req-strong">必須</strong></span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">51.1%<span class="sub">第19回（採択発表待ち）</span></div></div>
           <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>現在受付中の回なし<span class="sub">第20回：2026年11月5日〜12月15日17:00</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">長年継続的に実施。次年度以降も継続見込み</div></div>
@@ -788,7 +790,7 @@
       <div class="cond-card" data-key="kaizen">
         <div class="cond-head"><div class="stack"><span class="pill kaizen">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-kaizen"></span></div>
         <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong>時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong class="req-strong">時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">3/4〜4/5</div></div>
           <div class="pd-item"><div class="k">上限額</div><div class="v tabular">450万円<span class="sub">特例600万円。50円／70円／90円の3コースがあり、コースと引き上げ人数に応じて上限額が変動（概算シミュレーターでコース別に試算可能）</span></div></div>
@@ -803,7 +805,7 @@
       <div class="cond-card" data-key="shoryokuka">
         <div class="cond-head"><div class="stack"><span class="pill alt">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a><span class="elig-badge" id="eligBadge-shoryokuka"></span></div>
         <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（GビズIDプライム必須）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（<strong class="req-strong">GビズIDプライム必須</strong>）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">小規模2/3。最低賃金引上げ特例でさらに優遇</span></div></div>
           <div class="pd-item pd-item-wide">
@@ -843,7 +845,7 @@
       <div class="cond-card" data-key="jinzai">
         <div class="cond-head"><div class="stack"><span class="pill alt">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-jinzai"></span></div>
         <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に10時間以上の訓練を実施する事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
+          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に<strong class="req-strong">10時間以上の訓練を実施する</strong>事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修・訓練費用、訓練期間中の賃金</div></div>
           <div class="pd-item"><div class="k">補助率</div><div class="v tabular">経費助成45%<span class="sub">＋賃金助成。大企業は30%（中小企業の基準内であれば45%を維持）</span></div></div>
           <div class="pd-item"><div class="k">上限額</div><div class="v tabular">年間1,000万円</div></div>
@@ -1532,6 +1534,12 @@
     }
   };
 
+  // 「必須」「対象外」等、合否を分ける必須要件語を赤太字で強調する
+  function reqHL(text) {
+    if (!text) return text;
+    return String(text).replace(/(必須|対象外)/g, '<strong class="req-strong">$1</strong>');
+  }
+
   function renderProgram(key) {
     var p = PROGRAMS[key];
     var el = document.getElementById('programDetail');
@@ -1539,16 +1547,16 @@
     el.innerHTML =
       '<div class="pd-name">' + p.name + '</div>' +
       '<div class="pd-grid">' +
-        '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + p.scale + '</div></div>' +
+        '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
         '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
         '<div class="pd-item"><div class="k">補助率</div><div class="v tabular">' + p.rate + '</div></div>' +
         '<div class="pd-item"><div class="k">上限額</div><div class="v tabular">' + p.cap + '</div></div>' +
-        '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + p.wage + '</div></div>' +
+        '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(p.wage) + '</div></div>' +
         '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
         '<div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v">' + p.schedule + '</div></div>' +
         '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
       '</div>' +
-      '<div class="pd-note">' + p.note + '</div>' +
+      '<div class="pd-note">' + reqHL(p.note) + '</div>' +
       '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>';
   }
 
@@ -3917,16 +3925,16 @@
             '</div>' +
             '<div class="cond-card-prefecture-tag">' + wardName + '限定の制度</div>' +
             '<div class="pd-grid">' +
-              '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + p.scale + '</div></div>' +
+              '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
               '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
               '<div class="pd-item"><div class="k">補助率</div><div class="v tabular">' + p.rate + '</div></div>' +
               '<div class="pd-item"><div class="k">上限額</div><div class="v tabular">' + p.cap + '</div></div>' +
-              '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + p.wage + '</div></div>' +
+              '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(p.wage) + '</div></div>' +
               '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
               '<div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v">' + p.schedule + '</div></div>' +
               '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
             '</div>' +
-            '<div class="pd-note">' + p.note + '</div>' +
+            '<div class="pd-note">' + reqHL(p.note) + '</div>' +
           '</div>'
         );
       }).join('');
