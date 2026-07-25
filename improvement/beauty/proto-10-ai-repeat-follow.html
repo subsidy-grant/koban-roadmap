@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.10 リピート予測&AI再来店フォロー | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#b98a2f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .kpi b{font-size:22px;display:block}.kpi span{font-size:11px;color:var(--sub)}
+  .kpi .up{color:var(--green);font-size:11px;font-weight:700}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .cust{border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:10px}
+  .custhead{display:flex;gap:10px;align-items:center}
+  .risk{min-width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-direction:column}
+  .r-hi{background:var(--red)}.r-mid{background:var(--gold)}.r-lo{background:var(--green)}
+  .risk small{font-size:8px;font-weight:400}
+  .cust .info{flex:1}.cust .info b{font-size:13.5px}
+  .cust .info span{font-size:11.5px;color:var(--sub);display:block}
+  .custhead button{font:inherit;font-size:11.5px;padding:6px 10px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+  .line{background:#eef5f0;border-radius:12px 12px 12px 4px;padding:10px 12px;font-size:12.5px;margin-top:8px;white-space:pre-wrap;display:none}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}
+  svg text{font-family:"Noto Sans JP",sans-serif}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .real-badge{font-size:9.5px;background:#eef5f0;color:var(--green);border-radius:99px;padding:2px 8px;font-weight:800;margin-left:6px}
+  .respbtns{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+  .rb{font-size:10px;padding:4px 8px;border:1px solid var(--line);border-radius:99px;background:#fff;cursor:pointer;font-weight:700;color:var(--sub)}
+  .rb.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>💌 リピート予測&AI再来店フォローシステム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.10 / 業務改善助成金 対応案</span>
+</header>
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><span>再来店率(90日)</span><b>68<small>%</small></b><span class="up">▲ 導入前 54%</span></div>
+    <div class="kpi"><span>失客の掘り起こし</span><b>29<small>名/月</small></b><span class="up">▲ 売上 +38万円</span></div>
+    <div class="kpi"><span>フォロー作業</span><b>自動</b><span class="up">手作業 12h/月 → 0h</span></div>
+    <div class="kpi"><span>平均LTV</span><b>+22<small>%</small></b><span class="up">年間8.9万→10.9万</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>📋 今週のフォロー対応タスク(リスクが高い順)<span class="real-badge">実データ集計</span></h2>
+      <div id="weeklyTasks"></div>
+      <p class="note">下の詳細リストと連動して自動更新されます。対応が終わったものから順に「予約あり/来店済」を記録してください。</p>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h2>📥 カルテ連携<span class="real-badge">No.3と実データ連携</span></h2>
+      <input type="file" accept="application/json" id="karteImport">
+      <p class="note">No.3(AIカウンセリング&施術提案カルテ)で「📤 エクスポート」したJSONファイルを選択すると、前回の提案内容・アレルギー情報・次回推奨時期を踏まえたフォロー文面がその場で自動生成され、下のリストに追加されます。</p>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h2>離反リスク予測 — AIが来店周期を学習し、離れる前に自動フォロー</h2>
+      <div id="list"></div>
+      <p class="note">※ リスクスコアは平均来店周期に対する経過日数の超過率と、過去の来店間隔の伸び率(周期が徐々に伸びていないか)を組み合わせて算出しています。メッセージはLINE/SMS/メールの3トーンから選べます。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>失客率の推移</h2>
+        <svg viewBox="0 0 360 170" width="100%">
+          <line x1="36" y1="10" x2="36" y2="140" stroke="#e5dfd7"/>
+          <line x1="36" y1="140" x2="350" y2="140" stroke="#e5dfd7"/>
+          <text x="6" y="16" font-size="10" fill="#6f675e">50%</text>
+          <text x="6" y="80" font-size="10" fill="#6f675e">30%</text>
+          <text x="6" y="140" font-size="10" fill="#6f675e">10%</text>
+          <polyline fill="none" stroke="#a4453c" stroke-width="3" points="46,40 96,44 146,50 196,54 246,60"/>
+          <polyline fill="none" stroke="#3e6b4f" stroke-width="3" points="246,60 296,86 346,108"/>
+          <circle cx="346" cy="108" r="5" fill="#3e6b4f"/>
+          <text x="250" y="52" font-size="10" fill="#b98a2f">▲AI導入</text>
+          <text x="270" y="128" font-size="11" font-weight="bold" fill="#3e6b4f">失客率 18%</text>
+          <text x="46" y="158" font-size="9" fill="#6f675e">2月</text><text x="196" y="158" font-size="9" fill="#6f675e">5月</text><text x="330" y="158" font-size="9" fill="#6f675e">7月</text>
+        </svg>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>📊 フォロー成功率(リスクレベル別)<span class="real-badge">実データ集計</span></h2>
+        <div id="successStats"></div>
+        <p class="note">各顧客の「予約あり/来店済/反応なし」ボタンの記録から、その場で成功率を集計しています。</p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>今週の自動配信実績</h2>
+        <div class="row"><span>メンテ時期リマインド</span><span class="ok">42件送信 / 予約11件</span></div>
+        <div class="row"><span>離反リスク高へ特別クーポン</span><span class="ok">18件 / 復帰7件</span></div>
+        <div class="row"><span>誕生日メッセージ</span><span class="ok">9件 / 来店5件</span></div>
+        <div class="row"><span>休眠客(半年以上)掘り起こし</span><span class="ok">63件 / 復帰6件</span></div>
+        <p class="note">AIは配信しすぎによる「うざさ」も学習し、1顧客あたりの月間接触回数を上限管理しています。</p>
+        <button style="width:100%;margin-top:10px;font:inherit;font-size:12.5px;padding:9px 10px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer" onclick="printFollowReport()">🖨 週次フォロー実績レポートを印刷用に生成</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 離反リスクスコア算出(超過率×来店間隔の伸び率) =====
+function computeRisk(intervalHistory, daysSinceLast) {
+  const avgCycle = intervalHistory.reduce((a, b) => a + b, 0) / intervalHistory.length;
+  const baseline = intervalHistory.slice(0, -1).reduce((a, b) => a + b, 0) / (intervalHistory.length - 1);
+  const last = intervalHistory[intervalHistory.length - 1];
+  const trendPct = Math.round((last - baseline) / baseline * 100);
+  const overrunRatio = daysSinceLast / avgCycle;
+  const score = Math.max(0, Math.min(100, Math.round(overrunRatio * 60 + trendPct * 0.4)));
+  const tier = score >= 70 ? "高" : score >= 40 ? "中" : "低";
+  const cls = tier === "高" ? "r-hi" : tier === "中" ? "r-mid" : "r-lo";
+  return { score, tier, cls, trendPct, avgCycle: Math.round(avgCycle) };
+}
+
+const CUST_RAW = [
+  { name:"田村様(38・女性)", menu:"カラー", intervalHistory:[52,54,60], daysSinceLast:78,
+    msgVariants:{
+      line:`田村様、こんにちは😊 SALON BLOOMです。\n前回のカラーから2か月半、そろそろ根元が気になる頃ではないでしょうか?\n田村様がお好きだったアッシュベージュ、今の季節は透明感が出やすくおすすめです。\n\n【リピーター様限定】今週ご予約で炭酸スパを無料サービス中です。\nご都合いかがですか?ご予約はこちら→ [LINEで予約]`,
+      sms:`[SALON BLOOM] 田村様、前回のカラーから78日経過。今週ご予約で炭酸スパ無料!ご予約はこちら: [予約URL]`,
+      mail:`件名: 【SALON BLOOM】次回ご来店のご案内\n\n田村様\n\n平素より格別のご愛顧を賜り誠にありがとうございます。\n前回のカラーからおよそ2か月半が経過し、そろそろ根元が気になる頃かと存じます。お好きだったアッシュベージュは今の季節、透明感が出やすくおすすめです。\n今週ご予約いただいた方には炭酸スパを無料でご提供しております。\nご都合の良い日程がございましたら、本メールへのご返信、またはお電話にてご連絡くださいませ。\n\n今後ともSALON BLOOM 表参道をよろしくお願い申し上げます。` } },
+  { name:"小林様(29・女性)", menu:"カット+トリートメント", intervalHistory:[43,46,45], daysSinceLast:41,
+    msgVariants:{
+      line:`小林様、いつもありがとうございます✨\n前回のトリートメントの効果、そろそろリセットされる頃です。\n次回はホームケアで褒められた髪色をキープする「カラーシャンプー」もご用意しています。\nお好きな土曜午前の枠、来週はまだ空きがございます😊`,
+      sms:`[SALON BLOOM] 小林様、前回のトリートメントから41日。カラーシャンプーも入荷!来週土曜午前まだ空きあり。ご予約: [予約URL]`,
+      mail:`件名: 【SALON BLOOM】次回ご来店のご案内\n\n小林様\n\n平素より格別のご愛顧を賜り誠にありがとうございます。\n前回のトリートメントの効果もそろそろリセットされる頃かと存じます。髪色をキープする「カラーシャンプー」もご用意しております。\nお好きな土曜午前の枠、来週はまだ空きがございます。\nご都合の良い日程がございましたら、本メールへのご返信、またはお電話にてご連絡くださいませ。\n\n今後ともSALON BLOOM 表参道をよろしくお願い申し上げます。` } },
+  { name:"渡辺様(52・男性)", menu:"カット", intervalHistory:[30,29,28], daysSinceLast:19,
+    msgVariants:{
+      line:`(渡辺様は来店周期が安定しているため、AIは今週の配信対象外と判断しました。過剰なメッセージは送りません。)\n次回のメンテ時期(9日後)に、いつもの土曜18時枠の空き通知のみ自動送付予定です。`,
+      sms:`[SALON BLOOM] 渡辺様はいつも安定したペースでご来店いただいているため、今週は特にご連絡しておりません。次回の空き情報のみ後日お届けします。`,
+      mail:`件名: 【SALON BLOOM】いつもご利用ありがとうございます\n\n渡辺様\n\n平素よりご愛顧賜り誠にありがとうございます。安定したペースでご来店いただいているため、今回は特にご案内はございません。次回のご来店時期が近づきましたら、改めて空き状況をお知らせいたします。\n\n今後ともよろしくお願い申し上げます。` } },
+];
+const CUST = CUST_RAW.map(raw => {
+  const r = computeRisk(raw.intervalHistory, raw.daysSinceLast);
+  return {
+    risk: r.tier, cls: r.cls, originalRisk: r.tier, response: null, tone: "line", score: r.score,
+    name: raw.name,
+    detail: `前回: ${raw.menu}(${raw.daysSinceLast}日前) / 平均周期${r.avgCycle}日 / 伸び率${r.trendPct >= 0 ? "+" : ""}${r.trendPct}% / リスクスコア${r.score}`,
+    msgVariants: raw.msgVariants,
+  };
+});
+const listEl = document.getElementById("list");
+function reviewAskText(name) {
+  const disp = name.replace(/\(.*\)/, "");
+  return `${disp}\n\nこの度はご来店(またはご予約)ありがとうございます!仕上がりにご満足いただけていましたら、Googleの口コミで一言いただけると大変励みになります🙏\n(口コミはこちらから: [店舗の口コミURL])\n\nお忙しい中恐れ入りますが、ご協力いただけますと幸いです。`;
+}
+function custRowHtml(i) {
+  const c = CUST[i];
+  const btns = [["booked","📅予約あり"],["visited","✅来店済"],["none","—反応なし"]]
+    .map(([val, label]) => `<button class="rb ${c.response === val ? "on" : ""}" onclick="setResponse(${i},'${val}')">${label}</button>`).join("");
+  const toneBtns = [["line","💬LINE風"],["sms","📱SMS風"],["mail","📧メール風"]]
+    .map(([val, label]) => `<button class="rb ${(c.tone || "line") === val ? "on" : ""}" onclick="setTone(${i},'${val}')">${label}</button>`).join("");
+  const reviewAsk = (c.response === "booked" || c.response === "visited") ? `
+    <div class="respbtns"><button class="rb" onclick="showReviewAsk(${i})">📣 口コミ依頼文を生成(No.4連携)</button></div>
+    <div class="line" id="reviewAsk${i}">${reviewAskText(c.name)}
+<button class="rb" style="margin-top:8px;background:#06c755;color:#fff;border-color:#06c755" onclick="sendReviewAskViaLine(${i})">📤 LINE公式アカウントから送信</button></div>` : "";
+  return `<div class="cust">
+    <div class="custhead">
+      <div class="risk ${c.cls}">${c.risk}<small>リスク</small></div>
+      <div class="info"><b>${c.name}</b><span>${c.detail}</span></div>
+      <button onclick="show(${i})">✉ AI文面を確認</button>
+    </div>
+    <div class="respbtns">${toneBtns}</div>
+    <div class="line" id="line${i}">${c.msgVariants[c.tone || "line"]}</div>
+    <div class="respbtns">${btns}</div>${reviewAsk}
+  </div>`;
+}
+function appendCustomer(i) {
+  const d = document.createElement("div");
+  d.id = "custRow" + i;
+  d.innerHTML = custRowHtml(i);
+  listEl.appendChild(d);
+}
+function updateCustomerRow(i) {
+  const el = document.getElementById("custRow" + i);
+  if (el) el.innerHTML = custRowHtml(i);
+}
+function setResponse(i, type) {
+  const c = CUST[i];
+  c.response = type;
+  if (type === "visited") { c.risk = "低"; c.cls = "r-lo"; }
+  updateCustomerRow(i);
+  renderSuccessStats();
+  renderWeeklyTaskList();
+}
+function setTone(i, tone) {
+  CUST[i].tone = tone;
+  updateCustomerRow(i);
+}
+function showReviewAsk(i) {
+  const el = document.getElementById("reviewAsk" + i);
+  if (el) el.style.display = el.style.display === "block" ? "none" : "block";
+}
+const LINE_OA_ID = "@salonbloom"; // デモ用の公式アカウントID(実運用では導入店舗のLINE公式アカウントIDに差し替え)
+function sendReviewAskViaLine(i) {
+  const text = reviewAskText(CUST[i].name);
+  const url = `https://line.me/R/oaMessage/${encodeURIComponent(LINE_OA_ID)}/?${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+function renderSuccessStats() {
+  const tiers = ["高", "中", "低"];
+  document.getElementById("successStats").innerHTML = tiers.map(tier => {
+    const group = CUST.filter(c => c.originalRisk === tier);
+    const total = group.length;
+    const success = group.filter(c => c.response === "booked" || c.response === "visited").length;
+    const pct = total ? Math.round(success / total * 100) : 0;
+    return `<div class="row"><span>${tier}リスクだった顧客(${total}名)</span><b class="ok">${pct}%</b></div>`;
+  }).join("");
+}
+function renderWeeklyTaskList() {
+  const colorOf = cls => cls === "r-hi" ? "var(--red)" : cls === "r-mid" ? "var(--gold)" : "var(--green)";
+  const sorted = CUST.map((c, i) => ({ c, i })).sort((a, b) => (b.c.score || 0) - (a.c.score || 0));
+  document.getElementById("weeklyTasks").innerHTML = sorted.map(({ c, i }, rank) => `
+    <div class="row" style="align-items:center">
+      <span>${rank + 1}. <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${colorOf(c.cls)};margin-right:4px"></span>${c.name}${c.response ? ` <small style="color:var(--sub)">(${c.response === "booked" ? "予約済" : c.response === "visited" ? "来店済✔" : "反応なし"})</small>` : ""}</span>
+      <b style="color:${colorOf(c.cls)}">${c.risk}リスク${c.score != null ? "(" + c.score + ")" : ""}</b>
+    </div>`).join("");
+}
+CUST.forEach((c, i) => appendCustomer(i));
+renderSuccessStats();
+renderWeeklyTaskList();
+function show(i){ const el = document.getElementById("line"+i); el.style.display = el.style.display === "block" ? "none" : "block"; }
+
+// ===== No.3カルテのJSONインポート(実データ連携) =====
+function buildFollowMessage(data, cycleDays, tone) {
+  tone = tone || "line";
+  const displayName = (data.name || "お客様").replace(/\(.*\)/, "");
+  const proposalText = data.proposals && data.proposals.length ? data.proposals.join("・") : "ご提案内容";
+  const allergyNote = data.allergy && data.allergy !== "特記なし" ? `${data.allergy}を考慮し、次回もアレルギー対応のご提案を継続いたします。` : "";
+  if (tone === "sms") {
+    return `[SALON BLOOM] ${displayName}様、先日の${proposalText}から${cycleDays}日ほど経ちます。次回メンテのご予約はお済みですか?ご予約: [予約URL]`;
+  }
+  if (tone === "mail") {
+    return `件名: 【SALON BLOOM】次回ご来店のご案内\n\n${displayName} 様\n\n平素より格別のご愛顧を賜り誠にありがとうございます。\n先日は「${proposalText}」をご利用いただき、誠にありがとうございました。仕上がりのご様子はいかがでしょうか。\n次回は${cycleDays}日後頃のメンテナンスをお勧めしております。${allergyNote}\nご都合の良い日程がございましたら、本メールへのご返信、またはお電話にてご連絡くださいませ。\n\n今後ともSALON BLOOM 表参道をよろしくお願い申し上げます。`;
+  }
+  return `${displayName}、こんにちは😊 SALON BLOOMです。\n先日は「${proposalText}」をご利用いただきありがとうございました。仕上がりのご様子はいかがでしょうか?\n次回は${cycleDays}日後頃のメンテナンスがおすすめの時期です。${allergyNote ? "\n" + allergyNote : ""}\nご都合の良い日程がございましたら、お気軽にご返信ください😊`;
+}
+
+function importKarte(data) {
+  const cycleDays = Math.round((data.visitCycleMonths || 3) * 30);
+  const i = CUST.length;
+  CUST.push({
+    risk: "低", cls: "r-lo", originalRisk: "低", response: null, tone: "line", score: 20,
+    name: (data.name || "お客様") + "(カルテ連携)",
+    detail: `前回提案: ${data.proposals ? data.proposals.join("・") : "—"} / 次回推奨: 約${cycleDays}日後 / ${data.allergy && data.allergy !== "特記なし" ? "⚠ " + data.allergy : "特記事項なし"}`,
+    msgVariants: { line: buildFollowMessage(data, cycleDays, "line"), sms: buildFollowMessage(data, cycleDays, "sms"), mail: buildFollowMessage(data, cycleDays, "mail") },
+  });
+  appendCustomer(i);
+  renderSuccessStats();
+  renderWeeklyTaskList();
+}
+
+document.getElementById("karteImport").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      importKarte(data);
+      alert(`「${(data.name||"お客様")}」のカルテを連携しました。フォロー文面が自動生成され、リストに追加されています。`);
+    } catch (err) {
+      alert("JSONの読み込みに失敗しました。No.3(AIカウンセリング&施術提案カルテ)でエクスポートしたファイルを選択してください。");
+    }
+  };
+  reader.readAsText(file);
+});
+
+// ===== 週次フォロー実績レポートの印刷用出力 =====
+function printFollowReport() {
+  const now = new Date();
+  const tiers = ["高", "中", "低"];
+  const statRows = tiers.map(tier => {
+    const group = CUST.filter(c => c.originalRisk === tier);
+    const total = group.length;
+    const success = group.filter(c => c.response === "booked" || c.response === "visited").length;
+    const pct = total ? Math.round(success / total * 100) : 0;
+    return { tier, total, success, pct };
+  });
+  const sorted = CUST.map((c, i) => ({ c, i })).sort((a, b) => (b.c.score || 0) - (a.c.score || 0));
+  const respLabel = r => r === "booked" ? "予約あり" : r === "visited" ? "来店済" : r ? "反応なし" : "対応中";
+  const totalResponded = CUST.filter(c => c.response === "booked" || c.response === "visited").length;
+  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>週次フォロー実績レポート</title>
+<style>
+  @page{size:A4;margin:14mm}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:#26221e;font-size:13px;line-height:1.65}
+  h1{font-size:20px;border-bottom:3px solid #8a5a2b;padding-bottom:8px;margin-bottom:6px}
+  h2{font-size:14px;color:#6f675e;margin:18px 0 8px;border-bottom:1px solid #e5dfd7;padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  td,th{border:1px solid #e5dfd7;padding:6px 8px;text-align:left}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+  .kpi{border:1px solid #e5dfd7;border-radius:8px;padding:8px;text-align:center}
+  .kpi b{font-size:18px;display:block}
+  .kpi span{font-size:10.5px;color:#6f675e}
+  .comment{background:#faf7f2;border-radius:8px;padding:12px;font-size:12.5px}
+  .meta{color:#6f675e;font-size:12px}
+  .printbtn{font:inherit;padding:8px 16px;border-radius:8px;border:none;background:#8a5a2b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:14px}
+  @media print{.printbtn{display:none}}
+</style></head><body>
+<button class="printbtn" onclick="window.print()">🖨 このレポートを印刷する</button>
+<h1>週次フォロー実績レポート</h1>
+<p class="meta">作成日: ${now.toLocaleDateString("ja-JP")} / SALON BLOOM 表参道(AI自動生成・要店長確認) / 対象${CUST.length}名</p>
+<h2>サマリー</h2>
+<div class="kpis">
+  <div class="kpi"><b>${CUST.length}名</b><span>フォロー対象顧客</span></div>
+  <div class="kpi"><b>${totalResponded}名</b><span>予約・来店につながった数</span></div>
+  <div class="kpi"><b>68%</b><span>再来店率(90日・導入前54%)</span></div>
+  <div class="kpi"><b>+22%</b><span>平均LTV(年間8.9万→10.9万)</span></div>
+</div>
+<h2>フォロー成功率(リスクレベル別)</h2>
+<table><tr><th>リスク</th><th>対象数</th><th>成功数(予約/来店)</th><th>成功率</th></tr>
+${statRows.map(r => `<tr><td>${r.tier}リスク</td><td>${r.total}名</td><td>${r.success}名</td><td>${r.pct}%</td></tr>`).join("")}
+</table>
+<h2>顧客別タスク一覧(リスクが高い順)</h2>
+<table><tr><th>#</th><th>顧客</th><th>リスク</th><th>スコア</th><th>対応状況</th></tr>
+${sorted.map(({ c }, rank) => `<tr><td>${rank + 1}</td><td>${c.name}</td><td>${c.risk}</td><td>${c.score ?? "—"}</td><td>${respLabel(c.response)}</td></tr>`).join("")}
+</table>
+<h2>今週の自動配信実績</h2>
+<table><tr><th>施策</th><th>送信数</th><th>成果</th></tr>
+<tr><td>メンテ時期リマインド</td><td>42件</td><td>予約11件</td></tr>
+<tr><td>離反リスク高へ特別クーポン</td><td>18件</td><td>復帰7件</td></tr>
+<tr><td>誕生日メッセージ</td><td>9件</td><td>来店5件</td></tr>
+<tr><td>休眠客(半年以上)掘り起こし</td><td>63件</td><td>復帰6件</td></tr>
+</table>
+<h2>AI総評</h2>
+<div class="comment">${statRows[0].tier === "高" && statRows[0].total ? `高リスク顧客${statRows[0].total}名中${statRows[0].success}名(${statRows[0].pct}%)の再来店につながった。` : "高リスク顧客への対応記録はまだありません。"}引き続き高リスク顧客への優先フォローを継続しつつ、配信頻度の上限管理により顧客体験を損なわないバランスを維持することを推奨する。</div>
+</body></html>`;
+  const win = window.open("", "_blank");
+  if (!win) { alert("ポップアップがブロックされました。ブラウザの設定でこのページのポップアップを許可してください。"); return; }
+  win.document.write(html);
+  win.document.close();
+}
+</script>
+</body>
+</html>

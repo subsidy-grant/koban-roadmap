@@ -288,12 +288,18 @@ def build_plan_html(pl, scheme, industry_label):
             f"<style>{css}</style></head><body>{toolbar}" + "\n".join(pages) + "</body></html>")
 
 
+EXTERNAL_INDUSTRIES = {"beauty"}  # 外部プロジェクト連携のため本スクリプトでは生成しない業種
+
+
 def main():
     industries = sys.argv[1:]
     if not industries:
         pdir = os.path.join(DATA, "plans")
         industries = [f[:-5] for f in os.listdir(pdir) if f.endswith(".json")] if os.path.isdir(pdir) else []
     for ik in industries:
+        if ik in EXTERNAL_INDUSTRIES:
+            print(f"SKIP: {ik} は外部プロジェクト連携のため build_plans.py では生成しません")
+            continue
         with open(os.path.join(DATA, "plans", ik + ".json"), encoding="utf-8") as f:
             plans = json.load(f)
         outdir = os.path.join(IMPROVEMENT, ik)

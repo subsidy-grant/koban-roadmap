@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.6 薬剤・材料AI自動発注 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#3e6b4f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .kpi b{font-size:22px;display:block}.kpi span{font-size:11px;color:var(--sub)}
+  .kpi .up{color:var(--green);font-size:11px;font-weight:700}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{background:#efe9e0;padding:7px 8px;text-align:left;font-size:11.5px;white-space:nowrap}
+  td{padding:7px 8px;border-top:1px solid var(--line);vertical-align:middle}
+  .meter{height:7px;background:#efe9e0;border-radius:99px;overflow:hidden;min-width:70px}
+  .meter i{display:block;height:100%}
+  .lv-ok i{background:var(--green)}.lv-mid i{background:var(--gold)}.lv-low i{background:var(--red)}
+  .st{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:99px;white-space:nowrap}
+  .st-low{background:#fbeeec;color:var(--red)}.st-mid{background:#fbf4e3;color:#7a5a17}.st-ok{background:#eef5f0;color:var(--green)}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:9px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%;margin-top:10px}
+  .mail{font-family:Consolas,monospace;font-size:12px;background:#26221e;color:#cfe3d5;border-radius:10px;padding:12px;white-space:pre-wrap;min-height:180px}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📦 薬剤・材料AI自動発注システム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.6 / 省力化投資補助金(一般型) 対応案</span>
+</header>
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><span>発注・棚卸作業</span><b>18→2<small>h/月</small></b><span class="up">▲ 16時間削減</span></div>
+    <div class="kpi"><span>在庫金額</span><b>-23<small>%</small></b><span class="up">過剰在庫 32万円圧縮</span></div>
+    <div class="kpi"><span>期限切れ廃棄</span><b>0<small>件</small></b><span class="up">3か月連続ゼロ</span></div>
+    <div class="kpi"><span>欠品による施術不可</span><b>0<small>件</small></b><span class="up">予約連動予測が機能</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>在庫モニター(POS・カルテ連動でリアルタイム推定)</h2>
+      <table>
+        <tr><th>品目</th><th>残量</th><th>あと何日</th><th>来週の予約需要</th><th>状態</th></tr>
+        <tr><td>アッシュ系カラー剤 8A</td><td><div class="meter lv-low"><i style="width:12%"></i></div></td><td><b style="color:var(--red)">2日</b></td><td>カラー予約14件(需要 高)</td><td><span class="st st-low">自動発注対象</span></td></tr>
+        <tr><td>酸性ストレート1剤</td><td><div class="meter lv-low"><i style="width:18%"></i></div></td><td><b style="color:var(--red)">4日</b></td><td>縮毛矯正5件(梅雨需要↑)</td><td><span class="st st-low">自動発注対象</span></td></tr>
+        <tr><td>ケラチントリートメント</td><td><div class="meter lv-mid"><i style="width:38%"></i></div></td><td>9日</td><td>トリートメント11件</td><td><span class="st st-mid">来週発注予定</span></td></tr>
+        <tr><td>ブリーチパウダー</td><td><div class="meter lv-ok"><i style="width:72%"></i></div></td><td>21日</td><td>ブリーチ3件</td><td><span class="st st-ok">適正</span></td></tr>
+        <tr><td>グレイカラー 6GB</td><td><div class="meter lv-ok"><i style="width:64%"></i></div></td><td>17日</td><td>白髪染め8件</td><td><span class="st st-ok">適正</span></td></tr>
+        <tr><td>シャンプー(業務用18L)</td><td><div class="meter lv-mid"><i style="width:33%"></i></div></td><td>11日</td><td>全施術で使用</td><td><span class="st st-mid">相見積り中</span></td></tr>
+      </table>
+      <button class="btn-p" id="run">🤖 AI発注案を生成 → 承認</button>
+      <p class="note">※ 使用量は予約メニュー×調合レシピから自動算出。天候(梅雨)による縮毛矯正需要の上振れも学習済み。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>発注書プレビュー(承認後ディーラーへ自動送信)</h2>
+        <div class="mail" id="mail">[待機中] 「AI発注案を生成」を押すと、ディーラー別の発注書が自動作成されます。</div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>AI判断ログ</h2>
+        <div class="row"><span>8Aカラー剤: 通常5本のところ<b>7本</b></span><span class="ok">来週カラー予約+40%</span></div>
+        <div class="row"><span>ストレート1剤: 相場比較で<b>B社</b>選択</span><span class="ok">▲1本あたり260円安</span></div>
+        <div class="row"><span>まとめ発注で送料無料ライン調整</span><span class="ok">▲送料880円削減</span></div>
+        <div class="row"><span>トリートメント: 今回見送り</span><span class="ok">キャンペーン予告を検知</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById("run").onclick = function () {
+  this.textContent = "⏳ 生成中…";
+  setTimeout(() => {
+    document.getElementById("mail").textContent =
+`━━ 発注書(自動生成) ━━━━━━━━━
+宛先: ビューティーサプライB社 御中
+発注日: 2026-07-18 / SALON BLOOM 表参道
+
+┌ 品目                      数量   単価
+│ アッシュ系カラー剤 8A       7  ¥1,180
+│ 酸性ストレート1剤(1kg)      3  ¥3,640
+│ カラー用手袋(100枚)         2  ¥  680
+└ 小計 ¥20,540(税込・送料無料)
+
+備考: 7/21(火)午前着 指定
+      ※来週の予約状況に基づく増量発注
+
+―― 同時処理 ――
+✔ 発注メール送信済み(18:02)
+✔ 会計ソフトへ仕入予定を自動計上
+✔ 入荷予定を在庫モニターへ反映
+✔ 店長へLINEで承認記録を送付`;
+    this.textContent = "✔ 承認・送信済み(発注完了)";
+    this.style.background = "#3e6b4f";
+  }, 1200);
+};
+</script>
+</body>
+</html>

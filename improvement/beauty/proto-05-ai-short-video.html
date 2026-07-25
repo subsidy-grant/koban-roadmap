@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.5 施術動画ショートAI自動編集 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#b98a2f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .timeline{display:flex;gap:6px;margin:10px 0;overflow-x:auto;padding-bottom:6px}
+  .clip{min-width:92px;height:130px;border-radius:10px;background:linear-gradient(160deg,#4a3a28,#26221e);color:#f5efe6;font-size:11px;display:flex;flex-direction:column;justify-content:space-between;padding:8px;position:relative;opacity:.35;transition:opacity .4s,transform .4s}
+  .clip.pick{opacity:1;transform:translateY(-4px);outline:3px solid var(--green)}
+  .clip .em{font-size:30px;text-align:center}
+  .clip .sc{position:absolute;top:6px;right:6px;background:var(--green);border-radius:99px;padding:0 6px;font-weight:700;display:none}
+  .clip.pick .sc{display:block}
+  .phone{width:210px;height:373px;background:#111;border-radius:26px;margin:0 auto;padding:10px;position:relative}
+  .screen{width:100%;height:100%;border-radius:18px;background:linear-gradient(160deg,#6b4a2f,#2c2620);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+  .screen .big{font-size:64px}
+  .cap{position:absolute;bottom:44px;left:0;right:0;text-align:center;color:#fff;font-weight:800;font-size:14px;text-shadow:0 2px 6px #000;padding:0 10px}
+  .capsub{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:#ffd98a;font-size:10.5px;text-shadow:0 1px 4px #000}
+  .bgm{position:absolute;top:10px;left:10px;color:#fff;font-size:10px;background:#0008;border-radius:99px;padding:2px 8px}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%;margin-top:10px}
+  .log{font-size:11.5px;max-height:140px;overflow-y:auto;background:#26221e;color:#cfe3d5;border-radius:8px;padding:10px;font-family:Consolas,monospace;margin-top:10px}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}.wait{color:var(--gold);font-weight:700}
+  .caption-box{background:#faf7f2;border-radius:10px;padding:10px;font-size:12.5px;white-space:pre-wrap;margin-top:8px}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎬 施術動画ショートAI自動編集 <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.5 / 業務改善助成金 対応案</span>
+</header>
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>① 撮りっぱなし素材(42分) → AIがベストシーン自動抽出</h2>
+      <div class="timeline" id="tl">
+        <div class="clip" data-s="0.91"><span>00:12</span><span class="em">💇‍♀️</span><span>ビフォア正面</span><span class="sc">0.91</span></div>
+        <div class="clip" data-s="0"><span>03:40</span><span class="em">💬</span><span>カウンセリング</span><span class="sc"></span></div>
+        <div class="clip" data-s="0.88"><span>08:15</span><span class="em">✂️</span><span>カット寄り</span><span class="sc">0.88</span></div>
+        <div class="clip" data-s="0"><span>15:02</span><span class="em">🧴</span><span>薬剤塗布</span><span class="sc"></span></div>
+        <div class="clip" data-s="0.86"><span>24:48</span><span class="em">🚿</span><span>流し(音◎)</span><span class="sc">0.86</span></div>
+        <div class="clip" data-s="0.93"><span>36:20</span><span class="em">💨</span><span>ブロー動き</span><span class="sc">0.93</span></div>
+        <div class="clip" data-s="0.97"><span>41:05</span><span class="em">✨</span><span>アフター回転</span><span class="sc">0.97</span></div>
+      </div>
+      <button class="btn-p" id="edit">✨ AI自動編集を実行(抽出→テロップ→BGM→書き出し)</button>
+      <div class="log" id="log">[待機中] 素材をドロップするだけで15秒ショート動画が完成します。</div>
+
+      <h2 style="margin-top:16px">② AI生成キャプション&ハッシュタグ</h2>
+      <div class="caption-box" id="capout">— 編集実行後に自動生成されます —</div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>完成プレビュー(9:16 / 15秒)</h2>
+        <div class="phone"><div class="screen" id="scr">
+          <span class="big" id="scrEm">▶</span>
+          <span class="bgm" id="bgm"></span>
+          <div class="cap" id="cap"></div>
+          <div class="capsub" id="capsub"></div>
+        </div></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>③ マルチ配信ステータス</h2>
+        <div class="row"><span>Instagram リール</span><span id="p1" class="wait">待機</span></div>
+        <div class="row"><span>TikTok</span><span id="p2" class="wait">待機</span></div>
+        <div class="row"><span>YouTube ショート</span><span id="p3" class="wait">待機</span></div>
+        <div class="row"><span>LINE VOOM</span><span id="p4" class="wait">待機</span></div>
+        <p class="note">先週実績: 動画6本 自動作成 / 編集時間 0分(従来 2.5h×6本=15h) / リール経由の新規予約 9件</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const seq = [
+  ["🎞 42分の素材から表情・動き・音声品質をAIが解析中…", null],
+  ["✔ ベストシーン5本を抽出(スコア0.86〜0.97)", "pick"],
+  ["📝 テロップ生成: ビフォーアフター構成で15秒に自動整列", null],
+  ["🎵 BGM選定: 今週のトレンド音源『Golden Hour (sped up)』", null],
+  ["🌐 キャプション+タグを生成(日/英 同時)", "cap"],
+  ["📤 4プラットフォームへ最適サイズで書き出し完了", "post"],
+];
+const scenes = [
+  ["💇‍♀️","Before…","くせ毛×広がりに悩む30代"],
+  ["✂️","レイヤーカット","顔周りに『くびれ』を仕込む"],
+  ["🚿","高濃度トリートメント","ASMR音声そのまま"],
+  ["💨","ブローで動き出す","※加速編集 2.0x"],
+  ["✨","After!!","髪質改善カラーで艶MAX"],
+];
+document.getElementById("edit").onclick = () => {
+  const log = document.getElementById("log");
+  log.textContent = ""; let i = 0;
+  const t = setInterval(() => {
+    const [msg, act] = seq[i];
+    log.textContent += `[${String(i+1).padStart(2,"0")}] ${msg}\n`; log.scrollTop = 1e4;
+    if (act === "pick") document.querySelectorAll(".clip").forEach(c => { if (+c.dataset.s > 0) c.classList.add("pick"); });
+    if (act === "cap") document.getElementById("capout").textContent =
+`【くせ毛さん集合】広がる髪、切り方で変わります✂️✨
+梅雨に負けない髪質改善カラー×くびれレイヤー。
+仕上がりまで15秒でどうぞ→
+
+#表参道美容室 #くせ毛カット #髪質改善 #くびれヘア #ビフォーアフター #hairtransformation #tokyohairsalon #japanesehairsalon`;
+    if (act === "post") { ["p1","p2","p3","p4"].forEach((id, k) => setTimeout(() => {
+        const el = document.getElementById(id); el.textContent = "✔ 予約投稿 19:00"; el.className = "ok";
+      }, k * 350)); play(); }
+    if (++i >= seq.length) clearInterval(t);
+  }, 800);
+};
+function play() {
+  let s = 0;
+  document.getElementById("bgm").textContent = "♪ Golden Hour (sped up)";
+  const t = setInterval(() => {
+    const [em, c1, c2] = scenes[s];
+    document.getElementById("scrEm").textContent = em;
+    document.getElementById("cap").textContent = c1;
+    document.getElementById("capsub").textContent = c2;
+    if (++s >= scenes.length) s = 0;
+  }, 1400);
+}
+</script>
+</body>
+</html>

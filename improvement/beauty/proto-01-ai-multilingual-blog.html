@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.1 AI多言語ブログ自動投稿 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--blue:#2f5f8a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#b98a2f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:290px 1fr;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .kpi b{font-size:22px;display:block}
+  .kpi span{font-size:11px;color:var(--sub)}
+  .kpi .up{color:var(--green);font-size:11px;font-weight:700}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:9px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%}
+  .btn-p:hover{background:#6f4720}
+  .btn-s{background:#efe9e0;color:var(--ink)}
+  .btn-s:hover{background:#e5ddd0}
+  .btn-e{background:var(--red);color:#fff}
+  .btn-e:hover{background:#8a372f}
+  .langs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .lang{font-size:11.5px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:#faf7f2;cursor:pointer;font-weight:600}
+  .lang.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .article h3{font-size:16px;margin-bottom:6px}
+  .meta{font-size:11px;color:var(--sub);margin-bottom:10px;display:flex;gap:10px;flex-wrap:wrap}
+  .body-txt{font-size:13px;white-space:pre-wrap;background:#faf7f2;border-radius:10px;padding:14px;max-height:330px;overflow-y:auto}
+  .kw{display:inline-block;font-size:11px;background:#eef5f0;color:var(--green);border-radius:99px;padding:2px 9px;margin:2px;font-weight:600}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}.wait{color:var(--gold);font-weight:700}.err{color:var(--red);font-weight:700}
+  .log{font-size:11.5px;color:var(--sub);max-height:150px;overflow-y:auto;background:#26221e;color:#cfe3d5;border-radius:8px;padding:10px;font-family:Consolas,monospace}
+  .prog{height:6px;background:#efe9e0;border-radius:99px;margin:8px 0;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:var(--green);transition:width .5s}
+  select{font:inherit;font-size:13px;padding:7px;border:1px solid var(--line);border-radius:8px;width:100%;background:#fff}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+
+  /* --- タブナビ --- */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tabbtn{background:var(--card);border:1px solid var(--line);color:var(--sub);padding:9px 15px;border-radius:99px;font-size:12.5px;font-weight:700}
+  .tabbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tabpanel{display:none}
+  .tabpanel.on{display:block}
+
+  /* --- ダッシュボード --- */
+  .dashnav{display:flex;flex-direction:column;gap:4px}
+  .dashnav div{font-size:12.5px;padding:8px 10px;border-radius:8px;color:var(--sub);font-weight:600}
+  .dashnav div.on{background:#faf3e8;color:var(--accent)}
+  .postlist .prow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .postlist .prow img,.postlist .prow .ph{width:38px;height:38px;border-radius:8px;background:#efe9e0;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .postlist .ptitle{font-size:12.5px;font-weight:700;flex:1}
+  .postlist .pdate{font-size:10.5px;color:var(--sub)}
+  .badges{display:flex;gap:4px;flex-wrap:wrap}
+  .badge{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700}
+  .badge.jp{background:#fdecec;color:#a4453c}
+  .badge.en{background:#e9f0fb;color:#2f5f8a}
+  .badge.cn{background:#fdecec;color:#c23b3b}
+  .badge.ot{background:#efe9e0;color:var(--sub)}
+
+  /* --- 比較表 --- */
+  table.cmp{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:7px 8px;text-align:center}
+  table.cmp th{background:#faf7f2;color:var(--sub);font-size:11.5px}
+  table.cmp td.before{color:var(--sub)}
+  table.cmp td.after{color:var(--green);font-weight:700}
+
+  /* --- スプレッドシート管理 --- */
+  table.sheet{width:100%;border-collapse:collapse;font-size:12px}
+  table.sheet th{background:#26221e;color:#f5efe6;padding:8px 7px;text-align:left;font-size:11px;letter-spacing:.03em}
+  table.sheet td{padding:8px 7px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.sheet tr:hover td{background:#faf7f2}
+  .stcell{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;display:inline-block}
+  .stcell.todo{background:#efe9e0;color:var(--sub)}
+  .stcell.doing{background:#fdf3e0;color:var(--gold)}
+  .stcell.done{background:#e9f5ec;color:var(--green)}
+  .stcell.error{background:#fdecec;color:var(--red)}
+  .logcell{font-size:10.5px;color:var(--red);font-family:Consolas,monospace}
+  .colhead{font-size:10px;color:var(--sub);font-weight:400}
+
+  /* --- システム構成図 --- */
+  .archflow{display:flex;flex-direction:column;gap:0;align-items:center;padding:10px 0}
+  .archbox{width:100%;max-width:640px;background:#faf7f2;border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px}
+  .archbox .ic{font-size:22px;flex:none}
+  .archbox b{font-size:13px;display:block}
+  .archbox span{font-size:11px;color:var(--sub)}
+  .archarrow{font-size:18px;color:var(--sub);padding:2px 0}
+  .archarrow small{display:block;font-size:10.5px;color:var(--sub);font-weight:600}
+  .archend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:640px;width:100%}
+  .archend .archbox{max-width:190px;flex-direction:column;text-align:center;padding:14px 10px}
+
+  /* --- 投稿制御 --- */
+  .toggle{display:flex;gap:6px;margin:8px 0}
+  .toggle button{flex:1;background:#efe9e0;color:var(--sub);font-size:12px;padding:8px}
+  .toggle button.on{background:var(--blue);color:#fff}
+</style>
+</head>
+<body>
+<header>
+  <h1>💇 AI多言語ブログ自動投稿システム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.1 / 業務改善助成金 対応案</span>
+</header>
+<div class="wrap">
+  <div class="tabs">
+    <button class="tabbtn on" data-tab="dash">🖥 ダッシュボード</button>
+    <button class="tabbtn" data-tab="sheet">📊 スプレッドシート管理</button>
+    <button class="tabbtn" data-tab="arch">🔗 システム構成</button>
+    <button class="tabbtn" data-tab="gen">✨ 記事自動生成</button>
+  </div>
+
+  <!-- ============ ダッシュボード ============ -->
+  <div class="tabpanel on" id="tab-dash">
+    <div class="kpis">
+      <div class="kpi"><span>今月の投稿数</span><b id="kPosts">48<small>本</small></b><span class="up">▲ 手作業比 27時間削減</span></div>
+      <div class="kpi"><span>サイトアクセス(30日)</span><b>12,540<small>PV</small></b><span class="up">▲ 前月比 +38%</span></div>
+      <div class="kpi"><span>お問い合わせ</span><b>156<small>件</small></b><span class="up">▲ 外国人予約 23件</span></div>
+      <div class="kpi"><span>展開言語</span><b>10<small>言語</small></b><span class="up">インバウンド流入 12か国</span></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>メニュー</h2>
+        <div class="dashnav">
+          <div class="on">🏠 ダッシュボード</div>
+          <div>📄 記事一覧</div>
+          <div>📮 投稿管理</div>
+          <div>📈 分析レポート</div>
+          <div>⚙️ 設定(言語・API・投稿タイミング)</div>
+        </div>
+        <div class="card" style="margin-top:12px;background:#faf7f2">
+          <h2 style="margin-bottom:6px">導入前後の比較</h2>
+          <table class="cmp">
+            <tr><th>比較項目</th><th>導入前</th><th>導入後</th></tr>
+            <tr><td>月間更新本数</td><td class="before">2〜4本</td><td class="after">30本以上</td></tr>
+            <tr><td>対応言語</td><td class="before">日本語のみ</td><td class="after">10言語 同時公開</td></tr>
+            <tr><td>1記事の作業時間</td><td class="before">1〜2時間</td><td class="after">タイトル入力のみ(数分)</td></tr>
+            <tr><td>SEO対策</td><td class="before">運任せ</td><td class="after">見出し・KW最適化済み</td></tr>
+            <tr><td>インバウンド対応</td><td class="before">不可</td><td class="after">外国語ページ自動生成</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>最近の投稿(言語別公開ステータス)</h2>
+        <div class="postlist" id="postlist"></div>
+        <p class="note">※「記事一覧」「投稿管理」「分析レポート」はプロトタイプでは簡略表示です。実装版では投稿の個別編集・再投稿・PV/CVレポートのドリルダウンに対応します。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ スプレッドシート管理 ============ -->
+  <div class="tabpanel" id="tab-sheet">
+    <div class="card">
+      <h2>スプレッドシート「投稿管理」シート(A〜E列)</h2>
+      <p class="note" style="margin:0 0 10px">オーナー・スタッフはこのシートにタイトルを並べるだけ。あとはシステムが自動で処理し、C〜E列を自動更新します。</p>
+      <div style="overflow-x:auto">
+      <table class="sheet">
+        <tr>
+          <th>A列<div class="colhead">ブログタイトル(必須)</div></th>
+          <th>B列<div class="colhead">キーワード(SEO用・任意)</div></th>
+          <th>C列<div class="colhead">ステータス</div></th>
+          <th>D列<div class="colhead">投稿完了日時</div></th>
+          <th>E列<div class="colhead">ログ</div></th>
+        </tr>
+        <tbody id="sheetRows"></tbody>
+      </table>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-s" onclick="addSheetRow()">＋ タイトルを追加(オーナー入力を再現)</button>
+        <button class="btn-e" onclick="simulateError()">⚠ エラー発生をデモ(WordPress認証切れ等)</button>
+      </div>
+      <div class="card" style="margin-top:14px;background:#faf7f2">
+        <h2 style="margin-bottom:6px">言語設定シート(有効言語のON/OFF)</h2>
+        <p class="note" style="margin:0 0 8px">コードを変更せず、チェックボックスで投稿対象言語を追加・除外できます。</p>
+        <div class="langs" id="langToggle"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ システム構成図 ============ -->
+  <div class="tabpanel" id="tab-arch">
+    <div class="card">
+      <h2>処理フロー(データがどう流れて記事が公開されるか)</h2>
+      <div class="archflow">
+        <div class="archbox"><span class="ic">📋</span><div><b>① Googleスプレッドシート(管理画面)</b><span>スタッフがA列にタイトル・B列にキーワードを入力するだけ</span></div></div>
+        <div class="archarrow">↓<small>定時トリガー or 手動実行がタイトル・キーワードを読み取り</small></div>
+        <div class="archbox"><span class="ic">⚙️</span><div><b>② Google Apps Script(自動処理)</b><span>行を1件ずつ処理。ステータスを「処理中」に更新</span></div></div>
+        <div class="archarrow">↓<small>AIへ記事生成・翻訳を依頼</small></div>
+        <div class="archbox"><span class="ic">✨</span><div><b>③ Gemini API(AI記事生成・翻訳)</b><span>日本語記事を生成 → HTML構造を保ったまま英語・中国語ほか9言語へローカライズ</span></div></div>
+        <div class="archarrow">↓<small>WordPress REST APIへ投稿リクエスト</small></div>
+        <div class="archbox"><span class="ic">🌐</span><div><b>④ WordPress REST API(自動投稿)</b><span>Polylangで言語ディレクトリを構成。即時公開 or 予約投稿を選択</span></div></div>
+        <div class="archarrow">↓<small>結果を D・E列に自動記録</small></div>
+        <div class="archend">
+          <div class="archbox"><span class="ic">🇯🇵</span><b>日本語サイト</b><span>公開</span></div>
+          <div class="archbox"><span class="ic">🌍</span><b>英語・中国語ほか9言語</b><span>同時公開</span></div>
+          <div class="archbox"><span class="ic">📊</span><b>スプレッドシート</b><span>投稿完了日時・ログを自動記録</span></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px;background:#faf7f2">
+        <h2 style="margin-bottom:6px">使用ツール・サービス</h2>
+        <div class="row"><span>Google Apps Script</span><span>記事生成・投稿処理の自動実行 / 無料</span></div>
+        <div class="row"><span>Googleスプレッドシート</span><span>タイトル入力・ステータス管理・ログ確認 / 無料</span></div>
+        <div class="row"><span>Gemini API</span><span>AI記事生成・多言語翻訳 / 従量課金</span></div>
+        <div class="row"><span>WordPress</span><span>ブログ記事の公開・管理 / 別途サーバー費用</span></div>
+        <div class="row" style="border-bottom:none"><span>Polylang(WPプラグイン)</span><span>多言語サイトの構成管理 / 無料</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 記事自動生成 ============ -->
+  <div class="tabpanel" id="tab-gen">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2>本日の自動生成</h2>
+          <label style="font-size:12px;color:var(--sub)">テーマ(AIが検索トレンドから自動選定)</label>
+          <select id="topic">
+            <option>梅雨の湿気に負けない縮毛矯正Q&A</option>
+            <option>2026年秋のトレンドカラー「モカベージュ」</option>
+            <option>外国人観光客に人気の日本のヘッドスパ</option>
+            <option>ブリーチなしでできる透明感カラー5選</option>
+            <option>浴衣に合うまとめ髪アレンジ(原宿散策向け)</option>
+          </select>
+          <label style="font-size:12px;color:var(--sub);display:block;margin-top:10px">投稿タイミング</label>
+          <div class="toggle">
+            <button id="tgNow" class="on" onclick="setTiming('now')">🚀 即時公開</button>
+            <button id="tgRes" onclick="setTiming('reserve')">🕒 予約投稿</button>
+          </div>
+          <select id="resTime" style="display:none;margin-bottom:8px">
+            <option>本日 22:00 に自動公開</option>
+            <option>明日 6:00 に自動公開</option>
+            <option>3日後 6:00 に自動公開</option>
+          </select>
+          <div class="prog"><i id="prog"></i></div>
+          <button class="btn-p" id="gen">✨ 記事を自動生成 → 10言語展開 → 投稿</button>
+          <div class="log" id="log" style="margin-top:10px">[待機中] 毎朝6:00に自動実行されます。手動実行も可能です。</div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2>SEO / MEO 自動対策 状況</h2>
+          <div class="row"><span>構造化データ(Article/LocalBusiness)</span><span class="ok">✔ 自動付与</span></div>
+          <div class="row"><span>hreflang 10言語相互リンク</span><span class="ok">✔ 自動生成</span></div>
+          <div class="row"><span>Googleビジネスプロフィール投稿連携</span><span class="ok">✔ 本日投稿済</span></div>
+          <div class="row"><span>サイトマップ更新・検索エンジン通知</span><span class="ok">✔ 完了</span></div>
+          <div class="row"><span>「表参道 美容室」MEO順位</span><span class="ok">3位 (▲2)</span></div>
+          <div class="row" style="border-bottom:none"><span>"hair salon tokyo" 英語検索順位</span><span class="wait">11位 (▲9)</span></div>
+        </div>
+      </div>
+
+      <div class="card article">
+        <h2>生成記事プレビュー(言語タブで切替)</h2>
+        <div class="langs" id="langs"></div>
+        <h3 id="aTitle"></h3>
+        <div class="meta"><span id="aMeta"></span><span id="aStatus" class="ok"></span></div>
+        <div class="body-txt" id="aBody"></div>
+        <div style="margin-top:10px"><b style="font-size:12px">SEOキーワード(AI自動選定):</b><br><span id="aKw"></span></div>
+        <p class="note">※ 本プロトタイプの記事・数値はデモ用サンプルです。実装版ではGemini APIによる生成とWordPress REST API経由の自動投稿を行います。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- タブ切替 ---------- */
+document.querySelectorAll(".tabbtn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tabbtn").forEach(b => b.classList.remove("on"));
+    document.querySelectorAll(".tabpanel").forEach(p => p.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("on");
+  };
+});
+
+/* ---------- ダッシュボード: 最近の投稿 ---------- */
+const RECENT_POSTS = [
+  {t:"季節のヘアケアで美しい髪を保つコツ", d:"2026/07/18 06:12", langs:["jp","en","cn","ot"]},
+  {t:"梅雨の湿気に負けない!縮毛矯正Q&A", d:"2026/07/18 06:12", langs:["jp","en","cn"]},
+  {t:"外国人観光客に人気の日本のヘッドスパ", d:"2026/07/17 06:08", langs:["jp","en","cn","ot"]},
+  {t:"2026年秋のトレンドカラー「モカベージュ」", d:"2026/07/16 06:05", langs:["jp","en"]},
+  {t:"表参道駅から徒歩3分、免税対応サロン案内", d:"2026/07/15 06:10", langs:["jp","en","cn","ot"]},
+];
+const postlist = document.getElementById("postlist");
+RECENT_POSTS.forEach(p => {
+  const row = document.createElement("div");
+  row.className = "prow";
+  const badgeMap = {jp:"🇯🇵 日本語", en:"🇺🇸 English", cn:"🇨🇳 中文", ot:"+7言語"};
+  row.innerHTML = `<div class="ph">📝</div><div style="flex:1"><div class="ptitle">${p.t}</div><div class="pdate">${p.d} 公開済み</div></div>
+    <div class="badges">${p.langs.map(l => `<span class="badge ${l}">${badgeMap[l]}</span>`).join("")}</div>`;
+  postlist.appendChild(row);
+});
+
+/* ---------- スプレッドシート管理 ---------- */
+let SHEET_ROWS = [
+  {a:"梅雨の湿気に負けない縮毛矯正Q&A", b:"縮毛矯正 表参道, frizz treatment japan", c:"done", d:"2026/07/18 06:12", e:""},
+  {a:"外国人観光客に人気の日本のヘッドスパ", b:"hair spa tokyo, 头皮护理", c:"done", d:"2026/07/17 06:08", e:""},
+  {a:"2026年秋のトレンドカラー「モカベージュ」", b:"トレンドカラー 表参道", c:"doing", d:"—", e:""},
+  {a:"浴衣に合うまとめ髪アレンジ", b:"浴衣 ヘアアレンジ 原宿", c:"todo", d:"—", e:""},
+  {a:"ブリーチなしでできる透明感カラー5選", b:"ブリーチなし カラー", c:"todo", d:"—", e:""},
+];
+const STLABEL = {todo:"未処理", doing:"処理中", done:"完了", error:"エラー"};
+function renderSheet(){
+  const tb = document.getElementById("sheetRows");
+  tb.innerHTML = SHEET_ROWS.map(r => `<tr>
+    <td>${r.a}</td>
+    <td>${r.b}</td>
+    <td><span class="stcell ${r.c}">${STLABEL[r.c]}</span></td>
+    <td>${r.d}</td>
+    <td class="logcell">${r.e}</td>
+  </tr>`).join("");
+}
+renderSheet();
+let newRowN = 0;
+function addSheetRow(){
+  newRowN++;
+  SHEET_ROWS.push({a:`新規タイトル案 #${newRowN}(スタッフ入力)`, b:"(AIがキーワード自動提案)", c:"todo", d:"—", e:""});
+  renderSheet();
+}
+function simulateError(){
+  const target = SHEET_ROWS.find(r => r.c === "todo" || r.c === "doing") || SHEET_ROWS[SHEET_ROWS.length-1];
+  target.c = "error";
+  target.e = "WordPress認証エラー: アプリケーションパスワードを確認してください";
+  renderSheet();
+}
+
+/* ---------- 言語設定トグル ---------- */
+const LANGS = [
+  ["日本語","🇯🇵"],["English","🇺🇸"],["中文(簡体)","🇨🇳"],["中文(繁體)","🇹🇼"],["한국어","🇰🇷"],
+  ["ไทย","🇹🇭"],["Tiếng Việt","🇻🇳"],["Español","🇪🇸"],["Français","🇫🇷"],["Deutsch","🇩🇪"]
+];
+const langToggle = document.getElementById("langToggle");
+LANGS.forEach(([l, f], i) => {
+  const b = document.createElement("span");
+  b.className = "lang" + (i < 5 ? " on" : "");
+  b.textContent = `${f} ${l}`;
+  b.onclick = () => b.classList.toggle("on");
+  langToggle.appendChild(b);
+});
+
+/* ---------- 記事プレビュー ---------- */
+const ARTICLES = {
+  "日本語":{t:"梅雨の湿気に負けない!縮毛矯正の最新事情Q&A【表参道美容師が解説】",
+    b:`こんにちは、SALON BLOOM 表参道です。\n\n6月に入り「朝せっかくブローしたのに、駅に着く頃には広がってしまう…」というご相談が急増しています。今日は湿気の季節に人気の縮毛矯正について、よくいただく質問にお答えします。\n\n■ Q1. 縮毛矯正とストレートパーマ、何が違うの?\n縮毛矯正は熱の力でクセの構造そのものを再形成する施術です。うねりが強い方、湿気で広がりやすい方には縮毛矯正をおすすめしています。\n\n■ Q2. ダメージが心配です\n当店では酸性ストレートを導入しており、ブリーチ毛や細い髪の方にも対応できるようになりました。カウンセリングで髪の状態を診断し、薬剤を調合します。\n\n■ Q3. どのくらい持ちますか?\nかけた部分は半永久的にストレートが続きます。新しく生えてくる部分との境目が気になるのは4〜6か月ほど。リタッチでのメンテナンスがおすすめです。\n\n■ 梅雨のヘアケア3つのポイント\n1. 洗い流さないトリートメントは「毛先→中間」の順で\n2. ドライヤーは上から下に風を当ててキューティクルを閉じる\n3. 仕上げのオイルは付けすぎ注意(1〜2滴)\n\nご予約はWeb・LINE・お電話で承っています。湿気に悩まされない夏を、一緒に作りましょう。`,
+    m:"2026-07-18 06:00 自動生成 / 1,842字 / 読了3分",s:"公開済み(6:12)"},
+  "English":{t:"Beat the Rainy-Season Frizz: Japanese Straightening Q&A from an Omotesando Stylist",
+    b:`Hello from SALON BLOOM Omotesando!\n\nJune in Tokyo means humidity — and a wave of guests asking why their morning blowout disappears by the time they reach the station. Today we answer the most common questions about Japanese thermal straightening (shukumo kyosei), the treatment that made Tokyo famous for silky hair.\n\n■ Q1. How is it different from a regular straight perm?\nJapanese straightening re-forms the internal structure of the hair with heat, giving a lasting glass-straight finish even in 90% humidity.\n\n■ Q2. Will it damage my hair?\nWe offer acid-based straightening, gentle enough for bleached or fine hair. Every treatment starts with a diagnosis and a custom-blended formula.\n\n■ Q3. How long does it last?\nTreated sections stay straight semi-permanently. Most guests return for a root touch-up every 4–6 months.\n\n■ Visiting Tokyo? \nEnglish-speaking stylists available. We are 3 minutes from Omotesando Station (Exit A1). Book online — no Japanese needed, and tax-free retail products are available for tourists.\n\nSee you in the salon!`,
+    m:"Auto-translated + localized 06:03 / SEO: hair straightening tokyo, japanese hair salon english",s:"Published (6:14)"},
+  "中文(簡体)":{t:"告别梅雨季炸毛!表参道发型师详解日式缩毛矫正Q&A",
+    b:`大家好,这里是SALON BLOOM表参道店。\n\n东京进入梅雨季,湿度高达90%。很多顾客问:"早上刚吹好的头发,到车站就毛躁了怎么办?"今天我们来解答关于日式缩毛矫正(直发)的常见问题。\n\n■ Q1. 缩毛矫正和普通拉直有什么区别?\n缩毛矫正利用热能重塑头发内部结构,即使在高湿度环境下也能保持如玻璃般顺滑的直发效果。\n\n■ Q2. 会伤头发吗?\n本店引进酸性直发技术,漂染过或细软的头发也可以做。每次施术前都会进行发质诊断并调配专属药水。\n\n■ Q3. 效果能维持多久?\n做过的部分半永久保持直发,一般4-6个月补根一次即可。\n\n■ 来东京旅游的朋友\n本店距表参道站A1出口步行3分钟,支持微信/支付宝付款,可在线预约(无需日语)。店内美发产品可办理免税。\n\n期待您的光临!`,
+    m:"自动翻译+本地化 06:05 / 关键词: 东京美发沙龙 日式拉直 表参道",s:"已发布 (6:15)"},
+  "한국어":{t:"장마철 곱슬 고민 끝! 오모테산도 미용사가 알려주는 일본 매직스트레이트 Q&A",
+    b:`안녕하세요, SALON BLOOM 오모테산도점입니다.\n\n도쿄의 장마철, 습도 90%에도 무너지지 않는 머릿결의 비밀 — 일본식 매직스트레이트(축모교정)에 대해 자주 받는 질문에 답해 드립니다.\n\n■ Q1. 일반 스트레이트펌과의 차이는?\n열의 힘으로 모발 내부 구조를 재형성하여, 습기에도 유리처럼 매끄러운 스트레이트가 유지됩니다.\n\n■ Q2. 손상이 걱정돼요\n산성 스트레이트를 도입하여 탈색모나 가는 모발도 시술 가능합니다. 모발 진단 후 맞춤 약제를 조합합니다.\n\n■ Q3. 얼마나 유지되나요?\n시술 부위는 반영구적으로 유지되며, 4~6개월마다 뿌리 리터치를 권장합니다.\n\n■ 도쿄 여행 중이신가요?\n오모테산도역 A1 출구에서 도보 3분. 온라인 예약 가능하며 면세 쇼핑도 지원합니다.\n\n살롱에서 뵙겠습니다!`,
+    m:"자동 번역+현지화 06:06 / 키워드: 도쿄 미용실 매직스트레이트 오모테산도",s:"게시됨 (6:16)"},
+};
+const FALLBACK = l => ({t:`[${l}] 記事は自動翻訳・ローカライズ済み(デモでは日英中韓のみ全文収録)`,
+  b:`この言語版はプロトタイプでは省略表示です。\n実装版では10言語すべてに対し、\n・機械翻訳ではなく文化圏に合わせたローカライズ\n・現地検索エンジン向けキーワード最適化\n・通貨/交通/決済情報の自動差し込み\nを行い、hreflangで相互リンクした状態で同時公開します。`,
+  m:"自動生成 06:0X / ローカライズ済み", s:"公開済み"});
+
+const KW = ["縮毛矯正 表参道","梅雨 髪 広がる 対策","hair straightening tokyo","japanese hair salon english ok","东京美发 推荐","도쿄 미용실 예약","酸性ストレート","frizz treatment japan","表参道駅 美容室","tax free salon tokyo"];
+
+let cur = "日本語";
+const langsEl = document.getElementById("langs");
+LANGS.forEach(([l, f]) => {
+  const b = document.createElement("span");
+  b.className = "lang" + (l === cur ? " on" : "");
+  b.textContent = `${f} ${l}`;
+  b.onclick = () => { cur = l; document.querySelectorAll("#langs .lang").forEach(x => x.classList.remove("on")); b.classList.add("on"); show(); };
+  langsEl.appendChild(b);
+});
+function show() {
+  const a = ARTICLES[cur] || FALLBACK(cur);
+  document.getElementById("aTitle").textContent = a.t;
+  document.getElementById("aMeta").textContent = a.m;
+  document.getElementById("aStatus").textContent = a.s;
+  document.getElementById("aBody").textContent = a.b;
+  document.getElementById("aKw").innerHTML = KW.map(k => `<span class="kw">${k}</span>`).join("");
+}
+show();
+
+/* ---------- 投稿タイミング切替 ---------- */
+let timing = "now";
+function setTiming(v){
+  timing = v;
+  document.getElementById("tgNow").classList.toggle("on", v === "now");
+  document.getElementById("tgRes").classList.toggle("on", v === "reserve");
+  document.getElementById("resTime").style.display = v === "reserve" ? "block" : "none";
+}
+
+/* ---------- 生成シミュレーション ---------- */
+function currentSteps(){
+  const base = [
+    "トレンド分析: Google Trends・検索クエリから本日のテーマを確定",
+    "日本語記事を生成中(構成→本文→推敲の3パス)…",
+    "SEOキーワード10件を選定、タイトル・見出しへ配置",
+    "9言語へローカライズ翻訳中(文化圏別に表現調整)…",
+    "hreflang・構造化データを生成、CMSへ入稿",
+    "Googleビジネスプロフィールへ要約版を投稿予約",
+  ];
+  if (timing === "now") {
+    base.push("完了: 10言語×1記事を公開しました ✔");
+  } else {
+    const t = document.getElementById("resTime").value;
+    base.push(`完了: 10言語×1記事を予約キューへ登録しました(${t}) ✔`);
+  }
+  return base;
+}
+document.getElementById("gen").onclick = () => {
+  const steps = currentSteps();
+  const log = document.getElementById("log"), prog = document.getElementById("prog");
+  log.textContent = ""; let i = 0;
+  const timer = setInterval(() => {
+    log.textContent += `[${new Date().toLocaleTimeString("ja-JP")}] ${steps[i]}\n`;
+    log.scrollTop = log.scrollHeight;
+    prog.style.width = ((i + 1) / steps.length * 100) + "%";
+    if (++i >= steps.length) {
+      clearInterval(timer);
+      const k = document.getElementById("kPosts");
+      k.innerHTML = (parseInt(k.textContent) + 1) + "<small>本</small>";
+      const sheetTarget = SHEET_ROWS.find(r => r.c === "todo");
+      if (sheetTarget) {
+        sheetTarget.c = "done";
+        sheetTarget.d = new Date().toLocaleString("ja-JP");
+        renderSheet();
+      }
+    }
+  }, 700);
+};
+</script>
+</body>
+</html>

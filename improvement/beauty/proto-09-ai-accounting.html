@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.9 レジ締め・記帳AI自動化 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#3e6b4f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{background:#efe9e0;padding:7px 8px;text-align:left;font-size:11.5px}
+  td{padding:7px 8px;border-top:1px solid var(--line)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .ok{color:var(--green);font-weight:700}.ng{color:var(--red);font-weight:700}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%;margin-top:10px}
+  .log{font-size:11.5px;max-height:170px;overflow-y:auto;background:#26221e;color:#cfe3d5;border-radius:8px;padding:10px;font-family:Consolas,monospace;margin-top:10px}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .stamp{display:none;margin:10px auto 0;width:110px;height:110px;border:4px solid var(--green);border-radius:50%;color:var(--green);font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;transform:rotate(-8deg);opacity:0}
+  .stamp.show{opacity:1;transition:opacity .5s}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .pl td{font-size:12px}
+  .pl .h{font-weight:700;background:#faf7f2}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧾 レジ締め・記帳AI自動化システム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.9 / 省力化投資補助金(一般型) 対応案</span>
+</header>
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>本日のレジ締め(7/18 閉店後) — POS×キャッシュレス明細をAIが自動突合</h2>
+      <table>
+        <tr><th>決済手段</th><th class="num">POS記録</th><th class="num">実残高/明細</th><th>判定</th></tr>
+        <tr><td>現金</td><td class="num">¥38,500</td><td class="num" id="cash">¥38,200</td><td id="cashJ" class="ng">▲300 差異</td></tr>
+        <tr><td>クレジット(Visa/MC)</td><td class="num">¥86,900</td><td class="num">¥86,900</td><td class="ok">一致</td></tr>
+        <tr><td>PayPay</td><td class="num">¥24,200</td><td class="num">¥24,200</td><td class="ok">一致</td></tr>
+        <tr><td>交通系IC</td><td class="num">¥9,350</td><td class="num">¥9,350</td><td class="ok">一致</td></tr>
+        <tr><td>ギフト券</td><td class="num">¥5,500</td><td class="num">¥5,500</td><td class="ok">一致</td></tr>
+        <tr style="font-weight:800"><td>売上合計</td><td class="num">¥164,450</td><td class="num" id="total">¥164,150</td><td id="totalJ" class="ng">要確認</td></tr>
+      </table>
+      <button class="btn-p" id="close">🤖 AIレジ締めを実行(差異調査→仕訳→日報)</button>
+      <div class="log" id="log">[待機中] 従来この作業に毎日25〜35分かかっていました。</div>
+      <div style="display:flex;justify-content:center"><div class="stamp" id="stamp">本日締め<br>完了</div></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>自動仕訳(会計ソフト連携済み)</h2>
+        <table>
+          <tr><th>借方</th><th>貸方</th><th class="num">金額</th></tr>
+          <tr><td>現金</td><td>売上高(施術)</td><td class="num">38,200</td></tr>
+          <tr><td>クレジット売掛金</td><td>売上高(施術)</td><td class="num">83,600</td></tr>
+          <tr><td>クレジット売掛金</td><td>売上高(店販)</td><td class="num">3,300</td></tr>
+          <tr><td>電子マネー売掛金</td><td>売上高(施術)</td><td class="num">33,550</td></tr>
+          <tr><td>雑損失(過不足)</td><td>現金</td><td class="num" style="color:var(--red)">300</td></tr>
+          <tr><td colspan="2" style="font-size:11px;color:var(--sub)">※軽減税率なし/消費税10%内税・自動区分済み</td><td></td></tr>
+        </table>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>月次サマリー(AIが税理士へ自動共有)</h2>
+        <table class="pl">
+          <tr class="h"><td>7月売上(18日時点)</td><td class="num">¥2,864,300</td></tr>
+          <tr><td>├ 施術売上</td><td class="num">¥2,571,800</td></tr>
+          <tr><td>└ 店販売上</td><td class="num">¥292,500</td></tr>
+          <tr class="h"><td>材料費率</td><td class="num">8.9%</td></tr>
+          <tr class="h"><td>人件費率</td><td class="num">42.1%</td></tr>
+          <tr class="h"><td>営業利益率(推定)</td><td class="num ok">14.8%</td></tr>
+        </table>
+        <div class="row"><span>月次試算表の完成</span><b>翌月10日 → 翌月2日</b></div>
+        <div class="row"><span>閉店後の事務時間</span><b>30分/日 → 3分/日</b></div>
+        <p class="note">AI所見: 店販比率10.2%は目標12%に未達。No.3カウンセリングAIの提案機能との連携強化を推奨。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const steps = [
+  "POSジャーナル142明細とキャッシュレス4社の明細を突合中…",
+  "現金差異▲300円を検出 → 取引ログを逆探索…",
+  "原因特定: 16:42 佐藤様会計で500円玉と100円玉の釣銭誤り(レジカメラ映像タイムスタンプ照合)",
+  "仕訳12本を自動生成し会計ソフトへ登録 ✔",
+  "日報を作成しオーナーのLINEへ送信 ✔",
+  "明日の釣銭準備金リストを発行(百円玉+20枚推奨) ✔",
+  "レジ締め完了 — 所要時間 2分48秒",
+];
+document.getElementById("close").onclick = function () {
+  const log = document.getElementById("log");
+  log.textContent = ""; let i = 0; this.disabled = true;
+  const t = setInterval(() => {
+    log.textContent += `[${String(i+1)}] ${steps[i]}\n`; log.scrollTop = 1e4;
+    if (i === 2) {
+      document.getElementById("cashJ").innerHTML = '<span class="ok">原因特定済</span>';
+      document.getElementById("totalJ").innerHTML = '<span class="ok">処理済</span>';
+    }
+    if (++i >= steps.length) {
+      clearInterval(t);
+      document.getElementById("stamp").classList.add("show");
+      this.textContent = "✔ 本日のレジ締め完了(2分48秒)";
+      this.style.background = "#3e6b4f"; this.disabled = false;
+    }
+  }, 900);
+};
+</script>
+</body>
+</html>

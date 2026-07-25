@@ -3,6 +3,9 @@
 
 data/plans/{industry}.json が存在する業種は10プランのカード（事業計画書・プロトタイプへの
 リンク付き）を、まだ存在しない業種は「準備中」を表示する。
+data/external/{industry}.json が存在する業種は、本サイトの100施策スコアリングではなく
+外部プロジェクト（別セッションで作成した事業計画書一式）を優先して表示する
+（現状: beauty = beauty-ai-factory との統合）。
 実行: python3 build_hub.py（冪等）
 """
 import json
@@ -13,6 +16,9 @@ DATA = os.path.join(HERE, "data")
 IMPROVEMENT = os.path.abspath(os.path.join(HERE, ".."))
 
 INDUSTRY_ORDER = ["beauty", "food", "lodging", "manufacturing", "realestate", "education"]
+
+# 100施策スコアリングの代わりに外部プロジェクトの10案を採用する業種
+EXTERNAL_INDUSTRIES = {"beauty"}
 
 CSS = """
   :root { --paper:#eef0ea; --paper-raised:#f8f9f4; --ink:#1b2420; --ink-soft:#4a564d;
@@ -71,7 +77,13 @@ def main():
     labels = {ik: data["INDUSTRIES"][ik]["label"] for ik in INDUSTRY_ORDER}
 
     plans = {}
+    external = {}
     for ik in INDUSTRY_ORDER:
+        ep = os.path.join(DATA, "external", ik + ".json")
+        if ik in EXTERNAL_INDUSTRIES and os.path.exists(ep):
+            with open(ep, encoding="utf-8") as f:
+                external[ik] = json.load(f)
+            continue
         p = os.path.join(DATA, "plans", ik + ".json")
         if os.path.exists(p):
             with open(p, encoding="utf-8") as f:
@@ -85,7 +97,7 @@ def main():
     parts.append("<style>" + CSS + "</style></head><body><main>")
     parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>')
     parts.append("<h1>業種別・改善計画 厳選10選</h1>")
-    parts.append('<p class="sub">6業種×100施策（計600施策）を費用対効果・業務改善効率でスコアリングし、各業種10案に厳選。'
+    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は姉妹プロジェクトとの統合、他業種は6業種×100施策のスコアリングによる選定）。'
                  "各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。"
                  '選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>')
 
@@ -98,7 +110,23 @@ def main():
     for i, ik in enumerate(INDUSTRY_ORDER):
         cls = "ind active" if i == 0 else "ind"
         parts.append(f'<section class="{cls}" id="ind-{ik}">')
-        if ik in plans:
+        if ik in external:
+            ext = external[ik]
+            parts.append(f'<p class="sub" style="margin-top:0;">{esc(ext.get("sourceNote", ""))}</p>')
+            parts.append('<div class="cards">')
+            for pl in ext["plans"]:
+                no = pl["no"]
+                prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
+                proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
+                parts.append('<div class="card">')
+                parts.append(f'<div class="no">PLAN {no:02d}</div>')
+                parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
+                parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
+                parts.append(f'<div class="links"><a href="{ik}/plan-{no:02d}.html">📄 事業計画書（A4×10p）</a>'
+                             f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+                parts.append("</div>")
+            parts.append("</div>")
+        elif ik in plans:
             parts.append('<div class="cards">')
             for pl in plans[ik]:
                 no = pl["no"]

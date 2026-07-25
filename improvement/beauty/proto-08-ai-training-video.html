@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.8 技術教育動画AI自動生成 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#b98a2f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .vid{background:#26221e;border-radius:12px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#f5efe6;position:relative;overflow:hidden}
+  .vid .em{font-size:56px}
+  .vid .cap{position:absolute;bottom:36px;background:#000a;padding:4px 14px;border-radius:8px;font-size:13px;font-weight:700}
+  .vbar{position:absolute;bottom:0;left:0;right:0;height:22px;background:#000c;display:flex;align-items:center;padding:0 10px;gap:8px;font-size:10px}
+  .vprog{flex:1;height:4px;background:#555;border-radius:99px;overflow:hidden}
+  .vprog i{display:block;height:100%;width:35%;background:var(--gold)}
+  .chap{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .ch{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;font-size:12.5px}
+  .ch:hover{background:#faf7f2}
+  .ch.on{border-color:var(--accent);background:#f7efe4}
+  .ch .no{background:var(--accent);color:#fff;border-radius:99px;min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+  .ch .t{flex:1}
+  .ch .ai{font-size:10px;color:var(--green);font-weight:700}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%;margin-top:10px}
+  .quiz{background:#faf7f2;border-radius:10px;padding:12px;font-size:13px;margin-top:8px}
+  .quiz .q{font-weight:700;margin-bottom:8px}
+  .quiz label{display:block;padding:7px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;cursor:pointer;background:#fff;font-size:12.5px}
+  .quiz label.correct{border-color:var(--green);background:#eef5f0;font-weight:700}
+  .quiz label.wrong{border-color:var(--red);background:#fbeeec}
+  .fb{font-size:12px;display:none;margin-top:6px;padding:8px;border-radius:8px}
+  .prog-list .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line);align-items:center}
+  .pb{width:110px;height:7px;background:#efe9e0;border-radius:99px;overflow:hidden}
+  .pb i{display:block;height:100%;background:var(--green)}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .addstaff{display:flex;gap:6px;margin-top:8px}
+  .addstaff input{flex:1;font:inherit;font-size:12px;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+  .addstaff button{background:var(--accent);color:#fff;font-size:12px;padding:6px 10px}
+  .stat-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;color:var(--sub)}
+  .stat-row b{color:var(--ink)}
+  .real-badge{font-size:9.5px;background:#eef5f0;color:var(--green);border-radius:99px;padding:2px 8px;font-weight:800;margin-left:4px}
+  .watchcb-label{display:flex;align-items:center;gap:3px;font-size:9.5px;color:var(--sub);white-space:nowrap}
+  .hide{display:none}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎓 技術教育動画AI自動生成システム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.8 / 業務改善助成金 対応案</span>
+</header>
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>教材ビューア — 店長の施術動画1本(38分)から自動生成された講座</h2>
+      <div class="vid" id="vid">
+        <span class="em" id="vEm">✂️</span>
+        <span class="cap" id="vCap">第2章: セニングの入れ角度 — ここが命</span>
+        <div class="vbar"><span>▶</span><div class="vprog"><i id="vp"></i></div><span id="vt">04:12 / 06:30</span></div>
+      </div>
+      <div class="chap" id="chap"></div>
+      <button class="btn-p" id="make">🤖 新しい施術動画から教材を自動生成する</button>
+      <p class="note">AIが自動実行: シーン分割 → 章立て → 字幕 → 重要ポイント抽出(店長の口癖「ここが命」を自動検出) → 確認クイズ生成。教材化の作業時間: 従来4時間 → 0分。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>カテゴリ別確認クイズ(AI自動生成・各3問・四択)</h2>
+        <div class="chap" id="quizCatSel"></div>
+        <div class="quiz hide" id="quizBox"></div>
+      </div>
+      <div class="card prog-list" style="margin-top:14px">
+        <h2>スタッフ別スキル管理ダッシュボード<span class="real-badge">実データ連動</span></h2>
+        <div id="staffList"></div>
+        <div class="addstaff">
+          <input id="newStaffName" placeholder="新しいスタッフ名(例: 田中(3年目))">
+          <button onclick="addStaff()">+ 追加</button>
+        </div>
+        <div id="radarBox" style="margin-top:8px"></div>
+        <div class="stat-row"><span>教材視聴進捗</span><b id="watchStat">—</b></div>
+        <div class="stat-row"><span>確認クイズ正答率</span><b id="quizStat">—</b></div>
+        <div id="weakBox"></div>
+        <button class="btn-p" onclick="printStaffReport()" style="background:var(--green)">📄 個人技術レポートを印刷用に生成(A4)</button>
+        <p class="note">上のクイズに答えたり、章の「視聴済」にチェックすると、選択中のスタッフの技術カテゴリ別スキルが実際に更新されます。</p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>店舗全体の平均習熟度推移</h2>
+        <div id="storeTrend"></div>
+        <div class="stat-row"><span>店舗全体 現在の平均習熟度</span><b id="storeAvg">—</b></div>
+        <button class="btn-p" onclick="printStoreReport()" style="background:var(--gold)">📄 店舗全体レポートを印刷用に生成(全スタッフ一覧)</button>
+        <p class="note">店長・トレーナー向け。全スタッフのスキルスコアと弱点、教材整備の優先度をA4 1枚にまとめます。</p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>導入効果(6か月)</h2>
+        <div class="row"><span>マンツーマン指導時間</span><b>週9h → 3h</b></div>
+        <div class="row"><span>スタイリストデビュー期間</span><b>3.2年 → 2.4年</b></div>
+        <div class="row"><span>教材ライブラリ</span><b>52本(自動生成)</b></div>
+        <div class="row"><span>ベテラン退職時の技術損失</span><b style="color:var(--green)">アーカイブ済み</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHAPS = [
+  ["01","導入・ウィッグセット確認(AI: 準備物リスト自動付与)","🪞","第1章: 施術前チェック","カット"],
+  ["02","セニングの入れ角度 — ここが命 ★重要ポイント自動検出","✂️","第2章: セニングの入れ角度 — ここが命","カット"],
+  ["03","顔周りレイヤーの「くびれ」設計","💇‍♀️","第3章: 顔周りレイヤーの設計","カット"],
+  ["04","ドライ&質感調整(スロー再生 0.5x 自動挿入)","💨","第4章: ドライ&質感調整","トリートメント"],
+  ["05","仕上げ・スタイリング剤の選定理由","✨","第5章: 仕上げとスタイリング","トリートメント"],
+];
+const CATS = ["カット","カラー","パーマ","トリートメント"];
+const STAFF = [
+  { name:"佐野(1年目)", skills:{カット:58,カラー:40,パーマ:35,トリートメント:70}, watched:new Set(), quiz:{correct:0,total:0} },
+  { name:"青木(2年目)", skills:{カット:78,カラー:65,パーマ:60,トリートメント:82}, watched:new Set(), quiz:{correct:0,total:0} },
+  { name:"森(パート復帰研修)", skills:{カット:30,カラー:20,パーマ:15,トリートメント:45}, watched:new Set(), quiz:{correct:0,total:0} },
+];
+let curStaff = 0;
+
+const chapEl = document.getElementById("chap");
+CHAPS.forEach(([no, t, em, cap], i) => {
+  const d = document.createElement("div");
+  d.className = "ch" + (i === 1 ? " on" : "");
+  d.innerHTML = `<span class="no">${no}</span><span class="t">${t}</span>
+    <label class="watchcb-label" onclick="event.stopPropagation()"><input type="checkbox" class="watchcb" onclick="toggleWatched(${i}, this.checked)"> 視聴済</label>
+    <span class="ai">AI章立て</span>`;
+  d.onclick = () => {
+    document.querySelectorAll(".ch").forEach(x => x.classList.remove("on")); d.classList.add("on");
+    document.getElementById("vEm").textContent = em;
+    document.getElementById("vCap").textContent = cap;
+    document.getElementById("vp").style.width = (15 + i * 20) + "%";
+  };
+  chapEl.appendChild(d);
+});
+
+// ===== カテゴリ別確認クイズ(各3問・四択) =====
+const CAT_ICON = { "カット":"✂️", "カラー":"🎨", "パーマ":"🌀", "トリートメント":"💆" };
+const QUIZ_BANK = {
+  "カット": [
+    { q:"グラデーションボブでセニングを入れる際、絶対に避けるべき操作は?", choices:["毛先1/3への縦スライドセニング","根元付近への深いセニング","ドライ後の質感調整","中間部への軽いセニング"], correct:1, tip:"根元に深く入れると膨らみの原因になるため、中間から毛先のみに留める。" },
+    { q:"顔周りレイヤーで「くびれ」を作る際に最も重要な要素は?", choices:["ハサミの角度の種類","引き出す角度と均一なテンション","カラーの明るさ","シャンプーのタイミング"], correct:1, tip:"引き出し角度とテンションの均一性がくびれの再現性を左右する。" },
+    { q:"刈り上げグラデーションでムラを防ぐために欠かせない工程は?", choices:["事前の丁寧なブロッキング","仕上げのワックス選定","シャンプーの温度","顧客への説明のみ"], correct:0, tip:"均一なブロッキングがグラデーションの滑らかさを決める。" },
+  ],
+  "カラー": [
+    { q:"ジアミンアレルギーの顧客に対して選ぶべき薬剤は?", choices:["通常のアルカリカラー剤","ノンジアミン・ゼロテク系カラー剤","ブリーチ剤のみ","ヘアマニキュアは避ける"], correct:1, tip:"ノンジアミン系はアレルギーリスクを大幅に低減できる。" },
+    { q:"既にブリーチ毛への重ねブリーチで最優先すべきことは?", choices:["保護剤を添加し負担を最小化","放置時間を通常より延長","温度を上げて時短する","薬剤を倍量塗布する"], correct:0, tip:"保護剤添加で断毛リスクを抑えつつ発色を狙う。" },
+    { q:"暖色系トーンが似合うと診断された顧客への提案として適切なのは?", choices:["寒色系クールトーンを強く推奨","地毛や既存カラーに馴染む暖色系配合","モノトーングレーのみ提案","提案せず現状維持"], correct:1, tip:"地毛との親和性を優先した配合が失敗を防ぐ。" },
+  ],
+  "パーマ": [
+    { q:"細毛・ダメージ毛への薬剤選定で避けるべきなのは?", choices:["低刺激システムパーマ","強アルカリ・高濃度の薬剤","コールドパーマ","デジタルパーマの低温設定"], correct:1, tip:"強アルカリ・高濃度は断毛リスクが跳ね上がるため避ける。" },
+    { q:"ボリュームを抑えたい場合に選ぶべきロッドは?", choices:["太めのロッド","細めのロッド","ロッドを使わない","ロッド径は関係ない"], correct:0, tip:"太めのロッドはウェーブを緩やかにしボリュームを抑えられる。" },
+    { q:"パーマ後のダメージを最小化するために推奨される工程は?", choices:["中間水洗をしっかり行う","放置時間を大幅に延長する","薬剤を追加塗布する","特に何もしない"], correct:0, tip:"中間水洗の徹底が薬剤残留によるダメージを防ぐ。" },
+  ],
+  "トリートメント": [
+    { q:"断毛リスクが高いブリーチ毛に推奨する集中補修は?", choices:["通常の洗い流しトリートメントのみ","超音波トリートメント等の集中補修","何もせず自然乾燥","シリコンオイルのみ塗布"], correct:1, tip:"集中補修でダメージ由来の断毛リスクを大きく下げられる。" },
+    { q:"頭皮の皮脂詰まり・薄毛予兆がある場合に優先すべきケアは?", choices:["スカルプクレンジング+育毛スパ","毛先だけのトリートメント","カラーの重ね塗り","特別なケアは不要"], correct:0, tip:"頭皮環境の改善が将来の薄毛リスク低減につながる。" },
+    { q:"酸熱トリートメントが不向きとされるケースは?", choices:["健康毛","細毛×ダメージ中〜大","硬毛","多毛"], correct:1, tip:"細毛でダメージが大きい髪は酸熱系で硬化するリスクがある。" },
+  ],
+};
+let quizCat = null, quizIdx = 0, quizCorrectCount = 0;
+function renderQuizCatSel() {
+  document.getElementById("quizCatSel").innerHTML = CATS.map(c => `
+    <div class="ch" onclick="startQuiz('${c}')"><span class="no">${CAT_ICON[c] || "📘"}</span><span class="t">${c}の確認クイズ(3問)</span><span class="ai">AI自動生成</span></div>`).join("");
+}
+function startQuiz(cat) {
+  quizCat = cat; quizIdx = 0; quizCorrectCount = 0;
+  document.getElementById("quizBox").classList.remove("hide");
+  renderQuizQuestion();
+}
+function renderQuizQuestion() {
+  const q = QUIZ_BANK[quizCat][quizIdx];
+  document.getElementById("quizBox").innerHTML = `
+    <div class="q">[${quizCat} ${quizIdx + 1}/${QUIZ_BANK[quizCat].length}] ${q.q}</div>
+    ${q.choices.map((c, i) => `<label onclick="answerQuiz(${i})">${String.fromCharCode(65 + i)}. ${c}</label>`).join("")}
+    <div class="fb" id="quizFb"></div>`;
+}
+function answerQuiz(i) {
+  const q = QUIZ_BANK[quizCat][quizIdx];
+  document.querySelectorAll("#quizBox label").forEach((l, idx) => {
+    if (idx === q.correct) l.classList.add("correct");
+    else if (idx === i) l.classList.add("wrong");
+    l.onclick = null;
+  });
+  const correct = i === q.correct;
+  if (correct) quizCorrectCount++;
+  const isLast = quizIdx === QUIZ_BANK[quizCat].length - 1;
+  const fb = document.getElementById("quizFb");
+  fb.style.display = "block";
+  fb.style.background = correct ? "#eef5f0" : "#fbeeec";
+  fb.innerHTML = (correct ? "⭕ 正解! " : "❌ 不正解(正解は" + String.fromCharCode(65 + q.correct) + ")。 ") + q.tip +
+    `<div style="margin-top:8px"><button onclick="nextQuizStep()">${isLast ? "結果を見る" : "次の問題へ"}</button></div>`;
+}
+function nextQuizStep() {
+  const qs = QUIZ_BANK[quizCat];
+  quizIdx++;
+  if (quizIdx < qs.length) { renderQuizQuestion(); return; }
+  const s = STAFF[curStaff];
+  s.quiz.total += qs.length;
+  s.quiz.correct += quizCorrectCount;
+  s.skills[quizCat] = Math.min(100, s.skills[quizCat] + quizCorrectCount * 3);
+  document.getElementById("quizBox").innerHTML = `
+    <div class="q">${quizCat}クイズ結果: ${quizCorrectCount}/${qs.length}問正解</div>
+    <p class="note">選択中スタッフ「${s.name}」の${quizCat}習熟度に +${quizCorrectCount * 3}pt 加算されました。</p>
+    <button onclick="document.getElementById('quizBox').classList.add('hide')" style="margin-top:8px;background:var(--accent);color:#fff">閉じる</button>`;
+  renderStaffPanel();
+}
+
+// ===== スタッフ別スキル管理ダッシュボード =====
+function radarChart(skills) {
+  const cats = Object.keys(skills);
+  const cx = 90, cy = 90, R = 66;
+  const step = (2 * Math.PI) / cats.length;
+  const pt = (i, ratio) => {
+    const a = -Math.PI / 2 + i * step;
+    return [cx + R * ratio * Math.cos(a), cy + R * ratio * Math.sin(a)];
+  };
+  const grids = [0.25, 0.5, 0.75, 1].map(lv =>
+    `<polygon points="${cats.map((c, i) => pt(i, lv).join(",")).join(" ")}" fill="none" stroke="#e5dfd7"/>`).join("");
+  const axes = cats.map((c, i) => { const [x, y] = pt(i, 1); return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e5dfd7"/>`; }).join("");
+  const labels = cats.map((c, i) => { const [x, y] = pt(i, 1.28); return `<text x="${x}" y="${y}" font-size="10" fill="#6f675e" text-anchor="middle">${c}(${skills[c]}%)</text>`; }).join("");
+  const poly = cats.map((c, i) => pt(i, skills[c] / 100).join(",")).join(" ");
+  return `<svg viewBox="0 0 180 195" width="100%">${grids}${axes}<polygon points="${poly}" fill="#8a5a2b55" stroke="#8a5a2b" stroke-width="2"/>${labels}</svg>`;
+}
+
+function storeTrendChart(current) {
+  const pts = [Math.max(0, current - 15), Math.max(0, current - 7), current];
+  const labels = ["3ヶ月前", "先月", "今月"];
+  const x = i => 24 + i * 116, y = v => 76 - (v / 100 * 56);
+  const path = pts.map((v, i) => `${x(i)},${y(v)}`).join(" ");
+  const dots = pts.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="#3e6b4f"/>
+    <text x="${x(i)}" y="${y(v) - 8}" font-size="9" fill="#3e6b4f" text-anchor="middle" font-weight="bold">${v}%</text>
+    <text x="${x(i)}" y="88" font-size="8.5" fill="#6f675e" text-anchor="middle">${labels[i]}</text>`).join("");
+  return `<svg viewBox="0 0 280 95" width="100%"><polyline points="${path}" fill="none" stroke="#3e6b4f" stroke-width="2"/>${dots}</svg>`;
+}
+
+function renderStaffList() {
+  document.getElementById("staffList").innerHTML = STAFF.map((s, i) => {
+    const avg = Math.round(Object.values(s.skills).reduce((a, b) => a + b, 0) / CATS.length);
+    return `<div class="row" style="cursor:pointer" onclick="selectStaff(${i})">
+      <span>${i === curStaff ? "▶ " : ""}${s.name}</span><div class="pb"><i style="width:${avg}%"></i></div><b>${avg}%</b></div>`;
+  }).join("");
+}
+
+function renderChapCheckboxes() {
+  document.querySelectorAll(".watchcb").forEach((cb, i) => { cb.checked = STAFF[curStaff].watched.has(i); });
+}
+
+function renderStaffPanel() {
+  const s = STAFF[curStaff];
+  document.getElementById("radarBox").innerHTML = radarChart(s.skills);
+  document.getElementById("quizStat").textContent = s.quiz.total ? `${s.quiz.correct}/${s.quiz.total}問正解` : "まだ挑戦なし";
+  document.getElementById("watchStat").textContent = `${s.watched.size}/${CHAPS.length}章 視聴済み`;
+  renderWeakBox(s);
+  const overallAvg = Math.round(STAFF.reduce((sum, st) => sum + Object.values(st.skills).reduce((a, b) => a + b, 0) / CATS.length, 0) / STAFF.length);
+  document.getElementById("storeAvg").textContent = overallAvg + "%";
+  document.getElementById("storeTrend").innerHTML = storeTrendChart(overallAvg);
+  renderStaffList();
+  renderChapCheckboxes();
+}
+
+function learningPath(skills) {
+  return Object.entries(skills).map(([cat, score]) => ({ cat, score })).sort((a, b) => a.score - b.score);
+}
+
+function chaptersFor(cat) {
+  return CHAPS.filter(c => c[4] === cat).map(c => `第${Number(c[0])}章「${c[1].split("(")[0].split("★")[0].trim()}」`);
+}
+
+function renderWeakBox(s) {
+  const path = learningPath(s.skills);
+  const rankColor = ["var(--red)", "var(--gold)", "var(--sub)", "var(--sub)"];
+  const rows = path.map((p, i) => {
+    const recs = chaptersFor(p.cat);
+    return `<div class="stat-row" style="${i === 0 ? "border-top:1px dashed var(--line);padding-top:8px;margin-top:4px" : ""}">
+      <span>${i + 1}. ${p.cat}(${p.score}%)</span>
+      <b style="color:${rankColor[i] || "var(--sub)"};text-align:right">${recs.length ? recs.join("、") : "教材なし"}</b>
+    </div>`;
+  }).join("");
+  document.getElementById("weakBox").innerHTML = `
+    <div class="note" style="font-weight:700;margin-top:4px">🎯 AI推奨学習パス(弱点順・優先度高い順)</div>
+    ${rows}`;
+}
+
+// ===== 個人技術レポート(A4印刷用)の自動生成 =====
+function printStaffReport() {
+  const s = STAFF[curStaff];
+  const path = learningPath(s.skills);
+  const watchedList = CHAPS.filter((c, i) => s.watched.has(i)).map(c => c[1].split("(")[0].split("★")[0].trim());
+  const quizRate = s.quiz.total ? Math.round(s.quiz.correct / s.quiz.total * 100) : 0;
+  const strongest = path[path.length - 1];
+  const weakest = path[0];
+  const comment = `${s.name}は「${strongest.cat}」(${strongest.score}%)を強みとしています。直近の確認クイズは${s.quiz.total}問中${s.quiz.correct}問正解(正答率${quizRate}%)。次は「${weakest.cat}」(${weakest.score}%)を重点的に伸ばすことで、総合力の底上げが期待できます。`;
+  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>${s.name} 技術習熟度レポート</title>
+<style>
+  @page{size:A4;margin:14mm}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:#26221e;font-size:13px;line-height:1.65}
+  h1{font-size:20px;border-bottom:3px solid #8a5a2b;padding-bottom:8px;margin-bottom:6px}
+  h2{font-size:14px;color:#6f675e;margin:18px 0 8px;border-bottom:1px solid #e5dfd7;padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  td,th{border:1px solid #e5dfd7;padding:6px 8px;text-align:left}
+  .comment{background:#faf7f2;border-radius:8px;padding:12px;font-size:12.5px}
+  .radarwrap{width:230px;margin:8px auto}
+  .meta{color:#6f675e;font-size:12px}
+  .printbtn{font:inherit;padding:8px 16px;border-radius:8px;border:none;background:#8a5a2b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:14px}
+  @media print{.printbtn{display:none}}
+</style></head><body>
+<button class="printbtn" onclick="window.print()">🖨 このレポートを印刷する</button>
+<h1>技術習熟度レポート — ${s.name}</h1>
+<p class="meta">作成日: ${new Date().toLocaleDateString("ja-JP")} / SALON BLOOM 表参道(AI自動生成・要スタイリスト確認)</p>
+<h2>カテゴリ別スキルスコア</h2>
+<div class="radarwrap">${radarChart(s.skills)}</div>
+<table><tr><th>カテゴリ</th><th>習熟度</th></tr>
+${CATS.map(c => `<tr><td>${c}</td><td>${s.skills[c]}%</td></tr>`).join("")}
+</table>
+<h2>学習履歴</h2>
+<p>視聴済み教材: ${watchedList.length ? watchedList.join("、") : "なし"}(${s.watched.size}/${CHAPS.length}章)</p>
+<p>確認クイズ: ${s.quiz.total}問中${s.quiz.correct}問正解(正答率${quizRate}%)</p>
+<h2>AI推奨学習パス(弱点順)</h2>
+<table><tr><th>優先度</th><th>カテゴリ</th><th>スコア</th><th>おすすめ教材</th></tr>
+${path.map((p, i) => `<tr><td>${i + 1}</td><td>${p.cat}</td><td>${p.score}%</td><td>${chaptersFor(p.cat).join("、") || "-"}</td></tr>`).join("")}
+</table>
+<h2>店長・トレーナーコメント(AI自動生成・要確認)</h2>
+<div class="comment">${comment}</div>
+</body></html>`;
+  const win = window.open("", "_blank");
+  if (!win) { alert("ポップアップがブロックされました。ブラウザの設定でこのページのポップアップを許可してください。"); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+// ===== 店舗全体レポート(全スタッフ一覧・A4印刷用) =====
+function printStoreReport() {
+  const rows = STAFF.map(s => {
+    const avg = Math.round(Object.values(s.skills).reduce((a, b) => a + b, 0) / CATS.length);
+    const path = learningPath(s.skills);
+    const quizRate = s.quiz.total ? Math.round(s.quiz.correct / s.quiz.total * 100) : 0;
+    return { name: s.name, avg, weakest: path[0], watched: s.watched.size, quizRate, quizTotal: s.quiz.total };
+  });
+  const storeAvg = Math.round(rows.reduce((sum, r) => sum + r.avg, 0) / rows.length);
+  const catAvg = {};
+  CATS.forEach(c => { catAvg[c] = Math.round(STAFF.reduce((sum, s) => sum + s.skills[c], 0) / STAFF.length); });
+  const weakestCat = Object.entries(catAvg).sort((a, b) => a[1] - b[1])[0];
+  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>店舗全体 技術習熟度レポート</title>
+<style>
+  @page{size:A4;margin:14mm}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:#26221e;font-size:13px;line-height:1.65}
+  h1{font-size:20px;border-bottom:3px solid #8a5a2b;padding-bottom:8px;margin-bottom:6px}
+  h2{font-size:14px;color:#6f675e;margin:18px 0 8px;border-bottom:1px solid #e5dfd7;padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  td,th{border:1px solid #e5dfd7;padding:6px 8px;text-align:left}
+  .comment{background:#faf7f2;border-radius:8px;padding:12px;font-size:12.5px}
+  .meta{color:#6f675e;font-size:12px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+  .kpi{border:1px solid #e5dfd7;border-radius:8px;padding:8px;text-align:center}
+  .kpi b{font-size:18px;display:block}
+  .kpi span{font-size:10.5px;color:#6f675e}
+  .printbtn{font:inherit;padding:8px 16px;border-radius:8px;border:none;background:#8a5a2b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:14px}
+  @media print{.printbtn{display:none}}
+</style></head><body>
+<button class="printbtn" onclick="window.print()">🖨 このレポートを印刷する</button>
+<h1>店舗全体 技術習熟度レポート</h1>
+<p class="meta">作成日: ${new Date().toLocaleDateString("ja-JP")} / SALON BLOOM 表参道(AI自動生成・要店長確認) / 対象${rows.length}名</p>
+<h2>店舗サマリー</h2>
+<div class="kpis">
+  <div class="kpi"><b>${storeAvg}%</b><span>店舗全体 平均習熟度</span></div>
+  <div class="kpi"><b>${weakestCat[0]}</b><span>店舗全体の弱点カテゴリ(${weakestCat[1]}%)</span></div>
+  <div class="kpi"><b>${rows.length}名</b><span>管理対象スタッフ</span></div>
+  <div class="kpi"><b>52本</b><span>教材ライブラリ(自動生成)</span></div>
+</div>
+<h2>カテゴリ別 店舗平均</h2>
+<table><tr>${CATS.map(c => `<th>${c}</th>`).join("")}</tr><tr>${CATS.map(c => `<td>${catAvg[c]}%</td>`).join("")}</tr></table>
+<h2>スタッフ別一覧</h2>
+<table><tr><th>スタッフ</th><th>平均習熟度</th><th>最重要弱点</th><th>教材視聴</th><th>クイズ正答率</th></tr>
+${rows.map(r => `<tr><td>${r.name}</td><td>${r.avg}%</td><td>${r.weakest.cat}(${r.weakest.score}%)</td><td>${r.watched}/${CHAPS.length}章</td><td>${r.quizTotal ? r.quizRate + "%" : "未受験"}</td></tr>`).join("")}
+</table>
+<h2>店長・トレーナー向けAI所見</h2>
+<div class="comment">店舗全体では「${weakestCat[0]}」が最も弱点カテゴリ(平均${weakestCat[1]}%)。次回の教材追加・勉強会はこのカテゴリを優先することを推奨する。個人別には、平均習熟度が最も低い${rows.slice().sort((a,b)=>a.avg-b.avg)[0].name}を重点フォロー対象とし、弱点カテゴリの教材視聴を優先的に案内する。</div>
+</body></html>`;
+  const win = window.open("", "_blank");
+  if (!win) { alert("ポップアップがブロックされました。ブラウザの設定でこのページのポップアップを許可してください。"); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+function selectStaff(i) { curStaff = i; renderStaffPanel(); }
+
+function addStaff() {
+  const input = document.getElementById("newStaffName");
+  const name = input.value.trim();
+  if (!name) return;
+  STAFF.push({ name, skills: { カット:20, カラー:20, パーマ:20, トリートメント:20 }, watched: new Set(), quiz: { correct:0, total:0 } });
+  input.value = "";
+  curStaff = STAFF.length - 1;
+  renderStaffPanel();
+}
+
+function toggleWatched(i, checked) {
+  const s = STAFF[curStaff];
+  const cat = CHAPS[i][4];
+  if (checked && !s.watched.has(i)) { s.watched.add(i); s.skills[cat] = Math.min(100, s.skills[cat] + 8); }
+  else if (!checked && s.watched.has(i)) { s.watched.delete(i); s.skills[cat] = Math.max(0, s.skills[cat] - 8); }
+  renderStaffPanel();
+}
+
+renderStaffPanel();
+renderQuizCatSel();
+document.getElementById("make").onclick = function () {
+  this.textContent = "⏳ 解析中… シーン分割 → 章立て → 字幕 → クイズ生成";
+  setTimeout(() => {
+    this.textContent = "✔ 新教材「白髪ぼかしハイライト(店長・38分)」を5章構成で公開しました";
+    this.style.background = "#3e6b4f";
+    chapEl.insertAdjacentHTML("beforeend",
+      `<div class="ch" style="border-color:var(--gold);background:#fbf4e3"><span class="no" style="background:var(--gold)">NEW</span><span class="t">白髪ぼかしハイライト 全5章(いま自動生成されました)</span><span class="ai">クイズ4問付き</span></div>`);
+  }, 1800);
+};
+</script>
+</body>
+</html>

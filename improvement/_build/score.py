@@ -22,6 +22,9 @@ IMPROVEMENT = os.path.abspath(os.path.join(HERE, ".."))
 WEIGHTS = {"E": 0.30, "C": 0.20, "S": 0.20, "P": 0.15, "D": 0.15}
 INDUSTRY_ORDER = ["beauty", "food", "lodging", "manufacturing", "realestate", "education"]
 
+# 100施策スコアリングではなく外部プロジェクトの10案を採用する業種（build_hub.pyと同じ対象）
+EXTERNAL_INDUSTRIES = {"beauty"}
+
 EASY_RE = re.compile(r"システム|クラウド|アプリ|ソフト|ツール|SaaS|管理|配信|デジタル|オンライン|電子|AI|分析|自動化")
 MID_RE = re.compile(r"機器|端末|レジ|タブレット|センサー|カメラ|照明|チェア|プリンタ|検温|ディスペンサー|キオスク")
 HARD_RE = re.compile(r"ロボット|工事|改装|改修|太陽光|バリアフリー|設置|増設|空調|オーブン|洗浄機|滅菌")
@@ -169,6 +172,11 @@ PDCA_CSS = """
   .card .meta { font-size:0.76rem; color:var(--ink-faint); }
   a { color: var(--accent); }
   .back { font-size:0.85rem; }
+  .badge.external { background:var(--accent-wash); color:var(--accent); }
+  .ext-card .why { font-size:0.78rem; color:var(--ink-soft); background:var(--paper); border-radius:6px; padding:0.5rem 0.6rem; margin-top:0.3rem; }
+  .ext-axes { display:grid; grid-template-columns:repeat(5,1fr); gap:0.3rem; font-size:0.66rem; color:var(--ink-faint); text-align:center; margin-top:0.4rem; }
+  .ext-axes b { display:block; font-size:0.86rem; color:var(--ink); }
+  .ext-links { margin-top:0.5rem; display:flex; gap:0.7rem; font-size:0.8rem; }
 """
 
 
@@ -176,7 +184,31 @@ def esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def render_pdca(data, all_scores):
+def render_ext_section(parts, ik, ext, ind_labels):
+    parts.append(f'<h2>{esc(ind_labels[ik])}<span class="badge external">採択確定（外部プロジェクト連携）</span></h2>')
+    parts.append(f'<p class="sub">{esc(ext.get("source", ""))}</p>')
+    parts.append(f'<div class="box"><p style="margin:0;">{esc(ext.get("sourceNote", ""))}</p></div>')
+    parts.append('<div class="cards">')
+    axes = [("market", "市場性"), ("saving", "省力化"), ("feasibility", "実現性"), ("subsidy", "補助金"), ("unique", "差別化")]
+    for pl in ext["plans"]:
+        no = pl["no"]
+        sc = pl["score"]
+        total = sum(sc.values())
+        parts.append('<div class="card ext-card">')
+        parts.append(f'<div class="no">PLAN {no:02d}｜総合 {total}/25</div>')
+        parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
+        parts.append(f'<div class="meta">{esc(pl["category"])}／概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）／想定省力化 約{pl["savingHoursPerMonth"]}時間/月</div>')
+        parts.append('<div class="ext-axes">' + "".join(f'<span>{l}<b>{sc[k]}</b></span>' for k, l in axes) + '</div>')
+        parts.append(f'<div class="why"><strong>選定理由：</strong>{esc(pl["why"])}</div>')
+        proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
+        parts.append(f'<div class="ext-links"><a href="{ik}/plan-{no:02d}.html">📄 事業計画書</a>'
+                     f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+        parts.append("</div>")
+    parts.append("</div>")
+
+
+def render_pdca(data, all_scores, external=None):
+    external = external or {}
     parts = []
     parts.append('<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">')
     parts.append('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
@@ -222,6 +254,9 @@ def render_pdca(data, all_scores):
 
     ind_labels = {ik: data["INDUSTRIES"][ik]["label"] for ik in INDUSTRY_ORDER}
     for ik in INDUSTRY_ORDER:
+        if ik in EXTERNAL_INDUSTRIES and ik in external:
+            render_ext_section(parts, ik, external[ik], ind_labels)
+            continue
         rows = all_scores[ik]
         selected = [r for r in rows if r.get("selected")]
         status = ('<span class="badge">採択確定</span>' if selected
@@ -268,11 +303,19 @@ def main():
     for ik, rows in all_scores.items():
         with open(os.path.join(DATA, "scores", ik + ".json"), "w", encoding="utf-8") as f:
             json.dump(rows, f, ensure_ascii=False, indent=1)
+
+    external = {}
+    for ik in EXTERNAL_INDUSTRIES:
+        ep = os.path.join(DATA, "external", ik + ".json")
+        if os.path.exists(ep):
+            with open(ep, encoding="utf-8") as f:
+                external[ik] = json.load(f)
+
     out = os.path.join(IMPROVEMENT, "pdca.html")
     with open(out, "w", encoding="utf-8") as f:
-        f.write(render_pdca(data, all_scores))
+        f.write(render_pdca(data, all_scores, external))
     n_sel = sum(1 for v in all_scores.values() for r in v if r.get("selected"))
-    print(f"OK: scores for {len(all_scores)} industries, {n_sel} selected -> pdca.html")
+    print(f"OK: scores for {len(all_scores)} industries, {n_sel} selected -> pdca.html (external: {sorted(external.keys()) or 'none'})")
 
 
 if __name__ == "__main__":

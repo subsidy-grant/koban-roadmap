@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.3 AIカウンセリング&施術提案カルテ | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#3e6b4f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:320px 1fr;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .face{width:130px;height:130px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:56px;background:radial-gradient(circle at 35% 30%,#f7e8d8,#e0c9ae);border:3px solid var(--line)}
+  .cust{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .cust button{font:inherit;font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:99px;background:#faf7f2;cursor:pointer;font-weight:600}
+  .cust button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  button.btn-p{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 14px;font-weight:700;background:var(--accent);color:#fff;width:100%;margin-top:12px}
+  .scan{position:relative;overflow:hidden}
+  .scan.on::after{content:"";position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#3e6b4f,transparent);animation:sc 1s linear infinite}
+  @keyframes sc{from{top:0}to{top:100%}}
+  .diag{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+  .d{background:#faf7f2;border-radius:10px;padding:10px}
+  .d span{font-size:11px;color:var(--sub);display:block}
+  .d b{font-size:14px}
+  .meter{height:7px;background:#efe9e0;border-radius:99px;margin-top:5px;overflow:hidden}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--gold));width:0;transition:width .8s}
+  .prop{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#fff}
+  .prop h3{font-size:14px;color:var(--accent)}
+  .prop .price{float:right;font-weight:800}
+  .prop p{font-size:12.5px;color:var(--sub);margin-top:4px}
+  .tagr{font-size:10.5px;background:#eef5f0;color:var(--green);border-radius:99px;padding:1px 8px;font-weight:700;margin-right:4px}
+  .karte{font-family:Consolas,monospace;font-size:12px;background:#26221e;color:#cfe3d5;border-radius:10px;padding:12px;white-space:pre-wrap;min-height:130px}
+  .warn{background:#fbeeec;border:1px solid #e6c4c0;color:var(--red);border-radius:10px;padding:10px;font-size:12.5px;font-weight:700;margin-top:10px;display:none}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .hide{display:none}
+  .modesw{display:flex;gap:6px;margin-bottom:12px}
+  .modesw button{flex:1;font:inherit;font-size:11.5px;padding:8px 4px;border:1px solid var(--line);border-radius:8px;background:#faf7f2;cursor:pointer;font-weight:700;color:var(--sub)}
+  .modesw button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .fsel{margin:10px 0;display:flex;flex-direction:column;gap:6px}
+  .fsel label{font-size:11px;color:var(--sub);font-weight:700}
+  .fsel select,.fsel input{font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  #photoPreview{width:100%;border-radius:10px;margin-top:8px;display:none;max-height:180px;object-fit:cover}
+  .real-badge{font-size:9.5px;background:#eef5f0;color:var(--green);border-radius:99px;padding:2px 8px;font-weight:800;margin-left:6px}
+  .microw{display:flex;gap:6px;align-items:flex-start}
+  .microw input,.microw textarea{flex:1}
+  .micbtn{flex-shrink:0;background:var(--red);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;padding:0}
+  .micbtn.rec{animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .tl{border-left:2px solid var(--line);margin:4px 0 4px 8px;padding-left:16px}
+  .tlitem{position:relative;padding-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+  .tlitem::before{content:"";position:absolute;left:-21px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .tlitem.new::before{background:var(--green)}
+  .tlthumb{width:38px;height:38px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:700}
+  .tlbody{flex:1}
+  .tlhead{display:flex;justify-content:space-between;font-size:11px;color:var(--sub)}
+  .tlmenu{font-size:13px;font-weight:700;margin-top:2px}
+  .badiff{margin-top:8px;font-size:12.5px}
+  .copybtn{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:99px;background:#faf7f2;cursor:pointer;font-weight:700;margin-top:8px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📋 AIカウンセリング&施術提案カルテ <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.3 / 省力化投資補助金(一般型) 対応案</span>
+</header>
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>① 来店客を選択 → 写真AI解析</h2>
+      <div class="modesw">
+        <button class="on" id="modeSampleBtn" onclick="switchMode('sample')">🧪 サンプル顧客で試す</button>
+        <button id="modePhotoBtn" onclick="switchMode('photo')">📷 実際の写真で解析<span class="real-badge">本番相当</span></button>
+      </div>
+
+      <div id="sampleMode">
+        <div class="face scan" id="face">👩</div>
+        <div class="cust" id="cust"></div>
+        <button class="btn-p" id="scan">🔍 AI解析を実行(髪質・頭皮・顔型)</button>
+      </div>
+
+      <div id="photoMode" class="hide">
+        <div class="fsel">
+          <label>顧客名</label><input id="pName" placeholder="例: 山田様(29)">
+          <label>アレルギー・禁忌メモ(あれば)<span class="real-badge">🎙音声入力対応</span></label>
+          <div class="microw"><input id="pAllergy" placeholder="例: ジアミンアレルギーあり"><button type="button" class="micbtn" data-target="pAllergy" onclick="toggleMic(this)">🎙</button></div>
+          <label>施術メモ(自由記述)<span class="real-badge">🎙音声入力対応</span></label>
+          <div class="microw"><textarea id="pMemo" rows="2" placeholder="施術中の気づき・お客様との会話メモなど" style="font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;resize:vertical"></textarea><button type="button" class="micbtn" data-target="pMemo" onclick="toggleMic(this)">🎙</button></div>
+        </div>
+        <button class="btn-p" onclick="document.getElementById('photoInput').click()">📷 施術前の写真を撮影・選択する</button>
+        <input type="file" accept="image/*" capture="environment" id="photoInput" style="display:none">
+        <img id="photoPreview">
+        <canvas id="photoCanvas" style="display:none"></canvas>
+        <label class="note" style="display:block;margin-top:8px">施術後の写真(あれば Before/After比較) <span class="real-badge">実装済み</span></label>
+        <input type="file" accept="image/*" id="afterPhotoInput" style="font-size:11.5px">
+        <div id="baWrap" class="hide">
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <div style="flex:1;text-align:center"><img id="beforeThumb" style="width:100%;border-radius:8px;max-height:110px;object-fit:cover"><div class="note">Before</div></div>
+            <div style="flex:1;text-align:center"><img id="afterThumb" style="width:100%;border-radius:8px;max-height:110px;object-fit:cover"><div class="note">After</div></div>
+          </div>
+          <div class="d badiff"><span>AI解析による Before → After 変化</span><b id="baDiff" style="display:block;margin-top:4px;font-size:12.5px">—</b></div>
+        </div>
+        <div class="fsel">
+          <label>頭皮の状態(見た目で選択)</label>
+          <select id="selScalp"><option value="良好|20">良好</option><option value="やや乾燥|45">やや乾燥</option><option value="皮脂多め・毛穴の炎症予兆|65">皮脂多め・毛穴の炎症予兆</option><option value="薄毛予兆|80">薄毛予兆</option></select>
+          <label>顔型(見た目で選択)</label>
+          <select id="selFace"><option value="卵型">卵型・自由度高</option><option value="丸型">丸型・縦ライン補正</option><option value="面長">面長・横ボリューム補正</option><option value="四角・エラ張り">四角・エラ張り・曲線補正</option><option value="ひし形">ひし形・頬骨ぼかし補正</option></select>
+        </div>
+        <button class="btn-p" id="scanPhoto">🔍 写真をAI解析(色味・ダメージを実測)</button>
+      </div>
+
+      <div class="diag">
+        <div class="d"><span>髪質</span><b id="dHair">—</b><div class="meter"><i id="m1"></i></div></div>
+        <div class="d"><span>ダメージレベル</span><b id="dDmg">—</b><div class="meter"><i id="m2"></i></div></div>
+        <div class="d"><span>頭皮状態</span><b id="dScalp">—</b><div class="meter"><i id="m3"></i></div></div>
+        <div class="d"><span>顔型・似合わせ</span><b id="dFace">—</b><div class="meter"><i id="m4"></i></div></div>
+      </div>
+      <div class="warn" id="warn"></div>
+      <p class="note" id="modeNote">※ デモは擬似解析。実装版はマイクロスコープ+顔画像をAIモデルで解析します。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>② AI施術提案(根拠付き・新人でもベテラン級の提案)</h2>
+        <div id="props"><p style="color:var(--sub);font-size:13px">左で顧客を選択し「AI解析を実行」を押してください。</p></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>③ カルテ自動記録(閉店後のカルテ残業ゼロ)</h2>
+        <div class="karte" id="karte">[未記録] 解析と提案確定後、カルテが自動生成されます。</div>
+        <button class="btn-p hide" id="exportBtn" onclick="exportKarte()" style="background:var(--green)">📤 このカルテをエクスポート(No.10 リピートフォローへ連携)</button>
+        <button class="btn-p hide" id="printKarteBtn" onclick="printKarteReport()" style="background:var(--accent)">🖨 カルテを印刷用PDFで出力</button>
+        <button class="btn-p hide" id="remindBtn" onclick="generateReminder()" style="background:var(--gold)">📱 次回来店リマインドLINE文面を自動生成</button>
+        <div class="karte hide" id="reminderBox" style="min-height:auto"></div>
+        <button class="copybtn hide" id="copyBtn" onclick="copyReminder()">📋 文面をコピー</button>
+        <button class="btn-p hide" id="sendLineBtn" onclick="sendReminderViaLine()" style="background:#06c755;margin-top:8px">📤 LINE公式アカウントから送信</button>
+        <p class="note hide" id="sendLineNote">※ LINE公式アカウントのトーク画面が開き、文面が入力済みの状態になります。内容を確認し「送信」をタップしてください(自動一斉送信にはMessaging API連携が必要なため、本デモはワンタップ送信の一歩手前までを実装しています)。</p>
+        <p class="note" id="exportNote"></p>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>④ 施術履歴タイムライン(過去の来店記録・自動蓄積)</h2>
+        <div class="tl" id="timeline"></div>
+        <p class="note" id="tlNote"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CUSTOMERS = [
+  { name:"伊藤様(32)", icon:"👩", hair:["軟毛・細毛", 40], dmg:["中(カラー履歴3回)", 55], scalp:["やや乾燥", 45], face:["面長・ひし形補正", 70],
+    allergy:"ジアミンアレルギー申告あり — アルカリカラー剤は使用不可",
+    history:[
+      { date:"2026-05-14", menu:"ノンジアミンカラー+髪質改善Tr", staff:"田中", color:"#8a5a2b" },
+      { date:"2026-02-20", menu:"ノンジアミンカラー(リタッチ)", staff:"田中", color:"#b98a2f" },
+      { date:"2025-11-30", menu:"カウンセリング+カット", staff:"鈴木", color:"#3e6b4f" },
+    ],
+    props:[
+      {t:"ノンジアミン・ゼロテクカラー", p:"¥9,900", why:"アレルギー履歴からジアミンフリー薬剤を自動選定。根元を外して塗布し頭皮刺激を回避。", tags:["アレルギー対応","単価+¥1,400"]},
+      {t:"髪質改善トリートメント併用", p:"+¥5,500", why:"細毛×ダメージ中のため、酸熱系は硬化リスク。ケラチン補修系を推奨。", tags:["ダメージ適合"]},
+      {t:"顔周りレイヤー+ワイドバング", p:"カット内", why:"面長補正: 横のボリュームを作る顔周りレイヤーが黄金比に最も近づく。", tags:["似合わせ根拠"]}]},
+  { name:"佐藤様(45)", icon:"👨", hair:["硬毛・多毛", 80], dmg:["低", 20], scalp:["皮脂多め・薄毛予兆", 60], face:["丸型・縦ライン強調", 60],
+    allergy:null,
+    history:[
+      { date:"2026-06-02", menu:"スカルプクレンジング+刈り上げ", staff:"鈴木", color:"#3e6b4f" },
+      { date:"2026-03-10", menu:"育毛スパ+縦シルエットカット", staff:"鈴木", color:"#b98a2f" },
+    ],
+    props:[
+      {t:"スカルプクレンジング+育毛スパ", p:"¥6,600", why:"頭皮画像に皮脂詰まりと毛穴の炎症予兆。薄毛が気になり始める年代への先手ケアを提案。", tags:["頭皮データ根拠","店販連動"]},
+      {t:"刈り上げグラデーション+縦シルエット", p:"カット内", why:"丸型補正: トップに高さを出しサイドをタイトに。骨格スコア0.82で最適解。", tags:["似合わせ根拠"]},
+      {t:"薬用スカルプシャンプー(店販)", p:"¥3,300", why:"施術効果を自宅で維持。定期便登録で継続率78%の実績商品。", tags:["物販クロスセル"]}]},
+  { name:"Chen様(28)", icon:"👱‍♀️", hair:["普通毛", 60], dmg:["高(ブリーチ2回)", 85], scalp:["良好", 25], face:["卵型・自由度高", 85],
+    allergy:"訪日観光客 — 中国語カウンセリングシート使用",
+    history:[
+      { date:"2026-04-18", menu:"ケアブリーチ+ミルクティーベージュ", staff:"田中", color:"#8a5a2b" },
+    ],
+    props:[
+      {t:"ケアブリーチ+ミルクティーベージュ", p:"¥18,700", why:"SNS保存画像から憧れスタイルを解析。既ブリーチ毛のため保護剤添加ブリーチで負担を最小化。", tags:["インバウンド","翻訳連携"]},
+      {t:"超音波トリートメント", p:"+¥6,600", why:"ダメージレベル高。断毛リスク32%→8%に低減する集中補修を強く推奨。", tags:["リスク回避"]},
+      {t:"帰国後ケアセット(免税)", p:"¥8,800", why:"現地で同品質のケア剤入手が困難。免税対象で購入率が高い。", tags:["免税物販"]}]},
+];
+let sel = 0, analyzed = false, currentKarte = null;
+let photoModeHistory = [];
+const cust = document.getElementById("cust");
+CUSTOMERS.forEach((c, i) => {
+  const b = document.createElement("button");
+  b.textContent = c.name; if (i === 0) b.classList.add("on");
+  b.onclick = () => { sel = i; analyzed = false; document.querySelectorAll("#cust button").forEach(x => x.classList.remove("on")); b.classList.add("on"); reset(); };
+  cust.appendChild(b);
+});
+function reset() {
+  const c = CUSTOMERS[sel];
+  document.getElementById("face").textContent = c.icon;
+  ["dHair","dDmg","dScalp","dFace"].forEach(id => document.getElementById(id).textContent = "—");
+  [1,2,3,4].forEach(n => document.getElementById("m"+n).style.width = 0);
+  document.getElementById("warn").style.display = "none";
+  document.getElementById("props").innerHTML = '<p style="color:var(--sub);font-size:13px">「AI解析を実行」を押してください。</p>';
+  document.getElementById("karte").textContent = "[未記録] 解析と提案確定後、カルテが自動生成されます。";
+  hideReminder();
+  renderTimeline(c.history || []);
+}
+
+function renderTimeline(history) {
+  const tl = document.getElementById("timeline");
+  const note = document.getElementById("tlNote");
+  if (!history.length) {
+    tl.innerHTML = "";
+    note.textContent = "初回のお客様のため履歴はまだありません。次回来店時からここに自動で蓄積されます。";
+    return;
+  }
+  note.textContent = "※ 過去の来店・施術記録。カルテ確定のたびにこのタイムラインへ自動追記されます(写真サムネイルはデモ用の色見本)。";
+  tl.innerHTML = history.map(h => `
+    <div class="tlitem${h.isNew ? " new" : ""}">
+      <div class="tlthumb" style="background:${h.color}">${h.isNew ? "NEW" : "📷"}</div>
+      <div class="tlbody">
+        <div class="tlhead"><span>${h.date}</span><span>担当: ${h.staff}</span></div>
+        <div class="tlmenu">${h.menu}</div>
+      </div>
+    </div>`).join("");
+}
+renderTimeline(CUSTOMERS[sel].history || []);
+document.getElementById("scan").onclick = () => {
+  const c = CUSTOMERS[sel];
+  const face = document.getElementById("face");
+  face.classList.add("on");
+  setTimeout(() => {
+    face.classList.remove("on");
+    document.getElementById("dHair").textContent = c.hair[0];
+    document.getElementById("dDmg").textContent = c.dmg[0];
+    document.getElementById("dScalp").textContent = c.scalp[0];
+    document.getElementById("dFace").textContent = c.face[0];
+    document.getElementById("m1").style.width = c.hair[1] + "%";
+    document.getElementById("m2").style.width = c.dmg[1] + "%";
+    document.getElementById("m3").style.width = c.scalp[1] + "%";
+    document.getElementById("m4").style.width = c.face[1] + "%";
+    const w = document.getElementById("warn");
+    if (c.allergy) { w.textContent = "⚠ " + c.allergy; w.style.display = "block"; }
+    document.getElementById("props").innerHTML = c.props.map(p => `
+      <div class="prop"><span class="price">${p.p}</span><h3>${p.t}</h3>
+      <p><b>AI提案根拠:</b> ${p.why}</p>
+      <div style="margin-top:4px">${p.tags.map(t => `<span class="tagr">${t}</span>`).join("")}</div></div>`).join("") +
+      `<button class="btn-p" onclick="fixKarte()">✔ この提案で確定 → カルテ自動記録</button>`;
+  }, 1600);
+};
+function fixKarte() {
+  const c = CUSTOMERS[sel];
+  const now = new Date();
+  currentKarte = {
+    name: c.name, allergy: c.allergy || "特記なし",
+    proposals: c.props.map(p => p.t),
+    visitCycleMonths: 3 + sel,
+    avgTicket: null,
+    menuHistory: c.props.map(p => p.t).join(" / "),
+    diagnosedAt: now.toISOString(),
+  };
+  document.getElementById("karte").textContent =
+`━━ 電子カルテ 自動生成 ━━
+日時    : ${now.toLocaleDateString("ja-JP")} ${now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"})}
+顧客    : ${c.name}
+AI診断  : 髪質=${c.hair[0]} / ダメージ=${c.dmg[0]}
+          頭皮=${c.scalp[0]} / 顔型=${c.face[0]}
+注意事項: ${c.allergy || "特記なし"}
+確定提案: ${c.props.map(p => p.t).join(" / ")}
+売上見込: ${c.props.map(p => p.p).join(" + ")}
+次回提案: AIが施術結果を学習し来店周期${3 + sel}か月で自動フォロー予定
+記録者  : AI自動記録(担当スタイリスト承認待ち)`;
+  document.getElementById("exportBtn").classList.remove("hide");
+  document.getElementById("printKarteBtn").classList.remove("hide");
+  document.getElementById("remindBtn").classList.remove("hide");
+  document.getElementById("exportNote").textContent = "";
+  hideReminder();
+  c.history = c.history || [];
+  c.history.forEach(h => h.isNew = false);
+  c.history.unshift({ date: now.toISOString().slice(0,10), menu: c.props.map(p => p.t).join(" / "), staff: "AI自動記録", color: "#3e6b4f", isNew: true });
+  renderTimeline(c.history);
+}
+
+// ===== 実写真AI解析モード(ブラウザ内蔵・外部API不要) =====
+function switchMode(mode) {
+  const isSample = mode === "sample";
+  document.getElementById("modeSampleBtn").classList.toggle("on", isSample);
+  document.getElementById("modePhotoBtn").classList.toggle("on", !isSample);
+  document.getElementById("sampleMode").classList.toggle("hide", !isSample);
+  document.getElementById("photoMode").classList.toggle("hide", isSample);
+  document.getElementById("modeNote").textContent = isSample
+    ? "※ サンプル顧客は擬似解析(仮データ)です。"
+    : "※ 髪質・ダメージは、アップロードされた写真をブラウザ内で実際にピクセル解析(明度・色相・コントラスト)して算出しています。頭皮・顔型は写真だけでは判定が難しいため、スタイリストの目視選択と組み合わせる設計です。";
+  ["dHair","dDmg","dScalp","dFace"].forEach(id => document.getElementById(id).textContent = "—");
+  [1,2,3,4].forEach(n => document.getElementById("m"+n).style.width = 0);
+  document.getElementById("warn").style.display = "none";
+  document.getElementById("props").innerHTML = `<p style="color:var(--sub);font-size:13px">${isSample ? "左で顧客を選択し「AI解析を実行」を押してください。" : "写真をアップロードし「写真をAI解析」を押してください。"}</p>`;
+  document.getElementById("karte").textContent = "[未記録] 解析と提案確定後、カルテが自動生成されます。";
+  document.getElementById("exportBtn").classList.add("hide");
+  document.getElementById("printKarteBtn").classList.add("hide");
+  document.getElementById("exportNote").textContent = "";
+  currentKarte = null;
+  hideReminder();
+  document.getElementById("baWrap").classList.add("hide");
+  beforeStat = null; afterPhotoImg = null;
+  document.getElementById("afterPhotoInput").value = "";
+  renderTimeline(isSample ? (CUSTOMERS[sel].history || []) : photoModeHistory);
+}
+
+let photoImg = null;
+document.getElementById("photoInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    photoImg = img;
+    const prev = document.getElementById("photoPreview");
+    prev.src = url;
+    prev.style.display = "block";
+    beforeStat = null; afterPhotoImg = null;
+    document.getElementById("baWrap").classList.add("hide");
+    document.getElementById("afterPhotoInput").value = "";
+  };
+  img.src = url;
+});
+
+function analyzePixels(img) {
+  const canvas = document.getElementById("photoCanvas");
+  const w = canvas.width = 80, h = canvas.height = 80; // 縮小して高速に解析
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, w, h);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  let sumR = 0, sumG = 0, sumB = 0, n = 0;
+  const lumis = [];
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i+1], b = data[i+2];
+    sumR += r; sumG += g; sumB += b;
+    lumis.push(0.299*r + 0.587*g + 0.114*b);
+    n++;
+  }
+  const avgLumi = lumis.reduce((a,v) => a+v, 0) / n;
+  const variance = lumis.reduce((a,v) => a + (v-avgLumi)*(v-avgLumi), 0) / n;
+  return { brightness: avgLumi, warmth: sumR/n - sumB/n, stdDev: Math.sqrt(variance) };
+}
+
+function faceAdvice(faceLabel) {
+  const map = {
+    "卵型・自由度高": "骨格バランスが良く、幅広いスタイルが似合う。トレンド重視の提案が可能。",
+    "丸型・縦ライン補正": "トップに高さを出しサイドをタイトにする縦ラインシルエットが黄金比に近づく。",
+    "面長・横ボリューム補正": "顔周りにレイヤーを入れ、横方向のボリュームでバランスを取る。",
+    "四角・エラ張り・曲線補正": "直線的な輪郭を、丸みのある毛流れ・レイヤーで柔らかく見せる。",
+    "ひし形・頬骨ぼかし補正": "頬骨の張りを前髪・サイドの毛束でぼかし、卵型に近づける。",
+  };
+  return map[faceLabel] || "骨格データに基づき似合わせを提案。";
+}
+
+function buildPhotoProps({ toneLabel, dmgPct, scalpLabel, faceLabel, warmth }) {
+  const props = [];
+  if (dmgPct >= 60) {
+    props.push({ t: "ダメージ集中補修トリートメント", p: "+¥6,600", why: `写真解析でコントラスト値からダメージ推定${dmgPct}%。集中補修でツヤと手触りを回復する。`, tags: ["写真解析根拠","ダメージ対応"] });
+  } else {
+    props.push({ t: warmth > 8 ? "暖色トーンを活かしたカラー提案" : warmth < -8 ? "寒色系クールトーンカラー" : "ナチュラルトーンカラー", p: "¥9,900〜", why: `写真の色味解析(${toneLabel})から、地毛や既存カラーに馴染む配合を自動選定。`, tags: ["写真解析根拠"] });
+  }
+  if (scalpLabel.includes("皮脂") || scalpLabel.includes("薄毛")) {
+    props.push({ t: "スカルプクレンジング+育毛スパ", p: "¥6,600", why: `頭皮状態「${scalpLabel}」の選択に基づき、毛穴詰まり・将来の薄毛リスクへ先手のケアを提案。`, tags: ["頭皮対応","店販連動"] });
+  } else {
+    props.push({ t: "髪質改善トリートメント", p: "+¥5,500", why: "頭皮は良好なため、髪自体の質感向上に焦点を当てたケアを提案。", tags: ["質感向上"] });
+  }
+  props.push({ t: faceLabel.split("・")[0] + "に似合うカット提案", p: "カット内", why: faceAdvice(faceLabel), tags: ["似合わせ根拠"] });
+  return props;
+}
+
+let lastPhotoProps = [];
+document.getElementById("scanPhoto").onclick = () => {
+  if (!photoImg) { alert("先に写真を撮影・選択してください。"); return; }
+  const btn = document.getElementById("scanPhoto");
+  btn.textContent = "🔄 解析中…";
+  btn.disabled = true;
+  setTimeout(() => {
+    const stat = analyzePixels(photoImg);
+    beforeStat = stat;
+    const brightnessPct = Math.round(Math.min(100, stat.brightness / 255 * 100));
+    const toneLabel = stat.warmth > 8 ? "暖色系(暖かみのあるトーン)" : stat.warmth < -8 ? "寒色系(クールトーン)" : "ニュートラルトーン";
+    const dmgPct = Math.round(Math.min(100, stat.stdDev / 70 * 100));
+    const dmgLabel = dmgPct < 35 ? "良好(ツヤ・均一感あり)" : dmgPct < 60 ? "中程度(部分的な乾燥・褪色兆候)" : "ダメージ蓄積の可能性";
+
+    const [scalpLabel, scalpPct] = document.getElementById("selScalp").value.split("|");
+    const faceSel = document.getElementById("selFace");
+    const faceLabel = faceSel.options[faceSel.selectedIndex].text;
+
+    document.getElementById("dHair").textContent = toneLabel;
+    document.getElementById("dDmg").textContent = dmgLabel;
+    document.getElementById("dScalp").textContent = scalpLabel;
+    document.getElementById("dFace").textContent = faceLabel;
+    document.getElementById("m1").style.width = brightnessPct + "%";
+    document.getElementById("m2").style.width = dmgPct + "%";
+    document.getElementById("m3").style.width = Number(scalpPct) + "%";
+    document.getElementById("m4").style.width = "70%";
+
+    const allergy = document.getElementById("pAllergy").value.trim();
+    const warn = document.getElementById("warn");
+    if (allergy) { warn.textContent = "⚠ " + allergy; warn.style.display = "block"; } else { warn.style.display = "none"; }
+
+    lastPhotoProps = buildPhotoProps({ toneLabel, dmgPct, scalpLabel, faceLabel, warmth: stat.warmth });
+    document.getElementById("props").innerHTML = lastPhotoProps.map(p => `
+      <div class="prop"><span class="price">${p.p}</span><h3>${p.t}</h3>
+      <p><b>AI提案根拠:</b> ${p.why}</p>
+      <div style="margin-top:4px">${p.tags.map(t => `<span class="tagr">${t}</span>`).join("")}</div></div>`).join("") +
+      `<button class="btn-p" onclick="confirmPhotoKarte()">✔ この提案で確定 → カルテ自動記録</button>`;
+
+    btn.textContent = "🔍 写真をAI解析(色味・ダメージを実測)";
+    btn.disabled = false;
+  }, 1400);
+};
+
+function confirmPhotoKarte() {
+  const name = document.getElementById("pName").value.trim() || "お客様";
+  const allergy = document.getElementById("pAllergy").value.trim();
+  const memo = document.getElementById("pMemo").value.trim();
+  const now = new Date();
+  currentKarte = {
+    name, allergy: allergy || "特記なし", memo: memo || "",
+    proposals: lastPhotoProps.map(p => p.t),
+    visitCycleMonths: 3,
+    avgTicket: null,
+    menuHistory: lastPhotoProps.map(p => p.t).join(" / "),
+    diagnosedAt: now.toISOString(),
+  };
+  document.getElementById("karte").textContent =
+`━━ 電子カルテ 自動生成(実写真解析) ━━
+日時    : ${now.toLocaleDateString("ja-JP")} ${now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"})}
+顧客    : ${name}
+AI診断  : 髪質=${document.getElementById("dHair").textContent} / ダメージ=${document.getElementById("dDmg").textContent}
+          頭皮=${document.getElementById("dScalp").textContent} / 顔型=${document.getElementById("dFace").textContent}
+注意事項: ${currentKarte.allergy}
+確定提案: ${currentKarte.proposals.join(" / ")}${memo ? `\n施術メモ: ${memo}` : ""}
+次回提案: AIが施術結果を学習し来店周期${currentKarte.visitCycleMonths}か月で自動フォロー予定
+記録者  : AI自動記録(担当スタイリスト承認待ち)`;
+  document.getElementById("exportBtn").classList.remove("hide");
+  document.getElementById("printKarteBtn").classList.remove("hide");
+  document.getElementById("remindBtn").classList.remove("hide");
+  document.getElementById("exportNote").textContent = "";
+  hideReminder();
+  photoModeHistory.forEach(h => h.isNew = false);
+  photoModeHistory.unshift({ date: now.toISOString().slice(0,10), menu: currentKarte.proposals.join(" / "), staff: "AI自動記録", color: "#8a5a2b", isNew: true });
+  renderTimeline(photoModeHistory);
+}
+
+// ===== 音声入力(ブラウザ内蔵Web Speech API・Chrome/Edge対応) =====
+let recognition = null, recActive = false, recTarget = null;
+function toggleMic(btn) {
+  const targetId = btn.dataset.target;
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) { alert("お使いのブラウザは音声入力に対応していません(Chrome/Edge推奨)。"); return; }
+  if (recActive && recTarget === targetId) { recognition.stop(); return; }
+  if (recognition) recognition.stop();
+  recognition = new SpeechRec();
+  recognition.lang = "ja-JP";
+  recognition.interimResults = false;
+  recognition.continuous = false;
+  recTarget = targetId;
+  recActive = true;
+  btn.classList.add("rec");
+  btn.textContent = "⏺";
+  recognition.onresult = e => {
+    const text = e.results[0][0].transcript;
+    const field = document.getElementById(targetId);
+    field.value = field.value ? field.value + " " + text : text;
+  };
+  recognition.onend = () => { recActive = false; btn.classList.remove("rec"); btn.textContent = "🎙"; };
+  recognition.onerror = () => { recActive = false; btn.classList.remove("rec"); btn.textContent = "🎙"; };
+  recognition.start();
+}
+
+function exportKarte() {
+  if (!currentKarte) { alert("先にカルテを確定してください。"); return; }
+  const blob = new Blob([JSON.stringify(currentKarte, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `karte_${currentKarte.name.replace(/[^\w一-龠ぁ-んァ-ヶー]/g, "")}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById("exportNote").textContent = "✔ エクスポートしました。No.10のプロトタイプで「📥 インポート」から読み込めます。";
+}
+
+// ===== カルテの印刷用PDF出力(A4・そのまま紙カルテ/電子カルテへ貼付できる体裁) =====
+function printKarteReport() {
+  if (!currentKarte) { alert("先にカルテを確定してください。"); return; }
+  const k = currentKarte;
+  const karteText = document.getElementById("karte").textContent;
+  const reminderText = document.getElementById("reminderBox").classList.contains("hide")
+    ? null : document.getElementById("reminderBox").textContent;
+  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>${k.name} 施術カルテ</title>
+<style>
+  @page{size:A4;margin:14mm}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:#26221e;font-size:13px;line-height:1.65}
+  h1{font-size:20px;border-bottom:3px solid #8a5a2b;padding-bottom:8px;margin-bottom:6px}
+  h2{font-size:14px;color:#6f675e;margin:18px 0 8px;border-bottom:1px solid #e5dfd7;padding-bottom:4px}
+  .meta{color:#6f675e;font-size:12px}
+  .warn{background:#fbeeec;border:1px solid #e6c4c0;color:#a4453c;border-radius:8px;padding:10px;font-weight:700;margin-top:10px}
+  .karte{font-family:Consolas,monospace;font-size:12px;background:#26221e;color:#cfe3d5;border-radius:10px;padding:14px;white-space:pre-wrap;margin-top:6px}
+  .line{background:#eef5f0;border-radius:10px;padding:12px;font-size:12.5px;white-space:pre-wrap;margin-top:6px}
+  .printbtn{font:inherit;padding:8px 16px;border-radius:8px;border:none;background:#8a5a2b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:14px}
+  @media print{.printbtn{display:none}}
+</style></head><body>
+<button class="printbtn" onclick="window.print()">🖨 このカルテを印刷する</button>
+<h1>施術カルテ — ${k.name}</h1>
+<p class="meta">作成日: ${new Date(k.diagnosedAt).toLocaleString("ja-JP")} / SALON BLOOM 表参道(AI自動記録・要スタイリスト承認)</p>
+${k.allergy && k.allergy !== "特記なし" ? `<div class="warn">⚠ ${k.allergy}</div>` : ""}
+<h2>AI診断・確定提案</h2>
+<div class="karte">${karteText}</div>
+${k.memo ? `<h2>施術メモ</h2><p>${k.memo}</p>` : ""}
+${reminderText ? `<h2>次回来店リマインド文(生成済み)</h2><div class="line">${reminderText}</div>` : ""}
+<h2>スタイリスト確認欄</h2>
+<p class="meta">上記AI診断・提案内容を確認しました。<br><br>担当スタイリスト署名: _____________________　確認日: ____年____月____日</p>
+</body></html>`;
+  const win = window.open("", "_blank");
+  if (!win) { alert("ポップアップがブロックされました。ブラウザの設定でこのページのポップアップを許可してください。"); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
+// ===== 予約リマインドLINE風メッセージ自動生成(実送信はせず、コピー用文面を生成) =====
+const LINE_OA_ID = "@salonbloom"; // デモ用の公式アカウントID(実運用では導入店舗のLINE公式アカウントIDに差し替え)
+function hideReminder() {
+  document.getElementById("reminderBox").classList.add("hide");
+  document.getElementById("copyBtn").classList.add("hide");
+  document.getElementById("sendLineBtn").classList.add("hide");
+  document.getElementById("sendLineNote").classList.add("hide");
+}
+function generateReminder() {
+  if (!currentKarte) return;
+  const cycle = currentKarte.visitCycleMonths || 3;
+  const base = new Date(currentKarte.diagnosedAt);
+  const next = new Date(base);
+  next.setMonth(next.getMonth() + cycle);
+  const nextStr = next.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" });
+  const menu = (currentKarte.proposals || currentKarte.menuHistory.split(" / "))[0];
+  const text =
+`${currentKarte.name.replace(/\(.+?\)/, "")}様
+
+いつもSALON BLOOM 表参道をご利用いただきありがとうございます😊
+前回「${menu}」からそろそろ${cycle}ヶ月が経ちますが、髪の調子はいかがですか?
+
+そろそろ次のお手入れ時期です✂️
+目安: ${nextStr} 頃のご予約がおすすめです。
+
+ご都合の良い日時があればこのメッセージにご返信ください🙌
+スタッフ一同お待ちしております!`;
+  document.getElementById("reminderBox").textContent = text;
+  document.getElementById("reminderBox").classList.remove("hide");
+  document.getElementById("copyBtn").classList.remove("hide");
+  document.getElementById("sendLineBtn").classList.remove("hide");
+  document.getElementById("sendLineNote").classList.remove("hide");
+}
+function copyReminder() {
+  const text = document.getElementById("reminderBox").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById("copyBtn");
+    const orig = btn.textContent;
+    btn.textContent = "✔ コピーしました";
+    setTimeout(() => btn.textContent = orig, 1500);
+  }).catch(() => alert("コピーに失敗しました。手動で選択してコピーしてください。"));
+}
+function sendReminderViaLine() {
+  const text = document.getElementById("reminderBox").textContent;
+  const url = `https://line.me/R/oaMessage/${encodeURIComponent(LINE_OA_ID)}/?${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
+// ===== Before/After 写真比較(施術後の写真をAI解析し変化を数値化) =====
+let beforeStat = null, afterPhotoImg = null;
+document.getElementById("afterPhotoInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!photoImg) { alert("先に「施術前」の写真を撮影・選択し、AI解析を実行してください。"); e.target.value = ""; return; }
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    afterPhotoImg = img;
+    document.getElementById("afterThumb").src = url;
+    document.getElementById("beforeThumb").src = document.getElementById("photoPreview").src;
+    if (!beforeStat) beforeStat = analyzePixels(photoImg);
+    const afterStat = analyzePixels(afterPhotoImg);
+    const dBright = Math.round((afterStat.brightness - beforeStat.brightness) / 255 * 100);
+    const beforeDmg = Math.round(Math.min(100, beforeStat.stdDev / 70 * 100));
+    const afterDmg = Math.round(Math.min(100, afterStat.stdDev / 70 * 100));
+    const dDmg = afterDmg - beforeDmg;
+    document.getElementById("baDiff").innerHTML =
+      `明度: ${dBright >= 0 ? "+" : ""}${dBright}pt ${dBright > 3 ? "(明るく・ツヤ感UP)" : dBright < -3 ? "(トーンダウン)" : "(ほぼ変化なし)"}<br>` +
+      `ダメージ推定: ${beforeDmg}% → ${afterDmg}% (${dDmg <= 0 ? dDmg + "pt 改善" : "+" + dDmg + "pt 悪化方向"})`;
+    document.getElementById("baWrap").classList.remove("hide");
+  };
+  img.src = url;
+});
+</script>
+</body>
+</html>

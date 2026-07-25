@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.4 口コミAI自動返信&MEO改善 | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#b98a2f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .kpi b{font-size:22px;display:block}.kpi span{font-size:11px;color:var(--sub)}
+  .kpi .up{color:var(--green);font-size:11px;font-weight:700}
+  .grid{display:grid;grid-template-columns:1fr 400px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .rev{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
+  .rev .head{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-bottom:4px}
+  .stars{color:var(--gold);letter-spacing:2px}
+  .rev p{font-size:13px}
+  .reply{background:#eef5f0;border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:10px;margin-top:8px;font-size:12.5px;display:none;white-space:pre-wrap}
+  .rbtns{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+  button{font:inherit;cursor:pointer;border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px;border:1px solid var(--line);background:#fff}
+  .btn-g{background:var(--green);color:#fff;border-color:var(--green)}
+  .neg{border-color:#e6c4c0;background:#fdf8f7}
+  .alert{font-size:11px;color:#fff;background:var(--red);border-radius:99px;padding:1px 8px;font-weight:700}
+  svg text{font-family:"Noto Sans JP",sans-serif}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}
+  textarea{width:100%;font:inherit;font-size:13px;padding:8px;border:1px solid var(--line);border-radius:8px;resize:vertical}
+  .badge{color:#fff;border-radius:99px;padding:2px 10px;font-size:11px;font-weight:700}
+  .real-badge{font-size:9.5px;background:#eef5f0;color:var(--green);border-radius:99px;padding:2px 8px;font-weight:800;margin-left:6px}
+  .hide{display:none}
+  .tonesw{display:flex;gap:6px;margin:8px 0}
+  .tonesw button{flex:1;font:inherit;font-size:11.5px;padding:6px 4px;border:1px solid var(--line);border-radius:8px;background:#faf7f2;cursor:pointer;font-weight:700;color:var(--sub)}
+  .tonesw button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .copybtn{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:99px;background:#faf7f2;cursor:pointer;font-weight:700;margin-top:8px}
+  .fsel2{margin:8px 0;display:flex;flex-direction:column;gap:6px}
+  .fsel2 label{font-size:11px;color:var(--sub);font-weight:700}
+  .fsel2 select,.fsel2 input{font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>⭐ 口コミAI自動返信&MEO改善システム <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.4 / 業務改善助成金 対応案</span>
+</header>
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><span>「表参道 美容室」MEO順位</span><b>3<small>位</small></b><span class="up">▲ 導入前 14位</span></div>
+    <div class="kpi"><span>口コミ返信率</span><b>100<small>%</small></b><span class="up">平均返信時間 8分</span></div>
+    <div class="kpi"><span>星評価(90日)</span><b>4.8</b><span class="up">▲ 4.2 → 4.8</span></div>
+    <div class="kpi"><span>地図経由の新規予約</span><b>34<small>件/月</small></b><span class="up">▲ +21件</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>✍️ 複数の口コミを一括分析<span class="real-badge">本番相当・実データ分析</span></h2>
+      <textarea id="pasteReview" rows="5" placeholder="実際の口コミ文章を1件1行で貼り付けてください(複数件まとめて分析できます)"></textarea>
+      <label style="font-size:11px;color:var(--sub);font-weight:700">返信文のトーン</label>
+      <div class="tonesw">
+        <button class="on" data-tone="polite" onclick="setTone('polite')">🎩 丁寧</button>
+        <button data-tone="casual" onclick="setTone('casual')">😊 カジュアル</button>
+      </div>
+      <div class="rbtns"><button class="btn-g" onclick="analyzeReview()">🤖 一括分析(感情・話題・返信文を生成)</button></div>
+      <div id="pasteResult"></div>
+      <p class="note">※ 貼り付けた文章はキーワードベースでAIがその場で感情分析します。外部送信なし・ブラウザ内で完結します。</p>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2>🆚 競合店との口コミ比較ベンチマーク<span class="real-badge">本番相当・実データ分析</span></h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label style="font-size:11px;color:var(--sub);font-weight:700">自店の口コミ(1件1行)</label>
+          <textarea id="ownReviews" rows="4" placeholder="自店の口コミを貼り付け"></textarea>
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--sub);font-weight:700">競合店の口コミ(1件1行)</label>
+          <textarea id="compReviews" rows="4" placeholder="競合店の口コミを貼り付け"></textarea>
+        </div>
+      </div>
+      <div class="rbtns"><button class="btn-g" onclick="compareCompetitor()">🤖 自店 vs 競合店を比較分析</button></div>
+      <div id="compareResult"></div>
+      <p class="note">※ 両方とも貼り付けたテキストをその場でキーワード分析するだけで、外部への送信・保存は行いません。</p>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2>📣 レビュー依頼メッセージの自動生成(来店後フォロー)</h2>
+      <div class="fsel2">
+        <label>お客様タイプ</label>
+        <select id="reqType">
+          <option value="satisfied">満足度が高かった方</option>
+          <option value="first">初めてご来店の方</option>
+          <option value="regular">常連のお客様</option>
+        </select>
+        <label>お客様名(任意)</label>
+        <input id="reqName" placeholder="例: 田中様">
+      </div>
+      <div class="rbtns"><button class="btn-g" onclick="generateReviewRequest()">🤖 依頼文を自動生成</button></div>
+      <div class="reply" id="reqResult"></div>
+      <button class="copybtn hide" id="reqCopyBtn" onclick="copyReviewRequest()">📋 文面をコピー</button>
+      <button class="hide" id="reqSendBtn" onclick="sendReviewRequestViaLine()" style="background:#06c755;color:#fff;border-color:#06c755;margin-top:8px">📤 LINE公式アカウントから送信</button>
+      <p class="note hide" id="reqSendNote">※ LINE公式アカウントのトーク画面が文面入力済みの状態で開きます。内容を確認し「送信」をタップしてください(自動一斉送信にはMessaging API連携が必要なため、本デモはワンタップ送信の一歩手前までを実装しています)。</p>
+      <p class="note">※ No.3のカルテ連携により満足度の高い顧客を自動抽出して依頼対象にする拡張も可能。</p>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2>新着口コミ(サンプル) — AIが下書きを自動生成(承認して投稿)</h2>
+
+      <div class="rev">
+        <div class="head"><b>Yuka M. <span class="stars">★★★★★</span></b><span>2時間前 / Google</span></div>
+        <p>初めてでしたが、カウンセリングがとても丁寧で仕上がりも大満足!山本さんにまたお願いしたいです。</p>
+        <div class="reply" id="r1"></div>
+        <div class="rbtns"><button class="btn-g" onclick="gen(1)">🤖 AI返信を生成</button><button onclick="approve(1)" id="a1" style="display:none">✔ 承認して投稿</button></div>
+      </div>
+
+      <div class="rev neg">
+        <div class="head"><b>T. K. <span class="stars">★★</span> <span class="alert">要注意 — 店長へ通知済み</span></b><span>5時間前 / Google</span></div>
+        <p>予約したのに15分以上待たされました。仕上がりは良かったけど、土曜は忙しすぎるのでは。</p>
+        <div class="reply" id="r2"></div>
+        <div class="rbtns"><button class="btn-g" onclick="gen(2)">🤖 AI返信を生成(お詫び+改善提示)</button><button onclick="approve(2)" id="a2" style="display:none">✔ 承認して投稿</button></div>
+      </div>
+
+      <div class="rev">
+        <div class="head"><b>Sarah L. <span class="stars">★★★★★</span></b><span>昨日 / Google(英語)</span></div>
+        <p>Amazing salon! English-friendly staff and the best haircut I've had in Tokyo. Tax-free products too!</p>
+        <div class="reply" id="r3"></div>
+        <div class="rbtns"><button class="btn-g" onclick="gen(3)">🤖 AI返信を生成(英語で返信)</button><button onclick="approve(3)" id="a3" style="display:none">✔ 承認して投稿</button></div>
+      </div>
+      <p class="note">※ ネガティブ口コミは自動投稿せず必ず店長承認フロー。実装版はGBP APIと連携します。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>MEO順位の推移(「表参道 美容室」)</h2>
+        <svg viewBox="0 0 380 180" width="100%">
+          <line x1="40" y1="10" x2="40" y2="150" stroke="#e5dfd7"/>
+          <line x1="40" y1="150" x2="370" y2="150" stroke="#e5dfd7"/>
+          <text x="8" y="18" font-size="10" fill="#6f675e">1位</text>
+          <text x="8" y="80" font-size="10" fill="#6f675e">8位</text>
+          <text x="8" y="148" font-size="10" fill="#6f675e">15位</text>
+          <polyline fill="none" stroke="#8a5a2b" stroke-width="3" stroke-linecap="round"
+            points="50,140 100,132 150,120 200,95 250,60 300,38 360,28"/>
+          <circle cx="360" cy="28" r="5" fill="#3e6b4f"/>
+          <text x="300" y="20" font-size="11" font-weight="bold" fill="#3e6b4f">現在3位</text>
+          <text x="50" y="168" font-size="9" fill="#6f675e">2月</text><text x="150" y="168" font-size="9" fill="#6f675e">4月</text>
+          <text x="250" y="168" font-size="9" fill="#6f675e">6月</text><text x="345" y="168" font-size="9" fill="#6f675e">7月</text>
+          <text x="120" y="115" font-size="9" fill="#b98a2f">▲AI返信運用開始</text>
+        </svg>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>今週のMEO自動施策</h2>
+        <div class="row"><span>GBP最新情報投稿(新色キャンペーン)</span><span class="ok">✔ 月曜投稿済</span></div>
+        <div class="row"><span>写真4枚を自動選定・追加</span><span class="ok">✔ 水曜完了</span></div>
+        <div class="row"><span>満足度の高い顧客12名へ口コミ依頼SMS</span><span class="ok">✔ 送信済(3件投稿)</span></div>
+        <div class="row"><span>Q&A「駐車場はありますか」自動整備</span><span class="ok">✔ 追加済</span></div>
+        <div class="row"><span>競合5店の順位変動モニタリング</span><span class="ok">✔ 異常なし</span></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>口コミAI分析(今月のテーマ別評判)</h2>
+        <div class="row"><span>技術・仕上がり</span><b style="color:var(--green)">+92% 好評</b></div>
+        <div class="row"><span>接客・カウンセリング</span><b style="color:var(--green)">+88% 好評</b></div>
+        <div class="row"><span>待ち時間</span><b style="color:var(--red)">-18% 不満 ← 改善提案あり</b></div>
+        <p class="note">AI提案: 土曜11-14時の予約枠を1枠減らし、待ち時間クレームの根本原因(掛け持ち過多)を解消することを推奨。</p>
+        <button class="btn-g" style="width:100%;margin-top:10px" onclick="printMeoReport()">🖨 月次口コミ・MEOレポートを印刷用に生成</button>
+        <p class="note" id="reportNote">上で「一括分析」を実行済みの場合、その結果もレポートに反映されます。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const REPLIES = {
+  1:`Yuka様\nこの度はSALON BLOOMにご来店いただき、また嬉しいお言葉をありがとうございます。担当の山本にも申し伝えたところ大変喜んでおりました。次回はぜひ、今回のお色味の経過も見せてくださいね。またのご来店を心よりお待ちしております。`,
+  2:`T.K.様\nこの度はお待たせしてしまい、誠に申し訳ございませんでした。せっかくご予約いただいたにもかかわらず、貴重なお時間を頂戴してしまいましたこと、重ねてお詫び申し上げます。\n頂いたご意見を受け、土曜日の予約枠と人員配置を今週より見直しました。仕上がりにご満足いただけたことが唯一の救いです。挽回の機会をいただけますと幸いです。店長・高橋`,
+  3:`Dear Sarah,\nThank you so much for your wonderful review! We're delighted you enjoyed your time with us. Our team loved chatting with you too. Next time you're in Tokyo, come say hi — your first treatment upgrade will be on us. Safe travels!\n— SALON BLOOM Omotesando`,
+};
+function gen(n) {
+  const el = document.getElementById("r" + n);
+  el.style.display = "block";
+  el.textContent = "🤖 生成中…";
+  setTimeout(() => {
+    el.textContent = REPLIES[n];
+    document.getElementById("a" + n).style.display = "inline-block";
+  }, 900);
+}
+function approve(n) {
+  const b = document.getElementById("a" + n);
+  b.textContent = "✔ 投稿済み"; b.disabled = true;
+  b.style.background = "#eef5f0"; b.style.color = "#3e6b4f";
+}
+
+// ===== 実口コミ貼り付け分析(ブラウザ内蔵・外部API不要) =====
+const POSITIVE_WORDS = ["丁寧","満足","最高","良かった","よかった","嬉しい","うれしい","おすすめ","気に入り","きれい","綺麗","上手","また来たい","親切","素敵","快適","安心","感謝","ありがとう","大満足"];
+const NEGATIVE_WORDS = ["待たされ","待たさ","遅い","不満","残念","二度と","対応が悪い","高すぎ","汚い","態度","ミス","雑","がっかり","最悪","二度目はない"];
+const TOPICS = {
+  "待ち時間": ["待た", "待ち時間", "遅れ", "遅刻"],
+  "接客・カウンセリング": ["接客", "スタッフ", "対応", "カウンセリング", "説明"],
+  "技術・仕上がり": ["仕上がり", "カット", "カラー", "技術", "パーマ", "トリートメント"],
+  "価格": ["高い", "料金", "価格", "コスパ", "値段"],
+};
+
+function analyzeSentiment(text) {
+  let score = 0;
+  POSITIVE_WORDS.forEach(w => { if (text.includes(w)) score++; });
+  NEGATIVE_WORDS.forEach(w => { if (text.includes(w)) score--; });
+  const topics = Object.entries(TOPICS).filter(([, words]) => words.some(w => text.includes(w))).map(([k]) => k);
+  const sentiment = score > 0 ? "positive" : score < 0 ? "negative" : "neutral";
+  return { sentiment, score, topics };
+}
+
+let toneMode = "polite";
+function setTone(t) {
+  toneMode = t;
+  document.querySelectorAll(".tonesw button").forEach(b => b.classList.toggle("on", b.dataset.tone === t));
+}
+
+function generateReply(analysis, tone) {
+  tone = tone || "polite";
+  const topic = analysis.topics[0] || null;
+  if (tone === "casual") {
+    if (analysis.sentiment === "positive") {
+      return `嬉しい口コミありがとうございます!${topic ? `${topic}について褒めていただけて、` : ""}スタッフ一同めちゃくちゃ励みになります😊 またのご来店、お待ちしてます!`;
+    }
+    if (analysis.sentiment === "negative") {
+      return `この度はご不便をおかけしてしまい、すみませんでした🙇${topic ? `${topic}について頂いたご意見、` : "頂いたご意見、"}しっかり受け止めて改善していきます。またの機会にぜひお店の様子を見にきてください。店長`;
+    }
+    return `口コミありがとうございます!今後もより良いサービスを目指して頑張ります。またのご来店お待ちしてます!`;
+  }
+  if (analysis.sentiment === "positive") {
+    return `この度は貴重なご感想をありがとうございます。${topic ? `${topic}についてお褒めのお言葉をいただき、` : ""}スタッフ一同大変励みになります。またのご来店を心よりお待ちしております。`;
+  }
+  if (analysis.sentiment === "negative") {
+    return `この度はご不快な思いをさせてしまい、誠に申し訳ございませんでした。${topic ? `${topic}について頂いたご意見は真摯に受け止め、` : "頂いたご意見は真摯に受け止め、"}店内で改善に取り組んでまいります。よろしければ次回ご来店の際に改めてお詫びの機会をいただけますと幸いです。店長`;
+  }
+  return `貴重なご意見をありがとうございます。今後ともよりよいサービスを提供できるよう努めてまいります。またのご来店をお待ちしております。`;
+}
+
+function sentimentBadge(sentiment) {
+  return sentiment === "positive" ? `<span class="badge" style="background:var(--green)">ポジティブ</span>`
+    : sentiment === "negative" ? `<span class="badge" style="background:var(--red)">ネガティブ</span>`
+    : `<span class="badge" style="background:var(--sub)">ニュートラル</span>`;
+}
+
+function sentimentDonut(counts) {
+  const total = counts.positive + counts.negative + counts.neutral || 1;
+  const r = 46, cx = 60, cy = 60, cir = 2 * Math.PI * r;
+  const segs = [{ v: counts.positive, color: "#3e6b4f" }, { v: counts.negative, color: "#a4453c" }, { v: counts.neutral, color: "#b98a2f" }];
+  let offset = 0;
+  const arcs = segs.map(s => {
+    const dash = s.v / total * cir;
+    const el = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="18" stroke-dasharray="${dash} ${cir - dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+    offset += dash;
+    return el;
+  }).join("");
+  return `<svg viewBox="0 0 120 120" width="120" height="120">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#eee5d8" stroke-width="18"/>${arcs}
+    <text x="${cx}" y="${cy+4}" font-size="16" font-weight="bold" fill="#26221e" text-anchor="middle">${total}件</text></svg>`;
+}
+
+function topicBar(topicCounts) {
+  const entries = Object.entries(topicCounts);
+  const max = Math.max(...entries.map(([, v]) => v), 1);
+  return `<div>` + entries.map(([k, v]) => {
+    const pct = Math.round(v / max * 100);
+    return `<div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:4px"><span style="width:120px;color:var(--sub)">${k}</span><div style="flex:1;background:#efe9e0;border-radius:99px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--accent)"></div></div><b style="width:18px;text-align:right">${v}</b></div>`;
+  }).join("") + `</div>`;
+}
+
+function wordCloud(topicCounts) {
+  const entries = Object.entries(topicCounts).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return `<p class="note" style="text-align:center">該当する話題タグなし</p>`;
+  const max = Math.max(...entries.map(([, v]) => v));
+  return `<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:12px">` +
+    entries.map(([k, v]) => {
+      const ratio = v / max;
+      const size = Math.round(12 + ratio * 18);
+      const color = ratio > 0.66 ? "var(--accent)" : ratio > 0.33 ? "var(--gold)" : "var(--sub)";
+      return `<span style="font-size:${size}px;font-weight:800;color:${color};line-height:1">${k}<small style="font-size:10px;opacity:.65;font-weight:600"> (${v})</small></span>`;
+    }).join("") + `</div>`;
+}
+
+function summarize(lines) {
+  const analyses = lines.map(text => ({ text, ...analyzeSentiment(text) }));
+  const counts = { positive: 0, negative: 0, neutral: 0 };
+  analyses.forEach(a => counts[a.sentiment]++);
+  const topicCounts = {};
+  Object.keys(TOPICS).forEach(k => topicCounts[k] = 0);
+  analyses.forEach(a => a.topics.forEach(t => topicCounts[t]++));
+  const posRate = analyses.length ? Math.round(counts.positive / analyses.length * 100) : 0;
+  return { analyses, counts, topicCounts, posRate, n: analyses.length };
+}
+
+function compareCompetitor() {
+  const ownLines = document.getElementById("ownReviews").value.split("\n").map(l => l.trim()).filter(l => l);
+  const compLines = document.getElementById("compReviews").value.split("\n").map(l => l.trim()).filter(l => l);
+  const result = document.getElementById("compareResult");
+  if (!ownLines.length || !compLines.length) { alert("自店・競合店の両方に口コミを1件以上貼り付けてください。"); return; }
+  result.innerHTML = `<p class="note">🤖 比較分析中…</p>`;
+  setTimeout(() => {
+    const own = summarize(ownLines);
+    const comp = summarize(compLines);
+    const diff = own.posRate - comp.posRate;
+    let verdict;
+    if (diff > 10) verdict = `自店の好評率が競合より${diff}pt高く、優位性があります。`;
+    else if (diff < -10) verdict = `競合の好評率が自店より${-diff}pt高く、改善余地があります。`;
+    else verdict = `自店と競合の好評率は大きな差がなく、拮抗しています。`;
+
+    let weakestTopic = null, weakestDiff = 0;
+    Object.keys(TOPICS).forEach(t => {
+      const d = (own.topicCounts[t] / (own.n || 1)) - (comp.topicCounts[t] / (comp.n || 1));
+      if (d < weakestDiff) { weakestDiff = d; weakestTopic = t; }
+    });
+
+    result.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;text-align:center">
+        <div><b>自店</b><br>${sentimentDonut(own.counts)}<div class="note">好評率 ${own.posRate}% (${own.n}件)</div></div>
+        <div><b>競合店</b><br>${sentimentDonut(comp.counts)}<div class="note">好評率 ${comp.posRate}% (${comp.n}件)</div></div>
+      </div>
+      <div style="background:#faf7f2;border-radius:10px;padding:10px;margin-top:10px;font-size:12.5px">
+        <b>AI総評:</b> ${verdict}${weakestTopic ? ` 特に「${weakestTopic}」の話題言及割合が競合より低く、強化余地があります。` : ""}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+        <div><div class="note" style="text-align:center;font-weight:700">自店の話題</div>${wordCloud(own.topicCounts)}</div>
+        <div><div class="note" style="text-align:center;font-weight:700">競合店の話題</div>${wordCloud(comp.topicCounts)}</div>
+      </div>
+    `;
+  }, 1000 + (ownLines.length + compLines.length) * 60);
+}
+
+const REVIEW_REQUEST_BODIES = {
+  satisfied: "本日はご来店いただきありがとうございました!仕上がりにご満足いただけていましたら、Googleの口コミで一言いただけると大変励みになります🙏\n(口コミはこちらから: [店舗の口コミURL])\n\nお忙しい中恐れ入りますが、ご協力いただけますと幸いです。",
+  first: "本日は初めてのご来店、ありがとうございました!当店のことはいかがでしたか?もしよろしければ、率直な感想をGoogleの口コミに書いていただけると嬉しいです😊\n(口コミはこちらから: [店舗の口コミURL])\n\n次回のご来店も心よりお待ちしております!",
+  regular: "いつもご愛顧いただき誠にありがとうございます!長年通ってくださっているお客様のお声は、これから来店される方にとって一番の後押しになります。お時間のある時にGoogleへ一言いただけますと大変嬉しいです🙏\n(口コミはこちらから: [店舗の口コミURL])",
+};
+const LINE_OA_ID = "@salonbloom"; // デモ用の公式アカウントID(実運用では導入店舗のLINE公式アカウントIDに差し替え)
+function generateReviewRequest() {
+  const type = document.getElementById("reqType").value;
+  const nameRaw = document.getElementById("reqName").value.trim();
+  const greeting = nameRaw ? nameRaw + "\n\n" : "";
+  const box = document.getElementById("reqResult");
+  box.textContent = greeting + REVIEW_REQUEST_BODIES[type];
+  box.style.display = "block";
+  document.getElementById("reqCopyBtn").classList.remove("hide");
+  document.getElementById("reqSendBtn").classList.remove("hide");
+  document.getElementById("reqSendNote").classList.remove("hide");
+}
+function copyReviewRequest() {
+  navigator.clipboard.writeText(document.getElementById("reqResult").textContent).then(() => {
+    const btn = document.getElementById("reqCopyBtn");
+    const orig = btn.textContent;
+    btn.textContent = "✔ コピーしました";
+    setTimeout(() => btn.textContent = orig, 1500);
+  }).catch(() => alert("コピーに失敗しました。手動で選択してコピーしてください。"));
+}
+function sendReviewRequestViaLine() {
+  const text = document.getElementById("reqResult").textContent;
+  const url = `https://line.me/R/oaMessage/${encodeURIComponent(LINE_OA_ID)}/?${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
+let lastAnalysisSummary = null;
+function analyzeReview() {
+  const raw = document.getElementById("pasteReview").value;
+  const lines = raw.split("\n").map(l => l.trim()).filter(l => l);
+  const result = document.getElementById("pasteResult");
+  if (!lines.length) { alert("口コミ文章を1件1行で貼り付けてください。"); return; }
+  result.innerHTML = `<p style="color:var(--sub);font-size:12.5px;margin-top:8px">🤖 ${lines.length}件を分析中…</p>`;
+  setTimeout(() => {
+    const analyses = lines.map(text => ({ text, ...analyzeSentiment(text) }));
+    analyses.forEach(a => { a.reply = generateReply(a, toneMode); });
+
+    const counts = { positive: 0, negative: 0, neutral: 0 };
+    analyses.forEach(a => counts[a.sentiment]++);
+
+    const topicCounts = {};
+    Object.keys(TOPICS).forEach(k => topicCounts[k] = 0);
+    analyses.forEach(a => a.topics.forEach(t => topicCounts[t]++));
+
+    const mostNegative = analyses.reduce((worst, a) => (!worst || a.score < worst.score) ? a : worst, null);
+    lastAnalysisSummary = { n: lines.length, counts, topicCounts, posRate: Math.round(counts.positive / lines.length * 100), mostNegative };
+    document.getElementById("reportNote").textContent = `✔ 一括分析結果(${lines.length}件)を反映済み。「月次口コミ・MEOレポート」に含まれます。`;
+
+    result.innerHTML = `
+      <div class="row" style="margin-top:8px"><span>分析件数</span><b>${lines.length}件</b></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px">
+        ${sentimentDonut(counts)}
+        <div style="flex:1;min-width:160px">${wordCloud(topicCounts)}</div>
+      </div>
+      ${mostNegative && mostNegative.sentiment === "negative" ? `
+        <div class="rev neg" style="margin-top:10px">
+          <div class="head"><b>⚠ 最もネガティブ度の高いレビュー</b></div>
+          <p>${mostNegative.text}</p>
+          <div class="reply" style="display:block">${mostNegative.reply}</div>
+        </div>` : ""}
+      <h2 style="margin-top:10px">各口コミの分析・返信文</h2>
+      ${analyses.map((a, i) => `
+        <div class="rev ${a.sentiment === 'negative' ? 'neg' : ''}" style="margin-top:8px">
+          <div class="head"><b>#${i+1}</b> ${sentimentBadge(a.sentiment)} <span>${a.topics.length ? a.topics.join("・") : "話題特定なし"}</span></div>
+          <p>${a.text}</p>
+          <div class="reply" style="display:block">${a.reply}</div>
+        </div>`).join("")}
+    `;
+  }, 900 + lines.length * 80);
+}
+
+// ===== 月次口コミ・MEOレポートの印刷用出力 =====
+function printMeoReport() {
+  const now = new Date();
+  const analysisSection = lastAnalysisSummary ? `
+<h2>今回の一括分析結果(${lastAnalysisSummary.n}件)</h2>
+<table><tr><th>好評率</th><th>ポジティブ</th><th>ネガティブ</th><th>ニュートラル</th></tr>
+<tr><td>${lastAnalysisSummary.posRate}%</td><td>${lastAnalysisSummary.counts.positive}件</td><td>${lastAnalysisSummary.counts.negative}件</td><td>${lastAnalysisSummary.counts.neutral}件</td></tr></table>
+<table style="margin-top:8px"><tr><th>話題</th><th>言及件数</th></tr>
+${Object.entries(lastAnalysisSummary.topicCounts).map(([k, v]) => `<tr><td>${k}</td><td>${v}件</td></tr>`).join("")}
+</table>` : `<p class="note">※ 今回は「複数の口コミを一括分析」は未実施です。実施すると分析結果もこのレポートに反映されます。</p>`;
+  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>月次口コミ・MEOレポート</title>
+<style>
+  @page{size:A4;margin:14mm}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:#26221e;font-size:13px;line-height:1.65}
+  h1{font-size:20px;border-bottom:3px solid #b98a2f;padding-bottom:8px;margin-bottom:6px}
+  h2{font-size:14px;color:#6f675e;margin:18px 0 8px;border-bottom:1px solid #e5dfd7;padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  td,th{border:1px solid #e5dfd7;padding:6px 8px;text-align:left}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+  .kpi{border:1px solid #e5dfd7;border-radius:8px;padding:8px;text-align:center}
+  .kpi b{font-size:18px;display:block}
+  .kpi span{font-size:10.5px;color:#6f675e}
+  .comment{background:#faf7f2;border-radius:8px;padding:12px;font-size:12.5px}
+  .meta{color:#6f675e;font-size:12px}
+  .printbtn{font:inherit;padding:8px 16px;border-radius:8px;border:none;background:#b98a2f;color:#fff;font-weight:700;cursor:pointer;margin-bottom:14px}
+  @media print{.printbtn{display:none}}
+</style></head><body>
+<button class="printbtn" onclick="window.print()">🖨 このレポートを印刷する</button>
+<h1>月次口コミ・MEOレポート</h1>
+<p class="meta">作成日: ${now.toLocaleDateString("ja-JP")} / SALON BLOOM 表参道(AI自動生成・要店長確認)</p>
+<h2>主要指標</h2>
+<div class="kpis">
+  <div class="kpi"><b>3位</b><span>MEO順位(導入前14位)</span></div>
+  <div class="kpi"><b>100%</b><span>口コミ返信率</span></div>
+  <div class="kpi"><b>4.8</b><span>星評価(導入前4.2)</span></div>
+  <div class="kpi"><b>34件/月</b><span>地図経由の新規予約</span></div>
+</div>
+<h2>今週のMEO自動施策</h2>
+<table><tr><th>施策</th><th>結果</th></tr>
+<tr><td>GBP最新情報投稿(新色キャンペーン)</td><td>✔ 月曜投稿済</td></tr>
+<tr><td>写真4枚を自動選定・追加</td><td>✔ 水曜完了</td></tr>
+<tr><td>満足度の高い顧客12名へ口コミ依頼SMS</td><td>✔ 送信済(3件投稿)</td></tr>
+<tr><td>Q&A「駐車場はありますか」自動整備</td><td>✔ 追加済</td></tr>
+<tr><td>競合5店の順位変動モニタリング</td><td>✔ 異常なし</td></tr>
+</table>
+<h2>テーマ別評判(今月)</h2>
+<table><tr><th>テーマ</th><th>評価</th></tr>
+<tr><td>技術・仕上がり</td><td>+92% 好評</td></tr>
+<tr><td>接客・カウンセリング</td><td>+88% 好評</td></tr>
+<tr><td>待ち時間</td><td>-18% 不満 ← 改善提案あり</td></tr>
+</table>
+${analysisSection}
+<h2>AI総評・改善提案</h2>
+<div class="comment">待ち時間に関する不満が唯一のマイナス要因。土曜11-14時の予約枠を1枠減らし、待ち時間クレームの根本原因(掛け持ち過多)を解消することを推奨。それ以外のテーマは高水準を維持しており、現行のAI返信・MEO運用体制の継続を推奨する。</div>
+</body></html>`;
+  const win = window.open("", "_blank");
+  if (!win) { alert("ポップアップがブロックされました。ブラウザの設定でこのページのポップアップを許可してください。"); return; }
+  win.document.write(html);
+  win.document.close();
+}
+</script>
+</body>
+</html>

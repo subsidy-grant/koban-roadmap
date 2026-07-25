@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No.7 AIシフト自動作成&労務アラート | プロトタイプ</title>
+<style>
+  :root{--bg:#f7f5f2;--card:#fff;--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--blue:#5b7b9a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:#3e6b4f;color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:1150px;margin:0 auto;padding:18px}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card h2{font-size:13px;color:var(--sub);letter-spacing:.08em;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+  th{background:#efe9e0;padding:6px 4px;text-align:center;font-size:11px}
+  th:first-child{width:110px;text-align:left;padding-left:8px}
+  td{padding:5px 4px;border-top:1px solid var(--line);text-align:center}
+  td:first-child{text-align:left;padding-left:8px;font-weight:700;font-size:12px}
+  .sh{border-radius:6px;font-size:10.5px;font-weight:700;padding:3px 0;display:block;color:#fff}
+  .early{background:var(--blue)}.late{background:var(--accent)}.mid{background:var(--green)}.off{background:#e5dfd7;color:#6f675e}
+  .paid{background:var(--gold)}
+  .warnrow{outline:2px solid var(--red);outline-offset:-2px;border-radius:6px}
+  button{font:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 14px;font-weight:700}
+  .btn-p{background:var(--accent);color:#fff;width:100%;margin-top:10px}
+  .alerts{display:flex;flex-direction:column;gap:8px}
+  .al{border-radius:10px;padding:10px;font-size:12.5px;border-left:4px solid}
+  .al b{display:block;font-size:12px}
+  .al-red{background:#fbeeec;border-color:var(--red)}
+  .al-yel{background:#fbf4e3;border-color:var(--gold)}
+  .al-grn{background:#eef5f0;border-color:var(--green)}
+  .row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ok{color:var(--green);font-weight:700}
+  .note{font-size:11px;color:var(--sub);margin-top:8px}
+  .demand{display:flex;gap:3px;align-items:flex-end;height:46px;margin:4px 0 10px}
+  .demand i{flex:1;background:linear-gradient(180deg,var(--gold),#e8d4a8);border-radius:3px 3px 0 0;position:relative}
+  .demand span{position:absolute;top:-16px;left:0;right:0;font-size:9px;text-align:center;color:var(--sub)}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗓 AIシフト自動作成&労務アラート <small style="font-weight:400">— SALON BLOOM 表参道(デモ店舗)</small></h1>
+  <span class="tag">PROTOTYPE No.7 / 省力化投資補助金(一般型) 対応案</span>
+</header>
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <h2>来週シフト(7/20〜7/26) — 予約需要と連動して自動生成</h2>
+      <div style="font-size:11px;color:var(--sub)">AIによる来店需要予測(合計予約+飛び込み推定)</div>
+      <div class="demand">
+        <i style="height:45%"><span>月</span></i><i style="height:30%"><span>火</span></i>
+        <i style="height:55%"><span>水</span></i><i style="height:60%"><span>木</span></i>
+        <i style="height:75%"><span>金</span></i><i style="height:100%"><span>土</span></i>
+        <i style="height:90%"><span>日</span></i>
+      </div>
+      <table id="shift">
+        <tr><th>スタッフ</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th></tr>
+        <tr><td>高橋(店長)</td><td><span class="sh early">早番</span></td><td><span class="sh off">休</span></td><td><span class="sh early">早番</span></td><td><span class="sh mid">中番</span></td><td><span class="sh early">早番</span></td><td><span class="sh early">早番</span></td><td><span class="sh mid">中番</span></td></tr>
+        <tr><td>山本(スタイリスト)</td><td><span class="sh off">休</span></td><td><span class="sh mid">中番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh off">休</span></td><td><span class="sh mid">中番</span></td><td><span class="sh early">早番</span></td><td><span class="sh early">早番</span></td></tr>
+        <tr><td>木村(スタイリスト)</td><td><span class="sh mid">中番</span></td><td><span class="sh early">早番</span></td><td><span class="sh off">休</span></td><td><span class="sh early">早番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh off">休</span></td></tr>
+        <tr id="satoRow"><td>佐野(アシスタント)</td><td><span class="sh early">早番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh mid">中番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh late">遅番</span></td><td><span class="sh early">早番</span></td><td id="satoSun"><span class="sh late">遅番</span></td></tr>
+        <tr><td>森(パート)</td><td><span class="sh off">休</span></td><td><span class="sh off">休</span></td><td><span class="sh mid">10-15</span></td><td><span class="sh off">休</span></td><td><span class="sh mid">10-15</span></td><td><span class="sh mid">10-16</span></td><td><span class="sh mid">10-16</span></td></tr>
+      </table>
+      <button class="btn-p" id="fix">🤖 労務違反を自動修正して再生成</button>
+      <p class="note">制約条件: 希望休/指名予約の担当確保/技術レベル配置(土日はスタイリスト2名以上)/連勤上限/週の法定労働時間。作成時間: 従来3時間 → 約20秒。</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>労務AIアラート(社労士監修ルール)</h2>
+        <div class="alerts" id="alerts">
+          <div class="al al-red" id="alert1"><b>⚠ 連勤超過: 佐野さん</b>7/20〜26で7連勤になっています。日曜の遅番を森さんの時間延長+木村さんの休日振替でカバー可能です。</div>
+          <div class="al al-yel"><b>△ 残業ペース注意: 山本さん</b>今月の時間外が現時点で32時間。このペースだと36協定の月45時間に接近します(予測: 41時間)。</div>
+          <div class="al al-yel"><b>△ 有給5日義務: 木村さん</b>年度残り8か月で取得0日。8月の閑散週(8/24週)への計画付与を提案します。</div>
+          <div class="al al-grn"><b>✔ 休憩取得・インターバル</b>全員が11時間の勤務間インターバルを確保できています。</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>賃金・要件モニター(業務改善助成金/賃上げ特例対応)</h2>
+        <div class="row"><span>事業場内最低賃金(森さん)</span><b>¥1,180/h</b></div>
+        <div class="row"><span>東京都最低賃金(参考)</span><span>¥1,163/h ✔クリア</span></div>
+        <div class="row"><span>賃上げ計画の進捗(+3.0%/年)</span><span class="ok">進捗 104%</span></div>
+        <div class="row"><span>給与総額の伸び(+3.5%/年)</span><span class="ok">進捗 101%</span></div>
+        <p class="note">補助金の賃上げ要件をシフト・勤怠データから常時モニタリング。未達リスクは3か月前に警告します。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById("fix").onclick = function () {
+  this.textContent = "⏳ 制約条件を再計算中…";
+  setTimeout(() => {
+    document.getElementById("satoSun").innerHTML = '<span class="sh off">休</span>';
+    document.getElementById("alert1").className = "al al-grn";
+    document.getElementById("alert1").innerHTML = "<b>✔ 解消: 佐野さんの連勤</b>日曜を公休に変更。森さん10-17時に延長(本人合意済みの範囲)、needカバー率は98%を維持。";
+    this.textContent = "✔ 再生成完了(違反ゼロ) — スタッフのLINEへ配信済み";
+    this.style.background = "#3e6b4f";
+  }, 1500);
+};
+</script>
+</body>
+</html>
