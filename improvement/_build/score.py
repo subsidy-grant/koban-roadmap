@@ -179,6 +179,9 @@ PDCA_CSS = """
   .ext-links { margin-top:0.5rem; display:flex; gap:0.7rem; font-size:0.8rem; }
   .ext-thumb { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
   .ext-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .ext-thumb-icon { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; display:flex;
+    align-items:center; justify-content:center; font-size:2.6rem;
+    background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
 """
 
 ICON_RULES = [
@@ -226,7 +229,9 @@ def render_ext_section(parts, ik, ext, ind_labels):
         sc = pl["score"]
         total = sum(sc.values())
         parts.append('<div class="card ext-card">')
-        if pl.get("image"):
+        if pl.get("icon"):
+            parts.append(f'<div class="ext-thumb-icon">{pl["icon"]}</div>')
+        elif pl.get("image"):
             parts.append(f'<div class="ext-thumb"><img src="{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
         parts.append(f'<div class="no">PLAN {no:02d}｜総合 {total}/25</div>')
         parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')

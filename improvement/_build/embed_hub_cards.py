@@ -114,7 +114,9 @@ def build_fragment():
                 prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
-                if pl.get("image"):
+                if pl.get("icon"):
+                    parts.append(f'<div class="thumb"><div class="thumb-icon">{pl["icon"]}</div></div>')
+                elif pl.get("image"):
                     parts.append(f'<div class="thumb"><img src="improvement/{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
                 else:
                     parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"])}</div></div>')
