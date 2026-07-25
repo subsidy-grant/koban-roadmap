@@ -1,86 +1,203 @@
 {
  "source": "beauty-ai-factory（別セッション「美容業向けビジネスプランの続行」で作成、2026-07時点）",
  "sourceNote": "この業種の10案は本サイトの100施策スコアリング（score.py）ではなく、姉妹プロジェクト beauty-ai-factory の独立したPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定されたものに差し替えています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）は同プロジェクトの評価基準に基づきます。",
+ "funnel": {
+  "plan": 1000,
+  "do": 100,
+  "check": 30,
+  "act": 10
+ },
+ "detailPage": "pdca.html",
  "plans": [
   {
-   "no": 1, "slug": "ai-multilingual-blog",
+   "no": 1,
+   "slug": "ai-multilingual-blog",
    "title": "美容室向けAI多言語ブログ自動投稿(10言語SEO/MEO)",
-   "category": "多言語・インバウンド", "schemeKey": "kaizen",
-   "investmentTotal": "180万円", "rate": "3/4", "savingHoursPerMonth": 30,
-   "score": { "market": 5, "saving": 5, "feasibility": 4, "subsidy": 5, "unique": 5 },
-   "why": "記事作成・翻訳・SEO/MEOという3業務を同時にゼロ化でき、インバウンド売上という新市場も獲得。省力化と販路開拓の両面で審査説明が最も立てやすい。"
+   "category": "多言語・インバウンド",
+   "schemeKey": "kaizen",
+   "investmentTotal": "180万円",
+   "rate": "3/4",
+   "savingHoursPerMonth": 30,
+   "score": {
+    "market": 5,
+    "saving": 5,
+    "feasibility": 4,
+    "subsidy": 5,
+    "unique": 5
+   },
+   "why": "記事作成・翻訳・SEO/MEOという3業務を同時にゼロ化でき、インバウンド売上という新市場も獲得。省力化と販路開拓の両面で審査説明が最も立てやすい。",
+   "image": "img/town.jpg"
   },
   {
-   "no": 2, "slug": "ai-phone-reservation",
+   "no": 2,
+   "slug": "ai-phone-reservation",
    "title": "美容室向けAI電話予約自動応対",
-   "category": "予約最適化", "schemeKey": "shoryokuka",
-   "investmentTotal": "320万円", "rate": "1/2", "savingHoursPerMonth": 35,
-   "score": { "market": 5, "saving": 5, "feasibility": 4, "subsidy": 5, "unique": 4 },
-   "why": "施術中の電話対応は美容室最大の中断要因。24時間自動応対は取りこぼし予約の売上化と省力化を数値で示しやすく、省力化指数の説明が明快。"
+   "category": "予約最適化",
+   "schemeKey": "shoryokuka",
+   "investmentTotal": "320万円",
+   "rate": "1/2",
+   "savingHoursPerMonth": 35,
+   "score": {
+    "market": 5,
+    "saving": 5,
+    "feasibility": 4,
+    "subsidy": 5,
+    "unique": 4
+   },
+   "why": "施術中の電話対応は美容室最大の中断要因。24時間自動応対は取りこぼし予約の売上化と省力化を数値で示しやすく、省力化指数の説明が明快。",
+   "image": "img/desk.jpg"
   },
   {
-   "no": 3, "slug": "ai-counseling-karte",
+   "no": 3,
+   "slug": "ai-counseling-karte",
    "title": "美容室向けAIカウンセリング&施術提案カルテ",
-   "category": "顧客カルテ・CRM", "schemeKey": "shoryokuka",
-   "investmentTotal": "290万円", "rate": "1/2", "savingHoursPerMonth": 25,
-   "score": { "market": 5, "saving": 5, "feasibility": 4, "subsidy": 5, "unique": 5 },
-   "why": "カウンセリングは単価と失客を左右する中核業務。写真解析AIで品質標準化とカルテ作成自動化を同時達成し、新人でも成果を出せる体制を作る。"
+   "category": "顧客カルテ・CRM",
+   "schemeKey": "shoryokuka",
+   "investmentTotal": "290万円",
+   "rate": "1/2",
+   "savingHoursPerMonth": 25,
+   "score": {
+    "market": 5,
+    "saving": 5,
+    "feasibility": 4,
+    "subsidy": 5,
+    "unique": 5
+   },
+   "why": "カウンセリングは単価と失客を左右する中核業務。写真解析AIで品質標準化とカルテ作成自動化を同時達成し、新人でも成果を出せる体制を作る。",
+   "image": "img/salonwork.jpg"
   },
   {
-   "no": 4, "slug": "ai-meo-review",
+   "no": 4,
+   "slug": "ai-meo-review",
    "title": "美容室向け口コミAI自動返信&MEO改善",
-   "category": "MEO・口コミ", "schemeKey": "kaizen",
-   "investmentTotal": "150万円", "rate": "3/4", "savingHoursPerMonth": 12,
-   "score": { "market": 5, "saving": 4, "feasibility": 5, "subsidy": 4, "unique": 4 },
-   "why": "地図検索は新規来店の最大導線。返信・投稿・分析の自動化は費用対効果が高く、効果測定（順位・件数）が容易で実績報告にも強い。"
+   "category": "MEO・口コミ",
+   "schemeKey": "kaizen",
+   "investmentTotal": "150万円",
+   "rate": "3/4",
+   "savingHoursPerMonth": 12,
+   "score": {
+    "market": 5,
+    "saving": 4,
+    "feasibility": 5,
+    "subsidy": 4,
+    "unique": 4
+   },
+   "why": "地図検索は新規来店の最大導線。返信・投稿・分析の自動化は費用対効果が高く、効果測定（順位・件数）が容易で実績報告にも強い。",
+   "image": "img/office.jpg"
   },
   {
-   "no": 5, "slug": "ai-short-video",
+   "no": 5,
+   "slug": "ai-short-video",
    "title": "美容室向け施術動画ショートAI自動編集",
-   "category": "SNS自動化", "schemeKey": "kaizen",
-   "investmentTotal": "160万円", "rate": "3/4", "savingHoursPerMonth": 20,
-   "score": { "market": 5, "saving": 4, "feasibility": 4, "subsidy": 4, "unique": 5 },
-   "why": "動画編集は1本2〜3時間の重負荷業務。撮影するだけで投稿まで自動化し、若年層集客というリターンも大きい。"
+   "category": "SNS自動化",
+   "schemeKey": "kaizen",
+   "investmentTotal": "160万円",
+   "rate": "3/4",
+   "savingHoursPerMonth": 20,
+   "score": {
+    "market": 5,
+    "saving": 4,
+    "feasibility": 4,
+    "subsidy": 4,
+    "unique": 5
+   },
+   "why": "動画編集は1本2〜3時間の重負荷業務。撮影するだけで投稿まで自動化し、若年層集客というリターンも大きい。",
+   "image": "img/salon.jpg"
   },
   {
-   "no": 6, "slug": "ai-auto-order",
+   "no": 6,
+   "slug": "ai-auto-order",
    "title": "美容室向け薬剤・材料AI自動発注",
-   "category": "在庫・発注", "schemeKey": "shoryokuka",
-   "investmentTotal": "240万円", "rate": "1/2", "savingHoursPerMonth": 18,
-   "score": { "market": 4, "saving": 5, "feasibility": 4, "subsidy": 5, "unique": 4 },
-   "why": "発注・棚卸は完全なノンコア業務で自動化抵抗が小さい。POS連動の需要予測は省力化効果を在庫金額でも示せる。"
+   "category": "在庫・発注",
+   "schemeKey": "shoryokuka",
+   "investmentTotal": "240万円",
+   "rate": "1/2",
+   "savingHoursPerMonth": 18,
+   "score": {
+    "market": 4,
+    "saving": 5,
+    "feasibility": 4,
+    "subsidy": 5,
+    "unique": 4
+   },
+   "why": "発注・棚卸は完全なノンコア業務で自動化抵抗が小さい。POS連動の需要予測は省力化効果を在庫金額でも示せる。",
+   "image": "img/meeting.jpg"
   },
   {
-   "no": 7, "slug": "ai-shift-romu",
+   "no": 7,
+   "slug": "ai-shift-romu",
    "title": "美容室向けAIシフト自動作成&労務アラート",
-   "category": "シフト・労務", "schemeKey": "shoryokuka",
-   "investmentTotal": "210万円", "rate": "1/2", "savingHoursPerMonth": 20,
-   "score": { "market": 4, "saving": 5, "feasibility": 4, "subsidy": 5, "unique": 4 },
-   "why": "シフト作成は店長業務の最大負荷のひとつ。法令チェック同時実行は賃上げ・労務要件と親和性が高く、社労士監修の説得力を持たせやすい。"
+   "category": "シフト・労務",
+   "schemeKey": "shoryokuka",
+   "investmentTotal": "210万円",
+   "rate": "1/2",
+   "savingHoursPerMonth": 20,
+   "score": {
+    "market": 4,
+    "saving": 5,
+    "feasibility": 4,
+    "subsidy": 5,
+    "unique": 4
+   },
+   "why": "シフト作成は店長業務の最大負荷のひとつ。法令チェック同時実行は賃上げ・労務要件と親和性が高く、社労士監修の説得力を持たせやすい。",
+   "image": "img/town.jpg"
   },
   {
-   "no": 8, "slug": "ai-training-video",
+   "no": 8,
+   "slug": "ai-training-video",
    "title": "美容室向け技術教育動画AI自動生成",
-   "category": "教育・技術伝承", "schemeKey": "kaizen",
-   "investmentTotal": "170万円", "rate": "3/4", "savingHoursPerMonth": 15,
-   "score": { "market": 4, "saving": 4, "feasibility": 4, "subsidy": 4, "unique": 5 },
-   "why": "技術者育成の長期化は業界共通課題。動画教材自動生成は教育時間の削減と定着率改善を両立し、賃上げ原資の生産性向上に直結。"
+   "category": "教育・技術伝承",
+   "schemeKey": "kaizen",
+   "investmentTotal": "170万円",
+   "rate": "3/4",
+   "savingHoursPerMonth": 15,
+   "score": {
+    "market": 4,
+    "saving": 4,
+    "feasibility": 4,
+    "subsidy": 4,
+    "unique": 5
+   },
+   "why": "技術者育成の長期化は業界共通課題。動画教材自動生成は教育時間の削減と定着率改善を両立し、賃上げ原資の生産性向上に直結。",
+   "image": "img/desk.jpg"
   },
   {
-   "no": 9, "slug": "ai-accounting",
+   "no": 9,
+   "slug": "ai-accounting",
    "title": "美容室向けレジ締め・記帳AI自動化",
-   "category": "会計・バックオフィス", "schemeKey": "shoryokuka",
-   "investmentTotal": "200万円", "rate": "1/2", "savingHoursPerMonth": 20,
-   "score": { "market": 4, "saving": 5, "feasibility": 5, "subsidy": 5, "unique": 3 },
-   "why": "レジ締め・記帳は毎日発生する確実な削減対象。効果測定が容易で、税理士連携による月次早期化という二次効果も説明できる。"
+   "category": "会計・バックオフィス",
+   "schemeKey": "shoryokuka",
+   "investmentTotal": "200万円",
+   "rate": "1/2",
+   "savingHoursPerMonth": 20,
+   "score": {
+    "market": 4,
+    "saving": 5,
+    "feasibility": 5,
+    "subsidy": 5,
+    "unique": 3
+   },
+   "why": "レジ締め・記帳は毎日発生する確実な削減対象。効果測定が容易で、税理士連携による月次早期化という二次効果も説明できる。",
+   "image": "img/salonwork.jpg"
   },
   {
-   "no": 10, "slug": "ai-repeat-follow",
+   "no": 10,
+   "slug": "ai-repeat-follow",
    "title": "美容室向けリピート予測&AI再来店フォロー",
-   "category": "リピート促進", "schemeKey": "kaizen",
-   "investmentTotal": "150万円", "rate": "3/4", "savingHoursPerMonth": 12,
-   "score": { "market": 5, "saving": 4, "feasibility": 5, "subsidy": 4, "unique": 4 },
-   "why": "新規獲得コストが高騰する中、失客防止は最も割の良い投資。来店周期学習×LINE自動配信は既存資産だけで動き、実現性が高い。"
+   "category": "リピート促進",
+   "schemeKey": "kaizen",
+   "investmentTotal": "150万円",
+   "rate": "3/4",
+   "savingHoursPerMonth": 12,
+   "score": {
+    "market": 5,
+    "saving": 4,
+    "feasibility": 5,
+    "subsidy": 4,
+    "unique": 4
+   },
+   "why": "新規獲得コストが高騰する中、失客防止は最も割の良い投資。来店周期学習×LINE自動配信は既存資産だけで動き、実現性が高い。",
+   "image": "img/office.jpg"
   }
  ]
 }

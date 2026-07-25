@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仕様書・使い方 No.2 AI電話予約自動応対システム導入による予約受付業務の省力化 | SALON BLOOM 表参道</title>
+<style>
+  :root{--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--scheme:#3e6b4f}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--ink);background:#f7f5f2;line-height:1.75;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:9}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:var(--scheme);color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:960px;margin:0 auto;padding:20px}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap}
+  .toc a{color:var(--accent);font-weight:700;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .hero{background:linear-gradient(135deg,#faf6f0,#f2eadd);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .hero-badge{display:inline-block;color:#fff;font-size:9pt;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:8px;background:var(--scheme)}
+  .hero h2{font-size:19px;line-height:1.4;margin:4px 0}
+  .hero p{font-size:13px;color:var(--sub);margin-top:8px;text-align:justify}
+  .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .links a{font-size:12.5px;font-weight:700;color:var(--accent);background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px;text-decoration:none}
+  .links a:hover{background:#f3ede4}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;scroll-margin-top:70px}
+  .card h3{font-size:15px;color:var(--accent);border-left:4px solid var(--scheme);padding-left:10px;margin-bottom:12px}
+  .card h4{font-size:12.5px;color:var(--sub);letter-spacing:.04em;margin:16px 0 8px}
+  .card h4:first-of-type{margin-top:0}
+  .p{font-size:13px;text-align:justify}
+  table.kv{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:6px}
+  table.kv th{background:#efe9e0;text-align:left;padding:6px 10px;font-size:11.5px;width:26%}
+  table.kv td{padding:8px 10px;border-top:1px solid var(--line);text-align:justify}
+  ul.feat{list-style:none}
+  ul.feat li{padding:7px 0 7px 20px;position:relative;font-size:12.5px;border-bottom:1px dashed var(--line);text-align:justify}
+  ul.feat li:last-child{border-bottom:none}
+  ul.feat li::before{content:"▪";position:absolute;left:2px;color:var(--scheme);font-weight:700}
+  ul.warnlist li::before{content:"⚠";color:var(--red)}
+  .impl{background:#f7f3ec;border-left:4px solid var(--scheme);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12.5px;color:var(--sub);text-align:justify}
+  ol.steps{padding-left:0;list-style:none;counter-reset:step}
+  ol.steps li{counter-increment:step;padding:12px 0 12px 42px;position:relative;border-bottom:1px dashed var(--line)}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{content:counter(step);position:absolute;left:0;top:10px;width:28px;height:28px;border-radius:50%;background:var(--scheme);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .stepaction{font-size:13.5px;font-weight:700;margin-bottom:4px}
+  .stepeffect{font-size:12.5px;color:var(--sub);text-align:justify}
+  .stepeffect b{color:var(--green)}
+  footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
+  .toplink{font-size:12px;color:#f5efe6;text-decoration:none;opacity:.85}
+  .toplink:hover{opacity:1}
+</style></head>
+<body>
+<header>
+  <span><a class="toplink" href="../index.html">← ポータルへ戻る</a></span>
+  <span class="tag">仕様書・使い方 No.2 / 中小企業省力化投資補助金(一般型)</span>
+</header>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">中小企業省力化投資補助金(一般型) 対応案</div>
+    <h2>No.2 AI電話予約自動応対システム導入による予約受付業務の省力化</h2>
+    <p>施術中・営業時間外で電話に出られない時間帯の着信をAIが24時間自動応対し、対話をリアルタイムに再現しながら空き枠照会・顧客照合・予約確定・カルテ転記までを自動で完結させるシステム。電話対応は美容室最大の作業中断要因であり、1件平均4.2分の対応がスタイリストの手を止めていた課題を解消する。</p>
+    <div class="links">
+      <a href="../prototypes/02-ai-phone-reservation.html">▶ プロトタイプを開く</a>
+      <a href="../plans/plan-02.html">📄 事業計画書(A4×10枚)</a>
+      <a href="../plans/plan-02.xlsx" download>📊 Excel版をダウンロード</a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <a href="#spec">📋 仕様書</a>
+    <a href="#howto">📖 使い方の説明書</a>
+  </div>
+
+  <div class="card" id="spec">
+    <h3>📋 仕様書</h3>
+    <h4>主な機能</h4><table class="kv"><tr><th>機能</th><th>説明</th></tr><tr><td>着信シミュレーション</td><td>ボタン1つで実際の対話フロー(挨拶→要望確認→空き枠提示→氏名確認→過去来店の言及→確定)を自動再生</td></tr><tr><td>予約台帳への自動反映</td><td>対話終了後、新規予約が自動でテーブルに追加され、既存予約との重複がないことを表示</td></tr><tr><td>処理進捗の可視化</td><td>5段階の処理(音声認識/空き枠照会/顧客DB照合/予約確定/カルテ転記)が順に完了マークへ変化</td></tr><tr><td>再シミュレーション</td><td>「▶もう一度シミュレート」ボタンで何度でもデモを再実行できる</td></tr></table>
+    <h4>画面構成</h4><table class="kv"><tr><th>エリア</th><th>内容</th></tr><tr><td>着信シミュレーション(左カード)</td><td>スマートフォン風の通話画面UI。着信ステータス表示、AI⇄顧客の対話吹き出し、「着信をシミュレート」ボタン</td></tr><tr><td>予約台帳(右上カード)</td><td>日時・顧客・メニュー・担当のテーブル。会話終了後に新規予約行がNEWバッジ付きで自動追加される</td></tr><tr><td>AI応対の裏側(右下カード)</td><td>音声認識・意図理解/空き枠照会/顧客DB照合/予約確定・SMS送信/カルテ自動転記、の5処理の進捗状況(待機→✔完了)</td></tr></table>
+    <h4>数値・指標の算出式</h4><p class="p">対話の進行はタイマーによる固定シナリオ表示であり、算出ロジックはありません。本番実装では音声認識の文字起こし精度(WER: Word Error Rate)や、意図理解の確信度スコア(0〜1)をAPIから取得し、確信度が閾値未満の場合は人間へのエスカレーションを行うロジックを想定しています。</p>
+    <h4>実装範囲(本デモで実際に動く部分)</h4><div class="impl">対話文はデモ用の固定シナリオを演出的に再生します。予約台帳への行追加、AI応対の裏側パネルの進捗表示は対話の進行と連動して実際に動作します。実際の音声入出力(マイク・スピーカー)は行われず、テキスト吹き出しでの表現に留まります。</div>
+    <h4>想定される本番実装技術・システム構成</h4><ul class="feat"><li>クラウドPBX/IP電話システム</li><li>音声認識API(高精度日本語文字起こし)</li><li>Claude API(意図理解・自然な対話生成・エスカレーション判定)</li><li>予約管理システムとの双方向連携API(空き枠照会・確定処理)</li><li>SMS送信API(予約確認メッセージの自動送信)</li></ul>
+    <h4>制約事項・既知の制限(本デモではできないこと)</h4><ul class="feat warnlist"><li>対話は固定シナリオの再生であり、任意の質問に対する応答は検証できない</li><li>音声認識・音声合成は実装されておらず、テキストベースの演出に限定される</li><li>複雑な要望(複数メニューの組み合わせ相談等)への対応可否はデモでは確認できない</li></ul>
+  </div>
+
+  <div class="card" id="howto">
+    <h3>📖 使い方の説明書</h3>
+    <p class="p" style="margin-bottom:10px">以下の手順に沿って操作すると、各機能の効果(何ができる・何がわかるようになるか)を体験できます。</p>
+    <ol class="steps">
+    <li><div class="stepaction">「▶ 着信をシミュレート」をクリックする</div><div class="stepeffect"><b>効果:</b> 営業時間外・施術中でも電話応対が止まらない体制を体感できる。人手を介さず24時間対応することの意味を具体的に理解できる。</div></li>
+    <li><div class="stepaction">AIと顧客の対話が自動で進行するのを確認する(担当スタイリスト指名・希望日時・氏名・電話番号を自動聞き取り)</div><div class="stepeffect"><b>効果:</b> 過去の来店履歴(前回のカラー内容等)を踏まえた提案が自動で行われる様子を確認でき、接客品質の標準化効果を把握できる。</div></li>
+    <li><div class="stepaction">対話終了後、予約台帳に新規予約(NEWバッジ)が追加されることを確認する</div><div class="stepeffect"><b>効果:</b> 二重予約・電話メモの転記ミスが構造的に排除される仕組みを理解できる。月35時間かかっていた応対工数が2時間に削減(▲33h/月)される根拠を把握できる。</div></li>
+    <li><div class="stepaction">右側「AI応対の裏側」で各処理ステップが順に✔完了になることを確認する</div><div class="stepeffect"><b>効果:</b> 従来ゼロだった営業時間外の予約獲得が月31件(売上換算+42.8万円)発生する仕組みを、処理の中身から理解できる。</div></li>
+    <li><div class="stepaction">「▶ もう一度シミュレート」で再実行する</div><div class="stepeffect"><b>効果:</b> AI完結率91%・残り9%は折返しリスト化という設計思想を、繰り返し確認しながら理解を深められる。</div></li></ol>
+    <div class="impl" style="margin-top:14px"><b>想定される導入効果まとめ:</b> 月間約35時間の省力化、年間約210万円の収益改善効果を見込み、投資回収期間は約1.5年(投資総額320万円)と試算している(事業計画書参照)。</div>
+  </div>
+</div>
+<footer>SALON BLOOM 表参道 — No.2 仕様書・使い方説明書 / 生成: 2026年</footer>
+</body></html>

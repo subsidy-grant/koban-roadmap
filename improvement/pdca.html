@@ -49,6 +49,8 @@
   .ext-axes { display:grid; grid-template-columns:repeat(5,1fr); gap:0.3rem; font-size:0.66rem; color:var(--ink-faint); text-align:center; margin-top:0.4rem; }
   .ext-axes b { display:block; font-size:0.86rem; color:var(--ink); }
   .ext-links { margin-top:0.5rem; display:flex; gap:0.7rem; font-size:0.8rem; }
+  .ext-thumb { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
+  .ext-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 </style></head><body><main>
 <p class="back"><a href="index.html">← 改善プラン10選 トップへ</a> ／ <a href="../index.html">ロードマップ本体へ</a></p>
 <h1>改善プラン選定の考え方</h1>
@@ -74,8 +76,16 @@
 <h2>美容業<span class="badge external">採択確定（外部プロジェクト連携）</span></h2>
 <p class="sub">beauty-ai-factory（別セッション「美容業向けビジネスプランの続行」で作成、2026-07時点）</p>
 <div class="box"><p style="margin:0;">この業種の10案は本サイトの100施策スコアリング（score.py）ではなく、姉妹プロジェクト beauty-ai-factory の独立したPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定されたものに差し替えています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）は同プロジェクトの評価基準に基づきます。</p></div>
+<div class="funnel" style="margin-top:0.8rem;">
+<div class="step"><div class="n">1000</div><div class="t">PLAN：アイデア発散プール</div></div>
+<div class="step"><div class="n">100</div><div class="t">DO：一次選抜（スコア上位）</div></div>
+<div class="step"><div class="n">30</div><div class="t">CHECK：試作可能性評価</div></div>
+<div class="step"><div class="n">10</div><div class="t">ACT：採択</div></div>
+</div>
+<p class="sub" style="margin-top:0.6rem;"><a href="beauty/pdca.html">全1000案のPDCAファネル・一覧を見る（美容業版）↗</a></p>
 <div class="cards">
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/town.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 01｜総合 24/25</div>
 <div class="ttl">美容室向けAI多言語ブログ自動投稿(10言語SEO/MEO)</div>
 <div class="meta">多言語・インバウンド／概算 180万円（補助率3/4）／想定省力化 約30時間/月</div>
@@ -84,6 +94,7 @@
 <div class="ext-links"><a href="beauty/plan-01.html">📄 事業計画書</a><a href="beauty/proto-01-ai-multilingual-blog.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/desk.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 02｜総合 23/25</div>
 <div class="ttl">美容室向けAI電話予約自動応対</div>
 <div class="meta">予約最適化／概算 320万円（補助率1/2）／想定省力化 約35時間/月</div>
@@ -92,6 +103,7 @@
 <div class="ext-links"><a href="beauty/plan-02.html">📄 事業計画書</a><a href="beauty/proto-02-ai-phone-reservation.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/salonwork.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 03｜総合 24/25</div>
 <div class="ttl">美容室向けAIカウンセリング&amp;施術提案カルテ</div>
 <div class="meta">顧客カルテ・CRM／概算 290万円（補助率1/2）／想定省力化 約25時間/月</div>
@@ -100,6 +112,7 @@
 <div class="ext-links"><a href="beauty/plan-03.html">📄 事業計画書</a><a href="beauty/proto-03-ai-counseling-karte.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/office.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 04｜総合 22/25</div>
 <div class="ttl">美容室向け口コミAI自動返信&amp;MEO改善</div>
 <div class="meta">MEO・口コミ／概算 150万円（補助率3/4）／想定省力化 約12時間/月</div>
@@ -108,6 +121,7 @@
 <div class="ext-links"><a href="beauty/plan-04.html">📄 事業計画書</a><a href="beauty/proto-04-ai-meo-review.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/salon.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 05｜総合 22/25</div>
 <div class="ttl">美容室向け施術動画ショートAI自動編集</div>
 <div class="meta">SNS自動化／概算 160万円（補助率3/4）／想定省力化 約20時間/月</div>
@@ -116,6 +130,7 @@
 <div class="ext-links"><a href="beauty/plan-05.html">📄 事業計画書</a><a href="beauty/proto-05-ai-short-video.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/meeting.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 06｜総合 22/25</div>
 <div class="ttl">美容室向け薬剤・材料AI自動発注</div>
 <div class="meta">在庫・発注／概算 240万円（補助率1/2）／想定省力化 約18時間/月</div>
@@ -124,6 +139,7 @@
 <div class="ext-links"><a href="beauty/plan-06.html">📄 事業計画書</a><a href="beauty/proto-06-ai-auto-order.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/town.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 07｜総合 22/25</div>
 <div class="ttl">美容室向けAIシフト自動作成&amp;労務アラート</div>
 <div class="meta">シフト・労務／概算 210万円（補助率1/2）／想定省力化 約20時間/月</div>
@@ -132,6 +148,7 @@
 <div class="ext-links"><a href="beauty/plan-07.html">📄 事業計画書</a><a href="beauty/proto-07-ai-shift-romu.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/desk.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 08｜総合 21/25</div>
 <div class="ttl">美容室向け技術教育動画AI自動生成</div>
 <div class="meta">教育・技術伝承／概算 170万円（補助率3/4）／想定省力化 約15時間/月</div>
@@ -140,6 +157,7 @@
 <div class="ext-links"><a href="beauty/plan-08.html">📄 事業計画書</a><a href="beauty/proto-08-ai-training-video.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/salonwork.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 09｜総合 22/25</div>
 <div class="ttl">美容室向けレジ締め・記帳AI自動化</div>
 <div class="meta">会計・バックオフィス／概算 200万円（補助率1/2）／想定省力化 約20時間/月</div>
@@ -148,6 +166,7 @@
 <div class="ext-links"><a href="beauty/plan-09.html">📄 事業計画書</a><a href="beauty/proto-09-ai-accounting.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card ext-card">
+<div class="ext-thumb"><img src="beauty/img/office.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 10｜総合 22/25</div>
 <div class="ttl">美容室向けリピート予測&amp;AI再来店フォロー</div>
 <div class="meta">リピート促進／概算 150万円（補助率3/4）／想定省力化 約12時間/月</div>

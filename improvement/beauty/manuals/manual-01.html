@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仕様書・使い方 No.1 AI多言語ブログ自動投稿による情報発信の省力化とインバウンド販路開拓 | SALON BLOOM 表参道</title>
+<style>
+  :root{--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--scheme:#b98a2f}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--ink);background:#f7f5f2;line-height:1.75;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:9}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:var(--scheme);color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:960px;margin:0 auto;padding:20px}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap}
+  .toc a{color:var(--accent);font-weight:700;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .hero{background:linear-gradient(135deg,#faf6f0,#f2eadd);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .hero-badge{display:inline-block;color:#fff;font-size:9pt;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:8px;background:var(--scheme)}
+  .hero h2{font-size:19px;line-height:1.4;margin:4px 0}
+  .hero p{font-size:13px;color:var(--sub);margin-top:8px;text-align:justify}
+  .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .links a{font-size:12.5px;font-weight:700;color:var(--accent);background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px;text-decoration:none}
+  .links a:hover{background:#f3ede4}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;scroll-margin-top:70px}
+  .card h3{font-size:15px;color:var(--accent);border-left:4px solid var(--scheme);padding-left:10px;margin-bottom:12px}
+  .card h4{font-size:12.5px;color:var(--sub);letter-spacing:.04em;margin:16px 0 8px}
+  .card h4:first-of-type{margin-top:0}
+  .p{font-size:13px;text-align:justify}
+  table.kv{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:6px}
+  table.kv th{background:#efe9e0;text-align:left;padding:6px 10px;font-size:11.5px;width:26%}
+  table.kv td{padding:8px 10px;border-top:1px solid var(--line);text-align:justify}
+  ul.feat{list-style:none}
+  ul.feat li{padding:7px 0 7px 20px;position:relative;font-size:12.5px;border-bottom:1px dashed var(--line);text-align:justify}
+  ul.feat li:last-child{border-bottom:none}
+  ul.feat li::before{content:"▪";position:absolute;left:2px;color:var(--scheme);font-weight:700}
+  ul.warnlist li::before{content:"⚠";color:var(--red)}
+  .impl{background:#f7f3ec;border-left:4px solid var(--scheme);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12.5px;color:var(--sub);text-align:justify}
+  ol.steps{padding-left:0;list-style:none;counter-reset:step}
+  ol.steps li{counter-increment:step;padding:12px 0 12px 42px;position:relative;border-bottom:1px dashed var(--line)}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{content:counter(step);position:absolute;left:0;top:10px;width:28px;height:28px;border-radius:50%;background:var(--scheme);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .stepaction{font-size:13.5px;font-weight:700;margin-bottom:4px}
+  .stepeffect{font-size:12.5px;color:var(--sub);text-align:justify}
+  .stepeffect b{color:var(--green)}
+  footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
+  .toplink{font-size:12px;color:#f5efe6;text-decoration:none;opacity:.85}
+  .toplink:hover{opacity:1}
+</style></head>
+<body>
+<header>
+  <span><a class="toplink" href="../index.html">← ポータルへ戻る</a></span>
+  <span class="tag">仕様書・使い方 No.1 / 業務改善助成金</span>
+</header>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">業務改善助成金 対応案</div>
+    <h2>No.1 AI多言語ブログ自動投稿による情報発信の省力化とインバウンド販路開拓</h2>
+    <p>AIが検索トレンドから記事テーマを選定し、日本語記事の生成→10言語へのローカライズ→SEO/MEO構造化→Googleビジネスプロフィール(GBP)への投稿までを完全自動化するブログ発信システム。従来は記事作成に1本60〜90分、多言語対応は外注で1言語1万円超を要していた業務を、AIによる自動生成・翻訳へ置き換える。</p>
+    <div class="links">
+      <a href="../prototypes/01-ai-multilingual-blog.html">▶ プロトタイプを開く</a>
+      <a href="../plans/plan-01.html">📄 事業計画書(A4×10枚)</a>
+      <a href="../plans/plan-01.xlsx" download>📊 Excel版をダウンロード</a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <a href="#spec">📋 仕様書</a>
+    <a href="#howto">📖 使い方の説明書</a>
+  </div>
+
+  <div class="card" id="spec">
+    <h3>📋 仕様書</h3>
+    <h4>主な機能</h4><table class="kv"><tr><th>機能</th><th>説明</th></tr><tr><td>テーマ自動選定(想定)</td><td>AIが検索トレンド・季節性から記事テーマを選定するUIを再現。プルダウンから選択して生成を開始する</td></tr><tr><td>生成ステップのログ表示</td><td>トレンド分析→日本語記事生成→SEOキーワード選定→9言語ローカライズ→hreflang/構造化データ生成→GBP投稿予約、の7ステップを順に表示</td></tr><tr><td>多言語プレビュー切替</td><td>言語タブをクリックすると、その言語の記事タイトル・本文・公開状況が即座に切り替わる</td></tr><tr><td>SEO/MEO状況の可視化</td><td>構造化データ・hreflang・GBP連携・サイトマップ更新・検索順位を一覧表示し、自動化の範囲を明示する</td></tr></table>
+    <h4>画面構成</h4><table class="kv"><tr><th>エリア</th><th>内容</th></tr><tr><td>本日の自動生成(左カード)</td><td>テーマ選択プルダウン(AIが検索トレンドから選定する想定)、進捗バー、「記事を自動生成」ボタン、生成ステップのリアルタイムログ表示</td></tr><tr><td>SEO/MEO自動対策 状況(左下カード)</td><td>構造化データ付与・hreflang生成・GBP投稿連携・サイトマップ更新・MEO順位・英語検索順位の実施状況一覧</td></tr><tr><td>生成記事プレビュー(右カード)</td><td>10言語の言語タブ(🇯🇵🇺🇸🇨🇳🇹🇼🇰🇷🇹🇭🇻🇳🇪🇸🇫🇷🇩🇪)、記事タイトル・投稿時刻・公開ステータス・本文・SEOキーワードタグ</td></tr></table>
+    <h4>数値・指標の算出式</h4><p class="p">本プロトタイプに数値の自動算出ロジックはなく、KPI(今月の自動投稿数・検索流入等)はデモ用の固定値です。本番実装では「月間投稿数」「検索流入(PV)」「外国人予約件数」等を、CMS/Google Analytics/予約システムの実測値から日次で集計・グラフ化する想定です。</p>
+    <h4>実装範囲(本デモで実際に動く部分)</h4><div class="impl">言語タブの切替とSEO対策一覧の表示は実データで動作します。記事本文は日本語/英語/中国語(簡体)/韓国語の4言語のみ全文を収録したデモ用固定サンプルで、他6言語はローカライズ済みのプレースホルダー表示です。「記事を自動生成」ボタンを押した際の生成ステップのログはタイマーによる演出で、実際のAI生成・翻訳・投稿は行われません。</div>
+    <h4>想定される本番実装技術・システム構成</h4><ul class="feat"><li>Claude API(検索トレンド分析に基づく記事生成、10言語への文化圏別ローカライズ翻訳)</li><li>CMS API連携(WordPress等への自動投稿)</li><li>Googleビジネスプロフィール API(GBP投稿の自動作成)</li><li>hreflang自動生成・構造化データ(Article/LocalBusiness)付与ロジック</li><li>検索順位計測ツール連携(自店・競合のMEO/SEO順位モニタリング)</li></ul>
+    <h4>制約事項・既知の制限(本デモではできないこと)</h4><ul class="feat warnlist"><li>記事本文はデモでは4言語のみ全文収録。実装版は全10言語で文化圏に応じたローカライズ翻訳を行う</li><li>生成ステップの進行はタイマー演出であり、実際のAI生成は行われない</li><li>通貨/交通/決済情報の自動差し込みなど、インバウンド向け高度化機能は本デモでは未実装(仕様として想定)</li></ul>
+  </div>
+
+  <div class="card" id="howto">
+    <h3>📖 使い方の説明書</h3>
+    <p class="p" style="margin-bottom:10px">以下の手順に沿って操作すると、各機能の効果(何ができる・何がわかるようになるか)を体験できます。</p>
+    <ol class="steps">
+    <li><div class="stepaction">左カードのプルダウンから記事テーマを選択する(未選択でも既定値で実行可)</div><div class="stepeffect"><b>効果:</b> AIが検索トレンドに基づきテーマを選定する運用イメージを体感できる。実運用ではスタッフによる毎回のネタ探し・企画会議の手間が不要になる。</div></li>
+    <li><div class="stepaction">「✨ 記事を自動生成 → 10言語展開 → 予約投稿」をクリックし、生成ステップのログが進行するのを確認する</div><div class="stepeffect"><b>効果:</b> 記事作成(1本60〜90分)から10言語翻訳(外注1言語1万円超)までが自動化される一連の流れを体感できる。月間の情報発信業務(約30時間)がゼロ化される効果を理解できる。</div></li>
+    <li><div class="stepaction">生成完了後、右側の言語タブを順にクリックして各言語の記事プレビューを切り替える</div><div class="stepeffect"><b>効果:</b> 10言語同時展開により、日本語のみの発信では届かなかったインバウンド顧客層(外国人観光客)への訴求力を確認できる。外国人予約が月3件→23件(+667%)に伸びた根拠を具体的にイメージできる。</div></li>
+    <li><div class="stepaction">「SEO/MEO自動対策 状況」カードで自動化済みの項目とMEO順位を確認する</div><div class="stepeffect"><b>効果:</b> 検索エンジン最適化(SEO)・地図検索最適化(MEO)の施策が人手を介さず継続される仕組みを把握し、月間検索流入 1,200→4,820PV(+302%)への理解を得られる。</div></li></ol>
+    <div class="impl" style="margin-top:14px"><b>想定される導入効果まとめ:</b> 月間約30時間の省力化、年間約129万円の収益改善効果を見込み、投資回収期間は約1.4年(投資総額180万円)と試算している(事業計画書参照)。</div>
+  </div>
+</div>
+<footer>SALON BLOOM 表参道 — No.1 仕様書・使い方説明書 / 生成: 2026年</footer>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仕様書・使い方 No.3 AIカウンセリング・施術提案カルテによる接客品質の標準化と記録業務の省力化 | SALON BLOOM 表参道</title>
+<style>
+  :root{--ink:#26221e;--sub:#6f675e;--line:#e5dfd7;--accent:#8a5a2b;--green:#3e6b4f;--gold:#b98a2f;--red:#a4453c;--scheme:#3e6b4f}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--ink);background:#f7f5f2;line-height:1.75;font-size:14px}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:9}
+  header h1{font-size:17px}
+  header .tag{font-size:11px;background:var(--scheme);color:#fff;padding:3px 10px;border-radius:99px;font-weight:700}
+  .wrap{max-width:960px;margin:0 auto;padding:20px}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap}
+  .toc a{color:var(--accent);font-weight:700;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .hero{background:linear-gradient(135deg,#faf6f0,#f2eadd);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .hero-badge{display:inline-block;color:#fff;font-size:9pt;font-weight:700;padding:3px 12px;border-radius:99px;margin-bottom:8px;background:var(--scheme)}
+  .hero h2{font-size:19px;line-height:1.4;margin:4px 0}
+  .hero p{font-size:13px;color:var(--sub);margin-top:8px;text-align:justify}
+  .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .links a{font-size:12.5px;font-weight:700;color:var(--accent);background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px;text-decoration:none}
+  .links a:hover{background:#f3ede4}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;scroll-margin-top:70px}
+  .card h3{font-size:15px;color:var(--accent);border-left:4px solid var(--scheme);padding-left:10px;margin-bottom:12px}
+  .card h4{font-size:12.5px;color:var(--sub);letter-spacing:.04em;margin:16px 0 8px}
+  .card h4:first-of-type{margin-top:0}
+  .p{font-size:13px;text-align:justify}
+  table.kv{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:6px}
+  table.kv th{background:#efe9e0;text-align:left;padding:6px 10px;font-size:11.5px;width:26%}
+  table.kv td{padding:8px 10px;border-top:1px solid var(--line);text-align:justify}
+  ul.feat{list-style:none}
+  ul.feat li{padding:7px 0 7px 20px;position:relative;font-size:12.5px;border-bottom:1px dashed var(--line);text-align:justify}
+  ul.feat li:last-child{border-bottom:none}
+  ul.feat li::before{content:"▪";position:absolute;left:2px;color:var(--scheme);font-weight:700}
+  ul.warnlist li::before{content:"⚠";color:var(--red)}
+  .impl{background:#f7f3ec;border-left:4px solid var(--scheme);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12.5px;color:var(--sub);text-align:justify}
+  ol.steps{padding-left:0;list-style:none;counter-reset:step}
+  ol.steps li{counter-increment:step;padding:12px 0 12px 42px;position:relative;border-bottom:1px dashed var(--line)}
+  ol.steps li:last-child{border-bottom:none}
+  ol.steps li::before{content:counter(step);position:absolute;left:0;top:10px;width:28px;height:28px;border-radius:50%;background:var(--scheme);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .stepaction{font-size:13.5px;font-weight:700;margin-bottom:4px}
+  .stepeffect{font-size:12.5px;color:var(--sub);text-align:justify}
+  .stepeffect b{color:var(--green)}
+  footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
+  .toplink{font-size:12px;color:#f5efe6;text-decoration:none;opacity:.85}
+  .toplink:hover{opacity:1}
+</style></head>
+<body>
+<header>
+  <span><a class="toplink" href="../index.html">← ポータルへ戻る</a></span>
+  <span class="tag">仕様書・使い方 No.3 / 中小企業省力化投資補助金(一般型)</span>
+</header>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">中小企業省力化投資補助金(一般型) 対応案</div>
+    <h2>No.3 AIカウンセリング・施術提案カルテによる接客品質の標準化と記録業務の省力化</h2>
+    <p>顧客写真をAIが解析して施術提案とカルテを自動生成し、提案品質の均一化と閉店後のカルテ残業ゼロを実現するシステム。カウンセリングは単価と失客を左右する中核業務でありながら提案力がスタイリストの経験に依存し、カルテ記入は1人あたり月20〜25時間のサービス残業を生んでいた課題を解消する。サンプル顧客での体験モードと、実際の写真・音声を使った本番相当の解析モードの2通りを搭載している。</p>
+    <div class="links">
+      <a href="../prototypes/03-ai-counseling-karte.html">▶ プロトタイプを開く</a>
+      <a href="../plans/plan-03.html">📄 事業計画書(A4×10枚)</a>
+      <a href="../plans/plan-03.xlsx" download>📊 Excel版をダウンロード</a>
+    </div>
+  </div>
+
+  <div class="toc">
+    <a href="#spec">📋 仕様書</a>
+    <a href="#howto">📖 使い方の説明書</a>
+  </div>
+
+  <div class="card" id="spec">
+    <h3>📋 仕様書</h3>
+    <h4>主な機能</h4><table class="kv"><tr><th>機能</th><th>説明</th></tr><tr><td>2モード切替</td><td>🧪サンプル顧客(3名の固定データで即体験)と📷実際の写真解析(本番相当のピクセル解析)を切替可能</td></tr><tr><td>AI診断メーター</td><td>髪質・ダメージレベル・頭皮状態・顔型/似合わせの4項目をメーター表示、アレルギー等の注意事項を警告表示</td></tr><tr><td>根拠付き施術提案</td><td>診断結果に基づき、提案理由(なぜこの施術か)を明記した提案カードを自動生成</td></tr><tr><td>Before/After比較</td><td>施術後写真をアップロードすると、明度・ダメージ推定の変化を自動算出して表示</td></tr><tr><td>カルテ自動生成・出力</td><td>提案確定でカルテを自動生成。JSONエクスポート(No.10連携)・印刷用PDF出力・LINEリマインド文生成に対応</td></tr><tr><td>施術履歴タイムライン</td><td>来店のたびにカルテ内容が自動で履歴に追記され、次回来店時に参照できる</td></tr></table>
+    <h4>画面構成</h4><table class="kv"><tr><th>エリア</th><th>内容</th></tr><tr><td>①来店客を選択→写真AI解析(左カード)</td><td>モード切替タブ(🧪サンプル顧客で試す/📷実際の写真で解析)。サンプルモードは顔アイコン(スキャン演出)と顧客タブ。写真モードは顧客名・アレルギー/施術メモ入力欄(🎙音声入力ボタン付き)、写真アップロード、Before/After比較欄、頭皮/顔型の選択欄。共通で髪質/ダメージ/頭皮/顔型の4項目診断メーターとアレルギー警告表示</td></tr><tr><td>②AI施術提案(右上カード)</td><td>提案カードの一覧(施術名・価格・AI提案根拠の文章・タグ)。確定ボタンでカルテ生成へ進む</td></tr><tr><td>③カルテ自動記録(右中カード)</td><td>電子カルテ風テキスト表示(日時/顧客/AI診断/確定提案/売上見込等)。📤エクスポート・🖨印刷用PDF・📱リマインド文生成の各ボタン</td></tr><tr><td>④施術履歴タイムライン(右下カード)</td><td>過去の来店記録を時系列で表示。新規確定時にNEWバッジ付きで自動追記される</td></tr></table>
+    <h4>数値・指標の算出式</h4><p class="p">写真モードの解析はブラウザ内Canvas APIで実際にピクセル値を計算しています。①画像を80×80pxに縮小しRGB値を取得。②輝度(明るさ)は各ピクセルで 0.299×R + 0.587×G + 0.114×B を計算しその平均値(avgLumi)を使用。③暖色度(warmth)は R平均 − B平均。warmth>8で暖色系、warmth<−8で寒色系、それ以外はニュートラルトーンと判定。④ダメージ推定は輝度の標準偏差(stdDev、明暗のムラ=毛髪表面の乱反射の指標)を70で正規化し百分率化(dmgPct = min(100, stdDev÷70×100))。dmgPct<35で良好、<60で中程度、それ以上をダメージ蓄積と判定。⑤Before/After比較は、施術後写真の輝度差分(After輝度−Before輝度)÷255×100(pt)と、ダメージ推定値の差分(After−Before)を算出して表示する。</p>
+    <h4>実装範囲(本デモで実際に動く部分)</h4><div class="impl">写真モードの明度・色相・コントラスト解析はブラウザ内で実際にピクセル解析しており本番相当です。音声入力もWeb Speech API(Chrome/Edge対応)による実装で、実際にマイクからの発話をテキスト化します。頭皮・顔型の判定はスタイリストの目視選択に基づくプリセットロジックで、提案文言はルールベースで生成しています。サンプル顧客モードの診断値・提案内容は3名分の固定データです。</div>
+    <h4>想定される本番実装技術・システム構成</h4><ul class="feat"><li>高精度画像解析AI(髪質・毛髪ダメージの科学的診断、マイクロスコープ等の専用機器との連携)</li><li>顔型・骨格解析AI(似合わせ提案の高度化)</li><li>電子カルテ・POSシステムとのデータ連携</li><li>音声認識API(本デモではWeb Speech APIで実装済み。本番運用では認識精度の高い商用APIへの置き換えも検討)</li><li>画像データの暗号化保管・アクセス権限管理(プライバシー対応)</li></ul>
+    <h4>制約事項・既知の制限(本デモではできないこと)</h4><ul class="feat warnlist"><li>サンプル顧客3名分の診断値・提案文言は固定データ(写真解析は行われない)</li><li>写真解析は明度・色味・コントラストの実測に限られ、キューティクル損傷度等の医療機器級の髪質診断は行っていない</li><li>頭皮・顔型判定はスタイリストの目視選択に依存し、AIによる自動画像判定は範囲外(仕様として明記)</li><li>音声認識はChrome/Edge等Web Speech API対応ブラウザでのみ利用可能</li></ul>
+  </div>
+
+  <div class="card" id="howto">
+    <h3>📖 使い方の説明書</h3>
+    <p class="p" style="margin-bottom:10px">以下の手順に沿って操作すると、各機能の効果(何ができる・何がわかるようになるか)を体験できます。</p>
+    <ol class="steps">
+    <li><div class="stepaction">「🧪サンプル顧客で試す」または「📷実際の写真で解析」を選ぶ</div><div class="stepeffect"><b>効果:</b> 固定データでの体験(仕組みの理解)と、実写真での本番相当の解析(実効性の検証)を使い分けられることを確認できる。</div></li>
+    <li><div class="stepaction">サンプル: 顧客タブを選択し「🔍AI解析を実行」→提案が表示されたら「✔この提案で確定→カルテ自動記録」</div><div class="stepeffect"><b>効果:</b> 新人スタイリストでもベテラン級の根拠ある提案ができる仕組みを体感できる。新人の提案採用率が38%→71%(+87%)に向上する根拠を理解できる。</div></li>
+    <li><div class="stepaction">写真: 顧客名等を入力→「📷施術前の写真を撮影・選択する」→頭皮/顔型を選択→「🔍写真をAI解析」→提案確定</div><div class="stepeffect"><b>効果:</b> 実際の写真から色味・ダメージが数値として算出される様子を確認でき、属人的だった診断が定量化・標準化される効果を理解できる。</div></li>
+    <li><div class="stepaction">確定後に表示される「📤エクスポート」「🖨印刷用PDF」「📱リマインド文生成」を必要に応じて使う</div><div class="stepeffect"><b>効果:</b> カルテ記入(月20〜25時間のサービス残業)がゼロになり、記録がそのまま次回フォロー(No.10)・紙カルテ代替(印刷)に転用される一気通貫の効果を理解できる。</div></li>
+    <li><div class="stepaction">施術後の写真を「施術後の写真」欄からアップロードし、Before/After比較を確認する</div><div class="stepeffect"><b>効果:</b> 仕上がりの変化を客観的な数値(明度・ダメージ推定)で顧客に説明できるようになり、客単価向上(9,600円→11,200円、+16.7%)の根拠を裏付けられる。</div></li></ol>
+    <div class="impl" style="margin-top:14px"><b>想定される導入効果まとめ:</b> 月間約25時間の省力化、年間約174万円の収益改善効果を見込み、投資回収期間は約1.7年(投資総額290万円)と試算している(事業計画書参照)。</div>
+  </div>
+</div>
+<footer>SALON BLOOM 表参道 — No.3 仕様書・使い方説明書 / 生成: 2026年</footer>
+</body></html>

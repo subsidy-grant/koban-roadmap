@@ -177,7 +177,25 @@ PDCA_CSS = """
   .ext-axes { display:grid; grid-template-columns:repeat(5,1fr); gap:0.3rem; font-size:0.66rem; color:var(--ink-faint); text-align:center; margin-top:0.4rem; }
   .ext-axes b { display:block; font-size:0.86rem; color:var(--ink); }
   .ext-links { margin-top:0.5rem; display:flex; gap:0.7rem; font-size:0.8rem; }
+  .ext-thumb { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
+  .ext-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 """
+
+ICON_RULES = [
+    (("予約", "顧客"), "📅"), (("集客", "マーケティング", "MEO", "口コミ"), "📣"),
+    (("会計", "キャッシュレス", "バックオフィス"), "💳"), (("カウンセリング", "接客", "カルテ"), "🧑‍🤝‍🧑"),
+    (("機器", "設備", "施術"), "🛠️"), (("SNS", "動画"), "🎬"), (("在庫", "発注", "商材"), "📦"),
+    (("人材", "教育", "研修", "シフト", "労務"), "🎓"), (("衛生", "清掃"), "🧼"),
+    (("経営", "分析", "多店舗"), "📊"), (("物販", "EC"), "🛍️"), (("価格",), "💰"),
+    (("インバウンド", "多言語"), "🌐"), (("リピート",), "🔁"),
+]
+
+
+def category_icon(text):
+    for keys, icon in ICON_RULES:
+        if any(k in text for k in keys):
+            return icon
+    return "✨"
 
 
 def esc(s):
@@ -188,6 +206,19 @@ def render_ext_section(parts, ik, ext, ind_labels):
     parts.append(f'<h2>{esc(ind_labels[ik])}<span class="badge external">採択確定（外部プロジェクト連携）</span></h2>')
     parts.append(f'<p class="sub">{esc(ext.get("source", ""))}</p>')
     parts.append(f'<div class="box"><p style="margin:0;">{esc(ext.get("sourceNote", ""))}</p></div>')
+
+    funnel = ext.get("funnel")
+    if funnel:
+        parts.append('<div class="funnel" style="margin-top:0.8rem;">')
+        stage_labels = [("plan", "PLAN：アイデア発散プール"), ("do", "DO：一次選抜（スコア上位）"),
+                        ("check", "CHECK：試作可能性評価"), ("act", "ACT：採択")]
+        for key, label in stage_labels:
+            parts.append(f'<div class="step"><div class="n">{funnel.get(key, "?")}</div><div class="t">{esc(label)}</div></div>')
+        parts.append("</div>")
+    detail_page = ext.get("detailPage")
+    if detail_page:
+        parts.append(f'<p class="sub" style="margin-top:0.6rem;"><a href="{ik}/{detail_page}">全{funnel.get("plan") if funnel else ""}案のPDCAファネル・一覧を見る（{esc(ind_labels[ik])}版）↗</a></p>')
+
     parts.append('<div class="cards">')
     axes = [("market", "市場性"), ("saving", "省力化"), ("feasibility", "実現性"), ("subsidy", "補助金"), ("unique", "差別化")]
     for pl in ext["plans"]:
@@ -195,6 +226,8 @@ def render_ext_section(parts, ik, ext, ind_labels):
         sc = pl["score"]
         total = sum(sc.values())
         parts.append('<div class="card ext-card">')
+        if pl.get("image"):
+            parts.append(f'<div class="ext-thumb"><img src="{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
         parts.append(f'<div class="no">PLAN {no:02d}｜総合 {total}/25</div>')
         parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
         parts.append(f'<div class="meta">{esc(pl["category"])}／概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）／想定省力化 約{pl["savingHoursPerMonth"]}時間/月</div>')

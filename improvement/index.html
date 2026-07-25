@@ -31,6 +31,10 @@
   .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0.9rem; }
   .card { background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
     padding:1rem 1.2rem; display:flex; flex-direction:column; gap:0.35rem; }
+  .card .thumb { height:110px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
+  .card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .card .thumb-icon { width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    font-size:2.1rem; background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
   .card .no { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
   .card .ttl { font-weight:600; font-size:0.95rem; line-height:1.5; }
   .card .meta { font-size:0.76rem; color:var(--ink-faint); }
@@ -54,60 +58,70 @@
 <p class="sub" style="margin-top:0;">この業種の10案は本サイトの100施策スコアリング（score.py）ではなく、姉妹プロジェクト beauty-ai-factory の独立したPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定されたものに差し替えています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）は同プロジェクトの評価基準に基づきます。</p>
 <div class="cards">
 <div class="card">
+<div class="thumb"><img src="beauty/img/town.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 01</div>
 <div class="ttl">美容室向けAI多言語ブログ自動投稿(10言語SEO/MEO)</div>
 <div class="meta">多言語・インバウンド｜概算 180万円（補助率3/4）｜業務改善助成金</div>
 <div class="links"><a href="beauty/plan-01.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-01-ai-multilingual-blog.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/desk.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">美容室向けAI電話予約自動応対</div>
 <div class="meta">予約最適化｜概算 320万円（補助率1/2）｜中小企業省力化投資補助金</div>
 <div class="links"><a href="beauty/plan-02.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-02-ai-phone-reservation.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/salonwork.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">美容室向けAIカウンセリング&amp;施術提案カルテ</div>
 <div class="meta">顧客カルテ・CRM｜概算 290万円（補助率1/2）｜中小企業省力化投資補助金</div>
 <div class="links"><a href="beauty/plan-03.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-03-ai-counseling-karte.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/office.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">美容室向け口コミAI自動返信&amp;MEO改善</div>
 <div class="meta">MEO・口コミ｜概算 150万円（補助率3/4）｜業務改善助成金</div>
 <div class="links"><a href="beauty/plan-04.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-04-ai-meo-review.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/salon.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">美容室向け施術動画ショートAI自動編集</div>
 <div class="meta">SNS自動化｜概算 160万円（補助率3/4）｜業務改善助成金</div>
 <div class="links"><a href="beauty/plan-05.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-05-ai-short-video.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/meeting.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">美容室向け薬剤・材料AI自動発注</div>
 <div class="meta">在庫・発注｜概算 240万円（補助率1/2）｜中小企業省力化投資補助金</div>
 <div class="links"><a href="beauty/plan-06.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-06-ai-auto-order.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/town.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">美容室向けAIシフト自動作成&amp;労務アラート</div>
 <div class="meta">シフト・労務｜概算 210万円（補助率1/2）｜中小企業省力化投資補助金</div>
 <div class="links"><a href="beauty/plan-07.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-07-ai-shift-romu.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/desk.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">美容室向け技術教育動画AI自動生成</div>
 <div class="meta">教育・技術伝承｜概算 170万円（補助率3/4）｜業務改善助成金</div>
 <div class="links"><a href="beauty/plan-08.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-08-ai-training-video.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/salonwork.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">美容室向けレジ締め・記帳AI自動化</div>
 <div class="meta">会計・バックオフィス｜概算 200万円（補助率1/2）｜中小企業省力化投資補助金</div>
 <div class="links"><a href="beauty/plan-09.html">📄 事業計画書（A4×10p）</a><a href="beauty/proto-09-ai-accounting.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><img src="beauty/img/office.jpg" alt="" loading="lazy"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">美容室向けリピート予測&amp;AI再来店フォロー</div>
 <div class="meta">リピート促進｜概算 150万円（補助率3/4）｜業務改善助成金</div>
@@ -118,60 +132,70 @@
 <section class="ind" id="ind-food">
 <div class="cards">
 <div class="card">
+<div class="thumb"><div class="thumb-icon">💳</div></div>
 <div class="no">PLAN 01</div>
 <div class="ttl">モバイルオーダー（セルフオーダー）システム導入によるホール業務の省力化と客単価向上</div>
 <div class="meta">01 モバイルオーダー・キャッシュレス決済｜概算 45万円/年間｜デジタル化・AI導入補助金</div>
 <div class="links"><a href="food/plan-01.html">📄 事業計画書（A4×10p）</a><a href="food/proto-01-mobile-order.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">📦</div></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">AI需要予測による自動発注システム導入で食材廃棄ロスと欠品を同時に削減</div>
 <div class="meta">02 食品ロス削減・在庫発注管理｜概算 27万円/年間｜デジタル化・AI導入補助金</div>
 <div class="links"><a href="food/plan-02.html">📄 事業計画書（A4×10p）</a><a href="food/proto-02-ai-demand-forecast.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">📅</div></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">飲食店向け予約管理システム導入によるノーショー対策と予約業務の効率化</div>
 <div class="meta">03 予約・顧客管理DX｜概算 40万円/年間｜小規模事業者持続化補助金</div>
 <div class="links"><a href="food/plan-03.html">📄 事業計画書（A4×10p）</a><a href="food/proto-03-reservation-system.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">🛠️</div></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">配膳・下膳ロボット導入によるホール業務の省人化と提供スピードの向上</div>
 <div class="meta">04 厨房設備・調理効率化(省力化機器)｜概算 60万円/初年度｜中小企業省力化投資補助金</div>
 <div class="links"><a href="food/plan-04.html">📄 事業計画書（A4×10p）</a><a href="food/proto-04-delivery-robot.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">🛠️</div></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">業務用スチームコンベクションオーブン導入による仕込み時間短縮と賃上げの同時実現</div>
 <div class="meta">04 厨房設備・調理効率化(省力化機器)｜概算 100万円/初期投資｜業務改善助成金</div>
 <div class="links"><a href="food/plan-05.html">📄 事業計画書（A4×10p）</a><a href="food/proto-05-steam-convection-oven.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">💳</div></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">キッチンディスプレイシステム(KDS)導入による厨房伝達の正確化と提供スピード向上</div>
 <div class="meta">01 モバイルオーダー・キャッシュレス決済｜概算 20万円/初期投資｜デジタル化・AI導入補助金</div>
 <div class="links"><a href="food/plan-06.html">📄 事業計画書（A4×10p）</a><a href="food/proto-06-kitchen-display.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">🧼</div></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">空気清浄・換気システム導入による衛生対策の強化と厨房環境の改善</div>
 <div class="meta">07 衛生管理・HACCP対応｜概算 25万円/初期投資｜業務改善助成金</div>
 <div class="links"><a href="food/plan-07.html">📄 事業計画書（A4×10p）</a><a href="food/proto-07-ventilation-system.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">💳</div></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">クラウド勤怠・シフト管理システム導入によるバックオフィス業務の削減</div>
 <div class="meta">08 バックオフィス効率化｜概算 33万円/年間｜飲食業労働生産性向上支援補助金</div>
 <div class="links"><a href="food/plan-08.html">📄 事業計画書（A4×10p）</a><a href="food/proto-08-cloud-shift-attendance.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">✨</div></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">LED照明への切替による電気料金削減と厨房環境の改善</div>
 <div class="meta">09 店舗環境・省エネ｜概算 60万円/初期投資｜業務改善助成金</div>
 <div class="links"><a href="food/plan-09.html">📄 事業計画書（A4×10p）</a><a href="food/proto-09-led-energy-saving.html">🖥 プロトタイプ</a></div>
 </div>
 <div class="card">
+<div class="thumb"><div class="thumb-icon">💳</div></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">給与計算システムの自動化によるアルバイト多数店舗の労務事務削減</div>
 <div class="meta">08 バックオフィス効率化｜概算 42万円/年間｜デジタル化・AI導入補助金</div>

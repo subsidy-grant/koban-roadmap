@@ -18,6 +18,23 @@ MAIN_HTML = os.path.join(ROOT, "index.html")
 INDUSTRY_ORDER = ["beauty", "food", "lodging", "manufacturing", "realestate", "education"]
 EXTERNAL_INDUSTRIES = {"beauty"}
 
+ICON_RULES = [
+    (("予約", "顧客"), "📅"), (("集客", "マーケティング", "MEO", "口コミ"), "📣"),
+    (("会計", "キャッシュレス", "バックオフィス"), "💳"), (("カウンセリング", "接客", "カルテ"), "🧑‍🤝‍🧑"),
+    (("機器", "設備", "施術"), "🛠️"), (("SNS", "動画"), "🎬"), (("在庫", "発注", "商材"), "📦"),
+    (("人材", "教育", "研修", "シフト", "労務"), "🎓"), (("衛生", "清掃"), "🧼"),
+    (("経営", "分析", "多店舗"), "📊"), (("物販", "EC"), "🛍️"), (("価格",), "💰"),
+    (("インバウンド", "多言語"), "🌐"), (("リピート",), "🔁"),
+]
+
+
+def category_icon(text):
+    for keys, icon in ICON_RULES:
+        if any(k in text for k in keys):
+            return icon
+    return "✨"
+
+
 PROGRAM_LABEL = {
     "ai": "デジタル化・AI導入補助金", "jizoku": "小規模事業者持続化補助金",
     "kaizen": "業務改善助成金", "shoryokuka": "中小企業省力化投資補助金",
@@ -43,6 +60,10 @@ CSS = """
   #improvement-cta .imp10-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.8rem; }
   #improvement-cta .imp10-card { background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
     padding:0.9rem 1.1rem; display:flex; flex-direction:column; gap:0.35rem; box-shadow:0 1px 2px var(--shadow); }
+  #improvement-cta .imp10-card .thumb { height:110px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
+  #improvement-cta .imp10-card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  #improvement-cta .imp10-card .thumb-icon { width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    font-size:2.1rem; background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
   #improvement-cta .imp10-card .no { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
   #improvement-cta .imp10-card .ttl { font-weight:600; font-size:0.92rem; line-height:1.5; }
   #improvement-cta .imp10-card .meta { font-size:0.75rem; color:var(--ink-faint); }
@@ -93,6 +114,10 @@ def build_fragment():
                 prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
+                if pl.get("image"):
+                    parts.append(f'<div class="thumb"><img src="improvement/{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
+                else:
+                    parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
@@ -107,6 +132,7 @@ def build_fragment():
                 prog = PROGRAM_LABEL.get(pl["subsidy"]["key"], pl["subsidy"]["key"])
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
+                parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')

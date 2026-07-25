@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDCA評価ダッシュボード | 美容業×AI 1000案</title>
+<style>
+  :root{
+    --bg:#f7f5f2; --card:#ffffff; --ink:#26221e; --sub:#6f675e; --line:#e5dfd7;
+    --accent:#8a5a2b; --accent2:#3e6b4f; --gold:#b98a2f; --red:#a4453c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:28px 24px}
+  header h1{font-size:22px;font-weight:700}
+  header p{font-size:13px;opacity:.85;margin-top:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  /* PDCAファネル */
+  .funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:relative}
+  .stage .ph{font-size:11px;font-weight:700;letter-spacing:.12em;color:#fff;display:inline-block;padding:2px 10px;border-radius:99px;margin-bottom:8px}
+  .stage .num{font-size:30px;font-weight:800}
+  .stage .lbl{font-size:12px;color:var(--sub)}
+  .stage .desc{font-size:11px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+  .s-p .ph{background:#5b7b9a}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#b98a2f}.s-a .ph{background:#a4453c}
+  /* TOP10 */
+  h2{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}
+  .topgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .tcard .rank{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}
+  .tcard h3{font-size:15px}
+  .tcard .why{font-size:12px;color:var(--sub);background:#faf7f2;border-radius:8px;padding:8px}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
+  .b-sho{color:var(--accent2);border-color:var(--accent2);background:#eef5f0}
+  .b-gyo{color:#7a5a17;border-color:var(--gold);background:#fbf4e3}
+  .bar{height:8px;background:#efe9e0;border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold))}
+  .axes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:10px;color:var(--sub);text-align:center}
+  .axes b{display:block;font-size:13px;color:var(--ink)}
+  .links{display:flex;gap:8px;font-size:12px;flex-wrap:wrap}
+  .links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
+  .links a:hover{background:#f3ede4}
+  /* フィルタ+表 */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+  select,input[type=search]{font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+  input[type=search]{flex:1;min-width:200px}
+  .count{font-size:12px;color:var(--sub)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:12.5px}
+  th{background:#efe9e0;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{background:#e6ddd0}
+  td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+  tr:hover td{background:#faf7f2}
+  .stg{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
+  .stg-top{background:#a4453c;color:#fff}.stg-c{background:#b98a2f;color:#fff}
+  .stg-p{background:#5b7b9a;color:#fff}.stg-0{background:#e5dfd7;color:#6f675e}
+  .pager{display:flex;gap:8px;justify-content:center;margin:14px 0;align-items:center;font-size:13px}
+  .pager button{font:inherit;padding:6px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+  .pager button:disabled{opacity:.4;cursor:default}
+  footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
+</style>
+</head>
+<body>
+<p style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:13px;"><a href="../index.html?industry=beauty" style="color:#8a5a2b;font-weight:700;text-decoration:none;">← 改善計画10選（美容業）へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#8a5a2b;font-weight:700;text-decoration:none;">ロードマップ本体へ</a></p>
+<header>
+  <h1>美容業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
+  <p>20カテゴリ × 10コア機能 × 5業態(美容室/理容室/エステ/ネイル/マツエク)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。</p>
+</header>
+<div class="wrap">
+
+  <div class="funnel">
+    <div class="stage s-p"><span class="ph">PLAN</span><div class="num">1,000<span style="font-size:13px">案</span></div>
+      <div class="lbl">アイデア発散プール</div>
+      <div class="desc">業務フロー20領域×5業態を網羅生成。重複・非現実案も許容する発散フェーズ。</div></div>
+    <div class="stage s-d"><span class="ph">DO</span><div class="num">100<span style="font-size:13px">案</span></div>
+      <div class="lbl">一次選抜(スコア上位)</div>
+      <div class="desc">5軸合計スコアで足切り。市場性2点台・実現性2点台の案はここで落選。</div></div>
+    <div class="stage s-c"><span class="ph">CHECK</span><div class="num">30<span style="font-size:13px">案</span></div>
+      <div class="lbl">試作可能性評価</div>
+      <div class="desc">プロトタイプ製作コスト・データ入手性・既製品との差別化を検証し3割まで圧縮。</div></div>
+    <div class="stage s-a"><span class="ph">ACT</span><div class="num">10<span style="font-size:13px">案</span></div>
+      <div class="lbl">採択(補助金2制度へ割当)</div>
+      <div class="desc">省力化投資補助金(一般型)5案・業務改善助成金5案に振り分けて事業計画化。</div></div>
+  </div>
+
+  <h2>TOP10 採択案(プロトタイプ&事業計画書あり)</h2>
+  <div class="topgrid" id="topgrid"></div>
+
+  <h2>全1000案ブラウザ</h2>
+  <div class="filters">
+    <input type="search" id="q" placeholder="キーワード検索(タイトル・説明)">
+    <select id="fCat"><option value="">全カテゴリ</option></select>
+    <select id="fSeg"><option value="">全業態</option></select>
+    <select id="fStage"><option value="">全ステージ</option>
+      <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
+    <select id="fScheme"><option value="">全制度</option><option value="省力化">省力化投資補助金</option><option value="業務改善">業務改善助成金</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th data-k="rank">順位</th><th data-k="title">タイトル</th><th data-k="category">カテゴリ</th>
+      <th data-k="segment">業態</th><th data-k="savingHoursPerMonth">省力化 h/月</th>
+      <th data-k="total">総合</th><th data-k="stage">ステージ</th><th data-k="scheme">制度</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="pager">
+    <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
+  </div>
+</div>
+<footer>beauty-ai-factory — AIで完全自走する美容業DXコンテンツ工場 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)</footer>
+
+<script src="ideas.js"></script>
+<script>
+// TOP10の選定理由(Check/Act段階の評価コメント)とプロトタイプ・計画書リンク
+const RATIONALE = {
+  1:{why:"記事作成・翻訳・SEO/MEOという3業務を同時にゼロ化でき、インバウンド売上という新市場も獲得。省力化と販路開拓の両面で審査説明が最も立てやすい。",proto:"proto-01-ai-multilingual-blog.html",plan:"plan-01.html"},
+  2:{why:"施術中の電話対応は美容室最大の中断要因。24時間自動応対は取りこぼし予約の売上化と省力化を数値で示しやすく、省力化指数の説明が明快。",proto:"proto-02-ai-phone-reservation.html",plan:"plan-02.html"},
+  3:{why:"カウンセリングは単価と失客を左右する中核業務。写真解析AIで品質標準化とカルテ作成自動化を同時達成し、新人でも成果を出せる体制を作る。",proto:"proto-03-ai-counseling-karte.html",plan:"plan-03.html"},
+  4:{why:"地図検索は新規来店の最大導線。返信・投稿・分析の自動化は費用対効果が高く、効果測定(順位・件数)が容易で実績報告にも強い。",proto:"proto-04-ai-meo-review.html",plan:"plan-04.html"},
+  5:{why:"動画編集は1本2〜3時間の重負荷業務。撮影するだけで投稿まで自動化し、若年層集客というリターンも大きい。",proto:"proto-05-ai-short-video.html",plan:"plan-05.html"},
+  6:{why:"発注・棚卸は完全なノンコア業務で自動化抵抗が小さい。POS連動の需要予測は省力化効果を在庫金額でも示せる。",proto:"proto-06-ai-auto-order.html",plan:"plan-06.html"},
+  7:{why:"シフト作成は店長業務の最大負荷のひとつ。法令チェック同時実行は賃上げ・労務要件と親和性が高く、社労士監修の説得力を持たせやすい。",proto:"proto-07-ai-shift-romu.html",plan:"plan-07.html"},
+  8:{why:"技術者育成の長期化は業界共通課題。動画教材自動生成は教育時間の削減と定着率改善を両立し、賃上げ原資の生産性向上に直結。",proto:"proto-08-ai-training-video.html",plan:"plan-08.html"},
+  9:{why:"レジ締め・記帳は毎日発生する確実な削減対象。効果測定が容易で、税理士連携による月次早期化という二次効果も説明できる。",proto:"proto-09-ai-accounting.html",plan:"plan-09.html"},
+  10:{why:"新規獲得コストが高騰する中、失客防止は最も割の良い投資。来店周期学習×LINE自動配信は既存資産だけで動き、実現性が高い。",proto:"proto-10-ai-repeat-follow.html",plan:"plan-10.html"},
+};
+
+const AX = [["market","市場性"],["saving","省力化"],["feasibility","実現性"],["subsidy","補助金"],["unique","差別化"]];
+
+// TOP10カード
+document.getElementById("topgrid").innerHTML = TOP10.map(t => {
+  const r = RATIONALE[t.topRank] || {};
+  const badge = t.scheme === "省力化"
+    ? '<span class="badge b-sho">省力化投資補助金(一般型)</span>'
+    : '<span class="badge b-gyo">業務改善助成金</span>';
+  return `<div class="tcard">
+    <div><span class="rank">No.${t.topRank}</span> ${badge}</div>
+    <h3>${t.title}</h3>
+    <div style="font-size:12px">${t.description}</div>
+    <div class="bar"><i style="width:${t.total/25*100}%"></i></div>
+    <div class="axes">${AX.map(([k,l])=>`<span>${l}<b>${t.score[k]}</b></span>`).join("")}</div>
+    <div class="why"><b>選定理由:</b> ${r.why||""}</div>
+    <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月</div>
+    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a><a href="manuals/manual-${String(t.topRank).padStart(2,"0")}.html">📖 仕様書</a></div>
+  </div>`;
+}).join("");
+
+// フィルタ初期化
+const fCat = document.getElementById("fCat"), fSeg = document.getElementById("fSeg");
+CATEGORIES.forEach(c => fCat.insertAdjacentHTML("beforeend", `<option>${c.name}</option>`));
+SEGMENTS.forEach(s => fSeg.insertAdjacentHTML("beforeend", `<option>${s.name}</option>`));
+
+let sortKey = "rank", sortAsc = true, page = 0;
+const PAGE = 50;
+const els = ["q","fCat","fSeg","fStage","fScheme"].map(id => document.getElementById(id));
+els.forEach(el => el.addEventListener("input", () => { page = 0; render(); }));
+document.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
+  const k = th.dataset.k;
+  if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = k === "rank" || k === "title"; }
+  render();
+}));
+document.getElementById("prev").onclick = () => { page--; render(); };
+document.getElementById("next").onclick = () => { page++; render(); };
+
+function stageClass(s){ return s.startsWith("TOP") ? "stg-top" : s.startsWith("C") ? "stg-c" : s.startsWith("P") ? "stg-p" : "stg-0"; }
+
+function render() {
+  const [q, cat, seg, stage, scheme] = els.map(e => e.value);
+  const ql = q.toLowerCase();
+  let rows = IDEAS.filter(i =>
+    (!cat || i.category === cat) && (!seg || i.segment === seg) &&
+    (!stage || i.stage === stage) && (!scheme || i.scheme === scheme) &&
+    (!q || (i.title + i.description).toLowerCase().includes(ql)));
+  rows.sort((a, b) => {
+    const va = a[sortKey], vb = b[sortKey];
+    const c = typeof va === "number" ? va - vb : String(va).localeCompare(String(vb), "ja");
+    return sortAsc ? c : -c;
+  });
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  page = Math.min(Math.max(0, page), pages - 1);
+  document.getElementById("count").textContent = `${rows.length}件`;
+  document.getElementById("pinfo").textContent = `${page + 1} / ${pages}ページ`;
+  document.getElementById("prev").disabled = page === 0;
+  document.getElementById("next").disabled = page >= pages - 1;
+  document.getElementById("tbody").innerHTML = rows.slice(page * PAGE, (page + 1) * PAGE).map(i => `
+    <tr><td>${i.rank}</td>
+    <td><b>${i.title}</b><br><span style="color:var(--sub)">${i.description}</span></td>
+    <td>${i.category}</td><td>${i.segment}</td>
+    <td style="text-align:center">${i.savingHoursPerMonth}</td>
+    <td><b>${i.total}</b>/25</td>
+    <td><span class="stg ${stageClass(i.stage)}">${i.stage}</span></td>
+    <td>${i.scheme === "省力化" ? "省力化(一般型)" : "業務改善"}</td></tr>`).join("");
+}
+render();
+</script>
+</body>
+</html>

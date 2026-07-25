@@ -49,6 +49,10 @@ CSS = """
   .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0.9rem; }
   .card { background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
     padding:1rem 1.2rem; display:flex; flex-direction:column; gap:0.35rem; }
+  .card .thumb { height:110px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
+  .card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .card .thumb-icon { width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    font-size:2.1rem; background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
   .card .no { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
   .card .ttl { font-weight:600; font-size:0.95rem; line-height:1.5; }
   .card .meta { font-size:0.76rem; color:var(--ink-faint); }
@@ -57,6 +61,25 @@ CSS = """
     padding:2rem; text-align:center; color:var(--ink-faint); font-size:0.9rem; }
   .note { font-size:0.78rem; color:var(--ink-faint); margin-top:2.5rem; }
 """
+
+ICON_RULES = [
+    (("予約", "顧客"), "📅"), (("集客", "マーケティング", "MEO", "口コミ"), "📣"),
+    (("会計", "キャッシュレス", "バックオフィス"), "💳"), (("カウンセリング", "接客", "カルテ"), "🧑‍🤝‍🧑"),
+    (("機器", "設備", "施術"), "🛠️"), (("SNS", "動画"), "🎬"), (("在庫", "発注", "商材"), "📦"),
+    (("人材", "教育", "研修", "シフト", "労務"), "🎓"), (("衛生", "清掃"), "🧼"),
+    (("経営", "分析", "多店舗"), "📊"), (("物販", "EC"), "🛍️"), (("価格"), "💰"),
+    (("インバウンド", "多言語"), "🌐"), (("リピート",), "🔁"),
+]
+
+
+def category_icon(text):
+    for keys, icon in ICON_RULES:
+        if isinstance(keys, str):
+            keys = (keys,)
+        if any(k in text for k in keys):
+            return icon
+    return "✨"
+
 
 PROGRAM_LABEL = {
     "ai": "デジタル化・AI導入補助金", "jizoku": "小規模事業者持続化補助金",
@@ -119,6 +142,10 @@ def main():
                 prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
+                if pl.get("image"):
+                    parts.append(f'<div class="thumb"><img src="{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
+                else:
+                    parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
@@ -133,6 +160,7 @@ def main():
                 prog = PROGRAM_LABEL.get(pl["subsidy"]["key"], pl["subsidy"]["key"])
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
+                parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')
