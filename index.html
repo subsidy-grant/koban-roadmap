@@ -311,7 +311,17 @@
   .pd-item .v .sub { display: block; font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.15rem; }
   .pd-item-wide { grid-column: 1 / -1; }
   .req-strong { color: var(--rust); font-weight: 700; }
-  .num-strong { color: var(--accent); font-weight: 700; }
+  .num-strong {
+    background: #ffffff;
+    color: #1d3a63;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.12em;
+    padding: 0.05em 0.35em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
   .num-weak { font-weight: 600; }
   .pd-note { margin-top: 1rem; font-size: 0.84rem; color: var(--ink-soft); background: var(--sage-wash); border-radius: 6px; padding: 0.7rem 0.9rem; }
 
