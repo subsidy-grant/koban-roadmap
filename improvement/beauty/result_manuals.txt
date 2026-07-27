@@ -1,0 +1,16 @@
+index.html: manual links = 10 (expect 10)
+index.html: missing manual files = []
+index.html errors = []
+pdca.html: manual links = 10 (expect 10)
+pdca.html: missing manual files = []
+pdca.html errors = []
+manual-01.html: title_ok=True features=8 steps=4 missing_links=['#spec', '#howto'] errors=[]
+manual-02.html: title_ok=True features=8 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-03.html: title_ok=True features=9 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-04.html: title_ok=True features=7 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-05.html: title_ok=True features=8 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-06.html: title_ok=True features=8 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-07.html: title_ok=True features=7 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-08.html: title_ok=True features=7 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-09.html: title_ok=True features=7 steps=5 missing_links=['#spec', '#howto'] errors=[]
+manual-10.html: title_ok=True features=7 steps=6 missing_links=['#spec', '#howto'] errors=[]
