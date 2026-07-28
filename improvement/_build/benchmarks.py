@@ -40,30 +40,57 @@ def load():
 
 # ---------------------------------------------------------------- 申請規模の妥当性
 
-def scale_check(investment_man_yen, annual_revenue_man_yen):
+def scale_check(investment_man_yen, annual_revenue_man_yen=None):
     """投資総額が年商の1/3目安を超えていないか判定する。
 
-    Returns: dict(ok, ratio, limit_man_yen, message, source) または
-             annual_revenue が未指定なら None。
+    年商が分かっている場合は mode="judged" で判定結果を返す。
+    年商が前提として置かれていない業種（モデル事業者に年商の記載がない場合）は、
+    年商を捏造せず mode="threshold" で「この投資額が目安に収まるのに必要な年商ライン」
+    （投資総額 ÷ 1/3）だけを返す。これは投資額のみからの算術で、推測値ではない。
+
+    Returns: dict(mode, ok, ratio, limit_man_yen, message, source)
     """
     rule = load()["applicationScaleRule"]
+    r = rule["ratioOfAnnualRevenue"]
     if not annual_revenue_man_yen:
-        return None
+        need = investment_man_yen / r
+        return {
+            "mode": "threshold", "ok": None, "ratio": None,
+            "investmentManYen": investment_man_yen,
+            "annualRevenueManYen": None,
+            "requiredRevenueManYen": round(need),
+            "message": (f"本計画の投資総額{investment_man_yen:,.0f}万円が目安（年商の1/3以内）に"
+                        f"収まるのは、年商がおおむね{need:,.0f}万円以上の場合。"
+                        f"自店の直近年商を当てはめて確認すること。"),
+            "source": rule["source"], "sourceType": rule["sourceType"], "note": rule["note"],
+        }
     ratio = investment_man_yen / annual_revenue_man_yen
     limit = annual_revenue_man_yen * rule["ratioOfAnnualRevenue"]
     ok = investment_man_yen <= limit
     if ok:
         msg = (f"投資総額{investment_man_yen:,.0f}万円は年商{annual_revenue_man_yen:,.0f}万円の"
-               f"{ratio:.0%}で、目安である1/3以内に収まっている。")
+               f"{ratio:.1%}で、目安である1/3以内に収まっている。")
     else:
         msg = (f"⚠ 投資総額{investment_man_yen:,.0f}万円は年商{annual_revenue_man_yen:,.0f}万円の"
-               f"{ratio:.0%}に達し、目安の1/3（{limit:,.0f}万円）を超える。"
+               f"{ratio:.1%}に達し、目安の1/3（{limit:,.0f}万円）を超える。"
                f"自己負担分の資金調達根拠（自己資金・融資枠）を計画書に明示すること。")
     return {
+        "mode": "judged",
+        "investmentManYen": investment_man_yen,
+        "annualRevenueManYen": annual_revenue_man_yen,
         "ok": ok, "ratio": ratio, "limit_man_yen": limit,
         "message": msg, "source": rule["source"], "sourceType": rule["sourceType"],
         "note": rule["note"],
     }
+
+
+def model_business(industry_key):
+    """業種のモデル事業者前提（年商・従業員数等）を返す。未設定は None。
+
+    ここに年商が無い業種では scale_check を mode="threshold" で使うこと。
+    年商を推測で埋めてはいけない（補助金申請書に載る数値のため）。
+    """
+    return load()["modelBusiness"].get(industry_key)
 
 
 # ---------------------------------------------------------------- ハード・ソフト要件
@@ -137,6 +164,14 @@ def margin_comparison(industry_key, plan_margin_pct=None):
                        f"申請書に業界比較を載せる場合は {fin.get('pendingSource','')} から取得すること。",
         }
     benchmark = om.get(choice["recommended"])
+    if benchmark is None:
+        # 推奨統計値のキーが欠けている＝データ不備。黙って None を刷らせない
+        return {
+            "available": False, "excludedByPolicy": False,
+            "reason": f"operatingMarginPct に '{choice['recommended']}' が無い",
+            "message": f"{fin['label']}の業界平均は推奨統計値（{choice['recommended']}）が"
+                       f"benchmarks.json に登録されていないため出力しない。",
+        }
     caveat = load()["industryFinancials"].get("_sampleCaveat", {})
     msg = (f"{fin['label']}の売上高営業利益率は、黒字かつ自己資本プラス企業の平均で{benchmark}%"
            f"（全企業平均{om.get('avg')}%、中央値{om.get('median')}%）。"
