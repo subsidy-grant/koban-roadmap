@@ -287,13 +287,18 @@ def build_appendix(industry, plan_no, program_key, investment, footer_left):
 def apply_to_file(path, industry, plan_no, program_key, investment):
     with open(path, encoding="utf-8") as f:
         html = f.read()
-    html = re.sub(re.escape(START) + r".*?" + re.escape(END), "", html, flags=re.S).rstrip()
+    # 前回のブロックは前後の空白ごと落とす。残すと再実行のたびに空行が1つずつ増える
+    html = re.sub(r"\s*" + re.escape(START) + r".*?" + re.escape(END) + r"\s*",
+                  "\n", html, flags=re.S)
     m = re.search(r"<title>(.*?)</title>", html, re.S)
     footer_left = re.sub(r"\s+", " ", m.group(1)).strip() if m else INDUSTRY_LABEL.get(industry, "")
     block = build_appendix(industry, plan_no, program_key, investment, footer_left)
     if "</body>" not in html:
         raise RuntimeError(f"{path}: </body> が見つからない")
-    html = html.replace("</body>", block + "\n</body>", 1)
+    # 印刷用レポートのHTMLをJSの文字列で持つページがあり（proto-*.html に実例あり）、
+    # 最初の </body> はその文字列の中かもしれない。必ず最後の </body> の直前に入れる。
+    head, _, tail = html.rpartition("</body>")
+    html = head.rstrip() + "\n" + block + "\n</body>" + tail
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
 

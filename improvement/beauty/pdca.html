@@ -33,10 +33,18 @@
   .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
   .b-sho{color:var(--accent2);border-color:var(--accent2);background:#eef5f0}
   .b-gyo{color:#7a5a17;border-color:var(--gold);background:#fbf4e3}
-  .bar{height:8px;background:#efe9e0;border-radius:99px;overflow:hidden}
-  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold))}
-  .axes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:10px;color:var(--sub);text-align:center}
-  .axes b{display:block;font-size:13px;color:var(--ink)}
+  /* 5軸スコアは5角形レーダーチャートで表示する（横棒だと軸ごとの強弱が読み取りにくいため） */
+  .scorewrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .radarbox{flex:0 0 auto;width:210px;max-width:100%;margin:0 auto}
+  .radar{width:100%;height:auto;display:block}
+  .radar .rlbl{font-size:11.5px;fill:var(--sub)}
+  .radar .rval{font-size:13px;font-weight:800;fill:var(--ink)}
+  .radar .grid{fill:none;stroke:var(--line)}
+  .radar .shape{fill:var(--accent);fill-opacity:.17;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+  .radar .dot{fill:var(--accent)}
+  .tot{text-align:center;font-size:11px;color:var(--sub);margin-top:-2px}
+  .tot b{font-size:15px;color:var(--ink)}
+  .scorewrap .why{flex:1 1 190px;margin:0}
   .links{display:flex;gap:8px;font-size:12px;flex-wrap:wrap}
   .links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
   .links a:hover{background:#f3ede4}
@@ -126,6 +134,48 @@ const RATIONALE = {
 };
 
 const AX = [["market","市場性"],["saving","省力化"],["feasibility","実現性"],["subsidy","補助金"],["unique","差別化"]];
+const AX_MAX = 5;
+
+// 5軸スコアの5角形レーダーチャート。頂点は真上から時計回りにAXの順。
+function radarChart(score) {
+  // Wはラベル（「省力化4.7」で約58px）が左右にはみ出さない幅を確保している
+  const W = 240, H = 184, cx = W / 2, cy = H / 2 - 1, R = 48, LR = R + 14;
+  const pt = (i, r) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / AX.length;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
+  const poly = r => AX.map((_, i) => pt(i, r).map(n => n.toFixed(1)).join(",")).join(" ");
+
+  // 目盛りの同心5角形（1〜5点）と中心からの軸線
+  let grid = "";
+  for (let lv = 1; lv <= AX_MAX; lv++) {
+    grid += `<polygon class="grid" points="${poly(R * lv / AX_MAX)}"${lv === AX_MAX ? "" : ' stroke-dasharray="2 3"'}/>`;
+  }
+  grid += AX.map((_, i) => {
+    const [x, y] = pt(i, R);
+    return `<line class="grid" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+  }).join("");
+
+  const vals = AX.map(([k]) => Math.max(0, Math.min(AX_MAX, Number(score[k]) || 0)));
+  const shape = vals.map((v, i) => pt(i, R * v / AX_MAX).map(n => n.toFixed(1)).join(",")).join(" ");
+  const dots = vals.map((v, i) => {
+    const [x, y] = pt(i, R * v / AX_MAX);
+    return `<circle class="dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/>`;
+  }).join("");
+
+  // ラベルは頂点の外側に置き、左右どちら側かで揃えを変える
+  const labels = AX.map(([, l], i) => {
+    const [x, y] = pt(i, LR), dx = x - cx;
+    const anchor = Math.abs(dx) < 6 ? "middle" : (dx > 0 ? "start" : "end");
+    const dy = y < cy - 10 ? -1 : (y > cy + 10 ? 10 : 4);
+    return `<text class="rlbl" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">`
+         + `${l}<tspan class="rval" dx="3">${vals[i]}</tspan></text>`;
+  }).join("");
+
+  const alt = AX.map(([, l], i) => `${l}${vals[i]}点`).join("、");
+  return `<svg class="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="5軸スコア（各5点満点）：${alt}">`
+       + `${grid}<polygon class="shape" points="${shape}"/>${dots}${labels}</svg>`;
+}
 
 // TOP10カード
 document.getElementById("topgrid").innerHTML = TOP10.map(t => {
@@ -137,9 +187,10 @@ document.getElementById("topgrid").innerHTML = TOP10.map(t => {
     <div><span class="rank">No.${t.topRank}</span> ${badge}</div>
     <h3>${t.title}</h3>
     <div style="font-size:12px">${t.description}</div>
-    <div class="bar"><i style="width:${t.total/25*100}%"></i></div>
-    <div class="axes">${AX.map(([k,l])=>`<span>${l}<b>${t.score[k]}</b></span>`).join("")}</div>
-    <div class="why"><b>選定理由:</b> ${r.why||""}</div>
+    <div class="scorewrap">
+      <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
+      <div class="why"><b>選定理由:</b> ${r.why||""}</div>
+    </div>
     <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月</div>
     <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a><a href="manuals/manual-${String(t.topRank).padStart(2,"0")}.html">📖 仕様書</a></div>
   </div>`;

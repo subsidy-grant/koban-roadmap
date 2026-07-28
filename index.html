@@ -310,6 +310,17 @@
   .pd-item .v { font-size: 0.92rem; line-height: 1.6; }
   .pd-item .v .sub { display: block; font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.15rem; }
   .pd-item-wide { grid-column: 1 / -1; }
+  /* 制度カード内で真っ先に見る3項目（補助率・上限額・締切）だけを色分けする。
+     色は既存トークンを流用するのでライト/ダーク両テーマに自動追従する。 */
+  .pd-item-key { border-left: 4px solid var(--hl); background: var(--hl-wash); }
+  .pd-item-key .k { color: var(--hl); font-weight: 700; }
+  .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
+  .pd-item-amount { --hl: var(--sage); --hl-wash: var(--sage-wash); }
+  .pd-item-due { --hl: var(--rust); --hl-wash: var(--rust-wash); }
+  .pd-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-top: 0.8rem;
+    font-size: 0.74rem; color: var(--ink-faint); }
+  .pd-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .pd-legend i { width: 0.7rem; height: 0.7rem; border-radius: 2px; display: inline-block; }
   .req-strong { color: var(--rust); font-weight: 700; }
   .num-strong {
     background: #ffffff;
@@ -738,6 +749,11 @@
   <section id="conditions">
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>導入のための条件</h2></div>
     <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有制度に整理した。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示す。</p>
+    <p class="pd-legend">各制度カードでは、まず見るべき3項目を色分けしている：
+      <span><i style="background:var(--accent)"></i>補助率</span>
+      <span><i style="background:var(--sage)"></i>上限額</span>
+      <span><i style="background:var(--rust)"></i>受付期間・次回締切</span>
+    </p>
 
     <div class="threshold-box">
       <div class="slider-row">
@@ -775,11 +791,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者が対象。<strong>中小企業者の基準（上記ボックス参照）の範囲内なら6人以上でも対象</strong>で、この制度自体には従業員数による上限額の変動はない</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2以内</strong><span class="sub">要件充足で2/3</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">5万〜450万円</strong><span class="sub">通常枠。ほかにインボイス枠(対応類型・上限350万円)、セキュリティ対策推進枠(上限150万円)等があり、概算シミュレーターで枠ごとに試算できる</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2以内</strong><span class="sub">要件充足で2/3</span></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">5万〜450万円</strong><span class="sub">通常枠。ほかにインボイス枠(対応類型・上限350万円)、セキュリティ対策推進枠(上限150万円)等があり、概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金未満雇用者要件で補助率優遇</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">43.9%<span class="sub">2026年1次・通常枠</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>通年・複数回締切<span class="sub num-weak">次回：3次締切 2026年7月21日17:00／4次締切 8月25日</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>通年・複数回締切<span class="sub num-weak">次回：3次締切 2026年7月21日17:00／4次締切 8月25日</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2017年度から継続実施中。名称・要件は年度改定あり、次年度以降も何らかの形での継続が見込まれる</div></div>
         </div>
         <div class="cond-faq" id="condFaq-ai"></div>
@@ -790,11 +806,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>「小規模事業者持続化補助金の対象基準」（上記ボックス参照）以下の常時使用従業員数</strong>が対象。個人事業主も対象。<strong style="color:var(--rust);">基準を超える場合は「小規模事業者」に該当せず対象外</strong>（この場合はデジタル化・AI導入補助金や省力化投資補助金を検討）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">2/3以内</strong></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">上限50万円</strong><span class="sub">賃金引上げ枠で200万円、インボイス特例併用で250万円（いずれも対象基準以下が前提）。概算シミュレーターで枠ごとに試算できる</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">2/3以内</strong></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">上限50万円</strong><span class="sub">賃金引上げ枠で200万円、インボイス特例併用で250万円（いずれも対象基準以下が前提）。概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>通常枠は任意<span class="sub">賃金引上げ枠を選ぶ場合は<strong class="req-strong">必須</strong></span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">51.1%<span class="sub">第19回（採択発表待ち）</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>現在受付中の回なし<span class="sub num-weak">第20回：2026年11月5日〜12月15日17:00</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>現在受付中の回なし<span class="sub num-weak">第20回：2026年11月5日〜12月15日17:00</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">長年継続的に実施。次年度以降も継続見込み</div></div>
         </div>
         <div class="cond-faq" id="condFaq-jizoku"></div>
@@ -805,11 +821,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong class="req-strong">時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">3/4〜4/5</strong></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">450万円</strong><span class="sub">特例600万円。50円／70円／90円の3コースがあり、コースと引き上げ人数に応じて上限額が変動（概算シミュレーターでコース別に試算可能）</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">3/4〜4/5</strong></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">450万円</strong><span class="sub">特例600万円。50円／70円／90円の3コースがあり、コースと引き上げ人数に応じて上限額が変動（概算シミュレーターでコース別に試算可能）</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub"><strong class="num-strong">50円</strong>以上の賃上げが前提条件</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付前<span class="sub num-weak">2026年9月1日開始／締切は最低賃金発効日前日か11月30日の早い方</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付前<span class="sub num-weak">2026年9月1日開始／締切は最低賃金発効日前日か11月30日の早い方</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">毎年度実施。2027年度以降も継続見込み</div></div>
         </div>
         <div class="cond-faq" id="condFaq-kaizen"></div>
@@ -820,7 +836,7 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（<strong class="req-strong">GビズIDプライム必須</strong>）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2</strong><span class="sub">小規模2/3。最低賃金引上げ特例でさらに優遇</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2</strong><span class="sub">小規模2/3。最低賃金引上げ特例でさらに優遇</span></div></div>
           <div class="pd-item pd-item-wide">
             <div class="k">上限額（従業員規模別）</div>
             <ul class="tier-list">
@@ -834,7 +850,7 @@
           </div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金引上げ特例で補助率優遇</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">直近公募分は未公表</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第7回受付中<span class="sub num-weak">2026年7月1日〜7月31日17:00／第8回は10月頃開始見込み</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第7回受付中<span class="sub num-weak">2026年7月1日〜7月31日17:00／第8回は10月頃開始見込み</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2024年度創設。年3〜4回のペースで継続公募中、次年度以降は予算措置次第</div></div>
         </div>
         <div class="cond-faq" id="condFaq-shoryokuka"></div>
@@ -845,11 +861,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">有期雇用労働者等を正社員化する事業主。事業所あたり年20名まで。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）か大企業かで支給額が異なる</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">正社員転換に伴う人件費相当（設備投資ではない）</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">定額支給</strong></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">140万円／人</strong><span class="sub">加算込。中小企業向け金額（大企業はより低額）</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">定額支給</strong></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">140万円／人</strong><span class="sub">加算込。中小企業向け金額（大企業はより低額）</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">転換後に賃金<strong class="num-strong">3%</strong>以上の引上げが要件</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給。事前のキャリアアップ計画届出が必要</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給。事前のキャリアアップ計画届出が必要</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">恒久的な制度として毎年度実施。次年度も継続見込み</div></div>
         </div>
         <div class="cond-faq" id="condFaq-career"></div>
@@ -860,11 +876,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に<strong class="req-strong">10時間以上の訓練を実施する</strong>事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修・訓練費用、訓練期間中の賃金</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">経費助成45%</strong><span class="sub">＋賃金助成。大企業は30%（中小企業の基準内であれば45%を維持）</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">年間1,000万円</strong></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">経費助成45%</strong><span class="sub">＋賃金助成。大企業は30%（中小企業の基準内であれば45%を維持）</span></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">年間1,000万円</strong></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>基本不要<span class="sub">一部コースで賃金要件充足時に助成単価上乗せ</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">恒久的な制度として毎年度実施。次年度も継続見込み</div></div>
         </div>
         <div class="cond-faq" id="condFaq-jinzai"></div>
@@ -879,11 +895,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小・中堅規模の飲食店（他業種は対象外）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">調理・接客・店舗管理の各領域における自動化・省力化設備・システム。<strong style="color:var(--rust);">リース契約に限る（購入・レンタルは対象外）</strong></div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">定額（10/10、全額補助）</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">1領域100万〜500万円<span class="sub">3領域併願で最大1,500万円</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">定額（10/10、全額補助）</div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">1領域100万〜500万円<span class="sub">3領域併願で最大1,500万円</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし<span class="sub">公募要領に賃上げ必須要件の記載はない</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">2026年度分は選定手続き中</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">2026年度は3/26〜4/10・4/1〜5/29で終了。次回は未発表</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">2026年度は3/26〜4/10・4/1〜5/29で終了。次回は未発表</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2026年度新設。年度内複数回の公募実績があり継続の可能性は高いが確定情報ではない</div></div>
         </div>
         <div class="cond-faq" id="condFaq-food_labor"></div>
@@ -898,11 +914,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">旅館業法第3条第1項の許可を受けた宿泊事業者（風俗営業・住宅宿泊事業＝民泊は対象外）。地域（DMO・自治体等）と連携した取組が要件</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動チェックイン機、PMS、配膳ロボット、清掃支援設備等の省力化・省人化設備</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">1施設あたり1,000万円</div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2</div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">1施設あたり1,000万円</div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし</span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は3/27〜5/29で終了。二次公募の実施可否は検討中</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は3/27〜5/29で終了。二次公募の実施可否は検討中</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧・人材不足対策事業からの継続制度。次年度以降の実施可否は予算措置次第</div></div>
         </div>
         <div class="cond-faq" id="condFaq-kanko_shoryokuka"></div>
@@ -917,11 +933,11 @@
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・中堅企業者（基準は上記ボックス参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウド利用費等</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">特例2/3。グローバル枠は2/3</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">750万〜7,000万円<span class="sub">3つの申請枠（革新的新製品・サービス枠／新事業進出枠／グローバル枠）で対象・上限額が異なる。概算シミュレーターで枠ごとに試算できる</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">特例2/3。グローバル枠は2/3</span></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">750万〜7,000万円<span class="sub">3つの申請枠（革新的新製品・サービス枠／新事業進出枠／グローバル枠）で対象・上限額が異なる。概算シミュレーターで枠ごとに試算できる</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">給与支給総額+3.5%以上／事業場内最低賃金+30円以上を3〜5年維持</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">第1回公募のため実績なし</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第1回公募<span class="sub">2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第1回公募<span class="sub">2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧ものづくり補助金（2026年5月公募終了）と新事業進出補助金の統合により2026年度新設。継続実施見込みだが次年度以降の詳細は未定</div></div>
         </div>
         <div class="cond-faq" id="condFaq-monodukuri"></div>
@@ -936,11 +952,11 @@
         <div class="pd-grid">
           <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">民間事業者（不動産事業者を含む）・NPO・地方公共団体等の提案主体。<strong style="color:var(--accent);">他制度と異なり、個別の設備導入費ではなく先進的な空き家対策の事業提案に対する競争的な公募</strong>である点に注意</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">空き家の改修・除却工事（ハード事業）、相談体制構築等の事業スキーム構築（ソフト事業）</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">工事費は最大2/5<span class="sub">ソフト事業は定額</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">提案内容により異なる</div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">工事費は最大2/5<span class="sub">ソフト事業は定額</span></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">提案内容により異なる</div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>対象外</span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">競争的提案公募型<span class="sub">令和8年度は36件採択</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は5/20正午締切。採択発表は7月上旬予定。次年度は例年3〜5月頃見込み</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は5/20正午締切。採択発表は7月上旬予定。次年度は例年3〜5月頃見込み</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">国土交通省が毎年度実施。次年度以降も継続実施が見込まれる</div></div>
         </div>
         <div class="cond-faq" id="condFaq-akiya"></div>
@@ -956,11 +972,11 @@
         <div class="pd-grid">
           <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内で創業予定の個人、または創業から5年未満の中小企業者等（申請時点で、個人事業主または法人の代表者として経営に従事している期間が通算5年未満であること）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">賃借料・広告費・器具備品購入費・産業財産権出願導入費・専門家指導費等の事業費、従業員人件費、市場調査・分析費</div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">400万円<span class="sub">下限100万円。事業費・人件費分は上限300万円、委託費分は上限100万円の内訳制約あり</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">400万円<span class="sub">下限100万円。事業費・人件費分は上限300万円、委託費分は上限100万円の内訳制約あり</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">審査による選考制。応募状況により変動</span></div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月29日〜10月8日<span class="sub">第1回（4/7〜4/16）は受付終了</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月29日〜10月8日<span class="sub">第1回（4/7〜4/16）は受付終了</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">東京都・東京都中小企業振興公社が例年実施。次年度以降も継続実施が見込まれる</div></div>
         </div>
         <div class="cond-faq" id="condFaq-tokyo_sogyo"></div>
@@ -976,11 +992,11 @@
         <div class="pd-grid">
           <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業者等（会社・個人事業主・中小企業団体）。従業員規模を問わず対象</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">新たに導入するデジタルツール（ソフトウェア・クラウドサービス）本体費、および初期設定・カスタマイズ・運用保守サポート費。<strong style="color:var(--accent);">ハード機器本体・OS・汎用セキュリティソフト等は対象外</strong></div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">1/2以内<span class="sub">小規模事業者、または環境負荷軽減に資するツールは2/3以内</span></div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">150万円<span class="sub">下限5万円</span></div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2以内<span class="sub">小規模事業者、または環境負荷軽減に資するツールは2/3以内</span></div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">150万円<span class="sub">下限5万円</span></div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月頃受付開始予定<span class="sub">第1回（6/11〜7/3）は受付終了</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月頃受付開始予定<span class="sub">第1回（6/11〜7/3）は受付終了</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
         </div>
         <div class="cond-faq" id="condFaq-tokyo_digital"></div>
@@ -996,11 +1012,11 @@
         <div class="pd-grid">
           <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業等で、<strong style="color:var(--rust);">直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している事業者</strong>が対象。業績が堅調な事業者は対象外</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目<span class="sub">市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可</span></div></div>
-          <div class="pd-item"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
-          <div class="pd-item"><div class="k">上限額</div><div class="v tabular">600万円</div></div>
+          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
+          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">600万円</div></div>
           <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある</span></span></div></div>
           <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：8/3〜8/14 16時<span class="sub">第3回：11/2〜11/13 16時／第4回：令和9年2/1〜2/12 16時</span></span></div></div>
+          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：8/3〜8/14 16時<span class="sub">第3回：11/2〜11/13 16時／第4回：令和9年2/1〜2/12 16時</span></span></div></div>
           <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
         </div>
         <div class="cond-faq" id="condFaq-tokyo_soui"></div>
@@ -1787,11 +1803,11 @@
       '<div class="pd-grid">' +
         '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
         '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-        '<div class="pd-item"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
-        '<div class="pd-item"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
+        '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
+        '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
         '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
         '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
-        '<div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
+        '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
         '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
       '</div>' +
       '<div class="pd-note">' + reqHL(p.note) + '</div>' +
@@ -4147,11 +4163,11 @@
             '<div class="pd-grid">' +
               '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
               '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-              '<div class="pd-item"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
-              '<div class="pd-item"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
+              '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
+              '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
               '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
               '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
-              '<div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
+              '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
               '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
             '</div>' +
             '<div class="pd-note">' + reqHL(p.note) + '</div>' +
@@ -4686,10 +4702,10 @@
         '<div class="pd-grid">' +
           '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + p.scale + '</div></div>' +
           '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-          '<div class="pd-item"><div class="k">補助率</div><div class="v">' + p.rate + '</div></div>' +
-          '<div class="pd-item"><div class="k">上限額</div><div class="v">' + p.cap + '</div></div>' +
+          '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v">' + p.rate + '</div></div>' +
+          '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v">' + p.cap + '</div></div>' +
           '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + p.wage + '</div></div>' +
-          '<div class="pd-item"><div class="k">受付期間・次回締切</div><div class="v">' + p.schedule + '</div></div>' +
+          '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + p.schedule + '</div></div>' +
           '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
           '<div class="pd-item"><div class="k">公式サイト</div><div class="v">' + p.link + '</div></div>' +
         '</div>' +

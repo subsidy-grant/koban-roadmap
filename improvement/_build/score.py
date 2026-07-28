@@ -174,8 +174,13 @@ PDCA_CSS = """
   .back { font-size:0.85rem; }
   .badge.external { background:var(--accent-wash); color:var(--accent); }
   .ext-card .why { font-size:0.78rem; color:var(--ink-soft); background:var(--paper); border-radius:6px; padding:0.5rem 0.6rem; margin-top:0.3rem; }
-  .ext-axes { display:grid; grid-template-columns:repeat(5,1fr); gap:0.3rem; font-size:0.66rem; color:var(--ink-faint); text-align:center; margin-top:0.4rem; }
-  .ext-axes b { display:block; font-size:0.86rem; color:var(--ink); }
+  /* 5軸スコアは5角形レーダーチャート。beauty/pdca.html の表示と合わせている */
+  .ext-radar { width:100%; max-width:210px; height:auto; display:block; margin:0.4rem auto 0; }
+  .ext-radar .grid { fill:none; stroke:var(--line); }
+  .ext-radar .shape { fill:var(--accent); fill-opacity:.17; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; }
+  .ext-radar .dot { fill:var(--accent); }
+  .ext-radar .rlbl { font-size:11.5px; fill:var(--ink-faint); }
+  .ext-radar .rval { font-size:13px; font-weight:800; fill:var(--ink); }
   .ext-links { margin-top:0.5rem; display:flex; gap:0.7rem; font-size:0.8rem; }
   .ext-thumb { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
   .ext-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -183,6 +188,56 @@ PDCA_CSS = """
     align-items:center; justify-content:center; font-size:2.6rem;
     background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
 """
+
+AXES = [("market", "市場性"), ("saving", "省力化"), ("feasibility", "実現性"),
+        ("subsidy", "補助金"), ("unique", "差別化")]
+AX_MAX = 5
+
+
+def radar_svg(score, cls="ext-radar"):
+    """5軸スコアの5角形レーダーチャートをSVGで返す（beauty/pdca.html のJS版と同じ形）。
+
+    Wはラベル（「省力化4.7」で約58px）が左右にはみ出さない幅を確保している。
+    """
+    import math
+    W, H, R, LR = 240, 184, 48, 62
+    cx, cy = W / 2, H / 2 - 1
+
+    def pt(i, r):
+        a = -math.pi / 2 + i * 2 * math.pi / len(AXES)
+        return cx + math.cos(a) * r, cy + math.sin(a) * r
+
+    def poly(r):
+        return " ".join(f"{x:.1f},{y:.1f}" for x, y in (pt(i, r) for i in range(len(AXES))))
+
+    out = []
+    for lv in range(1, AX_MAX + 1):
+        dash = "" if lv == AX_MAX else ' stroke-dasharray="2 3"'
+        out.append(f'<polygon class="grid" points="{poly(R * lv / AX_MAX)}"{dash}/>')
+    for i in range(len(AXES)):
+        x, y = pt(i, R)
+        out.append(f'<line class="grid" x1="{cx}" y1="{cy}" x2="{x:.1f}" y2="{y:.1f}"/>')
+
+    vals = [max(0, min(AX_MAX, float(score.get(k, 0)))) for k, _ in AXES]
+    shape = " ".join(f"{x:.1f},{y:.1f}" for x, y in
+                     (pt(i, R * v / AX_MAX) for i, v in enumerate(vals)))
+    out.append(f'<polygon class="shape" points="{shape}"/>')
+    for i, v in enumerate(vals):
+        x, y = pt(i, R * v / AX_MAX)
+        out.append(f'<circle class="dot" cx="{x:.1f}" cy="{y:.1f}" r="2.6"/>')
+    for i, (_, label) in enumerate(AXES):
+        x, y = pt(i, LR)
+        dx = x - cx
+        anchor = "middle" if abs(dx) < 6 else ("start" if dx > 0 else "end")
+        dy = -1 if y < cy - 10 else (10 if y > cy + 10 else 4)
+        v = vals[i]
+        vt = f"{v:g}"
+        out.append(f'<text class="rlbl" x="{x:.1f}" y="{y + dy:.1f}" text-anchor="{anchor}">'
+                   f'{label}<tspan class="rval" dx="3">{vt}</tspan></text>')
+    alt = "、".join(f"{l}{v:g}点" for (_, l), v in zip(AXES, vals))
+    return (f'<svg class="{cls}" viewBox="0 0 {W} {H}" role="img" '
+            f'aria-label="5軸スコア（各5点満点）：{alt}">' + "".join(out) + "</svg>")
+
 
 ICON_RULES = [
     (("予約", "顧客"), "📅"), (("集客", "マーケティング", "MEO", "口コミ"), "📣"),
@@ -236,7 +291,7 @@ def render_ext_section(parts, ik, ext, ind_labels):
         parts.append(f'<div class="no">PLAN {no:02d}｜総合 {total}/25</div>')
         parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
         parts.append(f'<div class="meta">{esc(pl["category"])}／概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）／想定省力化 約{pl["savingHoursPerMonth"]}時間/月</div>')
-        parts.append('<div class="ext-axes">' + "".join(f'<span>{l}<b>{sc[k]}</b></span>' for k, l in axes) + '</div>')
+        parts.append(radar_svg(sc))
         parts.append(f'<div class="why"><strong>選定理由：</strong>{esc(pl["why"])}</div>')
         proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
         parts.append(f'<div class="ext-links"><a href="{ik}/plan-{no:02d}.html">📄 事業計画書</a>'

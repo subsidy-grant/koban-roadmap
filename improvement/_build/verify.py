@@ -26,6 +26,8 @@ for c in [r"C:\Program Files\Google\Chrome\Application\chrome.exe",
 
 PAGE_H_PX = 1122.5  # 297mm @96dpi
 TOL = 1.02
+# 本編10ページ ＋ apply_benchmarks.py が付ける「参考資料：計画の妥当性チェック」1ページ
+EXPECTED_PAGES = 11
 
 OVERFLOW_HARNESS = """
 <script>
@@ -57,7 +59,11 @@ PROTO_HARNESS = """
 window.addEventListener('load', function() {
   setTimeout(function() {
     var errors = window.__protoErrors || [];
-    try { runDemo(); } catch (e) { errors.push('demo: ' + e.message); }
+    // runDemo() は score.py 生成のプロトタイプの規約。beauty 由来のものは持たないので
+    // 「未定義」を失敗にしない（定義されている場合だけ実行して例外を拾う）
+    if (typeof runDemo === 'function') {
+      try { runDemo(); } catch (e) { errors.push('demo: ' + e.message); }
+    }
     var text = document.body.innerText;
     var bad = [];
     ['undefined', 'NaN', '__SCHEME__', '{{'].forEach(function (t) {
@@ -79,7 +85,10 @@ def run_chrome(args, timeout=90):
 def dump_title(html_path, harness, tmpdir, tag):
     with open(html_path, encoding="utf-8") as f:
         content = f.read()
-    injected = content.replace("</body>", harness, 1)
+    # 印刷用レポートのHTMLをJSの文字列で抱えるページがあり、最初の </body> はその中。
+    # そこへ差し込むとスクリプトが壊れて結果が取れないので、必ず最後の </body> を使う。
+    head, _, tail = content.rpartition("</body>")
+    injected = head + harness + tail
     if tag == "proto":
         injected = injected.replace("<script>", "<script>window.__protoErrors=[];window.onerror=function(m){__protoErrors.push(m)};</script><script>", 1)
     tmp = os.path.join(tmpdir, tag + "_" + os.path.basename(html_path))
@@ -117,8 +126,9 @@ def main():
 
     for ik in industries:
         d = os.path.join(IMPROVEMENT, ik)
-        plans = sorted(f for f in os.listdir(d) if f.startswith("plan-"))
-        protos = sorted(f for f in os.listdir(d) if f.startswith("proto-"))
+        # .xlsx など同じ接頭辞の非HTMLが同居するので拡張子で絞る（Chromeに食わせると固まる）
+        plans = sorted(f for f in os.listdir(d) if f.startswith("plan-") and f.endswith(".html"))
+        protos = sorted(f for f in os.listdir(d) if f.startswith("proto-") and f.endswith(".html"))
 
         for f in plans:
             path = os.path.join(d, f)
@@ -129,9 +139,9 @@ def main():
                             "--virtual-time-budget=5000", "--no-pdf-header-footer",
                             "--print-to-pdf=" + pdf, "file:///" + path.replace("\\", "/")])
                 n = len(pypdf.PdfReader(pdf).pages)
-                status = "OK" if n == 10 else "FAIL"
-                if n != 10:
-                    failures.append(f"{ik}/{f}: pdf pages={n} (expected 10)")
+                status = "OK" if n == EXPECTED_PAGES else "FAIL"
+                if n != EXPECTED_PAGES:
+                    failures.append(f"{ik}/{f}: pdf pages={n} (expected {EXPECTED_PAGES})")
                 print(f"[pdf] {ik}/{f}: {n} pages {status}")
             # 2. overflow
             rep = dump_title(path, OVERFLOW_HARNESS % {"maxh": PAGE_H_PX * TOL}, tmpdir, "plan")
@@ -144,7 +154,7 @@ def main():
                     failures.append(f"{ik}/{f} p{b['page']}: height={b['height']} spill={b['spill']}")
                 print(f"[layout] {ik}/{f}: {len(bad)} page(s) FAIL")
             else:
-                print(f"[layout] {ik}/{f}: all 10 pages OK")
+                print(f"[layout] {ik}/{f}: all {len(rep)} pages OK")
 
         for f in protos:
             rep = dump_title(os.path.join(d, f), PROTO_HARNESS, tmpdir, "proto")
