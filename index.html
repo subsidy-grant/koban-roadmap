@@ -4263,6 +4263,30 @@
       schedule: "令和8年4月13日〜4月24日（受付終了。予算額に達していない場合は追加受付を検討との記載あり）",
       continuity: "越谷市が物価高騰対策として実施。次年度以降は予算措置次第"
     },
+    kanagawa_atsugi_it: {
+      name: "厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）",
+      prefecture: "kanagawa", municipality: "atsugi",
+      scale: "厚木市内の中小企業者（業種制限の明記なし）",
+      expense: "機械購入費、システム開発費、ソフトウェア導入費、専門家依頼経費等（汎用機器、保守費、クラウド利用費、通信料、バージョンアップ費は対象外）",
+      rate: "1/2以内", cap: "IT導入10万円／ロボット・IoT・AI導入50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "クラウド利用費が対象外のため、SaaS型サービスの月額利用料には使いにくい。下限が対象経費50万円以上と高め。",
+      link: "https://www.city.atsugi.kanagawa.jp/soshiki/sangyoshinkoka/9/2/24830.html", linkLabel: "厚木市 公式ページを見る",
+      schedule: "前年度3月16日から当該年度3月15日までに支払った費用が対象（令和8年度の受付期間は市の公式ページで要確認）",
+      continuity: "厚木市が継続実施。令和8年度の実施は公式ページで要確認"
+    },
+    gunma_isesaki_shokibo: {
+      name: "伊勢崎市小規模事業者サポート補助金",
+      prefecture: "gunma", municipality: "isesaki",
+      scale: "伊勢崎市内の小規模事業者（卸売業・小売業・サービス業は常時雇用5人以下、製造業その他は20人以下）。農業・林業・漁業、風俗営業、フランチャイズ事業は対象外",
+      expense: "生産性向上が見込まれる事業用設備の購入費（単価税抜3万円以上）、IT・IoT化や人材育成・教育訓練による業務効率化経費。パソコン等の事務用品は対象外",
+      rate: "1/2以内", cap: "50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "フランチャイズ事業が対象外。パソコン等の汎用事務用品も対象外のため、業務特化型の設備・システムが対象。",
+      link: "https://www.city.isesaki.lg.jp/soshiki/keizai/shoko/syoukousinkou/12899.html", linkLabel: "伊勢崎市 公式ページを見る",
+      schedule: "令和8年6月15日〜7月10日（受付終了）",
+      continuity: "伊勢崎市が例年実施。次年度以降も継続が見込まれる"
+    },
     gunma_maebashi_dx: {
       name: "前橋市DX推進補助金",
       prefecture: "gunma", municipality: "maebashi",
@@ -4277,7 +4301,7 @@
     }
     };
     Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });
-    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, gunma_maebashi_dx: 150};
+    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, gunma_maebashi_dx: 150};
     Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });
     var ADDED_CAP_TEXT = {
       chiba_seicho4: "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
@@ -4295,6 +4319,8 @@
       kanagawa_yokosuka_ict: "30万円",
       chiba_matsudo_dx: "50万円（下限5万円／ウェブサイト制作費・機器購入費はそれぞれ25万円、汎用機器は10万円かつ1台2万5千円以下）",
       saitama_koshigaya_setsubi: "200万円（市内・市外あわせて200万円以内）",
+      kanagawa_atsugi_it: "IT導入事業10万円・ロボット/IoT/AI導入事業50万円（大学発ベンチャーはそれぞれ20万円・70万円／下限：対象経費50万円以上）",
+      gunma_isesaki_shokibo: "50万円",
       gunma_maebashi_dx: "150万円（下限：補助対象事業費10万円以上）"
     };
     Object.keys(ADDED_CAP_TEXT).forEach(function (k) { CAP_TEXT[k] = ADDED_CAP_TEXT[k]; });
@@ -4314,6 +4340,8 @@
       kanagawa_yokosuka_ict: "業務効率化のためのICT導入経費",
       chiba_matsudo_dx: "ソフトウェア・ウェブサイト・デジタル機器の導入費",
       saitama_koshigaya_setsubi: "省エネ・省コスト・生産性向上のための設備導入費・改修工事費",
+      kanagawa_atsugi_it: "機械購入費・システム開発費・ソフトウェア導入費",
+      gunma_isesaki_shokibo: "事業用設備の購入費・IT/IoT化による業務効率化経費",
       gunma_maebashi_dx: "システム導入費・ハードウェア購入費・システム使用料・初期設定費"
     };
     Object.keys(ADDED_EXPENSE).forEach(function (k) { EXPENSE_DESC[k] = ADDED_EXPENSE[k]; });
@@ -4333,10 +4361,10 @@
     };
     Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });
     var ADDED_MUNI = {
-      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict"] },
+      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict"], atsugi: ["kanagawa_atsugi_it"] },
       chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"] },
       saitama: { saitama: ["saitama_saitama_dx"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"] },
-      gunma: { maebashi: ["gunma_maebashi_dx"] }
+      gunma: { isesaki: ["gunma_isesaki_shokibo"], maebashi: ["gunma_maebashi_dx"] }
     };
     Object.keys(ADDED_MUNI).forEach(function (k) { MUNICIPALITY_PROGRAM_KEYS[k] = ADDED_MUNI[k]; });
     var ADDED_NF = {
@@ -4352,6 +4380,7 @@
       saitama: {
         tokorozawa: "「地域資源活用・ものづくり総合支援補助金」は市内事業者が連携して行う新商品・サービス開発や販路開拓が対象、「中小企業設備投資融資利子補給事業」は制度融資の支払利子への補給であり、いずれも設備・IT導入費を直接補助する制度ではありません。",
         kawagoe: "市のサイトでは埼玉県の制度融資やデジタル人材育成事業、「先端設備等導入計画」の認定が案内されていますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
+        kasukabe: "市のサイトでは国の業務改善助成金や「先端設備等導入計画」の認定、企業向け太陽光発電・蓄電池設置補助金が案内されていますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
         soka: "「経営革新チャレンジ支援事業補助金」がありますが、これは経営革新計画の都道府県知事承認を前提とした定額給付型（経営革新関連20万円、創業関連5万円が基本額）で、対象経費に設備投資・IT導入が含まれるかは公式サイト上で確認できませんでした。"
       },
       tochigi: {
@@ -4368,10 +4397,10 @@
     // 『制度が無い』ことを意味しない。210市区町村を一度に調べ切れないための区別。
     MUNICIPALITY_CHECKED.tokyo = '*';
     MUNICIPALITY_CHECKED.chiba = ["chiba", "funabashi", "matsudo", "ichikawa", "kashiwa"];
-    MUNICIPALITY_CHECKED.saitama = ["saitama", "kawaguchi", "koshigaya", "tokorozawa", "kawagoe", "soka"];
-    MUNICIPALITY_CHECKED.kanagawa = ["yokohama", "kawasaki", "sagamihara", "yokosuka", "fujisawa"];
+    MUNICIPALITY_CHECKED.saitama = ["saitama", "kawaguchi", "koshigaya", "tokorozawa", "kawagoe", "soka", "kasukabe"];
+    MUNICIPALITY_CHECKED.kanagawa = ["yokohama", "kawasaki", "sagamihara", "yokosuka", "fujisawa", "atsugi"];
     MUNICIPALITY_CHECKED.tochigi = ["utsunomiya", "oyama"];
-    MUNICIPALITY_CHECKED.gunma = ["maebashi", "takasaki", "ota"];
+    MUNICIPALITY_CHECKED.gunma = ["maebashi", "takasaki", "ota", "isesaki"];
     var ADDED_PNF = {
       gunma: "群馬県の県レベルの事業者向け補助金（ぐんまDX技術革新補助金・ぐんま技術革新チャレンジ補助金・ぐんま未来共創トライアル補助金）は、いずれも新技術・新製品の開発や実証プロジェクトが対象で、業種を問わず一般の事業者が設備・ITを導入する用途に使える汎用制度は確認できませんでした。市町村の制度と全国共通の制度をご確認ください。"
     };

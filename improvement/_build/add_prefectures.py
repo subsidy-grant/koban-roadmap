@@ -265,6 +265,27 @@ PROGRAMS = [
          note="市内事業者に発注すると補助率2/3、市外だと1/2に下がる。改修工事費まで対象になる範囲の広い制度。",
          link="https://www.city.koshigaya.saitama.jp/kurashi_shisei/jigyosha/shienyushi/hojokin/koshigaya_contents_buxtukakoutou.html",
          link_label="越谷市 公式ページを見る", cont="越谷市が物価高騰対策として実施。次年度以降は予算措置次第"),
+    dict(key="kanagawa_atsugi_it", name="厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）", pref="kanagawa", muni="atsugi",
+         scale="厚木市内の中小企業者（業種制限の明記なし）",
+         expense="機械購入費、システム開発費、ソフトウェア導入費、専門家依頼経費等（汎用機器、保守費、クラウド利用費、通信料、バージョンアップ費は対象外）",
+         rate="1/2以内", cap="IT導入10万円／ロボット・IoT・AI導入50万円", cap_num=50,
+         cap_text="IT導入事業10万円・ロボット/IoT/AI導入事業50万円（大学発ベンチャーはそれぞれ20万円・70万円／下限：対象経費50万円以上）",
+         expense_desc="機械購入費・システム開発費・ソフトウェア導入費",
+         wage="特になし", acceptance="非公表",
+         sched="前年度3月16日から当該年度3月15日までに支払った費用が対象（令和8年度の受付期間は市の公式ページで要確認）",
+         note="クラウド利用費が対象外のため、SaaS型サービスの月額利用料には使いにくい。下限が対象経費50万円以上と高め。",
+         link="https://www.city.atsugi.kanagawa.jp/soshiki/sangyoshinkoka/9/2/24830.html",
+         link_label="厚木市 公式ページを見る", cont="厚木市が継続実施。令和8年度の実施は公式ページで要確認"),
+    dict(key="gunma_isesaki_shokibo", name="伊勢崎市小規模事業者サポート補助金", pref="gunma", muni="isesaki",
+         scale="伊勢崎市内の小規模事業者（卸売業・小売業・サービス業は常時雇用5人以下、製造業その他は20人以下）。農業・林業・漁業、風俗営業、フランチャイズ事業は対象外",
+         expense="生産性向上が見込まれる事業用設備の購入費（単価税抜3万円以上）、IT・IoT化や人材育成・教育訓練による業務効率化経費。パソコン等の事務用品は対象外",
+         rate="1/2以内", cap="50万円", cap_num=50, cap_text="50万円",
+         expense_desc="事業用設備の購入費・IT/IoT化による業務効率化経費",
+         wage="特になし", acceptance="非公表",
+         sched="令和8年6月15日〜7月10日（受付終了）",
+         note="フランチャイズ事業が対象外。パソコン等の汎用事務用品も対象外のため、業務特化型の設備・システムが対象。",
+         link="https://www.city.isesaki.lg.jp/soshiki/keizai/shoko/syoukousinkou/12899.html",
+         link_label="伊勢崎市 公式ページを見る", cont="伊勢崎市が例年実施。次年度以降も継続が見込まれる"),
     dict(key="gunma_maebashi_dx", name="前橋市DX推進補助金", pref="gunma", muni="maebashi",
          scale="前橋市内で1年以上継続して事業を営み市税を完納している事業者。風俗営業、農業・林業、漁業、電気・ガス・熱供給・水道業、情報サービス業、インターネット付随サービス業、電気事務機械器具小売業、学校教育、医療・福祉、各種団体、公務等は対象外",
          expense="システム導入費（ソフトウェア開発・導入）、ハードウェア購入費（システム導入費の1/2以内）、システム使用料、初期設定費",
@@ -292,6 +313,7 @@ MUNI_NOT_FOUND = {
     "saitama": {
         "tokorozawa": "「地域資源活用・ものづくり総合支援補助金」は市内事業者が連携して行う新商品・サービス開発や販路開拓が対象、「中小企業設備投資融資利子補給事業」は制度融資の支払利子への補給であり、いずれも設備・IT導入費を直接補助する制度ではありません。",
         "kawagoe": "市のサイトでは埼玉県の制度融資やデジタル人材育成事業、「先端設備等導入計画」の認定が案内されていますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
+        "kasukabe": "市のサイトでは国の業務改善助成金や「先端設備等導入計画」の認定、企業向け太陽光発電・蓄電池設置補助金が案内されていますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
         "soka": "「経営革新チャレンジ支援事業補助金」がありますが、これは経営革新計画の都道府県知事承認を前提とした定額給付型（経営革新関連20万円、創業関連5万円が基本額）で、対象経費に設備投資・IT導入が含まれるかは公式サイト上で確認できませんでした。",
     },
     "tochigi": {
@@ -312,10 +334,10 @@ PREF_NOT_FOUND = {
 # 調査済みの市区町村（ここに無い自治体は「未調査」）
 CHECKED = {
     "chiba": ["chiba", "funabashi", "matsudo", "ichikawa", "kashiwa"],
-    "saitama": ["saitama", "kawaguchi", "koshigaya", "tokorozawa", "kawagoe", "soka"],
-    "kanagawa": ["yokohama", "kawasaki", "sagamihara", "yokosuka", "fujisawa"],
+    "saitama": ["saitama", "kawaguchi", "koshigaya", "tokorozawa", "kawagoe", "soka", "kasukabe"],
+    "kanagawa": ["yokohama", "kawasaki", "sagamihara", "yokosuka", "fujisawa", "atsugi"],
     "tochigi": ["utsunomiya", "oyama"],
-    "gunma": ["maebashi", "takasaki", "ota"],
+    "gunma": ["maebashi", "takasaki", "ota", "isesaki"],
 }
 
 START = "// PREFECTURE_EXPANSION:START"
