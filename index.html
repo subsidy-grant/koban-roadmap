@@ -327,7 +327,36 @@
     cursor: pointer;
   }
   .picker select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .program-detail { margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px dashed var(--line); }
+  /* 制度詳細の開閉バー。カードと同じくバー全幅をクリック領域にする */
+  .picker-toggle {
+    display: flex; align-items: center; gap: 0.6rem;
+    width: calc(100% + 2.6rem);
+    margin: 1.1rem -1.3rem -1.4rem;
+    padding: 0.95rem 1.3rem;
+    font: inherit; text-align: left;
+    background: transparent; border: none;
+    border-top: 1px dashed var(--line);
+    border-radius: 0 0 8px 8px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .picker-toggle:hover { background: var(--paper); }
+  .picker-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .picker-toggle .pt-label { font-size: 0.82rem; font-weight: 700; flex-shrink: 0; }
+  .picker-toggle .pt-name {
+    font-size: 0.8rem; color: var(--ink-faint); flex: 1 1 auto; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .picker-toggle::after {
+    content: '▾'; flex-shrink: 0; font-size: 0.85rem; color: var(--ink-faint);
+    transition: transform 0.2s ease;
+  }
+  .picker.is-open .picker-toggle::after { transform: rotate(180deg); }
+  /* 開いているときは詳細が下に続くので、バーは詳細の上の見出し扱いにする */
+  .picker.is-open .picker-toggle { margin-bottom: 0; border-radius: 0; }
+  .picker:not(.is-open) .program-detail { display: none; }
+  .program-detail { margin-top: 0; padding-top: 1.1rem; }
   .pd-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.15rem; }
   .pd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.9rem 0.9rem; margin-top: 1rem; }
   .pd-item { border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.85rem; background: var(--paper); }
@@ -372,11 +401,24 @@
   }
   .cond-head {
     display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem;
-    padding-bottom: 0.9rem; margin-bottom: 0.2rem;
+    /* カードのpadding分だけ外側へ広げ、カード幅いっぱいをクリック領域にする
+       （負のmargin＋同量のpaddingで見た目の位置は変えない） */
+    margin: -1.3rem -1.4rem 0.2rem;
+    padding: 1.3rem 1.4rem 0.9rem;
     border-bottom: 1px dashed var(--line);
+    border-radius: 8px 8px 0 0;
     cursor: pointer; user-select: none;
+    transition: background 0.15s ease;
   }
-  .cond-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cond-head:hover { background: var(--paper); }
+  /* 閉じているときは下の余白も飲み込んで、カード全体をクリック領域にする */
+  .cond-card:not(.is-open) > .cond-head {
+    margin-bottom: -1.3rem;
+    padding-bottom: 1.3rem;
+    border-bottom-color: transparent;
+    border-radius: 8px;
+  }
+  .cond-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .cond-head::after {
     content: '▾';
     flex-shrink: 0;
@@ -388,6 +430,7 @@
   .cond-card:not(.is-open) .pd-grid, .cond-card:not(.is-open) .cond-faq { display: none; }
   .cond-head-static { cursor: default; }
   .cond-head-static::after { content: none; }
+  .cond-head-static:hover { background: transparent; }
   .cond-head .stack { flex: 1 1 auto; min-width: 10rem; }
   .cond-head a.src-link { flex-shrink: 1; min-width: 0; }
   .cond-card .tier-list { margin-top: 0.4rem; max-width: 26rem; }
@@ -808,9 +851,13 @@
       <p class="t-note">入力すると、下の各制度カードに自社が対象かどうかのバッジが表示される。この選択は「概算シミュレーター」の従業員数選択と連動する。都道府県を選択すると、その自治体独自の制度カードが下に追加表示され、概算シミュレーターの対象制度にも加わる（現時点では東京都のみ対応。他道府県は順次追加予定）。東京都を選択すると市区町村も選べる（現時点では東京23区のみ。うち5区は業種を問わず使える汎用制度が確認できず、その旨を表示する）。</p>
     </div>
 
-    <div class="picker">
+    <div class="picker is-open" id="programPicker">
       <label for="programSelect">制度を選択して詳細を表示（プルダウン見出し = 制度名＋上限額）</label>
       <select id="programSelect" onchange="renderProgram(this.value)"></select>
+      <button type="button" class="picker-toggle" id="pickerToggle" aria-expanded="true" aria-controls="programDetail" onclick="toggleProgramDetail()">
+        <span class="pt-label">制度の詳細</span>
+        <span class="pt-name" id="pickerToggleName"></span>
+      </button>
       <div class="program-detail" id="programDetail"></div>
     </div>
 
@@ -1842,6 +1889,19 @@
       '</div>' +
       '<div class="pd-note">' + reqHL(p.note) + '</div>' +
       '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>';
+    // 折りたたんでいても「どの制度を選んでいるか」がバーに残るようにする
+    var nameEl = document.getElementById('pickerToggleName');
+    if (nameEl) nameEl.textContent = p.name;
+  }
+
+  // 制度詳細の開閉。閉じているときはバーだけが残り、選択中の制度名が見える。
+  function toggleProgramDetail(force) {
+    var picker = document.getElementById('programPicker');
+    var btn = document.getElementById('pickerToggle');
+    if (!picker || !btn) return;
+    var open = (typeof force === 'boolean') ? force : !picker.classList.contains('is-open');
+    picker.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, food_labor: 1.0, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
