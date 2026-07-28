@@ -8,7 +8,6 @@
       "申請書・事業計画書に転記する際は、本ファイルの note をそのまま脚注として併記する。"
     ]
   },
-
   "applicationScaleRule": {
     "label": "申請規模の妥当性チェック",
     "heuristic": "投資総額は直近年商のおおむね1/3以内を目安とする",
@@ -18,7 +17,6 @@
     "note": "公募要領に明文化された基準ではなく、審査で事業規模との整合性を問われにくい目安。超過する場合は自己負担分の資金調達根拠（自己資金・融資枠）を計画書に明示すること。",
     "checkLogic": "investmentTotal > annualRevenue * 0.333 のとき警告し、資金調達根拠の記載を促す"
   },
-
   "hardwareSoftwareNotes": {
     "_note": "『ソフトだけ／ハードだけ』で申請して対象外になる事故を防ぐための制度別注記。出典は各制度の公式サイト（本サイト index.html の PROGRAM_INELIGIBLE_INFO と同一の一次情報）。",
     "shoryokuka": {
@@ -78,16 +76,31 @@
       "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html"
     }
   },
-
   "adoptionRateTrends": {
     "_note": "採択率と審査傾向。競争審査型と要件充足型で計画書の書き分けが変わる。",
     "screeningAxes": {
       "label": "競争審査型に共通する4区分の評価軸",
       "axes": [
-        { "key": "eligibility", "name": "適格性", "content": "対象者・対象経費・必須要件の形式確認。ここで不備があると内容審査に進めない" },
-        { "key": "technical", "name": "技術・事業面", "content": "課題分析の的確さ、解決策の妥当性と独自性、投資回収期間、付加価値額の年平均成長率目標" },
-        { "key": "plan", "name": "計画面", "content": "実施体制（人員・財務状況）の妥当性、スケジュールの実現可能性、賃上げ目標の水準と達成見込み、会社全体への波及効果" },
-        { "key": "policy", "name": "政策面", "content": "地域経済への波及効果、国の政策アジェンダ（DX・GX・事業承継・輸出拡大等）との合致度" }
+        {
+          "key": "eligibility",
+          "name": "適格性",
+          "content": "対象者・対象経費・必須要件の形式確認。ここで不備があると内容審査に進めない"
+        },
+        {
+          "key": "technical",
+          "name": "技術・事業面",
+          "content": "課題分析の的確さ、解決策の妥当性と独自性、投資回収期間、付加価値額の年平均成長率目標"
+        },
+        {
+          "key": "plan",
+          "name": "計画面",
+          "content": "実施体制（人員・財務状況）の妥当性、スケジュールの実現可能性、賃上げ目標の水準と達成見込み、会社全体への波及効果"
+        },
+        {
+          "key": "policy",
+          "name": "政策面",
+          "content": "地域経済への波及効果、国の政策アジェンダ（DX・GX・事業承継・輸出拡大等）との合致度"
+        }
       ],
       "sourceUrl": "https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf"
     },
@@ -95,8 +108,19 @@
       "shoryokuka": {
         "screeningType": "competitive",
         "rates": [
-          { "round": "一般型 第4回", "applied": 2100, "adopted": 1456, "rate": 0.693, "publishedOn": "2026-03-06" },
-          { "round": "一般型 第3回", "applied": 2775, "adopted": 1854, "rate": 0.668 }
+          {
+            "round": "一般型 第4回",
+            "applied": 2100,
+            "adopted": 1456,
+            "rate": 0.693,
+            "publishedOn": "2026-03-06"
+          },
+          {
+            "round": "一般型 第3回",
+            "applied": 2775,
+            "adopted": 1854,
+            "rate": 0.668
+          }
         ],
         "trend": "第3回66.8%→第4回69.3%と上昇傾向",
         "planNote": "単体設備ではなく『工程全体・事業全体への波及効果』を数値と作業動線で説明できている案件が採択されやすい。省力化指数・投資回収期間・付加価値額成長率を明示すること。",
@@ -105,7 +129,10 @@
       "monodukuri": {
         "screeningType": "competitive",
         "rates": [],
-        "bonusPoints": { "total": 15, "note": "加点項目は15個。4個以上獲得すると採択率が大きく上がる傾向。ただし加点だけでは事業計画の質の低さは補えない。" },
+        "bonusPoints": {
+          "total": 15,
+          "note": "加点項目は15個。4個以上獲得すると採択率が大きく上がる傾向。ただし加点だけでは事業計画の質の低さは補えない。"
+        },
         "planNote": "賃上げ目標（給与支給総額の年平均成長率+3.5%以上等）が必須。未達だと返還対象になるため、達成可能な水準で設定すること。",
         "sourceUrl": "https://www.sme-support.co.jp/column/p1352/"
       },
@@ -122,7 +149,11 @@
       },
       "career": {
         "screeningType": "requirement_based",
-        "usage": { "annualCases": 70000, "fraudCases": 200, "fraudRate": 0.003 },
+        "usage": {
+          "annualCases": 70000,
+          "fraudCases": 200,
+          "fraudRate": 0.003
+        },
         "planNote": "年間約7万件の利用実績。要件（転換後賃金3%以上引上げ等）を満たせば原則支給。",
         "sourceUrl": "https://hojyokin-portal.jp/columns/career-up_summary"
       },
@@ -133,13 +164,28 @@
       }
     },
     "commonBonusPointFamilies": [
-      { "key": "wage", "name": "賃上げ系", "content": "給与支給総額の伸び率、事業場内最低賃金の引上げ幅" },
-      { "key": "certification", "name": "認定・宣言系", "content": "健康経営優良法人、くるみん／えるぼし、DX認定、パートナーシップ構築宣言" },
-      { "key": "continuity", "name": "事業継続・承継系", "content": "事業継続力強化計画の認定、事業承継・M&A実施実績" },
-      { "key": "policy_program", "name": "政策プログラム登録系", "content": "新規輸出1万者支援プログラム、成長加速マッチングサービス等への登録" }
+      {
+        "key": "wage",
+        "name": "賃上げ系",
+        "content": "給与支給総額の伸び率、事業場内最低賃金の引上げ幅"
+      },
+      {
+        "key": "certification",
+        "name": "認定・宣言系",
+        "content": "健康経営優良法人、くるみん／えるぼし、DX認定、パートナーシップ構築宣言"
+      },
+      {
+        "key": "continuity",
+        "name": "事業継続・承継系",
+        "content": "事業継続力強化計画の認定、事業承継・M&A実施実績"
+      },
+      {
+        "key": "policy_program",
+        "name": "政策プログラム登録系",
+        "content": "新規輸出1万者支援プログラム、成長加速マッチングサービス等への登録"
+      }
     ]
   },
-
   "industryFinancials": {
     "_note": "業界平均利益率・売上規模。事業計画書のKPI自動推定と『自社計画値 vs 業界平均』の比較表に使う。",
     "_statisticChoice": {
@@ -150,71 +196,222 @@
     "byIndustry": {
       "beauty": {
         "label": "美容業",
-        "operatingMarginPct": null,
+        "operatingMarginPct": {
+          "avg": -4.6,
+          "profitableFirmAvg": 5.4,
+          "median": -2.8
+        },
+        "grossMarginPct": {
+          "avg": 84.2,
+          "profitableFirmAvg": 84.3,
+          "median": 87.2
+        },
+        "laborCostRatioPct": {
+          "avg": 45.1,
+          "profitableFirmAvg": 41.2,
+          "median": 47.0
+        },
+        "revenuePerEmployeeThousandYen": {
+          "avg": 8499,
+          "profitableFirmAvg": 10016,
+          "median": 6820
+        },
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "未取得",
-        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3『売上高及び営業費用』産業中分類別表）の『生活関連サービス業，娯楽業』内 洗濯・理容・美容・浴場業。または日本政策金融公庫『小企業の経営指標調査』サービス業編。",
-        "warning": "厚労省の理容業モデル（売上高対営業利益率24.1%）は平成20年度と古く、かつ個人事業主モデルで事業主自身の労働が費用計上されていないため、法人の営業利益率として引用してはならない。"
+        "status": "取得済み",
+        "sampleSize": {
+          "total": 470,
+          "profitableFirms": 167
+        },
+        "definition": "売上高営業利益率。『平均値』は全調査対象の単純平均、『黒字かつ自己資本プラス企業平均』は税引前当期純利益と自己資本がともにプラスの企業のみの平均、『中央値』はサンプルを大きさ順に並べた中央の値。",
+        "tablePdf": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_11b.pdf",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』2023年度調査",
+        "surveyYear": "決算期2022年7月以降（融資時期2023年4〜12月・2024年8月公表）",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html",
+        "revenuePerChairThousandYen": {
+          "avg": 6943,
+          "profitableFirmAvg": 7587,
+          "median": 5594
+        },
+        "reference": {
+          "理容業": {
+            "avg": -13.0,
+            "profitableFirmAvg": 4.7,
+            "median": -7.0,
+            "sampleSize": 35
+          },
+          "洗濯・理容・美容・浴場業": {
+            "avg": -6.6,
+            "profitableFirmAvg": 5.1,
+            "median": -3.4,
+            "sampleSize": 735
+          }
+        },
+        "note": "『サービス業』編の小分類。椅子1台当たり売上高は美容業固有の指標で、席数ベースのモデル事業者設定の妥当性検証に使える。"
       },
       "food": {
         "label": "飲食業",
-        "operatingMarginPct": { "avg": -1.4, "profitableFirmAvg": 3.6, "median": 0.1 },
-        "grossMarginPct": { "avg": 68.6, "profitableFirmAvg": 70.1, "median": 67.6 },
-        "laborCostRatioPct": { "avg": 33.6, "profitableFirmAvg": 32.3, "median": 33.8 },
+        "operatingMarginPct": {
+          "avg": -20.0,
+          "profitableFirmAvg": 6.0,
+          "median": -14.9
+        },
+        "grossMarginPct": {
+          "avg": 67.4,
+          "profitableFirmAvg": 70.3,
+          "median": 66.7
+        },
+        "laborCostRatioPct": {
+          "avg": 40.2,
+          "profitableFirmAvg": 35.7,
+          "median": 39.3
+        },
+        "revenuePerEmployeeThousandYen": {
+          "avg": 7357,
+          "profitableFirmAvg": 8377,
+          "median": 5687
+        },
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "取得済み（年次要確認）",
-        "surveyName": "日本政策金融公庫『小企業の経営指標調査』業種別経営指標（飲食店，宿泊業）",
-        "sampleSize": { "total": 1694, "profitableFirms": 574 },
-        "definition": "売上高営業利益率。『平均値』は赤字企業を含む全調査対象、『黒字かつ自己資本プラス企業平均』は黒字かつ自己資本がプラスの企業のみの平均。",
-        "sourceUrl": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_202008_08a.pdf",
-        "surveyYear": "要確認",
-        "warning": "取得したPDFはファイル名から2020年8月公開と推定されるが、PDF本文に調査年次の記載を確認できなかった。最新版は2023年度調査（2024年8月公開）のため、申請書に使う前に最新版で数値を差し替えること。"
+        "status": "取得済み",
+        "sampleSize": {
+          "total": 821,
+          "profitableFirms": 217
+        },
+        "definition": "売上高営業利益率。『平均値』は全調査対象の単純平均、『黒字かつ自己資本プラス企業平均』は税引前当期純利益と自己資本がともにプラスの企業のみの平均、『中央値』はサンプルを大きさ順に並べた中央の値。",
+        "tablePdf": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_08b.pdf",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』2023年度調査",
+        "surveyYear": "決算期2022年7月以降（融資時期2023年4〜12月・2024年8月公表）",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html",
+        "note": "大分類『飲食店，宿泊業』の数値（飲食店単独の集計ではない点に注意）。"
       },
       "lodging": {
         "label": "宿泊業",
-        "operatingMarginPct": { "avg": -1.5, "profitableFirmAvg": 7.4, "median": -0.4 },
-        "grossMarginPct": { "avg": 82.5, "profitableFirmAvg": 85.5, "median": 81.8 },
-        "laborCostRatioPct": { "avg": 31.2, "profitableFirmAvg": 29.1, "median": 31.6 },
-        "revenuePerEmployeeThousandYen": { "avg": 10659, "profitableFirmAvg": 12522, "median": 8963 },
+        "operatingMarginPct": {
+          "avg": -14.9,
+          "profitableFirmAvg": 9.9,
+          "median": -10.2
+        },
+        "grossMarginPct": {
+          "avg": 81.8,
+          "profitableFirmAvg": 83.4,
+          "median": 82.2
+        },
+        "laborCostRatioPct": {
+          "avg": 35.5,
+          "profitableFirmAvg": 29.0,
+          "median": 32.9
+        },
+        "revenuePerEmployeeThousandYen": {
+          "avg": 8056,
+          "profitableFirmAvg": 9741,
+          "median": 6245
+        },
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "取得済み（年次要確認）",
-        "surveyName": "日本政策金融公庫『小企業の経営指標調査』業種別経営指標（宿泊業）",
-        "sampleSize": { "total": 214, "profitableFirms": 76 },
-        "definition": "売上高営業利益率。区分の定義は food と同じ。",
-        "sourceUrl": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_202008_08a.pdf",
-        "surveyYear": "要確認",
-        "warning": "food と同じ出典・同じ年次未確認の問題を持つ。最新版での差し替えが必要。"
+        "status": "取得済み",
+        "sampleSize": {
+          "total": 100,
+          "profitableFirms": 32
+        },
+        "definition": "売上高営業利益率。『平均値』は全調査対象の単純平均、『黒字かつ自己資本プラス企業平均』は税引前当期純利益と自己資本がともにプラスの企業のみの平均、『中央値』はサンプルを大きさ順に並べた中央の値。",
+        "tablePdf": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_08b.pdf",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』2023年度調査",
+        "surveyYear": "決算期2022年7月以降（融資時期2023年4〜12月・2024年8月公表）",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html",
+        "revenuePerRoomThousandYen": {
+          "avg": 4888
+        },
+        "note": "サンプル数100と少なめ。1客室当たり売上高は客室数ベースのモデル設定の検証に使える。"
       },
       "manufacturing": {
         "label": "製造業",
-        "operatingMarginPct": null,
+        "operatingMarginPct": {
+          "avg": -5.1,
+          "profitableFirmAvg": 4.9,
+          "median": -1.0
+        },
+        "grossMarginPct": {
+          "avg": 43.0,
+          "profitableFirmAvg": 44.1,
+          "median": 38.5
+        },
+        "laborCostRatioPct": {
+          "avg": 36.7,
+          "profitableFirmAvg": 31.8,
+          "median": 33.9
+        },
+        "revenuePerEmployeeThousandYen": {
+          "avg": 12291,
+          "profitableFirmAvg": 14751,
+          "median": 9646
+        },
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "未取得",
-        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3、産業別・従業者規模別表）の製造業。または日本政策金融公庫『小企業の経営指標調査』製造業編（2024年度調査・2025年8月公開予定）。"
+        "status": "取得済み",
+        "sampleSize": {
+          "total": 2042,
+          "profitableFirms": 624
+        },
+        "definition": "売上高営業利益率。『平均値』は全調査対象の単純平均、『黒字かつ自己資本プラス企業平均』は税引前当期純利益と自己資本がともにプラスの企業のみの平均、『中央値』はサンプルを大きさ順に並べた中央の値。",
+        "tablePdf": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_04b.pdf",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』2024年度調査",
+        "surveyYear": "決算期2023年7月以降（融資時期2024年4〜12月・2025年8月公表）",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html",
+        "note": "2024年度調査のため他5業種（2023年度調査）と決算期が1年ずれる。横並び比較時は注記すること。"
       },
       "realestate": {
         "label": "不動産業、物品賃貸業",
         "operatingMarginPct": null,
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "未取得",
-        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3）の『不動産業，物品賃貸業』。"
+        "status": "未取得（JFC調査の対象業種外）",
+        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3『売上高及び営業費用』産業別・従業者規模別表）の『不動産業，物品賃貸業』。",
+        "warning": "日本政策金融公庫『小企業の経営指標調査』の対象9業種（情報通信・運輸・卸売小売・飲食店宿泊・医療福祉・教育学習支援・サービス・建設・製造）に不動産業は含まれない。他5業種と同一調査で揃えられないため、中小企業実態基本調査から取る場合は標本・定義が異なる旨を必ず注記し、他業種と単純比較しないこと。"
       },
       "education": {
         "label": "教育、学習支援業",
-        "operatingMarginPct": null,
+        "operatingMarginPct": {
+          "avg": -8.4,
+          "profitableFirmAvg": 6.8,
+          "median": -5.4
+        },
+        "grossMarginPct": {
+          "avg": 91.2,
+          "profitableFirmAvg": 89.3,
+          "median": 96.9
+        },
+        "laborCostRatioPct": {
+          "avg": 44.3,
+          "profitableFirmAvg": 35.8,
+          "median": 45.3
+        },
+        "revenuePerEmployeeThousandYen": {
+          "avg": 9208,
+          "profitableFirmAvg": 10515,
+          "median": 7262
+        },
         "avgAnnualRevenueManYen": null,
         "avgEmployees": null,
-        "status": "未取得",
-        "pendingSource": "日本政策金融公庫『小企業の経営指標調査』教育・学習支援業編（2023年度調査・2024年8月公開）。中小企業実態基本調査には教育・学習支援業は含まれないので注意。"
+        "status": "取得済み",
+        "sampleSize": {
+          "total": 364,
+          "profitableFirms": 105
+        },
+        "definition": "売上高営業利益率。『平均値』は全調査対象の単純平均、『黒字かつ自己資本プラス企業平均』は税引前当期純利益と自己資本がともにプラスの企業のみの平均、『中央値』はサンプルを大きさ順に並べた中央の値。",
+        "tablePdf": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_10b.pdf",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』2023年度調査",
+        "surveyYear": "決算期2022年7月以降（融資時期2023年4〜12月・2024年8月公表）",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html"
       }
+    },
+    "_sampleCaveat": {
+      "population": "日本政策金融公庫 国民生活事業が融資した法人企業のうち、従業者50人未満・決算期間1年の企業",
+      "warning": "全事業者の母集団平均ではなく『公庫融資先』という選択バイアスのある標本。全業種で平均値が負値になっているのはこのバイアスと、決算期がコロナ影響期を含むことの複合と考えられる。",
+      "implication": "したがって申請書・事業計画書では『平均値』ではなく『黒字かつ自己資本プラス企業平均』を目標水準として引用し、出典・調査年度・決算期・標本の性質を必ず脚注に書くこと。黒字企業平均は全業種4.9〜9.9%と安定しており、目標値として説明しやすい。",
+      "sourceUrl": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_01.pdf"
     }
   },
-
   "modelBusiness": {
     "_note": "事業計画書のモデル事業者前提。業界平均が揃うまではこの手置き値を使う。",
     "beauty": {

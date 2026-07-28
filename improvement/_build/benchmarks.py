@@ -125,14 +125,19 @@ def margin_comparison(industry_key, plan_margin_pct=None):
                        f"申請書に業界比較を載せる場合は {fin.get('pendingSource','')} から取得すること。",
         }
     benchmark = om.get(choice["recommended"])
+    caveat = load()["industryFinancials"].get("_sampleCaveat", {})
     msg = (f"{fin['label']}の売上高営業利益率は、黒字かつ自己資本プラス企業の平均で{benchmark}%"
            f"（全企業平均{om.get('avg')}%、中央値{om.get('median')}%）。"
-           f"出典: {fin.get('surveyName')}")
+           f"出典: {fin.get('surveyName')}／{fin.get('surveyYear')}")
     result = {
         "available": True, "label": fin["label"], "benchmarkPct": benchmark,
         "all": om, "statistic": choice["recommended"], "message": msg,
         "sourceUrl": fin.get("sourceUrl"), "surveyName": fin.get("surveyName"),
         "surveyYear": fin.get("surveyYear"), "warning": fin.get("warning"),
+        "sampleSize": fin.get("sampleSize"), "note": fin.get("note"),
+        # 標本バイアス（公庫融資先・従業者50人未満）は脚注に必須
+        "sampleCaveat": caveat.get("warning"),
+        "population": caveat.get("population"),
     }
     if plan_margin_pct is not None:
         diff = plan_margin_pct - benchmark
@@ -164,7 +169,11 @@ def plan_notes(industry, program_key, investment_man_yen=None,
     if out["adoption"] and out["adoption"].get("sourceUrl"):
         foot.append(f"採択率・審査傾向: {out['adoption']['sourceUrl']}")
     if out["industry"].get("available"):
-        foot.append(f"業界平均: {out['industry']['surveyName']} {out['industry']['sourceUrl']}")
+        ind = out["industry"]
+        foot.append(f"業界平均: {ind['surveyName']}（{ind['surveyYear']}） {ind['sourceUrl']}")
+        # 標本の性質は数値とセットで開示する（公庫融資先・従業者50人未満の選択バイアス）
+        if ind.get("population"):
+            foot.append(f"業界平均の標本: {ind['population']}")
     out["footnotes"] = foot
     return out
 
