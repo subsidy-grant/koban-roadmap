@@ -4588,6 +4588,30 @@
       schedule: "令和8年度実施（受付期間は村の公式ページで要確認）",
       continuity: "嬬恋村が継続実施。次年度以降も継続が見込まれる"
     },
+    kanagawa_hiratsuka_datsutanso: {
+      name: "平塚市脱炭素設備投資促進補助金",
+      prefecture: "kanagawa", municipality: "hiratsuka",
+      scale: "平塚市内に事業所がある中小事業者。業種の限定はなく、医療法人・学校法人・社会福祉法人・一般社団法人・NPO・各種組合も対象（大企業・みなし大企業は対象外）",
+      expense: "再生可能エネルギー設備または省エネルギー設備の本体価格および設置工事費（税抜）。本体価格30万円（税抜）以上の新品機械装置に限る",
+      rate: "1/5または1/3（設備区分・経費規模による）", cap: "再エネ最大500万円／省エネ最大200万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "同じ市のDX支援補助金が下限100万円と重いのに対し、こちらは本体30万円から使える。空調・照明・給湯などの省エネ更新が中心で、生産設備そのものは対象になりにくい。",
+      link: "https://www.city.hiratsuka.kanagawa.jp/sangyo/page33_00104.html", linkLabel: "平塚市 公式ページを見る",
+      schedule: "令和8年4月1日〜令和9年2月28日",
+      continuity: "平塚市が継続実施。次年度以降も継続が見込まれる"
+    },
+    saitama_saitama_setsubi: {
+      name: "さいたま市事業者向け設備導入応援補助金（物価高騰対応）",
+      prefecture: "saitama", municipality: "saitama",
+      scale: "さいたま市内に事業所を有し1年以上の事業継続実績がある中小企業者、または常時使用する従業員数2,000人以下で産業競争力強化法に規定される中堅企業。業種の限定なし",
+      expense: "省人化・省力化・業務効率化に資する機械・装置・システム・ソフトウェア等の購入費、据付工事費、技術導入費、専門家謝金等（税抜30万円が上限）",
+      rate: "2/3以内（千円未満切り捨て）", cap: "1,000万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "補助率2/3・上限1,000万円は市区町村レベルでは最大級。物価高騰対応の臨時制度のため、次回の募集があるかは市の公式ページで要確認。同じ市のDX推進補助金（2/3・40万円）とは別枠。",
+      link: "https://www.city.saitama.lg.jp/005/001/002/p123535.html", linkLabel: "さいたま市 公式ページを見る",
+      schedule: "第1回：令和7年9月2日〜10月3日（受付終了）",
+      continuity: "物価高騰対策として実施。次回募集は予算措置次第"
+    },
     gunma_maebashi_setsubi: {
       name: "前橋市設備投資支援補助金",
       prefecture: "gunma", municipality: "maebashi",
@@ -4758,7 +4782,7 @@
     }
     };
     Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });
-    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, gunma_maebashi_setsubi: 200, kanagawa_atsugi_setsubi: 200, kanagawa_yokosuka_senshinteki: 200, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150};
+    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, kanagawa_hiratsuka_datsutanso: 500, saitama_saitama_setsubi: 1000, gunma_maebashi_setsubi: 200, kanagawa_atsugi_setsubi: 200, kanagawa_yokosuka_senshinteki: 200, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150};
     Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });
     var ADDED_CAP_TEXT = {
       chiba_seicho4: "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
@@ -4802,6 +4826,8 @@
       tochigi_kanuma_digital: "50万円",
       gunma_midori_renewal: "100万円",
       gunma_tsumagoi_uriage: "50万円（1事業者あたりの交付限度額）",
+      kanagawa_hiratsuka_datsutanso: "再生可能エネルギー設備：8万円/kW・上限300万円 または 10万円/kW・上限500万円／省エネルギー設備：50万円 または 200万円（経費規模による）",
+      saitama_saitama_setsubi: "1,000万円",
       gunma_maebashi_setsubi: "生産性向上枠：個人50万円・小規模企業者100万円・その他150万円（事業所税加算で200万円）／省エネ枠：100万円（加算で150万円）",
       kanagawa_atsugi_setsubi: "製造業200万円／製造業以外100万円（年度内1回限り）",
       kanagawa_yokosuka_senshinteki: "200万円（1,000円未満切り捨て）",
@@ -4860,6 +4886,8 @@
       tochigi_kanuma_digital: "システム構築費・ソフトウェア導入費・機器設置設定費・Wi-Fi環境整備費",
       gunma_midori_renewal: "店舗の改装・改修工事費、備品購入費",
       gunma_tsumagoi_uriage: "販売促進・業務効率化に伴う広告費、店舗等改修費",
+      kanagawa_hiratsuka_datsutanso: "再エネ・省エネ設備の本体価格および設置工事費",
+      saitama_saitama_setsubi: "省人化・省力化・業務効率化のための機械／システム／ソフトウェア購入費、据付工事費",
       gunma_maebashi_setsubi: "設備の購入費・設計費・取付工事費・初期設定費",
       kanagawa_atsugi_setsubi: "設備本体費・附属部品費・設定費・運搬費",
       kanagawa_yokosuka_senshinteki: "機械装置・工具の購入／借入費、原材料購入費、外注加工費",
@@ -4910,9 +4938,9 @@
     };
     Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });
     var ADDED_MUNI = {
-      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict", "kanagawa_yokosuka_senshinteki"], atsugi: ["kanagawa_atsugi_it", "kanagawa_atsugi_setsubi"], hiratsuka: ["kanagawa_hiratsuka_dx"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"] },
+      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict", "kanagawa_yokosuka_senshinteki"], atsugi: ["kanagawa_atsugi_it", "kanagawa_atsugi_setsubi"], hiratsuka: ["kanagawa_hiratsuka_dx", "kanagawa_hiratsuka_datsutanso"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"] },
       chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"], kimitsu: ["chiba_kimitsu_seisansei"], tateyama: ["chiba_tateyama_digital"], minamiboso: ["chiba_minamiboso_digital"], mobara: ["chiba_mobara_support"], choshi: ["chiba_choshi_ritchi"] },
-      saitama: { saitama: ["saitama_saitama_dx"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"], iruma: ["saitama_iruma_shinko"] },
+      saitama: { saitama: ["saitama_saitama_dx", "saitama_saitama_setsubi"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"], iruma: ["saitama_iruma_shinko"] },
       gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], maebashi: ["gunma_maebashi_setsubi", "gunma_maebashi_dx"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"] },
       tochigi: { nikko: ["tochigi_nikko_digital", "tochigi_nikko_lease"], shimotsuke: ["tochigi_shimotsuke_reform"], kanuma: ["tochigi_kanuma_digital"], ashikaga: ["tochigi_ashikaga_shinko"] }
     };
