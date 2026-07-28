@@ -209,7 +209,7 @@ function radarChart(score) {
        + `${grid}<polygon class="shape" points="${shape}"/>${dots}${labels}</svg>`;
 }
 
-// TOP10カード（飲食版はExcel・仕様書が無いため、リンクはプロトタイプと事業計画書の2つ）
+// TOP10カード（美容版と違い仕様書(manual)は無い。Excel版は build_plan_excel.py が生成）
 document.getElementById("topgrid").innerHTML = TOP10.map(t => {
   const r = RATIONALE[t.topRank] || {};
   return `<div class="tcard">
@@ -221,7 +221,7 @@ document.getElementById("topgrid").innerHTML = TOP10.map(t => {
       <div class="why"><b>選定理由:</b> ${r.why||""}</div>
     </div>
     <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月（${t.dept}）</div>
-    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a></div>
+    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a></div>
   </div>`;
 }).join("");
 
