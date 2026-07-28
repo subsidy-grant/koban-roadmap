@@ -1,0 +1,228 @@
+{
+  "_meta": {
+    "purpose": "事業計画書に『業界平均利益率・採択率傾向・ハードウェア要件注記・申請規模の妥当性』を自動反映するための参照データ。2026-07-25ミーティング ネクストアクション（議事録 D:/KOBAN事務/議事録/0725議事録.md L142、討議内容L48-49・項目25-27）に対応。",
+    "updated": "2026-07-28",
+    "rules": [
+      "数値は必ず sourceUrl / surveyYear / definition を伴って記載する。出典を示せない数値は書かない（捏造禁止）。",
+      "未取得の項目は値を null のままにし、pendingSource に取得先を明記する。もっともらしい数値で埋めない。",
+      "申請書・事業計画書に転記する際は、本ファイルの note をそのまま脚注として併記する。"
+    ]
+  },
+
+  "applicationScaleRule": {
+    "label": "申請規模の妥当性チェック",
+    "heuristic": "投資総額は直近年商のおおむね1/3以内を目安とする",
+    "ratioOfAnnualRevenue": 0.333,
+    "source": "2026-07-25 ミーティング（山本・平）での実務的な経験則",
+    "sourceType": "実務経験則（公的な審査基準ではない）",
+    "note": "公募要領に明文化された基準ではなく、審査で事業規模との整合性を問われにくい目安。超過する場合は自己負担分の資金調達根拠（自己資金・融資枠）を計画書に明示すること。",
+    "checkLogic": "investmentTotal > annualRevenue * 0.333 のとき警告し、資金調達根拠の記載を促す"
+  },
+
+  "hardwareSoftwareNotes": {
+    "_note": "『ソフトだけ／ハードだけ』で申請して対象外になる事故を防ぐための制度別注記。出典は各制度の公式サイト（本サイト index.html の PROGRAM_INELIGIBLE_INFO と同一の一次情報）。",
+    "shoryokuka": {
+      "programLabel": "中小企業省力化投資補助金（一般型）",
+      "requirement": "hardware_required",
+      "note": "情報システムの構築・購入費は『導入する設備と一体的に省力化を実現するもの』であることが条件。設備を伴わない業務ソフト・クラウドサービス単体（予約管理・顧客管理システム等）は対象になりにくい。",
+      "planNote": "計画書では、導入するハードウェア（自動化・省人化機器）とソフトウェアを必ずセットで記載し、両者が一体で省力化を実現する構成図を示すこと。",
+      "sourceUrl": "https://shoryokuka.smrj.go.jp/ippan/"
+    },
+    "shoryokuka_catalog": {
+      "programLabel": "中小企業省力化投資補助金（カタログ注文型）",
+      "requirement": "hardware_only",
+      "note": "中小企業庁の登録カタログに掲載されたハードウェア製品のみが対象。予約管理・顧客管理ソフトなどハードウェアを伴わない業務システム単体は登録カテゴリに含まれない。",
+      "planNote": "カタログ掲載製品の型番を特定してから計画書を作成すること。事業計画書の作成自体は不要な類型。",
+      "sourceUrl": "https://shoryokuka.smrj.go.jp/catalog/product_catalog/"
+    },
+    "ai": {
+      "programLabel": "デジタル化・AI導入補助金（旧IT導入補助金）",
+      "requirement": "software_centric",
+      "note": "対象はソフトウェア購入費・クラウド利用料（最大2年分）・導入関連費。パソコンやタブレットそのものの購入費は原則対象外。",
+      "planNote": "計画書ではハードウェア費を主役にせず、ソフトウェア/クラウドの機能と業務改善効果を中心に構成すること。",
+      "sourceUrl": "https://it-shien.smrj.go.jp/applicant/subsidy/normal/"
+    },
+    "tokyo_digital": {
+      "programLabel": "【東京都】中小企業デジタル導入促進補助事業",
+      "requirement": "software_centric",
+      "note": "パソコン・タブレット本体の購入費は原則対象外。対象はソフトウェア・クラウドサービス本体費と、それに連携する専用ハードウェアの導入・初期設定・保守費用等。",
+      "planNote": "『連携する専用ハードウェア』であることが分かる構成にすること。汎用端末単体は不可。",
+      "sourceUrl": "https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html"
+    },
+    "kaizen": {
+      "programLabel": "業務改善助成金",
+      "requirement": "equipment_plus_wage_increase",
+      "note": "生産性向上に資する設備・機器の導入費が対象。ただし事業場内最低賃金を50円以上引き上げることが必須の前提条件。",
+      "planNote": "設備導入と賃上げの因果（この設備でこの分の生産性が上がるため賃上げ原資が生まれる）を計画書で必ず結びつけること。",
+      "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html"
+    },
+    "food_labor": {
+      "programLabel": "飲食業労働生産性向上支援補助金",
+      "requirement": "lease_only",
+      "note": "リース契約に限られており、購入・レンタルは対象外。",
+      "planNote": "調達方法をリースで記載すること。購入前提の見積では対象外になる。",
+      "sourceUrl": "https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html"
+    },
+    "career": {
+      "programLabel": "キャリアアップ助成金",
+      "requirement": "no_equipment",
+      "note": "設備投資は対象外。正社員転換に伴う人件費相当が対象。",
+      "planNote": "設備導入計画と混在させないこと。設備は別制度で建てる。",
+      "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html"
+    },
+    "jinzai": {
+      "programLabel": "人材開発支援助成金",
+      "requirement": "no_equipment",
+      "note": "設備導入費は対象外。対象は研修・訓練にかかる経費および訓練期間中の賃金。10時間以上の訓練実施が要件。",
+      "planNote": "訓練計画（時間数・カリキュラム・実施機関）を具体的に記載すること。訓練会社からの資金提供・キックバック提案は不正受給スキームの典型なので絶対に受けない。",
+      "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html"
+    }
+  },
+
+  "adoptionRateTrends": {
+    "_note": "採択率と審査傾向。競争審査型と要件充足型で計画書の書き分けが変わる。",
+    "screeningAxes": {
+      "label": "競争審査型に共通する4区分の評価軸",
+      "axes": [
+        { "key": "eligibility", "name": "適格性", "content": "対象者・対象経費・必須要件の形式確認。ここで不備があると内容審査に進めない" },
+        { "key": "technical", "name": "技術・事業面", "content": "課題分析の的確さ、解決策の妥当性と独自性、投資回収期間、付加価値額の年平均成長率目標" },
+        { "key": "plan", "name": "計画面", "content": "実施体制（人員・財務状況）の妥当性、スケジュールの実現可能性、賃上げ目標の水準と達成見込み、会社全体への波及効果" },
+        { "key": "policy", "name": "政策面", "content": "地域経済への波及効果、国の政策アジェンダ（DX・GX・事業承継・輸出拡大等）との合致度" }
+      ],
+      "sourceUrl": "https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf"
+    },
+    "byProgram": {
+      "shoryokuka": {
+        "screeningType": "competitive",
+        "rates": [
+          { "round": "一般型 第4回", "applied": 2100, "adopted": 1456, "rate": 0.693, "publishedOn": "2026-03-06" },
+          { "round": "一般型 第3回", "applied": 2775, "adopted": 1854, "rate": 0.668 }
+        ],
+        "trend": "第3回66.8%→第4回69.3%と上昇傾向",
+        "planNote": "単体設備ではなく『工程全体・事業全体への波及効果』を数値と作業動線で説明できている案件が採択されやすい。省力化指数・投資回収期間・付加価値額成長率を明示すること。",
+        "sourceUrl": "https://www.chusho.meti.go.jp/koukai/hojyokin/saitaku/2026/260306001.html"
+      },
+      "monodukuri": {
+        "screeningType": "competitive",
+        "rates": [],
+        "bonusPoints": { "total": 15, "note": "加点項目は15個。4個以上獲得すると採択率が大きく上がる傾向。ただし加点だけでは事業計画の質の低さは補えない。" },
+        "planNote": "賃上げ目標（給与支給総額の年平均成長率+3.5%以上等）が必須。未達だと返還対象になるため、達成可能な水準で設定すること。",
+        "sourceUrl": "https://www.sme-support.co.jp/column/p1352/"
+      },
+      "jizoku": {
+        "screeningType": "competitive",
+        "rates": [],
+        "planNote": "投資額の大小より『経営計画に基づく課題設定と販路開拓策の具体性』が採否を分ける。市場分析に基づく売上高・売上総利益の定量目標が必要。加点は重点政策加点1つ＋政策加点1つの計2つまで（3つ以上選ぶと加点審査対象外）。",
+        "sourceUrl": "https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html"
+      },
+      "kaizen": {
+        "screeningType": "requirement_based",
+        "planNote": "審査による競争選抜ではなく要件充足型のため、要件を満たせば原則支給される。計画書は『賃上げと設備投資の因果』の説明に集中すればよい。",
+        "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html"
+      },
+      "career": {
+        "screeningType": "requirement_based",
+        "usage": { "annualCases": 70000, "fraudCases": 200, "fraudRate": 0.003 },
+        "planNote": "年間約7万件の利用実績。要件（転換後賃金3%以上引上げ等）を満たせば原則支給。",
+        "sourceUrl": "https://hojyokin-portal.jp/columns/career-up_summary"
+      },
+      "jinzai": {
+        "screeningType": "requirement_based",
+        "planNote": "10時間以上の訓練実施が要件。事業展開等リスキリング支援コースは中小企業の経費助成率が最大75%。",
+        "sourceUrl": "https://www.gov-online.go.jp/article/202302/entry-9899.html"
+      }
+    },
+    "commonBonusPointFamilies": [
+      { "key": "wage", "name": "賃上げ系", "content": "給与支給総額の伸び率、事業場内最低賃金の引上げ幅" },
+      { "key": "certification", "name": "認定・宣言系", "content": "健康経営優良法人、くるみん／えるぼし、DX認定、パートナーシップ構築宣言" },
+      { "key": "continuity", "name": "事業継続・承継系", "content": "事業継続力強化計画の認定、事業承継・M&A実施実績" },
+      { "key": "policy_program", "name": "政策プログラム登録系", "content": "新規輸出1万者支援プログラム、成長加速マッチングサービス等への登録" }
+    ]
+  },
+
+  "industryFinancials": {
+    "_note": "業界平均利益率・売上規模。事業計画書のKPI自動推定と『自社計画値 vs 業界平均』の比較表に使う。",
+    "_statisticChoice": {
+      "recommended": "profitableFirmAvg",
+      "reason": "『平均値』は赤字企業を含むため飲食・宿泊業では負値になり、事業計画書のベンチマークとして機能しない。黒字かつ自己資本プラス企業の平均を『目指すべき水準』として引用し、平均値・中央値は参考として併記するのが実務上妥当。",
+      "mustDisclose": "計画書に転記する際は必ず『どの統計値か（黒字企業平均／中央値／平均値）』『調査名・調査年次』を脚注に明記すること。"
+    },
+    "byIndustry": {
+      "beauty": {
+        "label": "美容業",
+        "operatingMarginPct": null,
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "未取得",
+        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3『売上高及び営業費用』産業中分類別表）の『生活関連サービス業，娯楽業』内 洗濯・理容・美容・浴場業。または日本政策金融公庫『小企業の経営指標調査』サービス業編。",
+        "warning": "厚労省の理容業モデル（売上高対営業利益率24.1%）は平成20年度と古く、かつ個人事業主モデルで事業主自身の労働が費用計上されていないため、法人の営業利益率として引用してはならない。"
+      },
+      "food": {
+        "label": "飲食業",
+        "operatingMarginPct": { "avg": -1.4, "profitableFirmAvg": 3.6, "median": 0.1 },
+        "grossMarginPct": { "avg": 68.6, "profitableFirmAvg": 70.1, "median": 67.6 },
+        "laborCostRatioPct": { "avg": 33.6, "profitableFirmAvg": 32.3, "median": 33.8 },
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "取得済み（年次要確認）",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』業種別経営指標（飲食店，宿泊業）",
+        "sampleSize": { "total": 1694, "profitableFirms": 574 },
+        "definition": "売上高営業利益率。『平均値』は赤字企業を含む全調査対象、『黒字かつ自己資本プラス企業平均』は黒字かつ自己資本がプラスの企業のみの平均。",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_202008_08a.pdf",
+        "surveyYear": "要確認",
+        "warning": "取得したPDFはファイル名から2020年8月公開と推定されるが、PDF本文に調査年次の記載を確認できなかった。最新版は2023年度調査（2024年8月公開）のため、申請書に使う前に最新版で数値を差し替えること。"
+      },
+      "lodging": {
+        "label": "宿泊業",
+        "operatingMarginPct": { "avg": -1.5, "profitableFirmAvg": 7.4, "median": -0.4 },
+        "grossMarginPct": { "avg": 82.5, "profitableFirmAvg": 85.5, "median": 81.8 },
+        "laborCostRatioPct": { "avg": 31.2, "profitableFirmAvg": 29.1, "median": 31.6 },
+        "revenuePerEmployeeThousandYen": { "avg": 10659, "profitableFirmAvg": 12522, "median": 8963 },
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "取得済み（年次要確認）",
+        "surveyName": "日本政策金融公庫『小企業の経営指標調査』業種別経営指標（宿泊業）",
+        "sampleSize": { "total": 214, "profitableFirms": 76 },
+        "definition": "売上高営業利益率。区分の定義は food と同じ。",
+        "sourceUrl": "https://www.jfc.go.jp/n/findings/pdf/sme_findings2_202008_08a.pdf",
+        "surveyYear": "要確認",
+        "warning": "food と同じ出典・同じ年次未確認の問題を持つ。最新版での差し替えが必要。"
+      },
+      "manufacturing": {
+        "label": "製造業",
+        "operatingMarginPct": null,
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "未取得",
+        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3、産業別・従業者規模別表）の製造業。または日本政策金融公庫『小企業の経営指標調査』製造業編（2024年度調査・2025年8月公開予定）。"
+      },
+      "realestate": {
+        "label": "不動産業、物品賃貸業",
+        "operatingMarginPct": null,
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "未取得",
+        "pendingSource": "中小企業実態基本調査（e-Stat 統計表3）の『不動産業，物品賃貸業』。"
+      },
+      "education": {
+        "label": "教育、学習支援業",
+        "operatingMarginPct": null,
+        "avgAnnualRevenueManYen": null,
+        "avgEmployees": null,
+        "status": "未取得",
+        "pendingSource": "日本政策金融公庫『小企業の経営指標調査』教育・学習支援業編（2023年度調査・2024年8月公開）。中小企業実態基本調査には教育・学習支援業は含まれないので注意。"
+      }
+    }
+  },
+
+  "modelBusiness": {
+    "_note": "事業計画書のモデル事業者前提。業界平均が揃うまではこの手置き値を使う。",
+    "beauty": {
+      "annualRevenueManYen": 3000,
+      "employees": 5,
+      "seats": 5,
+      "source": "beauty-ai-factory 事業計画書リデザインv2（2026-07-25）で設定した前提",
+      "note": "業界平均が取得できたら、その水準と整合するか検証すること。"
+    }
+  }
+}
