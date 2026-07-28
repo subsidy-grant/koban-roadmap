@@ -29,6 +29,10 @@
     --sage-wash: #dcefe2;
     --rust: #b0342a;
     --rust-wash: #f7ded8;
+    --cat-hojo: #2b4c7e;
+    --cat-hojo-wash: #e7edf6;
+    --cat-josei: #7a5a17;
+    --cat-josei-wash: #fbf4e3;
     --line: #dde1e8;
     --shadow: rgba(27, 35, 51, 0.10);
   }
@@ -47,6 +51,10 @@
       --sage-wash: #16261d;
       --rust: #e0897a;
       --rust-wash: #2e1c17;
+      --cat-hojo: #7fa4d9;
+      --cat-hojo-wash: #1a2740;
+      --cat-josei: #d9b463;
+      --cat-josei-wash: #2b2415;
       --line: #262d3c;
       --shadow: rgba(0, 0, 0, 0.45);
     }
@@ -65,6 +73,10 @@
     --sage-wash: #16261d;
     --rust: #e0897a;
     --rust-wash: #2e1c17;
+    --cat-hojo: #7fa4d9;
+    --cat-hojo-wash: #1a2740;
+    --cat-josei: #d9b463;
+    --cat-josei-wash: #2b2415;
     --line: #262d3c;
     --shadow: rgba(0, 0, 0, 0.45);
   }
@@ -82,6 +94,10 @@
     --sage-wash: #dcefe2;
     --rust: #b0342a;
     --rust-wash: #f7ded8;
+    --cat-hojo: #2b4c7e;
+    --cat-hojo-wash: #e7edf6;
+    --cat-josei: #7a5a17;
+    --cat-josei-wash: #fbf4e3;
     --line: #dde1e8;
     --shadow: rgba(27, 35, 51, 0.10);
   }
@@ -260,10 +276,19 @@
     white-space: nowrap;
     font-weight: 600;
   }
-  .pill.ai { background: var(--sage-wash); color: var(--sage); }
-  .pill.jizoku { background: var(--accent-wash); color: var(--accent); }
-  .pill.kaizen { background: var(--rust-wash); color: var(--rust); }
+  /* 制度名は「補助金か助成金か」で色分けする。制度ごとの任意色ではなくカテゴリ色。
+     判定は表示している制度名そのものから行う（pillClass()）ので、動的に差し込む
+     自治体制度にも自動で効く。 */
+  .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
+  .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
+  .pill.other { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); font-weight: 500; }
   .pill.alt { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); font-weight: 500; }
+  /* 藍と金の対は2型・1型色覚シミュレーションでも距離を約8割保持するため、
+     制度名そのものが「◯◯補助金／◯◯助成金」と読める点と併せて色分けのみで足りる
+     （文字を前置きすると名称と重複して読みにくくなる）。 */
+  .cat-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; margin-top: 0.6rem;
+    font-size: 0.74rem; color: var(--ink-faint); align-items: center; }
+  .cat-legend .pill { font-size: 0.68rem; }
 
   .tier-list { list-style: none; margin: 0; padding: 0; font-size: 0.85rem; }
   .tier-list li { display: flex; justify-content: space-between; gap: 0.8rem; padding: 0.2rem 0; }
@@ -749,6 +774,11 @@
   <section id="conditions">
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>導入のための条件</h2></div>
     <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有制度に整理した。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示す。</p>
+    <p class="cat-legend">制度名は種別で色分けしている：
+      <span class="pill hojo">補助金</span>
+      <span class="pill josei">助成金</span>
+      <span class="pill other">名称から種別を判別できない制度</span>
+    </p>
     <p class="pd-legend">各制度カードでは、まず見るべき3項目を色分けしている：
       <span><i style="background:var(--accent)"></i>補助率</span>
       <span><i style="background:var(--sage)"></i>上限額</span>
@@ -787,7 +817,7 @@
     <div class="cond-list">
 
       <div class="cond-card" data-key="ai">
-        <div class="cond-head"><div class="stack"><span class="pill ai">デジタル化・AI導入補助金2026</span><span class="sub">旧IT導入補助金／通常枠</span></div><a class="src-link" href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）を見る ↗</a><span class="elig-badge" id="eligBadge-ai"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill hojo">デジタル化・AI導入補助金2026</span><span class="sub">旧IT導入補助金／通常枠</span></div><a class="src-link" href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）を見る ↗</a><span class="elig-badge" id="eligBadge-ai"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者が対象。<strong>中小企業者の基準（上記ボックス参照）の範囲内なら6人以上でも対象</strong>で、この制度自体には従業員数による上限額の変動はない</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費</div></div>
@@ -802,7 +832,7 @@
       </div>
 
       <div class="cond-card" data-key="jizoku">
-        <div class="cond-head"><div class="stack"><span class="pill jizoku">小規模事業者持続化補助金</span><span class="sub">＜一般型・通常枠＞（第20回）</span></div><a class="src-link" href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">第20回公募要領を見る ↗</a><span class="elig-badge" id="eligBadge-jizoku"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill hojo">小規模事業者持続化補助金</span><span class="sub">＜一般型・通常枠＞（第20回）</span></div><a class="src-link" href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">第20回公募要領を見る ↗</a><span class="elig-badge" id="eligBadge-jizoku"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>「小規模事業者持続化補助金の対象基準」（上記ボックス参照）以下の常時使用従業員数</strong>が対象。個人事業主も対象。<strong style="color:var(--rust);">基準を超える場合は「小規模事業者」に該当せず対象外</strong>（この場合はデジタル化・AI導入補助金や省力化投資補助金を検討）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
@@ -817,7 +847,7 @@
       </div>
 
       <div class="cond-card" data-key="kaizen">
-        <div class="cond-head"><div class="stack"><span class="pill kaizen">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-kaizen"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill josei">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-kaizen"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong class="req-strong">時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
@@ -832,7 +862,7 @@
       </div>
 
       <div class="cond-card" data-key="shoryokuka">
-        <div class="cond-head"><div class="stack"><span class="pill alt">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a><span class="elig-badge" id="eligBadge-shoryokuka"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill hojo">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a><span class="elig-badge" id="eligBadge-shoryokuka"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（<strong class="req-strong">GビズIDプライム必須</strong>）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）</div></div>
@@ -857,7 +887,7 @@
       </div>
 
       <div class="cond-card" data-key="career">
-        <div class="cond-head"><div class="stack"><span class="pill alt">キャリアアップ助成金</span><span class="sub">正社員化コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-career"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill josei">キャリアアップ助成金</span><span class="sub">正社員化コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-career"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">有期雇用労働者等を正社員化する事業主。事業所あたり年20名まで。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）か大企業かで支給額が異なる</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">正社員転換に伴う人件費相当（設備投資ではない）</div></div>
@@ -872,7 +902,7 @@
       </div>
 
       <div class="cond-card" data-key="jinzai">
-        <div class="cond-head"><div class="stack"><span class="pill alt">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-jinzai"></span></div>
+        <div class="cond-head"><div class="stack"><span class="pill josei">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-jinzai"></span></div>
         <div class="pd-grid">
           <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に<strong class="req-strong">10時間以上の訓練を実施する</strong>事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
           <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修・訓練費用、訓練期間中の賃金</div></div>
@@ -888,7 +918,7 @@
 
       <div class="cond-card cond-card-extra" data-industry-only="food" data-key="food_labor">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">飲食業労働生産性向上支援補助金</span><span class="sub">農林水産省・厚生労働省</span></div>
+          <div class="stack"><span class="pill hojo">飲食業労働生産性向上支援補助金</span><span class="sub">農林水産省・厚生労働省</span></div>
           <a class="src-link" href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページを見る ↗</a>
         </div>
         <div class="cond-card-extra-tag">飲食業限定の制度</div>
@@ -907,7 +937,7 @@
 
       <div class="cond-card cond-card-extra" data-industry-only="lodging" data-key="kanko_shoryokuka">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">観光地・観光産業における省力化投資補助事業</span><span class="sub">観光庁</span></div>
+          <div class="stack"><span class="pill hojo">観光地・観光産業における省力化投資補助事業</span><span class="sub">観光庁</span></div>
           <a class="src-link" href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイトを見る ↗</a>
         </div>
         <div class="cond-card-extra-tag">宿泊業限定の制度</div>
@@ -926,7 +956,7 @@
 
       <div class="cond-card cond-card-extra" data-industry-only="manufacturing" data-key="monodukuri">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">新事業進出・ものづくり商業サービス補助金</span><span class="sub">旧ものづくり補助金＋新事業進出補助金の統合制度</span></div>
+          <div class="stack"><span class="pill hojo">新事業進出・ものづくり商業サービス補助金</span><span class="sub">旧ものづくり補助金＋新事業進出補助金の統合制度</span></div>
           <a class="src-link" href="https://shinjigyou-monodukuri.smrj.go.jp/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a>
         </div>
         <div class="cond-card-extra-tag">製造業と相性が良い制度</div>
@@ -945,7 +975,7 @@
 
       <div class="cond-card cond-card-extra" data-industry-only="realestate" data-key="akiya">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">空き家対策モデル事業</span><span class="sub">国土交通省</span></div>
+          <div class="stack"><span class="pill other">空き家対策モデル事業</span><span class="sub">国土交通省</span></div>
           <a class="src-link" href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000131.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページを見る ↗</a>
         </div>
         <div class="cond-card-extra-tag">不動産業と相性が良い制度</div>
@@ -964,7 +994,7 @@
 
       <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_sogyo">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">創業助成事業</span><span class="sub">東京都・東京都中小企業振興公社（TOKYO創業ステーション）</span></div>
+          <div class="stack"><span class="pill josei">創業助成事業</span><span class="sub">東京都・東京都中小企業振興公社（TOKYO創業ステーション）</span></div>
           <a class="src-link" href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション 公式ページを見る ↗</a>
           <span class="elig-badge" id="eligBadge-tokyo_sogyo"></span>
         </div>
@@ -984,7 +1014,7 @@
 
       <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_digital">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">中小企業デジタル導入促進補助事業</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
+          <div class="stack"><span class="pill hojo">中小企業デジタル導入促進補助事業</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
           <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
           <span class="elig-badge" id="eligBadge-tokyo_digital"></span>
         </div>
@@ -1004,7 +1034,7 @@
 
       <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_soui">
         <div class="cond-head">
-          <div class="stack"><span class="pill alt">創意工夫チャレンジ促進事業（業務改善コース）</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
+          <div class="stack"><span class="pill other">創意工夫チャレンジ促進事業（業務改善コース）</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
           <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
           <span class="elig-badge" id="eligBadge-tokyo_soui"></span>
         </div>
@@ -4000,8 +4030,16 @@
     return unit.split('/')[1] || '概算';
   }
 
-  function pillClass(progKey) {
-    return (progKey === 'ai' || progKey === 'jizoku' || progKey === 'kaizen') ? progKey : 'alt';
+  // 制度名の表記から「補助金／助成金／その他」を判定する。
+  // PROGRAMS のキーではなく画面に出ている文字列で判定するので、色と読める名称が必ず一致し、
+  // 動的に差し込む自治体制度も追加コードなしで色分けされる。
+  // 名称に「補助」「助成」のどちらも含まない制度（空き家対策モデル事業など）は
+  // 憶測で振り分けず 'other' にする。
+  function pillClass(text) {
+    var t = String(text || '');
+    if (t.indexOf('助成') !== -1) return 'josei';
+    if (t.indexOf('補助') !== -1) return 'hojo';
+    return 'other';
   }
 
   function renderRankingHTML(industryKey) {
@@ -4017,7 +4055,7 @@
         return '<div class="line"><span>' + line[0] + '</span><span class="tabular">' + line[1] + '</span></div>';
       }).join('');
       var pillHTML = cat.programs.map(function (p) {
-        return '<span class="pill ' + pillClass(p.key) + '">' + p.label + '</span>';
+        return '<span class="pill ' + pillClass(p.label) + '">' + p.label + '</span>';
       }).join('');
       var effectHTML = cat.effectBullets.map(function (b) { return '<li>' + b + '</li>'; }).join('');
       var plan = planMap[String(idx + 1)];
@@ -4155,7 +4193,7 @@
         return (
           '<div class="cond-card cond-card-prefecture cond-card-municipality" style="display:block;">' +
             '<div class="cond-head">' +
-              '<div class="stack"><span class="pill alt">' + p.name.replace(/（.*?）$/, '') + '</span><span class="sub">' + wardName + '</span></div>' +
+              '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name.replace(/（.*?）$/, '') + '</span><span class="sub">' + wardName + '</span></div>' +
               '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
               '<span class="elig-badge warn">△ 要確認</span>' +
             '</div>' +
