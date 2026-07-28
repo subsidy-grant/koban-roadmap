@@ -117,8 +117,20 @@ def margin_comparison(industry_key, plan_margin_pct=None):
         return {"available": False, "reason": "未知の業種キー"}
     om = fin.get("operatingMarginPct")
     if not om:
+        # 「まだ取っていない」と「方針として持たない」を区別する。
+        # 後者で e-Stat 等から数値を補うと出典が業種ごとにバラけるため、代替手段を案内する。
+        if fin.get("excludedByPolicy"):
+            return {
+                "available": False,
+                "excludedByPolicy": True,
+                "reason": fin.get("status"),
+                "message": f"{fin['label']}は出典統一の方針により業界平均を持たない。{fin.get('reason','')}",
+                "planGuidance": fin.get("planGuidance"),
+                "alternativeIfNeeded": fin.get("alternativeIfNeeded"),
+            }
         return {
             "available": False,
+            "excludedByPolicy": False,
             "reason": fin.get("status", "未取得"),
             "pendingSource": fin.get("pendingSource"),
             "message": f"{fin['label']}の業界平均営業利益率は本データベースに未取得。"
@@ -174,6 +186,9 @@ def plan_notes(industry, program_key, investment_man_yen=None,
         # 標本の性質は数値とセットで開示する（公庫融資先・従業者50人未満の選択バイアス）
         if ind.get("population"):
             foot.append(f"業界平均の標本: {ind['population']}")
+    elif out["industry"].get("excludedByPolicy"):
+        # 業界平均を載せない業種。計画書側で代替の見せ方に切り替える必要がある
+        foot.append("業界平均: 出典統一の方針により本業種は掲載しない（自社実績推移で妥当性を示す）")
     out["footnotes"] = foot
     return out
 
