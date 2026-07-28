@@ -1,0 +1,412 @@
+# -*- coding: utf-8 -*-
+"""index.html に千葉・埼玉・神奈川・栃木・群馬の5県と、その全市区町村を追加する。
+
+■ 調査の原則（東京都のときと同じ）
+  数値は各自治体・県の公式サイト（.lg.jp / .jp の自治体ドメイン、または自治体が
+  運営を委託する公益財団法人のサイト）のみを出典とする。アフィリエイト系の
+  補助金まとめサイトは手がかりにはしても数値の根拠にはしない。
+
+■ 「未調査」と「調査したが無かった」を必ず区別する
+  MUNICIPALITY_CHECKED に載っている自治体だけが調査済み。載っていない自治体は
+  「未調査」と表示し、「制度が無い」とは書かない。210市区町村すべてを一度に
+  調べ切ることはできないため、この区別が無いとサイトが嘘をつくことになる。
+
+実行: python3 add_prefectures.py
+冪等: 生成ブロックはマーカーで囲み、毎回まるごと置き換える。
+"""
+import io
+import os
+import re
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+INDEX = os.path.abspath(os.path.join(HERE, "..", "..", "index.html"))
+
+# ---------------------------------------------------------------- 市区町村名
+# 総務省の市区町村コード順。名称は各県公式サイトの市町村一覧に準拠。
+MUNICIPALITIES = {
+    "chiba": [
+        ("chiba", "千葉市"), ("choshi", "銚子市"), ("ichikawa", "市川市"), ("funabashi", "船橋市"),
+        ("tateyama", "館山市"), ("kisarazu", "木更津市"), ("matsudo", "松戸市"), ("noda", "野田市"),
+        ("mobara", "茂原市"), ("narita", "成田市"), ("sakura", "佐倉市"), ("togane", "東金市"),
+        ("asahi", "旭市"), ("narashino", "習志野市"), ("kashiwa", "柏市"), ("katsuura", "勝浦市"),
+        ("ichihara", "市原市"), ("nagareyama", "流山市"), ("yachiyo", "八千代市"), ("abiko", "我孫子市"),
+        ("kamogawa", "鴨川市"), ("kamagaya", "鎌ケ谷市"), ("kimitsu", "君津市"), ("futtsu", "富津市"),
+        ("urayasu", "浦安市"), ("yotsukaido", "四街道市"), ("sodegaura", "袖ケ浦市"), ("yachimata", "八街市"),
+        ("inzai", "印西市"), ("shiroi", "白井市"), ("tomisato", "富里市"), ("minamiboso", "南房総市"),
+        ("sosa", "匝瑳市"), ("katori", "香取市"), ("sammu", "山武市"), ("isumi", "いすみ市"),
+        ("oamishirasato", "大網白里市"), ("shisui", "酒々井町"), ("sakae", "栄町"), ("kozaki", "神崎町"),
+        ("tako", "多古町"), ("tonosho", "東庄町"), ("kujukuri", "九十九里町"), ("shibayama", "芝山町"),
+        ("yokoshibahikari", "横芝光町"), ("ichinomiya", "一宮町"), ("mutsuzawa", "睦沢町"), ("shirako", "白子町"),
+        ("nagara", "長柄町"), ("chonan", "長南町"), ("otaki", "大多喜町"), ("onjuku", "御宿町"),
+        ("kyonan", "鋸南町"), ("chosei", "長生村"),
+    ],
+    "saitama": [
+        ("saitama", "さいたま市"), ("kawagoe", "川越市"), ("kumagaya", "熊谷市"), ("kawaguchi", "川口市"),
+        ("gyoda", "行田市"), ("chichibu", "秩父市"), ("tokorozawa", "所沢市"), ("hanno", "飯能市"),
+        ("kazo", "加須市"), ("honjo", "本庄市"), ("higashimatsuyama", "東松山市"), ("kasukabe", "春日部市"),
+        ("sayama", "狭山市"), ("hanyu", "羽生市"), ("konosu", "鴻巣市"), ("fukaya", "深谷市"),
+        ("ageo", "上尾市"), ("soka", "草加市"), ("koshigaya", "越谷市"), ("warabi", "蕨市"),
+        ("toda", "戸田市"), ("iruma", "入間市"), ("asaka", "朝霞市"), ("shiki", "志木市"),
+        ("wako", "和光市"), ("niiza", "新座市"), ("okegawa", "桶川市"), ("kuki", "久喜市"),
+        ("kitamoto", "北本市"), ("yashio", "八潮市"), ("fujimi", "富士見市"), ("misato", "三郷市"),
+        ("hasuda", "蓮田市"), ("sakado", "坂戸市"), ("satte", "幸手市"), ("tsurugashima", "鶴ヶ島市"),
+        ("hidaka", "日高市"), ("yoshikawa", "吉川市"), ("fujimino", "ふじみ野市"), ("shiraoka", "白岡市"),
+        ("ina", "伊奈町"), ("miyoshi", "三芳町"), ("moroyama", "毛呂山町"), ("ogose", "越生町"),
+        ("namegawa", "滑川町"), ("ranzan", "嵐山町"), ("ogawa", "小川町"), ("kawajima", "川島町"),
+        ("yoshimi", "吉見町"), ("hatoyama", "鳩山町"), ("tokigawa", "ときがわ町"), ("yokoze", "横瀬町"),
+        ("minano", "皆野町"), ("nagatoro", "長瀞町"), ("ogano", "小鹿野町"), ("misato_s", "美里町"),
+        ("kamikawa", "神川町"), ("kamisato", "上里町"), ("yorii", "寄居町"), ("miyashiro", "宮代町"),
+        ("sugito", "杉戸町"), ("matsubushi", "松伏町"), ("higashichichibu", "東秩父村"),
+    ],
+    "kanagawa": [
+        ("yokohama", "横浜市"), ("kawasaki", "川崎市"), ("sagamihara", "相模原市"), ("yokosuka", "横須賀市"),
+        ("hiratsuka", "平塚市"), ("kamakura", "鎌倉市"), ("fujisawa", "藤沢市"), ("odawara", "小田原市"),
+        ("chigasaki", "茅ヶ崎市"), ("zushi", "逗子市"), ("miura", "三浦市"), ("hadano", "秦野市"),
+        ("atsugi", "厚木市"), ("yamato", "大和市"), ("isehara", "伊勢原市"), ("ebina", "海老名市"),
+        ("zama", "座間市"), ("minamiashigara", "南足柄市"), ("ayase", "綾瀬市"), ("hayama", "葉山町"),
+        ("samukawa", "寒川町"), ("oiso", "大磯町"), ("ninomiya", "二宮町"), ("nakai", "中井町"),
+        ("oi", "大井町"), ("matsuda", "松田町"), ("yamakita", "山北町"), ("kaisei", "開成町"),
+        ("hakone", "箱根町"), ("manazuru", "真鶴町"), ("yugawara", "湯河原町"), ("aikawa", "愛川町"),
+        ("kiyokawa", "清川村"),
+    ],
+    "tochigi": [
+        ("utsunomiya", "宇都宮市"), ("ashikaga", "足利市"), ("tochigi", "栃木市"), ("sano", "佐野市"),
+        ("kanuma", "鹿沼市"), ("nikko", "日光市"), ("oyama", "小山市"), ("moka", "真岡市"),
+        ("otawara", "大田原市"), ("yaita", "矢板市"), ("nasushiobara", "那須塩原市"), ("sakura", "さくら市"),
+        ("nasukarasuyama", "那須烏山市"), ("shimotsuke", "下野市"), ("kaminokawa", "上三川町"),
+        ("mashiko", "益子町"), ("motegi", "茂木町"), ("ichikai", "市貝町"), ("haga", "芳賀町"),
+        ("mibu", "壬生町"), ("nogi", "野木町"), ("shioya", "塩谷町"), ("takanezawa", "高根沢町"),
+        ("nasu", "那須町"), ("nakagawa", "那珂川町"),
+    ],
+    "gunma": [
+        ("maebashi", "前橋市"), ("takasaki", "高崎市"), ("kiryu", "桐生市"), ("isesaki", "伊勢崎市"),
+        ("ota", "太田市"), ("numata", "沼田市"), ("tatebayashi", "館林市"), ("shibukawa", "渋川市"),
+        ("fujioka", "藤岡市"), ("tomioka", "富岡市"), ("annaka", "安中市"), ("midori", "みどり市"),
+        ("shinto", "榛東村"), ("yoshioka", "吉岡町"), ("ueno", "上野村"), ("kanna", "神流町"),
+        ("shimonita", "下仁田町"), ("nanmoku", "南牧村"), ("kanra", "甘楽町"), ("nakanojo", "中之条町"),
+        ("naganohara", "長野原町"), ("tsumagoi", "嬬恋村"), ("kusatsu", "草津町"), ("takayama", "高山村"),
+        ("higashiagatsuma", "東吾妻町"), ("katashina", "片品村"), ("kawaba", "川場村"), ("showa", "昭和村"),
+        ("minakami", "みなかみ町"), ("tamamura", "玉村町"), ("itakura", "板倉町"), ("meiwa", "明和町"),
+        ("chiyoda", "千代田町"), ("oizumi", "大泉町"), ("ora", "邑楽町"),
+    ],
+}
+
+PREFECTURE_LABEL = {
+    "chiba": "千葉県", "saitama": "埼玉県", "kanagawa": "神奈川県",
+    "tochigi": "栃木県", "gunma": "群馬県",
+}
+
+# ---------------------------------------------------------------- 制度データ
+# すべて公式サイトから取得（2026年7月28日調査）。数値は出典ページの表記どおり。
+PROGRAMS = [
+    # ===== 千葉県 =====
+    dict(key="chiba_seicho4", name="千葉県中小企業成長促進補助金（第4弾）", pref="chiba", muni=None,
+         scale="千葉県内に主たる事業所を有する中小企業者等。中小企業者枠と小規模事業者枠がある",
+         expense="機械装置等の購入・改良、専用ソフトウェア・情報システム等の購入・構築、導入に必要な運搬・据付費",
+         rate="1/2以内", cap="中小企業者枠3,000万円／小規模事業者枠500万円",
+         cap_num=3000, cap_text="中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
+         expense_desc="生産性向上のための機械装置・ソフトウェア・情報システム導入費",
+         wage="特になし（「積極的な賃上げや投資等を行う意欲の高い事業者」を対象とする趣旨の記載あり）",
+         acceptance="非公表", sched="令和8年7月24日17時〜8月21日17時",
+         note="下限額が中小企業者枠500万円・小規模事業者枠100万円と高く、小規模な投資には使いにくい。第1〜3弾は受付終了済み。",
+         link="https://www.pref.chiba.lg.jp/keisei/zaisei/chiba-seichohojyo4.html",
+         link_label="千葉県 公式ページを見る", cont="千葉県が第1弾から継続して実施。次弾の実施は予算措置次第"),
+    # ===== 埼玉県 =====
+    dict(key="saitama_dx", name="埼玉県中小企業DX導入支援補助金", pref="saitama", muni=None,
+         scale="埼玉県内の事業所でDXツールの活用による生産性向上に取り組む中小企業者等。1年後に労働生産性を向上させる計画の策定が必要",
+         expense="生産性向上に資するDXツールの購入費、導入に要する経費（対象経費総額の1/2まで）。キャッシュレス決済システム・会計ソフト・グループウェア等",
+         rate="3/4以内", cap="300万円", cap_num=300, cap_text="300万円（下限7万5千円）",
+         expense_desc="生産性向上に資するDXツール購入費・導入経費",
+         wage="特になし", acceptance="非公表",
+         sched="第1期：令和8年7月1日〜7月31日16時／第2期：8月3日〜8月31日16時／第3期：9月1日〜9月30日16時",
+         note="補助率3/4は都道府県レベルでは高い水準。下限が7万5千円と低く、小規模なツール導入にも使いやすい。",
+         link="https://dxdounyushienhozyo.pref.saitama.lg.jp/",
+         link_label="埼玉県 特設サイトを見る", cont="埼玉県が令和8年度に実施。次年度以降は予算措置次第"),
+    dict(key="saitama_shoryokuka", name="埼玉県中小企業省力化支援事業補助金", pref="saitama", muni=None,
+         scale="埼玉県内の中小企業者等。1次産業（農業・林業・漁業）は対象外。人手不足要件（残業月30時間超／従業員5%以上減／求人未充足等）のいずれかに該当することが必要",
+         expense="省力化製品の購入費（中古品・リース等を含む）、設置・運搬・動作確認等の導入経費（対象経費総額の1/2まで）",
+         rate="2/3以内（賃上げ要件達成で4/5以内）", cap="1,000万円（賃上げ要件達成で1,200万円）",
+         cap_num=1200, cap_text="1,000万円（賃上げ要件達成で1,200万円）",
+         expense_desc="省力化製品の購入費・設置導入経費",
+         wage="必須。実績報告時に平均所定内給与支給額を前年同月比3.0%以上増加させること",
+         acceptance="非公表", sched="令和8年5月25日〜7月17日16時（受付終了）",
+         note="賃上げ3.0%以上が実績報告時の必須要件で、未達だと返還リスクがある。人手不足要件の該当も必要。",
+         link="https://www.pref.saitama.lg.jp/a0805/shoryokuka/index.html",
+         link_label="埼玉県 公式ページを見る", cont="埼玉県が令和8年度に実施。次年度以降は予算措置次第"),
+    # ===== 神奈川県 =====
+    dict(key="kanagawa_seisansei", name="神奈川県中小企業生産性向上促進事業費補助金", pref="kanagawa", muni=None,
+         scale="神奈川県内の事業所で実態のある事業を営む中小企業者・小規模事業者。県内自社事業所での実施が必須。一般枠・グループ化支援枠・創業者成長支援枠がある",
+         expense="生産性向上・業務プロセス改善・人手不足解消に資する設備導入費等（ITサービス導入費は上限50万円、施設工事費は上限100万円）。単なる設備更新は対象外",
+         rate="中小企業1/2以内、小規模事業者2/3以内（創業者成長支援枠は2/3以内）",
+         cap="一般枠500万円", cap_num=500,
+         cap_text="一般枠500万円（下限25万円）／グループ化支援枠1グループ4,000万円／創業者成長支援枠300万円",
+         expense_desc="生産性向上・省力化に資する設備導入費",
+         wage="必須（給与支給額を増加させること）", acceptance="非公表",
+         sched="一般枠・グループ化支援枠【7月公募】令和8年7月31日17時／創業者成長支援枠 8月31日17時",
+         note="単なる設備更新は対象外で、生産性向上との因果の説明が必要。ITサービス導入費は上限50万円と別枠制限がある。",
+         link="https://r8seisansei.pref.kanagawa.jp/",
+         link_label="神奈川県 ポータルサイトを見る", cont="神奈川県が例年実施。次年度以降も継続が見込まれる"),
+    dict(key="kanagawa_digital", name="神奈川県小規模事業者デジタル化支援推進事業費補助金", pref="kanagawa", muni=None,
+         scale="神奈川県内に事業所を有する小規模事業者（商業・サービス業〈宿泊業・娯楽業以外〉は従業員5人以下、宿泊業・娯楽業および製造業その他は20人以下）",
+         expense="ITサービス導入費、ホームページ作成改修費、機械装置等費。パソコン・タブレット・周辺機器・プレインストールソフトも対象（合計上限10万円）",
+         rate="2/3以内", cap="50万円", cap_num=50,
+         cap_text="50万円（ホームページ作成改修費、パソコン・タブレット等はそれぞれ上限10万円）",
+         expense_desc="ITサービス導入費・ホームページ作成改修費・機械装置等費",
+         wage="特になし", acceptance="非公表（先着順・予算到達で終了）",
+         sched="令和8年4月15日9時〜9月30日17時（先着順・予算到達次第終了）",
+         note="国のデジタル化・AI導入補助金では原則対象外のパソコン・タブレット本体が上限10万円まで対象になる点が特徴。小規模事業者限定。",
+         link="https://www.pref.kanagawa.jp/docs/m2w/shokibo_digital/r8.html",
+         link_label="神奈川県 公式ページを見る", cont="神奈川県が令和7年度から継続実施。次年度以降も継続が見込まれる"),
+    # ===== 栃木県 =====
+    dict(key="tochigi_chinage", name="とちぎ賃上げ環境整備促進補助金", pref="tochigi", muni=None,
+         scale="栃木県内に事業所を有する中小企業者等。令和7年10月1日以降に事業場内最低賃金を50円以上引き上げ、かつ引上げ前の事業場内最低賃金が地域別最低賃金より51円以上高く1,500円以下であることが必要",
+         expense="生産性向上に資する設備投資（POSレジシステム、リフト付き特殊車両等）、労働環境改善に資する設備投資（キッズルーム設置、スロープ化等）",
+         rate="1/2", cap="200万円", cap_num=200, cap_text="200万円",
+         expense_desc="生産性向上・労働環境改善に資する設備投資",
+         wage="必須。事業場内最低賃金を50円以上引き上げ、かつ引上げ前の事業場内最低賃金が地域別最低賃金＋51円以上1,500円以下",
+         acceptance="非公表（先着順・予算到達で終了）",
+         sched="令和8年5月18日〜12月21日（先着順・予算到達次第終了）",
+         note="交付決定日以降に納品完了・正式契約・支払いが行われたものが対象。賃金水準の上下両方に条件があるため、自社の事業場内最低賃金の確認が先。",
+         link="https://www.pref.tochigi.lg.jp/f06/chinagekannkyouseibihojokin.html",
+         link_label="栃木県 公式ページを見る", cont="栃木県が令和8年度に実施。次年度以降は予算措置次第"),
+    # ===== 市町村 =====
+    dict(key="kanagawa_kawasaki_seicho", name="川崎市中小企業成長環境支援補助金", pref="kanagawa", muni="kawasaki",
+         scale="川崎市内に事業所を有して1年以上事業を営む中小事業者等（かながわサイエンスパーク等の特定施設入居者は1年未満でも対象）",
+         expense="設備等導入費、システム構築費、導入・サポート費、設計・工事費、専門家指導費、運搬費等",
+         rate="1/2以内（賃上げ申請事業者は2/3以内）",
+         cap="生産性向上支援100万円（賃上げ200万円）", cap_num=200,
+         cap_text="生産性向上支援100万円・賃上げ申請200万円（下限20万円）",
+         expense_desc="デジタル技術・生産性向上設備の導入費",
+         wage="任意（賃上げ申請で補助率2/3・上限200万円に優遇）", acceptance="非公表",
+         sched="エントリーシート：令和8年4月17日〜9月11日必着／申請書：4月22日〜9月30日必着",
+         note="エントリーシートの提出が申請の前提。デジタル技術の導入と生産性向上設備等の導入の2区分がある。",
+         link="https://www.city.kawasaki.jp/280/page/0000186427.html",
+         link_label="川崎市 公式ページを見る", cont="川崎市が令和8年度に実施。次年度以降は予算措置次第"),
+    dict(key="kanagawa_sagamihara_seisansei", name="相模原市中小企業生産性向上支援補助金", pref="kanagawa", muni="sagamihara",
+         scale="相模原市内に事業所を有し市内事業所で設備投資を行う中小企業者等（みなし大企業を除く）。労働生産性を3年間で9%以上向上させる事業計画が必要",
+         expense="機械装置、測定工具・検査工具、器具備品、建物付属設備、ソフトウェア等の購入費",
+         rate="2/3以内（市外事業者からの調達は1/2以内）", cap="1,000万円", cap_num=1000,
+         cap_text="1,000万円", expense_desc="機械装置・器具備品・ソフトウェア等の購入費",
+         wage="特になし", acceptance="非公表（予算上限到達次第終了）",
+         sched="補助事業実施期間：令和8年4月1日〜令和9年1月31日（納品・支払い完了が条件／予算上限到達次第終了）",
+         note="市内事業者から調達すると補助率が2/3、市外だと1/2に下がる。産業支援機関による事業計画の事前確認が必要。",
+         link="https://www.city.sagamihara.kanagawa.jp/sangyo/sangyo/1026664/1003291/josei/1035055.html",
+         link_label="相模原市 公式ページを見る", cont="相模原市が令和8年度に実施。次年度以降は予算措置次第"),
+    dict(key="chiba_chiba_ict", name="千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）", pref="chiba", muni="chiba",
+         scale="千葉市内に本社または事業所を置き、主たる事業実施場所が市内の中小企業者。事業を開始していない創業者は対象外。財団コーディネーターのフォローアップ支援受講が必要",
+         expense="クラウドサービス利用料・ソフトウェア購入費・システム設計費/構築費（必須）、インターネット通信インフラ費、保守委託費、コンサルティング・教育訓練費、機器購入・リース料",
+         rate="2/3以内（機器購入・リース料等は1/3以内）", cap="50万円", cap_num=50,
+         cap_text="50万円", expense_desc="クラウドサービス利用料・ソフトウェア購入費・システム構築費",
+         wage="特になし", acceptance="非公表（予算上限到達次第終了）",
+         sched="随時募集（予算上限到達次第終了）",
+         note="実施主体は公益財団法人千葉市産業振興財団。より大規模な課題向けに「タイプB：生産性向上大規模型」もある。",
+         link="https://www.chibashi-sangyo.or.jp/enterprise/kyoka-sosyutu/keiei/ict-change/type-a/",
+         link_label="千葉市産業振興財団 公式ページを見る", cont="千葉市産業振興財団が継続実施。令和8年度も受付中"),
+    dict(key="saitama_saitama_dx", name="さいたま市DX推進補助金", pref="saitama", muni="saitama",
+         scale="さいたま市内の中小企業者等",
+         expense="生産性向上に資するシステム・ソフトウェア購入費および関連経費（対象外経費が16項目詳細に列挙されている）",
+         rate="2/3", cap="40万円", cap_num=40, cap_text="40万円",
+         expense_desc="生産性向上に資するシステム・ソフトウェア購入費",
+         wage="特になし", acceptance="非公表",
+         sched="令和8年4月6日〜5月20日（受付終了）",
+         note="実施主体は公益財団法人さいたま市産業創造財団。対象外経費が細かく列挙されているため、申請前に要綱の確認が必要。",
+         link="https://www.sozo-saitama.or.jp/topic/dx-subsidy/",
+         link_label="さいたま市産業創造財団 公式ページを見る", cont="さいたま市産業創造財団が例年実施。次年度以降も継続が見込まれる"),
+    dict(key="gunma_maebashi_dx", name="前橋市DX推進補助金", pref="gunma", muni="maebashi",
+         scale="前橋市内で1年以上継続して事業を営み市税を完納している事業者。風俗営業、農業・林業、漁業、電気・ガス・熱供給・水道業、情報サービス業、インターネット付随サービス業、電気事務機械器具小売業、学校教育、医療・福祉、各種団体、公務等は対象外",
+         expense="システム導入費（ソフトウェア開発・導入）、ハードウェア購入費（システム導入費の1/2以内）、システム使用料、初期設定費",
+         rate="1/3以内（小規模企業者は1/2以内）", cap="150万円", cap_num=150,
+         cap_text="150万円（下限：補助対象事業費10万円以上）",
+         expense_desc="システム導入費・ハードウェア購入費・システム使用料・初期設定費",
+         wage="特になし", acceptance="非公表",
+         sched="令和8年5月11日〜5月22日（受付終了）",
+         note="対象外業種が広く列挙されているため、まず自社の業種が対象か確認すること。交付決定後に着手し令和9年2月26日までに納品・支払いを完了する必要がある。",
+         link="https://www.city.maebashi.gunma.jp/soshiki/sangyokeizai/sangyoseisaku/shinseisho/7311.html",
+         link_label="前橋市 公式ページを見る", cont="前橋市が令和8年度に実施。次年度以降は予算措置次第"),
+]
+
+# 調査したが、業種を問わず使える汎用の設備投資・IT導入系制度が確認できなかった自治体
+MUNI_NOT_FOUND = {
+    "kanagawa": {
+        "yokohama": "「中小企業デジタル化推進支援補助金」を令和7年度に実施していましたが、令和7年12月11日に予算上限に達して受付終了しており、令和8年度の募集は本稿時点で確認できませんでした。市はデジタル人材育成講座や専門家による伴走支援を継続しています。",
+    },
+    "tochigi": {
+        "utsunomiya": "「ICT利活用促進助成制度」（ICT導入による業務効率化・売上向上の取組が対象、宇都宮商工会議所またはうつのみや市商工会の支援を受けた経営計画の策定が必要）がありますが、補助率・上限額を公式サイト上で確認できなかったため、推測の数値は掲載していません。金額は市商工振興課へ直接ご確認ください。",
+    },
+    "gunma": {
+        "takasaki": "「中小企業等機械設備導入支援助成金」（1事業者あたり年500万円が限度）がありますが、これはリース料に対する助成（助成率2.1%×リース日数÷365）で、対象は生産に直接関わる機械・装置と特定の車両運搬具に限られ、ITシステム・ソフトウェアの記載はありません。「まちなか商店リニューアル助成事業補助金」は受付終了しています。",
+    },
+}
+
+# 県レベルで汎用制度が確認できなかった県
+PREF_NOT_FOUND = {
+    "gunma": "群馬県の県レベルの事業者向け補助金（ぐんまDX技術革新補助金・ぐんま技術革新チャレンジ補助金・ぐんま未来共創トライアル補助金）は、いずれも新技術・新製品の開発や実証プロジェクトが対象で、業種を問わず一般の事業者が設備・ITを導入する用途に使える汎用制度は確認できませんでした。市町村の制度と全国共通の制度をご確認ください。",
+}
+
+# 調査済みの市区町村（ここに無い自治体は「未調査」）
+CHECKED = {
+    "chiba": ["chiba"],
+    "saitama": ["saitama"],
+    "kanagawa": ["yokohama", "kawasaki", "sagamihara"],
+    "tochigi": ["utsunomiya"],
+    "gunma": ["maebashi", "takasaki"],
+}
+
+START = "// PREFECTURE_EXPANSION:START"
+END = "// PREFECTURE_EXPANSION:END"
+
+
+def js_str(s):
+    return '"' + str(s).replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def build_programs_js():
+    out = []
+    for p in PROGRAMS:
+        muni = f' municipality: {js_str(p["muni"])},' if p["muni"] else ""
+        out.append(
+            f'    {p["key"]}: {{\n'
+            f'      name: {js_str(p["name"])},\n'
+            f'      prefecture: {js_str(p["pref"])},{muni}\n'
+            f'      scale: {js_str(p["scale"])},\n'
+            f'      expense: {js_str(p["expense"])},\n'
+            f'      rate: {js_str(p["rate"])}, cap: {js_str(p["cap"])},\n'
+            f'      wage: {js_str(p["wage"])}, acceptance: {js_str(p["acceptance"])},\n'
+            f'      note: {js_str(p["note"])},\n'
+            f'      link: {js_str(p["link"])}, linkLabel: {js_str(p["link_label"])},\n'
+            f'      schedule: {js_str(p["sched"])},\n'
+            f'      continuity: {js_str(p["cont"])}\n'
+            f'    }}'
+        )
+    return ",\n".join(out)
+
+
+def build_block():
+    L = []
+    A = L.append
+    A(START)
+    A("  // 千葉・埼玉・神奈川・栃木・群馬の5県とその全210市区町村。")
+    A("  // 数値は各県・各自治体の公式サイトのみを出典とする（2026年7月28日調査）。")
+    A("  // このブロックは improvement/_build/add_prefectures.py が生成する。手で編集しないこと。")
+    A("  (function () {")
+
+    # PROGRAMS への追加
+    A("    var ADDED = {")
+    A(build_programs_js())
+    A("    };")
+    A("    Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });")
+
+    # CAP / CAP_TEXT / EXPENSE_DESC
+    A("    var ADDED_CAP = {" + ", ".join(f'{p["key"]}: {p["cap_num"]}' for p in PROGRAMS) + "};")
+    A("    Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });")
+    A("    var ADDED_CAP_TEXT = {")
+    A(",\n".join(f'      {p["key"]}: {js_str(p["cap_text"])}' for p in PROGRAMS))
+    A("    };")
+    A("    Object.keys(ADDED_CAP_TEXT).forEach(function (k) { CAP_TEXT[k] = ADDED_CAP_TEXT[k]; });")
+    A("    var ADDED_EXPENSE = {")
+    A(",\n".join(f'      {p["key"]}: {js_str(p["expense_desc"])}' for p in PROGRAMS))
+    A("    };")
+    A("    Object.keys(ADDED_EXPENSE).forEach(function (k) { EXPENSE_DESC[k] = ADDED_EXPENSE[k]; });")
+
+    # 県レベル制度キー
+    pref_keys = {}
+    for p in PROGRAMS:
+        if not p["muni"]:
+            pref_keys.setdefault(p["pref"], []).append(p["key"])
+    A("    var ADDED_PREF = {")
+    A(",\n".join(f'      {k}: [' + ", ".join(js_str(x) for x in v) + "]" for k, v in pref_keys.items()))
+    A("    };")
+    A("    Object.keys(ADDED_PREF).forEach(function (k) { PREFECTURE_PROGRAM_KEYS[k] = ADDED_PREF[k]; });")
+
+    # 市区町村ラベル
+    A("    var ADDED_LABEL = {")
+    rows = []
+    for pref, items in MUNICIPALITIES.items():
+        inner = ", ".join(f"{k}: {js_str(v)}" for k, v in items)
+        rows.append(f"      {pref}: {{ {inner} }}")
+    A(",\n".join(rows))
+    A("    };")
+    A("    Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });")
+
+    # 市区町村の制度キー
+    muni_keys = {}
+    for p in PROGRAMS:
+        if p["muni"]:
+            muni_keys.setdefault(p["pref"], {}).setdefault(p["muni"], []).append(p["key"])
+    A("    var ADDED_MUNI = {")
+    rows = []
+    for pref, d in muni_keys.items():
+        inner = ", ".join(f"{m}: [" + ", ".join(js_str(x) for x in ks) + "]" for m, ks in d.items())
+        rows.append(f"      {pref}: {{ {inner} }}")
+    A(",\n".join(rows))
+    A("    };")
+    A("    Object.keys(ADDED_MUNI).forEach(function (k) { MUNICIPALITY_PROGRAM_KEYS[k] = ADDED_MUNI[k]; });")
+
+    # 調査したが無かった自治体
+    A("    var ADDED_NF = {")
+    rows = []
+    for pref, d in MUNI_NOT_FOUND.items():
+        inner = ",\n".join(f"        {m}: {js_str(t)}" for m, t in d.items())
+        rows.append(f"      {pref}: {{\n{inner}\n      }}")
+    A(",\n".join(rows))
+    A("    };")
+    A("    Object.keys(ADDED_NF).forEach(function (k) { MUNICIPALITY_NOT_FOUND[k] = ADDED_NF[k]; });")
+
+    # 調査済みリスト
+    A("    // ここに載っている自治体だけが調査済み。載っていない自治体は『未調査』であり、")
+    A("    // 『制度が無い』ことを意味しない。210市区町村を一度に調べ切れないための区別。")
+    A("    MUNICIPALITY_CHECKED.tokyo = '*';")
+    for pref, ks in CHECKED.items():
+        A(f"    MUNICIPALITY_CHECKED.{pref} = [" + ", ".join(js_str(k) for k in ks) + "];")
+
+    # 県レベルで見つからなかった県
+    A("    var ADDED_PNF = {")
+    A(",\n".join(f"      {k}: {js_str(v)}" for k, v in PREF_NOT_FOUND.items()))
+    A("    };")
+    A("    Object.keys(ADDED_PNF).forEach(function (k) { PREFECTURE_NOT_FOUND[k] = ADDED_PNF[k]; });")
+
+    A("  })();")
+    A("  " + END)
+    return "\n".join(L)
+
+
+def main():
+    sys.stdout.reconfigure(encoding="utf-8")
+    html = io.open(INDEX, encoding="utf-8").read()
+
+    block = "  " + build_block()
+    if START in html:
+        html = re.sub(re.escape(START) + r".*?" + re.escape(END), block.strip(), html, flags=re.S)
+        action = "置換"
+    else:
+        anchor = "  var PREFECTURE_PROGRAM_KEYS ="
+        idx = html.index(anchor)
+        # PREFECTURE_PROGRAM_KEYS 以降の各定義より後に差し込む必要があるため、
+        # MUNICIPALITY_NOT_FOUND の定義が閉じた直後を探す
+        marker = "  var MUNICIPALITY_NOT_FOUND = {"
+        j = html.index(marker)
+        depth, k = 0, html.index("{", j)
+        while True:
+            if html[k] == "{":
+                depth += 1
+            elif html[k] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            k += 1
+        end = html.index("\n", k)
+        html = html[:end + 1] + "\n" + block + "\n" + html[end + 1:]
+        action = "新規挿入"
+
+    io.open(INDEX, "w", encoding="utf-8").write(html)
+    n_muni = sum(len(v) for v in MUNICIPALITIES.values())
+    n_checked = sum(len(v) for v in CHECKED.values())
+    print(f"{action}: 5県 / {n_muni}市区町村 / 制度{len(PROGRAMS)}件")
+    for pref, items in MUNICIPALITIES.items():
+        print(f"  {PREFECTURE_LABEL[pref]}: {len(items)}市区町村（調査済み {len(CHECKED[pref])}）")
+    print(f"  調査済み計 {n_checked} / {n_muni}（残り {n_muni - n_checked} は未調査と表示）")
+
+
+if __name__ == "__main__":
+    main()
