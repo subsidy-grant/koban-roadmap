@@ -283,6 +283,14 @@
   .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
   .pill.other { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); font-weight: 500; }
   .pill.alt { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); font-weight: 500; }
+  /* 都道府県・市区町村カードの見出しピルは制度名をそのまま入れるので長い。
+     .pill の nowrap のままだと狭い画面で「（タイプA：…）」が切れて読めなくなるため、
+     ここだけ折り返しを許す。2行になると角丸100pxが不自然なので角丸も落とす。 */
+  .cond-card-prefecture > .cond-head .stack > .pill {
+    white-space: normal;
+    border-radius: 10px;
+    padding: 0.2rem 0.6rem;
+  }
   /* 藍と金の対は2型・1型色覚シミュレーションでも距離を約8割保持するため、
      制度名そのものが「◯◯補助金／◯◯助成金」と読める点と併せて色分けのみで足りる
      （文字を前置きすると名称と重複して読みにくくなる）。 */
@@ -4649,11 +4657,15 @@
   }
 
   // 県レベル・市区町村の制度カードを1件ぶん組み立てる（静的な東京都カードと同じ見た目）
-  function buildAreaCardHTML(p, areaLabel, tagLabel) {
+  // 県の制度カードと市区町村の制度カードは同じ形。extraClass だけが違う。
+  // 以前は市区町村側に同じHTMLがもう一組あり、片方だけ直して表示が食い違ったので1本にした
+  function buildAreaCardHTML(p, areaLabel, tagLabel, extraClass) {
     return (
-      '<div class="cond-card cond-card-prefecture" style="display:block;">' +
+      '<div class="cond-card cond-card-prefecture' + (extraClass ? ' ' + extraClass : '') + '" style="display:block;">' +
         '<div class="cond-head">' +
-          '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name.replace(/（.*?）$/, '') + '</span><span class="sub">' + areaLabel + '</span></div>' +
+          // 末尾の括弧は落とさない。「（タイプA）」「（B.生産性向上枠）」「（DX部門）」は
+          // 同じ制度の別枠と区別する情報で、消すと補助率・上限額がどの枠の数字か分からなくなる
+          '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name + '</span><span class="sub">' + areaLabel + '</span></div>' +
           '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
           '<span class="elig-badge warn">△ 要確認</span>' +
         '</div>' +
@@ -4754,27 +4766,7 @@
       var html = progKeys.map(function (key) {
         var p = PROGRAMS[key];
         if (!p) return '';
-        return (
-          '<div class="cond-card cond-card-prefecture cond-card-municipality" style="display:block;">' +
-            '<div class="cond-head">' +
-              '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name.replace(/（.*?）$/, '') + '</span><span class="sub">' + wardName + '</span></div>' +
-              '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
-              '<span class="elig-badge warn">△ 要確認</span>' +
-            '</div>' +
-            '<div class="cond-card-prefecture-tag">' + wardName + '限定の制度</div>' +
-            '<div class="pd-grid">' +
-              '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
-              '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-              '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
-              '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
-              '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
-              '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
-              '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
-              '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
-            '</div>' +
-            '<div class="pd-note">' + reqHL(p.note) + '</div>' +
-          '</div>'
-        );
+        return buildAreaCardHTML(p, wardName, wardName + '限定の制度', 'cond-card-municipality');
       }).join('');
       slot.innerHTML = html;
       initCondCardToggles(slot);
