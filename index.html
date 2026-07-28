@@ -4911,10 +4911,46 @@
       link: "https://www.city.sodegaura.lg.jp/soshiki/shoukou/kigyoushinkoujourei.html", linkLabel: "袖ケ浦市 公式ページを見る",
       schedule: "対象施設の完成日から90日以内に指定申請書を提出（事前に事業者の指定を受けることが必要）",
       continuity: "令和6年12月20日施行の条例に基づき5年間有効"
+    },
+    gunma_minakami_tenpo: {
+      name: "みなかみ町店舗等改築等補助金",
+      prefecture: "gunma", municipality: "minakami",
+      scale: "みなかみ町内に本店がある個人または営利法人で、卸売業・小売業、宿泊業・飲食サービス業、生活関連サービス業（映画館、スポーツ施設提供業、遊技場などを除く）を営む者。5年以上の事業継続見込みと町税の完納が必要",
+      expense: "内装工事、外装工事、屋根工事、外壁工事、給排水設備工事、電気工事、空調設備工事など（20万円以上）。改築を伴わない製品の取り付けのみは対象外",
+      rate: "10%以内", cap: "50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "理容業・美容業は日本標準産業分類の「生活関連サービス業」に含まれるため対象になるが、除外業種の書き方が包括的なので申請前に観光商工課へ確認すること。補助率10%は低めだが、空き店舗や自宅の改修で開業する場合にも使える。",
+      link: "https://www.town.minakami.gunma.jp/industry/hojyokin_shienseido/2019-0417-0952-72.html", linkLabel: "みなかみ町 公式ページを見る",
+      schedule: "令和7年度は令和7年4月1日〜12月26日（令和8年度の受付期間は町の公式ページで要確認）",
+      continuity: "みなかみ町が継続実施。年度ごとに受付期間が設定される"
+    },
+    kanagawa_yugawara_shukuhaku: {
+      name: "湯河原町宿泊税システム整備費等補助金",
+      prefecture: "kanagawa", municipality: "yugawara",
+      scale: "湯河原町の宿泊税の特別徴収義務者（旅館・ホテル営業、簡易宿所営業、住宅宿泊事業の施設を営む事業者）。特別徴収義務者申告書の提出が申請の前提",
+      expense: "レジシステムの改修・構築費、PC・タブレット・プリンター等のハードウェアおよびソフトウェアの購入費、施設パンフレット・ポスター・ホームページの修正費",
+      rate: "10/10（全額）", cap: "50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "補助率10/10は全額補助で、宿泊業だけが使える数少ない制度。令和8年4月1日の宿泊税導入に合わせた時限的な制度なので、この期限を逃すと使えない。",
+      link: "https://www.town.yugawara.kanagawa.jp/site/shukuhakuzei/28030.html", linkLabel: "湯河原町 公式ページを見る",
+      schedule: "申請期限：令和8年2月2日／対象経費は交付決定から令和8年6月1日までに支払い完了したもの",
+      continuity: "令和8年4月の宿泊税導入に伴う時限措置。申請期限後の継続は未定"
+    },
+    gunma_nakanojo_keizoku: {
+      name: "中之条町事業継続補助金",
+      prefecture: "gunma", municipality: "nakanojo",
+      scale: "申請日以前に中之条町内で3年以上継続して事業を営んでいる小規模事業者。業種の限定はないが、医師・医療法人・社会福祉法人などは対象外（詳細は要綱の別表1）",
+      expense: "事業継続のために行う店舗・事務所の改修費、備品購入費（税抜20万円以上）。町内事業者に発注した工事・購入であること",
+      rate: "1/2", cap: "30万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "旧「店舗等リニューアル事業補助金」。町内事業者への発注が条件なので、施工業者を町内で探す必要がある。改修だけでなく備品購入にも使えるのが利点。",
+      link: "https://www.town.nakanojo.gunma.jp/soshiki/9/1354.html", linkLabel: "中之条町 公式ページを見る",
+      schedule: "通年（受付期間は町の公式ページで要確認）",
+      continuity: "中之条町が継続実施。次年度以降も継続が見込まれる"
     }
     };
     Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });
-    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, kanagawa_hiratsuka_datsutanso: 500, saitama_saitama_setsubi: 1000, gunma_maebashi_setsubi: 200, kanagawa_atsugi_setsubi: 200, kanagawa_yokosuka_senshinteki: 200, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150, kanagawa_yokohama_shoene: 300, kanagawa_yokohama_led: 50, kanagawa_yokohama_shingijutsu: 1000, kanagawa_yokohama_monozukuri: 40, kanagawa_sagamihara_shoene: 100, saitama_kawaguchi_ritchi: 200, kanagawa_hiratsuka_ritchi: 50000, saitama_sayama_ritchi: 1000, saitama_tokorozawa_monozukuri: 100, saitama_tokorozawa_toshigata: 240, chiba_sodegaura_shinko: 20000};
+    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, kanagawa_hiratsuka_datsutanso: 500, saitama_saitama_setsubi: 1000, gunma_maebashi_setsubi: 200, kanagawa_atsugi_setsubi: 200, kanagawa_yokosuka_senshinteki: 200, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150, kanagawa_yokohama_shoene: 300, kanagawa_yokohama_led: 50, kanagawa_yokohama_shingijutsu: 1000, kanagawa_yokohama_monozukuri: 40, kanagawa_sagamihara_shoene: 100, saitama_kawaguchi_ritchi: 200, kanagawa_hiratsuka_ritchi: 50000, saitama_sayama_ritchi: 1000, saitama_tokorozawa_monozukuri: 100, saitama_tokorozawa_toshigata: 240, chiba_sodegaura_shinko: 20000, gunma_minakami_tenpo: 50, kanagawa_yugawara_shukuhaku: 50, gunma_nakanojo_keizoku: 30};
     Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });
     var ADDED_CAP_TEXT = {
       chiba_seicho4: "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
@@ -4984,7 +5020,10 @@
       saitama_sayama_ritchi: "企業立地奨励金：中小企業は上限なし・5年間／大企業は年1,000万円・3年間／雇用促進助成金 1人20万円・上限400万円／正規従業員雇用促進助成金 1人30万円・上限600万円／環境保全施設設置助成金 1/2・上限300万円",
       saitama_tokorozawa_monozukuri: "販路開拓（設備改修等）100万円（経営革新計画の承認事業者は150万円）／新製品等開発 30万円（設備改修を含む場合100万円）／産業財産権取得 30万円",
       saitama_tokorozawa_toshigata: "月額最大10万円×最長24か月（合計最大240万円）",
-      chiba_sodegaura_shinko: "新規立地奨励金：固定資産税納付相当額の50%・年度上限2億円・課税翌年度から5年間／カーボンニュートラル促進奨励金：70%・年度上限1億円・5年間／大規模設備投資奨励金：3年間（研究関連施設は5年間）"
+      chiba_sodegaura_shinko: "新規立地奨励金：固定資産税納付相当額の50%・年度上限2億円・課税翌年度から5年間／カーボンニュートラル促進奨励金：70%・年度上限1億円・5年間／大規模設備投資奨励金：3年間（研究関連施設は5年間）",
+      gunma_minakami_tenpo: "50万円（対象は20万円以上の工事）",
+      kanagawa_yugawara_shukuhaku: "50万円",
+      gunma_nakanojo_keizoku: "30万円（対象は税抜20万円以上の事業）"
     };
     Object.keys(ADDED_CAP_TEXT).forEach(function (k) { CAP_TEXT[k] = ADDED_CAP_TEXT[k]; });
     var ADDED_EXPENSE = {
@@ -5055,7 +5094,10 @@
       saitama_sayama_ritchi: "事業所の新設・増設に係る固定資産税等相当額、新規雇用、環境保全施設の設置費",
       saitama_tokorozawa_monozukuri: "既存設備の改修費、新製品等の開発費、産業財産権の出願費",
       saitama_tokorozawa_toshigata: "事務所等の賃借料",
-      chiba_sodegaura_shinko: "対象施設の新設・増設に係る固定資産税納付相当額"
+      chiba_sodegaura_shinko: "対象施設の新設・増設に係る固定資産税納付相当額",
+      gunma_minakami_tenpo: "店舗の内装・外装・給排水・電気・空調設備の改築工事費",
+      kanagawa_yugawara_shukuhaku: "レジシステムの改修費、PC・タブレット等の購入費、パンフレット・HPの修正費",
+      gunma_nakanojo_keizoku: "店舗・事務所の改修費、事業継続に必要な備品購入費"
     };
     Object.keys(ADDED_EXPENSE).forEach(function (k) { EXPENSE_DESC[k] = ADDED_EXPENSE[k]; });
     var ADDED_INDUSTRIES = {
@@ -5080,7 +5122,9 @@
       saitama_sayama_ritchi: ["manufacturing"],
       saitama_tokorozawa_monozukuri: ["manufacturing"],
       saitama_tokorozawa_toshigata: ["manufacturing"],
-      chiba_sodegaura_shinko: ["manufacturing", "lodging"]
+      chiba_sodegaura_shinko: ["manufacturing", "lodging"],
+      gunma_minakami_tenpo: ["beauty", "food", "lodging"],
+      kanagawa_yugawara_shukuhaku: ["lodging"]
     };
     Object.keys(ADDED_INDUSTRIES).forEach(function (k) { PROGRAM_INDUSTRIES[k] = ADDED_INDUSTRIES[k]; });
     var ADDED_PREF = {
@@ -5099,10 +5143,10 @@
     };
     Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });
     var ADDED_MUNI = {
-      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei", "kanagawa_sagamihara_shoene"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict", "kanagawa_yokosuka_senshinteki"], atsugi: ["kanagawa_atsugi_it", "kanagawa_atsugi_setsubi"], hiratsuka: ["kanagawa_hiratsuka_dx", "kanagawa_hiratsuka_datsutanso", "kanagawa_hiratsuka_ritchi"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"], yokohama: ["kanagawa_yokohama_shoene", "kanagawa_yokohama_led", "kanagawa_yokohama_shingijutsu", "kanagawa_yokohama_monozukuri"] },
+      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei", "kanagawa_sagamihara_shoene"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict", "kanagawa_yokosuka_senshinteki"], atsugi: ["kanagawa_atsugi_it", "kanagawa_atsugi_setsubi"], hiratsuka: ["kanagawa_hiratsuka_dx", "kanagawa_hiratsuka_datsutanso", "kanagawa_hiratsuka_ritchi"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"], yokohama: ["kanagawa_yokohama_shoene", "kanagawa_yokohama_led", "kanagawa_yokohama_shingijutsu", "kanagawa_yokohama_monozukuri"], yugawara: ["kanagawa_yugawara_shukuhaku"] },
       chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"], kimitsu: ["chiba_kimitsu_seisansei"], tateyama: ["chiba_tateyama_digital"], minamiboso: ["chiba_minamiboso_digital"], mobara: ["chiba_mobara_support"], choshi: ["chiba_choshi_ritchi"], sodegaura: ["chiba_sodegaura_shinko"] },
       saitama: { saitama: ["saitama_saitama_dx", "saitama_saitama_setsubi"], kawaguchi: ["saitama_kawaguchi_dx", "saitama_kawaguchi_ritchi"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"], iruma: ["saitama_iruma_shinko"], sayama: ["saitama_sayama_ritchi"], tokorozawa: ["saitama_tokorozawa_monozukuri", "saitama_tokorozawa_toshigata"] },
-      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], maebashi: ["gunma_maebashi_setsubi", "gunma_maebashi_dx"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"] },
+      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], maebashi: ["gunma_maebashi_setsubi", "gunma_maebashi_dx"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"], minakami: ["gunma_minakami_tenpo"], nakanojo: ["gunma_nakanojo_keizoku"] },
       tochigi: { nikko: ["tochigi_nikko_digital", "tochigi_nikko_lease"], shimotsuke: ["tochigi_shimotsuke_reform"], kanuma: ["tochigi_kanuma_digital"], ashikaga: ["tochigi_ashikaga_shinko"] }
     };
     Object.keys(ADDED_MUNI).forEach(function (k) { MUNICIPALITY_PROGRAM_KEYS[k] = ADDED_MUNI[k]; });
@@ -5127,7 +5171,7 @@
         kaisei: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         hakone: "町独自の制度は「人材確保等支援事業補助金」（人材確保・定着の取組が対象）と創業支援（空き公共施設の店舗活用支援等）で、設備投資・IT導入を対象とする制度は確認できませんでした。",
         manazuru: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
-        yugawara: "町独自の制度は原油価格高騰対策支援金（燃料費・電気料金・ガス料金の一部を支援）と特定創業支援等事業で、設備投資・IT導入を対象とする補助金は確認できませんでした。",
+        yugawara: "「宿泊税システム整備費等補助金」（補助率10/10・上限50万円）がありますが、宿泊税の特別徴収義務者＝宿泊事業者しか使えません。それ以外の業種向けは原油価格高騰対策支援金（燃料費・電気料金・ガス料金の一部を支援）と特定創業支援等事業で、設備投資・IT導入を対象とする補助金は確認できませんでした。",
         aikawa: "町の公式サイトを調べた範囲では、創業支援相談（NPOあつぎみらい21と連携）はありますが、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         kiyokawa: "村の公式サイトを調べた範囲では、創業支援相談（NPOあつぎみらい21と連携）はありますが、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         hadano: "市の商工業支援は融資制度（脱炭素設備等導入促進資金・ハイテク機器設備資金等）と利子補給が中心で、市独自の設備投資・IT導入補助金は確認できませんでした。企業立地等奨励金は新規立地・施設再整備を行う企業が対象です。"
@@ -5135,7 +5179,7 @@
       chiba: {
         funabashi: "「工業振興支援事業補助金」（令和4年度から全業種に拡大）がありますが、対象はISO認証・エコアクション21・産業財産権の取得と試験データ収集に限られ、設備投資・IT導入は対象外です。ほかに再投資企業促進事業補助制度がありますが、これは市内立地企業の再投資・雇用拡大を対象とする制度です。",
         ichikawa: "「経営力強化支援補助金」は事業計画策定時の専門家相談料等を補助する制度、「中小企業展示会等出展支援事業補助金」は展示会出展費の補助で、いずれも設備投資・IT導入そのものを対象とする制度ではありません。省エネ・創エネ設備設置費等補助金は省エネ・創エネ設備に限定されます。",
-        kashiwa: "市のサイトでは国のデジタル化・AI導入補助金等が案内されていますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。創業支援・企業立地促進の補助金は対象が限定されます。",
+        kashiwa: "「チャレンジ支援補助金」に令和6年度はDX推進事業・新商品開発等事業の区分がありましたが、令和8年度は賑わい創出イベント開催支援のみで、設備投資・IT導入の区分は確認できませんでした。市のサイトでは国のデジタル化・AI導入補助金等が案内されています。創業支援・企業立地促進の補助金は対象が限定されます。",
         ichihara: "「中小企業等未来開拓サポート事業補助金」（2/3以内・上限50万円、女性または39歳以下は3/4以内）がありますが、対象は「事業を営んでいない個人であって令和8年1月1日〜令和9年3月12日の間に開業する方」で、既に営業している事業者は使えません。対象経費も店舗等改修費・備品購入費・広報費等で、設備投資・IT導入を主目的とする制度ではありません。",
         yachiyo: "市独自の制度は中小企業資金融資制度と商店街向けの共同施設設置・商業活性化推進事業補助金に限られ、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。設備関連は千葉県の事業として案内されています。",
         nagareyama: "市独自の補助金は「多様な人材が活躍できる職場づくり補助金」（職場環境改善）、「グループ提案型売上アップ・プロジェクト応援補助金」（3事業者以上のグループが対象）、「空き店舗有効活用事業補助金」（改装工事費・賃料）で、いずれも業種を問わず単独で使える設備投資・IT導入の制度ではありません。",
@@ -5275,9 +5319,8 @@
         shinto: "村独自の制度は空き家のリフォーム補助金（村内で居住または事業を行う意思のある者が対象）で、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         kanra: "町の補助制度は住宅リフォーム促進事業補助金や農業関係が中心で、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         shimonita: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
-        nakanojo: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         kusatsu: "町の助成金等のページは浄化槽設置整備事業費補助金など暮らし向けが中心で、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
-        minakami: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
+        minakami: "「店舗等改築等補助金」は対象業種が卸売業・小売業、宿泊業・飲食サービス業、生活関連サービス業に限られ、製造業・不動産業・教育業は使えません。ほかに起業支援事業補助金、地場産品普及事業補助金、観光活性化補助金がありますが、いずれも設備投資・IT導入そのものを対象とする制度ではありません。",
         higashiagatsuma: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         naganohara: "町の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         takayama: "村の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
@@ -5289,7 +5332,7 @@
         nanmoku: "村の公式サイトを調べた範囲では、事業者向けの設備投資・IT導入補助金は確認できませんでした。",
         fujioka: "「ぐんま技術革新チャレンジ補助金」（1/2以内・小規模事業者は4/5以内、上限80万円）はデジタル技術を活用した開発が対象で、新技術・新製品の開発が前提です。ほかはISO認証取得支援事業補助金と企業誘致系で、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
         kiryu: "市独自の11制度（魅力ある職場発信・雇用促進、繊維産地新連携促進、ものづくり拠点開設、新店舗開設促進、地域店舗買物促進、販路拡大支援、産学官共同研究推進、ぐんま技術革新チャレンジ、群馬大学生就労型人材活用推進、中小企業人材養成、小規模企業者省エネルギー設備導入）は、いずれも目的や対象が限定されています。設備投資系は省エネ設備導入補助金のみで、業種を問わず使えるIT導入・生産性向上の補助金は確認できませんでした。",
-        shibukawa: "「ぐんま技術革新チャレンジ補助金」は新技術・新製品の開発が対象、「しぶかわ企業進出促進補助金」と「工場等設置奨励事業」は立地・設置が対象で、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。「先端設備等導入計画」の認定は固定資産税の特例を受けるための制度で、補助金ではありません。",
+        shibukawa: "既存事業者向けの「店舗改装事業補助金」（1/2・上限30万円）は令和8年度の助成金一覧から外れており、募集は確認できませんでした。創業者であれば「しぶかわde創業チャレンジ支援事業補助金」（1/2・上限50万円、都市機能誘導区域内は60万円）が事業所改修・設備購入に使えます。「ぐんま技術革新チャレンジ補助金」は新技術・新製品の開発が対象、「しぶかわ企業進出促進補助金」と「工場等設置奨励事業」は立地・設置が対象で、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。「先端設備等導入計画」の認定は固定資産税の特例を受けるための制度で、補助金ではありません。",
         tatebayashi: "市独自の16制度は店舗改装・労働環境改善・展示会出展・人材育成・雇用奨励・事業承継など目的が限定されています。「店舗リニューアル助成金」（改装費用の1/2、小売業・飲食サービス業・生活関連サービス業の来店型店舗が対象）は受付終了しており、「ぐんま技術革新チャレンジ補助金」は新技術・新製品の開発が対象です。",
         ota: "「太田市DX推進補助金」（1/2以内・上限100万円）がありますが、対象は建設業・製造業・運輸業／郵便業を主たる事業とする者、または市内で製品等の開発・製造を行う者に限られ、業種を問わず使える制度ではありません。該当業種の方は市の公式ページをご確認ください。"
       }
