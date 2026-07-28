@@ -4588,6 +4588,42 @@
       schedule: "令和8年度実施（受付期間は村の公式ページで要確認）",
       continuity: "嬬恋村が継続実施。次年度以降も継続が見込まれる"
     },
+    gunma_maebashi_setsubi: {
+      name: "前橋市設備投資支援補助金",
+      prefecture: "gunma", municipality: "maebashi",
+      scale: "前橋市内で1年以上継続して事業を営む個人事業主・法人・進出企業。風俗営業、農業、漁業、電気・ガス・水道業、学校教育、医療福祉、政治経済文化団体、宗教、その他サービス業等は対象外。市税の完納が必要",
+      expense: "資産購入費、設計費、取付工事費、初期設定費（譲渡・交換・貸付目的、人員削減目的、中古設備、保守料、消費税、関連会社への支出、車両、野立て設置、複数事業者の共同申請は対象外）",
+      rate: "生産性向上設備導入枠：個人事業主1/3以内・法人1/5以内／省エネ設備導入枠：1/3以内", cap: "生産性向上枠 最大200万円／省エネ枠 最大150万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "同じ市のDX推進補助金がソフト寄りなのに対し、こちらは設備そのものが対象。生産性向上枠は受付が年2回・各2週間だけなので日程に注意。法人は補助率1/5と低い。",
+      link: "https://www.city.maebashi.gunma.jp/soshiki/sangyokeizai/sangyoseisaku/shinseisho/7310.html", linkLabel: "前橋市 公式ページを見る",
+      schedule: "生産性向上枠：令和8年6月1日〜12日、8月17日〜28日／省エネ枠：随時（予算上限到達まで）",
+      continuity: "前橋市が令和8年度に実施。次年度以降は予算措置次第"
+    },
+    kanagawa_atsugi_setsubi: {
+      name: "厚木市中小企業設備投資促進事業補助金",
+      prefecture: "kanagawa", municipality: "atsugi",
+      scale: "厚木市内で5年以上継続して事業を営み市税を完納している中小企業者等。業種の限定はなく、製造業以外も対象（自社製品を設置するものは対象外）",
+      expense: "設備本体費、附属部品費、設定費、運搬費（工事・設置費用および既存設備の廃棄費用は対象外）。令和8年3月16日〜令和9年3月15日に支払ったもの",
+      rate: "中小企業者1/2以内／小規模企業者2/3以内", cap: "製造業200万円／製造業以外100万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "製造業以外も上限100万円で使える。工事・設置費用が対象外なので、見積は設備本体と工事を分けておくこと。申請は設備の引渡し後で、期限が引渡しから2か月と短い。",
+      link: "https://www.city.atsugi.kanagawa.jp/soshiki/sangyoshinkoka/9/2/2146.html", linkLabel: "厚木市 公式ページを見る",
+      schedule: "設備引渡しから2か月以内、または令和9年3月15日までのいずれか早い方（3月16日〜31日は受付対象外）",
+      continuity: "厚木市が継続実施。次年度以降も継続が見込まれる"
+    },
+    kanagawa_yokosuka_senshinteki: {
+      name: "横須賀市先進的技術開発促進事業補助金",
+      prefecture: "kanagawa", municipality: "yokosuka",
+      scale: "横須賀市内の工業系地域、地区計画に定める工業集積拠点、指定産業地域で製造業を主たる事業として営んでいる中小企業者",
+      expense: "原材料購入費、機械装置・工具の購入または借入れ、外注加工費、技術指導・調査費、特許権の出願費用（実用新案権・意匠権・商標権は対象外）",
+      rate: "1/2", cap: "200万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "立地が工業系地域・工業集積拠点・指定産業地域に限られるため、まず自社の所在地が該当するか確認すること。技術開発が目的で、単なる設備更新には使えない。",
+      link: "https://www.city.yokosuka.kanagawa.jp/4421/g_info/l100050805.html", linkLabel: "横須賀市 公式ページを見る",
+      schedule: "令和8年度実施（受付期間は市の公式ページで要確認）",
+      continuity: "横須賀市が継続実施。次年度以降も継続が見込まれる"
+    },
     kanagawa_ayase_kyojinka: {
       name: "綾瀬市中小企業強靭化推進補助金",
       prefecture: "kanagawa", municipality: "ayase",
@@ -4722,7 +4758,7 @@
     }
     };
     Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });
-    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150};
+    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, gunma_maebashi_setsubi: 200, kanagawa_atsugi_setsubi: 200, kanagawa_yokosuka_senshinteki: 200, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150};
     Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });
     var ADDED_CAP_TEXT = {
       chiba_seicho4: "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
@@ -4766,6 +4802,9 @@
       tochigi_kanuma_digital: "50万円",
       gunma_midori_renewal: "100万円",
       gunma_tsumagoi_uriage: "50万円（1事業者あたりの交付限度額）",
+      gunma_maebashi_setsubi: "生産性向上枠：個人50万円・小規模企業者100万円・その他150万円（事業所税加算で200万円）／省エネ枠：100万円（加算で150万円）",
+      kanagawa_atsugi_setsubi: "製造業200万円／製造業以外100万円（年度内1回限り）",
+      kanagawa_yokosuka_senshinteki: "200万円（1,000円未満切り捨て）",
       kanagawa_ayase_kyojinka: "A-1コース500万円／A-2コース200万円／Bコース200万円",
       gunma_ota_dx: "100万円（下限：補助対象事業費50万円〈税抜〉以上）",
       kanagawa_isehara_setsubi: "50万円（対象は総額160万円以上の機械・装置）",
@@ -4821,6 +4860,9 @@
       tochigi_kanuma_digital: "システム構築費・ソフトウェア導入費・機器設置設定費・Wi-Fi環境整備費",
       gunma_midori_renewal: "店舗の改装・改修工事費、備品購入費",
       gunma_tsumagoi_uriage: "販売促進・業務効率化に伴う広告費、店舗等改修費",
+      gunma_maebashi_setsubi: "設備の購入費・設計費・取付工事費・初期設定費",
+      kanagawa_atsugi_setsubi: "設備本体費・附属部品費・設定費・運搬費",
+      kanagawa_yokosuka_senshinteki: "機械装置・工具の購入／借入費、原材料購入費、外注加工費",
       kanagawa_ayase_kyojinka: "製造現場の強靭化・生産性向上・デジタル化推進の経費",
       gunma_ota_dx: "省力化機器・勤怠管理システム等のシステム導入費",
       kanagawa_isehara_setsubi: "機械及び装置の購入費",
@@ -4839,6 +4881,7 @@
       chiba_tateyama_digital: ["beauty", "food", "lodging", "manufacturing", "education"],
       kanagawa_ayase_shogyo: ["beauty", "food"],
       tochigi_shimotsuke_reform: ["beauty", "food", "lodging", "education"],
+      kanagawa_yokosuka_senshinteki: ["manufacturing"],
       kanagawa_ayase_kyojinka: ["manufacturing"],
       gunma_ota_dx: ["manufacturing"],
       kanagawa_isehara_setsubi: ["manufacturing"],
@@ -4867,10 +4910,10 @@
     };
     Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });
     var ADDED_MUNI = {
-      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict"], atsugi: ["kanagawa_atsugi_it"], hiratsuka: ["kanagawa_hiratsuka_dx"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"] },
+      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict", "kanagawa_yokosuka_senshinteki"], atsugi: ["kanagawa_atsugi_it", "kanagawa_atsugi_setsubi"], hiratsuka: ["kanagawa_hiratsuka_dx"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"] },
       chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"], kimitsu: ["chiba_kimitsu_seisansei"], tateyama: ["chiba_tateyama_digital"], minamiboso: ["chiba_minamiboso_digital"], mobara: ["chiba_mobara_support"], choshi: ["chiba_choshi_ritchi"] },
       saitama: { saitama: ["saitama_saitama_dx"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"], iruma: ["saitama_iruma_shinko"] },
-      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"], maebashi: ["gunma_maebashi_dx"] },
+      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], maebashi: ["gunma_maebashi_setsubi", "gunma_maebashi_dx"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"] },
       tochigi: { nikko: ["tochigi_nikko_digital", "tochigi_nikko_lease"], shimotsuke: ["tochigi_shimotsuke_reform"], kanuma: ["tochigi_kanuma_digital"], ashikaga: ["tochigi_ashikaga_shinko"] }
     };
     Object.keys(ADDED_MUNI).forEach(function (k) { MUNICIPALITY_PROGRAM_KEYS[k] = ADDED_MUNI[k]; });
