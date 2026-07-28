@@ -4001,6 +4001,11 @@
   var currentIndustry = 'beauty';
   var currentPrefecture = '';
   var currentMunicipality = '';
+  // 対象業種が限られる制度だけをここに入れる（入っていない制度＝全6業種で使える）。
+  // improvement/_build/add_prefectures.py が PREFECTURE_EXPANSION ブロックで中身を足す。
+  // 宣言はブロックより必ず前に置くこと（後ろだと実行時にまだ undefined で落ちる）。
+  var PROGRAM_INDUSTRIES = {};
+
   var PREFECTURE_PROGRAM_KEYS = { tokyo: ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'] };
   var PREFECTURE_LABEL = {
     tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
@@ -4583,6 +4588,126 @@
       schedule: "令和8年度実施（受付期間は村の公式ページで要確認）",
       continuity: "嬬恋村が継続実施。次年度以降も継続が見込まれる"
     },
+    kanagawa_ayase_kyojinka: {
+      name: "綾瀬市中小企業強靭化推進補助金",
+      prefecture: "kanagawa", municipality: "ayase",
+      scale: "綾瀬市内の中小企業者のうち、主たる業種が製造業である者",
+      expense: "A-1コース：製造現場強靭化事業、企業間連携力強化事業、ビジネスモデル転換事業等／A-2コース：新技術・新商品開発事業、研究調査・実証実験事業等／Bコース：生産性向上事業、販路拡大事業、デジタル化推進事業、カーボンニュートラル推進事業等",
+      rate: "A-1コース2/3以内（A-2・Bコースの補助率は要綱で要確認）", cap: "A-1コース500万円／A-2・Bコース200万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "上限500万円は市町村レベルでは高い水準。事前相談が本申請の前提で、締切が約2週間先行する。製造業以外は同じ市の商業者支援事業補助金を確認すること。",
+      link: "https://www.city.ayase.kanagawa.jp/soshiki/shokosinkoka/kogyotanto/4/2905.html", linkLabel: "綾瀬市 公式ページを見る",
+      schedule: "事前相談：令和8年7月1日〜8月17日／本申請：令和8年7月1日〜8月31日",
+      continuity: "綾瀬市が例年実施。次年度以降も継続が見込まれる"
+    },
+    gunma_ota_dx: {
+      name: "太田市DX推進補助金",
+      prefecture: "gunma", municipality: "ota",
+      scale: "太田市内に事業所または工場を有する中小企業者のうち、建設業・製造業・運輸業／郵便業を主たる事業とする者、または市内で製品等の開発・製造を行う者。個人事業主は対象外。市税の滞納がないこと",
+      expense: "事業の効率化を目的とした省力化機器や勤怠管理システム等のシステム導入に係る費用（税抜き）。新設備の導入で市内業者への発注が基本",
+      rate: "1/2以内", cap: "100万円",
+      wage: "特になし", acceptance: "非公表（予算に達し次第終了）",
+      note: "市内業者への発注が基本で、市外業者に発注する場合は事前に市へ確認が必要。個人事業主が対象外の点に注意。",
+      link: "https://www.city.ota.gunma.jp/page/1051763.html", linkLabel: "太田市 公式ページを見る",
+      schedule: "令和8年12月28日17時まで（郵送は当日消印有効／予算に達し次第終了）",
+      continuity: "太田市が令和8年度に実施。次年度以降は予算措置次第"
+    },
+    kanagawa_isehara_setsubi: {
+      name: "伊勢原市中小企業設備投資支援事業補助金",
+      prefecture: "kanagawa", municipality: "isehara",
+      scale: "伊勢原市内で1年以上継続して製造業を営み、個人にあっては市内に1年以上住所を有する中小企業者",
+      expense: "総額160万円以上の機械及び装置（運搬費・工事費・設置費等は除く）",
+      rate: "1/5以内", cap: "50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "補助率1/5は低めで、対象も機械・装置本体のみ。運搬費・工事費・設置費が対象外のため、見積の内訳を分けておく必要がある。",
+      link: "https://www.city.isehara.kanagawa.jp/docs/2024032500039/", linkLabel: "伊勢原市 公式ページを見る",
+      schedule: "計画概要書を12月末までに必着で提出",
+      continuity: "伊勢原市が継続実施。次年度以降も継続が見込まれる"
+    },
+    kanagawa_kamakura_ritchi: {
+      name: "鎌倉市企業立地整備費等補助金",
+      prefecture: "kanagawa", municipality: "kamakura",
+      scale: "鎌倉市内に事業所・サテライトオフィス等を新規に整備する、製造業・情報通信業・宿泊業・自然科学研究所を営む事業者（シェアオフィスのみ全業種）",
+      expense: "リフォーム補助：オフィス内装変更・造作経費、通信設備経費、バリアフリー化を含む外構工事経費／賃料補助：助成事業の用に供する部分の賃料等（共益費含む）",
+      rate: "リフォーム補助50%以内／賃料補助50%以内", cap: "リフォーム300万円／賃料25万円×6か月",
+      wage: "特になし", acceptance: "非公表",
+      note: "宿泊業が対象業種に明記されている数少ない制度。新規整備が前提で、既存事業所の改修には使えない。",
+      link: "https://www.city.kamakura.kanagawa.jp/shoukou/sien/office.html", linkLabel: "鎌倉市 公式ページを見る",
+      schedule: "令和8年4月1日〜令和9年2月26日",
+      continuity: "鎌倉市が継続実施。次年度以降も継続が見込まれる"
+    },
+    kanagawa_kamakura_kankyo: {
+      name: "鎌倉市環境共生施設整備費補助金",
+      prefecture: "kanagawa", municipality: "kamakura",
+      scale: "鎌倉市内で製造業・情報通信業・自然科学研究所を1年以上継続して営んでいる企業",
+      expense: "環境保全施設（防音・防臭・防煙、省エネ、汚水浄化等）、雨水活用施設（貯水量600リットル超）、太陽光発電施設（発電能力1kW以上）",
+      rate: "環境保全施設50%以内／雨水活用施設30%以内／太陽光発電は1kWにつき10万円", cap: "環境保全300万円／太陽光150万円／雨水100万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "生産設備そのものではなく環境負荷を下げる施設が対象。省エネ設備の導入と組み合わせて検討する制度。",
+      link: "https://www.city.kamakura.kanagawa.jp/shoukou/kankyou.html", linkLabel: "鎌倉市 公式ページを見る",
+      schedule: "令和8年4月1日〜令和9年2月26日",
+      continuity: "鎌倉市が継続実施。次年度以降も継続が見込まれる"
+    },
+    chiba_choshi_ritchi: {
+      name: "銚子市企業立地等促進事業補助金",
+      prefecture: "chiba", municipality: "choshi",
+      scale: "銚子市内で製造業、流通加工施設、植物工場、陸上養殖施設、情報サービス業、観光業、宿泊業を営む事業者。新たに立地する者または既存工場に再投資する者",
+      expense: "新規所有型：操業開始日前5年以内に取得した土地・建物・償却資産に係る固定資産税および都市計画税相当額／新規賃借型：対象施設の賃借料／再投資：同上の固定資産税等相当額",
+      rate: "新規所有型100%／新規賃借型1/2以内／再投資1/2以内", cap: "再投資は年度1,000万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "設備費そのものではなく固定資産税相当額または賃借料を補助する形。観光業・宿泊業が対象に含まれる。操業開始前に申請しないと使えない。",
+      link: "https://www.city.choshi.chiba.jp/business/page110047.html", linkLabel: "銚子市 公式ページを見る",
+      schedule: "操業開始日前の申請が必要（受付期間は市の公式ページで要確認）",
+      continuity: "銚子市が継続実施。次年度以降も継続が見込まれる"
+    },
+    gunma_takasaki_lease: {
+      name: "高崎市中小企業等機械設備導入支援助成金",
+      prefecture: "gunma", municipality: "takasaki",
+      scale: "高崎市内の中小企業者等。対象は生産に直接関わる機械・装置と特定の車両運搬具に限られ、ITシステム・ソフトウェアの記載はありません",
+      expense: "機械・装置および特定の車両運搬具のリース料",
+      rate: "助成率2.1%×リース日数÷365", cap: "年500万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "購入ではなくリース料への助成で、助成率は年率換算2.1%相当。生産に直接関わる設備が対象のため、事務用のIT機器には使えない。",
+      link: "https://www.city.takasaki.gunma.jp/", linkLabel: "高崎市 公式サイトを見る",
+      schedule: "令和8年度実施（受付期間は市の公式ページで要確認）",
+      continuity: "高崎市が継続実施。次年度以降も継続が見込まれる"
+    },
+    tochigi_ashikaga_shinko: {
+      name: "足利市地域産業振興奨励事業補助",
+      prefecture: "tochigi", municipality: "ashikaga",
+      scale: "足利市内に事業所を有する製造業等の中小企業者またはそのグループ",
+      expense: "地域産業の振興に資する事業（詳細は市の補助制度一覧で要確認）",
+      rate: "30%以内", cap: "100万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "市の補助制度一覧にはほかに、ものづくり人材育成支援（30%・20万円）、競争力強化認証等取得支援（30%・50万円）、産業財産権取得（30%以内・30万円）、独自ブランド製品販売促進（30%以内・30万円）、工業製品展示会等出展支援（30%以内・30万円）がある。いずれも製造業等が対象。",
+      link: "https://www.city.ashikaga.tochigi.jp/industory/000058/000303/p002695.html", linkLabel: "足利市 公式ページを見る",
+      schedule: "令和8年度実施（受付期間は市の公式ページで要確認）",
+      continuity: "足利市が継続実施。次年度以降も継続が見込まれる"
+    },
+    saitama_iruma_shinko: {
+      name: "入間市商工業振興助成金",
+      prefecture: "saitama", municipality: "iruma",
+      scale: "入間市内に工場または本社を持たない事業者で、常時雇用者10人以上（中小企業は例外あり）。指定業種は製造業、情報通信業、自然科学研究所、本社、または市長が認定する特定製造業",
+      expense: "新たに立地する事業所に係る固定資産税相当額",
+      rate: "固定資産税相当額の1/10〜全額（経済産業省のDX認定事業者は加算あり）", cap: "1億円（3年間の合計）",
+      wage: "特になし", acceptance: "非公表",
+      note: "新規立地が前提の企業誘致型の制度で、既にある事業所の設備更新には使えない。DX認定事業者は助成率が加算される。",
+      link: "https://www.city.iruma.saitama.jp/soshiki/shokokankoka/shokogyo/8923.html", linkLabel: "入間市 公式ページを見る",
+      schedule: "操業開始後の最初の固定資産税課税年度の翌年度から3年間",
+      continuity: "入間市が継続実施。次年度以降も継続が見込まれる"
+    },
+    kanagawa_zama_renewal: {
+      name: "座間市店舗リニューアル等補助金",
+      prefecture: "kanagawa", municipality: "zama",
+      scale: "座間市内で小売業、飲食サービス業または生活関連サービス業に分類される事業を1年以上営み、座間市商工会の会員である事業者",
+      expense: "内外装工事費、事業用設備取得費、広告宣伝費",
+      rate: "1/2", cap: "50万円",
+      wage: "特になし", acceptance: "非公表",
+      note: "生活関連サービス業（理容・美容業）が対象。座間市商工会の会員であることが要件のため、未加入の場合は先に入会の相談が必要。",
+      link: "https://www.city.zama.kanagawa.jp/sangyo/sougyou/shogyo/1003455.html", linkLabel: "座間市 公式ページを見る",
+      schedule: "令和8年度実施（受付期間は市の公式ページで要確認）",
+      continuity: "座間市が継続実施。次年度以降も継続が見込まれる"
+    },
     gunma_maebashi_dx: {
       name: "前橋市DX推進補助金",
       prefecture: "gunma", municipality: "maebashi",
@@ -4597,7 +4722,7 @@
     }
     };
     Object.keys(ADDED).forEach(function (k) { PROGRAMS[k] = ADDED[k]; });
-    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, gunma_maebashi_dx: 150};
+    var ADDED_CAP = {chiba_seicho4: 3000, saitama_dx: 300, saitama_shoryokuka: 1200, kanagawa_seisansei: 500, kanagawa_digital: 50, tochigi_chinage: 200, kanagawa_kawasaki_seicho: 200, kanagawa_sagamihara_seisansei: 1000, chiba_chiba_ict: 50, saitama_saitama_dx: 40, saitama_kawaguchi_dx: 50, kanagawa_yokosuka_seisansei: 25, kanagawa_yokosuka_ict: 30, chiba_matsudo_dx: 50, saitama_koshigaya_setsubi: 200, kanagawa_atsugi_it: 50, gunma_isesaki_shokibo: 50, saitama_ageo_dx: 25, saitama_ageo_setsubi: 1000, saitama_niiza_itdx: 7, kanagawa_hiratsuka_dx: 200, kanagawa_ebina_shinko: 100, kanagawa_yamato_koten: 50, chiba_kimitsu_seisansei: 150, chiba_tateyama_digital: 50, chiba_minamiboso_digital: 50, chiba_mobara_support: 30, kanagawa_ayase_shogyo: 200, saitama_fujimi_challenge: 50, saitama_kazo_keieikakushin: 100, saitama_higashimatsuyama_ganbaru: 30, saitama_chichibu_reform: 15, saitama_toda_dx: 50, saitama_misato_ganbaro: 50, kanagawa_kamakura_digital: 15, tochigi_nikko_digital: 20, tochigi_nikko_lease: 100, tochigi_shimotsuke_reform: 100, tochigi_kanuma_digital: 50, gunma_midori_renewal: 100, gunma_tsumagoi_uriage: 50, kanagawa_ayase_kyojinka: 500, gunma_ota_dx: 100, kanagawa_isehara_setsubi: 50, kanagawa_kamakura_ritchi: 300, kanagawa_kamakura_kankyo: 300, chiba_choshi_ritchi: 1000, gunma_takasaki_lease: 500, tochigi_ashikaga_shinko: 100, saitama_iruma_shinko: 10000, kanagawa_zama_renewal: 50, gunma_maebashi_dx: 150};
     Object.keys(ADDED_CAP).forEach(function (k) { CAP[k] = ADDED_CAP[k]; });
     var ADDED_CAP_TEXT = {
       chiba_seicho4: "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）",
@@ -4641,6 +4766,16 @@
       tochigi_kanuma_digital: "50万円",
       gunma_midori_renewal: "100万円",
       gunma_tsumagoi_uriage: "50万円（1事業者あたりの交付限度額）",
+      kanagawa_ayase_kyojinka: "A-1コース500万円／A-2コース200万円／Bコース200万円",
+      gunma_ota_dx: "100万円（下限：補助対象事業費50万円〈税抜〉以上）",
+      kanagawa_isehara_setsubi: "50万円（対象は総額160万円以上の機械・装置）",
+      kanagawa_kamakura_ritchi: "リフォーム補助300万円（床面積100㎡未満は150万円）／賃料補助 月25万円×最大6か月",
+      kanagawa_kamakura_kankyo: "環境保全施設300万円／太陽光発電施設150万円／雨水活用施設100万円",
+      chiba_choshi_ritchi: "新規所有型は上限なし／新規賃借型は年度100万円／再投資は年度1,000万円",
+      gunma_takasaki_lease: "1事業者あたり年500万円が限度",
+      tochigi_ashikaga_shinko: "100万円",
+      saitama_iruma_shinko: "1億円（3年間の合計）",
+      kanagawa_zama_renewal: "50万円（下限：補助対象経費20万円）",
       gunma_maebashi_dx: "150万円（下限：補助対象事業費10万円以上）"
     };
     Object.keys(ADDED_CAP_TEXT).forEach(function (k) { CAP_TEXT[k] = ADDED_CAP_TEXT[k]; });
@@ -4686,9 +4821,36 @@
       tochigi_kanuma_digital: "システム構築費・ソフトウェア導入費・機器設置設定費・Wi-Fi環境整備費",
       gunma_midori_renewal: "店舗の改装・改修工事費、備品購入費",
       gunma_tsumagoi_uriage: "販売促進・業務効率化に伴う広告費、店舗等改修費",
+      kanagawa_ayase_kyojinka: "製造現場の強靭化・生産性向上・デジタル化推進の経費",
+      gunma_ota_dx: "省力化機器・勤怠管理システム等のシステム導入費",
+      kanagawa_isehara_setsubi: "機械及び装置の購入費",
+      kanagawa_kamakura_ritchi: "オフィスの内装変更・造作経費、通信設備経費、外構工事費",
+      kanagawa_kamakura_kankyo: "環境保全施設・雨水活用施設・太陽光発電施設の整備費",
+      chiba_choshi_ritchi: "固定資産税・都市計画税相当額、または対象施設の賃借料",
+      gunma_takasaki_lease: "生産用の機械・装置のリース料",
+      tochigi_ashikaga_shinko: "地域産業振興に資する事業の経費",
+      saitama_iruma_shinko: "新規立地に伴う固定資産税相当額",
+      kanagawa_zama_renewal: "店舗の内外装工事費、事業用設備取得費",
       gunma_maebashi_dx: "システム導入費・ハードウェア購入費・システム使用料・初期設定費"
     };
     Object.keys(ADDED_EXPENSE).forEach(function (k) { EXPENSE_DESC[k] = ADDED_EXPENSE[k]; });
+    var ADDED_INDUSTRIES = {
+      kanagawa_yamato_koten: ["beauty", "food", "lodging", "education"],
+      chiba_tateyama_digital: ["beauty", "food", "lodging", "manufacturing", "education"],
+      kanagawa_ayase_shogyo: ["beauty", "food"],
+      tochigi_shimotsuke_reform: ["beauty", "food", "lodging", "education"],
+      kanagawa_ayase_kyojinka: ["manufacturing"],
+      gunma_ota_dx: ["manufacturing"],
+      kanagawa_isehara_setsubi: ["manufacturing"],
+      kanagawa_kamakura_ritchi: ["manufacturing", "lodging"],
+      kanagawa_kamakura_kankyo: ["manufacturing"],
+      chiba_choshi_ritchi: ["manufacturing", "lodging"],
+      gunma_takasaki_lease: ["manufacturing"],
+      tochigi_ashikaga_shinko: ["manufacturing"],
+      saitama_iruma_shinko: ["manufacturing"],
+      kanagawa_zama_renewal: ["beauty", "food"]
+    };
+    Object.keys(ADDED_INDUSTRIES).forEach(function (k) { PROGRAM_INDUSTRIES[k] = ADDED_INDUSTRIES[k]; });
     var ADDED_PREF = {
       chiba: ["chiba_seicho4"],
       saitama: ["saitama_dx", "saitama_shoryokuka"],
@@ -4705,11 +4867,11 @@
     };
     Object.keys(ADDED_LABEL).forEach(function (k) { MUNICIPALITY_LABEL[k] = ADDED_LABEL[k]; });
     var ADDED_MUNI = {
-      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict"], atsugi: ["kanagawa_atsugi_it"], hiratsuka: ["kanagawa_hiratsuka_dx"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo"], kamakura: ["kanagawa_kamakura_digital"] },
-      chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"], kimitsu: ["chiba_kimitsu_seisansei"], tateyama: ["chiba_tateyama_digital"], minamiboso: ["chiba_minamiboso_digital"], mobara: ["chiba_mobara_support"] },
-      saitama: { saitama: ["saitama_saitama_dx"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"] },
-      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], maebashi: ["gunma_maebashi_dx"] },
-      tochigi: { nikko: ["tochigi_nikko_digital", "tochigi_nikko_lease"], shimotsuke: ["tochigi_shimotsuke_reform"], kanuma: ["tochigi_kanuma_digital"] }
+      kanagawa: { kawasaki: ["kanagawa_kawasaki_seicho"], sagamihara: ["kanagawa_sagamihara_seisansei"], yokosuka: ["kanagawa_yokosuka_seisansei", "kanagawa_yokosuka_ict"], atsugi: ["kanagawa_atsugi_it"], hiratsuka: ["kanagawa_hiratsuka_dx"], ebina: ["kanagawa_ebina_shinko"], yamato: ["kanagawa_yamato_koten"], ayase: ["kanagawa_ayase_shogyo", "kanagawa_ayase_kyojinka"], kamakura: ["kanagawa_kamakura_digital", "kanagawa_kamakura_ritchi", "kanagawa_kamakura_kankyo"], isehara: ["kanagawa_isehara_setsubi"], zama: ["kanagawa_zama_renewal"] },
+      chiba: { chiba: ["chiba_chiba_ict"], matsudo: ["chiba_matsudo_dx"], kimitsu: ["chiba_kimitsu_seisansei"], tateyama: ["chiba_tateyama_digital"], minamiboso: ["chiba_minamiboso_digital"], mobara: ["chiba_mobara_support"], choshi: ["chiba_choshi_ritchi"] },
+      saitama: { saitama: ["saitama_saitama_dx"], kawaguchi: ["saitama_kawaguchi_dx"], koshigaya: ["saitama_koshigaya_setsubi"], ageo: ["saitama_ageo_dx", "saitama_ageo_setsubi"], niiza: ["saitama_niiza_itdx"], fujimi: ["saitama_fujimi_challenge"], kazo: ["saitama_kazo_keieikakushin"], higashimatsuyama: ["saitama_higashimatsuyama_ganbaru"], chichibu: ["saitama_chichibu_reform"], toda: ["saitama_toda_dx"], misato: ["saitama_misato_ganbaro"], iruma: ["saitama_iruma_shinko"] },
+      gunma: { isesaki: ["gunma_isesaki_shokibo"], midori: ["gunma_midori_renewal"], tsumagoi: ["gunma_tsumagoi_uriage"], ota: ["gunma_ota_dx"], takasaki: ["gunma_takasaki_lease"], maebashi: ["gunma_maebashi_dx"] },
+      tochigi: { nikko: ["tochigi_nikko_digital", "tochigi_nikko_lease"], shimotsuke: ["tochigi_shimotsuke_reform"], kanuma: ["tochigi_kanuma_digital"], ashikaga: ["tochigi_ashikaga_shinko"] }
     };
     Object.keys(ADDED_MUNI).forEach(function (k) { MUNICIPALITY_PROGRAM_KEYS[k] = ADDED_MUNI[k]; });
     var ADDED_NF = {
@@ -4718,7 +4880,7 @@
         fujisawa: "「先端設備等導入計画」の認定（固定資産税の特例等）や国の制度の案内はありますが、市独自の、業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
         chigasaki: "市独自の補助金は「販路開拓等事業補助金」（展示会等への出店費用・最大10万円）と商店街向けの街路灯電灯料補助・活性化事業費補助に限られ、設備投資・IT導入を対象とする制度は確認できませんでした。市のサイトでは国のIT導入補助金・省力化投資補助金等が案内されています。",
         odawara: "市の中小企業等経営支援は融資制度と信用保証料補助が中心で、設備投資・IT導入を直接補助する市独自の制度は確認できませんでした。「デジタル関連企業集積施設整備補助金」はDX推進拠点となる施設の整備が対象、「中小企業等販路開拓事業補助金」は展示会・見本市への出展費が対象です。",
-        zama: "「生産性向上設備導入」の補助金は製造業を営む者に限定されています。ほかは創業支援（法人登記の登録免許税相当額、内外装工事費・広告宣伝費）、展示会出展、空き店舗活用事業（内外装工事費・設備物品取得費の1/2、上限50万円。市内事業者への発注が条件）で、既存事業者が業種を問わず使える設備投資・IT導入補助金は確認できませんでした。",
+        zama: "「生産性向上設備導入」の補助金は製造業を営む者に限定されており、補助率・上限額を公式サイト上で確認できなかったため掲載していません（金額は産業振興課 046-252-7604 へご確認ください）。ほかは創業支援、展示会出展、空き店舗活用事業（内外装工事費・設備物品取得費の1/2、上限50万円。市内事業者への発注が条件）です。なお小売業・飲食サービス業・生活関連サービス業の方は「店舗リニューアル等補助金」が使えます。",
         isehara: "「中小企業設備投資支援事業補助金」は市内で1年以上継続して製造業を営む事業者が対象で、総額160万円以上の機械・装置に限られます。「中小企業等省エネ設備導入支援補助金」は省エネ設備への更新が対象です。業種を問わず使えるIT導入・生産性向上の補助金は確認できませんでした。",
         zushi: "市の中小企業事業者向け支援のページに「逗子市としての助成制度はありません」と明記されており、逗子市商工会経由で国の小規模事業者持続化補助金等を利用する案内になっています。",
         miura: "市独自の制度は中小企業助成制度、経済対策利子補給金、中小企業退職金共済掛金補助、信用保証料補助で、設備投資・IT導入を直接補助する制度は確認できませんでした。市のサイトでは国の業務改善助成金（賃上げと設備投資をセットで行う場合に使える）が案内されています。",
@@ -5057,6 +5219,42 @@
   }
 
   // 県レベル・市区町村の制度カードを1件ぶん組み立てる（静的な東京都カードと同じ見た目）
+  function programFitsIndustry(key) {
+    var list = PROGRAM_INDUSTRIES[key];
+    return !list || list.indexOf(currentIndustry) !== -1;
+  }
+
+  function fitsCurrentIndustry(keys) {
+    return (keys || []).filter(programFitsIndustry);
+  }
+
+  // 制度自体はあるが、いま選んでいる業種が対象外のときに出すカード。
+  // 「確認できませんでした」と言うと嘘になる（制度はある）ので、対象業種のほうを伝える
+  function buildOtherIndustryCardHTML(keys, areaLabel) {
+    var rows = keys.map(function (k) {
+      var p = PROGRAMS[k];
+      if (!p) return '';
+      var inds = (PROGRAM_INDUSTRIES[k] || []).map(function (i) {
+        return (INDUSTRIES[i] && INDUSTRIES[i].label) || i;
+      }).join('・');
+      return '<li style="margin-bottom:0.35rem;"><a href="' + p.link +
+        '" target="_blank" rel="noopener noreferrer">' + p.name + ' ↗</a>' +
+        (inds ? '<span style="color:var(--ink-soft);">（対象：' + inds + '）</span>' : '') + '</li>';
+    }).join('');
+    return (
+      '<div class="cond-card cond-card-prefecture municipality-otherindustry" style="display:block;">' +
+        '<div class="cond-head cond-head-static"><div class="stack"><span class="pill alt">' + areaLabel +
+          '</span><span class="sub">制度はあるが対象業種が異なる</span></div></div>' +
+        '<div class="cond-card-prefecture-tag">' + areaLabel + '</div>' +
+        '<p style="margin:0.7rem 0 0.4rem; font-size:0.88rem; color:var(--ink-soft); max-width:none;">' +
+          areaLabel + 'には事業者向けの制度がありますが、いま選んでいる業種は対象に含まれていません。' +
+          '<strong>制度が無いという意味ではありません。</strong>次の制度は対象業種が異なります。' +
+        '</p>' +
+        '<ul style="margin:0; padding-left:1.2rem; font-size:0.88rem;">' + rows + '</ul>' +
+      '</div>'
+    );
+  }
+
   // 県の制度カードと市区町村の制度カードは同じ形。extraClass だけが違う。
   // 以前は市区町村側に同じHTMLがもう一組あり、片方だけ直して表示が食い違ったので1本にした
   function buildAreaCardHTML(p, areaLabel, tagLabel, extraClass) {
@@ -5095,13 +5293,16 @@
     if (!slot) return;
     var label = PREFECTURE_LABEL[currentPrefecture] || '';
     if (!currentPrefecture || currentPrefecture === 'tokyo') { slot.innerHTML = ''; return; }
-    var keys = PREFECTURE_PROGRAM_KEYS[currentPrefecture] || [];
+    var allKeys = PREFECTURE_PROGRAM_KEYS[currentPrefecture] || [];
+    var keys = fitsCurrentIndustry(allKeys);
     if (keys.length) {
       slot.innerHTML = keys.map(function (k) {
         var p = PROGRAMS[k];
         return p ? buildAreaCardHTML(p, label, label + '限定の制度') : '';
       }).join('');
       initCondCardToggles(slot);
+    } else if (allKeys.length) {
+      slot.innerHTML = buildOtherIndustryCardHTML(allKeys, label);
     } else {
       var note = PREFECTURE_NOT_FOUND[currentPrefecture];
       slot.innerHTML =
@@ -5161,7 +5362,16 @@
     if (!slot) return;
     if (!currentPrefecture || !currentMunicipality) { slot.innerHTML = ''; return; }
     var wardName = (MUNICIPALITY_LABEL[currentPrefecture] || {})[currentMunicipality] || currentMunicipality;
-    var progKeys = (MUNICIPALITY_PROGRAM_KEYS[currentPrefecture] || {})[currentMunicipality];
+    var allKeys = (MUNICIPALITY_PROGRAM_KEYS[currentPrefecture] || {})[currentMunicipality] || [];
+    var progKeys = fitsCurrentIndustry(allKeys);
+    // 制度はあるが、いま選んでいる業種が対象外のとき。
+    // MUNICIPALITY_NOT_FOUND に「なぜ使えないか」を書いてあればそちらを優先する
+    // （調査時に書いた理由のほうが、機械的な一覧より読み手の役に立つ）
+    if (!progKeys.length && allKeys.length &&
+        !(MUNICIPALITY_NOT_FOUND[currentPrefecture] || {})[currentMunicipality]) {
+      slot.innerHTML = buildOtherIndustryCardHTML(allKeys, wardName);
+      return;
+    }
     if (progKeys && progKeys.length) {
       var html = progKeys.map(function (key) {
         var p = PROGRAMS[key];
@@ -5372,6 +5582,9 @@
     renderProgramSelects(key);
     renderTrackSelect(document.getElementById('simProgram').value);
     updateIndustrySpecificCards(key);
+    // 地域の制度は対象業種が違うことがある（製造業限定など）。業種を変えたら描き直す
+    updatePrefectureCards();
+    renderMunicipalityCard();
     updateEligibilityBadges();
     renderProgram(document.getElementById('programSelect').value);
     initProgramFaq();
