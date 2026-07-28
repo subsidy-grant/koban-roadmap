@@ -120,7 +120,7 @@ def main():
     parts.append("<style>" + CSS + "</style></head><body><main>")
     parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>')
     parts.append("<h1>業種別・改善計画 厳選10選</h1>")
-    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は姉妹プロジェクトとの統合、他業種は6業種×100施策のスコアリングによる選定）。'
+    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は1000案からの独自PDCA評価、他業種は6業種×100施策のスコアリングによる選定）。'
                  "各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。"
                  '選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>')
 

@@ -390,7 +390,7 @@ def render_pdca(data, all_scores, external=None):
                          f"<td class='num'><strong>{r['weighted']:.2f}</strong></td><td>{sel}</td></tr>")
         parts.append("</tbody></table></div></details>")
 
-    parts.append('<p class="sub" style="margin-top:2.5rem;">スコア・採択情報は improvement/_build/ 配下のスクリプトとデータから再現できます。'
+    parts.append('<p class="sub" style="margin-top:2.5rem;">スコア・採択情報は本ページ記載の基準に基づき機械的に再計算できるものです。'
                  "本ページの内容は選定プロセスの透明性確保を目的とした参考情報であり、個別事業者への効果を保証するものではありません。</p>")
     parts.append("</main></body></html>")
     return "\n".join(parts)

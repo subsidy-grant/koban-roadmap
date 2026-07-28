@@ -45,7 +45,7 @@
 </style></head><body><main>
 <p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>
 <h1>業種別・改善計画 厳選10選</h1>
-<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は姉妹プロジェクトとの統合、他業種は6業種×100施策のスコアリングによる選定）。各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>
+<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は1000案からの独自PDCA評価、他業種は6業種×100施策のスコアリングによる選定）。各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>
 <div class="tabs" role="tablist">
 <button class="active" data-ind="beauty" onclick="showInd('beauty')">美容業</button>
 <button data-ind="food" onclick="showInd('food')">飲食業</button>
@@ -55,7 +55,7 @@
 <button data-ind="education" onclick="showInd('education')">教育、学習支援業</button>
 </div>
 <section class="ind active" id="ind-beauty">
-<p class="sub" style="margin-top:0;">この業種の10案は本サイトの100施策スコアリング（score.py）ではなく、姉妹プロジェクト beauty-ai-factory の独立したPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定されたものに差し替えています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）は同プロジェクトの評価基準に基づきます。</p>
+<p class="sub" style="margin-top:0;">この業種の10案は、6業種共通の100施策スコアリングではなく、美容業に特化した独自のPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定しています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）はその評価基準に基づきます。</p>
 <div class="cards">
 <div class="card">
 <div class="thumb"><div class="thumb-icon">🌐</div></div>
@@ -227,4 +227,8 @@
     if (m && document.getElementById('ind-' + m[1])) showInd(m[1]);
   })();
 </script>
-</main></body></html>
+</main>
+<!-- ANALYTICS:START -->
+<script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- ANALYTICS:END -->
+</body></html>
