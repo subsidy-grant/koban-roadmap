@@ -66,7 +66,9 @@ MAIN_HOOK = """<script>
 })();
 </script>"""
 
-RE_BLOCK = re.compile(r"\n?<!-- ANALYTICS:START -->.*?<!-- ANALYTICS:END -->", re.S)
+# 末尾の改行まで食わないと、差し込み時に足した "\n" が毎回1本ずつ残り、
+# 実行のたびにファイルが1行ずつ伸びていく（冪等にならない）
+RE_BLOCK = re.compile(r"\n?<!-- ANALYTICS:START -->.*?<!-- ANALYTICS:END -->\n?", re.S)
 
 
 def inject(path, extra=""):

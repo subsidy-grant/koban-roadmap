@@ -4,8 +4,8 @@
 <style>
   @page { size: A4 portrait; margin: 0; }
   :root{
-    --ink:#171310;--sub:#5b544c;--mute:#8a8178;--line:#dcd4c8;--soft:#faf8f4;
-    --green:#1f6b46;--red:#b3372c;--gold:#a8790f;--scheme:#b98a2f;--sc:#1f3d63;
+    --ink:#171310;--sub:#5b544c;--mute:#6b6359;--line:#dcd4c8;--soft:#faf8f4;
+    --green:#1f6b46;--red:#b3372c;--gold:#8a6208;--scheme:#8a6208;--sc:#1f3d63;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:var(--ink);background:#dcd8d2;
@@ -14,7 +14,7 @@
   /* ツールバー */
   .toolbar{background:#1a1714;color:#f6f1e8;padding:11px 20px;display:flex;justify-content:space-between;
     align-items:center;font-size:12.5px;position:sticky;top:0;z-index:9;gap:10px}
-  .toolbar button,.toolbar a{font:inherit;font-weight:700;background:#a8790f;color:#fff;border:none;
+  .toolbar button,.toolbar a{font:inherit;font-weight:700;background:#8a6208;color:#fff;border:none;
     border-radius:8px;padding:8px 16px;cursor:pointer;text-decoration:none}
   .toolbar a.xls{background:#1d6f42}
   .toolbar .btns{display:flex;gap:8px}
@@ -131,7 +131,7 @@
 
   /* Before/After */
   .ba-h{font-size:10.5pt;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;margin-bottom:4px}
-  .ba-h.before{background:#8a8178}
+  .ba-h.before{background:#6b6359}
   .ba-h.after{background:var(--green)}
 
   /* ステップフロー(HTML実装:はみ出し不可) */
@@ -140,7 +140,7 @@
     border-radius:9px;padding:8px 7px 10px;text-align:center;display:flex;flex-direction:column;gap:5px}
   .step-no{font-size:9pt;font-weight:900;color:var(--sc);letter-spacing:.04em}
   .step-t{font-size:9.6pt;line-height:1.42;font-weight:700}
-  .step-ar{flex:0 0 17px;display:flex;align-items:center;justify-content:center;color:#a8790f;font-size:13pt;font-weight:900}
+  .step-ar{flex:0 0 17px;display:flex;align-items:center;justify-content:center;color:#8a6208;font-size:13pt;font-weight:900}
 
   /* 課題ツリー */
   .tree{margin:6px 0 2px}
@@ -180,7 +180,7 @@
   .rp-d{font-size:9pt;line-height:1.45;color:var(--ink)}
   .rp-stage.s1{background:#eef3f8;border-color:#2b5f8a;color:#2b5f8a}
   .rp-stage.s2{background:#ecf3ee;border-color:#1f6b46;color:#1f6b46}
-  .rp-stage.s3{background:#fbf4e4;border-color:#a8790f;color:#a8790f}
+  .rp-stage.s3{background:#fbf4e4;border-color:#8a6208;color:#8a6208}
   .rp-ar{color:var(--mute);font-size:11pt;font-weight:900;line-height:1.5}
 
   /* 写真 */
@@ -192,8 +192,27 @@
   @media print{
     body{background:#fff}
     .toolbar{display:none}
+    .mobile-note{display:none}
+    .sheets{overflow:visible}
     .page{margin:0;box-shadow:none;page-break-after:always}
     .page:last-child{page-break-after:auto}
+  }
+
+  /* 狭い画面向け(2026-07-29 追加、飲食業版 build_plans.py と同じ方針)
+     A4固定レイアウト(210mm=約794px)はスマートフォンに収まらない。ページ全体が
+     横にずれるとツールバーや注記まで隠れるため、横スクロールは書類領域(.sheets)
+     だけに閉じ込め、読みやすい形(印刷/PDF・Excel)への案内を先に出す。 */
+  .mobile-note{display:none}
+  @media (max-width:900px){
+    .mobile-note{display:block;background:#fff5e0;border-bottom:1px solid #e6d3a8;
+      color:#5b4708;font-size:13.5px;line-height:1.7;padding:12px 16px}
+    .mobile-note b{font-weight:700}
+    .sheets{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:10px}
+    .page{margin:14px}
+    .toolbar{font-size:13px}
+    .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+    .toolbar .btns{justify-content:flex-start}
+    .toolbar button,.toolbar a{padding:8px 12px;font-size:13px;white-space:nowrap}
   }
 </style></head>
 <body>
@@ -204,7 +223,8 @@
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>
   </div>
-  <section class="page" style="--sc:#2b5f8a">
+  <div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。スマートフォンでは横にスクロールしてご覧ください。読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excelをダウンロード」をご利用ください。</div>
+  <div class="sheets"><section class="page" style="--sc:#2b5f8a">
     <div class="rail"></div>
     <div class="phead">
       <div class="phead-l"><span class="phead-chip">事業概要</span><span class="phead-t">1. 事業概要</span></div>
@@ -241,7 +261,7 @@
     <div class="tile-unit">万円/年</div>
     <div class="tile-badge good">年商比 +4.3%</div>
   </div>
-      <div class="tile" style="--tc:#a8790f">
+      <div class="tile" style="--tc:#8a6208">
     <div class="tile-label">投資回収期間</div>
     <div class="tile-nums"><span class="tile-after">1.4</span></div>
     <div class="tile-unit">年</div>
@@ -332,7 +352,7 @@
     <div class="tree-down">▼</div>
     <div class="tree-concl">→ 労働生産性と処遇改善の停滞(本事業で解決する課題)</div>
   </div></div>
-    <p class="note">※ 本計画の数値は業界実態に基づくモデルケースの仮置きです。実申請時には自社の勤怠記録・POS実績等の裏付けデータに差し替えます。</p></div>
+    <p class="note">※ 本計画の数値は業界実態に基づくデモ用の仮置きです。実申請時には自社の勤怠記録・POS実績等の裏付けデータに差し替えます。</p></div>
     <div class="pfoot"><span>SALON BLOOM 表参道 事業計画書</span><span>現状分析</span></div>
   </section>
 <section class="page" style="--sc:#2b5f8a">
@@ -452,12 +472,12 @@
     <line x1="58" y1="168" x2="570" y2="168" stroke="#5b544c" stroke-width="1.5"/>
     <rect x="53" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="98.0909090909091" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="143.1818181818182" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="188.27272727272728" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="233.36363636363637" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="278.4545454545455" y="155.73913043478262" width="26" height="12.260869565217376" rx="3" fill="#d8cfbf"/><rect x="323.54545454545456" y="127.13043478260869" width="26" height="40.86956521739131" rx="3" fill="#a9c6b4"/><rect x="368.6363636363636" y="106.69565217391305" width="26" height="61.30434782608695" rx="3" fill="#a9c6b4"/><rect x="413.72727272727275" y="90.34782608695652" width="26" height="77.65217391304348" rx="3" fill="#a9c6b4"/><rect x="458.81818181818187" y="82.17391304347827" width="26" height="85.82608695652173" rx="3" fill="#a9c6b4"/><rect x="503.909090909091" y="78.08695652173913" width="26" height="89.91304347826087" rx="3" fill="#a9c6b4"/><rect x="549" y="74" width="26" height="94" rx="3" fill="#a9c6b4"/>
     <polyline points="66,144.59751037344398 111.0909090909091,145.53360995850622 156.1818181818182,144.12946058091285 201.27272727272728,145.0655601659751 246.36363636363637,144.36348547717841 291.4545454545455,145.29958506224065 336.54545454545456,119.88838174273859 381.6363636363636,100.83485477178424 426.72727272727275,88.1195020746888 471.81818181818187,80.35767634854771 516.909090909091,76.12572614107884 562,74" fill="none" stroke="#2b5f8a" stroke-width="3.2" stroke-linejoin="round"/>
-    <circle cx="66" cy="144.59751037344398" r="4.5" fill="#8a8178"/><circle cx="111.0909090909091" cy="145.53360995850622" r="4.5" fill="#8a8178"/><circle cx="156.1818181818182" cy="144.12946058091285" r="4.5" fill="#8a8178"/><circle cx="201.27272727272728" cy="145.0655601659751" r="4.5" fill="#8a8178"/><circle cx="246.36363636363637" cy="144.36348547717841" r="4.5" fill="#8a8178"/><circle cx="291.4545454545455" cy="145.29958506224065" r="4.5" fill="#8a8178"/><circle cx="336.54545454545456" cy="119.88838174273859" r="4.5" fill="#2b5f8a"/><circle cx="381.6363636363636" cy="100.83485477178424" r="4.5" fill="#2b5f8a"/><circle cx="426.72727272727275" cy="88.1195020746888" r="4.5" fill="#2b5f8a"/><circle cx="471.81818181818187" cy="80.35767634854771" r="4.5" fill="#2b5f8a"/><circle cx="516.909090909091" cy="76.12572614107884" r="4.5" fill="#2b5f8a"/><circle cx="562" cy="74" r="4.5" fill="#2b5f8a"/>
+    <circle cx="66" cy="144.59751037344398" r="4.5" fill="#6b6359"/><circle cx="111.0909090909091" cy="145.53360995850622" r="4.5" fill="#6b6359"/><circle cx="156.1818181818182" cy="144.12946058091285" r="4.5" fill="#6b6359"/><circle cx="201.27272727272728" cy="145.0655601659751" r="4.5" fill="#6b6359"/><circle cx="246.36363636363637" cy="144.36348547717841" r="4.5" fill="#6b6359"/><circle cx="291.4545454545455" cy="145.29958506224065" r="4.5" fill="#6b6359"/><circle cx="336.54545454545456" cy="119.88838174273859" r="4.5" fill="#2b5f8a"/><circle cx="381.6363636363636" cy="100.83485477178424" r="4.5" fill="#2b5f8a"/><circle cx="426.72727272727275" cy="88.1195020746888" r="4.5" fill="#2b5f8a"/><circle cx="471.81818181818187" cy="80.35767634854771" r="4.5" fill="#2b5f8a"/><circle cx="516.909090909091" cy="76.12572614107884" r="4.5" fill="#2b5f8a"/><circle cx="562" cy="74" r="4.5" fill="#2b5f8a"/>
     <line x1="314" y1="62" x2="314" y2="168" stroke="#b3372c" stroke-width="2" stroke-dasharray="6 4"/>
     <rect x="270" y="44" width="88" height="20" rx="10" fill="#b3372c"/>
     <text x="314" y="58" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">システム導入</text>
     <text x="66" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲6</text><text x="111.0909090909091" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲5</text><text x="156.1818181818182" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲4</text><text x="201.27272727272728" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲3</text><text x="246.36363636363637" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲2</text><text x="291.4545454545455" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">▲1</text><text x="336.54545454545456" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+1</text><text x="381.6363636363636" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+2</text><text x="426.72727272727275" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+3</text><text x="471.81818181818187" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+4</text><text x="516.909090909091" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+5</text><text x="562" y="190" font-size="11.5" fill="#5b544c" text-anchor="middle">+6</text><text x="314" y="210" font-size="12.5" fill="#171310" text-anchor="middle">横軸:システム導入からの経過月数(単位:か月 / ▲=導入前、+=導入後)</text>
-    <text x="0" y="226" font-size="11.5" fill="#8a8178">※ 導入前は直近実績、導入後は本計画に基づく見込値。相関する2指標を左右2軸で1図に集約。</text>
+    <text x="0" y="226" font-size="11.5" fill="#6b6359">※ 導入前は直近実績、導入後は本計画に基づく見込値。相関する2指標を左右2軸で1図に集約。</text>
   </svg></div>
 
     <h3>導入前後の業務指標(一覧)</h3>
@@ -511,7 +531,7 @@
       <text x="182" y="186" font-size="12.5" fill="#171310" text-anchor="middle">計画1年目</text><rect x="222.5" y="50" width="46" height="116" rx="4" fill="#2b5f8a"/>
       <text x="245.5" y="40" font-size="16" font-weight="800" fill="#2b5f8a" text-anchor="middle">1,270</text>
       <text x="245.5" y="186" font-size="12.5" fill="#171310" text-anchor="middle">計画3年目</text>
-    <text x="150" y="202" font-size="11.5" fill="#8a8178" text-anchor="middle">法定最低賃金を全期間で上回る水準を維持する</text>
+    <text x="150" y="202" font-size="11.5" fill="#6b6359" text-anchor="middle">法定最低賃金を全期間で上回る水準を維持する</text>
   </svg></div>
         <figure class="ph-fig sm"><img src="img/salonwork.jpg" alt=""><figcaption>処遇改善は、技術者の定着とサービス品質の維持に直結する</figcaption></figure>
       </div>
@@ -797,7 +817,7 @@
       <div class="half-1"><figure class="ph-fig "><img src="img/desk.jpg" alt=""><figcaption>実申請時は専門家の確認を経て提出する</figcaption></figure></div>
     </div>
     <div class="callout alert">
-      <b>重要:</b> 本計画書はモデルケースのサンプルです。数値(賃金・売上・投資額等)は仮置きであり、実際の申請にあたっては
+      <b>重要:</b> 本計画書はデモ用のサンプルです。数値(賃金・売上・投資額等)は仮置きであり、実際の申請にあたっては
       ①自社の実績データへの差し替え ②最新の公募要領との突合 ③認定支援機関・専門家(中小企業診断士・税理士・社会保険労務士)による確認 が必須です。補助金の採択を保証するものではありません。
     </div>
     <h3>提出書類チェックリスト(申請準備)</h3>
@@ -837,7 +857,7 @@
   font-size:8.9pt;white-space:nowrap}
 .bmk-t td{border:1px solid #d9d2c8;padding:2.5px 7px;vertical-align:top}
 .bmk-t .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.bmk-t .fill{color:#a9a099;letter-spacing:.08em}
+.bmk-t .fill{color:#7d746c;letter-spacing:.08em}
 .bmk-t.center th,.bmk-t.center td{text-align:center}
 .bmk-box{background:#f8f5f0;border-left:4px solid #2b5f8a;border-radius:0 7px 7px 0;
   padding:4px 9px;font-size:9.3pt;margin:3px 0;text-align:justify}
@@ -857,6 +877,7 @@
 </style>
 <section class="page bmk-page"><div class="bmk-head"><span class="bmk-head-t">参考資料：計画の妥当性チェック</span><span class="bmk-head-n">美容業 / PLAN 01 / 自動生成</span></div><p class="bmk-lead">申請書の本文ではなく、審査で問われやすい4点を計画書とセットで確認するための参考ページ。数値はすべて出典つきの公開データで、推計値・仮定値は含まない（未取得の項目は空欄のまま示す）。</p><div class="bmk-sec"><div class="bmk-h">申請規模の妥当性<span class="bmk-chip ok">目安内</span></div><table class="bmk-t center"><thead><tr><th>投資総額</th><th>前提とする年商</th><th>年商に対する比率</th><th>目安（年商の1/3）</th></tr></thead><tbody><tr><td class="num">180万円</td><td class="num">3,000万円</td><td class="num">6.0%</td><td class="num">999万円</td></tr></tbody></table><div class="bmk-box">投資総額180万円は年商3,000万円の6.0%で、目安である1/3以内に収まっている。</div><div class="bmk-note">公募要領に明文化された基準ではなく、審査で事業規模との整合性を問われにくい目安。超過する場合は自己負担分の資金調達根拠（自己資金・融資枠）を計画書に明示すること。</div></div><div class="bmk-sec"><div class="bmk-h">対象経費のハード・ソフト要件<span class="bmk-chip warn">設備＋賃上げが必須</span></div><div class="bmk-box alert"><b>業務改善助成金：</b>生産性向上に資する設備・機器の導入費が対象。ただし事業場内最低賃金を50円以上引き上げることが必須の前提条件。</div><div class="bmk-box"><b>計画書での書き方：</b>設備導入と賃上げの因果（この設備でこの分の生産性が上がるため賃上げ原資が生まれる）を計画書で必ず結びつけること。</div></div><div class="bmk-sec"><div class="bmk-h">採択率傾向・審査で見られる観点<span class="bmk-chip ok">要件充足型</span></div><div class="bmk-box"><b>計画書での勘所：</b>審査による競争選抜ではなく要件充足型のため、要件を満たせば原則支給される。計画書は『賃上げと設備投資の因果』の説明に集中すればよい。</div></div><div class="bmk-sec"><div class="bmk-h">業界平均利益率との比較<span class="bmk-chip flat">美容業 5.4%</span></div><table class="bmk-t"><thead><tr><th>統計値の種別</th><th>売上高営業利益率</th><th>本計画での扱い</th></tr></thead><tbody><tr><th>黒字かつ自己資本プラス企業の平均</th><td class="num">5.4%</td><td>目標水準として採用</td></tr><tr><th>全企業の平均値</th><td class="num">-4.6%</td><td>赤字企業を含むため目標には使わない</td></tr><tr><th>中央値</th><td class="num">-2.8%</td><td>参考</td></tr><tr><th>自店の直近営業利益率</th><td class="num fill">（　　　％）</td><td>記入して上記と比較する</td></tr></tbody></table><div class="bmk-note">標本: 日本政策金融公庫 国民生活事業が融資した法人企業のうち、従業者50人未満・決算期間1年の企業全事業者の母集団平均ではなく『公庫融資先』という選択バイアスのある標本。全業種で平均値が負値になっているのはこのバイアスと、決算期がコロナ影響期を含むことの複合と考えられる。</div></div><div class="bmk-sec"><div class="bmk-h">出典</div><ul class="bmk-src"><li>申請規模の目安: 2026-07-25 ミーティング（山本・平）での実務的な経験則（実務経験則（公的な審査基準ではない））</li><li>対象経費要件: 業務改善助成金 公式サイト https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html</li><li>採択率・審査傾向: https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html</li><li>業界平均: 日本政策金融公庫『小企業の経営指標調査』2023年度調査（決算期2022年7月以降（融資時期2023年4〜12月・2024年8月公表）） https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html</li><li>業界平均の標本: 日本政策金融公庫 国民生活事業が融資した法人企業のうち、従業者50人未満・決算期間1年の企業</li><li>本ページは improvement/_build/data/benchmarks.json から自動生成。数値の更新は同ファイルを直し apply_benchmarks.py を再実行する。</li></ul></div><div class="bmk-foot"><span>事業計画書 No.1 AI多言語ブログ自動投稿による情報発信の省力化とインバウンド販路開拓 | SALON BLOOM 表参道</span><span>参考資料</span></div></section>
 <!-- BENCHMARK_APPENDIX:END -->
+<!-- SHEETS:END --></div>
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

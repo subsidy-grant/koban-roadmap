@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>補助金活用 業務改善ロードマップ｜美容業・飲食業など6業種対応</title>
 <meta name="description" content="美容業・飲食業・宿泊業・製造業・不動産業・教育業の6業種向けに、設備投資・IT導入に使える国・都道府県・市区町村の補助金/助成金を整理。業種と地域を選ぶだけで、使える制度・補助額の概算・改善計画のモデルケースを確認できます。">
+<link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="補助金活用 業務改善ロードマップ">
+<meta property="og:title" content="補助金活用 業務改善ロードマップ｜業種と地域を選ぶだけ">
+<meta property="og:description" content="美容業・飲食業・宿泊業・製造業・不動産業・教育業の6業種向けに、国・都道府県・市区町村の補助金/助成金を整理。業種・地域・従業員数の3つを選ぶと、使える可能性のある制度と締切、補助額の概算が分かります。登録不要・無料。">
+<meta property="og:url" content="https://subsidy-grant.github.io/koban-roadmap/">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://subsidy-grant.github.io/koban-roadmap/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="補助金活用 業務改善ロードマップ｜業種と地域を選ぶだけ">
+<meta name="twitter:description" content="6業種向けに国・都道府県・市区町村の補助金/助成金を整理。3つ選ぶだけで使える制度・締切・概算額が分かります。登録不要・無料。">
+<meta name="twitter:image" content="https://subsidy-grant.github.io/koban-roadmap/ogp.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +34,7 @@
     --paper-raised: #ffffff;
     --ink: #1b2333;
     --ink-soft: #48536a;
-    --ink-faint: #7c869c;
+    --ink-faint: #5a6478;
     --accent: #2b4c7e;
     --accent-soft: #c3d2e8;
     --accent-wash: #e7edf6;
@@ -44,7 +56,7 @@
       --paper-raised: #161b26;
       --ink: #e8ebf1;
       --ink-soft: #b7c0d1;
-      --ink-faint: #818da3;
+      --ink-faint: #9aa6bd;
       --accent: #7fa4d9;
       --accent-soft: #24344f;
       --accent-wash: #1a2740;
@@ -66,7 +78,7 @@
     --paper-raised: #161b26;
     --ink: #e8ebf1;
     --ink-soft: #b7c0d1;
-    --ink-faint: #818da3;
+    --ink-faint: #9aa6bd;
     --accent: #7fa4d9;
     --accent-soft: #24344f;
     --accent-wash: #1a2740;
@@ -87,7 +99,7 @@
     --paper-raised: #ffffff;
     --ink: #1b2333;
     --ink-soft: #48536a;
-    --ink-faint: #7c869c;
+    --ink-faint: #5a6478;
     --accent: #2b4c7e;
     --accent-soft: #c3d2e8;
     --accent-wash: #e7edf6;
@@ -741,53 +753,267 @@
   footer .inner p { max-width: none; }
 
   ::selection { background: var(--accent-soft); }
+
+  /* ==========================================================================
+     公開版デザイン基盤（2026-07-29）
+
+     主な利用者が50〜80代の経営者であることを踏まえ、以下を全体の下限として敷く。
+     個々のルールを1つずつ書き換えるとCSSの依存関係が追えなくなるため、
+     既存指定の後ろに「下限を引き上げる層」として1か所にまとめている。
+
+       ・本文まわりの文字を12〜13px台から14px以上へ（ルート17px＋下限指定）
+       ・操作要素の当たり判定を最小44pxへ（指の震え・老眼を想定）
+       ・キーボード操作時のフォーカスを全要素で可視化
+     ========================================================================== */
+  html { font-size: 17px; }
+  @media (max-width: 400px) { html { font-size: 16px; } }
+
+  /* 狭い画面で業種名だけが1文字ずつ縦に折れるのを防ぐ */
+  .eyebrow { flex-wrap: wrap; }
+  .eyebrow .ind-label { white-space: nowrap; }
+
+  /* --- 文字サイズの下限 ------------------------------------------------- */
+  .section-sub { font-size: 1rem; }
+  .stat .k, .stat .d { font-size: 0.88rem; }
+  .pill { font-size: 0.82rem; }
+  .cat-legend, .pd-legend, .rank-links-label { font-size: 0.86rem; }
+  .pd-item .k, .picker label, .threshold-box > .k,
+  .effect-box h4, .equip-box h4, .cost-box h4, .cond-faq-title { font-size: 0.82rem; }
+  .pd-item .v { font-size: 1rem; }
+  .pd-item .v .sub, .stack .sub, .tier-list .sub,
+  .wage-flag .sub, .sched-flag .sub { font-size: 0.87rem; }
+  .tier-list, .item-list li, .effect-box ul, .equip-box ul, .cost-box,
+  .cond-faq summary, .cond-faq .faq-a, .sim-note, .rank-meta .why { font-size: 0.95rem; }
+  a.src-link, .t-note, .track-desc, .sim-calc, .effect-box .src,
+  .advice-disclaimer, footer .inner, .fav-empty-hint, .fav-chip,
+  .print-orientation, .fav-print-btn { font-size: 0.9rem; }
+  .fav-panel-label, .slider-row label, .rank-cost .lbl { font-size: 0.88rem; }
+  nav.toc a { font-size: 0.95rem; }
+  .picker select, #simTrackContainer select, .prefecture-row select { font-size: 1rem; }
+
+  /* --- 当たり判定 44px 以上 --------------------------------------------- */
+  .fav-star { width: 2.6rem; height: 2.6rem; font-size: 1.15rem; }
+  a.src-link, a.equip-link { min-height: 2.6rem; padding-top: 0.3rem; padding-bottom: 0.3rem; }
+  nav.toc a { padding-left: 0.2rem; padding-right: 0.2rem; }
+  .print-orientation label { min-height: 2.6rem; padding: 0 0.3rem; }
+  .print-orientation input[type="radio"] { width: 1.25rem; height: 1.25rem; }
+  .fav-print-btn { min-height: 2.6rem; padding: 0.5rem 1.1rem; }
+  .fav-chip button { min-width: 2rem; min-height: 2rem; }
+  .cat-check { min-height: 2.75rem; }
+  .cat-check input { width: 1.25rem; height: 1.25rem; }
+  #improvement-cta .imp10-tabs button { min-height: 2.6rem; }
+  /* つまみは指で掴める大きさに、軌道は狙いやすい太さに広げる */
+  .slider-row input[type="range"] { height: 10px; }
+  .slider-row input[type="range"]::-webkit-slider-thumb { width: 30px; height: 30px; }
+  .slider-row input[type="range"]::-moz-range-thumb { width: 30px; height: 30px; }
+
+  /* --- フォーカス可視化（キーボード操作） -------------------------------- */
+  a:focus-visible, button:focus-visible, select:focus-visible,
+  input:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* --- 本文先頭へ飛ぶリンク（スクリーンリーダー・キーボード用） ---------- */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 100;
+    background: var(--accent); color: #fff; padding: 0.8rem 1.4rem;
+    text-decoration: none; font-weight: 700; border-radius: 0 0 6px 0;
+  }
+  .skip-link:focus { left: 0; }
+
+  /* 画面には出さず、読み上げにだけ渡すテキスト */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ==========================================================================
+     診断エントリー（3問で自分向けの結果を先に出す）
+     ========================================================================== */
+  .diag { background: var(--paper-raised); border-bottom: 1px solid var(--line); }
+  .diag-inner { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 2.4rem; }
+  .diag h2 { font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; }
+  .diag .diag-lead { color: var(--ink-soft); margin: 0.5rem 0 1.5rem; font-size: 1rem; }
+  .diag-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 760px) { .diag-steps { grid-template-columns: 1fr; } }
+  .diag-step { border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem 1.1rem; background: var(--paper); }
+  .diag-step > .dhead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.7rem; }
+  .diag-step .dnum {
+    flex-shrink: 0; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 1rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .diag-step .dttl { font-weight: 700; font-size: 1.02rem; }
+  .diag-step label { display: block; font-size: 0.88rem; color: var(--ink-soft); margin: 0.7rem 0 0.35rem; }
+  .diag-step label:first-of-type { margin-top: 0; }
+  .diag-step select, .diag-step input[type="number"] {
+    width: 100%; font: inherit; font-size: 1.02rem; font-weight: 600;
+    min-height: 2.9rem; padding: 0.55rem 0.8rem;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); color: var(--ink);
+  }
+  .diag-step select {
+    padding-right: 2.4rem; appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%235a6478" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    background-repeat: no-repeat; background-position: right 0.8rem center; background-size: 1.1rem;
+  }
+  .diag-emp { display: flex; align-items: center; gap: 0.7rem; }
+  .diag-emp input[type="number"] { max-width: 6.5rem; text-align: right; }
+  .diag-emp .unit { font-size: 1rem; color: var(--ink-soft); }
+  .diag-step .dhint { font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.55rem; }
+
+  .diag-result { margin-top: 1.5rem; border: 2px solid var(--accent); border-radius: 10px; background: var(--accent-wash); padding: 1.2rem 1.3rem 1.3rem; }
+  .diag-result .dr-head { font-weight: 700; font-size: 1.05rem; color: var(--accent); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+  .diag-result .dr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem; margin-top: 1rem; }
+  @media (max-width: 700px) { .diag-result .dr-grid { grid-template-columns: 1fr; } }
+  .diag-result .dr-cell { background: var(--paper-raised); border-radius: 8px; padding: 0.85rem 1rem; }
+  .diag-result .dr-k { font-size: 0.85rem; color: var(--ink-soft); }
+  .diag-result .dr-v { font-weight: 700; font-size: 1.5rem; margin-top: 0.2rem; line-height: 1.35; }
+  .diag-result .dr-v small { font-size: 0.95rem; font-weight: 600; }
+  .diag-result .dr-s { font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.25rem; line-height: 1.6; }
+  .diag-cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.1rem; }
+  .diag-cta a {
+    display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.9rem;
+    padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none;
+    font-weight: 700; font-size: 0.98rem;
+    background: var(--accent); color: #fff; border: 2px solid var(--accent);
+  }
+  .diag-cta a.ghost { background: var(--paper-raised); color: var(--accent); }
+  .diag-cta a:hover { filter: brightness(1.08); }
+  .diag-note { font-size: 0.86rem; color: var(--ink-faint); margin-top: 0.9rem; }
+
+  /* ==========================================================================
+     現在地表示つきナビ・トップへ戻る・テーマ切替
+     ========================================================================== */
+  nav.toc a.is-current { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
+
+  .util-row { display: flex; justify-content: flex-end; gap: 0.5rem; max-width: 880px; margin: 0 auto; padding: 0.5rem 1.5rem 0; }
+  .util-btn {
+    appearance: none; font: inherit; font-size: 0.88rem; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem;
+    padding: 0.35rem 0.85rem; border-radius: 100px;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+  }
+  .util-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  #toTop {
+    position: fixed; right: 1rem; bottom: 1rem; z-index: 30;
+    width: 3.2rem; height: 3.2rem; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
+    box-shadow: 0 2px 10px var(--shadow); cursor: pointer;
+    font-size: 1.3rem; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.2s ease;
+  }
+  #toTop.is-visible { opacity: 1; visibility: visible; }
+  #toTop:hover { background: var(--accent-wash); }
+  @media print { #toTop, .util-row { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { #toTop { transition: none; } html { scroll-behavior: auto; } }
+
+  /* ==========================================================================
+     制度の並び替え・締切サマリー
+     ========================================================================== */
+  .sort-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem;
+    margin-bottom: 1rem; padding: 0.8rem 1rem;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .sort-row .sort-label { font-size: 0.9rem; font-weight: 700; color: var(--ink-soft); }
+  .sort-row .sort-btns { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .sort-row button {
+    appearance: none; font: inherit; font-size: 0.9rem; cursor: pointer;
+    min-height: 2.6rem; padding: 0.4rem 0.95rem; border-radius: 100px;
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
+  }
+  .sort-row button.active { background: var(--accent-wash); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+  .sort-note { font-size: 0.86rem; color: var(--ink-faint); flex-basis: 100%; margin: 0; max-width: none; }
+
+  .twrap { overflow-x: auto; margin-bottom: 1.6rem; }
+  table.summary-table { border-collapse: collapse; width: 100%; min-width: 34rem; background: var(--paper-raised); font-size: 0.95rem; }
+  table.summary-table th, table.summary-table td { border: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+  table.summary-table th { background: var(--accent-wash); color: var(--accent); font-size: 0.88rem; white-space: nowrap; }
+  table.summary-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.summary-table td .sub { display: block; font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.15rem; }
+  table.summary-table tr.is-region td:first-child { border-left: 4px solid var(--sage); }
+  table.summary-table .due-soon { color: var(--rust); font-weight: 700; }
 </style>
 <style id="printOrientationStyle">
   @page { size: portrait; margin: 1.5cm; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#diagnose">本文（3つの質問）へ移動</a>
+
 <header class="hero">
   <div class="hero-inner">
     <div class="eyebrow">Subsidy &amp; Grant Roadmap — <span class="ind-label">美容業</span></div>
     <h1>補助金・助成金活用<br>業務改善ロードマップ</h1>
-    <p class="lede">業種を選択すると、その業種向けの導入条件・業務改善策・必要機材・概算シミュレーターに切り替わります。公募が継続中または今後予定されている国の制度のみを掲載し、随時アップデートしています。</p>
-
-    <div class="industry-picker">
-      <label for="industrySelectTop">業種を選択</label>
-      <select id="industrySelectTop" onchange="switchIndustry(this.value)">
-        <option value="beauty">美容業（美容室・サロン等）</option>
-        <option value="food">飲食業（レストラン・カフェ・居酒屋等）</option>
-        <option value="lodging">宿泊業（ホテル・旅館等）</option>
-        <option value="manufacturing">製造業（工場・ものづくり事業者等）</option>
-        <option value="realestate">不動産業、物品賃貸業</option>
-        <option value="education">教育、学習支援業（学習塾・スクール等）</option>
-      </select>
-    </div>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="k">対象業態</div>
-        <div class="v ind-label" style="font-size:1.3rem;">美容業</div>
-        <div class="d">個人事業主〜101人以上まで幅広く想定</div>
-      </div>
-      <div class="stat">
-        <div class="k">掲載制度数</div>
-        <div class="v tabular"><span id="heroProgramCount">6</span><small> 制度</small></div>
-        <div class="d">公募が終了した制度は掲載から除外</div>
-      </div>
-      <div class="stat">
-        <div class="k">業務改善分類</div>
-        <div class="v tabular">10<small> 分類</small></div>
-        <div class="d">100施策を集約し優先度順に整理</div>
-      </div>
-    </div>
+    <p class="lede">美容業・飲食業・宿泊業・製造業・不動産業・教育業の事業者向けに、設備投資やIT導入に使える国・都道府県・市区町村の制度をまとめた情報サイトです。登録も費用も必要ありません。</p>
   </div>
 </header>
 
-<nav class="toc">
+<!-- 3問診断: 長い説明を読む前に、自分向けの結果を先に出す入口 -->
+<section class="diag" id="diagnose">
+  <div class="diag-inner">
+    <h2>3つ選ぶと、使える可能性のある制度が分かります</h2>
+    <p class="diag-lead">ここで選んだ内容は、このページの解説・概算シミュレーターにもそのまま反映されます。</p>
+
+    <div class="diag-steps">
+      <div class="diag-step">
+        <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">業種を選ぶ</span></div>
+        <label for="industrySelectTop">お店・会社の業種</label>
+        <select id="industrySelectTop" onchange="switchIndustry(this.value)">
+          <option value="beauty">美容業（美容室・サロン等）</option>
+          <option value="food">飲食業（レストラン・カフェ・居酒屋等）</option>
+          <option value="lodging">宿泊業（ホテル・旅館等）</option>
+          <option value="manufacturing">製造業（工場・ものづくり事業者等）</option>
+          <option value="realestate">不動産業、物品賃貸業</option>
+          <option value="education">教育、学習支援業（学習塾・スクール等）</option>
+        </select>
+        <p class="dhint">6業種に対応しています。近いものをお選びください。</p>
+      </div>
+
+      <div class="diag-step">
+        <div class="dhead"><span class="dnum" aria-hidden="true">2</span><span class="dttl">地域を選ぶ</span></div>
+        <label for="prefectureSelect">都道府県（任意）</label>
+        <select id="prefectureSelect" onchange="onPrefectureChange(this.value)">
+          <option value="">選択しない（全国共通の制度のみ）</option>
+          <option value="tokyo">東京都</option>
+          <option value="kanagawa">神奈川県</option>
+          <option value="saitama">埼玉県</option>
+          <option value="chiba">千葉県</option>
+          <option value="tochigi">栃木県</option>
+          <option value="gunma">群馬県</option>
+        </select>
+        <div id="municipalityRow" style="display:none;">
+          <label for="municipalitySelect">市区町村（任意）</label>
+          <select id="municipalitySelect" onchange="onMunicipalityChange(this.value)"></select>
+        </div>
+        <p class="dhint">選ぶと、その地域だけの制度も一緒に表示します。</p>
+      </div>
+
+      <div class="diag-step">
+        <div class="dhead"><span class="dnum" aria-hidden="true">3</span><span class="dttl">従業員数を入れる</span></div>
+        <label for="employeeCountInput">常時使用する従業員の人数</label>
+        <div class="diag-emp">
+          <input type="number" id="employeeCountInput" min="1" max="100" step="1" value="5"
+                 inputmode="numeric" oninput="onEmployeeCountInput(this.value)">
+          <span class="unit">人</span>
+        </div>
+        <p class="dhint">パート・アルバイトを含みます。人数によって使える制度と上限額が変わります。</p>
+      </div>
+    </div>
+
+    <div class="diag-result" id="diagResult"></div>
+  </div>
+</section>
+
+<nav class="toc" aria-label="ページ内の目次">
   <div class="toc-scroll">
     <div class="row">
+      <a href="#diagnose">3つの質問</a>
       <a href="#favPanel">☆ お気に入り</a>
       <a href="#premise">対象と前提</a>
       <a href="#conditions">導入条件</a>
@@ -800,6 +1026,12 @@
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
 </nav>
+
+<div class="util-row">
+  <button type="button" class="util-btn" id="themeToggle" onclick="toggleTheme()">
+    <span id="themeToggleIcon" aria-hidden="true">🌙</span><span id="themeToggleLabel">夜間モードにする</span>
+  </button>
+</div>
 
 <div class="fav-panel" id="favPanel">
   <div class="fav-panel-inner">
@@ -820,23 +1052,34 @@
 
   <section id="premise">
     <div class="section-head"><span class="section-no jp-serif">00</span><h2>対象業態と前提</h2></div>
-    <p class="section-sub">本資料は「<span id="premiseIndustryName">美容業（美容室・理容室・ヘアサロン、ネイル・まつげエクステ等を含む美容関連サービス業）</span>」を対象に、個人事業主・小規模事業者から、6〜20人・21〜50人・51〜100人・101人以上まで幅広い事業規模を想定している。従業員数によって活用できる制度や上限額が変わるため、「導入のための条件」の比較表と「概算シミュレーター」では従業員規模別の違いを確認できる。</p>
-    <p>対象とした公的制度は、経済産業省「デジタル化・AI導入補助金2026」、中小企業庁「小規模事業者持続化補助金」「中小企業省力化投資補助金」、厚生労働省「業務改善助成金」「キャリアアップ助成金」「人材開発支援助成金」の6制度。旧・事業再構築補助金や中小企業新事業進出補助金など、既に公募を終了した制度は掲載していない。内容は2026年7月13日時点で公開されている公募要領・制度概要に基づき、公募スケジュールの変化に応じて随時更新する。</p>
+    <p class="section-sub">本資料は「<span id="premiseIndustryName">美容業（美容室・理容室・ヘアサロン、ネイル・まつげエクステ等を含む美容関連サービス業）</span>」を対象に、個人事業主・小規模事業者から、6〜20人・21〜50人・51〜100人・101人以上まで幅広い事業規模を想定しています。従業員数によって活用できる制度や上限額が変わるため、「導入のための条件」の比較表と「概算シミュレーター」で従業員規模別の違いを確認できます。</p>
+    <p>対象とした公的制度は、経済産業省「デジタル化・AI導入補助金2026」、中小企業庁「小規模事業者持続化補助金」「中小企業省力化投資補助金」、厚生労働省「業務改善助成金」「キャリアアップ助成金」「人材開発支援助成金」の6制度です（業種によっては、これに業種特有の制度が加わります）。旧・事業再構築補助金や中小企業新事業進出補助金など、既に公募を終了した制度は掲載していません。内容は2026年7月13日時点で公開されている公募要領・制度概要に基づくもので、公募スケジュールの変化に応じて随時更新しています。</p>
   </section>
 
   <section id="conditions">
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>導入のための条件</h2></div>
-    <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有制度に整理した。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示す。</p>
-    <p class="cat-legend">制度名は種別で色分けしている：
+    <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有の制度に整理しています。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示しています。</p>
+    <p class="cat-legend">制度名は種別で色分けしています：
       <span class="pill hojo">補助金</span>
       <span class="pill josei">助成金</span>
       <span class="pill other">名称から種別を判別できない制度</span>
     </p>
-    <p class="pd-legend">各制度カードでは、まず見るべき3項目を色分けしている：
+    <p class="pd-legend">各制度カードでは、まず見るべき3項目を色分けしています：
       <span><i style="background:var(--accent)"></i>補助率</span>
       <span><i style="background:var(--sage)"></i>上限額</span>
       <span><i style="background:var(--rust)"></i>受付期間・次回締切</span>
     </p>
+
+    <div class="sort-row" id="summarySortRow">
+      <span class="sort-label">一覧の並び順</span>
+      <div class="sort-btns">
+        <button type="button" class="active" data-sort="default" onclick="setSummarySort('default')">掲載順</button>
+        <button type="button" data-sort="due" onclick="setSummarySort('due')">締切が近い順</button>
+        <button type="button" data-sort="cap" onclick="setSummarySort('cap')">上限額が大きい順</button>
+      </div>
+      <p class="sort-note" id="summarySortNote"></p>
+    </div>
+    <div class="twrap" id="programSummaryWrap"><table class="summary-table" id="programSummary"></table></div>
 
     <div class="threshold-box">
       <div class="slider-row">
@@ -847,23 +1090,7 @@
         <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
         <input type="range" id="capitalSlider" min="0" max="7" step="1" value="2" oninput="onCapitalSliderInput(this.value)">
       </div>
-      <div class="prefecture-row" style="margin-top:1.3rem;">
-        <label for="prefectureSelect">本社所在地の都道府県（任意）</label>
-        <select id="prefectureSelect" onchange="onPrefectureChange(this.value)">
-          <option value="">選択しない（全国共通の6制度のみ表示）</option>
-          <option value="tokyo">東京都</option>
-          <option value="kanagawa">神奈川県</option>
-          <option value="saitama">埼玉県</option>
-          <option value="chiba">千葉県</option>
-          <option value="tochigi">栃木県</option>
-          <option value="gunma">群馬県</option>
-        </select>
-      </div>
-      <div class="prefecture-row" id="municipalityRow" style="margin-top:1rem; display:none;">
-        <label for="municipalitySelect">市区町村（任意）</label>
-        <select id="municipalitySelect" onchange="onMunicipalityChange(this.value)"></select>
-      </div>
-      <p class="t-note">入力すると、下の各制度カードに自社が対象かどうかのバッジが表示される。この選択は「概算シミュレーター」の従業員数選択と連動する。都道府県を選択すると、その自治体独自の制度カードが下に追加表示され、概算シミュレーターの対象制度にも加わる（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べる（対応6都県の全263市区町村を選択可能）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示される。未調査は「制度が無い」という意味ではない。</strong></p>
+      <p class="t-note">従業員数と資本金を入れると、下の各制度カードに自社が対象かどうかのバッジが表示されます。従業員数はページ上部の「3つの質問」および「概算シミュレーター」と連動しています。地域はページ上部で選んでください（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
     </div>
 
     <div class="picker is-open" id="programPicker">
@@ -1120,12 +1347,12 @@
     </div>
     <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合はカードが追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
     <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算上限のある競争審査型で採択率が変動するのに対し、「助成金」は要件を満たせば原則支給される制度である点に留意。</p>
-    <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度のカードが上記に追加表示される（現時点では東京都のみ調査済み。他の道府県は今後順次追加予定）。</p>
+    <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度のカードが上記に追加表示されます（現時点では東京都のみ調査済みで、他の道府県は今後順次追加予定です）。</p>
   </section>
 
   <section id="ranking">
     <div class="section-head"><span class="section-no jp-serif">02</span><h2>業務改善内容 — 10分類ランキング</h2></div>
-    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される細かな業務改善策を100個洗い出し、テーマごとに10分類へ集約。経営における効果の即効性・波及範囲をもとに優先順位を付けた。各カードを開くと、分類内の10施策・必要機材・概算費用・対象制度に加え、該当する<strong>事業計画書・試作デモ</strong>（ある分類のみ）を確認できる。</p>
+    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される細かな業務改善策を100個洗い出し、テーマごとに10分類へ集約しました。経営における効果の即効性・波及範囲をもとに優先順位を付けています。各カードを開くと、分類内の10施策・必要機材・概算費用・対象制度に加え、該当する<strong>事業計画書・試作デモ</strong>（ある分類のみ）を確認できます。</p>
 
     <div class="rank-list" id="rankList"></div>
   </section>
@@ -1159,6 +1386,29 @@
   #improvement-cta .imp10-card .links { margin-top:auto; padding-top:0.55rem; display:flex; gap:0.9rem; font-size:0.8rem; }
   #improvement-cta .imp10-pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:8px;
     padding:1.6rem; text-align:center; color:var(--ink-faint); font-size:0.88rem; }
+
+  /* 可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針） */
+  #improvement-cta .imp10-note { font-size:0.9rem; }
+  #improvement-cta .imp10-card .no { font-size:0.8rem; }
+  #improvement-cta .imp10-card .ttl { font-size:1rem; }
+  #improvement-cta .imp10-card .meta { font-size:0.87rem; }
+  #improvement-cta .imp10-card .links { font-size:0.9rem; }
+  #improvement-cta .imp10-card .links a { display:inline-flex; align-items:center; min-height:2.6rem; }
+  #improvement-cta .imp10-tabs button { font-size:0.95rem; min-height:2.6rem; }
+
+  /* スマートフォンでは10枚のカードで約3,400px になり、その先の
+     シミュレーターまで届かない。最初は4枚だけ見せ、続きは任意で開く。 */
+  #improvement-cta .imp10-more { display:none; }
+  @media (max-width:700px) {
+    #improvement-cta .imp10-cards:not(.is-expanded) .imp10-card:nth-child(n+5) { display:none; }
+    #improvement-cta .imp10-more {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      width:100%; min-height:2.9rem; margin-top:0.8rem; padding:0.5rem 1rem;
+      font:inherit; font-size:0.95rem; font-weight:700; cursor:pointer;
+      border:1px solid var(--accent); border-radius:8px;
+      background:var(--paper-raised); color:var(--accent);
+    }
+  }
 </style>
 
 <div class="imp10-tabs" role="tablist">
@@ -1243,6 +1493,7 @@
 <div class="links"><a class="src-link" href="improvement/beauty/plan-10.html">📄 事業計画書</a><a class="src-link" href="improvement/beauty/proto-10-ai-repeat-follow.html">🖥 プロトタイプ</a></div>
 </div>
 </div>
+<button type="button" class="imp10-more" onclick="this.previousElementSibling.classList.add('is-expanded'); this.remove();">残りの案も見る（全10案）</button>
 </div>
 <div class="imp10-panel" id="imp10-food">
 <div class="imp10-cards">
@@ -1317,6 +1568,7 @@
 <div class="links"><a class="src-link" href="improvement/food/plan-10.html">📄 事業計画書</a><a class="src-link" href="improvement/food/proto-10-payroll-automation.html">🖥 プロトタイプ</a></div>
 </div>
 </div>
+<button type="button" class="imp10-more" onclick="this.previousElementSibling.classList.add('is-expanded'); this.remove();">残りの案も見る（全10案）</button>
 </div>
 <div class="imp10-panel" id="imp10-lodging">
 <div class="imp10-pending">この業種の10案は準備中です。スコアリング（候補評価）は<a href="improvement/pdca.html">選定の考え方</a>で先行公開しています。</div>
@@ -1348,7 +1600,7 @@
 
   <section id="simulator">
     <div class="section-head"><span class="section-no jp-serif">04</span><h2>概算シミュレーター</h2></div>
-    <p class="section-sub">使いたい制度・従業員数・業務改善の分類（複数選択可）を選ぶと、見込める補助金・助成金の概算受給額を試算する。対象経費の種類が一致しない分類はアラートで表示する。</p>
+    <p class="section-sub">使いたい制度・従業員数・業務改善の分類（複数選択可）を選ぶと、見込める補助金・助成金の概算受給額を試算します。対象経費の種類が一致しない分類は注意として表示します。</p>
 
     <div class="picker">
       <div class="sim-grid">
@@ -1377,13 +1629,13 @@
 
   <section id="notes">
     <div class="section-head"><span class="section-no jp-serif">05</span><h2>留意事項</h2></div>
-    <p>補助金・助成金の活用にあたっては、以下の点に留意すること。</p>
+    <p>補助金・助成金の活用にあたっては、次の点にご留意ください。</p>
     <ul class="item-list" style="max-width:68ch;">
-      <li>同一の経費に対して複数の制度から重複して受給することはできない。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要がある</li>
-      <li>業務改善助成金・キャリアアップ助成金は賃金引き上げの実施が前提条件であり、事前の計画届出が必要な場合がある</li>
-      <li>補助金（デジタル化・AI導入、小規模事業者持続化、業務改善、省力化投資）は予算上限のある競争審査型のため、申請しても不採択となる可能性がある</li>
-      <li>公募スケジュールは年度内に複数回変更・追加されるため、申請前に必ず各制度の公式サイト・公募要領で最新情報を確認すること</li>
-      <li>本資料の金額・条件は概算であり、実際の採択可否・交付額は事業計画の内容や審査結果により変動する</li>
+      <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
+      <li>業務改善助成金・キャリアアップ助成金は賃金引き上げの実施が前提条件で、事前の計画届出が必要な場合があります</li>
+      <li>補助金（デジタル化・AI導入、小規模事業者持続化、業務改善、省力化投資）は予算上限のある競争審査型のため、申請しても不採択となることがあります</li>
+      <li>公募スケジュールは年度内に複数回変更・追加されるため、申請前に必ず各制度の公式サイト・公募要領で最新情報をご確認ください</li>
+      <li>本資料の金額・条件は概算であり、実際の採択可否・交付額は事業計画の内容や審査結果によって変わります</li>
     </ul>
   </section>
 
@@ -1393,8 +1645,11 @@
   <div class="inner">
     <p>掲載の制度概要・金額・公募スケジュールは2026年7月28日時点で公開されている情報に基づく試算であり、将来の公募内容や採択を保証するものではありません。公募が終了した制度は随時掲載から除外しています。実際の申請にあたっては、必ず各制度の公式サイト・公募要領で最新の要件・受付期間をご確認ください。</p>
     <p style="margin-top:0.6rem;">本サイトでは、利用状況の把握のためCookieを使用しないアクセス解析（GoatCounter）を利用しています。氏名・連絡先など個人を特定する情報は収集しません。</p>
+    <p style="margin-top:0.6rem;">本サイトは公的機関ではなく、公開されている公募要領・制度概要を業種別に読みやすく整理した個人運営の情報サイトです。掲載内容は申請の可否・採択を保証するものではありません。制度そのものへのご質問は、各制度の公式サイトに記載された問い合わせ窓口へお願いします。</p>
   </div>
 </footer>
+
+<button type="button" id="toTop" onclick="scrollToTop()" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
 
 <script>
   var PROGRAMS = {
@@ -5426,7 +5681,7 @@
       html += '<details class="rank-card">' +
         '<summary>' +
           '<span class="rank-num tabular">' + String(idx + 1).padStart(2, '0') + '</span>' +
-          '<div class="rank-meta"><div class="name">' + displayName + '</div><div class="why">' + cat.why + '</div></div>' +
+          '<div class="rank-meta"><h3 class="name">' + displayName + '</h3><div class="why">' + cat.why + '</div></div>' +
           '<div class="rank-cost"><div class="amt tabular">' + cat.cost + '万円</div><div class="lbl">' + unitLabel(cat.unit) + '</div></div>' +
           '<span class="chevron">▶</span>' +
         '</summary>' +
@@ -5786,6 +6041,10 @@
       var el = document.getElementById(id);
       if (el) el.textContent = label;
     });
+    // 3問診断の数値入力も連動させる。入力中の欄を書き換えると
+    // 「12」と打つ途中の「1」で値が飛ぶため、フォーカス中は触らない
+    var numEl = document.getElementById('employeeCountInput');
+    if (numEl && document.activeElement !== numEl) numEl.value = currentEmployeeCount;
   }
 
   function onEmployeeCountInput(value) {
@@ -5816,7 +6075,7 @@
       return '<option value="' + o.key + '">' + o.label + '</option>';
     }).join('');
     container.className = '';
-    container.innerHTML = '<select id="simTrack" onchange="onSimTrackChange()">' + optionsHTML + '</select><div class="track-desc" id="simTrackDesc"></div>';
+    container.innerHTML = '<select id="simTrack" aria-label="申請枠を選択" onchange="onSimTrackChange()">' + optionsHTML + '</select><div class="track-desc" id="simTrackDesc"></div>';
     document.getElementById('simTrack').value = trackDef.default;
     updateTrackDesc(progKey);
   }
@@ -6229,6 +6488,319 @@
     update();
   }
 
+  // ==========================================================================
+  // 公開版で追加した機能（2026-07-29）
+  //   1. 3問診断の結果カード   2. 制度の締切・上限額サマリー
+  //   3. URLへの状態保持       4. 現在地ナビ／トップへ戻る／夜間モード
+  // 既存の描画関数は書き換えず、末尾でラップして必要な再描画を足している。
+  // ==========================================================================
+
+  // ---------- 締切テキストからの日付抽出 ----------
+  // PROGRAMS[].schedule は「次回：3次締切 2026年7月21日17:00／4次締切 8月25日」のような
+  // 自由記述。機械判定できるのは "20XX年M月D日" 形式だけなので、そこだけを拾い、
+  // 拾えなかった制度は並び替えの最後にまとめて「日付を自動判定できない」と明示する。
+  function parseNextDeadline(text) {
+    if (!text) return null;
+    var re = /(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/g;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var best = null, m;
+    while ((m = re.exec(text)) !== null) {
+      var d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      if (d >= today && (best === null || d < best)) best = d;
+    }
+    return best;
+  }
+  function fmtDate(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  function daysUntil(d) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    return Math.round((d - today) / 86400000);
+  }
+
+  // 表示中の業種・地域で「使える可能性がある」制度キーの一覧
+  function getUsableProgramKeys() {
+    var ind = INDUSTRIES[currentIndustry];
+    var seen = {};
+    return getAvailablePrograms(currentIndustry).filter(function (k) {
+      if (!PROGRAMS[k] || seen[k]) return false;
+      seen[k] = true;
+      if (!programFitsIndustry(k)) return false;
+      return computeEligibility(k, currentEmployeeCount, currentCapitalYen, ind) !== 'ng';
+    });
+  }
+  function isRegionProgram(k) { return !!(PROGRAMS[k] && (PROGRAMS[k].prefecture || PROGRAMS[k].municipality)); }
+  function capManYen(k) {
+    if (k === 'shoryokuka') return SHORYOKUKA_CAP_BY_TIER[employeeCountToTier(currentEmployeeCount)] || CAP[k];
+    return CAP[k];
+  }
+
+  // ---------- 1. 3問診断の結果カード ----------
+  function renderDiagnosis() {
+    var el = document.getElementById('diagResult');
+    if (!el) return;
+    var keys = getUsableProgramKeys();
+    var regionKeys = keys.filter(isRegionProgram);
+
+    var best = null;
+    keys.forEach(function (k) {
+      var c = capManYen(k);
+      if (typeof c === 'number' && (best === null || c > best.cap)) best = { key: k, cap: c };
+    });
+
+    var due = null;
+    keys.forEach(function (k) {
+      var d = parseNextDeadline(PROGRAMS[k].schedule);
+      if (d && (due === null || d < due.date)) due = { key: k, date: d };
+    });
+
+    var areaLabel = '全国共通';
+    if (currentPrefecture) {
+      areaLabel = PREFECTURE_LABEL[currentPrefecture] || currentPrefecture;
+      if (currentMunicipality) {
+        areaLabel += ' ' + ((MUNICIPALITY_LABEL[currentPrefecture] || {})[currentMunicipality] || currentMunicipality);
+      }
+    }
+
+    var regionSub;
+    if (!currentPrefecture) {
+      regionSub = '都道府県を選ぶと、その地域だけの制度も加わります。';
+    } else if (currentMunicipality && !isMunicipalityChecked(currentPrefecture, currentMunicipality)) {
+      regionSub = 'この市区町村はまだ調査できていません。「制度が無い」という意味ではありません。';
+    } else if (regionKeys.length === 0) {
+      regionSub = '調査した範囲では、この地域独自の制度は確認できませんでした。';
+    } else {
+      regionSub = 'この地域だけで使える制度です。下の一覧に緑の線で表示しています。';
+    }
+
+    var dueHTML, dueSub;
+    if (due) {
+      var left = daysUntil(due.date);
+      dueHTML = '<span class="' + (left <= 30 ? 'due-soon' : '') + '">' + fmtDate(due.date) + '</span>';
+      dueSub = PROGRAMS[due.key].name + '（あと' + left + '日）';
+    } else {
+      dueHTML = '—';
+      dueSub = '日付を自動判定できる締切がありません。各制度の受付期間をご確認ください。';
+    }
+
+    el.innerHTML =
+      '<div class="dr-head">' + INDUSTRIES[currentIndustry].label + '／' + areaLabel + '／従業員' + currentEmployeeCount + '人 の場合</div>' +
+      '<div class="dr-grid">' +
+        '<div class="dr-cell"><div class="dr-k">使える可能性がある制度</div>' +
+          '<div class="dr-v tabular">' + keys.length + '<small> 件</small></div>' +
+          '<div class="dr-s">' + (best ? '最も上限額が大きいのは「' + PROGRAMS[best.key].name + '」（上限' + best.cap.toLocaleString() + '万円）です。' : '上限額を数値で比較できる制度がありません。') + '</div></div>' +
+        '<div class="dr-cell"><div class="dr-k">うち、この地域だけの制度</div>' +
+          '<div class="dr-v tabular">' + regionKeys.length + '<small> 件</small></div>' +
+          '<div class="dr-s">' + regionSub + '</div></div>' +
+        '<div class="dr-cell"><div class="dr-k">いちばん近い締切</div>' +
+          '<div class="dr-v tabular">' + dueHTML + '</div>' +
+          '<div class="dr-s">' + dueSub + '</div></div>' +
+      '</div>' +
+      '<div class="diag-cta">' +
+        '<a href="#conditions">制度の一覧と条件を見る</a>' +
+        '<a class="ghost" href="#simulator">受給額を試算する</a>' +
+        '<a class="ghost" href="#improvement-cta">改善計画の実例を見る</a>' +
+      '</div>' +
+      '<p class="diag-note">件数は、入力された従業員数で明らかに対象外となる制度を除いた数です。実際の可否は事業内容・経費区分・審査によって変わります。締切は掲載文から自動抽出した日付で、正確な期限は各制度の公式サイトでご確認ください。</p>';
+  }
+
+  // ---------- 2. 制度の締切・上限額サマリー ----------
+  var summarySort = 'default';
+  function setSummarySort(mode) {
+    summarySort = mode;
+    document.querySelectorAll('#summarySortRow button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-sort') === mode);
+    });
+    renderProgramSummary();
+  }
+  function renderProgramSummary() {
+    var table = document.getElementById('programSummary');
+    var note = document.getElementById('summarySortNote');
+    if (!table) return;
+    var keys = getUsableProgramKeys();
+    var rows = keys.map(function (k, i) {
+      return { key: k, order: i, due: parseNextDeadline(PROGRAMS[k].schedule), cap: capManYen(k) };
+    });
+    if (summarySort === 'due') {
+      rows.sort(function (a, b) {
+        if (a.due && b.due) return a.due - b.due || a.order - b.order;
+        if (a.due) return -1;
+        if (b.due) return 1;
+        return a.order - b.order;
+      });
+    } else if (summarySort === 'cap') {
+      rows.sort(function (a, b) {
+        var av = typeof a.cap === 'number' ? a.cap : -1, bv = typeof b.cap === 'number' ? b.cap : -1;
+        return bv - av || a.order - b.order;
+      });
+    }
+    if (note) {
+      note.textContent = summarySort === 'due'
+        ? '掲載文から自動抽出した「今日以降のいちばん近い日付」で並べています。日付を判定できない制度は最後にまとめています。正確な締切は必ず公式サイトでご確認ください。'
+        : summarySort === 'cap'
+          ? '通常枠の上限額で並べています。申請枠によって上限は変わります。金額を判定できない制度は最後にまとめています。'
+          : 'この業種・地域で使える可能性がある制度の一覧です。列見出しの下のボタンで並び替えできます。';
+    }
+    var body = rows.map(function (r) {
+      var p = PROGRAMS[r.key];
+      var dueCell = r.due
+        ? '<span class="' + (daysUntil(r.due) <= 30 ? 'due-soon' : '') + '">' + fmtDate(r.due) + '</span><span class="sub">あと' + daysUntil(r.due) + '日</span>'
+        : '<span class="sub">日付を自動判定できません</span>';
+      var capCell = typeof r.cap === 'number' ? r.cap.toLocaleString() + '万円' : '—';
+      return '<tr' + (isRegionProgram(r.key) ? ' class="is-region"' : '') + '>' +
+        '<td>' + p.name + (isRegionProgram(r.key) ? '<span class="sub">この地域だけの制度</span>' : '') + '</td>' +
+        '<td>' + p.rate + '</td>' +
+        '<td class="num">' + capCell + '</td>' +
+        '<td>' + dueCell + '</td></tr>';
+    }).join('');
+    table.innerHTML =
+      '<caption class="sr-only">使える可能性がある制度の一覧</caption>' +
+      '<thead><tr><th scope="col">制度名</th><th scope="col">補助率</th><th scope="col">上限額</th><th scope="col">次の締切</th></tr></thead>' +
+      '<tbody>' + body + '</tbody>';
+  }
+
+  // ---------- 3. URLへの状態保持 ----------
+  // 業種・地域・従業員数をクエリに載せることで、見ている画面をそのまま共有・
+  // ブックマークできるようにする。ハッシュはページ内リンクと GoatCounter の
+  // 計測除外トグル(#toggle-goatcounter)が使うため、クエリ側を使う。
+  var restoringState = false;
+  function syncURLState() {
+    if (restoringState || !window.history || !window.history.replaceState) return;
+    var p = new URLSearchParams();
+    if (currentIndustry && currentIndustry !== 'beauty') p.set('industry', currentIndustry);
+    if (currentPrefecture) p.set('pref', currentPrefecture);
+    if (currentMunicipality) p.set('muni', currentMunicipality);
+    if (currentEmployeeCount !== 5) p.set('emp', String(currentEmployeeCount));
+    var qs = p.toString();
+    try {
+      window.history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash);
+    } catch (e) { /* file:// 等では失敗するが本体機能には影響させない */ }
+  }
+  function applyURLState() {
+    var p;
+    try { p = new URLSearchParams(location.search); } catch (e) { return; }
+    if (!p.toString()) return;
+    var prevRestoring = restoringState;
+    restoringState = true;
+    try {
+      var ind = p.get('industry');
+      if (ind && INDUSTRIES[ind]) switchIndustry(ind);
+      var pref = p.get('pref');
+      if (pref && PREFECTURE_LABEL[pref]) {
+        var pSel = document.getElementById('prefectureSelect');
+        if (pSel) pSel.value = pref;
+        onPrefectureChange(pref);
+        var muni = p.get('muni');
+        if (muni && (MUNICIPALITY_LABEL[pref] || {})[muni]) {
+          var mSel = document.getElementById('municipalitySelect');
+          if (mSel) mSel.value = muni;
+          onMunicipalityChange(muni);
+        }
+      }
+      var emp = parseInt(p.get('emp'), 10);
+      if (emp >= 1 && emp <= 100) onEmployeeCountInput(emp);
+    } finally {
+      restoringState = prevRestoring;
+    }
+  }
+
+  // ---------- 4. 夜間モード ----------
+  function prefersDark() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function applyTheme(theme) {
+    var root = document.documentElement;
+    if (theme === 'dark' || theme === 'light') root.setAttribute('data-theme', theme);
+    else root.removeAttribute('data-theme');
+    var isDark = theme === 'dark' || (theme !== 'light' && prefersDark());
+    var icon = document.getElementById('themeToggleIcon');
+    var label = document.getElementById('themeToggleLabel');
+    if (icon) icon.textContent = isDark ? '☀' : '🌙';
+    if (label) label.textContent = isDark ? '昼間モードにする' : '夜間モードにする';
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme');
+    var isDark = cur === 'dark' || (!cur && prefersDark());
+    var next = isDark ? 'light' : 'dark';
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    applyTheme(next);
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    applyTheme(saved);
+  }
+
+  // ---------- 4. トップへ戻る・現在地ナビ ----------
+  function scrollToTop() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function initToTop() {
+    var btn = document.getElementById('toTop');
+    if (!btn) return;
+    function update() { btn.classList.toggle('is-visible', window.scrollY > 600); }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+  function initScrollSpy() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a[href^="#"]'));
+    if (!links.length || !window.IntersectionObserver) return;
+    var map = {};
+    links.forEach(function (a) {
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if (el) map[el.id] = a;
+    });
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+      var currentId = null;
+      Object.keys(map).forEach(function (id) {
+        if (visible[id] && currentId === null) currentId = id;
+      });
+      links.forEach(function (a) { a.classList.remove('is-current'); });
+      if (currentId && map[currentId]) {
+        map[currentId].classList.add('is-current');
+        // 目次自体が横スクロールするので、現在地が画面外なら見える位置へ寄せる
+        var scroller = document.querySelector('nav.toc .toc-scroll');
+        if (scroller) {
+          var a = map[currentId];
+          if (a.offsetLeft < scroller.scrollLeft ||
+              a.offsetLeft + a.offsetWidth > scroller.scrollLeft + scroller.clientWidth) {
+            scroller.scrollLeft = Math.max(0, a.offsetLeft - 16);
+          }
+        }
+      }
+    }, { rootMargin: '-25% 0px -60% 0px' });
+    Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
+  }
+
+  // ---------- 狭い画面では既定で畳む ----------
+  // 制度の詳細パネルは開いた状態で約1,800px あり、スマホでは上の一覧表と
+  // 内容が重なる。一覧表を先に見せ、詳細は必要な人だけ開く形にする。
+  function collapseCardsOnNarrowScreens() {
+    if (window.innerWidth > 760) return;
+    try { toggleProgramDetail(false); } catch (e) {}
+  }
+
+  // ---------- 既存の描画関数に追記（本体は書き換えない） ----------
+  function refreshPublicViews() {
+    renderDiagnosis();
+    renderProgramSummary();
+    syncURLState();
+  }
+  ['switchIndustry', 'onPrefectureChange', 'onMunicipalityChange', 'onEmployeeCountInput'].forEach(function (name) {
+    var original = window[name];
+    if (typeof original !== 'function') return;
+    window[name] = function () {
+      var r = original.apply(this, arguments);
+      try { refreshPublicViews(); } catch (e) { /* 表示の追加分は本体機能を止めない */ }
+      return r;
+    };
+  });
+
+  // 初期化中はURLへの書き戻しを止める。止めないと既定値での初回描画が
+  // ?industry=... を消してしまい、共有されたURLで開いても復元できなくなる
+  restoringState = true;
+
   initCondCardToggles();
   initFavoriteStars();
   renderFavPanel();
@@ -6237,8 +6809,22 @@
   renderMunicipalitySelect();
   switchIndustry('beauty');
 
+  initTheme();
+  applyURLState();
+  collapseCardsOnNarrowScreens();
+
+  restoringState = false;
+  refreshPublicViews();
+  initToTop();
+  initScrollSpy();
+
   setupScrollFade(document.querySelector('nav.toc .toc-scroll'), document.querySelector('nav.toc .toc-fade'));
 </script>
+
+
+
+
+
 
 
 <!-- ANALYTICS:START -->

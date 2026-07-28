@@ -101,7 +101,7 @@ CSS = """
   font-size:8.9pt;white-space:nowrap}
 .bmk-t td{border:1px solid #d9d2c8;padding:2.5px 7px;vertical-align:top}
 .bmk-t .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.bmk-t .fill{color:#a9a099;letter-spacing:.08em}
+.bmk-t .fill{color:#7d746c;letter-spacing:.08em}
 .bmk-t.center th,.bmk-t.center td{text-align:center}
 .bmk-box{background:#f8f5f0;border-left:4px solid __ACCENT__;border-radius:0 7px 7px 0;
   padding:4px 9px;font-size:9.3pt;margin:3px 0;text-align:justify}
@@ -297,6 +297,21 @@ def apply_to_file(path, industry, plan_no, program_key, investment):
         raise RuntimeError(f"{path}: </body> が見つからない")
     # 印刷用レポートのHTMLをJSの文字列で持つページがあり（proto-*.html に実例あり）、
     # 最初の </body> はその文字列の中かもしれない。必ず最後の </body> の直前に入れる。
+    #
+    # ただし計画書は狭い画面向けに全ページを <div class="sheets"> で包んでいる
+    # （横スクロールを書類の領域だけに閉じ込めるため）。参考資料ページもA4なので、
+    # sheets の外に置くとそのページだけページ全体を横に押し広げてしまう。
+    # sheets がある場合はその内側の末尾に入れる。
+    # 生成側が置いた目印の直前に入れる。閉じタグの並びで探すと、後から
+    # add_analytics.py が </body> の手前に解析タグを差し込んだ時点で位置がずれ、
+    # 参考資料ページだけ sheets の外に出てしまう（実際に一度そうなった）。
+    marker = "<!-- SHEETS:END -->"
+    if marker in html:
+        head, _, tail = html.rpartition(marker)
+        html = head.rstrip() + "\n" + block + "\n" + marker + tail
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(html)
+        return
     head, _, tail = html.rpartition("</body>")
     html = head.rstrip() + "\n" + block + "\n</body>" + tail
     with open(path, "w", encoding="utf-8") as f:

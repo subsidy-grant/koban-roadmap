@@ -8,8 +8,8 @@
   /* beauty/pdca.html と同型。飲食版はアクセントを暖色(パプリカ)に寄せて区別する */
   :root{
     --bg:#f7f4f1; --card:#ffffff; --ink:#27211d; --sub:#6f665e; --line:#e6ddd4;
-    --accent:#9c4a2e; --accent2:#3e6b4f; --gold:#b98a2f; --red:#a4453c;
-    --blue:#4a6b8a; --teal:#3d7a78;
+    --accent:#9c4a2e; --accent2:#3e6b4f; --gold:#8a6208; --red:#a4453c;
+    --blue:#4a6b8a; --teal:#2f6260;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
@@ -24,7 +24,7 @@
   .stage .num{font-size:30px;font-weight:800}
   .stage .lbl{font-size:12px;color:var(--sub)}
   .stage .desc{font-size:11px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
-  .s-p .ph{background:#5b7b9a}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#b98a2f}.s-a .ph{background:#a4453c}
+  .s-p .ph{background:#4a6480}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#8a6208}.s-a .ph{background:#a4453c}
   /* TOP10 */
   h2{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}
   .topgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
@@ -64,8 +64,8 @@
   td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
   tr:hover td{background:#faf6f1}
   .stg{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
-  .stg-top{background:#a4453c;color:#fff}.stg-c{background:#b98a2f;color:#fff}
-  .stg-p{background:#5b7b9a;color:#fff}.stg-0{background:#e6ddd4;color:#6f665e}
+  .stg-top{background:#a4453c;color:#fff}.stg-c{background:#8a6208;color:#fff}
+  .stg-p{background:#4a6480;color:#fff}.stg-0{background:#e6ddd4;color:#6f665e}
   .pager{display:flex;gap:8px;justify-content:center;margin:14px 0;align-items:center;font-size:13px}
   .pager button{font:inherit;padding:6px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
   .pager button:disabled{opacity:.4;cursor:default}
@@ -74,10 +74,39 @@
      （ページ全体を横スクロールさせない） */
   .twrap{overflow-x:auto}
   @media (max-width:720px){ .funnel{grid-template-columns:repeat(2,1fr)} }
+
+  /* 公開版の可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針）
+     1000件を1画面に詰め込むより、読める大きさで絞って見せることを優先する。 */
+  header p{font-size:14.5px;opacity:.92}
+  .stage .lbl{font-size:13.5px}
+  .stage .desc{font-size:12.5px}
+  .stage .ph{font-size:12px}
+  table{font-size:14px}
+  .stg{font-size:11.5px}
+  .rdesc{color:var(--sub)}
+  .filters input,.filters select{min-height:2.6rem;font-size:14.5px}
+  .pager button{min-height:2.6rem;padding:6px 16px;font-size:14.5px}
+  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
+    outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+  /* 狭い画面（2026-07-29 追加）
+     幅375pxでは1行が最大645pxまで折り返し、50行の表が32,000px超になっていた。
+     表には最低幅を与えて縦に潰れないようにし（横スクロールは .twrap 内に収まる）、
+     説明文は表からは省いて一覧性を優先する。1ページの件数もJS側で25件に落とす。 */
+  @media (max-width:760px){
+    .twrap table{min-width:820px}
+    .rdesc{display:none}
+    .funnel{grid-template-columns:repeat(2,1fr)}
+    .topgrid{grid-template-columns:1fr}
+  }
+
+  /* リンクの当たり判定を44px以上に（2026-07-29） */
+  .back a,.tcard .links a,.links a{display:inline-flex;align-items:center;min-height:2.6rem}
+  .back{display:flex;flex-wrap:wrap;align-items:center;gap:0 .4rem}
 </style>
 </head>
 <body>
-<p style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:13px;"><a href="../index.html?industry=food" style="color:#9c4a2e;font-weight:700;text-decoration:none;">← 改善計画10選（飲食業）へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#9c4a2e;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:#9c4a2e;font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
+<p class="back" style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:14px;"><a href="../index.html?industry=food" style="color:#9c4a2e;font-weight:700;text-decoration:none;">← 改善計画10選（飲食業）へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#9c4a2e;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:#9c4a2e;font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
 <header>
   <h1>飲食業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
   <p>20カテゴリ × 10コア機能 × 5業態(居酒屋/カフェ/ラーメン/レストラン/寿司・和食)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。TOP10は「改善計画10選（飲食業）」で採択済みの10案と同一で、本ボードはその10案を1000案のアイデア空間の中に位置づけたものです（採択自体の記録は「選定の考え方」参照）。</p>
@@ -104,14 +133,14 @@
 
   <h2>全1000案ブラウザ</h2>
   <div class="filters">
-    <input type="search" id="q" placeholder="キーワード検索(タイトル・説明)">
-    <select id="fCat"><option value="">全カテゴリ</option></select>
-    <select id="fSeg"><option value="">全業態</option></select>
-    <select id="fDept"><option value="">全部門</option>
+    <input type="search" id="q" aria-label="キーワードで絞り込む" placeholder="キーワード検索(タイトル・説明)">
+    <select id="fCat" aria-label="カテゴリで絞り込む"><option value="">全カテゴリ</option></select>
+    <select id="fSeg" aria-label="業態で絞り込む"><option value="">全業態</option></select>
+    <select id="fDept" aria-label="部門で絞り込む"><option value="">全部門</option>
       <option>ホール</option><option>厨房</option><option>バックオフィス</option><option>店舗・店外</option></select>
-    <select id="fStage"><option value="">全ステージ</option>
+    <select id="fStage" aria-label="選定ステージで絞り込む"><option value="">全ステージ</option>
       <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
-    <select id="fScheme"><option value="">全制度</option>
+    <select id="fScheme" aria-label="活用制度で絞り込む"><option value="">全制度</option>
       <option value="デジタル">デジタル化・AI導入補助金2026</option>
       <option value="カタログ">中小企業省力化投資補助金(カタログ注文型)</option>
       <option value="業務改善">業務改善助成金</option>
@@ -231,7 +260,8 @@ CATEGORIES.forEach(c => fCat.insertAdjacentHTML("beforeend", `<option>${c.name}<
 SEGMENTS.forEach(s => fSeg.insertAdjacentHTML("beforeend", `<option>${s.name}</option>`));
 
 let sortKey = "rank", sortAsc = true, page = 0;
-const PAGE = 50;
+// 狭い画面では1行が高くなるため、1ページの件数を落とす
+const PAGE = window.matchMedia('(max-width:760px)').matches ? 25 : 50;
 const els = ["q","fCat","fSeg","fDept","fStage","fScheme"].map(id => document.getElementById(id));
 els.forEach(el => el.addEventListener("input", () => { page = 0; render(); }));
 document.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
@@ -265,7 +295,7 @@ function render() {
   document.getElementById("next").disabled = page >= pages - 1;
   document.getElementById("tbody").innerHTML = rows.slice(page * PAGE, (page + 1) * PAGE).map(i => `
     <tr><td>${i.rank}</td>
-    <td><b>${i.title}</b><br><span style="color:var(--sub)">${i.description}</span></td>
+    <td><b>${i.title}</b><br><span class="rdesc">${i.description}</span></td>
     <td>${i.category}</td><td>${i.dept}</td><td>${i.segment}</td>
     <td style="text-align:center">${i.savingHoursPerMonth}</td>
     <td><b>${i.total}</b>/25</td>
@@ -274,6 +304,11 @@ function render() {
 }
 render();
 </script>
+
+
+
+
+
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

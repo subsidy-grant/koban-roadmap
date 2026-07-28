@@ -70,8 +70,36 @@ CSS = """
   #improvement-cta .imp10-card .links { margin-top:auto; padding-top:0.55rem; display:flex; gap:0.9rem; font-size:0.8rem; }
   #improvement-cta .imp10-pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:8px;
     padding:1.6rem; text-align:center; color:var(--ink-faint); font-size:0.88rem; }
+
+  /* 可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針） */
+  #improvement-cta .imp10-note { font-size:0.9rem; }
+  #improvement-cta .imp10-card .no { font-size:0.8rem; }
+  #improvement-cta .imp10-card .ttl { font-size:1rem; }
+  #improvement-cta .imp10-card .meta { font-size:0.87rem; }
+  #improvement-cta .imp10-card .links { font-size:0.9rem; }
+  #improvement-cta .imp10-card .links a { display:inline-flex; align-items:center; min-height:2.6rem; }
+  #improvement-cta .imp10-tabs button { font-size:0.95rem; min-height:2.6rem; }
+
+  /* スマートフォンでは10枚のカードで約3,400px になり、その先の
+     シミュレーターまで届かない。最初は4枚だけ見せ、続きは任意で開く。 */
+  #improvement-cta .imp10-more { display:none; }
+  @media (max-width:700px) {
+    #improvement-cta .imp10-cards:not(.is-expanded) .imp10-card:nth-child(n+5) { display:none; }
+    #improvement-cta .imp10-more {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      width:100%; min-height:2.9rem; margin-top:0.8rem; padding:0.5rem 1rem;
+      font:inherit; font-size:0.95rem; font-weight:700; cursor:pointer;
+      border:1px solid var(--accent); border-radius:8px;
+      background:var(--paper-raised); color:var(--accent);
+    }
+  }
 </style>
 """
+
+# スマートフォンで5件目以降を開くボタン。狭い画面でだけ表示される（CSSで制御）
+MORE_BUTTON = ("<button type=\"button\" class=\"imp10-more\""
+               " onclick=\"this.previousElementSibling.classList.add('is-expanded'); this.remove();\">"
+               "残りの案も見る（全10案）</button>")
 
 
 def esc(s):
@@ -127,6 +155,7 @@ def build_fragment():
                              f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
                 parts.append("</div>")
             parts.append("</div>")
+            parts.append(MORE_BUTTON)
         elif ik in plans:
             parts.append('<div class="imp10-cards">')
             for pl in plans[ik]:
@@ -142,6 +171,7 @@ def build_fragment():
                              f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
                 parts.append("</div>")
             parts.append("</div>")
+            parts.append(MORE_BUTTON)
         else:
             parts.append('<div class="imp10-pending">この業種の10案は準備中です。スコアリング（候補評価）は'
                          '<a href="improvement/pdca.html">選定の考え方</a>で先行公開しています。</div>')

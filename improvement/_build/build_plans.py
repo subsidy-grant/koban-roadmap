@@ -41,8 +41,11 @@ PAGE_CHIPS = ["計画概要", "現状分析", "解決策", "施策詳細", "ス�
 CSS_TMPL = """
   @page { size: A4 portrait; margin: 0; }
   :root{
-    --ink:#171310;--sub:#5b544c;--mute:#8a8178;--line:#dcd4c8;--soft:#faf8f4;
-    --green:#1f6b46;--red:#b3372c;--gold:#a8790f;--scheme:__SCHEME__;--sc:#2b5f8a;
+    /* --mute / --gold は 3.6:1・3.66:1 でWCAG AA(4.5:1)に届いていなかったため
+       2026-07-29に濃くした（#8a8178→#6b6359 = 5.6:1、#a8790f→#8a6208 = 5.2:1）。
+       印刷時の見え方は変わらず、画面で読むときだけ効く。 */
+    --ink:#171310;--sub:#5b544c;--mute:#6b6359;--line:#dcd4c8;--soft:#faf8f4;
+    --green:#1f6b46;--red:#b3372c;--gold:#8a6208;--scheme:__SCHEME__;--sc:#2b5f8a;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;color:var(--ink);background:#dcd8d2;
@@ -156,9 +159,36 @@ CSS_TMPL = """
   .ul.on li::before{content:"✓";color:var(--green);font-weight:800}
   .ul.cols{column-count:2;column-gap:18px}
 
-  @media print{body{background:#fff}.toolbar{display:none}
+  @media print{body{background:#fff}.toolbar{display:none}.mobile-note{display:none}
+    .sheets{overflow:visible}
     .page{margin:0;box-shadow:none;page-break-after:always}.page:last-child{page-break-after:auto}}
+
+  /* 狭い画面向け（2026-07-29 追加）
+     この書類はA4固定レイアウトのため、スマートフォンでは幅210mm(約794px)が
+     収まらない。ページ全体が横にずれるとツールバーや注記まで隠れてしまうので、
+     横スクロールは書類の領域(.sheets)だけに閉じ込め、代わりに読みやすい形
+     （印刷/PDF・Excel）への案内を最初に出す。 */
+  .mobile-note{display:none}
+  @media (max-width:900px){
+    .mobile-note{display:block;background:#fff5e0;border-bottom:1px solid #e6d3a8;
+      color:#5b4708;font-size:13.5px;line-height:1.7;padding:12px 16px}
+    .mobile-note b{font-weight:700}
+    .sheets{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:10px}
+    .page{margin:14px}
+    .toolbar{font-size:13px}
+    .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+    .toolbar .btns{justify-content:flex-start}
+    .toolbar button,.toolbar a{padding:8px 12px;font-size:13px;white-space:nowrap}
+  }
 """
+
+# 参考資料ページ(apply_benchmarks.py)を .sheets の内側に入れるための目印。
+# </body> の直前には解析タグ(add_analytics.py)も入るため、閉じタグの並びでは位置を特定できない。
+SHEETS_END = "<!-- SHEETS:END --></div>"
+
+MOBILE_NOTE = ('<div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。'
+               'スマートフォンでは横にスクロールしてご覧ください。'
+               '読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版」をご利用ください。</div>')
 
 
 def esc(s):
@@ -475,7 +505,8 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
             '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
             f'<title>事業計画書 PLAN {pl["no"]:02d} {esc(pl["title"])}（{esc(industry_label)}・モデルケース）</title>'
             '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">'
-            f"<style>{css}</style></head><body>{toolbar}" + "\n".join(pages) + "</body></html>")
+            f"<style>{css}</style></head><body>{toolbar}{MOBILE_NOTE}"
+            '<div class="sheets">' + "\n".join(pages) + SHEETS_END + "</body></html>")
 
 
 EXTERNAL_INDUSTRIES = {"beauty"}  # 外部プロジェクト連携のため本スクリプトでは生成しない業種

@@ -137,7 +137,7 @@ def build_scores(data):
 
 PDCA_CSS = """
   :root { --paper:#eef0ea; --paper-raised:#f8f9f4; --ink:#1b2420; --ink-soft:#4a564d;
-    --ink-faint:#7c8880; --accent:#a8752f; --accent-wash:#f2e9d6; --sage:#5f7360;
+    --ink-faint:#59645c; --accent:#845818; --accent-wash:#f2e9d6; --sage:#4f6350;
     --sage-wash:#e2e8de; --rust:#9c5539; --line:#d5cfbf; }
   @media (prefers-color-scheme: dark) { :root { --paper:#12181a; --paper-raised:#182020;
     --ink:#ece8e0; --ink-soft:#b7bdb0; --ink-faint:#838f83; --accent:#dcab5c;
@@ -192,6 +192,23 @@ PDCA_CSS = """
   .ext-thumb-icon { height:120px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; display:flex;
     align-items:center; justify-content:center; font-size:2.6rem;
     background:linear-gradient(135deg, var(--accent-wash), var(--paper)); }
+
+  /* 公開版の可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針）
+     利用者に50〜80代を想定し、ルート17px・本文まわり14px以上・
+     操作要素の当たり判定44px以上・フォーカスの可視化を全体に敷く。 */
+  html { font-size:17px; }
+  @media (max-width:400px) { html { font-size:16px; } }
+  .sub { font-size:1rem; }
+  table { font-size:0.92rem; }
+  th { font-size:0.85rem; }
+  .funnel .step .t, .card .meta, .ext-card .why { font-size:0.88rem; }
+  .badge, .card .no { font-size:0.82rem; }
+  .card .ttl { font-size:1rem; }
+  .back, .ext-links { font-size:0.92rem; }
+  summary { min-height:2.6rem; display:flex; align-items:center; }
+  .ext-links a, .back a { display:inline-flex; align-items:center; min-height:2.6rem; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline:3px solid var(--accent); outline-offset:2px; border-radius:3px; }
 """
 
 AXES = [("market", "市場性"), ("saving", "省力化"), ("feasibility", "実現性"),

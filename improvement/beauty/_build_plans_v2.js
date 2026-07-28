@@ -29,8 +29,10 @@ const BIZ = DATA.biz;
 
 // ---------- カラー ----------
 const C = {
-  ink: "#171310", sub: "#5b544c", mute: "#8a8178", line: "#dcd4c8", soft: "#faf8f4",
-  green: "#1f6b46", red: "#b3372c", gold: "#a8790f", navy: "#1f3d63",
+  // mute / gold は 3.6:1・3.66:1 でWCAG AA(4.5:1)未達だったため2026-07-29に濃くした
+  // (#8a8178→#6b6359 = 5.6:1、#a8790f→#8a6208 = 5.2:1)。飲食業版と同じ値に揃えている
+  ink: "#171310", sub: "#5b544c", mute: "#6b6359", line: "#dcd4c8", soft: "#faf8f4",
+  green: "#1f6b46", red: "#b3372c", gold: "#8a6208", navy: "#1f3d63",
   teal: "#0d6e6e", plum: "#63396a", orange: "#bf5a12", brown: "#8a5a2b", blue: "#2b5f8a",
 };
 // セクション別アクセント(ページを色で識別できるようにする)
@@ -1027,8 +1029,27 @@ function shell(d, s, pages) {
   @media print{
     body{background:#fff}
     .toolbar{display:none}
+    .mobile-note{display:none}
+    .sheets{overflow:visible}
     .page{margin:0;box-shadow:none;page-break-after:always}
     .page:last-child{page-break-after:auto}
+  }
+
+  /* 狭い画面向け(2026-07-29 追加、飲食業版 build_plans.py と同じ方針)
+     A4固定レイアウト(210mm=約794px)はスマートフォンに収まらない。ページ全体が
+     横にずれるとツールバーや注記まで隠れるため、横スクロールは書類領域(.sheets)
+     だけに閉じ込め、読みやすい形(印刷/PDF・Excel)への案内を先に出す。 */
+  .mobile-note{display:none}
+  @media (max-width:900px){
+    .mobile-note{display:block;background:#fff5e0;border-bottom:1px solid #e6d3a8;
+      color:#5b4708;font-size:13.5px;line-height:1.7;padding:12px 16px}
+    .mobile-note b{font-weight:700}
+    .sheets{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:10px}
+    .page{margin:14px}
+    .toolbar{font-size:13px}
+    .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+    .toolbar .btns{justify-content:flex-start}
+    .toolbar button,.toolbar a{padding:8px 12px;font-size:13px;white-space:nowrap}
   }
 </style></head>
 <body>
@@ -1039,7 +1060,8 @@ function shell(d, s, pages) {
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>
   </div>
-  ${pages}
+  <div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。スマートフォンでは横にスクロールしてご覧ください。読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excelをダウンロード」をご利用ください。</div>
+  <div class="sheets">${pages}<!-- SHEETS:END --></div>
 </body></html>`;
 }
 
