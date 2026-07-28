@@ -25,6 +25,11 @@ INDUSTRY_ORDER = ["beauty", "food", "lodging", "manufacturing", "realestate", "e
 # 100施策スコアリングではなく外部プロジェクトの10案を採用する業種（build_hub.pyと同じ対象）
 EXTERNAL_INDUSTRIES = {"beauty"}
 
+# 採択済み10案を業種×AIの1000案アイデア空間に位置づけたダッシュボードを持つ業種。
+# 選定の記録（このページ）とは別物: 採択はあくまで100施策スコアリングで確定しており、
+# ボード側のTOP10はそれと同一になるよう作られている（{ik}/pdca.html 冒頭に明記）
+IDEA_BOARDS = {"food": "飲食業×AI 1000案のPDCAファネル・一覧を見る（飲食業版）↗"}
+
 EASY_RE = re.compile(r"システム|クラウド|アプリ|ソフト|ツール|SaaS|管理|配信|デジタル|オンライン|電子|AI|分析|自動化")
 MID_RE = re.compile(r"機器|端末|レジ|タブレット|センサー|カメラ|照明|チェア|プリンタ|検温|ディスペンサー|キオスク")
 HARD_RE = re.compile(r"ロボット|工事|改装|改修|太陽光|バリアフリー|設置|増設|空調|オーブン|洗浄機|滅菌")
@@ -368,6 +373,9 @@ def render_pdca(data, all_scores, external=None):
                     parts.append(f'<div class="meta" style="margin-top:0.4rem;">採択理由：{esc(r["stage2Note"])}</div>')
                 parts.append("</div>")
             parts.append("</div>")
+
+        if ik in IDEA_BOARDS:
+            parts.append(f'<p class="sub" style="margin-top:0.6rem;"><a href="{ik}/pdca.html">{esc(IDEA_BOARDS[ik])}</a></p>')
 
         parts.append(f"<details><summary>全100施策のスコア表を開く（{esc(ind_labels[ik])}）</summary>")
         parts.append('<div class="twrap"><table><thead><tr><th>順位</th><th>施策</th><th>分類</th>'

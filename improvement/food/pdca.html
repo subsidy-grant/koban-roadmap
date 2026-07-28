@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDCA評価ダッシュボード | 美容業×AI 1000案</title>
+<title>PDCA評価ダッシュボード | 飲食業×AI 1000案</title>
 <style>
+  /* beauty/pdca.html と同型。飲食版はアクセントを暖色(パプリカ)に寄せて区別する */
   :root{
-    --bg:#f7f5f2; --card:#ffffff; --ink:#26221e; --sub:#6f675e; --line:#e5dfd7;
-    --accent:#8a5a2b; --accent2:#3e6b4f; --gold:#b98a2f; --red:#a4453c;
+    --bg:#f7f4f1; --card:#ffffff; --ink:#27211d; --sub:#6f665e; --line:#e6ddd4;
+    --accent:#9c4a2e; --accent2:#3e6b4f; --gold:#b98a2f; --red:#a4453c;
+    --blue:#4a6b8a; --teal:#3d7a78;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
-  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:28px 24px}
+  header{background:linear-gradient(135deg,#2b211c,#54301f);color:#f7efe6;padding:28px 24px}
   header h1{font-size:22px;font-weight:700}
   header p{font-size:13px;opacity:.85;margin-top:6px}
   .wrap{max-width:1200px;margin:0 auto;padding:20px}
@@ -29,11 +31,14 @@
   .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
   .tcard .rank{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}
   .tcard h3{font-size:15px}
-  .tcard .why{font-size:12px;color:var(--sub);background:#faf7f2;border-radius:8px;padding:8px}
+  .tcard .why{font-size:12px;color:var(--sub);background:#faf6f1;border-radius:8px;padding:8px}
   .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
-  .b-sho{color:var(--accent2);border-color:var(--accent2);background:#eef5f0}
+  .b-dig{color:var(--blue);border-color:var(--blue);background:#edf2f7}
+  .b-cat{color:var(--accent2);border-color:var(--accent2);background:#eef5f0}
   .b-gyo{color:#7a5a17;border-color:var(--gold);background:#fbf4e3}
-  /* 5軸スコアは5角形レーダーチャートで表示する（横棒だと軸ごとの強弱が読み取りにくいため） */
+  .b-jiz{color:var(--red);border-color:var(--red);background:#f9edeb}
+  .b-sei{color:var(--teal);border-color:var(--teal);background:#eaf4f3}
+  /* 5軸スコアは5角形レーダーチャートで表示する（beauty/pdca.html と同じ描画） */
   .scorewrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   .radarbox{flex:0 0 auto;width:210px;max-width:100%;margin:0 auto}
   .radar{width:100%;height:auto;display:block}
@@ -47,20 +52,20 @@
   .scorewrap .why{flex:1 1 190px;margin:0}
   .links{display:flex;gap:8px;font-size:12px;flex-wrap:wrap}
   .links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
-  .links a:hover{background:#f3ede4}
+  .links a:hover{background:#f4ece4}
   /* フィルタ+表 */
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
   select,input[type=search]{font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
   input[type=search]{flex:1;min-width:200px}
   .count{font-size:12px;color:var(--sub)}
   table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:12.5px}
-  th{background:#efe9e0;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
-  th:hover{background:#e6ddd0}
+  th{background:#efe8e0;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{background:#e6dccf}
   td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
-  tr:hover td{background:#faf7f2}
+  tr:hover td{background:#faf6f1}
   .stg{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
   .stg-top{background:#a4453c;color:#fff}.stg-c{background:#b98a2f;color:#fff}
-  .stg-p{background:#5b7b9a;color:#fff}.stg-0{background:#e5dfd7;color:#6f675e}
+  .stg-p{background:#5b7b9a;color:#fff}.stg-0{background:#e6ddd4;color:#6f665e}
   .pager{display:flex;gap:8px;justify-content:center;margin:14px 0;align-items:center;font-size:13px}
   .pager button{font:inherit;padding:6px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
   .pager button:disabled{opacity:.4;cursor:default}
@@ -72,10 +77,10 @@
 </style>
 </head>
 <body>
-<p style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:13px;"><a href="../index.html?industry=beauty" style="color:#8a5a2b;font-weight:700;text-decoration:none;">← 改善計画10選（美容業）へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#8a5a2b;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="配布用サイト_1ファイル版.html" style="color:#8a5a2b;font-weight:700;text-decoration:none;">📦 オフライン配布用1ファイル版</a></p>
+<p style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:13px;"><a href="../index.html?industry=food" style="color:#9c4a2e;font-weight:700;text-decoration:none;">← 改善計画10選（飲食業）へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#9c4a2e;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:#9c4a2e;font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
 <header>
-  <h1>美容業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
-  <p>20カテゴリ × 10コア機能 × 5業態(美容室/理容室/エステ/ネイル/マツエク)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。</p>
+  <h1>飲食業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
+  <p>20カテゴリ × 10コア機能 × 5業態(居酒屋/カフェ/ラーメン/レストラン/寿司・和食)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。TOP10は「改善計画10選（飲食業）」で採択済みの10案と同一で、本ボードはその10案を1000案のアイデア空間の中に位置づけたものです（採択自体の記録は「選定の考え方」参照）。</p>
 </header>
 <div class="wrap">
 
@@ -90,8 +95,8 @@
       <div class="lbl">試作可能性評価</div>
       <div class="desc">プロトタイプ製作コスト・データ入手性・既製品との差別化を検証し3割まで圧縮。</div></div>
     <div class="stage s-a"><span class="ph">ACT</span><div class="num">10<span style="font-size:13px">案</span></div>
-      <div class="lbl">採択(補助金2制度へ割当)</div>
-      <div class="desc">省力化投資補助金(一般型)5案・業務改善助成金5案に振り分けて事業計画化。</div></div>
+      <div class="lbl">採択(改善計画10選と同一)</div>
+      <div class="desc">デジタル化・AI導入4案／業務改善助成金3案／省力化カタログ型1案／持続化1案／飲食業生産性向上1案。</div></div>
   </div>
 
   <h2>TOP10 採択案(プロトタイプ&事業計画書あり)</h2>
@@ -102,16 +107,23 @@
     <input type="search" id="q" placeholder="キーワード検索(タイトル・説明)">
     <select id="fCat"><option value="">全カテゴリ</option></select>
     <select id="fSeg"><option value="">全業態</option></select>
+    <select id="fDept"><option value="">全部門</option>
+      <option>ホール</option><option>厨房</option><option>バックオフィス</option><option>店舗・店外</option></select>
     <select id="fStage"><option value="">全ステージ</option>
       <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
-    <select id="fScheme"><option value="">全制度</option><option value="省力化">省力化投資補助金</option><option value="業務改善">業務改善助成金</option></select>
+    <select id="fScheme"><option value="">全制度</option>
+      <option value="デジタル">デジタル化・AI導入補助金2026</option>
+      <option value="カタログ">中小企業省力化投資補助金(カタログ注文型)</option>
+      <option value="業務改善">業務改善助成金</option>
+      <option value="持続化">小規模事業者持続化補助金</option>
+      <option value="生産性">飲食業労働生産性向上支援補助金</option></select>
     <span class="count" id="count"></span>
   </div>
   <div class="twrap">
   <table>
     <thead><tr>
       <th data-k="rank">順位</th><th data-k="title">タイトル</th><th data-k="category">カテゴリ</th>
-      <th data-k="segment">業態</th><th data-k="savingHoursPerMonth">省力化 h/月</th>
+      <th data-k="dept">部門</th><th data-k="segment">業態</th><th data-k="savingHoursPerMonth">省力化 h/月</th>
       <th data-k="total">総合</th><th data-k="stage">ステージ</th><th data-k="scheme">制度</th>
     </tr></thead>
     <tbody id="tbody"></tbody>
@@ -121,22 +133,36 @@
     <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
   </div>
 </div>
-<footer>beauty-ai-factory — AIで完全自走する美容業DXコンテンツ工場 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)</footer>
+<footer>koban-roadmap 飲食業×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10の採択自体は<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>に記録された100施策スコアリングによる。</footer>
 
 <script src="ideas.js"></script>
 <script>
 // TOP10の選定理由(Check/Act段階の評価コメント)とプロトタイプ・計画書リンク
+// ※採択は improvement/pdca.html の100施策スコアリングで確定済み。ここでは
+//   1000案の中でなぜこの10案が残るのかを、5軸の観点から言い直している
 const RATIONALE = {
-  1:{why:"記事作成・翻訳・SEO/MEOという3業務を同時にゼロ化でき、インバウンド売上という新市場も獲得。省力化と販路開拓の両面で審査説明が最も立てやすい。",proto:"proto-01-ai-multilingual-blog.html",plan:"plan-01.html"},
-  2:{why:"施術中の電話対応は美容室最大の中断要因。24時間自動応対は取りこぼし予約の売上化と省力化を数値で示しやすく、省力化指数の説明が明快。",proto:"proto-02-ai-phone-reservation.html",plan:"plan-02.html"},
-  3:{why:"カウンセリングは単価と失客を左右する中核業務。写真解析AIで品質標準化とカルテ作成自動化を同時達成し、新人でも成果を出せる体制を作る。",proto:"proto-03-ai-counseling-karte.html",plan:"plan-03.html"},
-  4:{why:"地図検索は新規来店の最大導線。返信・投稿・分析の自動化は費用対効果が高く、効果測定(順位・件数)が容易で実績報告にも強い。",proto:"proto-04-ai-meo-review.html",plan:"plan-04.html"},
-  5:{why:"動画編集は1本2〜3時間の重負荷業務。撮影するだけで投稿まで自動化し、若年層集客というリターンも大きい。",proto:"proto-05-ai-short-video.html",plan:"plan-05.html"},
-  6:{why:"発注・棚卸は完全なノンコア業務で自動化抵抗が小さい。POS連動の需要予測は省力化効果を在庫金額でも示せる。",proto:"proto-06-ai-auto-order.html",plan:"plan-06.html"},
-  7:{why:"シフト作成は店長業務の最大負荷のひとつ。法令チェック同時実行は賃上げ・労務要件と親和性が高く、社労士監修の説得力を持たせやすい。",proto:"proto-07-ai-shift-romu.html",plan:"plan-07.html"},
-  8:{why:"技術者育成の長期化は業界共通課題。動画教材自動生成は教育時間の削減と定着率改善を両立し、賃上げ原資の生産性向上に直結。",proto:"proto-08-ai-training-video.html",plan:"plan-08.html"},
-  9:{why:"レジ締め・記帳は毎日発生する確実な削減対象。効果測定が容易で、税理士連携による月次早期化という二次効果も説明できる。",proto:"proto-09-ai-accounting.html",plan:"plan-09.html"},
-  10:{why:"新規獲得コストが高騰する中、失客防止は最も割の良い投資。来店周期学習×LINE自動配信は既存資産だけで動き、実現性が高い。",proto:"proto-10-ai-repeat-follow.html",plan:"plan-10.html"},
+  1:{why:"注文取りはホール最大の反復業務。24席モデルで月27時間→10時間の試算(plan-01)があり、おすすめ表示で客単価も上がる。省力化と売上の両面で説明が最も立てやすい。",proto:"proto-01-mobile-order.html",plan:"plan-01.html"},
+  2:{why:"食材費は飲食最大のコスト構造。カン頼みの発注を予測に置き換え、廃棄ロスと欠品による機会損失を同時に削減できる。効果を金額で示しやすい。",proto:"proto-02-ai-demand-forecast.html",plan:"plan-02.html"},
+  3:{why:"ノーショーは仕込みと席の二重損失。事前決済・自動リマインドで直接被害を減らし、電話対応の削減も同時に得られる。",proto:"proto-03-reservation-system.html",plan:"plan-03.html"},
+  4:{why:"省力化カタログ注文型で申請が軽い代表格。ホール1人分の歩行を肩代わりし、下げ膳の滞留も解消。効果が配膳回数として記録に残り実績報告に強い。",proto:"proto-04-delivery-robot.html",plan:"plan-04.html"},
+  5:{why:"仕込みの拘束時間を短縮し、火入れの自動プログラムで品質を標準化。生産性向上と賃上げをセットで示せる業務改善助成金との相性が良い。",proto:"proto-05-steam-convection-oven.html",plan:"plan-05.html"},
+  6:{why:"紙伝票の紛失・聞き違いによる作り直しは純損失。提供時間の見える化で遅延クレームも防ぎ、改善効果を提供リードタイムで数値報告できる。",proto:"proto-06-kitchen-display.html",plan:"plan-06.html"},
+  7:{why:"厨房の暑熱・油煙は離職理由の上位。換気刷新は求人・定着に直結し、客席の空気の快適さは来店理由にもなる。設備投資として審査に馴染む。",proto:"proto-07-ventilation-system.html",plan:"plan-07.html"},
+  8:{why:"アルバイト多数店舗のシフト作成・勤怠集計は店長業務の最大負荷。クラウド化で労基対応の記録も同時に整い、賃上げ原資の生産性向上に直結。",proto:"proto-08-cloud-shift-attendance.html",plan:"plan-08.html"},
+  9:{why:"電気料金の削減が確実に出る、最も外れの少ない投資。長時間営業ほど効き、厨房の発熱低減・演色性の改善も同時に得られる。",proto:"proto-09-led-energy-saving.html",plan:"plan-09.html"},
+  10:{why:"深夜割増・掛け持ちバイトの複雑な給与計算は毎月確実に発生する削減対象。勤怠連携で締め作業を自動化し、計算ミスの信頼リスクもなくす。",proto:"proto-10-payroll-automation.html",plan:"plan-10.html"},
+};
+
+const SCHEME_BADGE = {
+  "デジタル":   '<span class="badge b-dig">デジタル化・AI導入補助金2026</span>',
+  "カタログ":   '<span class="badge b-cat">中小企業省力化投資補助金(カタログ注文型)</span>',
+  "業務改善":   '<span class="badge b-gyo">業務改善助成金</span>',
+  "持続化":     '<span class="badge b-jiz">小規模事業者持続化補助金</span>',
+  "生産性":     '<span class="badge b-sei">飲食業労働生産性向上支援補助金</span>',
+};
+const SCHEME_SHORT = {
+  "デジタル": "デジタル化・AI導入", "カタログ": "省力化(カタログ)", "業務改善": "業務改善",
+  "持続化": "持続化", "生産性": "飲食業生産性向上",
 };
 
 const AX = [["market","市場性"],["saving","省力化"],["feasibility","実現性"],["subsidy","補助金"],["unique","差別化"]];
@@ -183,22 +209,19 @@ function radarChart(score) {
        + `${grid}<polygon class="shape" points="${shape}"/>${dots}${labels}</svg>`;
 }
 
-// TOP10カード
+// TOP10カード（飲食版はExcel・仕様書が無いため、リンクはプロトタイプと事業計画書の2つ）
 document.getElementById("topgrid").innerHTML = TOP10.map(t => {
   const r = RATIONALE[t.topRank] || {};
-  const badge = t.scheme === "省力化"
-    ? '<span class="badge b-sho">省力化投資補助金(一般型)</span>'
-    : '<span class="badge b-gyo">業務改善助成金</span>';
   return `<div class="tcard">
-    <div><span class="rank">No.${t.topRank}</span> ${badge}</div>
+    <div><span class="rank">No.${t.topRank}</span> ${SCHEME_BADGE[t.scheme] || ""}</div>
     <h3>${t.title}</h3>
     <div style="font-size:12px">${t.description}</div>
     <div class="scorewrap">
       <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
       <div class="why"><b>選定理由:</b> ${r.why||""}</div>
     </div>
-    <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月</div>
-    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a><a href="manuals/manual-${String(t.topRank).padStart(2,"0")}.html">📖 仕様書</a></div>
+    <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月（${t.dept}）</div>
+    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a></div>
   </div>`;
 }).join("");
 
@@ -209,7 +232,7 @@ SEGMENTS.forEach(s => fSeg.insertAdjacentHTML("beforeend", `<option>${s.name}</o
 
 let sortKey = "rank", sortAsc = true, page = 0;
 const PAGE = 50;
-const els = ["q","fCat","fSeg","fStage","fScheme"].map(id => document.getElementById(id));
+const els = ["q","fCat","fSeg","fDept","fStage","fScheme"].map(id => document.getElementById(id));
 els.forEach(el => el.addEventListener("input", () => { page = 0; render(); }));
 document.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
   const k = th.dataset.k;
@@ -222,10 +245,11 @@ document.getElementById("next").onclick = () => { page++; render(); };
 function stageClass(s){ return s.startsWith("TOP") ? "stg-top" : s.startsWith("C") ? "stg-c" : s.startsWith("P") ? "stg-p" : "stg-0"; }
 
 function render() {
-  const [q, cat, seg, stage, scheme] = els.map(e => e.value);
+  const [q, cat, seg, dept, stage, scheme] = els.map(e => e.value);
   const ql = q.toLowerCase();
   let rows = IDEAS.filter(i =>
     (!cat || i.category === cat) && (!seg || i.segment === seg) &&
+    (!dept || i.dept === dept) &&
     (!stage || i.stage === stage) && (!scheme || i.scheme === scheme) &&
     (!q || (i.title + i.description).toLowerCase().includes(ql)));
   rows.sort((a, b) => {
@@ -242,11 +266,11 @@ function render() {
   document.getElementById("tbody").innerHTML = rows.slice(page * PAGE, (page + 1) * PAGE).map(i => `
     <tr><td>${i.rank}</td>
     <td><b>${i.title}</b><br><span style="color:var(--sub)">${i.description}</span></td>
-    <td>${i.category}</td><td>${i.segment}</td>
+    <td>${i.category}</td><td>${i.dept}</td><td>${i.segment}</td>
     <td style="text-align:center">${i.savingHoursPerMonth}</td>
     <td><b>${i.total}</b>/25</td>
     <td><span class="stg ${stageClass(i.stage)}">${i.stage}</span></td>
-    <td>${i.scheme === "省力化" ? "省力化(一般型)" : "業務改善"}</td></tr>`).join("");
+    <td>${SCHEME_SHORT[i.scheme] || i.scheme}</td></tr>`).join("");
 }
 render();
 </script>
