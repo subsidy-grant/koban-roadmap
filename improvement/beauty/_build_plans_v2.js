@@ -437,7 +437,7 @@ function page(n, total, sect, body, opts = {}) {
       <span class="phead-n">${n} <small>/ ${total}</small></span>
     </div>
     <div class="pbody">${body}</div>
-    <div class="pfoot"><span>${BIZ.name} 事業計画書</span><span>${opts.foot || sect.f}</span></div>
+    <div class="pfoot"><span>${BIZ.name} 事業計画書（モデルケース）</span><span>${opts.foot || sect.f}</span></div>
   </section>`;
 }
 
@@ -474,7 +474,7 @@ function buildPlan(d) {
       <div class="half">
         <h3>申請者概要</h3>
         <table class="kv pair">
-          <tr><td>事業者名</td><td>${BIZ.name}</td></tr>
+          <tr><td>事業者名</td><td>${BIZ.name}<span class="note" style="margin:0 0 0 6px">（架空のモデル事業者）</span></td></tr>
           <tr><td>業種 / 所在地</td><td>${BIZ.type} / ${BIZ.area}</td></tr>
           <tr><td>創業 / 規模</td><td>${BIZ.founded} / ${BIZ.staff}名・${BIZ.seats}席</td></tr>
           <tr><td>年商 / 月商</td><td><b>${BIZ.salesYen}万円</b> / ${BIZ.salesMYen}万円</td></tr>
