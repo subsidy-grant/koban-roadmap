@@ -53,11 +53,11 @@
 </header>
 <main>
   <h1>モバイルオーダー運用ダッシュボード</h1>
-  <p class="sub">モバイルオーダー（セルフオーダー）システム導入によるホール業務の省力化と客単価向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">モバイルオーダー（セルフオーダー）システム導入によるホール業務の省力化と客単価向上 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="register"><div><div class="label">本日の注文数</div><div class="amount">186件</div></div><div style="text-align:right"><div class="label">前回比</div><div style="font-weight:700;color:#f5efe6">+34 前週比</div></div></div><div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi"><div class="k">セルフオーダー比率</div><div class="v">68%</div><div class="d">+12pt 今月</div></div><div class="kpi"><div class="k">平均提供時間</div><div class="v">7.4分</div><div class="d">-4.6分 導入前比</div></div><div class="kpi"><div class="k">追加注文率</div><div class="v">31%</div><div class="d">+9pt 今月</div></div></div><div class="grid"><div class="panel"><h2>本日の注文状況</h2><div class="tickets" id="mainList"><div class="ticket"><div><div class="main">12:05 ／ 3番 ／ 日替わり定食+味噌汁 ／ セルフ</div></div><span class="status">提供済み</span></div><div class="ticket"><div><div class="main">12:10 ／ 7番 ／ 唐揚げ定食 ／ セルフ</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">12:12 ／ 5番 ／ 焼魚定食 ／ 店員</div></div><span class="status">提供済み</span></div><div class="ticket"><div><div class="main">12:15 ／ 2番 ／ 麻婆豆腐定食+ライス大盛 ／ セルフ</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">12:18 ／ 9番 ／ 本日のカレー ／ セルフ</div></div><span class="status">受付済み</span></div></div></div><div class="panel side"><h2>厨房KDS連携状況</h2><ul><li>未処理オーダー: 3件</li><li>平均調理時間: 6.2分</li><li>紙伝票の使用: 0件（本日）</li><li>端末エラー通知: なし</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 新規オーダーをシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -86,11 +86,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

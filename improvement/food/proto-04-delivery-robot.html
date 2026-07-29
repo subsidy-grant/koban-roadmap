@@ -56,11 +56,11 @@
 </header>
 <main>
   <h1>配膳ロボット運用ダッシュボード</h1>
-  <p class="sub">配膳・下膳ロボット導入によるホール業務の省人化と提供スピードの向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">配膳・下膳ロボット導入によるホール業務の省人化と提供スピードの向上 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">247回</div></div><div class="k">本日の配膳回数</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">ロボット比率82%</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">2.9%</div></div><div class="k">空席率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-3.7pt 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">2.1分</div></div><div class="k">平均リセット時間</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-1.9分 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">91%</div></div><div class="k">稼働率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">本日平均</div></div></div><div class="grid"><div class="panel"><h2>配膳ロボット稼働ログ</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">12:05</span><span class="r2">12番 ／ ハンバーグセット×2 ／ 1分40秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:08</span><span class="r2">5番 ／ パスタランチ×3 ／ 2分10秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:12</span><span class="r2">18番 ／ 下膳（12番） ／ 1分30秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:15</span><span class="r2">9番 ／ ドリンクバー案内 ／ 1分20秒 ／ 完了</span></div><div class="reading"><span class="dot"></span><span class="r1">12:18</span><span class="r2">3番 ／ キッズプレート×1 ／ 1分50秒 ／ 配送中</span></div></div></div><div class="panel side"><h2>本日の稼働サマリー</h2><ul><li>ロボット1: 走行距離 4.2km</li><li>ロボット2: 走行距離 3.8km</li><li>エラー通知: なし</li><li>バッテリー残量: 68% / 74%</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 配膳をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -91,11 +91,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

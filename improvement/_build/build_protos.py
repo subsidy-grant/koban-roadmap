@@ -371,11 +371,11 @@ def build_proto_html(pl, ik):
 </header>
 <main>
   <h1>{esc(p["screenTitle"])}</h1>
-  <p class="sub">{esc(pl["title"])} — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">{esc(pl["title"])} — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   {body}
   <div class="actions"><button class="demo" onclick="runDemo()">▶ {esc(p["demoLabel"])}</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>

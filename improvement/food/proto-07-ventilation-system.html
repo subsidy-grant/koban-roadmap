@@ -56,11 +56,11 @@
 </header>
 <main>
   <h1>厨房環境モニタリングダッシュボード</h1>
-  <p class="sub">空気清浄・換気システム導入による衛生対策の強化と厨房環境の改善 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">空気清浄・換気システム導入による衛生対策の強化と厨房環境の改善 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">31.8℃</div></div><div class="k">現在の厨房内温度</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-8.2℃ 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">94%</div></div><div class="k">換気ユニット稼働率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">ピーク時自動増速</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">0件</div></div><div class="k">客席への煙流入</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">導入後累計0件</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">良好</div></div><div class="k">フィルター状態</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">次回交換まで18日</div></div></div><div class="grid"><div class="panel"><h2>本日の厨房環境ログ</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">11:00</span><span class="r2">28.4℃ ／ 中 ／ ランチ準備</span></div><div class="reading"><span class="dot"></span><span class="r1">12:30</span><span class="r2">31.2℃ ／ 強（自動） ／ ピーク帯</span></div><div class="reading"><span class="dot"></span><span class="r1">14:00</span><span class="r2">29.1℃ ／ 中 ／ アイドルタイム</span></div><div class="reading"><span class="dot"></span><span class="r1">18:00</span><span class="r2">30.8℃ ／ 強（自動） ／ ディナー開始</span></div><div class="reading"><span class="dot"></span><span class="r1">19:30</span><span class="r2">31.8℃ ／ 強（自動） ／ ピーク帯</span></div></div></div><div class="panel side"><h2>今月の環境改善サマリー</h2><ul><li>平均厨房内温度: 30.2℃（前年同月-8.6℃）</li><li>客からの煙・匂い指摘: 0件</li><li>フィルター清掃: 月2回（前は週2回）</li><li>スタッフ休憩延長対応: 0件</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 換気強度を自動調整</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -91,11 +91,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

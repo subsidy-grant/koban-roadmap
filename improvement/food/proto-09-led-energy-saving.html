@@ -56,11 +56,11 @@
 </header>
 <main>
   <h1>省エネ効果モニタリングダッシュボード</h1>
-  <p class="sub">LED照明への切替による電気料金削減と厨房環境の改善 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">LED照明への切替による電気料金削減と厨房環境の改善 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="gauges"><div class="gwrap"><div class="ring" style="--pct:78"><div class="hole">13.8万円</div></div><div class="k">今月の電気料金</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">-8.2万円 導入前比</div></div><div class="gwrap"><div class="ring" style="--pct:62"><div class="hole">37%</div></div><div class="k">削減率</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">目標41%に対し進捗良好</div></div><div class="gwrap"><div class="ring" style="--pct:91"><div class="hole">24.6万円</div></div><div class="k">累計削減額</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">導入から3ヶ月</div></div><div class="gwrap"><div class="ring" style="--pct:45"><div class="hole">1件</div></div><div class="k">照明交換件数</div><div style="font-size:11px;color:var(--green);font-weight:600;margin-top:2px">今月（人感センサー故障）</div></div></div><div class="grid"><div class="panel"><h2>エリア別消費電力（本日）</h2><div class="readings" id="mainList"><div class="reading"><span class="dot"></span><span class="r1">客席</span><span class="r2">18.2kWh ／ 6.8kWh ／ 63%減</span></div><div class="reading"><span class="dot"></span><span class="r1">厨房</span><span class="r2">24.5kWh ／ 11.2kWh ／ 54%減</span></div><div class="reading"><span class="dot"></span><span class="r1">看板・外灯</span><span class="r2">8.0kWh ／ 2.1kWh ／ 74%減</span></div><div class="reading"><span class="dot"></span><span class="r1">バックヤード</span><span class="r2">6.5kWh ／ 1.4kWh ／ 78%減</span></div><div class="reading"><span class="dot"></span><span class="r1">合計</span><span class="r2">57.2kWh ／ 21.5kWh ／ 62%減</span></div></div></div><div class="panel side"><h2>今月の省エネサマリー</h2><ul><li>空調の夏季稼働時間: -8%（前年同月比）</li><li>CO2削減量: 約142kg（試算）</li><li>人感センサー作動: 1日平均34回</li><li>次回メンテナンス確認: 来月</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 本日の削減効果を集計</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -91,11 +91,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

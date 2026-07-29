@@ -53,11 +53,11 @@
 </header>
 <main>
   <h1>予約管理ダッシュボード</h1>
-  <p class="sub">飲食店向け予約管理システム導入によるノーショー対策と予約業務の効率化 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">飲食店向け予約管理システム導入によるノーショー対策と予約業務の効率化 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="kpis"><div class="kpi"><div class="k">本日の予約</div><div class="v">12件</div><div class="d">うちコース8件</div></div><div class="kpi"><div class="k">ネット予約比率</div><div class="v">58%</div><div class="d">+22pt 今月</div></div><div class="kpi"><div class="k">無断キャンセル</div><div class="v">0件</div><div class="d">今月累計2件</div></div><div class="kpi"><div class="k">事前決済完了</div><div class="v">8件</div><div class="d">コース予約全件</div></div></div><div class="grid"><div class="panel"><h2>本日の予約一覧（顧客・人数・内容）</h2><div class="timeline" id="mainList"><div class="tcard"><span class="pill">決済済み</span><div class="time">18:00</div><div class="desc">田中様 ／ 2名 ／ Aコース</div></div><div class="tcard"><span class="pill">確定</span><div class="time">18:30</div><div class="desc">佐藤様 ／ 4名 ／ アラカルト</div></div><div class="tcard"><span class="pill">決済済み</span><div class="time">19:00</div><div class="desc">鈴木様 ／ 2名 ／ Bコース</div></div><div class="tcard"><span class="pill">決済済み</span><div class="time">19:30</div><div class="desc">高橋様 ／ 6名 ／ 貸切コース</div></div><div class="tcard"><span class="pill">確定</span><div class="time">20:00</div><div class="desc">伊藤様 ／ 2名 ／ アラカルト</div></div></div></div><div class="panel side"><h2>自動リマインド送信状況</h2><ul><li>明日の予約 9件に送信予約済み</li><li>本日 15:00 送信完了（4件）</li><li>コース予約は決済リンクを同時送付</li><li>キャンセル待ち登録 1件</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 新規ネット予約をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -86,11 +86,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

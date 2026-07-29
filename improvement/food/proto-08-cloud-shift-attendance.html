@@ -53,11 +53,11 @@
 </header>
 <main>
   <h1>クラウド勤怠・シフト管理ダッシュボード</h1>
-  <p class="sub">クラウド勤怠・シフト管理システム導入によるバックオフィス業務の削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">クラウド勤怠・シフト管理システム導入によるバックオフィス業務の削減 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="kpis"><div class="kpi"><div class="k">今月のシフト充足率</div><div class="v">98%</div><div class="d">+14pt 導入前比</div></div><div class="kpi"><div class="k">自動生成の希望反映率</div><div class="v">91%</div><div class="d">手動調整9%のみ</div></div><div class="kpi"><div class="k">打刻移行率</div><div class="v">100%</div><div class="d">全12名</div></div><div class="kpi"><div class="k">代打募集の平均充足時間</div><div class="v">48分</div><div class="d">-3.2時間 導入前比</div></div></div><div class="grid"><div class="panel"><h2>今週のシフト一覧（抜粋）（時間帯・担当）</h2><div class="timeline" id="mainList"><div class="tcard"><span class="pill">確定</span><div class="time">7/21(月)</div><div class="desc">11:00-15:00 ／ 山田・鈴木</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/21(月)</div><div class="desc">17:00-22:00 ／ 佐藤・田中・伊藤</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/22(火)</div><div class="desc">11:00-15:00 ／ 高橋・渡辺</div></div><div class="tcard"><span class="pill">代打募集中</span><div class="time">7/23(水)</div><div class="desc">17:00-22:00 ／ 山田・伊藤</div></div><div class="tcard"><span class="pill">確定</span><div class="time">7/24(木)</div><div class="desc">11:00-15:00 ／ 鈴木・佐藤</div></div></div></div><div class="panel side"><h2>今月の勤怠サマリー</h2><ul><li>総労働時間: 1,240時間</li><li>残業時間: 12時間（要確認1件）</li><li>有給取得: 3件申請済み</li><li>給与データ: 25日に自動出力予定</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 代打募集をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -86,11 +86,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

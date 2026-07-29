@@ -191,7 +191,7 @@ SHEETS_END = "<!-- SHEETS:END --></div>"
 
 MOBILE_NOTE = ('<div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。'
                'スマートフォンでは横にスクロールしてご覧ください。'
-               '読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版」をご利用ください。</div>')
+               '読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版（編集用）」をご利用ください。</div>')
 
 
 def esc(s):
@@ -499,7 +499,7 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
     pages.append(page(10, "リスク対応・まとめ", footer_l, "まとめ", body10))
 
     css = CSS_TMPL.replace("__SCHEME__", scheme)
-    xls_link = (f'<a class="xls" href="plan-{pl["no"]:02d}.xlsx" download>📊 Excel版</a>' if has_xlsx else "")
+    xls_link = (f'<a class="xls" href="plan-{pl["no"]:02d}.xlsx" download>📊 Excel版（編集用）</a>' if has_xlsx else "")
     toolbar = (f'<div class="toolbar"><span>📄 事業計画書 PLAN {pl["no"]:02d}（{esc(industry_label)}）'
                f'— {esc(sub["label"])} / A4×10ページ</span>'
                f'<span class="btns"><a class="plain" href="../index.html">← 10選トップ</a>{xls_link}'

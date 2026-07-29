@@ -49,11 +49,11 @@
 </header>
 <main>
   <h1>給与計算自動化ダッシュボード</h1>
-  <p class="sub">給与計算システムの自動化によるアルバイト多数店舗の労務事務削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">給与計算システムの自動化によるアルバイト多数店舗の労務事務削減 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="kpis"><div class="kpi"><div class="k">今月の計算対象</div><div class="v">16名</div><div class="d">全員自動計算済み</div></div><div class="kpi"><div class="k">給与計算作業時間</div><div class="v">1.6時間</div><div class="d">-8.4時間 導入前比</div></div><div class="kpi"><div class="k">計算ミス</div><div class="v">0件</div><div class="d">今月累計0件</div></div><div class="kpi"><div class="k">電子明細配信</div><div class="v">16名</div><div class="d">配信完了</div></div></div><div class="grid"><div class="panel"><h2>今月の給与計算サマリー（抜粋）</h2><table><thead><tr><th>氏名</th><th>総労働時間</th><th>深夜割増</th><th>支給額</th><th>状態</th></tr></thead><tbody id="mainList"><tr><td>山田（社員）</td><td>168時間</td><td>8時間</td><td>285,400円</td><td>確定</td></tr><tr><td>佐藤（バイト）</td><td>62時間</td><td>4時間</td><td>84,600円</td><td>確定</td></tr><tr><td>田中（バイト）</td><td>58時間</td><td>2時間</td><td>78,200円</td><td>確定</td></tr><tr><td>伊藤（バイト）</td><td>71時間</td><td>6時間</td><td>96,800円</td><td>確定</td></tr><tr><td>高橋（バイト）</td><td>45時間</td><td>0時間</td><td>58,500円</td><td>確定</td></tr></tbody></table></div><div class="panel side"><h2>今月の処理サマリー</h2><ul><li>自動計算完了: 16名全員</li><li>振込データ: 25日に自動生成予定</li><li>電子明細未確認: 2名</li><li>次回法改正チェック: 来月</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 給与計算を実行</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -79,11 +79,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

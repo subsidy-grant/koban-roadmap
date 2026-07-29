@@ -53,11 +53,11 @@
 </header>
 <main>
   <h1>キッチンディスプレイシステム(KDS)</h1>
-  <p class="sub">キッチンディスプレイシステム(KDS)導入による厨房伝達の正確化と提供スピード向上 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">キッチンディスプレイシステム(KDS)導入による厨房伝達の正確化と提供スピード向上 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="register"><div><div class="label">表示中の注文</div><div class="amount">8件</div></div><div style="text-align:right"><div class="label">前回比</div><div style="font-weight:700;color:#f5efe6">平均待ち4分</div></div></div><div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi"><div class="k">本日の提供件数</div><div class="v">142件</div><div class="d">遅延0件</div></div><div class="kpi"><div class="k">平均提供時間</div><div class="v">9.2分</div><div class="d">-4.8分 導入前比</div></div><div class="kpi"><div class="k">伝票紛失</div><div class="v">0件</div><div class="d">導入後累計0件</div></div></div><div class="grid"><div class="panel"><h2>厨房モニター表示（現在の注文）</h2><div class="tickets" id="mainList"><div class="ticket"><div><div class="main">2分 ／ 5番 ／ 麻婆豆腐+ライス ／ -</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">4分 ／ 3番 ／ 酢豚定食 ／ エビアレルギー注意</div></div><span class="status">調理中</span></div><div class="ticket"><div><div class="main">6分 ／ 8番 ／ 餃子+チャーハン ／ -</div></div><span class="status">仕上げ</span></div><div class="ticket"><div><div class="main">1分 ／ 12番 ／ 青椒肉絲 ／ -</div></div><span class="status">受付済み</span></div><div class="ticket"><div><div class="main">7分 ／ 2番 ／ 回鍋肉定食 ／ -</div></div><span class="status">仕上げ</span></div></div></div><div class="panel side"><h2>本日の稼働サマリー</h2><ul><li>平均調理時間: 8.4分</li><li>特記事項の表示: 3件（全件対応済み）</li><li>遅延アラート: 0件</li><li>紙伝票の使用: 0件（本日）</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 調理完了をシミュレート</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -86,11 +86,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

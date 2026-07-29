@@ -49,11 +49,11 @@
 </header>
 <main>
   <h1>AI自動発注・食品ロス管理ダッシュボード</h1>
-  <p class="sub">AI需要予測による自動発注システム導入で食材廃棄ロスと欠品を同時に削減 — 導入イメージを体験できる試作モックアップ（表示データはすべてデモ用の架空データ）</p>
+  <p class="sub">AI需要予測による自動発注システム導入で食材廃棄ロスと欠品を同時に削減 — 導入後の画面イメージを実際に操作して確かめられる試作版です（表示している数値・名前はすべて架空のサンプルです）</p>
   <div class="kpis"><div class="kpi"><div class="k">本日の廃棄率</div><div class="v">3.1%</div><div class="d">-4.8pt 導入前比</div></div><div class="kpi"><div class="k">自動発注カバー率</div><div class="v">76%</div><div class="d">+6pt 今月</div></div><div class="kpi"><div class="k">在庫アラート</div><div class="v">2件</div><div class="d">賞味期限3日以内</div></div><div class="kpi"><div class="k">月間原価率</div><div class="v">31.2%</div><div class="d">-3.8pt 導入前比</div></div></div><div class="grid"><div class="panel"><h2>本日の自動発注リスト</h2><table><thead><tr><th>食材</th><th>推奨発注量</th><th>根拠</th><th>状態</th></tr></thead><tbody id="mainList"><tr><td>生キャベツ</td><td>18kg</td><td>土曜・晴天予測</td><td>発注済み</td></tr><tr><td>豚バラ肉</td><td>12kg</td><td>直近4週平均+イベント補正</td><td>発注済み</td></tr><tr><td>生ビール樽</td><td>3樽</td><td>気温予測反映</td><td>発注済み</td></tr><tr><td>刺身盛り合わせ用魚介</td><td>8kg</td><td>仕入先在庫確認中</td><td>確認待ち</td></tr><tr><td>キムチ</td><td>6kg</td><td>直近4週平均</td><td>発注済み</td></tr></tbody></table></div><div class="panel side"><h2>廃棄ロスの内訳（今週）</h2><ul><li>野菜類: 1.8kg（想定内）</li><li>刺身・鮮魚: 0.6kg（要注意）</li><li>揚げ物調理ロス: 0.4kg</li><li>先週比: -32%</li></ul></div></div>
   <div class="actions"><button class="demo" onclick="runDemo()">▶ 本日分の自動発注を実行</button></div>
   <div class="disclaimer">本画面は導入イメージを共有するための試作プロトタイプであり、実際の製品・サービスではありません。
-  表示されている数値・名前はすべて架空のデモデータです。導入時は各ベンダーの実製品をご確認ください。</div>
+  表示されている数値・名前はすべて架空のサンプルです。実際に導入される際は、各メーカー・ベンダーの製品でご確認ください。</div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -79,11 +79,6 @@
     window.__toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
   }
 </script>
-
-
-
-
-
 
 <!-- ANALYTICS:START -->
 <script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

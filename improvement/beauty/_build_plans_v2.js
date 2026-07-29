@@ -530,7 +530,7 @@ function buildPlan(d) {
        "有資格者が<br>低付加価値作業に従事",
        "残業・属人化・<br>ミスが常態化する"],
       "→ 労働生産性と処遇改善の停滞(本事業で解決する課題)")}</div>
-    <p class="note">※ 本計画の数値は業界実態に基づくデモ用の仮置きです。実申請時には自社の勤怠記録・POS実績等の裏付けデータに差し替えます。</p>`;
+    <p class="note">※ 本計画の数値は業界実態に基づくモデルケースの仮置きです。実申請時には自社の勤怠記録・POS実績等の裏付けデータに差し替えます。</p>`;
 
   // ===== P3 導入システム =====
   const P3 = `
@@ -564,7 +564,7 @@ function buildPlan(d) {
       <div class="half-2">
         <h3>本システムの差別化要因</h3>
         <p class="lead">${d.distinct}</p>
-        <div class="callout"><b>実機デモによる裏付け:</b> 本システムの動作は付属のプロトタイプ(prototypes/${d.proto})で実際に操作・確認できる。画面遷移・AI出力・効果数値を再現しており、審査における実現可能性の裏付けとする。</div>
+        <div class="callout"><b>試作システムでの動作確認:</b> 本システムの動作は付属のプロトタイプ(prototypes/${d.proto})で実際に操作・確認できる。画面遷移・AI出力・効果数値を再現しており、審査における実現可能性の裏付けとする。</div>
       </div>
       <div class="half-1">${photo("office.jpg", "担当者は端末上で最終確認・承認を行うのみ")}</div>
     </div>
@@ -808,7 +808,7 @@ function buildPlan(d) {
       <div class="half-1">${photo("desk.jpg", "実申請時は専門家の確認を経て提出する")}</div>
     </div>
     <div class="callout alert">
-      <b>重要:</b> 本計画書はデモ用のサンプルです。数値(賃金・売上・投資額等)は仮置きであり、実際の申請にあたっては
+      <b>重要:</b> 本計画書はモデルケースのサンプルです。数値(賃金・売上・投資額等)は仮置きであり、実際の申請にあたっては
       ①自社の実績データへの差し替え ②最新の公募要領との突合 ③認定支援機関・専門家(中小企業診断士・税理士・社会保険労務士)による確認 が必須です。補助金の採択を保証するものではありません。
     </div>
     <h3>提出書類チェックリスト(申請準備)</h3>
@@ -819,7 +819,7 @@ function buildPlan(d) {
       <tr><td>直近2期分の決算書・試算表</td><td>顧問税理士</td><td class="ok">✔</td></tr>
       <tr><td>賃金台帳・労働者名簿・就業規則</td><td>顧問社会保険労務士</td><td class="ok">✔</td></tr>
       <tr><td>賃金引上げ計画書・労働条件通知書</td><td>顧問社会保険労務士</td><td class="ok">✔</td></tr>
-      <tr><td>実機デモ(プロトタイプ)による実現性の裏付け</td><td>ITベンダー</td><td class="ok">✔</td></tr>
+      <tr><td>試作システム(プロトタイプ)による実現性の確認</td><td>ITベンダー</td><td class="ok">✔</td></tr>
     </table>
     <p class="note">参照した最新公募情報(2026年時点): 省力化投資補助金(一般型)第6・7回公募 / 業務改善助成金 令和8年度</p>`;
 
@@ -842,7 +842,7 @@ function shell(d, s, pages) {
      さらに @media (max-width:900px) のスマホ用CSSが一切効かなくなる。
      2026-07-29にiPhoneで押せない不具合として発覚（飲食業版には元からある）。 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>事業計画書 No.${d.no} ${d.title} | ${BIZ.name}</title>
+<title>事業計画書 No.${d.no} ${d.title}（美容業・モデルケース）</title>
 <style>
   @page { size: A4 portrait; margin: 0; }
   :root{
@@ -1064,13 +1064,13 @@ function shell(d, s, pages) {
 </style></head>
 <body>
   <div class="toolbar">
-    <span>📄 事業計画書 No.${d.no} — ${s.badge} / A4×10ページ(審査官視点リデザイン版)</span>
+    <span>📄 事業計画書 No.${d.no}（美容業）— ${s.badge} / A4×10ページ</span>
     <div class="btns">
-      <a class="xls" href="plan-${String(d.no).padStart(2, "0")}.xlsx" download>📊 Excelをダウンロード(編集用)</a>
+      <a class="xls" href="plan-${String(d.no).padStart(2, "0")}.xlsx" download>📊 Excel版（編集用）</a>
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>
   </div>
-  <div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。スマートフォンでは横にスクロールしてご覧ください。読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excelをダウンロード」をご利用ください。</div>
+  <div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。スマートフォンでは横にスクロールしてご覧ください。読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版（編集用）」をご利用ください。</div>
   <div class="sheets">${pages}<!-- SHEETS:END --></div>
 </body></html>`;
 }
