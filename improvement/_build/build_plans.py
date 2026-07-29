@@ -178,7 +178,10 @@ CSS_TMPL = """
     .toolbar{font-size:13px}
     .toolbar{flex-direction:column;align-items:stretch;gap:8px}
     .toolbar .btns{justify-content:flex-start}
-    .toolbar button,.toolbar a{padding:8px 12px;font-size:13px;white-space:nowrap}
+    /* 指で押せる大きさを確保する（44px以上）。ここが36pxだと押しにくい */
+    .toolbar button,.toolbar a{min-height:44px;display:inline-flex;align-items:center;
+      padding:8px 14px;font-size:14px;white-space:nowrap}
+    .toolbar a.plain{padding:8px 6px}
   }
 """
 

@@ -77,6 +77,18 @@
   .src-list li { margin-bottom: 0.35rem; break-inside: avoid; }
   @media (max-width: 640px) { .src-list { columns: 1; } }
   .note { font-size: 0.78rem; color: var(--ink-faint); margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+
+  /* 公開版の可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針）
+     利用者に50〜80代を想定し、リンク等の当たり判定を44px以上にする。
+     文章中に挟まるリンクは行を崩すため対象外（WCAGでも文中リンクは例外）。 */
+  a:not(.inline), button, summary { }
+  .back a, .navlinks a, .links a, header a, nav a, .toolbar a, .toolbar button,
+  li > a:only-child {
+    display:inline-flex; align-items:center; min-height:2.75rem;
+  }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline:3px solid currentColor; outline-offset:2px; border-radius:3px;
+  }
 </style></head><body><main>
 
 <p class="back"><a href="index.html">← ロードマップ本体へ戻る</a></p>

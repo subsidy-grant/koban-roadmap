@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
+<!-- viewport が無いとiOS Safariは幅980pxで描画してから縮小するため、
+     画面上ではツールバーのボタンが実寸50px前後になり指で押せない。
+     さらに @media (max-width:900px) のスマホ用CSSが一切効かなくなる。
+     2026-07-29にiPhoneで押せない不具合として発覚（飲食業版には元からある）。 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>事業計画書 No.3 AIカウンセリング・施術提案カルテによる接客品質の標準化と記録業務の省力化 | SALON BLOOM 表参道</title>
 <style>
   @page { size: A4 portrait; margin: 0; }
@@ -17,7 +22,9 @@
   .toolbar button,.toolbar a{font:inherit;font-weight:700;background:#8a6208;color:#fff;border:none;
     border-radius:8px;padding:8px 16px;cursor:pointer;text-decoration:none}
   .toolbar a.xls{background:#1d6f42}
-  .toolbar .btns{display:flex;gap:8px}
+  /* 折り返しを許さないと、スマホでボタン2つが横に並んだまま画面幅を数px超え、
+     iOSが全体をわずかに縮小表示してしまう（飲食業版と同じ指定に揃えた） */
+  .toolbar .btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
   /* ページ */
   .page{width:210mm;min-height:297mm;background:#fff;margin:16px auto;padding:13mm 14mm 10mm 17mm;
@@ -212,7 +219,10 @@
     .toolbar{font-size:13px}
     .toolbar{flex-direction:column;align-items:stretch;gap:8px}
     .toolbar .btns{justify-content:flex-start}
-    .toolbar button,.toolbar a{padding:8px 12px;font-size:13px;white-space:nowrap}
+    /* 指で押せる大きさを確保する（44px以上）。ここが36pxだと押しにくい */
+    .toolbar button,.toolbar a{min-height:44px;display:inline-flex;align-items:center;
+      padding:8px 14px;font-size:14px;white-space:nowrap}
+    .toolbar a.plain{padding:8px 6px}
   }
 </style></head>
 <body>

@@ -471,6 +471,17 @@ function page(item) {
   footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
   .toplink{font-size:12px;color:#f5efe6;text-decoration:none;opacity:.85}
   .toplink:hover{opacity:1}
+
+  /* 公開版の可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針）
+     利用者に50〜80代を想定し、リンク等の当たり判定を44px以上にする。
+     文章中に挟まるリンクは行を崩すため対象外（WCAGでも文中リンクは例外）。 */
+  a:not(.inline), button, summary { }
+  .back a, .navlinks a, .links a, header a, nav a, .toolbar a, .toolbar button {
+    display:inline-flex; align-items:center; min-height:2.75rem;
+  }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline:3px solid currentColor; outline-offset:2px; border-radius:3px;
+  }
 </style></head>
 <body>
 <header>
