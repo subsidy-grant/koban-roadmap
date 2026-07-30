@@ -173,8 +173,10 @@ def build_fragment():
             parts.append("</div>")
             parts.append(MORE_BUTTON)
         else:
-            parts.append('<div class="imp10-pending">この業種の10案は準備中です。スコアリング（候補評価）は'
-                         '<a href="improvement/pdca.html">選定の考え方</a>で先行公開しています。</div>')
+            parts.append('<div class="imp10-pending">この業種の「改善計画10選」(事業計画書・プロトタイプ)は準備中です。'
+                         '準備段階の評価として、'
+                         f'<a href="improvement/{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>と'
+                         '<a href="improvement/pdca.html">100施策スコアリング(選定の考え方)</a>を公開しています。</div>')
         parts.append("</div>")
 
     parts.append("""

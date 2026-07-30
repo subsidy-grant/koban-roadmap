@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDCA評価ダッシュボード | 教育、学習支援業×AI 1000案</title>
+<style>
+  /* food/pdca.html と同型。build_idea_boards.py が生成(手編集しないこと) */
+  :root{
+    --bg:#f5f2f6; --card:#ffffff; --ink:#2a2430; --sub:#6a5f72; --line:#e4dde7;
+    --accent:#63396a; --accent2:#3e6b4f; --gold:#8a6208; --red:#a4453c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(135deg,#262031,#4a3a5e);color:#f5f1ea;padding:28px 24px}
+  header h1{font-size:22px;font-weight:700}
+  header p{font-size:14.5px;opacity:.92;margin-top:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  /* PDCAファネル */
+  .funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:relative}
+  .stage .ph{font-size:12px;font-weight:700;letter-spacing:.12em;color:#fff;display:inline-block;padding:2px 10px;border-radius:99px;margin-bottom:8px}
+  .stage .num{font-size:30px;font-weight:800}
+  .stage .lbl{font-size:13.5px;color:var(--sub)}
+  .stage .desc{font-size:12.5px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+  .s-p .ph{background:#4a6480}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#8a6208}.s-a .ph{background:#a4453c}
+  /* TOP10候補 */
+  h2{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}
+  .topnote{font-size:13.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:0 0 12px}
+  .topgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .tcard .rank{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}
+  .tcard h3{font-size:15px}
+  .tcard .why{font-size:12px;color:var(--sub);background:#f6f2f8;border-radius:8px;padding:8px}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
+  .b1{color:#4a6b8a;border-color:#4a6b8a;background:#edf2f7}
+  .b2{color:#3e6b4f;border-color:#3e6b4f;background:#eef5f0}
+  .b3{color:#7a5a17;border-color:#7a5a17;background:#fbf4e3}
+  .b4{color:#a4453c;border-color:#a4453c;background:#f9edeb}
+  .b5{color:#2f6260;border-color:#2f6260;background:#eaf4f3}
+  /* 5軸スコアは5角形レーダーチャートで表示する(beauty/food版と同じ描画) */
+  .scorewrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .radarbox{flex:0 0 auto;width:210px;max-width:100%;margin:0 auto}
+  .radar{width:100%;height:auto;display:block}
+  .radar .rlbl{font-size:11.5px;fill:var(--sub)}
+  .radar .rval{font-size:13px;font-weight:800;fill:var(--ink)}
+  .radar .grid{fill:none;stroke:var(--line)}
+  .radar .shape{fill:var(--accent);fill-opacity:.17;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+  .radar .dot{fill:var(--accent)}
+  .tot{text-align:center;font-size:11px;color:var(--sub);margin-top:-2px}
+  .tot b{font-size:15px;color:var(--ink)}
+  .scorewrap .why{flex:1 1 190px;margin:0}
+  .links{display:flex;gap:8px;font-size:12px;flex-wrap:wrap}
+  .links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
+  .links a:hover{background:#f0e9f2}
+  /* フィルタ+表 */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+  select,input[type=search]{font:inherit;font-size:14.5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-height:2.6rem}
+  input[type=search]{flex:1;min-width:200px}
+  .count{font-size:12px;color:var(--sub)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  th{background:#ebe5ee;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{background:#e0d7e4}
+  td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+  tr:hover td{background:#f9f6fa}
+  .stg{font-size:11.5px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
+  .stg-top{background:#a4453c;color:#fff}.stg-c{background:#8a6208;color:#fff}
+  .stg-p{background:#4a6480;color:#fff}.stg-0{background:var(--line);color:var(--sub)}
+  .pager{display:flex;gap:8px;justify-content:center;margin:14px 0;align-items:center;font-size:13px}
+  .pager button{font:inherit;padding:6px 16px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;min-height:2.6rem;font-size:14.5px}
+  .pager button:disabled{opacity:.4;cursor:default}
+  footer{text-align:center;font-size:11px;color:var(--sub);padding:24px}
+  .rdesc{color:var(--sub)}
+  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
+    outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
+  /* 狭い画面: ページ全体を横スクロールさせず、表だけを .twrap 内でスクロールさせる */
+  .twrap{overflow-x:auto}
+  @media (max-width:760px){
+    .twrap table{min-width:820px}
+    .rdesc{display:none}
+    .funnel{grid-template-columns:repeat(2,1fr)}
+    .topgrid{grid-template-columns:1fr}
+  }
+  /* リンクの当たり判定を44px以上に */
+  .back a,.tcard .links a,.links a{display:inline-flex;align-items:center;min-height:2.6rem}
+  .back{display:flex;flex-wrap:wrap;align-items:center;gap:0 .4rem}
+</style>
+</head>
+<body>
+<p class="back" style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:14px;"><a href="../index.html" style="color:#63396a;font-weight:700;text-decoration:none;">← 改善計画10選へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#63396a;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:#63396a;font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
+<header>
+  <h1>教育、学習支援業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
+  <p>20カテゴリ × 10コア機能 × 5業態(個別指導塾/集団塾・予備校/英会話・語学/音楽・文化/プログラミング)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。<b>この業種の「改善計画10選」(事業計画書・プロトタイプ付き)はまだ準備中のため、本ボードのTOP10はその選定に向けた採択候補です</b>。候補は「選定の考え方」に記録した100施策スコアリングの上位領域(生徒・保護者管理、決済・会計の効率化)と整合するよう選んでいます。</p>
+</header>
+<div class="wrap">
+
+  <div class="funnel">
+    <div class="stage s-p"><span class="ph">PLAN</span><div class="num">1,000<span style="font-size:13px">案</span></div>
+      <div class="lbl">アイデア発散プール</div>
+      <div class="desc">業務フロー20領域×5業態を網羅生成。重複・非現実案も許容する発散フェーズ。</div></div>
+    <div class="stage s-d"><span class="ph">DO</span><div class="num">100<span style="font-size:13px">案</span></div>
+      <div class="lbl">一次選抜(スコア上位)</div>
+      <div class="desc">5軸合計スコアで足切り。市場性2点台・実現性2点台の案はここで落選。</div></div>
+    <div class="stage s-c"><span class="ph">CHECK</span><div class="num">30<span style="font-size:13px">案</span></div>
+      <div class="lbl">導入実現性の評価</div>
+      <div class="desc">導入コスト・既製品の有無・教育、学習支援業の現場適合性を検証し3割まで圧縮。</div></div>
+    <div class="stage s-a"><span class="ph">ACT</span><div class="num">10<span style="font-size:13px">案</span></div>
+      <div class="lbl">採択候補(計画書は準備中)</div>
+      <div class="desc">デジタル化・AI導入5案/省力化投資1案/持続化2案/業務改善1案/人材開発1案の候補構成。</div></div>
+  </div>
+
+  <h2>TOP10 採択候補</h2>
+  <p class="topnote">この10案は本ボードの5軸評価による<b>採択候補</b>です。教育、学習支援業の事業計画書・プロトタイプは準備中で、美容業・飲食業のような「採択済み10選」はまだありません。整備され次第、このページを採択済みの内容に更新します。機械スコアリングの全記録は<a href="../pdca.html" style="color:var(--accent);font-weight:700;">選定の考え方</a>をご覧ください。</p>
+  <div class="topgrid" id="topgrid"></div>
+
+  <h2>全1000案ブラウザ</h2>
+  <div class="filters">
+    <input type="search" id="q" aria-label="キーワードで絞り込む" placeholder="キーワード検索(タイトル・説明)">
+    <select id="fCat" aria-label="カテゴリで絞り込む"><option value="">全カテゴリ</option></select>
+    <select id="fSeg" aria-label="業態で絞り込む"><option value="">全業態</option></select>
+    <select id="fDept" aria-label="部門で絞り込む"><option value="">全部門</option><option>授業・指導</option><option>教務・生徒管理</option><option>バックオフィス</option><option>集客・広報</option><option>教室環境</option></select>
+    <select id="fStage" aria-label="選定ステージで絞り込む"><option value="">全ステージ</option>
+      <option>TOP10候補</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
+    <select id="fScheme" aria-label="活用制度で絞り込む"><option value="">全制度</option>
+      <option value="デジタル">デジタル化・AI導入補助金2026</option>
+      <option value="省力化">中小企業省力化投資補助金</option>
+      <option value="業務改善">業務改善助成金</option>
+      <option value="持続化">小規模事業者持続化補助金</option>
+      <option value="人材開発">人材開発支援助成金</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="twrap">
+  <table>
+    <thead><tr>
+      <th data-k="rank">順位</th><th data-k="title">タイトル</th><th data-k="category">カテゴリ</th>
+      <th data-k="dept">部門</th><th data-k="segment">業態</th><th data-k="savingHoursPerMonth">省力化 h/月</th>
+      <th data-k="total">総合</th><th data-k="stage">ステージ</th><th data-k="scheme">制度</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  </div>
+  <div class="pager">
+    <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
+  </div>
+</div>
+<footer>koban-roadmap 教育、学習支援業×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10は本ボードの5軸評価による採択候補であり、確定した採択ではありません。100施策の機械スコアリングは<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>参照。</footer>
+
+<script src="ideas.js"></script>
+<script>
+// TOP10候補の選定理由(5軸の観点からの評価コメント)。
+// ※この業種の改善計画10選は準備中のため、プロトタイプ・計画書リンクは無い。
+//   整備後は food/pdca.html と同じ形式(proto/plan/xlsxリンク付き)に更新すること。
+const RATIONALE = {
+  1:{why:"紙カルテと記憶頼みの生徒管理は、教室長の事務時間と引き継ぎ事故の源泉。一元化は以降の出欠・請求・面談DXすべての土台になる。"},
+  2:{why:"入退室通知は保護者の安心感という入会動機に直結する数少ない設備投資。安全確認の電話をなくす省力化と、選ばれる理由づくりを兼ねる。"},
+  3:{why:"授業料の集金・督促は心理的負担が最も重い事務。決済自動化は未収の早期発見と月末集計の圧縮でバックオフィスを数人分軽くする。"},
+  4:{why:"振替調整は電話とパズルの反復作業で、対応差がクレームにもなる。オンライン化は保護者の利便性と消化管理の正確さを同時に得る。"},
+  5:{why:"弱点分析と学習計画は講師の経験差が最も出る領域。AI分析は指導品質を平準化し、成果の説明力(面談・継続率)を引き上げる。"},
+  6:{why:"プリント作成は授業外残業の常連。AI作問は類題の量産で演習量を確保しながら、教材準備の時間をほぼゼロにする。"},
+  7:{why:"体験申込は入会の唯一の入口。LP改善と申込動線の最適化は、同じ広告費で入会数を増やす最も費用対効果の高い一手。"},
+  8:{why:"商圏という物理制約を外せるのはオンラインコースだけ。不登校・遠方・海外の需要を受けられ、教室の空き時間も収益化できる。"},
+  9:{why:"コマ給・事務給が混在する講師給与は毎月の計算事故リスク。クラウド化は締め作業を圧縮し、代講手配の混乱も減らす。"},
+  10:{why:"授業品質は講師で決まるが、研修は後回しにされがち。体系化は人材開発支援助成金で費用を抑えられ、講師の定着にも効く。"},
+};
+
+const SCHEME_BADGE = {
+  "デジタル": '<span class="badge b1">デジタル化・AI導入補助金2026</span>',
+  "省力化": '<span class="badge b2">中小企業省力化投資補助金</span>',
+  "業務改善": '<span class="badge b3">業務改善助成金</span>',
+  "持続化": '<span class="badge b4">小規模事業者持続化補助金</span>',
+  "人材開発": '<span class="badge b5">人材開発支援助成金</span>'
+};
+const SCHEME_SHORT = { "デジタル": "デジタル化・AI導入", "省力化": "省力化投資", "業務改善": "業務改善", "持続化": "持続化", "人材開発": "人材開発" };
+
+const AX = [["market","市場性"],["saving","省力化"],["feasibility","実現性"],["subsidy","補助金"],["unique","差別化"]];
+const AX_MAX = 5;
+
+// 5軸スコアの5角形レーダーチャート。頂点は真上から時計回りにAXの順。
+function radarChart(score) {
+  const W = 240, H = 184, cx = W / 2, cy = H / 2 - 1, R = 48, LR = R + 14;
+  const pt = (i, r) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / AX.length;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
+  const poly = r => AX.map((_, i) => pt(i, r).map(n => n.toFixed(1)).join(",")).join(" ");
+  let grid = "";
+  for (let lv = 1; lv <= AX_MAX; lv++) {
+    grid += `<polygon class="grid" points="${poly(R * lv / AX_MAX)}"${lv === AX_MAX ? "" : ' stroke-dasharray="2 3"'}/>`;
+  }
+  grid += AX.map((_, i) => {
+    const [x, y] = pt(i, R);
+    return `<line class="grid" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+  }).join("");
+  const vals = AX.map(([k]) => Math.max(0, Math.min(AX_MAX, Number(score[k]) || 0)));
+  const shape = vals.map((v, i) => pt(i, R * v / AX_MAX).map(n => n.toFixed(1)).join(",")).join(" ");
+  const dots = vals.map((v, i) => {
+    const [x, y] = pt(i, R * v / AX_MAX);
+    return `<circle class="dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/>`;
+  }).join("");
+  const labels = AX.map(([, l], i) => {
+    const [x, y] = pt(i, LR), dx = x - cx;
+    const anchor = Math.abs(dx) < 6 ? "middle" : (dx > 0 ? "start" : "end");
+    const dy = y < cy - 10 ? -1 : (y > cy + 10 ? 10 : 4);
+    return `<text class="rlbl" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">`
+         + `${l}<tspan class="rval" dx="3">${vals[i]}</tspan></text>`;
+  }).join("");
+  const alt = AX.map(([, l], i) => `${l}${vals[i]}点`).join("、");
+  return `<svg class="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="5軸スコア（各5点満点）：${alt}">`
+       + `${grid}<polygon class="shape" points="${shape}"/>${dots}${labels}</svg>`;
+}
+
+// TOP10候補カード(計画書・プロトタイプは準備中のためリンクは選定記録のみ)
+document.getElementById("topgrid").innerHTML = TOP10.map(t => {
+  const r = RATIONALE[t.topRank] || {};
+  return `<div class="tcard">
+    <div><span class="rank">候補 No.${t.topRank}</span> ${SCHEME_BADGE[t.scheme] || ""}</div>
+    <h3>${t.title}</h3>
+    <div style="font-size:12px">${t.description}</div>
+    <div class="scorewrap">
+      <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
+      <div class="why"><b>候補理由:</b> ${r.why||""}</div>
+    </div>
+    <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月（${t.dept}）</div>
+  </div>`;
+}).join("");
+
+// フィルタ初期化
+const fCat = document.getElementById("fCat"), fSeg = document.getElementById("fSeg");
+CATEGORIES.forEach(c => fCat.insertAdjacentHTML("beforeend", `<option>${c.name}</option>`));
+SEGMENTS.forEach(s => fSeg.insertAdjacentHTML("beforeend", `<option>${s.name}</option>`));
+
+let sortKey = "rank", sortAsc = true, page = 0;
+// 狭い画面では1行が高くなるため、1ページの件数を落とす
+const PAGE = window.matchMedia('(max-width:760px)').matches ? 25 : 50;
+const els = ["q","fCat","fSeg","fDept","fStage","fScheme"].map(id => document.getElementById(id));
+els.forEach(el => el.addEventListener("input", () => { page = 0; render(); }));
+document.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
+  const k = th.dataset.k;
+  if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = k === "rank" || k === "title"; }
+  render();
+}));
+document.getElementById("prev").onclick = () => { page--; render(); };
+document.getElementById("next").onclick = () => { page++; render(); };
+
+function stageClass(s){ return s.startsWith("TOP") ? "stg-top" : s.startsWith("C") ? "stg-c" : s.startsWith("P") ? "stg-p" : "stg-0"; }
+
+function render() {
+  const [q, cat, seg, dept, stage, scheme] = els.map(e => e.value);
+  const ql = q.toLowerCase();
+  let rows = IDEAS.filter(i =>
+    (!cat || i.category === cat) && (!seg || i.segment === seg) &&
+    (!dept || i.dept === dept) &&
+    (!stage || i.stage === stage) && (!scheme || i.scheme === scheme) &&
+    (!q || (i.title + i.description).toLowerCase().includes(ql)));
+  rows.sort((a, b) => {
+    const va = a[sortKey], vb = b[sortKey];
+    const c = typeof va === "number" ? va - vb : String(va).localeCompare(String(vb), "ja");
+    return sortAsc ? c : -c;
+  });
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  page = Math.min(Math.max(0, page), pages - 1);
+  document.getElementById("count").textContent = `${rows.length}件`;
+  document.getElementById("pinfo").textContent = `${page + 1} / ${pages}ページ`;
+  document.getElementById("prev").disabled = page === 0;
+  document.getElementById("next").disabled = page >= pages - 1;
+  document.getElementById("tbody").innerHTML = rows.slice(page * PAGE, (page + 1) * PAGE).map(i => `
+    <tr><td>${i.rank}</td>
+    <td><b>${i.title}</b><br><span class="rdesc">${i.description}</span></td>
+    <td>${i.category}</td><td>${i.dept}</td><td>${i.segment}</td>
+    <td style="text-align:center">${i.savingHoursPerMonth}</td>
+    <td><b>${i.total}</b>/25</td>
+    <td><span class="stg ${stageClass(i.stage)}">${i.stage}</span></td>
+    <td>${SCHEME_SHORT[i.scheme] || i.scheme}</td></tr>`).join("");
+}
+render();
+</script>
+
+<!-- ANALYTICS:START -->
+<script data-goatcounter="https://koban-roadmap.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- ANALYTICS:END -->
+</body>
+</html>

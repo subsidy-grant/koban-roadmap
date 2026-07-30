@@ -187,8 +187,10 @@ def main():
                 parts.append("</div>")
             parts.append("</div>")
         else:
-            parts.append('<div class="pending">この業種の10案は準備中です。スコアリング（候補評価）は'
-                         '<a href="pdca.html">選定の考え方</a>で先行公開しています。</div>')
+            parts.append('<div class="pending">この業種の「改善計画10選」(事業計画書・プロトタイプ)は準備中です。'
+                         '準備段階の評価として、'
+                         f'<a href="{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>と'
+                         '<a href="pdca.html">100施策スコアリング(選定の考え方)</a>を公開しています。</div>')
         parts.append("</section>")
 
     parts.append('<p class="note">本コンテンツは公開情報に基づくモデルケースの試算・提案であり、個別事業者への効果や補助金の採択を保証するものではありません。'
