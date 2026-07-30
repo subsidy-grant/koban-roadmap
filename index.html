@@ -254,7 +254,9 @@
 
   /* ---------- Main ---------- */
   main { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-  section { margin-bottom: 3.6rem; scroll-margin-top: 3.2rem; }
+  /* scroll-margin-top は固定ナビ（実測 PC61px / スマホ58px）より大きく取る。
+     3.2rem=51px では見出しの上端がナビに隠れていた。 */
+  section { margin-bottom: 3.6rem; scroll-margin-top: 4.75rem; }
 
   .section-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.4rem; }
   .section-no { font-family: 'Fraunces', serif; color: var(--accent); font-size: 1.05rem; font-weight: 600; }
@@ -500,6 +502,15 @@
   .slider-row .slider-out {
     font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.15rem; color: var(--accent); white-space: nowrap;
   }
+  /* スライダーと並べる数値欄。見た目は3問診断の人数欄に合わせる */
+  .slider-row .slider-num { display: flex; align-items: center; align-self: center; gap: 0.45rem; white-space: nowrap; }
+  .slider-row .slider-num input[type="number"] {
+    width: 4.8rem; text-align: right; font: inherit; font-size: 1.02rem; font-weight: 600;
+    min-height: 2.75rem; padding: 0.4rem 0.6rem;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); color: var(--ink);
+  }
+  .slider-row .slider-num .unit { font-size: 0.95rem; color: var(--ink-soft); }
   .slider-row input[type="range"] {
     width: 100%; margin: 0; appearance: none; -webkit-appearance: none; height: 6px;
     background: var(--line); border-radius: 100px; outline: none; cursor: pointer;
@@ -797,7 +808,8 @@
   nav.toc a { padding-left: 0.2rem; padding-right: 0.2rem; }
   .print-orientation label { min-height: 2.6rem; padding: 0 0.3rem; }
   .print-orientation input[type="radio"] { width: 1.25rem; height: 1.25rem; }
-  .fav-print-btn { min-height: 2.6rem; padding: 0.5rem 1.1rem; }
+  /* 2.6rem=41.6px では指のタップ目安44pxに届かない */
+  .fav-print-btn { min-height: 2.75rem; padding: 0.5rem 1.1rem; }
   .fav-chip button { min-width: 2rem; min-height: 2rem; }
   .cat-check { min-height: 2.75rem; }
   .cat-check input { width: 1.25rem; height: 1.25rem; }
@@ -949,7 +961,9 @@
      表示される。「見出しだけ出て何も開かない」状態にはならない。
      ========================================================================== */
   .has-accordion main { padding-top: 2rem; }
-  .has-accordion main > section { margin-bottom: 0.75rem; scroll-margin-top: 1rem; }
+  /* scroll-margin-top は section の共通指定（固定ナビ分）をそのまま使う。
+     ここで上書きすると、目次から飛んだとき見出しがナビの下に潜る。 */
+  .has-accordion main > section { margin-bottom: 0.75rem; }
   /* 組み替え前（.sec-body を作る前）も後も、この1本で見出し以外を隠す */
   .has-accordion main > section > *:not(.section-head) { display: none; }
   .has-accordion main > section.is-open > .sec-body { display: block; }
@@ -976,7 +990,9 @@
   /* 見出しだけだと中身が想像できないので、1行だけ手がかりを添える */
   .sec-hint {
     display: block; margin-top: 0.25rem;
-    font-size: 0.87rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
+    /* この1行を読んでどこを開くか決めるので、14px を下回らせない
+       （0.87rem=13.9px だった。中高年の利用を想定） */
+    font-size: 0.92rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
   }
   .sec-chevron {
     flex: none; color: var(--accent); font-size: 1.15rem; line-height: 1.6;
@@ -1059,7 +1075,7 @@
         <label for="employeeCountInput">常時使用する従業員の人数</label>
         <div class="diag-emp">
           <input type="number" id="employeeCountInput" min="1" max="100" step="1" value="5"
-                 inputmode="numeric" oninput="onEmployeeCountInput(this.value)">
+                 inputmode="numeric" oninput="onEmployeeCountInput(this.value, this)">
           <span class="unit">人</span>
         </div>
         <p class="dhint">パート・アルバイトを含みます。人数によって使える制度と上限額が変わります。</p>
@@ -1144,7 +1160,7 @@
     <div class="threshold-box">
       <div class="slider-row">
         <label for="employeeSizeSlider">自社の常時使用従業員数を選択<output for="employeeSizeSlider" id="employeeSizeSliderOut" class="slider-out">5人</output></label>
-        <input type="range" id="employeeSizeSlider" min="1" max="100" step="1" value="5" oninput="onEmployeeCountInput(this.value)">
+        <input type="range" id="employeeSizeSlider" min="1" max="100" step="1" value="5" oninput="onEmployeeCountInput(this.value, this)">
       </div>
       <div class="slider-row">
         <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
@@ -1961,8 +1977,13 @@
           <div id="simTrackContainer" class="track-none">通常適用のみ（複数の申請枠はなし）</div>
         </div>
         <div class="slider-row">
-          <label for="simEmployeesSlider">② 対象人数<output for="simEmployeesSlider" id="simEmployeesSliderOut" class="slider-out">5人</output></label>
-          <input type="range" id="simEmployeesSlider" min="1" max="100" step="1" value="5" oninput="onEmployeeCountInput(this.value)">
+          <!-- スライダーは1〜100人を約300pxで表すため、指では1人単位に合わせられない
+               （トラックを触った位置に値が飛ぶ）。3問診断と同じ数値欄を並べて、
+               正確な人数はキーボードでも入れられるようにする。 -->
+          <label for="simEmployeesInput">② 対象人数<span class="slider-num"><input type="number"
+              id="simEmployeesInput" min="1" max="100" step="1" value="5" inputmode="numeric"
+              aria-label="対象人数（人）" oninput="onEmployeeCountInput(this.value, this)"><span class="unit">人</span></span></label>
+          <input type="range" id="simEmployeesSlider" min="1" max="100" step="1" value="5" oninput="onEmployeeCountInput(this.value, this)">
         </div>
       </div>
 
@@ -6547,25 +6568,31 @@
     });
   }
 
-  function syncEmployeeSliders() {
+  // srcEl = いま操作されている入力欄。そこだけは書き戻さない（後述）
+  function syncEmployeeSliders(srcEl) {
     var label = currentEmployeeCount + '人';
     ['employeeSizeSlider', 'simEmployeesSlider'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.value = currentEmployeeCount;
     });
-    ['employeeSizeSliderOut', 'simEmployeesSliderOut'].forEach(function (id) {
+    ['employeeSizeSliderOut'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.textContent = label;
     });
-    // 3問診断の数値入力も連動させる。入力中の欄を書き換えると
-    // 「12」と打つ途中の「1」で値が飛ぶため、フォーカス中は触らない
-    var numEl = document.getElementById('employeeCountInput');
-    if (numEl && document.activeElement !== numEl) numEl.value = currentEmployeeCount;
+    // 数値入力欄も連動させる。ただし打っている最中の欄を書き換えると
+    // 一度空にして打ち直せなくなる（空欄→1に強制される）ので、
+    // イベントの発生元だけは触らない。document.activeElement で判定すると、
+    // 数値欄からスライダーへ移った瞬間はまだ数値欄にフォーカスがあるため
+    // 更新が落ちて、スライダーと数値欄が食い違ったまま残る。
+    ['employeeCountInput', 'simEmployeesInput'].forEach(function (id) {
+      var numEl = document.getElementById(id);
+      if (numEl && numEl !== srcEl) numEl.value = currentEmployeeCount;
+    });
   }
 
-  function onEmployeeCountInput(value) {
+  function onEmployeeCountInput(value, srcEl) {
     currentEmployeeCount = Math.max(1, Math.min(100, parseInt(value, 10) || 1));
-    syncEmployeeSliders();
+    syncEmployeeSliders(srcEl);
     updateEligibilityBadges();
     runSimulation();
   }
