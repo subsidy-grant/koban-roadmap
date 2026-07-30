@@ -586,6 +586,14 @@
   }
   .cat-check:has(input:checked) { border-color: var(--accent); background: var(--accent-wash); }
   .cat-check input { accent-color: var(--accent); width: 1rem; height: 1rem; flex-shrink: 0; }
+  /* 「まだ自分では選んでいない」ことを伝える一文。分類を触ると消える */
+  .cat-example-note {
+    margin: 0.7rem 0 0; padding: 0.6rem 0.85rem;
+    border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0;
+    background: var(--accent-wash); color: var(--ink-soft);
+    font-size: 0.92rem; line-height: 1.7;
+  }
+  .cat-example-note[hidden] { display: none; }
   .sim-result { margin-top: 1.3rem; }
   .sim-panel { border-radius: 8px; padding: 1.2rem 1.3rem; }
   .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
@@ -993,6 +1001,14 @@
     /* この1行を読んでどこを開くか決めるので、14px を下回らせない
        （0.87rem=13.9px だった。中高年の利用を想定） */
     font-size: 0.92rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
+  }
+  /* 3問診断が案内している3つの目印。押す前に「どれから見るか」を決められる */
+  .sec-primary {
+    display: inline-block; margin-top: 0.45rem;
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+    background: var(--accent); color: var(--paper-raised);
+    /* ヒント文と同じく14pxを下回らせない（スマホの1rem=16px基準） */
+    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
   }
   .sec-chevron {
     flex: none; color: var(--accent); font-size: 1.15rem; line-height: 1.6;
@@ -1990,6 +2006,9 @@
       <div style="margin-top:1.1rem;">
         <label>③ 業務改善の分類（複数選択可）</label>
         <div class="cat-check-grid" id="catCheckGrid"></div>
+        <!-- 開いた瞬間は先頭の分類にチェックが入っていて金額が出る。自分で選んだ
+             結果と読み違えられないよう、分類を触るまでは例だと明示する -->
+        <p class="cat-example-note" id="catExampleNote" hidden></p>
       </div>
 
       <div class="sim-result" id="simResult"></div>
@@ -6239,13 +6258,36 @@
     document.getElementById('rankList').innerHTML = html;
   }
 
+  // 分類を利用者自身が触ったか。触るまでの試算は「例」であることを明示する
+  var categoryTouched = false;
+  var defaultCategoryName = '';
+
+  function updateCategoryExampleNote() {
+    var el = document.getElementById('catExampleNote');
+    if (!el) return;
+    if (categoryTouched || !defaultCategoryName) { el.hidden = true; return; }
+    el.textContent = '下の金額は「' + defaultCategoryName +
+      '」を例として選んだ場合のものです。ご自身の取り組みに近い分類に変えると金額が変わります。';
+    el.hidden = false;
+  }
+
+  function onCategoryToggle() {
+    categoryTouched = true;
+    updateCategoryExampleNote();
+    runSimulation();
+  }
+
   function renderCategoryCheckboxes(industryKey) {
     var ind = INDUSTRIES[industryKey];
     var html = ind.categories.map(function (cat, idx) {
       var checked = idx === 0 ? ' checked' : '';
-      return '<label class="cat-check"><input type="checkbox" value="' + catKey(idx) + '"' + checked + ' onchange="runSimulation()"><span>' + cat.name + '</span></label>';
+      return '<label class="cat-check"><input type="checkbox" value="' + catKey(idx) + '"' + checked + ' onchange="onCategoryToggle()"><span>' + cat.name + '</span></label>';
     }).join('');
     document.getElementById('catCheckGrid').innerHTML = html;
+    // 業種を切り替えると分類も選び直しになるので、例の表示に戻す
+    categoryTouched = false;
+    defaultCategoryName = ind.categories[0] ? ind.categories[0].name : '';
+    updateCategoryExampleNote();
   }
 
   var UNIVERSAL_PROGRAM_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai'];
@@ -7378,6 +7420,38 @@
     if (anyOpen) setHashSilently('');
   }
 
+  // 畳んだ一覧は7枚が完全に等価で「どれから見ればいいか」の手がかりが無い。
+  // 3問診断の結果が案内している行き先＝主要導線なので、そこに印を付ける。
+  // 行き先はリンクから読み取るので、CTAを変えても表示がズレない。
+  // 何度呼んでも二重に付かない。
+  function markPrimarySections() {
+    var links = document.querySelectorAll('#diagResult a[href^="#"]');
+    if (!links.length) return;
+    var ids = {};
+    Array.prototype.forEach.call(links, function (a) {
+      var id = (a.getAttribute('href') || '').slice(1);
+      if (id) ids[id] = true;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('main > section'), function (sec) {
+      var btn = sec.querySelector('.sec-toggle');
+      if (!btn) return;
+      var isPrimary = !!ids[sec.id];
+      var badge = btn.querySelector('.sec-primary');
+      sec.classList.toggle('is-primary', isPrimary);
+      if (isPrimary && !badge) {
+        badge = document.createElement('span');
+        badge.className = 'sec-primary';
+        badge.textContent = '診断からの案内先';
+        // 見出しの横に置くと、狭い画面でタイトルとヒントの幅を奪って
+        // 「導入のた／めの条件」のように折れる。文字の下（同じ列）に置く。
+        var ttlEl = btn.querySelector('.sec-ttl');
+        (ttlEl || btn).appendChild(badge);
+      } else if (!isPrimary && badge) {
+        badge.parentNode.removeChild(badge);
+      }
+    });
+  }
+
   function initSectionAccordion() {
     try {
       var secs = document.querySelectorAll('main > section');
@@ -7528,6 +7602,8 @@
 
   restoringState = false;
   refreshPublicViews();
+  // 診断結果が描かれた後でないと案内先を読み取れないので、ここで印を付ける
+  try { markPrimarySections(); } catch (e) { /* 印が出なくても本体は動く */ }
   initToTop();
   initScrollSpy();
 
