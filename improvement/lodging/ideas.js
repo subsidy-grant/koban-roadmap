@@ -25,7 +25,7 @@ const SEGMENTS = [
 ];
 
 // 各カテゴリ: name, scheme(メイン適合制度), dept(部門), ideas[10]
-// idea: t=タイトル核, d=説明テンプレ関数, h=想定省力化時間(時間/月・基準値), sc=[market,saving,feas,subsidy,unique], star=TOP10候補ランク
+// idea: t=タイトル核, d=説明テンプレ関数, h=想定省力化時間(時間/月・基準値), sc=[market,saving,feas,subsidy,unique], star=TOP10採択ランク
 const CATEGORIES = [
 { name: "予約・OTA連携", scheme: "デジタル", dept: "フロント", ideas: [
   { t: "予約一元管理(サイトコントローラー+PMS連携)", d: s => `複数OTA・自社サイト・電話予約を1つの台帳に自動集約し、${s.name}の在庫調整と予約転記をゼロ化。ダブルブッキングと売り止め忘れを仕組みで防ぐ。`, h: 25, sc: [5,5,5,4,3], star: 2 },
@@ -290,7 +290,7 @@ const IDEAS = (() => {
         const rnd = mulberry32(id * 7919);
         const jitter = () => (rnd() - 0.5) * 0.8; // ±0.4
         const [m, sv, fe, su, un] = idea.sc;
-        const isStar = idea.star && seg.key === "bizhotel"; // TOP10候補は客数の多い汎用業態を代表として確定
+        const isStar = idea.star && seg.key === "bizhotel"; // TOP10採択は客数の多い汎用業態を代表として確定
         const score = {
           market:      +(Math.min(5, Math.max(1, m + seg.mMod + jitter()))).toFixed(1),
           saving:      +(Math.min(5, Math.max(1, sv + jitter()))).toFixed(1),
@@ -299,7 +299,7 @@ const IDEAS = (() => {
           unique:      +(Math.min(5, Math.max(1, un + jitter()))).toFixed(1),
         };
         if (isStar) {
-          // TOP10候補は表示スコアも高位に寄せるが、省力化度だけは基礎点が4以上の案に限る。
+          // TOP10採択は表示スコアも高位に寄せるが、省力化度だけは基礎点が4以上の案に限る。
           // 省エネ更新(star9)は時間削減ではなくコスト・環境改善の案なので、
           // 省力化4.5に嵩上げすると嘘になる(TOP10入り自体はrank計算の+100で保証される)
           score.market = Math.max(score.market, 4.6);
@@ -329,7 +329,7 @@ const IDEAS = (() => {
 const RANKED = [...IDEAS].sort((a, b) => (b.topRank ? 100 + b.total : b.total) - (a.topRank ? 100 + a.total : a.total));
 RANKED.forEach((idea, i) => {
   idea.rank = i + 1;
-  idea.stage = idea.topRank ? "TOP10候補" : i < 30 ? "C通過(30選)" : i < 100 ? "P通過(100選)" : "初期プール";
+  idea.stage = idea.topRank ? "TOP10採択" : i < 30 ? "C通過(30選)" : i < 100 ? "P通過(100選)" : "初期プール";
 });
 const TOP10 = IDEAS.filter(i => i.topRank).sort((a, b) => a.topRank - b.topRank);
 

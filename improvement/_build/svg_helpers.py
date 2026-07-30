@@ -13,6 +13,21 @@ def esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def _wrap_label(label, max_chars, max_lines=2):
+    """軸ラベルを最大2行に折る。「注文取り対応(時間/月)」のように末尾が単位の
+    括弧なら、そこで折ると意味の切れ目と一致して読みやすい。"""
+    if len(label) <= max_chars:
+        return [label]
+    for br in ("(", "（"):
+        i = label.rfind(br)
+        if 0 < i <= max_chars + 3 and len(label) - i <= max_chars + 3:
+            return [label[:i], label[i:]]
+    lines = [label[i:i + max_chars] for i in range(0, len(label), max_chars)][:max_lines]
+    if len("".join(lines)) < len(label):
+        lines[-1] = lines[-1][:-1] + "…"
+    return lines
+
+
 def bar_before_after(title, rows, accent=GREEN, w=320, h=195):
     """rows: [(label, before, after)] 最大4組の縦棒before/after比較。
     色の凡例はバー色と連動した数値ラベル（薄色=導入前／濃色太字=導入後）で示すため、
@@ -32,7 +47,14 @@ def bar_before_after(title, rows, accent=GREEN, w=320, h=195):
         out.append(f'<rect x="{gx:.1f}" y="{base_y-hb:.1f}" width="{bw}" height="{hb:.1f}" fill="{BEIGE}" rx="2"/>')
         out.append(f'<rect x="{gx+bw+4:.1f}" y="{base_y-ha:.1f}" width="{bw}" height="{ha:.1f}" fill="{accent}" rx="2"/>')
         cx = gx + bw + 2
-        out.append(f'<text x="{cx:.1f}" y="176" font-size="9" fill="{SUB}" text-anchor="middle">{esc(label)}</text>')
+        # ラベルは1本の<text>だと、棒が3組以上のとき隣の組と重なって読めなくなる
+        # （2組までは収まるため長らく露見していなかった）。組の幅から入る文字数を
+        # 出し、単位の括弧を優先して2行に折る。
+        fs = 9 if n <= 2 else 8
+        lines = _wrap_label(label, max(4, int(group_w / (fs * 0.96))))
+        for li, ln in enumerate(lines):
+            out.append(f'<text x="{cx:.1f}" y="{176 + li * (fs + 1.5):.1f}" font-size="{fs}" '
+                       f'fill="{SUB}" text-anchor="middle">{esc(ln)}</text>')
         out.append(f'<text x="{gx+bw/2:.1f}" y="{base_y-hb-5:.1f}" font-size="8.5" fill="{SUB}" text-anchor="middle">{before:g}</text>')
         out.append(f'<text x="{gx+bw*1.5+4:.1f}" y="{base_y-ha-5:.1f}" font-size="8.5" font-weight="bold" fill="{accent}" text-anchor="middle">{after:g}</text>')
     out.append("</svg>")
@@ -231,11 +253,18 @@ def payback_line(title, monthly_saving, self_pay, months=24, accent="#8a5a2b", w
     out.append(f'<line x1="{x0}" y1="{base_y}" x2="{w-8}" y2="{base_y}" stroke="{LINE}"/>')
     out.append(f'<line x1="{x0}" y1="{base_y}" x2="{x0}" y2="24" stroke="{LINE}"/>')
     out.append(f'<line x1="{x0}" y1="{y_self:.1f}" x2="{w-8}" y2="{y_self:.1f}" stroke="{RED}" stroke-dasharray="4 3"/>')
-    out.append(f'<text x="{w-10}" y="{y_self-5:.1f}" font-size="8" fill="{RED}" text-anchor="end">自己負担 {self_pay:g}万円</text>')
+    out.append(f'<text x="{w-10}" y="{y_self-8:.1f}" font-size="8" fill="{RED}" text-anchor="end">自己負担 {self_pay:g}万円</text>')
     out.append(f'<polyline points="{" ".join(pts)}" fill="none" stroke="{accent}" stroke-width="2.2"/>')
     if cross_m <= months:
         out.append(f'<circle cx="{cross_x:.1f}" cy="{y_self:.1f}" r="4" fill="{accent}"/>')
-        out.append(f'<text x="{cross_x:.1f}" y="{y_self-9:.1f}" font-size="8.6" font-weight="bold" fill="{INK}" text-anchor="middle">約{cross_m:.0f}ヶ月で回収</text>')
+        # 回収時期が右寄りだと「自己負担 ○万円」と同じ高さで重なるため、
+        # ぶつかる場合だけ破線の下側に逃がす（回収が遅い計画ほど起きやすい）。
+        cross_label = f"約{cross_m:.0f}ヶ月で回収"
+        self_label_left = (w - 10) - len(f"自己負担 {self_pay:g}万円") * 8
+        cross_y = y_self - 9
+        if cross_x + len(cross_label) * 4.3 > self_label_left:
+            cross_y = y_self + 14
+        out.append(f'<text x="{cross_x:.1f}" y="{cross_y:.1f}" font-size="8.6" font-weight="bold" fill="{INK}" text-anchor="middle">{cross_label}</text>')
     out.append(f'<text x="{x0}" y="{base_y+14}" font-size="7.5" fill="{SUB}">0</text>')
     out.append(f'<text x="{w-8}" y="{base_y+14}" font-size="7.5" fill="{SUB}" text-anchor="end">{months}ヶ月</text>')
     out.append(f'<text x="{x0+8}" y="30" font-size="7.5" fill="{SUB}">累積削減額(万円)</text>')

@@ -294,7 +294,7 @@ def page(no, title, footer_l, footer_r, body):
 
 
 DEMO_NOTE = ('<p class="note">※ 本計画の数値は公開情報・業界目安に基づくモデルケースの仮置きです。'
-             '実申請時には自社のPOS実績・勤怠記録等の裏付けデータに差し替えてください。</p>')
+             '実申請時には自社の売上・勤怠・稼働記録等の裏付けデータに差し替えてください。</p>')
 
 # 申請前チェック(制度共通で常に真の一般則のみ。制度固有の要件は各ページの記載に委ねる)
 PRECHECK = [
@@ -469,7 +469,7 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
     )
     if monthly and payback_m:
         body8 += f'<div class="callout small"><b>回収試算の前提：</b>{esc(eff["monthlySaving"]["assumption"])}</div>'
-    body8 += '<p class="note">効果の数値は導入事例・業界目安に基づく参考値であり、店舗規模・客層・運用により変動する。自店での効果測定と併せて判断すること。</p>'
+    body8 += '<p class="note">効果の数値は導入事例・業界目安に基づく参考値であり、事業規模・顧客層・運用により変動する。自社での効果測定と併せて判断すること。</p>'
     pages.append(page(8, "効果試算", footer_l, "効果試算", body8))
 
     # ---- p9 KPI・PDCA運用

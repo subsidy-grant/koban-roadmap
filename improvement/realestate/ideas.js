@@ -25,7 +25,7 @@ const SEGMENTS = [
 ];
 
 // 各カテゴリ: name, scheme(メイン適合制度), dept(部門), ideas[10]
-// idea: t=タイトル核, d=説明テンプレ関数, h=想定省力化時間(時間/月・基準値), sc=[market,saving,feas,subsidy,unique], star=TOP10候補ランク
+// idea: t=タイトル核, d=説明テンプレ関数, h=想定省力化時間(時間/月・基準値), sc=[market,saving,feas,subsidy,unique], star=TOP10採択ランク
 const CATEGORIES = [
 { name: "電子契約・IT重説", scheme: "デジタル", dept: "営業・仲介", ideas: [
   { t: "電子契約・IT重説の一体導入", d: s => `${s.svc}の契約書作成・重要事項説明・締結をオンライン完結にし、来店調整と製本・郵送・印紙をまとめて削減。遠方客の契約リードタイムも数日短縮する。`, h: 20, sc: [5,5,5,4,3], star: 1 },
@@ -290,7 +290,7 @@ const IDEAS = (() => {
         const rnd = mulberry32(id * 7919);
         const jitter = () => (rnd() - 0.5) * 0.8; // ±0.4
         const [m, sv, fe, su, un] = idea.sc;
-        const isStar = idea.star && seg.key === "chintai"; // TOP10候補は店舗数の多い賃貸仲介を代表として確定
+        const isStar = idea.star && seg.key === "chintai"; // TOP10採択は店舗数の多い賃貸仲介を代表として確定
         const score = {
           market:      +(Math.min(5, Math.max(1, m + seg.mMod + jitter()))).toFixed(1),
           saving:      +(Math.min(5, Math.max(1, sv + jitter()))).toFixed(1),
@@ -299,7 +299,7 @@ const IDEAS = (() => {
           unique:      +(Math.min(5, Math.max(1, un + jitter()))).toFixed(1),
         };
         if (isStar) {
-          // TOP10候補は表示スコアも高位に寄せるが、省力化度だけは基礎点が4以上の案に限る。
+          // TOP10採択は表示スコアも高位に寄せるが、省力化度だけは基礎点が4以上の案に限る。
           // 宅建研修(star9)・ポータル提供(star8)は時間削減が主目的ではないため、
           // 省力化4.5に嵩上げすると嘘になる(TOP10入り自体はrank計算の+100で保証される)
           score.market = Math.max(score.market, 4.6);
@@ -329,7 +329,7 @@ const IDEAS = (() => {
 const RANKED = [...IDEAS].sort((a, b) => (b.topRank ? 100 + b.total : b.total) - (a.topRank ? 100 + a.total : a.total));
 RANKED.forEach((idea, i) => {
   idea.rank = i + 1;
-  idea.stage = idea.topRank ? "TOP10候補" : i < 30 ? "C通過(30選)" : i < 100 ? "P通過(100選)" : "初期プール";
+  idea.stage = idea.topRank ? "TOP10採択" : i < 30 ? "C通過(30選)" : i < 100 ? "P通過(100選)" : "初期プール";
 });
 const TOP10 = IDEAS.filter(i => i.topRank).sort((a, b) => a.topRank - b.topRank);
 

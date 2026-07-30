@@ -13,6 +13,7 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "data")
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+IMPROVEMENT = os.path.abspath(os.path.join(HERE, ".."))
 MAIN_HTML = os.path.join(ROOT, "index.html")
 
 INDUSTRY_ORDER = ["beauty", "food", "lodging", "manufacturing", "realestate", "education"]
@@ -140,6 +141,8 @@ def build_fragment():
             for pl in ext["plans"]:
                 no = pl["no"]
                 prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
+                # プロトタイプは業種によって未整備（事業計画書だけ先に用意した業種がある）。
+                # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
                 if pl.get("icon"):
@@ -151,8 +154,10 @@ def build_fragment():
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
+                proto_link = (f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a>'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
                 parts.append(f'<div class="links"><a class="src-link" href="improvement/{ik}/plan-{no:02d}.html">📄 事業計画書</a>'
-                             f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+                             f'{proto_link}</div>')
                 parts.append("</div>")
             parts.append("</div>")
             parts.append(MORE_BUTTON)
@@ -161,14 +166,18 @@ def build_fragment():
             for pl in plans[ik]:
                 no = pl["no"]
                 prog = PROGRAM_LABEL.get(pl["subsidy"]["key"], pl["subsidy"]["key"])
+                # プロトタイプは業種によって未整備（事業計画書だけ先に用意した業種がある）。
+                # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
                 parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')
+                proto_link = (f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a>'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
                 parts.append(f'<div class="links"><a class="src-link" href="improvement/{ik}/plan-{no:02d}.html">📄 事業計画書</a>'
-                             f'<a class="src-link" href="improvement/{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+                             f'{proto_link}</div>')
                 parts.append("</div>")
             parts.append("</div>")
             parts.append(MORE_BUTTON)

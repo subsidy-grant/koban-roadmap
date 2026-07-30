@@ -136,8 +136,9 @@ def main():
     parts.append("<style>" + CSS + "</style></head><body><main>")
     parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>')
     parts.append("<h1>業種別・改善計画 厳選10選</h1>")
-    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は1000案からの独自PDCA評価、他業種は6業種×100施策のスコアリングによる選定）。'
-                 "各案には <strong>A4×10ページの事業計画書</strong> と、導入するシステムの<strong>試作プロトタイプ</strong>が付属します。"
+    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業・飲食業・宿泊業・製造業・不動産業・教育業は各1000案からのPDCA評価、あわせて6業種×100施策のスコアリングと突き合わせて選定）。'
+                 "各案には <strong>A4×10ページの事業計画書</strong>（Excel版つき）が付属します。"
+                 "<strong>試作プロトタイプ</strong>は美容業・飲食業で公開中、他の業種は準備中です。"
                  '選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>')
 
     parts.append('<div class="tabs" role="tablist">')
@@ -156,6 +157,8 @@ def main():
             for pl in ext["plans"]:
                 no = pl["no"]
                 prog = PROGRAM_LABEL.get(pl["schemeKey"], pl["schemeKey"])
+                # プロトタイプは業種によって未整備（事業計画書だけ先に用意した業種がある）。
+                # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
                 if pl.get("icon"):
@@ -167,8 +170,10 @@ def main():
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
+                proto_link = (f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a>'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
                 parts.append(f'<div class="links"><a href="{ik}/plan-{no:02d}.html">📄 事業計画書（A4×10p）</a>'
-                             f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+                             f'{proto_link}</div>')
                 parts.append("</div>")
             parts.append("</div>")
         elif ik in plans:
@@ -176,14 +181,18 @@ def main():
             for pl in plans[ik]:
                 no = pl["no"]
                 prog = PROGRAM_LABEL.get(pl["subsidy"]["key"], pl["subsidy"]["key"])
+                # プロトタイプは業種によって未整備（事業計画書だけ先に用意した業種がある）。
+                # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
                 parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')
+                proto_link = (f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a>'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
                 parts.append(f'<div class="links"><a href="{ik}/plan-{no:02d}.html">📄 事業計画書（A4×10p）</a>'
-                             f'<a href="{ik}/{proto_file}">🖥 プロトタイプ</a></div>')
+                             f'{proto_link}</div>')
                 parts.append("</div>")
             parts.append("</div>")
         else:

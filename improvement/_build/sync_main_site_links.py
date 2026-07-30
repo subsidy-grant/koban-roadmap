@@ -26,12 +26,22 @@ def build_mapping():
         cat_map = {}
         for pl in plans:
             rank = pl["category"]["rank"]
-            cat_map[str(rank)] = {
+            proto_rel = f"improvement/{ik}/proto-{pl['no']:02d}-{pl['slug']}.html"
+            entry = {
                 "no": pl["no"],
                 "planUrl": f"improvement/{ik}/plan-{pl['no']:02d}.html",
-                "protoUrl": f"improvement/{ik}/proto-{pl['no']:02d}-{pl['slug']}.html",
                 "title": pl["title"],
             }
+            # プロトタイプは業種によって未整備。無いURLを本体サイトへ渡すと
+            # リンク切れになるため、実ファイルがある業種にだけ protoUrl を入れる。
+            if os.path.exists(os.path.join(ROOT, proto_rel)):
+                entry["protoUrl"] = proto_rel
+            # 同じ分類から2案採択している業種がある（例：宿泊の「予約・OTA連携DX」）。
+            # この表は分類ごとに1件しか持てないので、順位の高い方（noが小さい方）を残す。
+            # 後勝ちにすると、上位案ではなく下位案へのリンクが表示されてしまう。
+            prev = cat_map.get(str(rank))
+            if prev is None or pl["no"] < prev["no"]:
+                cat_map[str(rank)] = entry
         mapping[ik] = cat_map
     return mapping
 

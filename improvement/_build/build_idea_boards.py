@@ -5,12 +5,15 @@ food/pdca.html(手書き)と同型のページを、業種ごとの設定(色・
 採択候補の理由文)から生成する。beauty/food は既存の手書き版を正とし、
 本スクリプトの対象外(BOARDS に含めない)。
 
-■ food版との最重要の違い(正直さの設計)
-  この4業種には「改善計画10選」(事業計画書・プロトタイプ)がまだ無い。
-  そのため TOP10 は「採択済み」ではなく **本ボードの5軸評価による採択候補** と
-  表示し、ヘッダー・ファネル・フッターの3箇所で明示する。
-  改善計画10選が整備されたら、food版と同じ「採択済みと同一」方式に更新すること
-  (ideas.js の star 割当と RATIONALE のリンクも合わせて更新する)。
+■ TOP10と事業計画書の対応(2026-07-30に採択済みへ移行)
+  当初この4業種には改善計画10選が無く、TOP10を「採択候補」と表示していた。
+  現在は plan_src/{industry}.py から40本の事業計画書(A4×10ページ+Excel)を
+  生成済みのため、TOP10 = 採択案として計画書へリンクする。
+  対応関係は「TOP10のtopRank N = plan-NN」。この前提が崩れると別の案の
+  計画書へリンクしてしまうので、生成時に data/plans/{industry}.json の
+  no が 1..10 であることを検証している(_plan_links)。
+  プロトタイプ(proto-*.html)は美容業・飲食業のみで、この4業種は未整備。
+  無いものへのリンクは出さない。
 
 ■ 可読性・操作性の下限(2026-07-29 の公開版方針)
   本文14px以上・操作要素44px以上・コントラストAA。主要な色ペアは
@@ -20,6 +23,7 @@ food/pdca.html(手書き)と同型のページを、業種ごとの設定(色・
 実行後は add_analytics.py を再実行して解析タグを注入すること。
 """
 import io
+import json
 import os
 import sys
 
@@ -46,7 +50,7 @@ BOARDS = {
         ("持続化",     "小規模事業者持続化補助金",                "持続化",             "b4"),
         ("観光省力化", "観光庁 省力化投資補助事業",               "観光庁省力化",       "b5"),
     ],
-    "act_desc": "デジタル化・AI導入3案/省力化投資2案/観光庁省力化2案/業務改善2案/持続化1案の候補構成。",
+    "act_desc": "デジタル化・AI導入3案/省力化投資2案/観光庁省力化2案/業務改善2案/持続化1案の構成。各案にA4×10ページの事業計画書を用意。",
     "rationale": {
         1: "チェックイン対応はフロント最大の定型業務。名簿・精算まで一体で置き換えられ、ピーク行列の解消と夜間省人化の両方に効く。省力化と補助金適合がともに最高水準。",
         2: "OTA在庫の手動調整はダブルブッキング事故と隣り合わせ。一元化は全予約業務の土台になり、以降のDX(料金最適化・CRM)の前提インフラにもなる。",
@@ -76,7 +80,7 @@ BOARDS = {
         ("持続化",     "小規模事業者持続化補助金",                      "持続化",             "b4"),
         ("ものづくり", "新事業進出・ものづくり商業サービス補助金",      "ものづくり",         "b5"),
     ],
-    "act_desc": "デジタル化・AI導入5案/省力化投資2案/ものづくり1案/業務改善1案/持続化1案の候補構成。",
+    "act_desc": "デジタル化・AI導入5案/省力化投資2案/ものづくり1案/業務改善1案/持続化1案の構成。各案にA4×10ページの事業計画書を用意。",
     "rationale": {
         1: "「どの設備がなぜ止まったか」を数値で掴めないと他の改善が始まらない。後付けセンサーは既存設備のまま導入でき、投資額に対する情報量が最大。",
         2: "目視検査は人手不足と品質ばらつきの二重苦。AI外観検査は全数化・記録化まで含めて効き、ものづくり補助金の代表的な投資テーマでもある。",
@@ -106,7 +110,7 @@ BOARDS = {
         ("持続化",   "小規模事業者持続化補助金",       "持続化",             "b4"),
         ("人材開発", "人材開発支援助成金",             "人材開発",           "b5"),
     ],
-    "act_desc": "デジタル化・AI導入6案/省力化投資2案/業務改善1案/人材開発1案の候補構成。",
+    "act_desc": "デジタル化・AI導入6案/省力化投資2案/業務改善1案/人材開発1案の構成。各案にA4×10ページの事業計画書を用意。",
     "rationale": {
         1: "契約・重説は全取引で必ず発生する最重量の事務。電子化は来店調整・製本・印紙まで一括で削減し、業界の法整備も追い風。市場性・省力化とも最高水準。",
         2: "内見同行は1件ごとに往復時間を食う代表的な拘束業務。スマートロックのセルフ内見は案内工数を減らしながら内見件数を増やす、数少ない攻守両得の投資。",
@@ -136,7 +140,7 @@ BOARDS = {
         ("持続化",   "小規模事業者持続化補助金",       "持続化",             "b4"),
         ("人材開発", "人材開発支援助成金",             "人材開発",           "b5"),
     ],
-    "act_desc": "デジタル化・AI導入5案/省力化投資1案/持続化2案/業務改善1案/人材開発1案の候補構成。",
+    "act_desc": "デジタル化・AI導入5案/省力化投資1案/持続化2案/業務改善1案/人材開発1案の構成。各案にA4×10ページの事業計画書を用意。",
     "rationale": {
         1: "紙カルテと記憶頼みの生徒管理は、教室長の事務時間と引き継ぎ事故の源泉。一元化は以降の出欠・請求・面談DXすべての土台になる。",
         2: "入退室通知は保護者の安心感という入会動機に直結する数少ない設備投資。安全確認の電話をなくす省力化と、選ばれる理由づくりを兼ねる。",
@@ -194,6 +198,34 @@ def assert_contrast(cfg, ind):
         raise SystemExit(1)
 
 
+def _plan_links(ind):
+    """topRank -> 事業計画書URL のJSリテラルを作る。
+
+    「TOP10のtopRank N = plan-NN.html」という前提に立っているので、その前提
+    （no が 1..10 で過不足なくそろい、HTMLが実在する）をここで検証する。
+    崩れたまま生成すると、別の案の計画書へ静かにリンクしてしまう。
+    計画書がまだ無い業種では空の辞書を返し、カードにリンクを出さない。
+    """
+    path = os.path.join(HERE, "data", "plans", ind + ".json")
+    if not os.path.exists(path):
+        print(f"  -- {ind}: 事業計画書なし（TOP10カードはリンクなしで生成）")
+        return "{}"
+    with open(path, encoding="utf-8") as f:
+        plans = json.load(f)
+    nos = sorted(p["no"] for p in plans)
+    if nos != list(range(1, 11)):
+        print(f"  !! {ind}: plans/{ind}.json の no が 1..10 でない: {nos}")
+        raise SystemExit(1)
+    for p in plans:
+        html = os.path.join(IMPROVEMENT, ind, f"plan-{p['no']:02d}.html")
+        if not os.path.exists(html):
+            print(f"  !! {ind}: {os.path.basename(html)} が無い（build_plans.py を先に実行）")
+            raise SystemExit(1)
+    return "{" + ",".join(
+        f'{p["no"]}:{{plan:"plan-{p["no"]:02d}.html",xlsx:"plan-{p["no"]:02d}.xlsx"}}'
+        for p in sorted(plans, key=lambda x: x["no"])) + "}"
+
+
 # ---------------------------------------------------------------- ページ生成
 def build_page(ind, cfg):
     scheme_options = "\n".join(
@@ -206,6 +238,7 @@ def build_page(ind, cfg):
         f"  .{cls}{{color:{fg};border-color:{fg};background:{bg}}}"
         for cls, (fg, bg) in BADGE_STYLES.items())
     rationale = "\n".join(f'  {n}:{{why:"{w}"}},' for n, w in sorted(cfg["rationale"].items()))
+    plan_links = _plan_links(ind)
     label = cfg["label"]
 
     return f"""<!DOCTYPE html>
@@ -234,7 +267,7 @@ def build_page(ind, cfg):
   .stage .lbl{{font-size:13.5px;color:var(--sub)}}
   .stage .desc{{font-size:12.5px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}}
   .s-p .ph{{background:{STAGE_COLORS["p"]}}}.s-d .ph{{background:#3e6b4f}}.s-c .ph{{background:{STAGE_COLORS["c"]}}}.s-a .ph{{background:{STAGE_COLORS["top"]}}}
-  /* TOP10候補 */
+  /* TOP10採択カード */
   h2{{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}}
   .topnote{{font-size:13.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:0 0 12px}}
   .topgrid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}}
@@ -242,6 +275,12 @@ def build_page(ind, cfg):
   .tcard .rank{{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}}
   .tcard h3{{font-size:15px}}
   .tcard .why{{font-size:12px;color:var(--sub);background:{cfg["why_bg"]};border-radius:8px;padding:8px}}
+  /* 事業計画書への導線。指で押せるよう高さ44pxを確保する */
+  .tlinks{{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}}
+  .tlinks a{{font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#fff;
+    min-height:44px;display:inline-flex;align-items:center}}
+  .tlinks a:hover,.tlinks a:focus-visible{{background:{cfg["link_hover"]}}}
   .badge{{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}}
 {badge_css}
   /* 5軸スコアは5角形レーダーチャートで表示する(beauty/food版と同じ描画) */
@@ -296,7 +335,7 @@ def build_page(ind, cfg):
 <p class="back" style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:14px;"><a href="../index.html" style="color:{cfg["accent"]};font-weight:700;text-decoration:none;">← 改善計画10選へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:{cfg["accent"]};font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:{cfg["accent"]};font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
 <header>
   <h1>{label}×AI システム 1000案 — PDCA評価ダッシュボード</h1>
-  <p>20カテゴリ × 10コア機能 × 5業態({cfg["segline"]})。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。<b>この業種の「改善計画10選」(事業計画書・プロトタイプ付き)はまだ準備中のため、本ボードのTOP10はその選定に向けた採択候補です</b>。候補は「選定の考え方」に記録した100施策スコアリングの上位領域({cfg["stage1_areas"]})と整合するよう選んでいます。</p>
+  <p>20カテゴリ × 10コア機能 × 5業態({cfg["segline"]})。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。<b>TOP10は「改善計画10選」として採択し、それぞれにA4×10ページの事業計画書（Excel版つき）を用意しています</b>。選定は「選定の考え方」に記録した100施策スコアリングの上位領域({cfg["stage1_areas"]})と突き合わせています。なお試作プロトタイプは美容業・飲食業のみの公開で、{label}は未整備です。</p>
 </header>
 <div class="wrap">
 
@@ -311,12 +350,12 @@ def build_page(ind, cfg):
       <div class="lbl">導入実現性の評価</div>
       <div class="desc">導入コスト・既製品の有無・{label}の現場適合性を検証し3割まで圧縮。</div></div>
     <div class="stage s-a"><span class="ph">ACT</span><div class="num">10<span style="font-size:13px">案</span></div>
-      <div class="lbl">採択候補(計画書は準備中)</div>
+      <div class="lbl">採択（事業計画書つき）</div>
       <div class="desc">{cfg["act_desc"]}</div></div>
   </div>
 
-  <h2>TOP10 採択候補</h2>
-  <p class="topnote">この10案は本ボードの5軸評価による<b>採択候補</b>です。{label}の事業計画書・プロトタイプは準備中で、美容業・飲食業のような「採択済み10選」はまだありません。整備され次第、このページを採択済みの内容に更新します。機械スコアリングの全記録は<a href="../pdca.html" style="color:var(--accent);font-weight:700;">選定の考え方</a>をご覧ください。</p>
+  <h2>TOP10 採択案（事業計画書つき）</h2>
+  <p class="topnote">この10案が{label}の<b>改善計画10選</b>です。各案にA4×10ページの事業計画書（印刷・PDF保存可／Excel版つき）があります。数値は公開情報・業界目安にもとづくモデルケースの試算で、実申請時は自社の実績データに差し替えてご利用ください。試作プロトタイプは{label}では未整備です。機械スコアリングの全記録は<a href="../pdca.html" style="color:var(--accent);font-weight:700;">選定の考え方</a>をご覧ください。</p>
   <div class="topgrid" id="topgrid"></div>
 
   <h2>全1000案ブラウザ</h2>
@@ -326,7 +365,7 @@ def build_page(ind, cfg):
     <select id="fSeg" aria-label="業態で絞り込む"><option value="">全業態</option></select>
     <select id="fDept" aria-label="部門で絞り込む"><option value="">全部門</option>{dept_options}</select>
     <select id="fStage" aria-label="選定ステージで絞り込む"><option value="">全ステージ</option>
-      <option>TOP10候補</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
+      <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
     <select id="fScheme" aria-label="活用制度で絞り込む"><option value="">全制度</option>
 {scheme_options}</select>
     <span class="count" id="count"></span>
@@ -345,16 +384,18 @@ def build_page(ind, cfg):
     <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
   </div>
 </div>
-<footer>koban-roadmap {label}×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10は本ボードの5軸評価による採択候補であり、確定した採択ではありません。100施策の機械スコアリングは<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>参照。</footer>
+<footer>koban-roadmap {label}×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10は本ボードの5軸評価による採択案で、各案に事業計画書（モデルケース）を用意しています。100施策の機械スコアリングは<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>参照。</footer>
 
 <script src="ideas.js"></script>
 <script>
-// TOP10候補の選定理由(5軸の観点からの評価コメント)。
-// ※この業種の改善計画10選は準備中のため、プロトタイプ・計画書リンクは無い。
-//   整備後は food/pdca.html と同じ形式(proto/plan/xlsxリンク付き)に更新すること。
+// TOP10の採択理由(5軸の観点からの評価コメント)。
 const RATIONALE = {{
 {rationale}
 }};
+
+// TOP10のtopRank → 事業計画書。build_idea_boards.py が
+// data/plans/<業種>.json を読んで生成する（計画書が無い業種では空になる）。
+const PLAN_LINKS = {plan_links};
 
 const SCHEME_BADGE = {{
 {scheme_badge}
@@ -398,18 +439,25 @@ function radarChart(score) {{
        + `${{grid}}<polygon class="shape" points="${{shape}}"/>${{dots}}${{labels}}</svg>`;
 }}
 
-// TOP10候補カード(計画書・プロトタイプは準備中のためリンクは選定記録のみ)
+// TOP10採択カード。事業計画書(plan-NN.html)とExcel版へリンクする。
+// プロトタイプはこの業種では未整備なので、そのリンクは出さない。
 document.getElementById("topgrid").innerHTML = TOP10.map(t => {{
   const r = RATIONALE[t.topRank] || {{}};
+  const p = PLAN_LINKS[t.topRank];
+  const links = p ? `<div class="tlinks">
+      <a href="${{p.plan}}">📄 事業計画書（A4×10ページ）</a>
+      <a href="${{p.xlsx}}" download>📊 Excel版（編集用）</a>
+    </div>` : "";
   return `<div class="tcard">
-    <div><span class="rank">候補 No.${{t.topRank}}</span> ${{SCHEME_BADGE[t.scheme] || ""}}</div>
+    <div><span class="rank">採択 No.${{t.topRank}}</span> ${{SCHEME_BADGE[t.scheme] || ""}}</div>
     <h3>${{t.title}}</h3>
     <div style="font-size:12px">${{t.description}}</div>
     <div class="scorewrap">
       <div class="radarbox">${{radarChart(t.score)}}<div class="tot">総合 <b>${{t.total}}</b>/25</div></div>
-      <div class="why"><b>候補理由:</b> ${{r.why||""}}</div>
+      <div class="why"><b>採択理由:</b> ${{r.why||""}}</div>
     </div>
     <div style="font-size:11px;color:var(--sub)">想定省力化: 約${{t.savingHoursPerMonth}}時間/月（${{t.dept}}）</div>
+    ${{links}}
   </div>`;
 }}).join("");
 

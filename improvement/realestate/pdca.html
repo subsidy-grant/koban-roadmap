@@ -24,7 +24,7 @@
   .stage .lbl{font-size:13.5px;color:var(--sub)}
   .stage .desc{font-size:12.5px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
   .s-p .ph{background:#4a6480}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#8a6208}.s-a .ph{background:#a4453c}
-  /* TOP10候補 */
+  /* TOP10採択カード */
   h2{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}
   .topnote{font-size:13.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:0 0 12px}
   .topgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
@@ -32,6 +32,12 @@
   .tcard .rank{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}
   .tcard h3{font-size:15px}
   .tcard .why{font-size:12px;color:var(--sub);background:#f3f7f3;border-radius:8px;padding:8px}
+  /* 事業計画書への導線。指で押せるよう高さ44pxを確保する */
+  .tlinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .tlinks a{font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#fff;
+    min-height:44px;display:inline-flex;align-items:center}
+  .tlinks a:hover,.tlinks a:focus-visible{background:#eaf1ea}
   .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
   .b1{color:#4a6b8a;border-color:#4a6b8a;background:#edf2f7}
   .b2{color:#3e6b4f;border-color:#3e6b4f;background:#eef5f0}
@@ -90,7 +96,7 @@
 <p class="back" style="max-width:1200px;margin:14px auto 0;padding:0 24px;font-size:14px;"><a href="../index.html" style="color:#3e6b4f;font-weight:700;text-decoration:none;">← 改善計画10選へ戻る</a> ／ <a href="../../index.html#improvement-cta" style="color:#3e6b4f;font-weight:700;text-decoration:none;">ロードマップ本体へ</a> ／ <a href="../pdca.html" style="color:#3e6b4f;font-weight:700;text-decoration:none;">📊 選定の考え方（100施策スコアリング）</a></p>
 <header>
   <h1>不動産業、物品賃貸業×AI システム 1000案 — PDCA評価ダッシュボード</h1>
-  <p>20カテゴリ × 10コア機能 × 5業態(賃貸仲介/売買仲介/賃貸管理/ビル管理/物品賃貸)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。<b>この業種の「改善計画10選」(事業計画書・プロトタイプ付き)はまだ準備中のため、本ボードのTOP10はその選定に向けた採択候補です</b>。候補は「選定の考え方」に記録した100施策スコアリングの上位領域(電子契約・IT重説、内見・VR案内の効率化)と整合するよう選んでいます。</p>
+  <p>20カテゴリ × 10コア機能 × 5業態(賃貸仲介/売買仲介/賃貸管理/ビル管理/物品賃貸)。5軸スコア(市場性・省力化度・実現性・補助金適合・差別化)でPlan→Do→Check→Actの絞り込みを実施。<b>TOP10は「改善計画10選」として採択し、それぞれにA4×10ページの事業計画書（Excel版つき）を用意しています</b>。選定は「選定の考え方」に記録した100施策スコアリングの上位領域(電子契約・IT重説、内見・VR案内の効率化)と突き合わせています。なお試作プロトタイプは美容業・飲食業のみの公開で、不動産業、物品賃貸業は未整備です。</p>
 </header>
 <div class="wrap">
 
@@ -105,12 +111,12 @@
       <div class="lbl">導入実現性の評価</div>
       <div class="desc">導入コスト・既製品の有無・不動産業、物品賃貸業の現場適合性を検証し3割まで圧縮。</div></div>
     <div class="stage s-a"><span class="ph">ACT</span><div class="num">10<span style="font-size:13px">案</span></div>
-      <div class="lbl">採択候補(計画書は準備中)</div>
-      <div class="desc">デジタル化・AI導入6案/省力化投資2案/業務改善1案/人材開発1案の候補構成。</div></div>
+      <div class="lbl">採択（事業計画書つき）</div>
+      <div class="desc">デジタル化・AI導入6案/省力化投資2案/業務改善1案/人材開発1案の構成。各案にA4×10ページの事業計画書を用意。</div></div>
   </div>
 
-  <h2>TOP10 採択候補</h2>
-  <p class="topnote">この10案は本ボードの5軸評価による<b>採択候補</b>です。不動産業、物品賃貸業の事業計画書・プロトタイプは準備中で、美容業・飲食業のような「採択済み10選」はまだありません。整備され次第、このページを採択済みの内容に更新します。機械スコアリングの全記録は<a href="../pdca.html" style="color:var(--accent);font-weight:700;">選定の考え方</a>をご覧ください。</p>
+  <h2>TOP10 採択案（事業計画書つき）</h2>
+  <p class="topnote">この10案が不動産業、物品賃貸業の<b>改善計画10選</b>です。各案にA4×10ページの事業計画書（印刷・PDF保存可／Excel版つき）があります。数値は公開情報・業界目安にもとづくモデルケースの試算で、実申請時は自社の実績データに差し替えてご利用ください。試作プロトタイプは不動産業、物品賃貸業では未整備です。機械スコアリングの全記録は<a href="../pdca.html" style="color:var(--accent);font-weight:700;">選定の考え方</a>をご覧ください。</p>
   <div class="topgrid" id="topgrid"></div>
 
   <h2>全1000案ブラウザ</h2>
@@ -120,7 +126,7 @@
     <select id="fSeg" aria-label="業態で絞り込む"><option value="">全業態</option></select>
     <select id="fDept" aria-label="部門で絞り込む"><option value="">全部門</option><option>営業・仲介</option><option>管理・入居者対応</option><option>バックオフィス</option><option>店舗・集客</option><option>レンタル業務</option></select>
     <select id="fStage" aria-label="選定ステージで絞り込む"><option value="">全ステージ</option>
-      <option>TOP10候補</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
+      <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
     <select id="fScheme" aria-label="活用制度で絞り込む"><option value="">全制度</option>
       <option value="デジタル">デジタル化・AI導入補助金2026</option>
       <option value="省力化">中小企業省力化投資補助金</option>
@@ -143,13 +149,11 @@
     <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
   </div>
 </div>
-<footer>koban-roadmap 不動産業、物品賃貸業×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10は本ボードの5軸評価による採択候補であり、確定した採択ではありません。100施策の機械スコアリングは<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>参照。</footer>
+<footer>koban-roadmap 不動産業、物品賃貸業×AI 1000案 / スコアは決定的シードによる机上評価(実データでの再評価を推奨)。TOP10は本ボードの5軸評価による採択案で、各案に事業計画書（モデルケース）を用意しています。100施策の機械スコアリングは<a href="../pdca.html" style="color:var(--accent)">選定の考え方</a>参照。</footer>
 
 <script src="ideas.js"></script>
 <script>
-// TOP10候補の選定理由(5軸の観点からの評価コメント)。
-// ※この業種の改善計画10選は準備中のため、プロトタイプ・計画書リンクは無い。
-//   整備後は food/pdca.html と同じ形式(proto/plan/xlsxリンク付き)に更新すること。
+// TOP10の採択理由(5軸の観点からの評価コメント)。
 const RATIONALE = {
   1:{why:"契約・重説は全取引で必ず発生する最重量の事務。電子化は来店調整・製本・印紙まで一括で削減し、業界の法整備も追い風。市場性・省力化とも最高水準。"},
   2:{why:"内見同行は1件ごとに往復時間を食う代表的な拘束業務。スマートロックのセルフ内見は案内工数を減らしながら内見件数を増やす、数少ない攻守両得の投資。"},
@@ -162,6 +166,10 @@ const RATIONALE = {
   9:{why:"宅建士の確保は事業拡大の法的な前提条件。資格取得支援は人材開発支援助成金で費用を抑えられ、採用競争力にもなる。"},
   10:{why:"店舗・現場が分散する業態の勤怠集計は毎月の確実な負荷。クラウド化は締め作業を数時間に短縮し、直行直帰の働き方も支える。"},
 };
+
+// TOP10のtopRank → 事業計画書。build_idea_boards.py が
+// data/plans/<業種>.json を読んで生成する（計画書が無い業種では空になる）。
+const PLAN_LINKS = {1:{plan:"plan-01.html",xlsx:"plan-01.xlsx"},2:{plan:"plan-02.html",xlsx:"plan-02.xlsx"},3:{plan:"plan-03.html",xlsx:"plan-03.xlsx"},4:{plan:"plan-04.html",xlsx:"plan-04.xlsx"},5:{plan:"plan-05.html",xlsx:"plan-05.xlsx"},6:{plan:"plan-06.html",xlsx:"plan-06.xlsx"},7:{plan:"plan-07.html",xlsx:"plan-07.xlsx"},8:{plan:"plan-08.html",xlsx:"plan-08.xlsx"},9:{plan:"plan-09.html",xlsx:"plan-09.xlsx"},10:{plan:"plan-10.html",xlsx:"plan-10.xlsx"}};
 
 const SCHEME_BADGE = {
   "デジタル": '<span class="badge b1">デジタル化・AI導入補助金2026</span>',
@@ -209,18 +217,25 @@ function radarChart(score) {
        + `${grid}<polygon class="shape" points="${shape}"/>${dots}${labels}</svg>`;
 }
 
-// TOP10候補カード(計画書・プロトタイプは準備中のためリンクは選定記録のみ)
+// TOP10採択カード。事業計画書(plan-NN.html)とExcel版へリンクする。
+// プロトタイプはこの業種では未整備なので、そのリンクは出さない。
 document.getElementById("topgrid").innerHTML = TOP10.map(t => {
   const r = RATIONALE[t.topRank] || {};
+  const p = PLAN_LINKS[t.topRank];
+  const links = p ? `<div class="tlinks">
+      <a href="${p.plan}">📄 事業計画書（A4×10ページ）</a>
+      <a href="${p.xlsx}" download>📊 Excel版（編集用）</a>
+    </div>` : "";
   return `<div class="tcard">
-    <div><span class="rank">候補 No.${t.topRank}</span> ${SCHEME_BADGE[t.scheme] || ""}</div>
+    <div><span class="rank">採択 No.${t.topRank}</span> ${SCHEME_BADGE[t.scheme] || ""}</div>
     <h3>${t.title}</h3>
     <div style="font-size:12px">${t.description}</div>
     <div class="scorewrap">
       <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
-      <div class="why"><b>候補理由:</b> ${r.why||""}</div>
+      <div class="why"><b>採択理由:</b> ${r.why||""}</div>
     </div>
     <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月（${t.dept}）</div>
+    ${links}
   </div>`;
 }).join("");
 

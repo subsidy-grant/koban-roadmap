@@ -15,7 +15,7 @@
   <!-- BENCHMARK_APPENDIX:START --> 〜 :END の間を毎回まるごと置き換える。
   何度実行しても結果は同じ。
 
-実行: python3 apply_benchmarks.py [industry ...]   省略時は beauty food
+実行: python3 apply_benchmarks.py [industry ...]   省略時は data/plans と data/external にある全業種
 """
 import json
 import os
@@ -320,7 +320,16 @@ def apply_to_file(path, industry, plan_no, program_key, investment):
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
-    industries = sys.argv[1:] or ["beauty", "food"]
+    # 省略時は計画データのある業種すべて。業種を足すたびに引数を書き換える運用だと、
+    # 新業種の計画書にだけ参考資料ページが付かない事故が起きる。
+    industries = sys.argv[1:]
+    if not industries:
+        found = set()
+        for sub in ("plans", "external"):
+            d = os.path.join(DATA, sub)
+            if os.path.isdir(d):
+                found |= {f[:-5] for f in os.listdir(d) if f.endswith(".json")}
+        industries = sorted(found)
     for ik in industries:
         meta = load_plan_meta(ik)
         if not meta:
