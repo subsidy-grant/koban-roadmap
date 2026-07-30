@@ -938,10 +938,70 @@
   table.summary-table td .sub { display: block; font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.15rem; }
   table.summary-table tr.is-region td:first-child { border-left: 4px solid var(--sage); }
   table.summary-table .due-soon { color: var(--rust); font-weight: 700; }
+
+  /* ==========================================================================
+     セクションのアコーディオン（2026-07-30 追加）
+     1ページに全部並べると縦に非常に長く、どこに何があるか掴みにくい。
+     既定は見出しだけを見せ、押した分だけ開く形にする。
+
+     .has-accordion は <head> のスクリプトが付ける。JSが無効／途中で失敗した
+     場合はクラスが付かない（または外れる）ので、従来どおり全部開いた状態で
+     表示される。「見出しだけ出て何も開かない」状態にはならない。
+     ========================================================================== */
+  .has-accordion main { padding-top: 2rem; }
+  .has-accordion main > section { margin-bottom: 0.75rem; scroll-margin-top: 1rem; }
+  /* 組み替え前（.sec-body を作る前）も後も、この1本で見出し以外を隠す */
+  .has-accordion main > section > *:not(.section-head) { display: none; }
+  .has-accordion main > section.is-open > .sec-body { display: block; }
+  .has-accordion .sec-body { padding: 1.5rem 0 0.8rem; }
+
+  .section-head.is-toggle { display: block; margin: 0; }
+  .sec-h2 { margin: 0; }
+  .sec-toggle {
+    appearance: none; -webkit-appearance: none;
+    width: 100%; font: inherit; text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 0.85rem;
+    min-height: 3.5rem; padding: 0.9rem 1.1rem;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper-raised); color: var(--ink);
+  }
+  .sec-toggle:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .sec-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* 「03.5」だけ桁が多く、幅を取らないと見出しの頭が揃わない */
+  .sec-toggle .section-no { flex: none; line-height: 1.7; min-width: 2.7rem; }
+  .sec-ttl {
+    flex: 1 1 auto; min-width: 0;
+    font-size: clamp(1.08rem, 2.2vw, 1.3rem); font-weight: 600; line-height: 1.5;
+  }
+  /* 見出しだけだと中身が想像できないので、1行だけ手がかりを添える */
+  .sec-hint {
+    display: block; margin-top: 0.25rem;
+    font-size: 0.87rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
+  }
+  .sec-chevron {
+    flex: none; color: var(--accent); font-size: 1.15rem; line-height: 1.6;
+    transition: transform 0.18s ease;
+  }
+  main > section.is-open .sec-chevron { transform: rotate(180deg); }
+  main > section.is-open > .section-head .sec-toggle {
+    border-color: var(--accent); background: var(--accent-wash);
+  }
+  @media (prefers-reduced-motion: reduce) { .sec-chevron { transition: none; } }
+  @media (max-width: 560px) {
+    .sec-toggle { padding: 0.85rem 0.9rem; gap: 0.6rem; }
+    .has-accordion .sec-body { padding-top: 1.2rem; }
+  }
 </style>
 <style id="printOrientationStyle">
   @page { size: portrait; margin: 1.5cm; }
 </style>
+<script>
+  // セクションを畳んだ状態で描き始めるための目印。<head> で付けるのは、
+  // 本文が一度開いた状態で描画されてから畳まれる「ちらつき」を防ぐため。
+  // 組み替え側(initSectionAccordion)が失敗したらこのクラスは外され、
+  // 従来どおり全部開いた状態に戻る。
+  document.documentElement.classList.add('has-accordion');
+</script>
 </head>
 <body>
 <a class="skip-link" href="#diagnose">本文（3つの質問）へ移動</a>
@@ -1359,7 +1419,7 @@
 
   <section id="improvement-cta">
     <div class="section-head"><span class="section-no jp-serif">03</span><h2>業種別・改善計画 厳選10選</h2></div>
-    <p class="section-sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業は1000案からの独自PDCA評価、他業種は6業種×100施策のスコアリングによる選定）。各案に<strong>A4×10ページの事業計画書</strong>と<strong>導入システムの試作プロトタイプ</strong>を用意しています。選定プロセス（スコアリング基準・採択理由）も全公開。</p>
+    <p class="section-sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（各業種1000案からのPDCA評価と、6業種×100施策のスコアリングを突き合わせて選定）。各案に<strong>A4×10ページの事業計画書</strong>（Excel版つき）を用意しています。<strong>導入システムの試作プロトタイプ</strong>は美容業・飲食業で公開中、ほかの業種は準備中です。選定プロセス（スコアリング基準・採択理由）も全公開。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="improvement/">改善計画10選を見る ↗</a>　<a class="src-link" href="improvement/pdca.html">選定の考え方（スコアリング全記録）↗</a></p>
   <!-- IMPROVEMENT_HUB_EMBED:START (embed_hub_cards.py で自動生成、手編集しないこと) -->
 
@@ -7237,6 +7297,172 @@
     try { toggleProgramDetail(false); } catch (e) {}
   }
 
+  // ---------- セクションのアコーディオン ----------
+  // 1ページに全部並べると縦に長すぎるため、既定は見出しだけを見せ、押した分
+  // だけ開く。HTMLを書き換えず読み込み時に組み替えているのは、03セクションの
+  // 本体が embed_hub_cards.py の生成物で、手でタグを足すと次の生成で消えるため。
+  //
+  // 見出しだけだと中に何があるか分からないので、1行の手がかりを添える。
+  // セクションを増やしたらここにも1行足すこと（無くても動くが説明が出ない）。
+  var SECTION_HINT = {
+    'premise': 'この資料が対象にしている業種と、掲載している制度の範囲',
+    'conditions': '制度ごとの対象者・補助率・上限額・締切と、お住まいの地域だけの制度',
+    'ranking': '業務改善策100個を10分類にまとめ、優先順位を付けた一覧',
+    'improvement-cta': '業種ごとに厳選した10案。A4×10ページの事業計画書つき',
+    'criteria-cta': '何が評価されて採択されるか、何をすると返還になるかの調査ノート',
+    'simulator': '制度・人数・分類を選ぶと、受け取れる金額の概算を試算します',
+    'notes': '申請の前に確認しておきたい5つの注意点'
+  };
+
+  function setSectionOpen(sec, open) {
+    if (!sec) return;
+    sec.classList.toggle('is-open', open);
+    var btn = sec.querySelector('.sec-toggle');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    updateExpandAllBtn();
+  }
+  function sectionOf(el) {
+    while (el && el !== document.body) {
+      if (el.tagName === 'SECTION' && el.parentNode && el.parentNode.tagName === 'MAIN') return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+  // 開いているセクションをURLのハッシュに残す。共有・ブックマークで同じ場所を
+  // 開けるようにするため。保存はしない（localStorageには何も書かない）。
+  function setHashSilently(hash) {
+    if (!window.history || !window.history.replaceState) return;
+    try {
+      window.history.replaceState(null, '',
+        location.pathname + location.search + (hash ? '#' + hash : ''));
+    } catch (e) { /* file:// 等では失敗するが本体機能には影響させない */ }
+  }
+  function updateExpandAllBtn() {
+    var btn = document.getElementById('expandAll');
+    if (!btn) return;
+    var anyOpen = !!document.querySelector('main > section.is-open');
+    btn.textContent = anyOpen ? 'すべて閉じる' : 'すべて開く';
+    btn.setAttribute('aria-pressed', anyOpen ? 'true' : 'false');
+  }
+  function toggleAllSections() {
+    var secs = document.querySelectorAll('main > section');
+    var anyOpen = !!document.querySelector('main > section.is-open');
+    Array.prototype.forEach.call(secs, function (s) { setSectionOpen(s, !anyOpen); });
+    if (anyOpen) setHashSilently('');
+  }
+
+  function initSectionAccordion() {
+    try {
+      var secs = document.querySelectorAll('main > section');
+      if (!secs.length) throw new Error('main直下のsectionが見つからない');
+
+      Array.prototype.forEach.call(secs, function (sec) {
+        var head = null;
+        for (var i = 0; i < sec.children.length; i++) {
+          if (sec.children[i].classList.contains('section-head')) { head = sec.children[i]; break; }
+        }
+        if (!head) return;
+        var noEl = head.querySelector('.section-no');
+        var h2El = head.querySelector('h2');
+        var no = noEl ? noEl.textContent : '';
+        var title = h2El ? h2El.textContent : sec.id;
+        var bodyId = 'secbody-' + sec.id;
+
+        // 見出し以外を1枚のパネルへ移す。innerHTMLではなく要素ごと移動するので、
+        // #rankList や #simResult などの既存idと参照はそのまま生きる。
+        var body = document.createElement('div');
+        body.className = 'sec-body';
+        body.id = bodyId;
+        var node = head.nextSibling;
+        while (node) { var next = node.nextSibling; body.appendChild(node); node = next; }
+        sec.appendChild(body);
+
+        // 見出しをボタンに組み替える。h2の中にbuttonを置く形にしているのは、
+        // 見出しとしての読み上げと「押せる」ことの両方を残すため
+        // （buttonの中にh2を入れるのはHTMLの入れ子として不正）。
+        head.className = 'section-head is-toggle';
+        head.textContent = '';
+        var h2 = document.createElement('h2');
+        h2.className = 'sec-h2';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sec-toggle';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', bodyId);
+
+        var noSpan = document.createElement('span');
+        noSpan.className = 'section-no jp-serif';
+        noSpan.setAttribute('aria-hidden', 'true');
+        noSpan.textContent = no;
+
+        var ttl = document.createElement('span');
+        ttl.className = 'sec-ttl';
+        ttl.appendChild(document.createTextNode(title));
+        if (SECTION_HINT[sec.id]) {
+          var hint = document.createElement('span');
+          hint.className = 'sec-hint';
+          hint.textContent = SECTION_HINT[sec.id];
+          ttl.appendChild(hint);
+        }
+
+        var chev = document.createElement('span');
+        chev.className = 'sec-chevron';
+        chev.setAttribute('aria-hidden', 'true');
+        chev.textContent = '▾';
+
+        btn.appendChild(noSpan);
+        btn.appendChild(ttl);
+        btn.appendChild(chev);
+        btn.addEventListener('click', function () {
+          var open = !sec.classList.contains('is-open');
+          setSectionOpen(sec, open);
+          setHashSilently(open ? sec.id : '');
+        });
+        h2.appendChild(btn);
+        head.appendChild(h2);
+      });
+
+      // 目次・診断結果・本文中のページ内リンクは、畳まれた中を指していることが
+      // ある。押した時点で開いておかないとリンクが黙って効かなくなる。
+      document.addEventListener('click', function (e) {
+        var el = e.target;
+        while (el && el !== document.body && !(el.tagName === 'A' && el.getAttribute('href'))) el = el.parentNode;
+        if (!el || el.tagName !== 'A') return;
+        var href = el.getAttribute('href') || '';
+        if (href.charAt(0) !== '#' || href.length < 2) return;
+        var target = document.getElementById(href.slice(1));
+        if (target) setSectionOpen(sectionOf(target), true);
+      }, true);
+
+      // 「すべて開く／すべて閉じる」。ブラウザのページ内検索(Ctrl+F)は閉じた
+      // 中身を拾えないため、まとめて開ける手段を必ず1つ残しておく。
+      var util = document.querySelector('.util-row');
+      if (util) {
+        var all = document.createElement('button');
+        all.type = 'button';
+        all.className = 'util-btn';
+        all.id = 'expandAll';
+        all.setAttribute('aria-pressed', 'false');
+        all.textContent = 'すべて開く';
+        all.addEventListener('click', toggleAllSections);
+        util.appendChild(all);
+      }
+
+      // 共有されたURLのハッシュ（例 #simulator）で開いた場合は、その場所を開く
+      if (location.hash.length > 1) {
+        var t = document.getElementById(location.hash.slice(1));
+        if (t) {
+          setSectionOpen(sectionOf(t), true);
+          setTimeout(function () { try { t.scrollIntoView(); } catch (e) {} }, 0);
+        }
+      }
+      updateExpandAllBtn();
+    } catch (e) {
+      // 組み替えに失敗したら畳む指定ごと外し、従来どおり全部見える状態に戻す
+      document.documentElement.classList.remove('has-accordion');
+    }
+  }
+
   // ---------- 既存の描画関数に追記（本体は書き換えない） ----------
   function refreshPublicViews() {
     renderDiagnosis();
@@ -7256,6 +7482,10 @@
   // 初期化中はURLへの書き戻しを止める。止めないと既定値での初回描画が
   // ?industry=... を消してしまい、共有されたURLで開いても復元できなくなる
   restoringState = true;
+
+  // 最初に実行する。後続の初期化でエラーが出ても「見出しだけ出て何も開かない」
+  // 状態にならないようにするため
+  initSectionAccordion();
 
   initCondCardToggles();
   initFavoriteStars();
