@@ -6271,7 +6271,14 @@
     el.hidden = false;
   }
 
-  function onCategoryToggle() {
+  function onCategoryToggle(srcEl) {
+    if (!categoryTouched) {
+      // 既定のチェックはあくまで「例」。利用者が自分で選び始めたら例は外す。
+      // 外さないと、02を選んだだけなのに合計へ01の金額が混ざり、しかも
+      // 「例です」の注記は消えるので、選んでいない分の金額に気づけない。
+      var boxes = document.querySelectorAll('#catCheckGrid input[type="checkbox"]');
+      if (boxes.length && boxes[0] !== srcEl) boxes[0].checked = false;
+    }
     categoryTouched = true;
     updateCategoryExampleNote();
     runSimulation();
@@ -6281,7 +6288,7 @@
     var ind = INDUSTRIES[industryKey];
     var html = ind.categories.map(function (cat, idx) {
       var checked = idx === 0 ? ' checked' : '';
-      return '<label class="cat-check"><input type="checkbox" value="' + catKey(idx) + '"' + checked + ' onchange="onCategoryToggle()"><span>' + cat.name + '</span></label>';
+      return '<label class="cat-check"><input type="checkbox" value="' + catKey(idx) + '"' + checked + ' onchange="onCategoryToggle(this)"><span>' + cat.name + '</span></label>';
     }).join('');
     document.getElementById('catCheckGrid').innerHTML = html;
     // 業種を切り替えると分類も選び直しになるので、例の表示に戻す
