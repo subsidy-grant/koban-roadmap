@@ -13,6 +13,41 @@ def esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def _text_w(s, fs):
+    """SVG内のラベルの描画幅の目安（px）。
+    SVGは要素をviewBoxで切り落とすので、幅を見積もらずに置くと文字が黙って
+    消える。全角は約1em、半角英数・記号は約0.55emとして数える。"""
+    total = 0.0
+    for ch in str(s):
+        total += 0.55 if ord(ch) < 0x2E80 else 1.0
+    return total * fs
+
+
+def _fit_lines(s, max_w, fs, max_lines=2):
+    """max_w(px)に収まるよう折り返す。max_lines を超える分は末尾を…で締める。
+    戻り値は行のリスト（必ず1行以上）。"""
+    s = str(s)
+    if not s:
+        return [""]
+    lines, cur = [], ""
+    for ch in s:
+        if not cur or _text_w(cur + ch, fs) <= max_w:
+            cur += ch
+        else:
+            lines.append(cur)
+            cur = ch
+            if len(lines) >= max_lines:
+                break
+    if len(lines) < max_lines and cur:
+        lines.append(cur)
+    if sum(len(x) for x in lines) < len(s):
+        last = lines[-1]
+        while last and _text_w(last + "…", fs) > max_w:
+            last = last[:-1]
+        lines[-1] = last + "…"
+    return lines or [""]
+
+
 def _wrap_label(label, max_chars, max_lines=2):
     """軸ラベルを最大2行に折る。「注文取り対応(時間/月)」のように末尾が単位の
     括弧なら、そこで折ると意味の切れ目と一致して読みやすい。"""
@@ -73,7 +108,12 @@ def bar_h(title, rows, accent="#8a5a2b", w=320, unit=""):
     for i, (label, v) in enumerate(rows):
         y = top + i * row_h
         bw_ = plot_w * v / maxv
-        out.append(f'<text x="112" y="{y+13}" font-size="8.6" fill="{SUB}" text-anchor="end">{esc(label)}</text>')
+        # 右寄せなので、長い項目名は左端がviewBoxの外へ出て消える。2行に折る。
+        lls = _fit_lines(label, 106, 8.6, max_lines=2)
+        ly = y + 13 - (len(lls) - 1) * 4.6
+        for li, ln in enumerate(lls):
+            out.append(f'<text x="112" y="{ly+li*9.2:.1f}" font-size="8.6" '
+                       f'fill="{SUB}" text-anchor="end">{esc(ln)}</text>')
         out.append(f'<rect x="118" y="{y+3}" width="{bw_:.1f}" height="13" fill="{accent}" rx="2" opacity="{0.55+0.45*(v/maxv):.2f}"/>')
         out.append(f'<text x="{118+bw_+5:.1f}" y="{y+13}" font-size="8.6" font-weight="bold" fill="{INK}">{v:g}{esc(unit)}</text>')
     out.append("</svg>")
@@ -136,7 +176,12 @@ def gantt(title, rows, accent="#8a5a2b", months=12, w=440):
     """rows: [(label, start, end)] 1始まりの月番号"""
     top, row_h = 42, 22
     h = top + len(rows) * row_h + 14
-    label_w = 128
+    # 工程名は「入退室管理システムの比較選定・カタログ登録状況の確認」のように
+    # 長いものがあり、128pxでは右寄せの左側がviewBoxの外に出て消えていた。
+    # 列を広げたうえで2行まで折り返す。
+    label_w = 150
+    lab_fs = 8.6
+    lab_max = label_w - 10
     cell = (w - label_w - 14) / months
     out = [f'<svg viewBox="0 0 {w} {h}" width="100%" role="img" aria-label="{esc(title)}">']
     out.append(f'<text x="10" y="16" font-size="11" font-weight="bold" fill="{INK}">{esc(title)}</text>')
@@ -146,7 +191,11 @@ def gantt(title, rows, accent="#8a5a2b", months=12, w=440):
         out.append(f'<text x="{x+cell/2:.1f}" y="{top-18}" font-size="7.5" fill="{SUB}" text-anchor="middle">{m+1}月目</text>')
     for i, (label, s, e) in enumerate(rows):
         y = top + i * row_h
-        out.append(f'<text x="{label_w-6}" y="{y+12}" font-size="8.6" fill="{SUB}" text-anchor="end">{esc(label)}</text>')
+        lls = _fit_lines(label, lab_max, lab_fs, max_lines=2)
+        ly = y + 12 - (len(lls) - 1) * 4.6
+        for li, ln in enumerate(lls):
+            out.append(f'<text x="{label_w-6}" y="{ly+li*9.2:.1f}" font-size="{lab_fs}" '
+                       f'fill="{SUB}" text-anchor="end">{esc(ln)}</text>')
         x = label_w + (s - 1) * cell
         bw_ = (e - s + 1) * cell
         out.append(f'<rect x="{x:.1f}" y="{y+2}" width="{bw_:.1f}" height="14" fill="{accent}" rx="7" opacity="{1-0.07*i:.2f}"/>')
@@ -272,7 +321,10 @@ def payback_line(title, monthly_saving, self_pay, months=24, accent="#8a5a2b", w
     return "".join(out)
 
 
-def pdca_cycle(accent="#8a5a2b", w=300, h=210):
+def pdca_cycle(accent="#8a5a2b", w=420, h=210):
+    """円の左右に注記を置くため、円の直径ぶんだけでは幅が足りない。
+    w=300 だった頃は左右の注記（「KPI・実施計画の設定」など）が
+    viewBoxの外にはみ出して切れていたので、420に広げてある。"""
     cx, cy, r = w / 2, h / 2 + 8, 68
     quads = [("P", "計画", "KPI・実施計画の設定", -1, -1), ("D", "実行", "導入・運用の実施", 1, -1),
              ("C", "評価", "KPI実績の測定", 1, 1), ("A", "改善", "運用ルール見直し", -1, 1)]
@@ -286,8 +338,12 @@ def pdca_cycle(accent="#8a5a2b", w=300, h=210):
         out.append(f'<circle cx="{cx+sx*r*0.71:.1f}" cy="{cy+sy*r*0.71:.1f}" r="15" fill="{accent if q=="P" else "#fcfaf6"}" stroke="{accent}"/>')
         out.append(f'<text x="{cx+sx*r*0.71:.1f}" y="{cy+sy*r*0.71+4:.1f}" font-size="11" font-weight="bold" fill="{"#fff" if q=="P" else accent}" text-anchor="middle">{q}</text>')
         anchor = "end" if sx < 0 else "start"
-        out.append(f'<text x="{qx+sx*8:.1f}" y="{qy:.1f}" font-size="8.6" font-weight="bold" fill="{INK}" text-anchor="{anchor}">{name}</text>')
-        out.append(f'<text x="{qx+sx*8:.1f}" y="{qy+12:.1f}" font-size="7.4" fill="{SUB}" text-anchor="{anchor}">{esc(desc)}</text>')
+        tx = qx + sx * 8
+        avail = (tx - 4) if sx < 0 else (w - tx - 4)   # viewBox端までの余地
+        out.append(f'<text x="{tx:.1f}" y="{qy:.1f}" font-size="8.6" font-weight="bold" fill="{INK}" text-anchor="{anchor}">{name}</text>')
+        for li, ln in enumerate(_fit_lines(desc, avail, 7.4, max_lines=2)):
+            out.append(f'<text x="{tx:.1f}" y="{qy+12+li*9:.1f}" font-size="7.4" '
+                       f'fill="{SUB}" text-anchor="{anchor}">{esc(ln)}</text>')
     out.append("</svg>")
     return "".join(out)
 
@@ -313,31 +369,47 @@ def gauge_row(title, gauges, accent="#8a5a2b", w=440):
     return "".join(out)
 
 
-def risk_matrix(items, accent="#8a5a2b", w=320, h=260):
-    """items: [(short_label, impact 1-2, likelihood 1-2)] 2x2マトリクス。
-    ラベルは本文(.ul等 約10pt相当)に合わせた文字サイズで表示する。"""
-    x0, y0, cw, ch = 66, 34, 118, 88
+RISK_STEPS = ("低", "中", "高")
+
+
+def risk_matrix(items, accent="#8a5a2b", w=440, h=286):
+    """items: [(short_label, impact 1-3, likelihood 1-3)] 3x3マトリクス。
+
+    仕様(plan_src)側は影響度・発生可能性とも1〜3の3段階で書かれているのに、
+    ここが2x2で描いていたため、3が指定されたリスクはマス目の外＝viewBoxの外に
+    置かれ、SVGに切り落とされて1件も見えていなかった（全200件中120件）。
+    3x3に直し、範囲外の値が来ても枠外に出ないよう1〜3に丸める。"""
+    x0, y0, cw, ch = 62, 34, 124, 74
     out = [f'<svg viewBox="0 0 {w} {h}" width="100%" role="img" aria-label="リスクマトリクス">']
-    out.append(f'<text x="10" y="16" font-size="11" font-weight="bold" fill="{INK}">リスクマトリクス（影響度×発生可能性）</text>')
-    colors = {(2, 2): "#f3ded9", (2, 1): "#f7ede0", (1, 2): "#f7ede0", (1, 1): "#eef0e8"}
-    for ix in (1, 2):
-        for iy in (1, 2):
+    out.append(f'<text x="10" y="16" font-size="11" font-weight="bold" fill="{INK}">'
+               f'リスクマトリクス（影響度×発生可能性）</text>')
+    # 影響度＋発生可能性の合計が大きいマスほど濃くする
+    tone = {2: "#eef0e8", 3: "#f2f1e4", 4: "#f7ede0", 5: "#f6e2d8", 6: "#f3ded9"}
+    for ix in (1, 2, 3):
+        for iy in (1, 2, 3):
             x = x0 + (ix - 1) * cw
-            y = y0 + (2 - iy) * ch
-            out.append(f'<rect x="{x}" y="{y}" width="{cw-4}" height="{ch-4}" fill="{colors[(ix,iy)]}" rx="8"/>')
-    out.append(f'<text x="{x0+cw/2}" y="{y0+2*ch+16}" font-size="9.3" fill="{SUB}" text-anchor="middle">発生可能性：低</text>')
-    out.append(f'<text x="{x0+cw*1.5}" y="{y0+2*ch+16}" font-size="9.3" fill="{SUB}" text-anchor="middle">発生可能性：高</text>')
-    out.append(f'<text x="{x0-10}" y="{y0+ch/2}" font-size="9.3" fill="{SUB}" text-anchor="end">影響大</text>')
-    out.append(f'<text x="{x0-10}" y="{y0+ch*1.5}" font-size="9.3" fill="{SUB}" text-anchor="end">影響小</text>')
+            y = y0 + (3 - iy) * ch
+            out.append(f'<rect x="{x}" y="{y}" width="{cw-5}" height="{ch-5}" '
+                       f'fill="{tone[ix+iy]}" rx="7"/>')
+    for ix in (1, 2, 3):
+        out.append(f'<text x="{x0+(ix-1)*cw+(cw-5)/2:.1f}" y="{y0+3*ch+14}" font-size="9" '
+                   f'fill="{SUB}" text-anchor="middle">発生可能性：{RISK_STEPS[ix-1]}</text>')
+        out.append(f'<text x="{x0-8}" y="{y0+(3-ix)*ch+ch/2:.1f}" font-size="9" '
+                   f'fill="{SUB}" text-anchor="end">影響：{RISK_STEPS[ix-1]}</text>')
     slots = {}
     for label, impact, likelihood in items:
-        key = (likelihood, impact)
-        slots.setdefault(key, []).append(label)
+        imp = min(3, max(1, int(impact or 1)))
+        lik = min(3, max(1, int(likelihood or 1)))
+        slots.setdefault((lik, imp), []).append(label)
+    lb_fs = 8.4
     for (lx, ly), labels in slots.items():
-        x = x0 + (lx - 1) * cw + 10
-        y = y0 + (2 - ly) * ch + 20
+        x = x0 + (lx - 1) * cw + 8
+        y = y0 + (3 - ly) * ch + 17
+        avail = (x0 + (lx - 1) * cw + cw - 5) - (x + 13) - 4
         for j, lb in enumerate(labels[:3]):
-            out.append(f'<circle cx="{x+5}" cy="{y+j*24-3}" r="4" fill="{accent}"/>')
-            out.append(f'<text x="{x+15}" y="{y+j*24}" font-size="9.8" fill="{INK}">{esc(lb)}</text>')
+            out.append(f'<circle cx="{x+4}" cy="{y+j*21-3}" r="3.4" fill="{accent}"/>')
+            for li, ln in enumerate(_fit_lines(lb, avail, lb_fs, max_lines=2)):
+                out.append(f'<text x="{x+13}" y="{y+j*21+li*9.4:.1f}" font-size="{lb_fs}" '
+                           f'fill="{INK}">{esc(ln)}</text>')
     out.append("</svg>")
     return "".join(out)

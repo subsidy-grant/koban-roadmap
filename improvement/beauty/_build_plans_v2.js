@@ -1042,17 +1042,35 @@ function shell(d, s, pages) {
     .page:last-child{page-break-after:auto}
   }
 
-  /* 狭い画面向け(2026-07-29 追加、飲食業版 build_plans.py と同じ方針)
-     A4固定レイアウト(210mm=約794px)はスマートフォンに収まらない。ページ全体が
-     横にずれるとツールバーや注記まで隠れるため、横スクロールは書類領域(.sheets)
-     だけに閉じ込め、読みやすい形(印刷/PDF・Excel)への案内を先に出す。 */
+  /* 狭い画面向け(build_plans.py と同じ方針。あちらと必ず揃えること)
+     A4固定レイアウト(210mm=約794px)はスマートフォンに収まらない。2026-07-29版は
+     .sheets を横スクロールさせていたが、指で横に送らないと1行が読み切れなかった
+     ため、2026-07-30に画面幅へ流し込む方式へ変更した。
+
+     ★ screen 限定にしているのが重要。単なる (max-width:900px) だと印刷にも当たる。
+       印刷時のビューポート幅はA4の210mm(約794px)で900px未満になるため、
+       このブロックが @media print より後ろにある＝後勝ちで
+       .page{margin:14px} が @media print の margin:0 を打ち消し、
+       1ページが上下2枚に割れて全10ページが22ページになっていた。 */
   .mobile-note{display:none}
-  @media (max-width:900px){
+  @media screen and (max-width:900px){
     .mobile-note{display:block;background:#fff5e0;border-bottom:1px solid #e6d3a8;
       color:#5b4708;font-size:13.5px;line-height:1.7;padding:12px 16px}
     .mobile-note b{font-weight:700}
-    .sheets{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:10px}
-    .page{margin:14px}
+    .sheets{overflow:visible;padding-bottom:10px}
+    /* A4の固定幅をやめ、画面幅に合わせて流し込む */
+    .page{width:auto;max-width:100%;min-height:0;margin:12px 10px;
+      padding:15px 13px 16px 24px;box-shadow:0 2px 10px #00000018}
+    .rail{width:12px}
+    /* 横並びは縦に畳む */
+    .tiles.t4,.tiles.t3{grid-template-columns:repeat(2,1fr)}
+    .hero,.split,.tree-row{flex-direction:column;align-items:stretch}
+    .hero-fig{min-height:110px}
+    .ul.cols{column-count:1}
+    /* はみ出しうるもの */
+    svg,img{max-width:100%;height:auto}
+    table{width:100%;table-layout:fixed}
+    td,th{word-break:break-word}
     .toolbar{font-size:13px}
     .toolbar{flex-direction:column;align-items:stretch;gap:8px}
     .toolbar .btns{justify-content:flex-start}
@@ -1070,7 +1088,7 @@ function shell(d, s, pages) {
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>
   </div>
-  <div class="mobile-note">この事業計画書は<b>A4印刷用のレイアウト</b>です。スマートフォンでは横にスクロールしてご覧ください。読みやすい形でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版（編集用）」をご利用ください。</div>
+  <div class="mobile-note">この事業計画書は<b>A4×10ページ</b>の書類です。スマートフォンでは画面幅に合わせて表示しているため、印刷したときの体裁とは並びが変わります。提出用の体裁でご覧になる場合は、上の「印刷 / PDF保存」または「Excel版（編集用）」をご利用ください。</div>
   <div class="sheets">${pages}<!-- SHEETS:END --></div>
 </body></html>`;
 }
