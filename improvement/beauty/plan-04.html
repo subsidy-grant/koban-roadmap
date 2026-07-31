@@ -201,7 +201,16 @@
     .toolbar{display:none}
     .mobile-note{display:none}
     .sheets{overflow:visible}
-    .page{margin:0;box-shadow:none;page-break-after:always}
+    /* ★ 印刷時だけ高さの固定(min-height:297mm)を外し、中身なりの高さにする。
+       297mm固定のままだと用紙(A4=297mm)と寸分たがわぬ高さになり、余裕が
+       実測0.9mm(10ページ目)しかなかった。この状態で印刷ダイアログの倍率が
+       100%を1%でも超えると全ページが上下2枚に割れ、10ページが22ページになる
+       （110%で22ページになることを2026-07-31に実測）。倍率はブラウザ側の設定
+       なのでCSSでは強制できないため、こちらが用紙いっぱいを使うのをやめて
+       逃げ幅を作る。中身の実高さは243〜296mmなので、切れは発生しない。
+       page-break-after で1枚ずつ改ページするのは変わらないため、
+       「1ページ＝1枚」は保たれる。 */
+    .page{margin:0;box-shadow:none;page-break-after:always;min-height:0;height:auto}
     .page:last-child{page-break-after:auto}
   }
 
