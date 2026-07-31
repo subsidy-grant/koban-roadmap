@@ -31,6 +31,9 @@ jobs:
 
       - run: pip install --quiet requests
 
+      - name: 判定規則の自己チェック（通信しない）
+        run: python3 _tools/test_classify.py
+
       - name: リンクを確認する
         id: check
         run: |

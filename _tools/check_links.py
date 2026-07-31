@@ -225,14 +225,26 @@ def _lm_gap(a, b):
 def classify(url, t, now, prev):
     """観測値と前回値から判定する。"""
     st = now.get("status")
+
+    # 404を返さないサーバーがある。it-shien.smrj.go.jp は存在しないパスにも403を返す
+    # （2026-07-31 実測）。「いつも403のホスト」と「前は開けたのに開けなくなったURL」は
+    # 意味が違うので、後者は要対応に格上げする。ただし1回きりの通信エラーで赤くしないよう、
+    # 2回続けて失敗してからにする（fail_streak は台帳に持ち越している）。
+    def _regressed(reason):
+        if prev and prev.get("last_ok") and prev.get("fail_streak", 0) >= 1:
+            return "regressed", "%s。%s には開けていた（2回続けて失敗）" % (reason, prev["last_ok"])
+        return None
+
     if st is None:
-        return "error", now.get("error", "接続できません")
+        return _regressed("接続できない") or ("error", now.get("error", "接続できません"))
     if st in (404, 410):
         return "dead", "HTTP %d（ページが無い）" % st
     if st in (401, 403, 429):
-        return "blocked", "HTTP %d（自動アクセスを拒否。目視で確認が要る）" % st
+        return _regressed("HTTP %d" % st) or \
+            ("blocked", "HTTP %d（自動アクセスを拒否。目視で確認が要る）" % st)
     if st >= 500:
-        return "server_error", "HTTP %d（サーバー側の障害の可能性）" % st
+        return _regressed("HTTP %d" % st) or \
+            ("server_error", "HTTP %d（サーバー側の障害の可能性）" % st)
     if st >= 400:
         return "dead", "HTTP %d" % st
     if st >= 300:
@@ -298,6 +310,7 @@ def run(targets, limit=None):
 # ---------------------------------------------------------------- 出力
 SEVERITY = [
     ("dead",          "🔴 リンク切れ（要修正）"),
+    ("regressed",     "🔴 前は開けたのに開けなくなった（要修正）"),
     ("type_mismatch", "🔴 ファイルの種類が変わった（要確認）"),
     ("moved",         "🟠 移転（URLの書き換えを推奨）"),
     ("changed",       "🟠 中身が差し替わった可能性（最新版か確認）"),
@@ -307,7 +320,7 @@ SEVERITY = [
     ("new",           "🔵 新規（今回から監視）"),
     ("ok",            "✅ 変化なし"),
 ]
-NEEDS_FIX = {"dead", "type_mismatch", "moved", "changed"}
+NEEDS_FIX = {"dead", "regressed", "type_mismatch", "moved", "changed"}
 NEEDS_EYE = {"server_error", "blocked", "error"}
 
 
@@ -414,6 +427,10 @@ def main():
             e.setdefault("first_seen", stamp)
             if now.get("status") and 200 <= now["status"] < 300:
                 e["last_ok"] = stamp
+                e["fail_streak"] = 0
+            else:
+                # 何回続けて取れなかったか。1回きりの通信エラーで騒がないために持ち越す
+                e["fail_streak"] = (prev.get(u) or {}).get("fail_streak", 0) + 1
             entries[u] = e
         # サイトから消えたURLは台帳からも消す
         entries = {u: e for u, e in entries.items() if u in targets}
