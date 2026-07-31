@@ -1,0 +1,195 @@
+# リンク確認レポート
+
+- 確認時刻：**2026-07-31 13:20**（JST）
+- 確認したURL：**178件**
+- 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
+
+## 集計
+
+✅ 変化なし **178件**
+
+## ✅ 変化なし（178件）
+
+<details><summary>一覧を開く</summary>
+
+- 埼玉県中小企業DX導入支援補助金 — https://dxdounyushienhozyo.pref.saitama.lg.jp/
+- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap
+- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap
+- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap
+- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap
+- （出典・参考リンク） — https://hojyokin-portal.jp/columns/career-up_summary
+- （出典・参考リンク） — https://hojyokin-portal.jp/columns/careerup-fusei
+- （出典・参考リンク） — https://hojyokin-portal.jp/columns/huseihanrei
+- （出典・参考リンク） — https://hojyokin-portal.jp/columns/mono_henkan
+- （出典・参考リンク） — https://hojyokin-portal.jp/columns/shoryokuka_saitakujirei
+- （出典・参考リンク） — https://hojyokinnomadoguchi.jp/gyoumukaizen-jirei/
+- （出典・参考リンク） — https://it-shien.smrj.go.jp/applicant/example/
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠） — https://it-shien.smrj.go.jp/applicant/subsidy/normal/
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／資料ダウンロード（公式） — https://it-shien.smrj.go.jp/download/
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付規程（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／請求・支払内訳シート — https://it-shien.smrj.go.jp/pdf/it2026_seikyushiharaiuchiwake_jisseki.xlsx
+- デジタル化・データ利活用推進助成金（板橋区） — https://itabashi-kohsha.com/subsidies/hruq3mhmotj1aane.html
+- 観光地・観光産業における省力化投資補助事業（観光庁）／（出典・参考リンク） — https://kanko-jinzai.go.jp/
+- 中小企業ソフトウェア導入費等支援事業補助金（港区） — https://minato-sansin.com/software/
+- （出典・参考リンク） — https://mirasapo-plus.go.jp/hint/24088/
+- （出典・参考リンク） — https://mirasapo-plus.go.jp/hint/27807/
+- （出典・参考リンク） — https://mirasapo-plus.go.jp/infomation/29995/
+- （出典・参考リンク） — https://monoken.yamazen.co.jp/blog/articles/subsidy/planbase/manufacturing-subsidy-examples-2025
+- （出典・参考リンク） — https://official.jizokukanb.com/ichiran
+- 小規模事業者持続化補助金＜一般型・通常枠＞（第20回）／商工会議所地区の公式サイト — https://r6.jizokukahojokin.info/
+- 小規模事業者持続化補助金＜一般型・通常枠＞（第20回）／交付規程（2026年3月6日改定） — https://r6.jizokukahojokin.info/doc/r6_kitei_260306_ip.pdf
+- 小規模事業者持続化補助金＜一般型・通常枠＞（第20回）／公募要領（第20回・第8版） — https://r6.jizokukahojokin.info/doc/r6_koubover8_ip20.pdf
+- 神奈川県中小企業生産性向上促進事業費補助金 — https://r8seisansei.pref.kanagawa.jp/
+- （出典・参考リンク） — https://report.jbaudit.go.jp/org/r03/2021-r03-0120-0.htm
+- デジタル技術活用推進助成・ソフトウェア（品川区） — https://shinagawa-dx-digital.com/digital_subsidy/
+- 新事業進出・ものづくり商業サービス補助金 — https://shinjigyou-monodukuri.smrj.go.jp/
+- 中小企業省力化投資補助金＜一般型＞／事業計画書（その1・その2） — https://shoryokuka.smrj.go.jp/assets/doc/yoshiki_business_plan_part1_part2_ippan.docx
+- 中小企業省力化投資補助金＜一般型＞／賃金引き上げ計画の表明書 — https://shoryokuka.smrj.go.jp/assets/doc/yoshiki_reference_wage_increase_statement_ippan_05.docx
+- （出典・参考リンク） — https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf
+- 中小企業省力化投資補助金＜一般型＞／公募要領（第7回公募） — https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_07.pdf
+- 中小企業省力化投資補助金＜一般型＞／交付申請の手引き — https://shoryokuka.smrj.go.jp/assets/pdf/application_manual_ippan_05.pdf
+- 中小企業省力化投資補助金＜一般型＞／交付規程 — https://shoryokuka.smrj.go.jp/assets/pdf/application_rules.pdf
+- 中小企業省力化投資補助金＜一般型＞／電子申請マニュアル（応募申請・第7回） — https://shoryokuka.smrj.go.jp/assets/pdf/electronic_application_manual_ippan_07.pdf
+- 中小企業省力化投資補助金＜一般型＞／応募申請の手引き（第7回公募） — https://shoryokuka.smrj.go.jp/assets/pdf/oubo_manual_ippan_07.pdf
+- 中小企業省力化投資補助金＜一般型＞／事業計画書（その3） — https://shoryokuka.smrj.go.jp/assets/xls/yoshiki_business_plan_part3_ippan.xlsx
+- 中小企業省力化投資補助金＜一般型＞／事業場内最低賃金引き上げ要件確認書（第7回） — https://shoryokuka.smrj.go.jp/assets/xls/yoshiki_on-site_minimum_wage_increase_requirement_ippan_07.xlsx
+- 中小企業省力化投資補助金＜一般型＞／地域別最低賃金引上げ要件確認書（第7回） — https://shoryokuka.smrj.go.jp/assets/xls/yoshiki_regional_minimum_wage_increase_requirement_ippan_07.xlsx
+- 中小企業省力化投資補助金＜一般型＞／1人当たり給与支給総額の確認書 — https://shoryokuka.smrj.go.jp/assets/xls/yoshiki_salary_payment_total_confirmation_ippan_05-07.xlsx
+- （出典・参考リンク） — https://shoryokuka.smrj.go.jp/catalog/product_catalog/
+- 中小企業省力化投資補助金＜一般型＞／（出典・参考リンク） — https://shoryokuka.smrj.go.jp/ippan/
+- 中小企業省力化投資補助金＜一般型＞／資料ダウンロード（一般型・公式） — https://shoryokuka.smrj.go.jp/ippan/download/
+- （出典・参考リンク） — https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
+- 創業助成事業（東京都・東京都中小企業振興公社）／（出典・参考リンク） — https://startup-station.jp/m2/services/sogyokassei/
+- （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/
+- （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/ogp.png
+- （出典・参考リンク） — https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
+- 経営基盤強化支援（台東区） — https://taito-sangyo.jp/2026/03/27/keieikiban/
+- 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型） — https://www.chibashi-sangyo.or.jp/enterprise/kyoka-sosyutu/keiei/ict-change/type-a/
+- 小規模事業者持続化補助金＜一般型・通常枠＞（第20回） — https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html
+- （出典・参考リンク） — https://www.chusho.meti.go.jp/koukai/hojyokin/saitaku/2026/260306001.html
+- 小規模事業者等経営改善補助金（足立区） — https://www.city.adachi.tokyo.jp/s-shinko/shigoto/chushokigyo/yushi-monozukuri.html
+- 上尾市SDGs・DX推進補助金（DX部門） — https://www.city.ageo.lg.jp/page/395426.html
+- 上尾市小規模事業者等設備導入応援補助金 — https://www.city.ageo.lg.jp/page/412445.html
+- 商業・サービス業事業継続力強化支援事業補助金（荒川区） — https://www.city.arakawa.tokyo.jp/a020/jigyousha/jigyouunei/r4hojyo.html
+- 足利市地域産業振興奨励事業補助 — https://www.city.ashikaga.tochigi.jp/industory/000058/000303/p002695.html
+- 厚木市中小企業設備投資促進事業補助金 — https://www.city.atsugi.kanagawa.jp/soshiki/sangyoshinkoka/9/2/2146.html
+- 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金） — https://www.city.atsugi.kanagawa.jp/soshiki/sangyoshinkoka/9/2/24830.html
+- 綾瀬市中小企業強靭化推進補助金 — https://www.city.ayase.kanagawa.jp/soshiki/shokosinkoka/kogyotanto/4/2905.html
+- 綾瀬市商業者支援事業補助金 — https://www.city.ayase.kanagawa.jp/soshiki/shokosinkoka/shogyotanto/sangyoshinko/5/2378.html
+- 持続可能性向上支援補助金・生産性向上設備（文京区） — https://www.city.bunkyo.lg.jp/b012/p005132.html
+- 秩父市住宅・店舗等リフォーム資金助成金事業 — https://www.city.chichibu.lg.jp/3591.html
+- 銚子市企業立地等促進事業補助金 — https://www.city.choshi.chiba.jp/business/page110047.html
+- 海老名市中小企業振興支援事業 — https://www.city.ebina.kanagawa.jp/guide/shoko/chusho/1003742.html
+- デジタル技術活用促進助成事業・DX導入（江戸川区） — https://www.city.edogawa.tokyo.jp/e093/shigotosangyo/jigyosha_oen/sangyo_jigyosya/jyosei/seisanseikojo/dounyu.html
+- 府中市小規模事業者等チャレンジ支援事業補助金（府中市） — https://www.city.fuchu.tokyo.jp/jigyosha/keesha/kigyo/tyushokigyoshienn/hanrokaitaku.html
+- 富士見市中小企業チャレンジ支援事業補助金 — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.html
+- 経営力強化補助金・事業継続事業（八王子市） — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku.html
+- 羽村市中小企業経営基盤強化助成金（羽村市） — https://www.city.hamura.tokyo.jp/0000018519.html
+- 東松山市がんばる中小企業等応援補助金 — https://www.city.higashimatsuyama.lg.jp/soshiki/18/1521.html
+- 平塚市企業立地促進補助金 — https://www.city.hiratsuka.kanagawa.jp/kigyo/page-c_01591.html
+- 平塚市中小企業等DX支援補助金 — https://www.city.hiratsuka.kanagawa.jp/sangyo/page33_00096.html
+- 平塚市脱炭素設備投資促進補助金 — https://www.city.hiratsuka.kanagawa.jp/sangyo/page33_00104.html
+- 入間市商工業振興助成金 — https://www.city.iruma.saitama.jp/soshiki/shokokankoka/shokogyo/8923.html
+- 伊勢原市中小企業設備投資支援事業補助金 — https://www.city.isehara.kanagawa.jp/docs/2024032500039/
+- 伊勢崎市小規模事業者サポート補助金 — https://www.city.isesaki.lg.jp/soshiki/keizai/shoko/syoukousinkou/12899.html
+- 鎌倉市環境共生施設整備費補助金 — https://www.city.kamakura.kanagawa.jp/shoukou/kankyou.html
+- 鎌倉市中小企業経営基盤強化事業費補助金（デジタル化推進事業） — https://www.city.kamakura.kanagawa.jp/shoukou/keieikiban.html
+- 鎌倉市企業立地整備費等補助金 — https://www.city.kamakura.kanagawa.jp/shoukou/sien/office.html
+- 鹿沼市デジタル化推進事業補助金 — https://www.city.kanuma.tochigi.jp/0655/info-0000009573-0.html
+- 葛飾区デジタル化支援事業費補助金（葛飾区） — https://www.city.katsushika.lg.jp/business/1000011/1034399/1032622/index.html
+- 川口市企業立地補助金 — https://www.city.kawaguchi.lg.jp/soshiki/01110/011/4/38246.html
+- 川口市DX推進補助金 — https://www.city.kawaguchi.lg.jp/soshiki/01110/021/12/38430.html
+- 川崎市中小企業成長環境支援補助金 — https://www.city.kawasaki.jp/280/page/0000186427.html
+- 加須市経営革新支援補助金 — https://www.city.kazo.lg.jp/soshiki/sangyoukoyou/hozyokin/35784.html
+- 令和8年度物価高騰対策君津市中小企業者生産性向上補助金 — https://www.city.kimitsu.lg.jp/soshiki/24/87220.html
+- IT・IoT導入チャレンジ支援事業（北区） — https://www.city.kita.lg.jp/business/industry/1011356/1011509/1011519.html
+- 越谷市物価高騰対策中小企業設備導入等支援補助金 — https://www.city.koshigaya.saitama.jp/kurashi_shisei/jigyosha/shienyushi/hojokin/koshigaya_contents_buxtukakoutou.html
+- ICT等導入支援事業（江東区） — https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/itc_shien.html
+- 前橋市設備投資支援補助金 — https://www.city.maebashi.gunma.jp/soshiki/sangyokeizai/sangyoseisaku/shinseisho/7310.html
+- 前橋市DX推進補助金 — https://www.city.maebashi.gunma.jp/soshiki/sangyokeizai/sangyoseisaku/shinseisho/7311.html
+- 松戸市中小企業デジタル化チャレンジ補助金 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.html
+- めぐろ中小企業省力化投資補助金（目黒区） — https://www.city.meguro.tokyo.jp/sangyoukeizai/shigoto/kigyoushien/syouryokuka.html
+- みどり市店舗リニューアル補助金 — https://www.city.midori.gunma.jp/kurashi/1001618/1005077/1005083/1005140.html
+- 南房総市市内事業者デジタル化トライアル補助金 — https://www.city.minamiboso.chiba.jp/0000020765.html
+- 三郷市がんばろう企業応援事業補助金 — https://www.city.misato.lg.jp/soshiki/chiikishinko/shokokanko/1/1422.html
+- 三鷹商工会中小企業等産業活性化補助金（三鷹市） — https://www.city.mitaka.lg.jp/c_service/118/118760.html
+- 茂原市中小事業者サポート補助金 — https://www.city.mobara.chiba.jp/0000007102.html
+- 新規ビジネスチャレンジ補助事業（練馬区） — https://www.city.nerima.tokyo.jp/kusei/sangyo/jigyosha/bizichalle.html
+- 新座市中小企業者IT・DX導入費補助金 — https://www.city.niiza.lg.jp/site/business-support/itdx.html
+- 日光市中小企業等生産設備導入事業費補助金（リース補助金） — https://www.city.nikko.lg.jp/soshiki/6/1029/5/1/1705.html
+- 日光市中小事業者等デジタル情報発信事業費補助金 — https://www.city.nikko.lg.jp/soshiki/6/1029/5/1/9432.html
+- 西東京市DX化推進事業補助金（西東京市） — https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.html
+- 太田市DX推進補助金 — https://www.city.ota.gunma.jp/page/1051763.html
+- 相模原市中小規模事業者省エネルギー設備等導入支援補助 — https://www.city.sagamihara.kanagawa.jp/kurashi/1026489/kankyo/hojyo/1008084.html
+- 相模原市中小企業生産性向上支援補助金 — https://www.city.sagamihara.kanagawa.jp/sangyo/sangyo/1026664/1003291/josei/1035055.html
+- さいたま市事業者向け設備導入応援補助金（物価高騰対応） — https://www.city.saitama.lg.jp/005/001/002/p123535.html
+- 狭山市企業立地奨励金等交付制度 — https://www.city.sayama.saitama.jp/kankou/kigyourichi/hojo/kigyourittisyoureiki.html
+- 世田谷区中小事業者経営支援補助金（世田谷区） — https://www.city.setagaya.lg.jp/03647/11321.html
+- 下野市まちなか商店リフォーム補助金 — https://www.city.shimotsuke.lg.jp/2003/info-0000000482-3.html
+- 袖ケ浦市企業振興条例奨励金 — https://www.city.sodegaura.lg.jp/soshiki/shoukou/kigyoushinkoujourei.html
+- 中小企業等デジタル化推進事業助成（杉並区） — https://www.city.suginami.tokyo.jp/s121/1754.html
+- 墨田区デジタル技術活用支援補助金（墨田区） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.html
+- 高崎市中小企業等機械設備導入支援助成金 — https://www.city.takasaki.gunma.jp/
+- 館山市市内事業者デジタル化トライアル補助金 — https://www.city.tateyama.chiba.jp/shoukan/page100561.html
+- 戸田市DX推進補助金 — https://www.city.toda.saitama.jp/soshiki/214/keizai-dxhojyo.html
+- 所沢市地域資源活用・ものづくり総合支援補助金 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/chiikishigen-monodukuri.html
+- 所沢市都市型産業等育成補助金 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.html
+- 中野区経営力強化支援事業補助金（中野区） — https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.html
+- 豊島区中小企業支援事業補助金・経営安定コース（豊島区） — https://www.city.toshima.lg.jp/584/machizukuri/sangyo/kigyo/019174.html
+- 大和市魅力ある個店支援事業 — https://www.city.yamato.lg.jp/gyosei/soshik/40/sangyo/shogyo/shien_seibi_todokede/23892.html
+- 横浜市省エネルギー化支援助成金 — https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/capex/carbon-kani.html
+- 横浜市LED化支援助成金（中小企業LED化型） — https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/capex/carbon-led-sme.html
+- 横浜市中小企業新技術・新製品開発促進助成金 — https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/kaihatsu/gijutsu/kaihatsu.html
+- 横浜市ものづくり魅力向上助成金 — https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/seizou/kyousei-mono.html
+- 横須賀市中小企業等省エネ化・生産性向上補助金（B.生産性向上枠） — https://www.city.yokosuka.kanagawa.jp/4402/hojokin/seisan.html
+- 横須賀市小規模事業者ICT支援補助金 — https://www.city.yokosuka.kanagawa.jp/4402/sangyoshinko/shokibojigyosha_ict_shien.html
+- 横須賀市先進的技術開発促進事業補助金 — https://www.city.yokosuka.kanagawa.jp/4421/g_info/l100050805.html
+- 座間市店舗リニューアル等補助金 — https://www.city.zama.kanagawa.jp/sangyo/sougyou/shogyo/1003455.html
+- （出典・参考リンク） — https://www.gov-online.go.jp/article/202302/entry-9899.html
+- （出典・参考リンク） — https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html
+- 飲食業労働生産性向上支援補助金（農林水産省）／（出典・参考リンク） — https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第1号 交付申請書 — https://www.mhlw.go.jp/content/11200000/001691199.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第3号 事業計画変更申請書 — https://www.mhlw.go.jp/content/11200000/001691200.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第7号 事業完了予定期日変更報告書 — https://www.mhlw.go.jp/content/11200000/001691202.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第9号 事業実績報告書 — https://www.mhlw.go.jp/content/11200000/001691204.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第10号 支給申請書 — https://www.mhlw.go.jp/content/11200000/001691205.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／様式第12号 消費税及び地方消費税に係る仕入控除税額報告書 — https://www.mhlw.go.jp/content/11200000/001691206.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高総利益率） — https://www.mhlw.go.jp/content/11200000/001692000.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高営業利益率） — https://www.mhlw.go.jp/content/11200000/001692001.docx
+- 業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール — https://www.mhlw.go.jp/content/11200000/001693661.xlsx
+- 人材開発支援助成金（人材育成支援コース）／様式第1-1号 記載例 — https://www.mhlw.go.jp/content/11800000/001686629.pdf
+- 人材開発支援助成金（人材育成支援コース）／様式第2-1号 職業訓練実施計画変更届 — https://www.mhlw.go.jp/content/11800000/001690277.xlsx
+- 人材開発支援助成金（人材育成支援コース）／様式第3-1号 対象労働者一覧 — https://www.mhlw.go.jp/content/11800000/001690279.xlsx
+- 人材開発支援助成金（人材育成支援コース）／様式第5号 賃金助成及びOJT実施助成の内訳 — https://www.mhlw.go.jp/content/11800000/001690293.xlsx
+- 人材開発支援助成金（人材育成支援コース）／様式第4-1号 支給申請書 — https://www.mhlw.go.jp/content/11800000/001690646.xlsx
+- 人材開発支援助成金（人材育成支援コース）／様式第1-1号 職業訓練実施計画届 — https://www.mhlw.go.jp/content/11800000/001698095.xlsx
+- キャリアアップ助成金（正社員化コース）／別添様式1-2 正社員化コース対象労働者詳細 — https://www.mhlw.go.jp/content/11909000/001619196.xlsx
+- キャリアアップ助成金（正社員化コース）／様式第3号 支給申請書 — https://www.mhlw.go.jp/content/11909000/001683460.xlsx
+- キャリアアップ助成金（正社員化コース）／様式第1号 キャリアアップ計画書 — https://www.mhlw.go.jp/content/11909000/001688046.docx
+- キャリアアップ助成金（正社員化コース）／別添様式1-1 正社員化コース内訳 — https://www.mhlw.go.jp/content/11909000/001688075.xlsx
+- （出典・参考リンク） — https://www.mhlw.go.jp/file/06-Seisakujouhou-11800000-Shokugyounouryokukaihatsukyoku/0000063765.pdf
+- キャリアアップ助成金（正社員化コース）／申請様式（令和8年4月8日以降の取組） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html
+- 人材開発支援助成金（人材育成支援コース）／申請書類（令和8年5月14日以降に計画届を提出） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/38819_00010.html
+- 人材開発支援助成金（人材育成支援コース） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html
+- キャリアアップ助成金（正社員化コース） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html
+- 業務改善助成金（2026年度／50・70・90円コース）／業務改善助成金（2026年度／50・70・90円コース）／厚生労働省 公式ページ／（出典・参考リンク） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html
+- 空き家対策モデル事業（国土交通省）／（出典・参考リンク） — https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000131.html
+- 千葉県中小企業成長促進補助金（第4弾） — https://www.pref.chiba.lg.jp/keisei/zaisei/chiba-seichohojyo4.html
+- 神奈川県小規模事業者デジタル化支援推進事業費補助金 — https://www.pref.kanagawa.jp/docs/m2w/shokibo_digital/r8.html
+- 埼玉県中小企業省力化支援事業補助金 — https://www.pref.saitama.lg.jp/a0805/shoryokuka/index.html
+- とちぎ賃上げ環境整備促進補助金 — https://www.pref.tochigi.lg.jp/f06/chinagekannkyouseibihojokin.html
+- （出典・参考リンク） — https://www.psrn.jp/topics/detail.php?id=39948
+- （出典・参考リンク） — https://www.sme-support.co.jp/column/p1352/
+- さいたま市DX推進補助金 — https://www.sozo-saitama.or.jp/topic/dx-subsidy/
+- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
+- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/
+- みなかみ町店舗等改築等補助金 — https://www.town.minakami.gunma.jp/industry/hojyokin_shienseido/2019-0417-0952-72.html
+- 中之条町事業継続補助金 — https://www.town.nakanojo.gunma.jp/soshiki/9/1354.html
+- 湯河原町宿泊税システム整備費等補助金 — https://www.town.yugawara.kanagawa.jp/site/shukuhakuzei/28030.html
+- 嬬恋村売上アップ事業補助金 — https://www.vill.tsumagoi.gunma.jp/www/contents/1000000000246/index.html
+
+</details>
+

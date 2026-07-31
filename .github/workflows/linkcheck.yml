@@ -1,0 +1,98 @@
+name: リンク切れ確認（週次）
+
+# 制度の公式ページ106件・様式ファイル37件・出典リンクを毎週叩いて、
+# リンク切れと『様式の差し替え』を検出する。人手では追いきれないため。
+#   要対応が出た場合 → Issue に書き込む（新規作成せず、開いているものに追記）
+#   結果は _tools/link_report.md と _tools/link_status.json にコミットして履歴を残す
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'      # 毎週月曜 00:00 UTC ＝ 月曜 09:00 JST
+  workflow_dispatch:          # 手動でも回せる
+
+permissions:
+  contents: write             # レポートと台帳のコミット用
+  issues: write               # 要対応の起票用
+
+concurrency:
+  group: linkcheck
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --quiet requests
+
+      - name: リンクを確認する
+        id: check
+        run: |
+          set +e
+          python3 _tools/check_links.py
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: 結果を実行サマリーに出す
+        if: always()
+        run: |
+          {
+            echo "## リンク確認の結果"
+            echo ""
+            sed -n '1,20p' _tools/link_report_brief.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: レポートを成果物として残す
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-report
+          path: |
+            _tools/link_report.md
+            _tools/link_status.json
+          retention-days: 90
+
+      - name: 台帳とレポートをコミットする
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md
+          if git diff --cached --quiet; then
+            echo "変化なし。コミットしない。"
+          else
+            git commit -m "リンク確認: $(date -u -d '+9 hours' '+%Y-%m-%d %H:%M') JST 時点の結果"
+            git push
+          fi
+
+      - name: 要対応ならIssueに書く
+        if: always() && steps.check.outputs.code != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create linkcheck --description "リンク確認の自動報告" --color D93F0B 2>/dev/null || true
+          num=$(gh issue list --label linkcheck --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body-file _tools/link_report_brief.md
+            echo "既存のIssue #$num に追記した"
+          else
+            gh issue create \
+              --title "リンク確認：要対応の項目があります（$(date -u -d '+9 hours' '+%Y-%m-%d') 時点）" \
+              --label linkcheck \
+              --body-file _tools/link_report_brief.md
+          fi
+
+      - name: 判定を終了コードに反映する
+        if: always()
+        run: |
+          code="${{ steps.check.outputs.code }}"
+          # 1 = 要対応（リンク切れ・移転・差し替え）→ 赤くして気づけるようにする
+          # 2 = 判定不能のみ（403やタイムアウト）→ 落とさない。Actions側のIPが
+          #     弾かれただけのことがあり、毎週赤くすると狼少年になるため
+          if [ "$code" = "1" ]; then exit 1; fi
+          exit 0
