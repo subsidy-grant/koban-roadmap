@@ -67,7 +67,9 @@ PHASES = [
     # あり、読みものの段に落ちてしまう（中野区・江戸川区で実測）
     ("申請の前に読む",               r"要領|要綱|要項|手引|しおり|案内|チラシ|ちらし|パンフ|"
                                      r"Q&A|QA|よくある|FAQ|質問|マニュアル|募集|"
-                                     r"チェックシート|チェックリスト|確認シート|提出書類"),
+                                     r"チェックシート|チェックリスト|確認シート|提出書類|"
+                                     # 「補助対象外リスト」は読みもの（観光庁で実測）
+                                     r"対象外"),
     # 「交付申請書兼請求書」は請求の語を含むが提出は申請時。先に拾う
     ("交付申請",                     r"交付申請書|申請書兼|申込書"),
     # 変更を実績より先に見る。「変更報告書」は報告の語を含むが提出は途中なので
@@ -118,6 +120,38 @@ def norm_name(name):
     return re.sub(r"[（(][^（()）]*[)）]", "", name).strip()
 
 
+# 制度ページと様式ページが別になっている制度。
+# 自動掲載できなかった23制度を2026-07-31に1件ずつ辿って確かめたところ、
+# 「制度の説明ページには様式が無く、別ページに一式が置いてある」ものが多数あった。
+# ここに様式ページを書くと、以降の抽出・段分け・掲載判定はそのまま効く。
+#   値 = (様式ページのURL, ポータルの表示名)
+FORM_PAGES = {
+    # 神奈川県：制度サイトのトップには公募要領だけ。様式は資料ダウンロードに77件ある
+    "kanagawa_seisansei": ("https://r8seisansei.pref.kanagawa.jp/download/",
+                           "資料ダウンロード（公式）"),
+    # 観光庁：計画申請・交付申請の資料がまとまったページ
+    "kanko_shoryokuka": ("https://kanko-jinzai.go.jp/document/", "資料ダウンロード（公式）"),
+    # 中小機構：公募要領と参考様式のページ
+    "monodukuri": ("https://shinjigyou-monodukuri.smrj.go.jp/document",
+                   "資料ダウンロード（公式）"),
+    # 埼玉県：index は【新規導入】【設備更新】への入口だけ。様式は新規導入ページ
+    "saitama_shoryokuka": ("https://www.pref.saitama.lg.jp/a0805/shoryokuka/"
+                           "sinnkidounyu_20260525.html",
+                           "埼玉県 公式ページ【新規導入】"),
+    # 東松山市：index.htmlのlinkは一覧ページ(1521)で、様式は制度ページ(1571)にある
+    "saitama_higashimatsuyama_ganbaru":
+        ("https://www.city.higashimatsuyama.lg.jp/soshiki/18/1571.html",
+         "東松山市 公式ページ"),
+    # 杉並区：index.htmlのlinkは「中小企業支援」の総合案内。様式はこの制度ページ
+    "tokyo_suginami_digital":
+        ("https://www.city.suginami.tokyo.jp/s121/news/25089.html", "杉並区 公式ページ"),
+    # 相模原市：様式は「申請書ダウンロード」側にある
+    "kanagawa_sagamihara_shoene":
+        ("https://www.city.sagamihara.kanagawa.jp/shinseisho_menu/kankyohozen/1011711.html",
+         "相模原市 申請書ダウンロード"),
+}
+
+
 def load_index():
     idx = io.open(INDEX, encoding="utf-8").read()
     progs = {}
@@ -140,7 +174,8 @@ def load_index():
 def scrape(key, prog):
     """公式ページから (見出し, リンク文字, URL) を順番どおりに拾う。"""
     try:
-        r = requests.get(prog["link"], headers=HEADERS, timeout=TIMEOUT)
+        r = requests.get(FORM_PAGES.get(key, (prog["link"],))[0],
+                         headers=HEADERS, timeout=TIMEOUT)
         r.encoding = r.apparent_encoding or r.encoding
     except Exception as e:
         return None, "取得できず（%s）" % type(e).__name__
@@ -196,8 +231,21 @@ def foreign_heading(head, prog_name):
     return None
 
 
-def clean_text(txt, url, before=""):
+# リンク文字がこれだけのページがある。書類の分類を言っているだけで書類名ではない
+# （観光庁の資料ダウンロードで実測。全リンクが「確認資料」「任意様式」「指定様式」で、
+#  本当の書類名は見出しの【指定様式】交付申請取下げ届出書 のほうに入っている）。
+GENERIC_LABEL = re.compile(r"^[【（(]?\s*(確認資料|任意様式|指定様式|参考様式|様式|資料|"
+                           r"添付書類|提出書類|各種様式)\s*[】）)]?$")
+
+
+def clean_text(txt, url, before="", head=""):
     """リンク文字が「Word」等で中身が分からない場合、ファイル名→直前の文字 で補う。"""
+    # 総称語しか書いていないリンクは、見出しのほうが書類名。
+    # 【指定様式】のような分類の括弧は外す（段の判定は書類名から行うため）
+    if head and GENERIC_LABEL.match(txt.strip()):
+        h = re.sub(r"^[【［][^】］]*[】］]\s*", "", head).strip()
+        if re.search(r"[一-龥ぁ-んァ-ヶ]", h):
+            txt = h
     # 「(DOCX, 51.38KB)」「（PDF：936KB）」のような形式・サイズの注記を落とす。
     # 残すと同じ様式のWord版とPDF版が別物に見えて、複製を落とせない（川崎市で実測）
     txt = re.sub(r"[（(]\s*(PDF|DOCX?|XLSX?|PPTX?|ワード|エクセル|Word|Excel)"
@@ -396,10 +444,14 @@ def esc(s):
 
 
 def emit(key, prog, groups, note, checked):
-    label = re.sub(r"を見る$|はこちら$", "", prog["linkLabel"]).strip() or "公式サイト"
+    if key in FORM_PAGES:
+        purl, label = FORM_PAGES[key][0], FORM_PAGES[key][1]
+    else:
+        purl = prog["link"]
+        label = re.sub(r"を見る$|はこちら$", "", prog["linkLabel"]).strip() or "公式サイト"
     lines = ["    %s: {" % key,
              "      checked: '%s'," % checked,
-             "      portal: { label: '%s', url: '%s' }," % (esc(label), esc(prog["link"])),
+             "      portal: { label: '%s', url: '%s' }," % (esc(label), esc(purl)),
              "      note: '%s'," % esc(note),
              "      groups: ["]
     gl = []
@@ -490,7 +542,8 @@ def main():
                 bad.append((row, why))
                 continue
             m = meta[row["url"]]
-            nm = with_context(clean_text(row["text"], row["url"], row.get("before", "")),
+            nm = with_context(clean_text(row["text"], row["url"],
+                                         row.get("before", ""), row["head"]),
                               row["head"])
             items.append({"text": nm, "url": row["url"],
                           "type": t, "size": human(m["len"]) if m.get("len") else None,
