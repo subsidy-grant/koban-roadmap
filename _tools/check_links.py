@@ -286,9 +286,16 @@ def classify(url, t, now, prev):
         pm, nm = prev.get("last_modified"), now.get("last_modified")
         if same_way and pl and nl and pl != nl:
             return "changed", "サイズが %s → %s に変化（差し替えの可能性）" % (pl, nl)
-        # 更新日時は1〜2秒ずれることがある（負荷分散で別サーバーに当たると起きる。
-        # jfc.go.jp で 2026-07-31 実測）ので、秒単位の差は無視する
-        if same_way and pm and nm and _lm_gap(pm, nm) > 60:
+        # 更新日時だけで判断しない。理由（どちらも 2026-07-31 実測）:
+        #   八王子市: 2ファイルの更新日時が互いに入れ替わって返ってきた（7分差）。
+        #             負荷分散でmtimeの違うサーバーに当たるため
+        #   銚子市: 5ファイルの更新日時が同時刻に一斉に変わった。サイズは同じで、
+        #           サイトの入れ替え作業でファイルが触られただけ
+        # サイズが取れていて変わっていないなら、中身は変わっていないとみなす。
+        # 更新日時を見るのはサイズが取れないときだけ、かつ1日以上ずれたとき
+        if same_way and pl and nl and pl == nl:
+            return "ok", ""
+        if same_way and pm and nm and _lm_gap(pm, nm) > 86400:
             return "changed", "更新日時が %s → %s に変化" % (pm, nm)
 
     return "ok", ""
