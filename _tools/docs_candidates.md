@@ -1,49 +1,13 @@
 # 様式の候補（機械が拾った下書き）
 
-- 取得時刻：**2026-07-31 13:12**（JST）
-- 調べた制度：**101件**（PROGRAM_DOCS に未掲載のもの）
-- 候補が出た制度：**83件**／出なかった：**18件**／取得できず：**0件**
+- 取得時刻：**2026-07-31 13:58**（JST）
+- 調べた制度：**81件**（PROGRAM_DOCS に未掲載のもの）
+- 候補が出た制度：**63件**／出なかった：**18件**／取得できず：**0件**
 
 > **これは掲載可能なリストではありません。**公式ページ上のPDF・Word・Excelへの
 > リンクを機械的に拾って、様式らしい語で並べ替えただけです。別制度の様式や
 > 古い年度のファイルが混ざります。人が公式ページを開いて確かめたものだけを
 > `index.html` の `PROGRAM_DOCS` に入れてください。
-
-## 墨田区デジタル技術活用支援補助金（墨田区）
-
-- キー：`tokyo_sumida_digital`
-- 公式ページ：https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.html
-
-- [ ] **事業計画書（第2号様式）R8.04（ワード：26KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/02_yoshiki_202604.docx
-- [ ] **誓約・同意書（第3号様式）（ワード：22KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/03_yoshiki.docx
-- [ ] **変更申請書（第6号様式）R8.04（ワード：20KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/06_yoshiki_202604.docx
-- [ ] **実施内容報告書（第9号様式）R8.04（ワード：23KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/09_yoshiki_202604_.docx
-- [ ] **交付申請書（第1号様式）（ワード：23KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/01_yohiki.docx
-- [ ] **事業計画書（第2号様式）PDF R8.04（PDF：322KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/02_yoshiki_202604.pdf
-- [ ] **【記載例】事業計画書（第2号様式）（PDF：353KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/02_yoshiki_example.pdf
-- [ ] **誓約・同意書（第3号様式）PDF（PDF：246KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/03_yoshiki.pdf
-- [ ] **変更申請書（第6号様式）PDF R8.04（PDF：47KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/06_yoshiki_202604.pdf
-- [ ] **実績報告書（第8号様式）（ワード：21KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/jissekihoukoku8.docx
-- [ ] **実施内容報告書（第9号様式）PDF R8.04（PDF：76KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/09_yoshiki_202604.pdf
-- [ ] **記載例（実施内容報告書（第9号様式））（PDF：90KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/09_yoshiki_example.pdf
-- [ ] **交付申請書（第1号様式）PDF（PDF：49KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/01_yohiki.pdf
-- [ ] **実績報告書（第8号様式）PDF（PDF：64KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/jissekihoukoku8.pdf
-- [ ] **補助金申請経費内訳書（税抜表示）（エクセル：12KB）** 
-      https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeinuki.xlsx
 
 ## 神奈川県小規模事業者デジタル化支援推進事業費補助金
 
@@ -225,41 +189,41 @@
 - [ ] **05_賃上げ計画の表明書 [Wordファイル／28KB]** 
       https://www.city.kimitsu.lg.jp/uploaded/attachment/59592.docx
 
-## 平塚市企業立地促進補助金
+## 茂原市中小事業者サポート補助金
 
-- キー：`kanagawa_hiratsuka_ritchi`
-- 公式ページ：https://www.city.hiratsuka.kanagawa.jp/kigyo/page-c_01591.html
+- キー：`chiba_mobara_support`
+- 公式ページ：https://www.city.mobara.chiba.jp/0000007102.html
 
-- [ ] **施設整備助成金 適用申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200177082.doc
-- [ ] **施設整備助成金 交付申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086087.doc
-- [ ] **環境設備助成金 適用申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086090.doc
-- [ ] **環境設備助成金 交付申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086092.doc
-- [ ] **持続可能な経営助成 適用申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086093.doc
-- [ ] **持続可能な経営助成 交付申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086094.doc
-- [ ] **市内雇用創出助成金 適用申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200106596.doc
-- [ ] **市内雇用創出助成金 交付申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200106597.doc
-- [ ] **助成措置適用承継申請書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086099.doc
-- [ ] **請求書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086126.xlsx
-- [ ] **事前届出書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086085.doc
-- [ ] **土地、家屋及び償却資産一覧表** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200177039.xlsx
-- [ ] **変更届出書** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200044205.doc
-- [ ] **操業廃止・休止届** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200086098.doc
-- [ ] **平塚市企業立地促進補助金&nbsp; 募集要領【令和8年4月版】** 
-      https://www.city.hiratsuka.kanagawa.jp/common/200199021.pdf
+- [ ] **茂原市中小事業者サポート補助金交付申請書（ワード形式、19.12KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/01_shinseisyo.docx
+- [ ] **補助事業計画書（ア）（ワード形式、21.56KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-1_keikakusyo(a).docx
+- [ ] **補助事業計画書（イ）（ワード形式、21.44KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-2_keikakusyo(i).docx
+- [ ] **補助事業計画書（ウ）（ワード形式、21.58KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-3_keikakusyo(u).docx
+- [ ] **補助事業計画書（エ）（ワード形式、17.43KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-4_keikakusyo(e).docx
+- [ ] **補助事業計画書（オ）（ワード形式、23.78KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-5_keikakusyo(o).docx
+- [ ] **補助事業計画書（カ）（ワード形式、21.25KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-6_keikakusyo(ka).docx
+- [ ] **補助事業計画書（キ）（ワード形式、22.05KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-7_keikakusyo(ki).docx
+- [ ] **補助事業計画書（ク）（ワード形式、21.75KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-8_keikakusyo(ku).docx
+- [ ] **補助事業等実績報告書（ワード形式、15.68KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/31_zisseki.docx
+- [ ] **茂原市中小事業者サポート補助金交付請求書（ワード形式、17.25KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/41_seikyu.docx
+- [ ] **申請者概要書（ワード形式、18.07KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/02_gaiyosyo.docx
+- [ ] **収支予算書（ワード形式、16.05KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/05_yosan.docx
+- [ ] **補助事業等着手届 （ワード形式、20.24KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/11_tyakusyu.docx
+- [ ] **補助事業等完了届 （ワード形式、20.25KB）** 
+      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/21_kanryo.docx
 
 ## 富士見市中小企業チャレンジ支援事業補助金
 
@@ -297,41 +261,41 @@
 - [ ] **事業報告書【人材育成事業】（様式第10号の3）（ワード：20KB）** 
       https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-3jigyouhoukokusho.docx
 
-## 茂原市中小事業者サポート補助金
+## 平塚市企業立地促進補助金
 
-- キー：`chiba_mobara_support`
-- 公式ページ：https://www.city.mobara.chiba.jp/0000007102.html
+- キー：`kanagawa_hiratsuka_ritchi`
+- 公式ページ：https://www.city.hiratsuka.kanagawa.jp/kigyo/page-c_01591.html
 
-- [ ] **茂原市中小事業者サポート補助金交付申請書（ワード形式、19.12KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/01_shinseisyo.docx
-- [ ] **補助事業計画書（ア）（ワード形式、21.56KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-1_keikakusyo(a).docx
-- [ ] **補助事業計画書（イ）（ワード形式、21.44KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-2_keikakusyo(i).docx
-- [ ] **補助事業計画書（ウ）（ワード形式、21.58KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-3_keikakusyo(u).docx
-- [ ] **補助事業計画書（エ）（ワード形式、17.43KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-4_keikakusyo(e).docx
-- [ ] **補助事業計画書（オ）（ワード形式、23.78KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-5_keikakusyo(o).docx
-- [ ] **補助事業計画書（カ）（ワード形式、21.25KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-6_keikakusyo(ka).docx
-- [ ] **補助事業計画書（キ）（ワード形式、22.05KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-7_keikakusyo(ki).docx
-- [ ] **補助事業計画書（ク）（ワード形式、21.75KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/03-8_keikakusyo(ku).docx
-- [ ] **補助事業等実績報告書（ワード形式、15.68KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/31_zisseki.docx
-- [ ] **茂原市中小事業者サポート補助金交付請求書（ワード形式、17.25KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/41_seikyu.docx
-- [ ] **申請者概要書（ワード形式、18.07KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/02_gaiyosyo.docx
-- [ ] **収支予算書（ワード形式、16.05KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/05_yosan.docx
-- [ ] **補助事業等着手届 （ワード形式、20.24KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/11_tyakusyu.docx
-- [ ] **補助事業等完了届 （ワード形式、20.25KB）** 
-      https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/21_kanryo.docx
+- [ ] **施設整備助成金 適用申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200177082.doc
+- [ ] **施設整備助成金 交付申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086087.doc
+- [ ] **環境設備助成金 適用申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086090.doc
+- [ ] **環境設備助成金 交付申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086092.doc
+- [ ] **持続可能な経営助成 適用申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086093.doc
+- [ ] **持続可能な経営助成 交付申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086094.doc
+- [ ] **市内雇用創出助成金 適用申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200106596.doc
+- [ ] **市内雇用創出助成金 交付申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200106597.doc
+- [ ] **助成措置適用承継申請書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086099.doc
+- [ ] **請求書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086126.xlsx
+- [ ] **事前届出書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086085.doc
+- [ ] **土地、家屋及び償却資産一覧表** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200177039.xlsx
+- [ ] **変更届出書** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200044205.doc
+- [ ] **操業廃止・休止届** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200086098.doc
+- [ ] **平塚市企業立地促進補助金&nbsp; 募集要領【令和8年4月版】** 
+      https://www.city.hiratsuka.kanagawa.jp/common/200199021.pdf
 
 ## 戸田市DX推進補助金
 
@@ -472,36 +436,6 @@
       https://www.city.saitama.lg.jp/005/001/002/p123535_d/fil/tennpuvchecksheet.docx
 - [ ] **さいたま市事業者向け設備導入応援補助金（物価高騰対応）交付要綱（PDF形式 312キロバイト）** 
       https://www.city.saitama.lg.jp/005/001/002/p123535_d/fil/hojyokinyouko.pdf
-
-## 世田谷区中小事業者経営支援補助金（世田谷区）
-
-- キー：`tokyo_setagaya_keiei`
-- 公式ページ：https://www.city.setagaya.lg.jp/03647/11321.html
-
-- [ ] **交付申請書（区様式）（ワード：27KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/02_shinseisyo.docx
-- [ ] **個人用（区様式）（エクセル：16KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/01-1_checklist-praivate.xlsx
-- [ ] **法人用（区様式）（エクセル：79KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/01-2_check-corporation.xlsx
-- [ ] **事業計画書（区様式）（ワード：26KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/03_keikakusyo.docx
-- [ ] **経費明細書（区様式）（エクセル：27KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/04_meisaisyo.xlsx
-- [ ] **誓約書（区様式）（ワード：23KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/05_seiyakusyo.docx
-- [ ] **実績報告チェックリスト（区様式）（エクセル：15KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/10_checklist-jisseki.xlsx
-- [ ] **実績報告書（区様式）（ワード：30KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/10_0_jisseki.docx
-- [ ] **支出内訳書（区様式）（エクセル：17KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/10_1_uchiwakesyo.xlsx
-- [ ] **記載例（PDF：81KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/03_keikakusyo_rei.pdf
-- [ ] **記載例（PDF：133KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/10_0_jisseki_rei.pdf
-- [ ] **募集要項（PDF：675KB）** 
-      https://www.city.setagaya.lg.jp/documents/11321/r8_youkou.pdf
 
 ## 松戸市中小企業デジタル化チャレンジ補助金
 
@@ -779,54 +713,6 @@
 - [ ] **【募集案内】LED化支援助成金（中小企業LED化型）（延長）（PDF：2,561KB）** 
       https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/capex/carbon-led-sme.files/0097_20260522.pdf
 
-## 中野区経営力強化支援事業補助金（中野区）
-
-- キー：`tokyo_nakano_keieiryoku`
-- 公式ページ：https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.html
-
-- [ ] **交付申請書【第1号様式】（ワード：27KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.1gou.docx
-- [ ] **事業実施内容説明（交付申請用）（ワード：21KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_sinseisetumei.docx
-- [ ] **変更等申請書【第4号様式】（ワード：27KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.4gou.docx
-- [ ] **実績報告書【第6号様式】（ワード：27KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.6gou.docx
-- [ ] **事業実施内容説明（実績報告用）（ワード：21KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_zissekisetumei.docx
-- [ ] **請求書兼口座振替依頼書（エクセル：18KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8kouzafurikaeiraisho.xlsx
-- [ ] **経費別明細書（エクセル：32KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/keihi.xls
-- [ ] **事業実施内容の変更説明（変更申請用）（ワード：21KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_henkosetumei.docx
-- [ ] **よくあるご質問（FAQ）（PDF形式：272KB）** 
-      https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8FAQ.pdf
-
-## 羽村市中小企業経営基盤強化助成金（羽村市）
-
-- キー：`tokyo_hamura_kiban`
-- 公式ページ：https://www.city.hamura.tokyo.jp/0000018519.html
-
-- [ ] **【Word版】交付申請書・事業計画書(サイズ:12.34KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/0613-1.docx
-- [ ] **【Word版】変更承認申請書(サイズ：9.74KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/hennkou.docx
-- [ ] **【Word版】実績報告書 (サイズ:11.77KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/jisseki2.docx
-- [ ] **【Word版】請求書兼振込依頼書(サイズ：10.15KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/seijyu2.docx
-- [ ] **【PDF版】交付申請書・事業計画書 (サイズ:73.55KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/0613-2.pdf
-- [ ] **【PDF版】変更承認申請書(サイズ：50.55KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/hennkou2.pdf
-- [ ] **【PDF版】実績報告書（サイズ:74.88KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/jisseki.pdf
-- [ ] **【PDF版】請求書兼振込依頼書(サイズ：49.26KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/seikyuu1.pdf
-- [ ] **【Word版】働く環境整備事業（賃上げ・有給取得促進）確認事項 (サイズ：8.53KB)** 
-      https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/R8.4_tinnage.yuukyuu.docx
-
 ## 伊勢崎市小規模事業者サポート補助金
 
 - キー：`gunma_isesaki_shokibo`
@@ -923,72 +809,6 @@
 - [ ] **8.（様式第8号）入間市商工業振興助成事業継続状況報告書 (Wordファイル: 12.1KB)** 
       https://www.city.iruma.saitama.jp/material/files/group/23/8.docx
 
-## 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）
-
-- キー：`tokyo_soui`
-- 公式ページ：https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/
-
-- [ ] **申請書** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_01.xlsx
-- [ ] **申請書記入例** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_kinyuurei_01-02.xlsx
-- [ ] **誓約書（助成金申請に関する誓約書）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_shinsei_01.xlsx
-- [ ] **誓約書（反社会的勢力排除に関する誓約書）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_hansha_01.xlsx
-- [ ] **FAQはこちらから** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8gyoumu_kaizen_faq.xlsx
-- [ ] **同意書（代理申請用）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_douisho.docx
-- [ ] **募集チラシはこちら** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/2605_keiei_challenge_out.pdf
-- [ ] **募集要項** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf
-
-## ICT等導入支援事業（江東区）
-
-- キー：`tokyo_koto_ict`
-- 公式ページ：https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/itc_shien.html
-
-- [ ] **江東区ICT等導入支援補助金交付申請書word版（ワード：27KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict4_shinsei.docx
-- [ ] **江東区ICT等導入支援補助金交付申請書pdf版（PDF：75KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict4_shinsei.pdf
-- [ ] **事業計画書word版（ワード：25KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict5_keikakusho.docx
-- [ ] **江東区ＩＣＴ等導入支援対象事業実績報告書word版（ワード：27KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict11_houkoku.docx
-- [ ] **事業計画書pdf版（PDF：219KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict5_keikakusho.pdf
-- [ ] **江東区ＩＣＴ等導入支援対象事業実績報告書pdf版（PDF：251KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict11_houkoku.pdf
-- [ ] **江東区ICT等導入支援申込書word版（ワード：22KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict1_mousikomi07w.docx
-- [ ] **江東区ICT等導入支援事業実施要綱（PDF：1,604KB）（別ウィンドウで開きます）** 
-      https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict_yoko2.pdf
-
-## 小規模事業者等経営改善補助金（足立区）
-
-- キー：`tokyo_adachi_kaizen`
-- 公式ページ：https://www.city.adachi.tokyo.jp/s-shinko/shigoto/chushokigyo/yushi-monozukuri.html
-
-- [ ] **「機械設備等購入費補助・店舗改修費補助」相談予約票および申請書【パソコン作成用】（ワード：209KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/000.docx
-- [ ] **「操業環境改善費補助」申請書【パソコン作成用】（ワード：76KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/001.docx
-- [ ] **募集案内・よくある質問・記入例（PDF：1,466KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/01.pdf
-- [ ] **「機械設備等購入費補助・店舗改修費補助」相談予約票および申請書【手書き作成用】（PDF：536KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/02.pdf
-- [ ] **「操業環境改善費補助」申請書【手書き作成用】（PDF：472KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/04.pdf
-- [ ] **申請書記入例（農業者向け）（PDF：590KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/04kinyurei.pdf
-- [ ] **見積書のサンプル（エクセル：12KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/03-01mitumori-excel.xlsx
-- [ ] **納品書のサンプル（エクセル：12KB）** 
-      https://www.city.adachi.tokyo.jp/documents/1324/03-02nohin-excel.xlsx
-
 ## 大和市魅力ある個店支援事業
 
 - キー：`kanagawa_yamato_koten`
@@ -1054,86 +874,6 @@
       https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/kaihatsu/gijutsu/kaihatsu.files/0122_20260402.pdf
 - [ ] **中小企業新技術・新製品開発促進助成金交付要綱（PDF：284KB）** 
       https://www.city.yokohama.lg.jp/business/kigyoshien/keieishien/kaihatsu/gijutsu/kaihatsu.files/0114_20260402.pdf
-
-## 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）
-
-- キー：`tokyo_digital`
-- 公式ページ：https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
-
-- [ ] **環境負荷軽減計画書（Excel）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8kannkyoufuka_plan.xlsx
-- [ ] **申請時添付書類例（PDF）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf
-- [ ] **ツール導入にあたってのチェックシート(Excel）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digitaltool.xlsx
-- [ ] **見積限定理由書（Word）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8mitumori_sor.docx
-- [ ] **小規模企業者に該当することの確認書(Word）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx
-- [ ] **【令和8年度第1回版】募集要項（PDF）** 
-      https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf
-- [ ] **個人情報の保護に関する要綱［PDF：146KB］** 
-      https://www.tokyo-kosha.or.jp/support/pdf/youkou.pdf
-
-## 中小企業ソフトウェア導入費等支援事業補助金（港区）
-
-- キー：`tokyo_minato_software`
-- 公式ページ：https://minato-sansin.com/software/
-
-- [ ] **Word版** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/データ①-1-【郵送】第1号様式-交付申請書（最新）-1.docx
-- [ ] **Word版** 
-      https://minato-sansin.com/wp-content/uploads/2025/04/データ②-1-【郵送】第2号様式　誓約書兼同意書.docx
-- [ ] **オンライン用、郵送用データ（共通）** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/1-3-第3号様式-収支計画書-※記入例含む.xlsx
-- [ ] **Word版** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/★1-1-提出書類確認シート.docx
-- [ ] **Word版** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/データ⑤-1-【郵送】第11号様式（実績報告書）.docx
-- [ ] **・オンライン用、郵送用データ（共通）** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/データ⑥（修正）-【オンライン・郵送共通】収支決算書（第12号様式）※記入例（個人・法人共通）含む-1.xlsx
-- [ ] **「港区中小企業ソフトウェア導入費等支援事業補助金募集要項」** 
-      https://minato-sansin.com/wp-content/uploads/2026/04/【要項】R7港区中小企業ソフトウェア導入費等支援事業補助金募集要項.pdf
-
-## デジタル技術活用促進助成事業・DX導入（江戸川区）
-
-- キー：`tokyo_edogawa_dx`
-- 公式ページ：https://www.city.edogawa.tokyo.jp/e093/shigotosangyo/jigyosha_oen/sangyo_jigyosya/jyosei/seisanseikojo/dounyu.html
-
-- [ ] **助成金交付申請書兼請求書(様式1)（ワード：49KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc
-- [ ] **事業計画書(別紙2)（ワード：71KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc
-- [ ] **事業所概要(別紙1)（ワード：42KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/r8_jigyoujyogaiyou.doc
-- [ ] **中小企業グループ構成・役割確認表(別紙3)（エクセル：20KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/groupekousei-r6.xlsx
-- [ ] **中小企業グループによる共同事業に係る確認書(別紙4)（ワード：36KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/groupekakunin-r6.docx
-- [ ] **募集要項【第2回】（PDF：729KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
-- [ ] **募集パンフレット【第2回】チラシ（PDF：668KB）** 
-      https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
-
-## 経営力強化補助金・事業継続事業（八王子市）
-
-- キー：`tokyo_hachioji_keizoku`
-- 公式ページ：https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku.html
-
-- [ ] **【第1-2号様式】交付申請書（事業継続事業）（ワード形式 32キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/shinseishoword.docx
-- [ ] **記入例【第1-2号様式】交付申請書（事業継続事業）（PDF形式 556キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/shinseishokinyuurei.pdf
-- [ ] **【第5-2号様式】実績報告書（事業継続事業）（ワード形式 30キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekiword.docx
-- [ ] **【第1-2号様式】交付申請書（事業継続事業）（PDF形式 404キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekipdf.pdf
-- [ ] **記入例【第5-2号様式】実績報告書（事業継続事業）（PDF形式 317キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekikinyuurei.pdf
-- [ ] **公募要領（事業継続事業）（PDF形式 577キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/koboyouryo.pdf
-- [ ] **令和8年度経営力強化補助金交付要綱（PDF形式 467キロバイト）** 
-      https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/R8youkou.pdf
 
 ## 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）
 
@@ -1275,42 +1015,6 @@
 - [ ] **座間市中小企業産業振興支援事業補助金交付要綱 （PDF 766.2 KB）** 
       https://www.city.zama.kanagawa.jp/_res/projects/default_project/_page_/001/003/455/zamasityuusyoukigyouyoukou.pdf
 
-## 葛飾区デジタル化支援事業費補助金（葛飾区）
-
-- キー：`tokyo_katsushika_digital`
-- 公式ページ：https://www.city.katsushika.lg.jp/business/1000011/1034399/1032622/index.html
-
-- [ ] **葛飾区デジタル化支援事業費補助金交付申請書（第1号様式）、事業計画書（第2号様式）、企業概要（第3号様式） （Word 59.5KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalshinsei.doc
-- [ ] **葛飾区デジタル化支援事業費補助金交付申請書（第1号様式）、事業計画書（第2号様式）、企業概要（第3号様式） （PDF 161.8KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalshinsei.pdf
-- [ ] **葛飾区デジタル化支援事業費実績報告書（第6号様式） （Word 48.5KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitaljisseki2.doc
-- [ ] **葛飾区デジタル化事業費補助金請求書（第9号様式） （Word 37.5KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalseikyuu.doc
-- [ ] **葛飾区デジタル化支援事業費実績報告書（第6号様式） （PDF 89.7KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitaljisseki.pdf
-- [ ] **葛飾区デジタル化事業費補助金請求書（第9号様式） （PDF 240.1KB）** 
-      https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalseikyuu.pdf
-
-## 西東京市DX化推進事業補助金（西東京市）
-
-- キー：`tokyo_nishitokyo_dx`
-- 公式ページ：https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.html
-
-- [ ] **交付申請書（ワード：18KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8sinseisyo.docx
-- [ ] **補助事業計画書（ワード：32KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8keikakusyo.docx
-- [ ] **変更等申請書（ワード：18KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8henkou.docx
-- [ ] **実績報告書（ワード：24KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8houkokusyo.docx
-- [ ] **交付申請書（記入例）（PDF：84KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/sinseisyokinyurei.pdf
-- [ ] **補助事業計画書（記入例）（PDF：350KB）** 
-      https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8keikakusyokinyurei.pdf
-
 ## 横須賀市中小企業等省エネ化・生産性向上補助金（B.生産性向上枠）
 
 - キー：`kanagawa_yokosuka_seisansei`
@@ -1400,38 +1104,6 @@
       https://www.town.nakanojo.gunma.jp/uploaded/attachment/3569.pdf
 - [ ] **中之条町事業継続補助金交付要綱別表2 [PDFファイル／91KB]** 
       https://www.town.nakanojo.gunma.jp/uploaded/attachment/3570.pdf
-
-## 持続可能性向上支援補助金・生産性向上設備（文京区）
-
-- キー：`tokyo_bunkyo_seisansei`
-- 公式ページ：https://www.city.bunkyo.lg.jp/b012/p005132.html
-
-- [ ] **交付申請書（別記様式第1号）（ワード：47KB）** 
-      https://www.city.bunkyo.lg.jp/documents/4945/01_kohushinsei.doc
-- [ ] **事業計画書（別紙1）（ワード：48KB）** 
-      https://www.city.bunkyo.lg.jp/documents/4945/2022221164254_1.doc
-- [ ] **実績報告書類等（ワード：57KB）** 
-      https://www.city.bunkyo.lg.jp/documents/4945/2022221164514_1.doc
-- [ ] **請求書兼口座振替依頼書（ワード：48KB）** 
-      https://www.city.bunkyo.lg.jp/documents/4945/2022221164558_1.doc
-- [ ] **事業予算書（別紙2）（ワード：49KB）** 
-      https://www.city.bunkyo.lg.jp/documents/4945/202222116435_1.doc
-
-## デジタル技術活用推進助成・ソフトウェア（品川区）
-
-- キー：`tokyo_shinagawa_digital`
-- 公式ページ：https://shinagawa-dx-digital.com/digital_subsidy/
-
-- [ ] **Word** 
-      https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/第1号様式-交付申請書-1.doc
-- [ ] **Word** 
-      https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/第1号様式（別紙）-実施計画書-1.doc
-- [ ] **Excel** 
-      https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/第1号様式（別紙）-資金計画等（ソフトウェア）_0528.xls
-- [ ] **Word** 
-      https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/99-誓約書（R8デジタルソフト助成）.docx
-- [ ] **Word** 
-      https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/99-提出書類チェックシート-1.docx
 
 ## 埼玉県中小企業DX導入支援補助金
 
@@ -1527,20 +1199,6 @@
 - [ ] **飲食業労働生産性向上推進事業実施要領（案）(PDF : 346KB)** 
       https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/260326_040-1-4.pdf
 
-## 川口市DX推進補助金
-
-- キー：`saitama_kawaguchi_dx`
-- 公式ページ：https://www.city.kawaguchi.lg.jp/soshiki/01110/021/12/38430.html
-
-- [ ] **申請書兼請求書 (Wordファイル: 32.0KB)** 
-      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyo.docx
-- [ ] **申請書兼請求書 (PDFファイル: 207.6KB)** 
-      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyo.pdf
-- [ ] **申請書兼請求書（記入例） (PDFファイル: 531.1KB)** 
-      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyokinyuurei.pdf
-- [ ] **申請要領 (PDFファイル: 1.3MB)** 
-      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8dxyouryou2.pdf
-
 ## さいたま市DX推進補助金
 
 - キー：`saitama_saitama_dx`
@@ -1555,41 +1213,19 @@
 - [ ] **さいたま市DX推進補助金 公募要領** 
       https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinkouboyouryo.pdf
 
-## めぐろ中小企業省力化投資補助金（目黒区）
+## 川口市DX推進補助金
 
-- キー：`tokyo_meguro_shoryokuka`
-- 公式ページ：https://www.city.meguro.tokyo.jp/sangyoukeizai/shigoto/kigyoushien/syouryokuka.html
+- キー：`saitama_kawaguchi_dx`
+- 公式ページ：https://www.city.kawaguchi.lg.jp/soshiki/01110/021/12/38430.html
 
-- [ ] **めぐろ中小企業省力化投資補助金交付申請書（PDF：77KB）** 
-      https://www.city.meguro.tokyo.jp/documents/19335/shinseisho.pdf
-- [ ] **申請の手引き（PDF：270KB）** 
-      https://www.city.meguro.tokyo.jp/documents/19335/r8tebiki.pdf
-- [ ] **「申請の手引き」（PDF：270KB）** 
-      https://www.city.meguro.tokyo.jp/documents/19335/r8tebiki_1.pdf
-
-## IT・IoT導入チャレンジ支援事業（北区）
-
-- キー：`tokyo_kita_itiot`
-- 公式ページ：https://www.city.kita.lg.jp/business/industry/1011356/1011509/1011519.html
-
-- [ ] **申請様式等 （Word 58.6KB）** 
-      https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/011/519/r8_youshiki_iot_.docx
-- [ ] **申請様式等 （PDF 389.4KB）** 
-      https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/011/519/r8_youshiki_iot_.pdf
-- [ ] **募集要項 （PDF 358.4KB）** 
-      https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/011/519/r8_boshuuyoukou_iot.pdf
-
-## デジタル化・データ利活用推進助成金（板橋区）
-
-- キー：`tokyo_itabashi_digital`
-- 公式ページ：https://itabashi-kohsha.com/subsidies/hruq3mhmotj1aane.html
-
-- [ ] **デジタル化・データ利活用推進助成金_申請様式一式 （121KB） Excel** 
-      https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx
-- [ ] **デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～） （262KB） PDF** 
-      https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf
-- [ ] **令和8年度デジタル化・データ利活用推進助成金_実施要領（令和8年4月1日～） （988KB） PDF** 
-      https://itabashi-kohsha.com/cms-data/file/common/令和8年度デジタル化・データ利活用推進助成金_実施要領（令和８年４月１日～）.pdf
+- [ ] **申請書兼請求書 (Wordファイル: 32.0KB)** 
+      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyo.docx
+- [ ] **申請書兼請求書 (PDFファイル: 207.6KB)** 
+      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyo.pdf
+- [ ] **申請書兼請求書（記入例） (PDFファイル: 531.1KB)** 
+      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8sinnseisyokinyuurei.pdf
+- [ ] **申請要領 (PDFファイル: 1.3MB)** 
+      https://www.city.kawaguchi.lg.jp/material/files/group/103/R8dxyouryou2.pdf
 
 ## 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）
 
@@ -1663,26 +1299,6 @@
 - [ ] **申請書 様式 [PDFファイル／121KB]** 
       https://www.city.sodegaura.lg.jp/uploaded/attachment/42978.pdf
 
-## 新事業進出・ものづくり商業サービス補助金
-
-- キー：`monodukuri`
-- 公式ページ：https://shinjigyou-monodukuri.smrj.go.jp/
-
-- [ ] **第1回 公募要領PDF** 
-      https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf?v2
-- [ ] **本補助金の公募要領PDF** 
-      https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
-
-## 豊島区中小企業支援事業補助金・経営安定コース（豊島区）
-
-- キー：`tokyo_toshima_keiei`
-- 公式ページ：https://www.city.toshima.lg.jp/584/machizukuri/sangyo/kigyo/019174.html
-
-- [ ] **補助金交付申請書一式（エクセル：45KB）** 
-      https://www.city.toshima.lg.jp/documents/3318/20260414144434.xlsx
-- [ ] **申請要領（PDF：824KB）** 
-      https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
-
 ## 中小企業等デジタル化推進事業助成（杉並区）
 
 - キー：`tokyo_suginami_digital`
@@ -1692,6 +1308,16 @@
       https://www.city.suginami.tokyo.jp/documents/1754/gaitoutodoke_uriagedaka.pdf
 - [ ] **（様式）中東情勢・物価高騰対策特例資金 該当届（営業利益率要件）（PDF：140KB）** 
       https://www.city.suginami.tokyo.jp/documents/1754/gaitoutodoke_eigyouriekiritu.pdf
+
+## 新事業進出・ものづくり商業サービス補助金
+
+- キー：`monodukuri`
+- 公式ページ：https://shinjigyou-monodukuri.smrj.go.jp/
+
+- [ ] **第1回 公募要領PDF** 
+      https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf?v2
+- [ ] **本補助金の公募要領PDF** 
+      https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
 
 ## 神奈川県中小企業生産性向上促進事業費補助金
 
@@ -1740,14 +1366,6 @@
 
 - [ ] **募集要領** 
       https://www.mlit.go.jp/jutakukentiku/house/content/001625070.pdf
-
-## 経営基盤強化支援（台東区）
-
-- キー：`tokyo_taito_keiei`
-- 公式ページ：https://taito-sangyo.jp/2026/03/27/keieikiban/
-
-- [ ] **変更承認申請書 ダウンロード** 
-      https://taito-sangyo.jp/src/wp-content/uploads/2026/03/経営基盤_変更届.doc
 
 ## 海老名市中小企業振興支援事業
 

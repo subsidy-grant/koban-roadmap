@@ -883,29 +883,6 @@
   .diag-emp { display: flex; align-items: center; gap: 0.7rem; }
   .diag-emp input[type="number"] { max-width: 6.5rem; text-align: right; }
   .diag-emp .unit { font-size: 1rem; color: var(--ink-soft); }
-  .diag-step .dhint {
-    position: relative;
-    margin-top: 0.8rem;
-    padding: 0.6rem 0.7rem 0.6rem 2.1rem;
-    border-top: 1px dashed var(--rust);
-    background: var(--rust-wash);
-    color: var(--rust);
-    font-size: 0.9rem;
-    line-height: 1.75;
-  }
-  /* 欄の番号と対応させる。data-n はHTML側で1〜3を入れている */
-  .diag-step .dhint::before {
-    content: attr(data-n);
-    position: absolute; left: 0.7rem; top: 0.78rem;
-    width: 1.05rem; height: 1.05rem; border: 1.5px solid var(--rust); border-radius: 50%;
-    font-size: 0.68rem; line-height: 0.92rem; text-align: center; font-weight: 700;
-  }
-  .diag-rei-label {
-    display: inline-block; margin-left: 0.7rem; padding: 0.1rem 0.6rem;
-    border: 1px solid var(--rust); color: var(--rust);
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; vertical-align: 0.15rem;
-  }
-
   /* 診断結果は「交付決定通知」の体裁。3つ答えた結果が返ってくる、という
      関係を、利用者が実際に受け取る紙の形で示している。
      角丸とカード分割をやめ、太い外枠＋青の見出し帯＋縦罫の3欄にした。 */
@@ -1094,6 +1071,10 @@
     padding: 0.85rem 1.1rem; margin: 1.1rem 0 0; border-radius: 0 4px 4px 0;
   }
   .docs-lead p { margin: 0; color: var(--ink); font-size: 0.95rem; max-width: none; }
+  /* 「様式だけでは足りない」の注意。段落が3つあるので間隔を持たせる。
+     枠の色は上の注意書きと同じ橙（＝注意）で、役割を混ぜない */
+  .docs-lead-more { margin-top: 0.7rem; }
+  .docs-lead-more p + p { margin-top: 0.5rem; }
 
   .docs-card {
     border: 1px solid var(--line); background: var(--paper-raised);
@@ -1168,6 +1149,10 @@
   /* 印刷（チェックリスト） */
   @media print {
     #printArea .pmeta { font-size: 10pt; color: #444; margin: 0.2rem 0 0.6rem; }
+    #printArea .pwarn {
+      font-size: 10pt; line-height: 1.7; margin: 0.4rem 0 1rem;
+      border: 1.5px solid #000; padding: 0.5rem 0.7rem;
+    }
     #printArea .pchk { list-style: none; margin: 0.3rem 0 0.9rem; }
     #printArea .pchk li { padding: 0.25rem 0; border-bottom: 1px dotted #bbb; font-size: 10.5pt; }
     #printArea .purl { display: block; font-size: 8.5pt; color: #555; word-break: break-all; }
@@ -1271,7 +1256,7 @@
 <!-- 3問診断: 長い説明を読む前に、自分向けの結果を先に出す入口 -->
 <section class="diag" id="diagnose">
   <div class="diag-inner">
-    <h2>3つ選ぶと、使える可能性のある制度が分かります<span class="diag-rei-label">記入例つき</span></h2>
+    <h2>3つ選ぶと、使える可能性のある制度が分かります</h2>
     <p class="diag-lead">ここで選んだ内容は、このページの解説・概算シミュレーターにもそのまま反映されます。</p>
 
     <div class="diag-steps">
@@ -1286,7 +1271,6 @@
           <option value="realestate">不動産業、物品賃貸業</option>
           <option value="education">教育、学習支援業（学習塾・スクール等）</option>
         </select>
-        <p class="dhint" data-n="1">6業種に対応しています。近いものをお選びください。</p>
       </div>
 
       <div class="diag-step">
@@ -1305,7 +1289,6 @@
           <label for="municipalitySelect">市区町村（任意）</label>
           <select id="municipalitySelect" onchange="onMunicipalityChange(this.value)"></select>
         </div>
-        <p class="dhint" data-n="2">選ぶと、その地域だけの制度も一緒に表示します。</p>
       </div>
 
       <div class="diag-step">
@@ -1316,7 +1299,6 @@
                  inputmode="numeric" oninput="onEmployeeCountInput(this.value, this)">
           <span class="unit">人</span>
         </div>
-        <p class="dhint" data-n="3">パート・アルバイトを含みます。人数によって使える制度と上限額が変わります。</p>
       </div>
     </div>
 
@@ -2256,6 +2238,12 @@
 
     <div class="docs-lead">
       <p><strong>提出までの順番で並べています。</strong>制度によっては「取組を始める前に出す書類」があり、後から出すと対象外になります。まずその段の書類をご確認ください。</p>
+    </div>
+
+    <div class="docs-lead docs-lead-more">
+      <p><strong>ここに載っているのは、公式サイトからダウンロードできる様式だけです。これだけでは足りない制度があります。</strong></p>
+      <p>様式のほかに、事業者ご自身で用意する書類（見積書、決算書・確定申告書、登記事項証明書、納税証明書、賃金台帳・労働者名簿など）や、第三者に出してもらう書類（商工会議所・商工会の事業支援計画書、認定経営革新等支援機関の確認書など）を求められることがあります。取得に日数がかかるものや、電子申請用のIDのように事前の準備が要るものもあります。</p>
+      <p><strong>提出書類の全体像は、各制度の「公募要領」に一覧で載っています。</strong>下の各制度の「申請の前に読む」にある公募要領を開いて、必ずそちらでご確認ください。</p>
     </div>
 
     <div class="sort-row" id="docsToolRow">
@@ -7564,6 +7552,391 @@
           { name: '様式第2-1号 職業訓練実施計画変更届', url: 'https://www.mhlw.go.jp/content/11800000/001690277.xlsx', type: 'Excel', size: '68KB' }
         ] }
       ]
+    },
+
+    // ---- 東京都の制度（2026-07-31 に各公式ページで確認） ----
+    tokyo_digital: {
+      checked: '2026-07-31',
+      portal: { label: '東京都中小企業振興公社 公式ページ', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html' },
+      note: '令和8年度第1回の様式です。申請は電子申請システムから行います。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '【令和8年度第1回版】募集要項', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf', type: 'PDF', size: '6.9MB' },
+          { name: '申請マニュアル', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8_digital-tool_sinnsei_manual.pdf', type: 'PDF', size: '2.0MB' },
+          { name: '申請時添付書類例', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf', type: 'PDF', size: '3.7MB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: 'ツール導入にあたってのチェックシート', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digitaltool.xlsx', type: 'Excel', size: '22KB' },
+          { name: '見積限定理由書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8mitumori_sor.docx', type: 'Word', size: '32KB' },
+          { name: '小規模企業者に該当することの確認書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx', type: 'Word', size: '18KB' },
+          { name: '環境負荷軽減計画書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8kannkyoufuka_plan.xlsx', type: 'Excel', size: '15KB' }
+        ] }
+      ]
+    },
+    tokyo_soui: {
+      checked: '2026-07-31',
+      portal: { label: '東京都中小企業振興公社 公式ページ', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/' },
+      note: '業務改善コースの様式です。営業利益の減少または損失計上が要件のため、募集要項で対象かどうかを先にご確認ください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf', type: 'PDF', size: '1.8MB' },
+          { name: '電子申請マニュアル', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_manual_denshi_02.pdf', type: 'PDF', size: '3.6MB' },
+          { name: 'よくある質問（FAQ）', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8gyoumu_kaizen_faq.xlsx', type: 'Excel', size: '28KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '申請書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_01.xlsx', type: 'Excel', size: '192KB' },
+          { name: '申請書 記入例', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_kinyuurei_01-02.xlsx', type: 'Excel', size: '223KB' },
+          { name: '誓約書（助成金申請に関する誓約書）', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_shinsei_01.xlsx', type: 'Excel', size: '14KB' },
+          { name: '誓約書（反社会的勢力排除に関する誓約書）', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_hansha_01.xlsx', type: 'Excel', size: '14KB' },
+          { name: '同意書（代理申請用）', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_douisho.docx', type: 'Word', size: '27KB' }
+        ] }
+      ]
+    },
+    tokyo_minato_software: {
+      checked: '2026-07-31',
+      portal: { label: '港区立産業振興センター 公式ページ', url: 'https://minato-sansin.com/software/' },
+      note: '郵送とオンラインで使う様式が一部異なります。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/【要項】R7港区中小企業ソフトウェア導入費等支援事業補助金募集要項.pdf', type: 'PDF', size: '568KB' },
+          { name: '提出書類確認シート', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/★1-1-提出書類確認シート.docx', type: 'Word', size: '33KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '第1号様式 交付申請書', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/データ①-1-【郵送】第1号様式-交付申請書（最新）-1.docx', type: 'Word', size: '38KB' },
+          { name: '第1号様式 記入例（法人用）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/★【記入例・法人】第1号様式（交付申請書）.pdf', type: 'PDF', size: '323KB' },
+          { name: '第1号様式 記入例（個人用）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/★【記入例・個人】第1号様式（交付申請書）.pdf', type: 'PDF', size: '328KB' },
+          { name: '第2号様式 誓約書兼同意書', url: 'https://minato-sansin.com/wp-content/uploads/2025/04/データ②-1-【郵送】第2号様式　誓約書兼同意書.docx', type: 'Word', size: '35KB' },
+          { name: '第3号様式 収支計画書（記入例つき）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/1-3-第3号様式-収支計画書-※記入例含む.xlsx', type: 'Excel', size: '23KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '第11号様式 実績報告書', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/データ⑤-1-【郵送】第11号様式（実績報告書）.docx', type: 'Word', size: '25KB' },
+          { name: '第11号様式 記入例（法人用）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/【記入例・法人】第11号様式（実績報告書）.docx-1.pdf', type: 'PDF', size: '335KB' },
+          { name: '第11号様式 記入例（個人用）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/【記入例・個人】第11号様式（実績報告書）.docx-1.pdf', type: 'PDF', size: '293KB' },
+          { name: '第12号様式 収支決算書（記入例つき）', url: 'https://minato-sansin.com/wp-content/uploads/2026/04/データ⑥（修正）-【オンライン・郵送共通】収支決算書（第12号様式）※記入例（個人・法人共通）含む-1.xlsx', type: 'Excel', size: '23KB' }
+        ] }
+      ]
+    },
+    tokyo_bunkyo_seisansei: {
+      checked: '2026-07-31',
+      portal: { label: '文京区 公式ページ', url: 'https://www.city.bunkyo.lg.jp/b012/p005132.html' },
+      note: '令和8年度の様式です。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '令和8年度 案内チラシ', url: 'https://www.city.bunkyo.lg.jp/documents/4945/chirashi.pdf', type: 'PDF', size: '652KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書（別記様式第1号）', url: 'https://www.city.bunkyo.lg.jp/documents/4945/01_kohushinsei.doc', type: 'Word', size: '46KB' },
+          { name: '事業計画書（別紙1）', url: 'https://www.city.bunkyo.lg.jp/documents/4945/2022221164254_1.doc', type: 'Word', size: '48KB' },
+          { name: '事業予算書（別紙2）', url: 'https://www.city.bunkyo.lg.jp/documents/4945/202222116435_1.doc', type: 'Word', size: '49KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書類等', url: 'https://www.city.bunkyo.lg.jp/documents/4945/2022221164514_1.doc', type: 'Word', size: '57KB' },
+          { name: '請求書兼口座振替依頼書', url: 'https://www.city.bunkyo.lg.jp/documents/4945/2022221164558_1.doc', type: 'Word', size: '48KB' }
+        ] }
+      ]
+    },
+    tokyo_taito_keiei: {
+      checked: '2026-07-31',
+      portal: { label: '台東区産業振興事業団 公式ページ', url: 'https://taito-sangyo.jp/2026/03/27/keieikiban/' },
+      note: '公式ページで様式ファイルとして配布されているのは下記です。交付申請の手続きは公式ページの案内に沿って進めてください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '経営基盤強化支援 チラシ（令和8年度）', url: 'https://taito-sangyo.jp/src/wp-content/uploads/2026/07/R8keieikiban-1.pdf', type: 'PDF', size: '1.6MB' }
+        ] },
+        { phase: '計画を変えるとき', items: [
+          { name: '変更承認申請書', url: 'https://taito-sangyo.jp/src/wp-content/uploads/2026/03/経営基盤_変更届.doc', type: 'Word', size: '32KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '支払い方法別 必要書類', url: 'https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf', type: 'PDF', size: '204KB' }
+        ] }
+      ]
+    },
+    tokyo_sumida_digital: {
+      checked: '2026-07-31',
+      portal: { label: '墨田区 公式ページ', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.html' },
+      note: '2026年4月版の様式です。経費内訳書は税抜・税込の2種類があり、どちらを使うかは募集要項でご確認ください。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項（2026.04版）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/R804bosyu.pdf', type: 'PDF', size: '617KB' },
+          { name: 'よくあるご質問（2026年4月1日時点）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/QA20260401.pdf', type: 'PDF', size: '78KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書（第1号様式）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/01_yohiki.docx', type: 'Word', size: '23KB' },
+          { name: '事業計画書（第2号様式）R8.04', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/02_yoshiki_202604.docx', type: 'Word', size: '26KB' },
+          { name: '【記載例】事業計画書（第2号様式）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/02_yoshiki_example.pdf', type: 'PDF', size: '354KB' },
+          { name: '誓約・同意書（第3号様式）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/03_yoshiki.docx', type: 'Word', size: '22KB' },
+          { name: '補助金申請経費内訳書（税抜表示）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeinuki.xlsx', type: 'Excel', size: '12KB' },
+          { name: '補助金申請経費内訳書（税込表示）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeikomi.xlsx', type: 'Excel', size: '12KB' },
+          { name: '値引き額按分計算表（内訳書付属資料）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/nebikianbunkeisanhyo.xlsx', type: 'Excel', size: '12KB' }
+        ] },
+        { phase: '計画を変えるとき', items: [
+          { name: '変更申請書（第6号様式）R8.04', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/06_yoshiki_202604.docx', type: 'Word', size: '21KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書（第8号様式）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/jissekihoukoku8.docx', type: 'Word', size: '21KB' },
+          { name: '実施内容報告書（第9号様式）R8.04', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/09_yoshiki_202604_.docx', type: 'Word', size: '24KB' },
+          { name: '【記載例】実施内容報告書（第9号様式）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/09_yoshiki_example.pdf', type: 'PDF', size: '91KB' },
+          { name: '補助金報告経費内訳書（税抜表示）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/houkokuuchiwakesho_zeinuki.xlsx', type: 'Excel', size: '12KB' },
+          { name: '補助金報告経費内訳書（税込表示）', url: 'https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/houkokuuchiwakesho_zeikomi.xlsx', type: 'Excel', size: '12KB' }
+        ] }
+      ]
+    },
+    tokyo_koto_ict: {
+      checked: '2026-07-31',
+      portal: { label: '江東区 公式ページ', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/itc_shien.html' },
+      note: '先に「申込書」を出し、支援決定を受けてから交付申請に進む流れです。順番にご注意ください。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '江東区ICT等導入支援事業実施要綱', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict_yoko2.pdf', type: 'PDF', size: '1.6MB' }
+        ] },
+        { phase: 'はじめに出す（支援の申込）', items: [
+          { name: '江東区ICT等導入支援申込書', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict1_mousikomi07w.docx', type: 'Word', size: '22KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict4_shinsei.docx', type: 'Word', size: '27KB' },
+          { name: '事業計画書', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict5_keikakusho.docx', type: 'Word', size: '25KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '対象事業実績報告書', url: 'https://www.city.koto.lg.jp/102020/sangyoshigoto/sangyo/documents/8ict11_houkoku.docx', type: 'Word', size: '27KB' }
+        ] }
+      ]
+    },
+    tokyo_shinagawa_digital: {
+      checked: '2026-07-31',
+      portal: { label: '品川区DX推進事業 公式ページ', url: 'https://shinagawa-dx-digital.com/digital_subsidy/' },
+      note: 'ソフトウェア分の様式です。オンライン申請の場合、交付申請書と提出書類チェックシートは不要と案内されています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/R8-bosyuyoko_DIGITAL_SUBSIDY_SOFT_0527.pdf', type: 'PDF', size: '445KB' },
+          { name: '提出書類チェックシート', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/99-提出書類チェックシート-1.docx', type: 'Word', size: '18KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '第1号様式 交付申請書', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/第1号様式-交付申請書-1.doc', type: 'Word', size: '34KB' },
+          { name: '第1号様式（別紙）実施計画書', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/第1号様式（別紙）-実施計画書-1.doc', type: 'Word', size: '48KB' },
+          { name: '第1号様式（別紙）資金計画等（ソフトウェア）', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/第1号様式（別紙）-資金計画等（ソフトウェア）_0528.xls', type: 'Excel', size: '61KB' },
+          { name: '誓約書', url: 'https://shinagawa-dx-digital.com/wp-content/uploads/2026/04/99-誓約書（R8デジタルソフト助成）.docx', type: 'Word', size: '22KB' }
+        ] }
+      ]
+    },
+    tokyo_meguro_shoryokuka: {
+      checked: '2026-07-31',
+      portal: { label: '目黒区 公式ページ', url: 'https://www.city.meguro.tokyo.jp/sangyoukeizai/shigoto/kigyoushien/syouryokuka.html' },
+      note: '公式ページで配布されているのは下記です。交付申請書はPDFのみで、Word版は配布されていません。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '申請の手引き', url: 'https://www.city.meguro.tokyo.jp/documents/19335/r8tebiki.pdf', type: 'PDF', size: '270KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: 'めぐろ中小企業省力化投資補助金 交付申請書', url: 'https://www.city.meguro.tokyo.jp/documents/19335/shinseisho.pdf', type: 'PDF', size: '76KB' }
+        ] }
+      ]
+    },
+    tokyo_setagaya_keiei: {
+      checked: '2026-07-31',
+      portal: { label: '世田谷区 公式ページ', url: 'https://www.city.setagaya.lg.jp/03647/11321.html' },
+      note: '令和8年度の様式です。チェックリストは個人用と法人用で分かれています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項', url: 'https://www.city.setagaya.lg.jp/documents/11321/r8_youkou.pdf', type: 'PDF', size: '675KB' },
+          { name: '申請チェックリスト（個人用）', url: 'https://www.city.setagaya.lg.jp/documents/11321/01-1_checklist-praivate.xlsx', type: 'Excel', size: '16KB' },
+          { name: '申請チェックリスト（法人用）', url: 'https://www.city.setagaya.lg.jp/documents/11321/01-2_check-corporation.xlsx', type: 'Excel', size: '78KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/02_shinseisyo.docx', type: 'Word', size: '27KB' },
+          { name: '事業計画書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/03_keikakusyo.docx', type: 'Word', size: '26KB' },
+          { name: '事業計画書 記載例', url: 'https://www.city.setagaya.lg.jp/documents/11321/03_keikakusyo_rei.pdf', type: 'PDF', size: '80KB' },
+          { name: '経費明細書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/04_meisaisyo.xlsx', type: 'Excel', size: '27KB' },
+          { name: '誓約書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/05_seiyakusyo.docx', type: 'Word', size: '22KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告チェックリスト（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/10_checklist-jisseki.xlsx', type: 'Excel', size: '15KB' },
+          { name: '実績報告書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/10_0_jisseki.docx', type: 'Word', size: '30KB' },
+          { name: '実績報告書 記載例', url: 'https://www.city.setagaya.lg.jp/documents/11321/10_0_jisseki_rei.pdf', type: 'PDF', size: '132KB' },
+          { name: '支出内訳書（区様式）', url: 'https://www.city.setagaya.lg.jp/documents/11321/10_1_uchiwakesyo.xlsx', type: 'Excel', size: '17KB' }
+        ] }
+      ]
+    },
+    tokyo_nakano_keieiryoku: {
+      checked: '2026-07-31',
+      portal: { label: '中野区 公式ページ', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.html' },
+      note: '令和8年度の様式です。生成AIを使う場合は経費計算の方法が別に案内されています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '応募要項（令和8年4月改定）', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8ouboyoukou.pdf', type: 'PDF', size: '714KB' },
+          { name: 'よくあるご質問（FAQ）', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8FAQ.pdf', type: 'PDF', size: '272KB' },
+          { name: '資料「生成AIの使用に係る経費計算方法」', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/seiseiAIkeihikeisan.pdf', type: 'PDF', size: '176KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書【第1号様式】', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.1gou.docx', type: 'Word', size: '28KB' },
+          { name: '事業実施内容説明（交付申請用）', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_sinseisetumei.docx', type: 'Word', size: '21KB' },
+          { name: '経費別明細書', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/keihi.xls', type: 'Excel', size: '32KB' }
+        ] },
+        { phase: '計画を変えるとき', items: [
+          { name: '変更等申請書【第4号様式】', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.4gou.docx', type: 'Word', size: '28KB' },
+          { name: '事業実施内容の変更説明（変更申請用）', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_henkosetumei.docx', type: 'Word', size: '21KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書【第6号様式】', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8.6gou.docx', type: 'Word', size: '28KB' },
+          { name: '事業実施内容説明（実績報告用）', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/2411_zissekisetumei.docx', type: 'Word', size: '21KB' },
+          { name: '請求書兼口座振替依頼書', url: 'https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/R8kouzafurikaeiraisho.xlsx', type: 'Excel', size: '18KB' }
+        ] }
+      ]
+    },
+    tokyo_toshima_keiei: {
+      checked: '2026-07-31',
+      portal: { label: '豊島区 公式ページ', url: 'https://www.city.toshima.lg.jp/584/machizukuri/sangyo/kigyo/019174.html' },
+      note: '経営安定コースの様式です。申請書類は1つのExcelにまとまっています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '申請要領', url: 'https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf', type: 'PDF', size: '824KB' },
+          { name: 'チラシ', url: 'https://www.city.toshima.lg.jp/documents/3318/20260415125508.pdf', type: 'PDF', size: '936KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '補助金交付申請書一式', url: 'https://www.city.toshima.lg.jp/documents/3318/20260414144434.xlsx', type: 'Excel', size: '44KB' }
+        ] }
+      ]
+    },
+    tokyo_kita_itiot: {
+      checked: '2026-07-31',
+      portal: { label: '北区 公式ページ', url: 'https://www.city.kita.lg.jp/business/industry/1011356/1011509/1011519.html' },
+      note: '令和8年度の様式です。申請様式は1つのWordにまとまっています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項', url: 'https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/011/519/r8_boshuuyoukou_iot.pdf', type: 'PDF', size: '359KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '申請様式等', url: 'https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/011/519/r8_youshiki_iot_.docx', type: 'Word', size: '56KB' }
+        ] }
+      ]
+    },
+    tokyo_itabashi_digital: {
+      checked: '2026-07-31',
+      portal: { label: '板橋区産業振興公社 公式ページ', url: 'https://itabashi-kohsha.com/subsidies/hruq3mhmotj1aane.html' },
+      note: '令和8年4月1日からの様式です。申請様式は1つのExcelにまとまっています。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '実施要領（令和8年度）', url: 'https://itabashi-kohsha.com/cms-data/file/common/令和8年度デジタル化・データ利活用推進助成金_実施要領（令和８年４月１日～）.pdf', type: 'PDF', size: '988KB' },
+          { name: '交付要綱（令和8年4月1日～）', url: 'https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf', type: 'PDF', size: '261KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '申請様式一式', url: 'https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx', type: 'Excel', size: '120KB' }
+        ] }
+      ]
+    },
+    tokyo_adachi_kaizen: {
+      checked: '2026-07-31',
+      portal: { label: '足立区 公式ページ', url: 'https://www.city.adachi.tokyo.jp/s-shinko/shigoto/chushokigyo/yushi-monozukuri.html' },
+      note: 'コースごとに申請書が分かれています。申請前に相談予約が必要です。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集案内・よくある質問・記入例', url: 'https://www.city.adachi.tokyo.jp/documents/1324/01.pdf', type: 'PDF', size: '1.4MB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '機械設備等購入費補助・店舗改修費補助 相談予約票および申請書', url: 'https://www.city.adachi.tokyo.jp/documents/1324/000.docx', type: 'Word', size: '209KB' },
+          { name: '操業環境改善費補助 申請書', url: 'https://www.city.adachi.tokyo.jp/documents/1324/001.docx', type: 'Word', size: '76KB' },
+          { name: '改修承諾書（賃貸物件で営業・操業している場合）', url: 'https://www.city.adachi.tokyo.jp/documents/1324/kaisyuusyoudakusyo.pdf', type: 'PDF', size: '293KB' },
+          { name: '相談内容報告書（店舗デザイン相談費を含める場合）', url: 'https://www.city.adachi.tokyo.jp/documents/1324/soudannaiyou.pdf', type: 'PDF', size: '227KB' },
+          { name: '見積書のサンプル', url: 'https://www.city.adachi.tokyo.jp/documents/1324/03-01mitumori-excel.xlsx', type: 'Excel', size: '12KB' },
+          { name: '納品書のサンプル', url: 'https://www.city.adachi.tokyo.jp/documents/1324/03-02nohin-excel.xlsx', type: 'Excel', size: '12KB' }
+        ] }
+      ]
+    },
+    tokyo_katsushika_digital: {
+      checked: '2026-07-31',
+      portal: { label: '葛飾区 公式ページ', url: 'https://www.city.katsushika.lg.jp/business/1000011/1034399/1032622/index.html' },
+      note: '交付申請書・事業計画書・企業概要は1つのファイルにまとまっています。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: 'デジタル化支援事業費補助金のご案内', url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf', type: 'PDF', size: '987KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書（第1号様式）・事業計画書（第2号様式）・企業概要（第3号様式）', url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalshinsei.doc', type: 'Word', size: '60KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書（第6号様式）', url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitaljisseki2.doc', type: 'Word', size: '48KB' },
+          { name: '補助金請求書（第9号様式）', url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalseikyuu.doc', type: 'Word', size: '38KB' }
+        ] }
+      ]
+    },
+    tokyo_edogawa_dx: {
+      checked: '2026-07-31',
+      portal: { label: '江戸川区 公式ページ', url: 'https://www.city.edogawa.tokyo.jp/e093/shigotosangyo/jigyosha_oen/sangyo_jigyosya/jyosei/seisanseikojo/dounyu.html' },
+      note: '第2回募集の様式です。別紙3・別紙4は中小企業グループで共同申請する場合のみ必要です。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '募集要項【第2回】', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf', type: 'PDF', size: '728KB' },
+          { name: '募集パンフレット【第2回】', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf', type: 'PDF', size: '668KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '助成金交付申請書兼請求書（様式1）', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc', type: 'Word', size: '49KB' },
+          { name: '事業所概要（別紙1）', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/r8_jigyoujyogaiyou.doc', type: 'Word', size: '42KB' },
+          { name: '事業計画書（別紙2）', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc', type: 'Word', size: '70KB' },
+          { name: '中小企業グループ構成・役割確認表（別紙3）', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/groupekousei-r6.xlsx', type: 'Excel', size: '19KB' },
+          { name: '中小企業グループによる共同事業に係る確認書（別紙4）', url: 'https://www.city.edogawa.tokyo.jp/documents/23284/groupekakunin-r6.docx', type: 'Word', size: '36KB' }
+        ] }
+      ]
+    },
+    tokyo_hachioji_keizoku: {
+      checked: '2026-07-31',
+      portal: { label: '八王子市 公式ページ', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku.html' },
+      note: '事業継続事業の様式です。令和8年度の交付要綱もあわせてご確認ください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '公募要領（事業継続事業）', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/koboyouryo.pdf', type: 'PDF', size: '577KB' },
+          { name: '令和8年度 経営力強化補助金交付要綱', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/R8youkou.pdf', type: 'PDF', size: '467KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '【第1-2号様式】交付申請書（事業継続事業）', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/shinseishoword.docx', type: 'Word', size: '32KB' },
+          { name: '【第1-2号様式】交付申請書 記入例', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/shinseishokinyuurei.pdf', type: 'PDF', size: '556KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '【第5-2号様式】実績報告書（事業継続事業）', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekiword.docx', type: 'Word', size: '29KB' },
+          { name: '【第5-2号様式】実績報告書 記入例', url: 'https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekikinyuurei.pdf', type: 'PDF', size: '316KB' }
+        ] }
+      ]
+    },
+    tokyo_hamura_kiban: {
+      checked: '2026-07-31',
+      portal: { label: '羽村市 公式ページ', url: 'https://www.city.hamura.tokyo.jp/0000018519.html' },
+      note: '令和8年度の様式です。手書き用のPDF版も公式ページにあります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '中小企業経営基盤強化助成金 チラシ', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/R8.4.27koushinnkeieikibannkyoukaR8.pdf', type: 'PDF', size: '482KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書・事業計画書', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/0613-1.docx', type: 'Word', size: '12KB' },
+          { name: '働く環境整備事業（賃上げ・有給取得促進）確認事項', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/R8.4_tinnage.yuukyuu.docx', type: 'Word', size: '9KB' }
+        ] },
+        { phase: '計画を変えるとき', items: [
+          { name: '変更承認申請書', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/hennkou.docx', type: 'Word', size: '10KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/jisseki2.docx', type: 'Word', size: '12KB' },
+          { name: '請求書兼振込依頼書', url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/seijyu2.docx', type: 'Word', size: '10KB' }
+        ] }
+      ]
+    },
+    tokyo_nishitokyo_dx: {
+      checked: '2026-07-31',
+      portal: { label: '西東京市 公式ページ', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.html' },
+      note: '令和8年度の様式です。交付申請書・事業計画書には記入例があります。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: 'DX化推進事業補助金 チラシ', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8tirashi.pdf', type: 'PDF', size: '636KB' }
+        ] },
+        { phase: '交付申請', items: [
+          { name: '交付申請書', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8sinseisyo.docx', type: 'Word', size: '18KB' },
+          { name: '交付申請書 記入例', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/sinseisyokinyurei.pdf', type: 'PDF', size: '84KB' },
+          { name: '補助事業計画書', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8keikakusyo.docx', type: 'Word', size: '32KB' },
+          { name: '補助事業計画書 記入例', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8keikakusyokinyurei.pdf', type: 'PDF', size: '350KB' }
+        ] },
+        { phase: '計画を変えるとき', items: [
+          { name: '変更等申請書', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8henkou.docx', type: 'Word', size: '19KB' }
+        ] },
+        { phase: '実績報告（事業が終わったあと）', items: [
+          { name: '実績報告書', url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8houkokusyo.docx', type: 'Word', size: '25KB' }
+        ] }
+      ]
     }
   };
 
@@ -7820,7 +8193,13 @@
       '／' + (currentPrefecture ? (PREFECTURE_LABEL[currentPrefecture] || currentPrefecture) : '全国共通') +
       '／従業員' + currentEmployeeCount + '人' +
       '　印刷日：' + new Date().toLocaleDateString('ja-JP') + '</p>' +
-      '<p class="pmeta">様式は年度・公募回ごとに差し替わります。提出前に必ず各制度の公式ページで最新版をご確認ください。</p>';
+      '<p class="pmeta">様式は年度・公募回ごとに差し替わります。提出前に必ず各制度の公式ページで最新版をご確認ください。</p>' +
+      // 紙で窓口に持っていく前提の一覧なので、画面と同じ注意を必ず載せる。
+      // 「この紙にある分をそろえれば足りる」と読まれると困る
+      '<p class="pwarn">このリストは、公式サイトからダウンロードできる様式だけです。' +
+      'ほかに見積書・決算書・登記事項証明書・納税証明書・賃金台帳などの添付や、' +
+      '商工会議所・認定支援機関に出してもらう書類が必要な制度があります。' +
+      '提出書類の全体像は各制度の「公募要領」に一覧で載っていますので、必ずそちらでご確認ください。</p>';
     var body = keys.filter(function (k) { return PROGRAM_DOCS[k]; }).map(function (k) {
       var d = PROGRAM_DOCS[k];
       return '<h2>' + PROGRAMS[k].name + '</h2>' +

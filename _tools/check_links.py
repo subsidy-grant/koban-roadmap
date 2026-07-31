@@ -2,18 +2,21 @@
 """サイト内の外部リンクを実際に叩いて、リンク切れと『中身の差し替え』を検出する。
 
 なぜ必要か:
-  index.html には制度の公式ページ 107件と、公式の様式ファイル 37件＋ポータル6件を
-  載せている。役所のページは告知なしに URL が変わり、様式は年度・公募回ごとに
-  差し替わる。人手では追いきれないので、毎週これを回して一次情報を取り直す。
+  index.html には制度の公式ページと、公式の様式ファイル＋ポータルを載せている。
+  役所のページは告知なしに URL が変わり、様式は年度・公募回ごとに差し替わる。
+  人手では追いきれないので、毎週これを回して一次情報を取り直す。
+  （件数は index.html から自動で拾うので、ここには書かない。実行すると先頭に出る）
 
   「様式が最新版かどうか」は 200 が返るだけでは分からない。同じ URL のまま中身が
   差し替わることがあるため、Content-Length と Last-Modified を前回値と比べて
   『差し替わった可能性』として報告する。
 
 使い方:
-  python3 _tools/check_links.py              # 全URLを確認し、_tools/link_report.md を出す
-  python3 _tools/check_links.py --limit 20   # 先頭20件だけ（動作確認用）
-  python3 _tools/check_links.py --no-save    # link_status.json を更新しない
+  python3 _tools/check_links.py                  # 全URLを確認し、link_report.md を出す
+  python3 _tools/check_links.py --only city.fuchu  # URLに文字列を含むものだけ
+  python3 _tools/check_links.py --kind docs-file   # 様式ファイルだけ
+  python3 _tools/check_links.py --no-save          # link_status.json を更新しない
+  絞り込んだときは link_report_part.md に出す（全件版を潰さないため）
 
 終了コード:
   0 = 対応不要（正常・新規・一時リダイレクトのみ）
@@ -164,6 +167,15 @@ def collect_targets(index_html_path, extra_html_paths):
             u = u.rstrip('.,)')
             if u not in targets:
                 add(u, "（出典・参考リンク）", "other", where=rel)
+
+    # 上の素朴な拾い方は空白でURLを切る。ファイル名に全角スペースを含むURLがあり
+    # （港区の「第2号様式　誓約書兼同意書.docx」。2026-07-31に実測）、途中で切れた
+    # 断片が「リンク切れ」として毎週上がってしまう。PROGRAMS/PROGRAM_DOCS から
+    # 正しく読めているURLの前半分でしかないものは、拾い間違いなので落とす。
+    known = [u for u, t in targets.items() if t["kind"] != "other"]
+    for u in [u for u, t in targets.items() if t["kind"] == "other"]:
+        if any(k != u and k.startswith(u) for k in known):
+            del targets[u]
 
     return targets
 
@@ -411,7 +423,8 @@ def main():
     os.makedirs(TOOLS, exist_ok=True)
     # 絞り込んだときは全件版のレポートを上書きしない（全体像が消えるため）
     suffix = "" if len(check) == len(targets) else "_part"
-    with open(REPORT_PATH.replace(".md", suffix + ".md"), "w", encoding="utf-8") as f:
+    report_path = REPORT_PATH.replace(".md", suffix + ".md")
+    with open(report_path, "w", encoding="utf-8") as f:
         f.write(build_report(targets, results, verdicts, stamp) + "\n")
     with open(BRIEF_PATH.replace(".md", suffix + ".md"), "w", encoding="utf-8") as f:
         f.write(build_report(targets, results, verdicts, stamp, brief=True) + "\n")
@@ -442,7 +455,7 @@ def main():
     for v, _ in verdicts.values():
         counts[v] += 1
     print("\n" + "／".join("%s %d" % (k, counts[k]) for k, _ in SEVERITY if counts[k]))
-    print("レポート: " + REPORT_PATH)
+    print("レポート: " + report_path)
 
     if any(counts[k] for k in NEEDS_FIX):
         return 1
