@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>申請書類の準備｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="補助金・助成金の申請書類を準備するページ。会社情報を1回入力して各書類に転記、取り寄せが必要な共通書類の確認、締切からの逆算、提出書類のチェックリストを1か所でまとめられます。登録不要・保存はお使いの端末の中だけ。">
+<link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/documents.html">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="補助金活用 業務改善ロードマップ">
+<meta property="og:title" content="申請書類の準備｜会社情報の転記・共通書類・締切逆算">
+<meta property="og:description" content="会社情報を1回入力して各様式に転記。取り寄せに日数がかかる書類を締切から逆算。提出書類のチェックは端末に残ります。">
+<meta property="og:url" content="https://subsidy-grant.github.io/koban-roadmap/documents.html">
+<meta property="og:locale" content="ja_JP">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体はトップページ（index.html）の「窓口の案内サイン」をそのまま使う。
+     青=案内／橙=注意／緑=状態。この3色以外を増やさない。
+     このページ独自の見せ方は「記入欄」だけ ――
+     申請様式そのものが下線と枠でできているので、入力欄も同じ作りにして
+     「いま帳票を書いている」感覚のまま操作できるようにしている。 */
+  :root {
+    --paper: #f1f3f5;
+    --paper-raised: #ffffff;
+    --ink: #14161a;
+    --ink-soft: #454b55;
+    --ink-faint: #565c66;
+    --accent: #00519e;
+    --accent-soft: #a8c6e4;
+    --accent-wash: #e7f0f8;
+    --on-accent: #ffffff;
+    --sage: #1f6b47;
+    --sage-wash: #e2f0e8;
+    --rust: #b34700;
+    --rust-wash: #fdf0e6;
+    --line: #c9ced6;
+    --shadow: rgba(20, 22, 26, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #10141c; --paper-raised: #161b26; --ink: #e8ebf1; --ink-soft: #b7c0d1;
+      --ink-faint: #9aa6bd; --accent: #7fa4d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --on-accent: #10141c; --sage: #7fbf9c; --sage-wash: #16261d; --rust: #f0955a;
+      --rust-wash: #2e1c17; --line: #262d3c; --shadow: rgba(0, 0, 0, 0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1319; --paper-raised: #171c24; --ink: #e9edf3; --ink-soft: #b3bcc9;
+    --ink-faint: #9aa4b2; --accent: #7cb2e8; --accent-soft: #22364d; --accent-wash: #16243a;
+    --on-accent: #0f1319; --sage: #79c39c; --sage-wash: #15271e; --rust: #f0955a;
+    --rust-wash: #2c1d12; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+  }
+  :root[data-theme="light"] {
+    --paper: #f4f5f7; --paper-raised: #ffffff; --ink: #1b2333; --ink-soft: #48536a;
+    --ink-faint: #5a6478; --accent: #2b4c7e; --accent-soft: #c3d2e8; --accent-wash: #e7edf6;
+    --on-accent: #ffffff; --sage: #2f6b4f; --sage-wash: #dcefe2; --rust: #b0342a;
+    --rust-wash: #f7ded8; --line: #dde1e8; --shadow: rgba(27, 35, 51, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Hiragino Sans","Meiryo",sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
+  main { max-width: 940px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
+  a { color: var(--accent); }
+
+  /* ---- ページ頭 ---- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap; margin-bottom: 1.4rem;
+  }
+  .back { font-size: 0.92rem; }
+  .theme-btn {
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+    border-radius: 6px; padding: 0.45rem 0.8rem; font: inherit; font-size: 0.85rem;
+    cursor: pointer; min-height: 44px;
+  }
+  h1 { font-size: 1.5rem; margin: 0 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
+
+  .privacy {
+    margin: 1.2rem 0 0; padding: 0.9rem 1.1rem; border-radius: 10px;
+    background: var(--sage-wash); border: 1px solid var(--sage);
+    font-size: 0.92rem; color: var(--ink);
+  }
+  .privacy strong { color: var(--ink); }
+
+  /* ---- 目次 ---- */
+  .toc { margin: 1.4rem 0 0; padding: 0.9rem 1.1rem; background: var(--paper-raised);
+    border: 1px solid var(--line); border-radius: 10px; }
+  .toc ol { margin: 0; padding-left: 1.4rem; }
+  .toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+
+  /* ---- 章 ---- */
+  section { margin-top: 3rem; scroll-margin-top: 1rem; }
+  .section-head { display: flex; align-items: baseline; gap: 0.7rem; border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.45rem; margin-bottom: 0.9rem; }
+  .section-no { font-size: 1.5rem; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .section-head h2 { font-size: 1.15rem; margin: 0; }
+  .section-sub { color: var(--ink-soft); font-size: 0.93rem; margin: 0 0 1rem; max-width: 66ch; }
+
+  /* ---- 記入欄（このページのシグネチャ） ----
+     ラベルを左の薄い青地に置き、入力欄は下線。役所の申請様式の記入欄と同じ形。 */
+  .form-grid { display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden; background: var(--paper-raised); }
+  .frow { display: grid; grid-template-columns: 12.5rem 1fr auto; align-items: stretch;
+    border-bottom: 1px solid var(--line); }
+  .frow:last-child { border-bottom: 0; }
+  .frow > label { background: var(--accent-wash); color: var(--ink); font-size: 0.88rem;
+    padding: 0.7rem 0.8rem; display: flex; align-items: center; gap: 0.3rem;
+    border-right: 1px solid var(--line); }
+  .frow input, .frow textarea {
+    border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 0.98rem;
+    padding: 0.7rem 0.8rem; width: 100%; min-height: 46px; resize: vertical;
+  }
+  .frow input:focus, .frow textarea:focus { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .frow input::placeholder, .frow textarea::placeholder { color: var(--ink-faint); opacity: 0.75; }
+  .copy-btn {
+    border: 0; border-left: 1px solid var(--line); background: var(--paper-raised);
+    color: var(--accent); font: inherit; font-size: 0.82rem; padding: 0 0.9rem;
+    cursor: pointer; min-width: 5.2rem; min-height: 44px;
+  }
+  .copy-btn:hover { background: var(--accent-wash); }
+  .copy-btn.done { background: var(--sage-wash); color: var(--sage); }
+  .fhint { grid-column: 2 / 4; font-size: 0.82rem; color: var(--ink-faint);
+    padding: 0 0.8rem 0.6rem; margin: -0.3rem 0 0; }
+  .fhint.ng { color: var(--rust); }
+  .fhint.ok { color: var(--sage); }
+  @media (max-width: 620px) {
+    .frow { grid-template-columns: 1fr auto; }
+    .frow > label { grid-column: 1 / 3; border-right: 0; border-bottom: 1px solid var(--line); }
+    .fhint { grid-column: 1 / 3; }
+  }
+
+  .btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+  .btn {
+    border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
+    border-radius: 8px; padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
+    cursor: pointer; min-height: 44px;
+  }
+  .btn.ghost { background: var(--paper-raised); color: var(--accent); }
+  .btn:hover { filter: brightness(1.08); }
+  .saved-note { font-size: 0.86rem; color: var(--sage); margin: 0.7rem 0 0; min-height: 1.5em; }
+
+  /* ---- 表 ---- */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.9rem;
+    background: var(--paper-raised); }
+  th, td { border: 1px solid var(--line); padding: 0.6rem 0.7rem; text-align: left; vertical-align: top; }
+  th { background: var(--accent-wash); font-weight: 700; white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.third th, tr.third td { background: var(--rust-wash); }
+  tr.third td:first-child { font-weight: 700; }
+
+  /* ---- 制度カード ---- */
+  .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 2px var(--shadow); }
+  .pcard h3 { font-size: 1rem; margin: 0 0 0.4rem; line-height: 1.6; }
+  .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
+  .deadline { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px;
+    font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+  .deadline.near { background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust); }
+  .deadline.ok { background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage); }
+  .deadline.none { background: var(--paper); color: var(--ink-faint); border: 1px solid var(--line); }
+
+  /* ---- チェックリスト ---- */
+  .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
+  .prog > i { display: block; height: 100%; background: var(--sage); }
+  .phase-ttl { font-size: 0.86rem; color: var(--ink-soft); margin: 0.8rem 0 0.3rem;
+    border-left: 3px solid var(--accent); padding-left: 0.5rem; }
+  ul.checks { list-style: none; margin: 0; padding: 0; }
+  ul.checks li { border-bottom: 1px dashed var(--line); }
+  ul.checks li:last-child { border-bottom: 0; }
+  ul.checks label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.2rem;
+    cursor: pointer; min-height: 44px; }
+  ul.checks input[type="checkbox"] { width: 22px; height: 22px; margin-top: 0.25rem; flex: none;
+    accent-color: var(--sage); }
+  ul.checks .fn { flex: 1; font-size: 0.92rem; }
+  ul.checks li.done .fn { color: var(--ink-faint); text-decoration: line-through; }
+  .ft { font-size: 0.72rem; border: 1px solid var(--line); border-radius: 4px;
+    padding: 0.05rem 0.35rem; color: var(--ink-soft); flex: none; margin-top: 0.35rem; }
+
+  .picker { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 0.9rem 1.1rem; margin-bottom: 1.2rem; }
+  .picker select { font: inherit; font-size: 0.95rem; padding: 0.5rem; max-width: 100%;
+    min-height: 44px; background: var(--paper-raised); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+  .chip { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.84rem;
+    background: var(--accent-wash); border: 1px solid var(--accent-soft); border-radius: 999px;
+    padding: 0.25rem 0.4rem 0.25rem 0.8rem; }
+  .chip button { border: 0; background: transparent; color: var(--ink-soft); font: inherit;
+    cursor: pointer; font-size: 1rem; line-height: 1; padding: 0.35rem 0.45rem; min-height: 32px; }
+
+  .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
+    padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
+  .warn strong { color: var(--rust); }
+  .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
+    border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+
+  /* ---- 印刷（転記カード） ---- */
+  #printArea { display: none; }
+  @media print {
+    body.printing > *:not(#printArea) { display: none !important; }
+    #printArea { display: block !important; }
+    #printArea table { width: 100%; border-collapse: collapse; font-size: 11pt; min-width: 0; }
+    #printArea th, #printArea td { border: 1px solid #000; padding: 0.35rem 0.5rem; color: #000; }
+    #printArea th { background: #eee; width: 12rem; }
+    #printArea h1 { font-size: 14pt; margin: 0 0 0.5rem; color: #000; }
+    #printArea p { font-size: 10pt; color: #000; margin: 0.3rem 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <p class="back"><a href="./">← 補助金活用 業務改善ロードマップ に戻る</a></p>
+    <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">画面を暗くする</button>
+  </div>
+
+  <h1>申請書類の準備</h1>
+  <p class="lede">同じ会社情報を何枚も書き写す手間と、「取り寄せが間に合わない」を減らすためのページです。会社情報は1回だけ入力すれば、以降はこのページから写して使えます。</p>
+
+  <div class="privacy">
+    <strong>入力した内容は、お使いの端末（ブラウザ）の中だけに保存されます。</strong>
+    このサイトにはデータを預かるサーバーがないため、入力内容が外に送られることはありません。
+    その代わり、別の端末やブラウザには引き継がれません。共用パソコンでお使いの場合は、最後に「入力内容を消す」を押してください。
+  </div>
+
+  <nav class="toc">
+    <ol>
+      <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
+      <li><a href="#houjin">法人番号を確かめる</a></li>
+      <li><a href="#common">取り寄せが必要な共通書類</a></li>
+      <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
+      <li><a href="#deadlines">締切一覧</a></li>
+      <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
+    </ol>
+  </nav>
+
+  <!-- 01 会社情報 -->
+  <section id="company">
+    <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報を1回だけ書く</h2></div>
+    <p class="section-sub">補助金の様式は、どの制度でもほぼ同じ項目（所在地・代表者・電話番号など）を繰り返し書かせます。ここに1回入力しておけば、各項目の「写す」を押すだけで様式に貼り付けられます。手書きの方は、下の「転記カードを印刷」で1枚にまとめて持てます。</p>
+
+    <div class="form-grid" id="companyForm"></div>
+
+    <div class="btn-row">
+      <button type="button" class="btn" onclick="printCard()">転記カードを印刷 / PDF保存</button>
+      <button type="button" class="btn ghost" onclick="clearCompany()">入力内容を消す</button>
+    </div>
+    <p class="saved-note" id="savedNote"></p>
+  </section>
+
+  <!-- 02 法人番号 -->
+  <section id="houjin">
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>法人番号を確かめる</h2></div>
+    <p class="section-sub">法人番号は13桁で、1桁目が誤りを見つけるための検査用数字になっています。上の欄に入力すると、この桁の計算が合っているかをその場で確かめます（通信はしません）。個人事業主の方に法人番号はありません。空欄のままで構いません。</p>
+
+    <div class="pcard">
+      <p class="meta" style="margin-bottom:0.6rem;">上の「法人番号」欄に入力すると、ここに結果が出ます。</p>
+      <p id="houjinResult" style="margin:0;font-size:0.98rem;">まだ入力されていません。</p>
+      <p style="margin:0.9rem 0 0;font-size:0.9rem;">
+        番号が分からないときは、国税庁の
+        <a href="https://www.houjin-bangou.nta.go.jp/" target="_blank" rel="noopener noreferrer">法人番号公表サイト ↗</a>
+        で調べられます（無料・登録不要）。開いたら「商号又は名称」の欄に会社名を入れて検索してください。
+        <button type="button" class="btn ghost" id="copyNameBtn" style="font-size:0.85rem;padding:0.4rem 0.9rem;margin-left:0.3rem;">会社名を写す</button>
+      </p>
+      <p style="margin:0.5rem 0 0;font-size:0.85rem;color:var(--ink-faint);">
+        ※検索結果を直接開くリンクは作れません。公表サイトの検索は送信方式（POST）で、
+        会社名をURLに載せて渡すことができないためです（2026年7月31日 16:05 JST にフォームの作りを確認）。
+      </p>
+    </div>
+
+    <div class="warn">
+      <strong>「法人番号を入れたら会社名と住所が自動で入る」形にはできませんでした。</strong>
+      国税庁の法人番号Web-APIと経済産業省のgBizINFOに 2026年7月31日 15:45 JST に問い合わせたところ、
+      どちらも他サイトからの呼び出しを許可する設定（CORS）を返しません。
+      このサイトはサーバーを持たない作りなので、ブラウザから直接呼ぶことができません。
+      上の検索リンクから公表サイトで確認して、お手数ですが写してください。
+    </div>
+  </section>
+
+  <!-- 03 共通書類 -->
+  <section id="common">
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>取り寄せが必要な共通書類</h2></div>
+    <p class="section-sub">様式のダウンロードだけでは申請できません。多くの制度で共通して求められるのが下の書類です。<strong>とくに橙色の行は、自分では発行できず他の人に出してもらう書類</strong>で、ここが間に合わずに締切に届かない原因になります。複数の制度に出す場合、同じ書類を必要な部数だけまとめて取り寄せると1回で済みます。</p>
+
+    <div class="tbl-wrap">
+      <table id="commonTable">
+        <thead>
+          <tr><th>用意する</th><th>書類</th><th>どこで</th><th>かかる日数の目安</th><th>注意</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="warn">
+      <strong>日数はあくまで目安です。</strong>窓口の混み具合・請求方法（窓口／郵送／オンライン）・時期によって変わります。
+      必要な書類と部数は制度ごとに違うので、<strong>必ず各制度の「公募要領」の提出書類一覧でご確認ください。</strong>
+      証明書には「発行後3か月以内」などの期限が付くことが多く、早く取りすぎても使えません。
+    </div>
+  </section>
+
+  <!-- 04 逆算 -->
+  <section id="leadtime">
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
+    <p class="section-sub">提出の締切日を入れると、上の共通書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
+
+    <div class="pcard">
+      <label for="deadlineInput" style="display:block;font-size:0.92rem;margin-bottom:0.4rem;">提出の締切日</label>
+      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
+      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;"></p>
+    </div>
+
+    <div id="leadResult"></div>
+  </section>
+
+  <!-- 05 締切一覧 -->
+  <section id="deadlines">
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切一覧</h2></div>
+    <p class="section-sub">下で選んだ制度の締切をまとめて並べます。<strong>日付は各制度の説明文から機械的に拾ったものです。</strong>公募回の追加や前倒しがあるため、実際に出すときは必ず公式ページでご確認ください。</p>
+
+    <div class="picker">
+      <p style="margin:0 0 0.5rem;font-size:0.93rem;">準備する制度を選んでください。<strong>トップページの☆（お気に入り）と同じもの</strong>を使っています。</p>
+      <select id="progPicker" onchange="addProgram(this.value)">
+        <option value="">＋ 制度を追加する</option>
+      </select>
+      <div class="chips" id="progChips"></div>
+    </div>
+
+    <div id="deadlineList"></div>
+  </section>
+
+  <!-- 06 チェックリスト -->
+  <section id="checklist">
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>提出書類のチェックリスト</h2></div>
+    <p class="section-sub">上で選んだ制度の様式を、提出の順番に並べています。<strong>チェックを付けると、この端末に残ります。</strong>次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
+    <div id="checkList"></div>
+    <p style="margin-top:1.2rem;font-size:0.9rem;color:var(--ink-soft);">
+      ここに出るのは公式サイトからダウンロードできる様式だけです。上の「03 取り寄せが必要な共通書類」と合わせてご確認ください。
+    </p>
+  </section>
+</main>
+
+<div id="printArea"></div>
+
+<script src="page_data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var D = window.KOBAN_DATA || { programs: {}, docs: {} };
+
+  // localStorage のキーは 'koban_' で名前空間化する。
+  // 同じオリジン（subsidy-grant.github.io）に姉妹サイトが同居しているため。
+  var K_COMPANY = 'koban_company';
+  var K_FAV     = 'koban_savedPrograms';   // トップページの☆と共通
+  var K_CHECK   = 'koban_docCheck';
+  var K_COMMON  = 'koban_commonDone';
+
+  function load(key, fallback) {
+    try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : fallback; }
+    catch (e) { return fallback; }
+  }
+  function save(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ---------- 画面の明暗（トップページと同じキーを使う） ----------
+  window.toggleTheme = function () {
+    var cur = document.documentElement.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    syncThemeBtn();
+  };
+  function syncThemeBtn() {
+    var btn = document.getElementById('themeBtn');
+    if (!btn) return;
+    var cur = document.documentElement.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    btn.textContent = cur === 'dark' ? '画面を明るくする' : '画面を暗くする';
+  }
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  })();
+
+  // ---------- 01 会社情報 ----------
+  // 補助金の様式に繰り返し出てくる項目。ここに無いものは各様式で個別に書く。
+  var FIELDS = [
+    { id: 'name',      label: '事業者名（商号・屋号）', ph: '例）株式会社○○／○○美容室' },
+    { id: 'kana',      label: '事業者名フリガナ',       ph: '例）カブシキガイシャマルマル' },
+    { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
+    { id: 'zip',       label: '郵便番号',               ph: '例）150-0001', mode: 'numeric' },
+    { id: 'addr',      label: '所在地',                 ph: '例）東京都渋谷区神宮前1-2-3 ○○ビル4階', big: true },
+    { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
+    { id: 'rep',       label: '代表者氏名',             ph: '例）山田 太郎' },
+    { id: 'repKana',   label: '代表者フリガナ',         ph: '例）ヤマダ タロウ' },
+    { id: 'tel',       label: '電話番号',               ph: '例）03-1234-5678', mode: 'tel' },
+    { id: 'fax',       label: 'FAX番号',                ph: '無ければ空欄で構いません', mode: 'tel' },
+    { id: 'mail',      label: 'メールアドレス',         ph: '例）info@example.jp', mode: 'email' },
+    { id: 'founded',   label: '設立年月日・開業日',     ph: '例）平成30年4月1日' },
+    { id: 'capital',   label: '資本金',                 ph: '例）3,000,000円（個人事業主は空欄）' },
+    { id: 'employees', label: '従業員数',               ph: '例）8人（常時使用する従業員）', mode: 'numeric' },
+    { id: 'industry',  label: '業種',                   ph: '例）美容業（日本標準産業分類 7821）' },
+    { id: 'business',  label: '事業内容',               ph: '例）美容室の運営。カット・カラー・トリートメント等', big: true },
+    { id: 'staff',     label: '担当者氏名',             ph: '代表者と同じなら空欄で構いません' },
+    { id: 'staffTel',  label: '担当者の連絡先',         ph: '例）090-1234-5678', mode: 'tel' }
+  ];
+
+  var company = load(K_COMPANY, {});
+
+  function renderCompany() {
+    var el = document.getElementById('companyForm');
+    el.innerHTML = FIELDS.map(function (f) {
+      var v = esc(company[f.id] || '');
+      var input = f.big
+        ? '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>'
+        : '<input id="f_' + f.id + '" type="text"' +
+          (f.mode ? ' inputmode="' + f.mode + '"' : '') +
+          ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
+      return '<div class="frow">' +
+        '<label for="f_' + f.id + '">' + esc(f.label) + '</label>' +
+        input +
+        '<button type="button" class="copy-btn" data-copy="' + f.id + '">写す</button>' +
+        (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
+        '</div>';
+    }).join('');
+
+    FIELDS.forEach(function (f) {
+      var node = document.getElementById('f_' + f.id);
+      node.addEventListener('input', function () {
+        company[f.id] = node.value;
+        var ok = save(K_COMPANY, company);
+        showSaved(ok);
+        if (f.id === 'houjin') checkHoujin();
+        if (f.id === 'name') updateHoujinSearch();
+      });
+    });
+
+    el.querySelectorAll('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { copyField(btn); });
+    });
+  }
+
+  var savedTimer = null;
+  function showSaved(ok) {
+    var n = document.getElementById('savedNote');
+    n.textContent = ok ? 'この端末に保存しました。' :
+      '保存できませんでした（ブラウザの設定で保存が禁止されている可能性があります）。';
+    n.style.color = ok ? 'var(--sage)' : 'var(--rust)';
+    clearTimeout(savedTimer);
+    savedTimer = setTimeout(function () { n.textContent = ''; }, 2500);
+  }
+
+  function copyField(btn) {
+    var id = btn.getAttribute('data-copy');
+    var node = document.getElementById('f_' + id);
+    var text = node.value;
+    if (!text) { btn.textContent = '空です'; setTimeout(function () { btn.textContent = '写す'; }, 1400); return; }
+    var done = function () {
+      btn.textContent = '写した';
+      btn.classList.add('done');
+      setTimeout(function () { btn.textContent = '写す'; btn.classList.remove('done'); }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(node, done); });
+    } else {
+      fallbackCopy(node, done);
+    }
+  }
+  // clipboard API はhttps以外や古い端末で使えないことがあるので、選択方式を残す
+  function fallbackCopy(node, done) {
+    node.select();
+    try { document.execCommand('copy'); done(); }
+    catch (e) { alert('自動で写せませんでした。欄の文字を選んでコピーしてください。'); }
+  }
+
+  window.clearCompany = function () {
+    if (!confirm('入力した会社情報をこの端末から消します。よろしいですか？')) return;
+    company = {};
+    try { localStorage.removeItem(K_COMPANY); } catch (e) {}
+    renderCompany();
+    checkHoujin();
+    updateHoujinSearch();
+    var n = document.getElementById('savedNote');
+    n.textContent = '消しました。';
+    n.style.color = 'var(--ink-soft)';
+  };
+
+  // ---------- 転記カードの印刷 ----------
+  window.printCard = function () {
+    var rows = FIELDS.filter(function (f) { return (company[f.id] || '').trim(); })
+      .map(function (f) {
+        return '<tr><th>' + esc(f.label) + '</th><td>' + esc(company[f.id]) + '</td></tr>';
+      }).join('');
+    if (!rows) { alert('まだ何も入力されていません。'); return; }
+    var d = new Date();
+    var stamp = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+    document.getElementById('printArea').innerHTML =
+      '<h1>申請書類 転記カード</h1>' +
+      '<p>補助金・助成金の様式に書き写すための控えです。（' + stamp + ' 印刷）</p>' +
+      '<table>' + rows + '</table>' +
+      '<p>※この控えには事業者の情報が載っています。取り扱いにご注意ください。</p>';
+    document.body.classList.add('printing');
+    window.print();
+    setTimeout(function () { document.body.classList.remove('printing'); }, 300);
+  };
+
+  // ---------- 02 法人番号の検査用数字 ----------
+  // 国税庁の定義：法人番号13桁は「検査用数字1桁 ＋ 基礎番号12桁」。
+  //   検査用数字 = 9 − (Σ(n=1..12) Pn × Qn) mod 9
+  //   Pn = 基礎番号の下からn桁目の数字、Qn = nが奇数なら1・偶数なら2
+  // 国税庁自身の法人番号 7000012050002 で計算が合うことを確認している。
+  function houjinCheckDigit(base12) {
+    var sum = 0;
+    for (var n = 1; n <= 12; n++) {
+      var p = parseInt(base12.charAt(12 - n), 10);
+      sum += p * (n % 2 === 1 ? 1 : 2);
+    }
+    return 9 - (sum % 9);
+  }
+  function checkHoujin() {
+    var raw = (company.houjin || '').replace(/[^0-9]/g, '');
+    var hint = document.getElementById('hint_houjin');
+    var out = document.getElementById('houjinResult');
+    if (!hint || !out) return;
+    if (!raw) {
+      hint.textContent = ''; hint.className = 'fhint';
+      out.textContent = 'まだ入力されていません。';
+      out.style.color = 'var(--ink-soft)';
+      return;
+    }
+    if (raw.length !== 13) {
+      hint.textContent = 'いまは' + raw.length + '桁です。法人番号は13桁です。';
+      hint.className = 'fhint ng';
+      out.textContent = '桁数が足りません（' + raw.length + '桁）。法人番号は13桁です。';
+      out.style.color = 'var(--rust)';
+      return;
+    }
+    var ok = houjinCheckDigit(raw.slice(1)) === parseInt(raw.charAt(0), 10);
+    hint.textContent = ok ? '13桁・検査用数字とも合っています。' : '13桁ですが、検査用数字が合いません。';
+    hint.className = 'fhint ' + (ok ? 'ok' : 'ng');
+    out.textContent = ok
+      ? '13桁で、検査用数字の計算も合っています。書き写しの誤りは無さそうです。'
+      : '13桁ですが、検査用数字の計算が合いません。どこかの数字が違っている可能性があります。';
+    out.style.color = ok ? 'var(--sage)' : 'var(--rust)';
+  }
+  // 公表サイトの検索はPOST（CSRFトークン付き）なので、会社名をURLで渡すリンクは作れない。
+  // 代わりに会社名をコピーして、検索欄に貼れるようにする。
+  function updateHoujinSearch() {
+    var btn = document.getElementById('copyNameBtn');
+    if (!btn) return;
+    var nm = (company.name || '').trim();
+    btn.disabled = !nm;
+    btn.style.opacity = nm ? '1' : '0.5';
+    btn.textContent = nm ? '会社名を写す' : '会社名が未入力です';
+  }
+
+  // ---------- 03 共通書類 ----------
+  // 日数は「窓口が混んでいなければこのくらい」という目安。制度・自治体で変わるため、
+  // 画面にも必ず目安と書き、公募要領で確認するよう促している。
+  // third=true は自分では発行できず、他の人・他の機関に出してもらう書類。
+  var COMMON_DOCS = [
+    { id: 'toki',    doc: '登記事項証明書（履歴事項全部証明書）', where: '法務局の窓口・オンライン請求', days: 7,  third: false,
+      note: '「発行後3か月以内」など期限指定が多い。早く取りすぎても使えない' },
+    { id: 'inkan',   doc: '印鑑証明書', where: '法人は法務局／個人は市区町村', days: 3, third: false,
+      note: '押印を求める制度で必要。期限指定あり' },
+    { id: 'kokuzei', doc: '納税証明書（国税）', where: '所轄の税務署・e-Tax', days: 7, third: false,
+      note: '「その3」など種類の指定があるので公募要領を確認' },
+    { id: 'chihou',  doc: '納税証明書・完納証明書（地方税）', where: '市区町村・都道府県税事務所', days: 7, third: false,
+      note: '市区町村の制度は「市税の滞納が無いこと」が条件のことが多い' },
+    { id: 'kessan',  doc: '決算書（直近2期分）', where: '自社・顧問税理士', days: 7, third: false,
+      note: '税理士に依頼する場合は日数を見込む' },
+    { id: 'kakutei', doc: '確定申告書の控え（収受印または受信通知つき）', where: '自社', days: 30, third: false,
+      note: '控えが手元に無いと税務署への開示請求になり、1か月ほどかかることがある' },
+    { id: 'chingin', doc: '賃金台帳・労働者名簿', where: '自社', days: 1, third: false,
+      note: '賃上げ要件のある制度で必要' },
+    { id: 'hoken',   doc: '労働保険・社会保険の加入が分かる書類', where: '自社・年金事務所等', days: 7, third: false,
+      note: '従業員を雇っている場合に求められることがある' },
+    { id: 'kyoka',   doc: '許認可証の写し（美容所の証明書・飲食店営業許可証など）', where: '自社・保健所', days: 7, third: false,
+      note: '手元にあれば当日。再発行は日数がかかる' },
+    { id: 'mitsu',   doc: '見積書（2社以上を求められることが多い）', where: '発注先の業者', days: 14, third: true,
+      note: '相見積りの指定金額・様式がある制度が多い。業者の返事待ちが発生する' },
+    { id: 'shien',   doc: '事業支援計画書（様式4など）', where: '商工会議所・商工会', days: 14, third: true,
+      note: '公募要領に「発行に日数を要する」と明記される制度がある。締切の数日前で受付を締め切る窓口がある' },
+    { id: 'nintei',  doc: '認定経営革新等支援機関の確認書', where: '認定支援機関（金融機関・税理士等）', days: 14, third: true,
+      note: '面談が必要な場合があり、最も日数がかかりやすい' },
+    { id: 'gbiz',    doc: 'gBizIDプライム', where: 'gBizID 公式サイト（オンライン申請）', days: 14, third: true,
+      note: '国の制度の電子申請で必要。審査に日数がかかるので、様式を書き始める前に申し込む' }
+  ];
+
+  var commonDone = load(K_COMMON, {});
+
+  function renderCommon() {
+    var tb = document.querySelector('#commonTable tbody');
+    tb.innerHTML = COMMON_DOCS.map(function (c) {
+      var days = c.days === 1 ? '当日' : ('〜' + c.days + '日');
+      return '<tr class="' + (c.third ? 'third' : '') + '">' +
+        '<td class="num">' + (c.third ? '他の人に頼む' : '自分で') + '</td>' +
+        '<td>' + esc(c.doc) + '</td>' +
+        '<td>' + esc(c.where) + '</td>' +
+        '<td class="num">' + days + '</td>' +
+        '<td>' + esc(c.note) + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  // ---------- 04 締切からの逆算 ----------
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+
+  function renderLead() {
+    var v = document.getElementById('deadlineInput').value;
+    var out = document.getElementById('leadResult');
+    if (!v) {
+      out.innerHTML = '<p class="empty">締切日を入れると、書類ごとの「いつまでに頼むか」を出します。' +
+        '下の「05 締切一覧」から日付を押しても入ります。</p>';
+      return;
+    }
+    var parts = v.split('-');
+    var due = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var left = Math.round((due - today) / 86400000);
+
+    var rows = COMMON_DOCS.slice().sort(function (a, b) { return b.days - a.days; }).map(function (c) {
+      var by = new Date(due.getTime() - c.days * 86400000);
+      var late = by < today;
+      return '<tr class="' + (c.third ? 'third' : '') + '">' +
+        '<td>' + esc(c.doc) + '</td>' +
+        '<td class="num">' + (c.days === 1 ? '当日' : '〜' + c.days + '日') + '</td>' +
+        '<td class="num">' + fmt(by) + '</td>' +
+        '<td class="num">' + (late
+          ? '<span class="deadline near">もう過ぎています</span>'
+          : '<span class="deadline ok">あと' + Math.round((by - today) / 86400000) + '日</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+
+    var head = left < 0
+      ? '<div class="warn"><strong>入力した締切日は過ぎています。</strong>次回の公募回の締切でお試しください。</div>'
+      : '<p class="section-sub">締切まであと<strong>' + left + '日</strong>です（' + fmt(due) + '）。</p>';
+
+    out.innerHTML = head +
+      '<div class="tbl-wrap"><table><thead><tr>' +
+      '<th>書類</th><th>目安</th><th>いつまでに頼むか</th><th>残り</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="warn">日数は目安です。橙色の行は他の人に出してもらう書類で、' +
+      '相手の都合で遅れます。<strong>期限ぎりぎりではなく、数日の余裕を見て依頼してください。</strong></div>';
+  }
+
+  // ---------- 05 締切一覧 ----------
+  // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
+  // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
+  function extractDates(text) {
+    if (!text) return [];
+    var found = [], m;
+    var reWareki = /令和\s*(\d+|元)\s*年\s*(\d+)\s*月\s*(\d+)\s*日/g;
+    while ((m = reWareki.exec(text))) {
+      var y = (m[1] === '元' ? 1 : parseInt(m[1], 10)) + 2018;
+      found.push(new Date(y, +m[2] - 1, +m[3]));
+    }
+    var reSeireki = /(20\d\d)\s*年\s*(\d+)\s*月\s*(\d+)\s*日/g;
+    while ((m = reSeireki.exec(text))) found.push(new Date(+m[1], +m[2] - 1, +m[3]));
+    return found;
+  }
+
+  function nextDeadline(text) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var future = extractDates(text).filter(function (d) { return d >= today; });
+    future.sort(function (a, b) { return a - b; });
+    return future.length ? future[0] : null;
+  }
+
+  function getPicked() {
+    var arr = load(K_FAV, []);
+    return Array.isArray(arr) ? arr.filter(function (k) { return D.programs[k]; }) : [];
+  }
+
+  window.addProgram = function (key) {
+    if (!key) return;
+    var arr = load(K_FAV, []);
+    if (!Array.isArray(arr)) arr = [];
+    if (arr.indexOf(key) === -1) { arr.push(key); save(K_FAV, arr); }
+    document.getElementById('progPicker').value = '';
+    renderPicked();
+  };
+  window.removeProgram = function (key) {
+    var arr = load(K_FAV, []).filter(function (k) { return k !== key; });
+    save(K_FAV, arr);
+    renderPicked();
+  };
+
+  function renderPicker() {
+    var sel = document.getElementById('progPicker');
+    var picked = getPicked();
+    var keys = Object.keys(D.programs).filter(function (k) { return picked.indexOf(k) === -1; });
+    keys.sort(function (a, b) { return D.programs[a].name.localeCompare(D.programs[b].name, 'ja'); });
+    sel.innerHTML = '<option value="">＋ 制度を追加する</option>' +
+      keys.map(function (k) {
+        return '<option value="' + esc(k) + '">' + esc(D.programs[k].name) + '</option>';
+      }).join('');
+  }
+
+  function renderChips() {
+    var picked = getPicked();
+    var el = document.getElementById('progChips');
+    var stale = unknownFromQuery
+      ? '<p class="warn" style="margin:0 0 0.6rem;">開こうとした制度が見つかりませんでした。' +
+        '制度の入れ替えで、リンクが古くなっている可能性があります。' +
+        'お手数ですが下の欄から選び直すか、<a href="./#docs">トップページの申請書類</a>から開き直してください。</p>'
+      : '';
+    el.innerHTML = stale + (picked.length
+      ? picked.map(function (k) {
+          return '<span class="chip">' + esc(D.programs[k].name) +
+            '<button type="button" title="外す" onclick="removeProgram(\'' + esc(k) + '\')">×</button></span>';
+        }).join('')
+      : '<span style="font-size:0.88rem;color:var(--ink-soft);">まだ選んでいません。上の欄から追加するか、' +
+        '<a href="./#programs">トップページの☆</a>で登録してください。</span>');
+  }
+
+  function renderDeadlines() {
+    var picked = getPicked();
+    var el = document.getElementById('deadlineList');
+    if (!picked.length) {
+      el.innerHTML = '<p class="empty">制度を選ぶと、締切がここに並びます。</p>';
+      return;
+    }
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var rows = picked.map(function (k) {
+      var p = D.programs[k];
+      return { key: k, p: p, next: nextDeadline(p.schedule) };
+    });
+    rows.sort(function (a, b) {
+      if (a.next && b.next) return a.next - b.next;
+      if (a.next) return -1;
+      if (b.next) return 1;
+      return 0;
+    });
+    el.innerHTML = rows.map(function (r) {
+      var badge;
+      if (r.next) {
+        var left = Math.round((r.next - today) / 86400000);
+        badge = '<button type="button" class="deadline ' + (left <= 30 ? 'near' : 'ok') + '" ' +
+          'style="cursor:pointer;font:inherit;font-size:0.85rem;" ' +
+          'onclick="useDeadline(\'' + iso(r.next) + '\')">' +
+          fmt(r.next) + '（あと' + left + '日）／この日で逆算する</button>';
+      } else {
+        badge = '<span class="deadline none">説明文から締切日を拾えませんでした</span>';
+      }
+      return '<div class="pcard">' +
+        '<h3>' + esc(r.p.name) + '</h3>' +
+        '<p class="meta">' + esc(r.p.schedule || '受付期間の記載がありません') + '</p>' +
+        '<p style="margin:0 0 0.5rem;">' + badge + '</p>' +
+        (r.p.link ? '<p style="margin:0;font-size:0.88rem;"><a href="' + esc(r.p.link) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(r.p.linkLabel || '公式サイトを見る') + ' ↗</a></p>' : '') +
+        '</div>';
+    }).join('');
+  }
+
+  window.useDeadline = function (isoStr) {
+    var input = document.getElementById('deadlineInput');
+    input.value = isoStr;
+    renderLead();
+    document.getElementById('deadlinePick').textContent = '締切一覧から取り込みました。';
+    document.getElementById('leadtime').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // ---------- 06 チェックリスト ----------
+  var checks = load(K_CHECK, {});
+
+  window.toggleCheck = function (progKey, url, on) {
+    if (!checks[progKey]) checks[progKey] = {};
+    if (on) checks[progKey][url] = 1; else delete checks[progKey][url];
+    save(K_CHECK, checks);
+    renderChecklist();
+  };
+
+  function renderChecklist() {
+    var picked = getPicked();
+    var el = document.getElementById('checkList');
+    if (!picked.length) {
+      el.innerHTML = '<p class="empty">制度を選ぶと、その制度の様式がここに並びます。' +
+        '上の「05 締切一覧」で追加してください。</p>';
+      return;
+    }
+    var withDocs = picked.filter(function (k) { return D.docs[k]; });
+    var without = picked.filter(function (k) { return !D.docs[k]; });
+
+    var html = withDocs.map(function (k) {
+      var p = D.programs[k], d = D.docs[k];
+      var mine = checks[k] || {};
+      var total = 0, done = 0;
+      d.groups.forEach(function (g) {
+        g.items.forEach(function (it) { total++; if (mine[it.url]) done++; });
+      });
+      var pct = total ? Math.round(done * 100 / total) : 0;
+      return '<div class="pcard" id="prog-' + esc(k) + '">' +
+        '<h3>' + esc(p.name) + '</h3>' +
+        '<p class="meta">' + done + ' / ' + total + ' 件そろいました' +
+        '（公式サイトで確認した日：' + esc(d.checked) + '）</p>' +
+        '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
+        d.groups.map(function (g) {
+          return '<p class="phase-ttl">' + esc(g.phase) + '</p><ul class="checks">' +
+            g.items.map(function (it) {
+              var on = !!mine[it.url];
+              return '<li class="' + (on ? 'done' : '') + '">' +
+                '<label><input type="checkbox"' + (on ? ' checked' : '') +
+                ' onchange="toggleCheck(\'' + esc(k) + '\',\'' + esc(it.url) + '\',this.checked)">' +
+                '<span class="ft">' + esc(it.type) + '</span>' +
+                '<span class="fn">' + esc(it.name) +
+                ' <a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">開く ↗</a>' +
+                (it.size ? '<span style="color:var(--ink-faint);font-size:0.82rem;"> ' + esc(it.size) + '</span>' : '') +
+                '</span></label></li>';
+            }).join('') + '</ul>';
+        }).join('') +
+        (d.portal ? '<p style="margin:0.8rem 0 0;font-size:0.88rem;"><a href="' + esc(d.portal.url) +
+          '" target="_blank" rel="noopener noreferrer">' + esc(d.portal.label) + ' ↗</a></p>' : '') +
+        '</div>';
+    }).join('');
+
+    if (without.length) {
+      html += '<div class="pcard">' +
+        '<h3>様式をまだ確認できていない制度（' + without.length + '件）</h3>' +
+        '<p class="meta">当サイトで様式の掲載場所を確認できていない制度です。' +
+        '<strong>書類が無いという意味ではありません。</strong>公式ページでご確認ください。</p>' +
+        '<ul style="margin:0;padding-left:1.2rem;font-size:0.9rem;">' + without.map(function (k) {
+          var p = D.programs[k];
+          return '<li><a href="' + esc(p.link) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(p.name) + ' ↗</a></li>';
+        }).join('') + '</ul></div>';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderPicked() {
+    renderPicker();
+    renderChips();
+    renderDeadlines();
+    renderChecklist();
+  }
+
+  // ---------- 起動 ----------
+  // トップページの書類カードから ?p=制度キー で来たとき、その制度を選択済みにする
+  var unknownFromQuery = false;
+  (function fromQuery() {
+    var m = /[?&]p=([^&]+)/.exec(location.search);
+    if (!m) return;
+    var key = decodeURIComponent(m[1]);
+    // 制度が入れ替わった後の古いリンク・ブックマークで来ることがある。
+    // 黙って何も起きないと「壊れている」と受け取られるので、理由を出す。
+    if (!D.programs[key]) { unknownFromQuery = true; return; }
+    var arr = load(K_FAV, []);
+    if (!Array.isArray(arr)) arr = [];
+    if (arr.indexOf(key) === -1) { arr.push(key); save(K_FAV, arr); }
+  })();
+
+  renderCompany();
+  checkHoujin();
+  updateHoujinSearch();
+  document.getElementById('copyNameBtn').addEventListener('click', function () {
+    var node = document.getElementById('f_name');
+    if (node && node.value) copyField(document.querySelector('.copy-btn[data-copy="name"]'));
+  });
+  renderCommon();
+  renderLead();
+  renderPicked();
+  syncThemeBtn();
+  document.getElementById('deadlineInput').addEventListener('change', function () {
+    document.getElementById('deadlinePick').textContent = '';
+    renderLead();
+  });
+
+  if (/[?&]p=/.test(location.search)) {
+    var t = document.getElementById('checklist');
+    if (t) setTimeout(function () { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
+  }
+})();
+</script>
+</body>
+</html>

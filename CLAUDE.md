@@ -22,7 +22,13 @@
 python3 _tools/check_links.py --only <URLの一部>   # そのリンクが今どうなっているかを取り直す
 python3 _tools/check_links.py                      # 制度リンク・様式・出典をまとめて確認（毎週月曜に自動実行）
 python3 _tools/collect_docs.py --only <制度キー>    # 公式ページから様式の候補を拾う（下書き。掲載判断は人）
+python3 _tools/build_page_data.py --check          # documents.html 用データが index.html と一致しているか
 ```
+
+**index.html の制度データ（PROGRAMS / ADDED）や様式（PROGRAM_DOCS）を触ったら、
+`python3 _tools/build_page_data.py` を流して `page_data.js` を作り直すこと。**
+`documents.html`（申請書類の準備）はこの生成ファイルを読んでおり、忘れるとそのページだけ古い制度が残る。
+`page_data.js` は自動生成なので手で編集しない。毎週のリンク確認ワークフローでも作り直して差分をコミットする。
 
 ## 障害を見つけたら、汚染されたデータを洗い出す
 

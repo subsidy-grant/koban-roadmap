@@ -396,7 +396,8 @@ def main():
     ap.add_argument("--no-save", action="store_true")
     args = ap.parse_args()
 
-    extra = [os.path.join(ROOT, "criteria.html")]
+    extra = [os.path.join(ROOT, "criteria.html"),
+             os.path.join(ROOT, "documents.html")]
     for dirpath, _dirs, files in os.walk(os.path.join(ROOT, "improvement")):
         for fn in files:
             if fn.endswith(".html"):

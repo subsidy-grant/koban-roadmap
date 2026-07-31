@@ -1123,6 +1123,14 @@
     font-variant-numeric: tabular-nums;
   }
   .docs-checked { font-size: 0.8rem; color: var(--ink-faint); margin: 0.8rem 0 0; }
+  /* 書類作成ページ（documents.html）への導線。カードの中で最後の行動になるので、
+     ファイル一覧の下・確認日の上に置く。青地の帯にして、ファイルのリンクと区別する */
+  .docs-prep {
+    margin: 0.9rem 0 0; padding: 0.6rem 0.9rem; border-radius: 6px;
+    background: var(--accent-wash); border: 1px solid var(--accent-soft);
+  }
+  .docs-prep a { font-size: 0.9rem; font-weight: 700; text-decoration: none; display: inline-block; min-height: 1.5em; }
+  .docs-prep a:hover { text-decoration: underline; }
   .docs-card-unknown { background: var(--paper); }
   .docs-links { list-style: none; margin: 0.6rem 0 0; }
   .docs-links li { border-bottom: 1px dotted var(--line); }
@@ -2245,6 +2253,12 @@
       <p>様式のほかに、事業者ご自身で用意する書類（見積書、決算書・確定申告書、登記事項証明書、納税証明書、賃金台帳・労働者名簿など）や、第三者に出してもらう書類（商工会議所・商工会の事業支援計画書、認定経営革新等支援機関の確認書など）を求められることがあります。取得に日数がかかるものや、電子申請用のIDのように事前の準備が要るものもあります。</p>
       <p><strong>提出書類の全体像は、各制度の「公募要領」に一覧で載っています。</strong>下の各制度の「申請の前に読む」にある公募要領を開いて、必ずそちらでご確認ください。</p>
     </div>
+
+    <!-- 書類作成ページへの導線。各制度のカードの中にも同じリンクを置いているが、
+         ここにも出さないと「まず何をすればいいか」が分からないため。 -->
+    <p class="docs-prep" style="margin-top:1.1rem;">
+      <a href="documents.html">同じ会社情報を何枚も書き写さずに済ませる → 申請書類の準備ページ（会社情報の転記・共通書類・締切の逆算・チェックリスト）</a>
+    </p>
 
     <div class="sort-row" id="docsToolRow">
       <span class="sort-label">表示</span>
@@ -9484,6 +9498,8 @@
                 '</a></li>';
             }).join('') + '</ul></div>';
         }).join('') +
+        '<p class="docs-prep"><a href="documents.html?p=' + encodeURIComponent(k) + '">' +
+          'この制度の書類を準備する（会社情報の転記・締切の逆算・チェックリスト） →</a></p>' +
         '<p class="docs-checked">公式サイトで確認した日：' + d.checked + '</p>' +
         '</div>';
     }).join('');

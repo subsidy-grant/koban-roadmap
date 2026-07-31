@@ -34,6 +34,15 @@ jobs:
       - name: 判定規則の自己チェック（通信しない）
         run: python3 _tools/test_classify.py
 
+      # documents.html（申請書類の準備）は index.html から作った page_data.js を読む。
+      # index.html だけ直して作り直しを忘れると、書類作成ページだけ古い制度が残る。
+      # 毎週ここで作り直し、差分が出たら下のコミット手順でそのまま反映する。
+      - name: 書類作成ページ用データを作り直す
+        run: |
+          pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          python3 _tools/build_page_data.py
+
       - name: リンクを確認する
         id: check
         run: |
@@ -65,7 +74,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md
+          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md page_data.js
           if git diff --cached --quiet; then
             echo "変化なし。コミットしない。"
           else
