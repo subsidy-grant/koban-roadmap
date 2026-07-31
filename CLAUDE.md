@@ -23,6 +23,7 @@ python3 _tools/check_links.py --only <URLの一部>   # そのリンクが今ど
 python3 _tools/check_links.py                      # 制度リンク・様式・出典をまとめて確認（毎週月曜に自動実行）
 python3 _tools/collect_docs.py --only <制度キー>    # 公式ページから様式の候補を拾う（下書き。掲載判断は人）
 python3 _tools/build_page_data.py --check          # documents.html 用データが index.html と一致しているか
+python3 _tools/build_zipcode.py --check            # 郵便番号データの件数を数える
 ```
 
 **index.html の制度データ（PROGRAMS / ADDED）や様式（PROGRAM_DOCS）を触ったら、

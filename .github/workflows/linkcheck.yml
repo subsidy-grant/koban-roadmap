@@ -43,6 +43,13 @@ jobs:
           python3 -m playwright install --with-deps chromium
           python3 _tools/build_page_data.py
 
+      # 郵便番号は月1回更新される。書類作成ページの住所検索は外部APIではなく
+      # 自サイトの zipdata/ を読むので、ここで作り直さないと古いままになる。
+      # 変化が無ければファイルの中身も変わらず、コミットも発生しない。
+      - name: 郵便番号データを作り直す
+        continue-on-error: true      # 日本郵便側が落ちていてもリンク確認は続ける
+        run: python3 _tools/build_zipcode.py
+
       - name: リンクを確認する
         id: check
         run: |
@@ -74,7 +81,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md page_data.js
+          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md page_data.js zipdata
           if git diff --cached --quiet; then
             echo "変化なし。コミットしない。"
           else
