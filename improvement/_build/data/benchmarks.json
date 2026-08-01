@@ -144,7 +144,7 @@
       },
       "kaizen": {
         "screeningType": "requirement_based",
-        "planNote": "審査による競争選抜ではなく要件充足型のため、要件を満たせば原則支給される。計画書は『賃上げと設備投資の因果』の説明に集中すればよい。",
+        "planNote": "審査による競争選抜ではないが、予算枠の消化による受付終了や、書類不備・要件の行き違いによる不交付はあり得る。要件充足の確認と早期申請が重要で、計画書は『賃上げと設備投資の因果』の説明に集中すればよい。",
         "sourceUrl": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html"
       },
       "career": {
@@ -154,7 +154,7 @@
           "fraudCases": 200,
           "fraudRate": 0.003
         },
-        "planNote": "年間約7万件の利用実績。要件（転換後賃金3%以上引上げ等）を満たせば原則支給。",
+        "planNote": "年間約7万件の利用実績。競争選抜ではないが、要件（転換後賃金3%以上引上げ等）の行き違いや書類不備による不支給はあり得るため、事前の計画届と要件確認が重要。",
         "sourceUrl": "https://hojyokin-portal.jp/columns/career-up_summary"
       },
       "jinzai": {

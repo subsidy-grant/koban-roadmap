@@ -250,6 +250,15 @@ def block_industry(ind, industry_label):
 
 # ---------------------------------------------------------------- ページ組み立て
 
+def block_tax():
+    """税務上の注意。2026-08-02の税理士監修で、60本すべてに税込/税抜・益金算入の
+    記載が無いと指摘を受けて追加した。参考資料ページは1枚に収める制約があるため、
+    見出し付きの節ではなく1行の注意書きにしている（節にすると印刷が1ページ増える）。"""
+    return ('<div class="bmk-box alert"><b>税務上の注意：</b>金額は税抜。'
+            '補助金は益金として課税対象で、固定資産に充てた場合は圧縮記帳（課税の繰延べ）の'
+            '余地がある。仕訳は税理士に確認する。</div>')
+
+
 def build_appendix(industry, plan_no, program_key, investment, footer_left):
     label = INDUSTRY_LABEL.get(industry, industry)
     mbiz = bm.model_business(industry) or {}
@@ -259,13 +268,12 @@ def build_appendix(industry, plan_no, program_key, investment, footer_left):
                           annual_revenue_man_yen=revenue)
 
     body = (block_scale(notes["scale"]) + block_hardware(notes["hardware"])
-            + block_adoption(notes["adoption"]) + block_industry(notes["industry"], label))
+            + block_adoption(notes["adoption"]) + block_industry(notes["industry"], label)
+            + block_tax())
 
     foot = notes["footnotes"]
     src = ('<div class="bmk-sec"><div class="bmk-h">出典</div><ul class="bmk-src">'
            + "".join(f"<li>{esc(x)}</li>" for x in foot)
-           + '<li>本ページは improvement/_build/data/benchmarks.json から自動生成。'
-             '数値の更新は同ファイルを直し apply_benchmarks.py を再実行する。</li>'
            + "</ul></div>")
 
     return (
@@ -274,9 +282,8 @@ def build_appendix(industry, plan_no, program_key, investment, footer_left):
         + '<section class="page bmk-page">'
         '<div class="bmk-head"><span class="bmk-head-t">参考資料：計画の妥当性チェック</span>'
         f'<span class="bmk-head-n">{esc(label)} / PLAN {plan_no:02d} / 自動生成</span></div>'
-        '<p class="bmk-lead">申請書の本文ではなく、審査で問われやすい4点を計画書とセットで'
-        '確認するための参考ページ。数値はすべて出典つきの公開データで、'
-        '推計値・仮定値は含まない（未取得の項目は空欄のまま示す）。</p>'
+        '<p class="bmk-lead">審査で問われやすい点を計画書とセットで確認するための参考ページ。'
+        '数値は出典つきの公開データのみで、推計値は含まない。</p>'
         + body + src
         + f'<div class="bmk-foot"><span>{esc(footer_left)}</span><span>参考資料</span></div>'
         "</section>\n"

@@ -172,7 +172,14 @@ def build_fragment():
                 # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
-                parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
+                # 実写の写真を最優先（2026-08-02、本人指示で絵文字から差し替え）。
+                # plans/*.json は build_plan_data.py の生成物で直接編集できないため、
+                # improvement/{ik}/img10/plan-NN.jpg が実在するかで出し分ける
+                img_file = os.path.join(IMPROVEMENT, ik, "img10", f"plan-{no:02d}.jpg")
+                if os.path.exists(img_file):
+                    parts.append(f'<div class="thumb"><img src="improvement/{ik}/img10/plan-{no:02d}.jpg" alt="" loading="lazy" width="640" height="360"></div>')
+                else:
+                    parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')

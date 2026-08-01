@@ -299,7 +299,7 @@ function wageChart(d, color) {
       <text x="${x + bw / 2}" y="${BASE - h - 10}" font-size="16" font-weight="800" fill="${r.hl ? color : C.sub}" text-anchor="middle">${nf(r.v)}</text>
       <text x="${x + bw / 2}" y="${BASE + 20}" font-size="12.5" fill="${C.ink}" text-anchor="middle">${r.k}</text>`;
   });
-  const yMin = BASE - (BASE - TOP) * (1163 - BASEV) / (max - BASEV);
+  const yMin = BASE - (BASE - TOP) * (1226 - BASEV) / (max - BASEV);
   return `<svg viewBox="0 0 ${W} 210" width="100%" role="img">
     <text x="0" y="16" font-size="14" font-weight="800" fill="${C.ink}">事業場内最低賃金の推移</text>
     <text x="0" y="34" font-size="12" fill="${C.sub}">単位: 円/時 (縦軸は${nf(BASEV)}円起点)</text>
@@ -308,7 +308,7 @@ function wageChart(d, color) {
     <line x1="${X0 - 6}" y1="${yMin}" x2="${W - 6}" y2="${yMin}" stroke="${C.red}" stroke-dasharray="5 4" stroke-width="1.5"/>
     <text x="${X0 - 10}" y="${yMin + 4}" font-size="11" fill="${C.red}" text-anchor="end">東京都</text>
     <text x="${X0 - 10}" y="${yMin + 16}" font-size="11" fill="${C.red}" text-anchor="end">最低賃金</text>
-    <text x="${X0 - 10}" y="${yMin + 28}" font-size="11" fill="${C.red}" text-anchor="end">1,163円</text>
+    <text x="${X0 - 10}" y="${yMin + 28}" font-size="11" fill="${C.red}" text-anchor="end">1,226円</text>
     ${body}
     <text x="${W / 2}" y="202" font-size="11.5" fill="${C.mute}" text-anchor="middle">法定最低賃金を全期間で上回る水準を維持する</text>
   </svg>`;
@@ -801,8 +801,8 @@ function buildPlan(d) {
         <div class="callout">
           <b>本計画のメイン: ${s.badge}</b><br>
           ${d.scheme === "省力化"
-            ? `本事業は省力化(生産性向上)効果が明確なため<b>省力化投資補助金(一般型)</b>を主軸とした。賃上げを主目的に据え直せば<b>業務改善助成金</b>への転用も可能。その場合は事業場内最低賃金の引上げ額(50円以上)を軸に、対象経費を生産性向上に資する設備投資へ組み替える。`
-            : `本事業は賃上げと業務改善の親和性が高いため<b>業務改善助成金</b>を主軸とした。投資規模を拡大し省力化効果を前面に出せば<b>省力化投資補助金(一般型)</b>への転用も可能。その場合は補助上限が大きく、大幅賃上げ特例で補助率2/3を狙える。`}
+            ? `本事業は省力化(生産性向上)効果が明確なため<b>省力化投資補助金(一般型)</b>を主軸とした。賃上げを主目的に据え直せば<b>業務改善助成金</b>への転用も可能。その場合は最低賃金の引上げ額(コース区分)を軸に、対象経費を生産性向上に資する設備投資へ組み替える。`
+            : `本事業は賃上げと業務改善の親和性が高いため<b>業務改善助成金</b>を主軸とした。投資規模を拡大し省力化効果を前面に出せば<b>省力化投資補助金(一般型)</b>への転用も可能。その場合は補助上限が大きく、小規模事業者なら補助率2/3。`}
         </div>
       </div>
       <div class="half-1">${photo("desk.jpg", "実申請時は専門家の確認を経て提出する")}</div>

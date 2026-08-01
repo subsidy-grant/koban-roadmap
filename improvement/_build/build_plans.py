@@ -331,6 +331,8 @@ PRECHECK = [
     "交付決定前に発注・契約・支払いをしていないか",
     "相見積など価格の妥当性を示す書類を準備したか",
     "実績報告に使う証憑（請求書・振込記録・写真）の保管ルールを決めたか",
+    # 2026-08-02 診断士監修で追加。採択後に効いてくる義務が60本とも書かれていなかった
+    "取得財産の処分制限と、採択後の報告義務（事業化状況報告・収益納付）を確認したか",
 ]
 
 
@@ -340,7 +342,12 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
     total = inv["total"]
     rate = sub["rate"]
     cap = sub["cap"]
-    applied = round(min(cap, total * rate), 1)
+    # 2026-08-02 診断士監修で追加：投資総額の一部しか補助対象にならない制度がある
+    # （例：デジタル化・AI導入補助金はハードウェア本体が対象外）。
+    # 対象額を eligible に持たせ、補助見込はその額から計算する。
+    # これが無いと「タブレット代にも1/2が付く」計算になり、補助見込が過大になる。
+    eligible = sub.get("eligible", total)
+    applied = round(min(cap, eligible * rate), 1)
     if applied == int(applied):
         applied = int(applied)
     self_pay = round(total - applied, 1)
@@ -455,7 +462,10 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
                     ("補助見込", f'<b style="color:var(--gold)">▲{applied}万円</b>'),
                     ("実質自己負担", f"<b>{self_pay}万円</b>")])
         + f'<div class="callout small" style="margin-top:8px"><b>費用の根拠（{basis_label}）：</b>{esc(inv["basisNote"])}</div></div></div>'
-        + '<p class="note">金額は本サイトの分類別概算（公開情報ベース）であり、実際の見積額は事業者・製品構成により変動する。</p>'
+        + '<p class="note">金額は本サイトの分類別概算（公開情報ベース・税抜）であり、実際の見積額は事業者・製品構成により変動する。</p>'
+        # 2026-08-02 税理士監修で追記：税込/税抜・益金算入・消費税の注意が
+        # 60本すべてに無かった。テンプレートで一括して入れる
+        + '<p class="note">補助金は税務上の収益（益金）として課税対象。消費税の扱いを含む税務上の注意は巻末の参考資料ページに記載。</p>'
     )
     pages.append(page(6, "費用計画", footer_l, "費用計画", body6))
 
@@ -464,9 +474,13 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
         ("活用する制度", esc(sub["label"])),
         ("補助率", esc(sub["rateText"])),
         ("上限額", esc(sub["capText"])),
-        ("本計画での補助見込", f"<b>min(上限{cap}万円, {total}万円×{rate:g}) = {applied}万円</b>"),
+        ("本計画での補助見込", f"<b>min(上限{cap}万円, {eligible}万円×{rate:g}) = {applied}万円</b>"),
         ("自己負担額", f"{self_pay}万円"),
     ]
+    if eligible != total:
+        sub_rows.insert(3, ("補助対象となる経費",
+                            f"<b>{eligible}万円</b>（投資総額{total}万円のうち。"
+                            f'{esc(sub.get("eligibleNote", ""))}）'))
     body7 = (
         f'<p class="lead">{esc(sub["why"])}</p>'
         + head_strip("制度の適用条件と本計画での試算")
@@ -475,7 +489,8 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
         + fig(sh.flow_h("申請から受給までの流れ（一般的な例）", [tuple(s) for s in sub["flowSteps"]], accent=scheme))
         + '<div class="callout scheme small">'
         + esc(sub.get("note", ""))
-        + " 補助率・上限額・公募スケジュールは公募回により変動するため、申請前に必ず公式の公募要領を確認すること。"
+        + " 補助率・上限額・公募スケジュールは公募回により変動し、<b>直近の公募が終了している制度もある。"
+          "申請前に必ず公式サイトで次回公募の有無と公募要領を確認すること。</b>"
         "同一経費への複数制度の重複受給はできない。</div>"
     )
     pages.append(page(7, "補助金活用計画", footer_l, "補助金活用", body7))
