@@ -1136,6 +1136,14 @@
     font-variant-numeric: tabular-nums;
   }
   .docs-checked { font-size: 0.8rem; color: var(--ink-faint); margin: 0.8rem 0 0; }
+  /* 様式のほかに必要な書類。ダウンロードリンクの一覧と見た目を分けて、
+     「このカードの上半分だけそろえれば足りる」と読まれないようにする */
+  .docs-extra { margin-top: 1rem; padding: 0.8rem 0.95rem; background: var(--paper);
+    border: 1px solid var(--line); border-radius: 8px; }
+  .docs-extra .docs-phase { margin-top: 0; }
+  .docs-extra ul { margin: 0.5rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
+  .docs-extra li { margin: 0.25rem 0; }
+  .docs-extra .docs-extra-note { font-size: 0.82rem; color: var(--ink-soft); margin: 0.6rem 0 0; }
   /* 書類作成ページ（documents.html）への導線。カードの中で最後の行動になるので、
      ファイル一覧の下・確認日の上に置く。青地の帯にして、ファイルのリンクと区別する */
   .docs-prep {
@@ -1276,12 +1284,11 @@
       <a href="#favPanel">気になる制度</a>
       <a href="#premise"><span class="toc-no">01</span>対象と前提</a>
       <a href="#conditions"><span class="toc-no">02</span>制度を探す</a>
-      <a href="#ranking"><span class="toc-no">03</span>業務改善の進め方</a>
-      <a href="#simulator"><span class="toc-no">04</span>概算シミュレーター</a>
-      <a href="#improvement-cta"><span class="toc-no">05</span>改善計画10選</a>
-      <a href="#docs"><span class="toc-no">06</span>申請書類・様式</a>
-      <a href="#criteria-cta"><span class="toc-no">07</span>採択・返還基準</a>
-      <a href="#notes"><span class="toc-no">08</span>留意事項</a>
+      <a href="#simulator"><span class="toc-no">03</span>概算シミュレーター</a>
+      <a href="#improvement-cta"><span class="toc-no">04</span>改善計画10選</a>
+      <a href="#docs"><span class="toc-no">05</span>申請書類・様式</a>
+      <a href="#criteria-cta"><span class="toc-no">06</span>採択・返還基準</a>
+      <a href="#notes"><span class="toc-no">07</span>留意事項</a>
     </div>
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
@@ -1674,19 +1681,12 @@
     <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度のカードが上記に追加表示されます（現時点では東京都のみ調査済みで、他の道府県は今後順次追加予定です）。</p>
   </section>
 
-  <section id="ranking">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>業務改善の進め方</h2></div>
-    <!-- もとは10分類のアコーディオンカードを並べていたが、中身が「改善計画10選」と
-         重複していてページが長くなるだけだったため、案内だけに絞った（2026-08-01）。
-         renderRankingHTML() は使わなくなったが、rankList / rankIndustryName の
-         参照が残っているので、空の入れ物は置いたままにしてある。 -->
-    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される業務改善策を100個洗い出し、テーマごとに10分類へ集約したうえで、そこから<strong>10案を選んで事業計画書までつくってあります</strong>。分類の一覧を眺めるより、そちらを見るほうが早く進みます。</p>
-    <p style="margin-top:0.9rem;"><a class="src-link" href="#improvement-cta">改善計画10選を見る（A4×10ページの事業計画書つき） →</a></p>
-    <div class="rank-list" id="rankList" hidden></div>
-  </section>
+  <!-- 「03 業務改善の進め方」は2026-08-02に廃止（案内文だけの節になっており、
+       04の改善計画10選と重複していたため）。renderRankingHTML / rankIndustryName は
+       getElementById が null ガード付きなので、節ごと消しても JS はそのまま動く。 -->
 
   <section id="simulator">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>概算シミュレーター</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>概算シミュレーター</h2></div>
     <p class="section-sub">使いたい制度・従業員数・業務改善の分類（複数選択可）を選ぶと、見込める補助金・助成金の概算受給額を試算します。対象経費の種類が一致しない分類は注意として表示します。</p>
 
     <div class="picker">
@@ -1723,9 +1723,9 @@
   </section>
 
   <section id="improvement-cta">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>業種別・改善計画 厳選10選</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>業種別・改善計画 厳選10選</h2></div>
     <p class="section-sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（各業種1000案からのPDCA評価と、6業種×100施策のスコアリングを突き合わせて選定）。各案に<strong>A4×10ページの事業計画書</strong>（Excel版つき）を用意しています。<strong>導入システムの試作プロトタイプ</strong>は美容業・飲食業で公開中、ほかの業種は準備中です。</p>
-    <p style="margin-top:0.8rem;"><a class="src-link" href="improvement/">改善計画10選を見る ↗</a>　<a class="src-link" id="pdcaBoardLink" href="improvement/beauty/pdca.html">全1000案のPDCAファネル・一覧を見る（美容業版）↗</a></p>
+    <p style="margin-top:0.8rem;"><a class="src-link" id="pdcaBoardLink" href="improvement/beauty/pdca.html">全1000案のPDCAファネル・一覧を見る（美容業版）↗</a></p>
   <!-- IMPROVEMENT_HUB_EMBED:START (embed_hub_cards.py で自動生成、手編集しないこと) -->
 
 <style>
@@ -2245,12 +2245,12 @@
   <!-- IMPROVEMENT_HUB_EMBED:END -->
   </section>
 
-  <!-- 06 申請書類。事業計画書を作った直後・提出の直前に必要になるので、
-       05（事業計画書）と07（採択基準）の間に置いている。
+  <!-- 05 申請書類。事業計画書を作った直後・提出の直前に必要になるので、
+       04（事業計画書）と06（採択基準）の間に置いている。
        中身は PROGRAM_DOCS から描画し、いま選んでいる業種・地域で
        使える制度のぶんだけを出す。 -->
   <section id="docs">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>申請書類・様式をそろえる</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>申請書類・様式をそろえる</h2></div>
     <p class="section-sub">選んだ条件で使える制度について、<strong>公式サイトで配布されている最新の様式・要領</strong>へのダウンロードリンクをまとめています。リンク先はすべて各制度の公式サイトです（当サイトはファイルを保管していません）。</p>
 
     <div class="docs-lead">
@@ -2260,7 +2260,7 @@
     <div class="docs-lead docs-lead-more">
       <p><strong>ここに載っているのは、公式サイトからダウンロードできる様式だけです。これだけでは足りない制度があります。</strong></p>
       <p>様式のほかに、事業者ご自身で用意する書類（見積書、決算書・確定申告書、登記事項証明書、納税証明書、賃金台帳・労働者名簿など）や、第三者に出してもらう書類（商工会議所・商工会の事業支援計画書、認定経営革新等支援機関の確認書など）を求められることがあります。取得に日数がかかるものや、電子申請用のIDのように事前の準備が要るものもあります。</p>
-      <p><strong>提出書類の全体像は、各制度の「公募要領」に一覧で載っています。</strong>下の各制度の「申請の前に読む」にある公募要領を開いて、必ずそちらでご確認ください。</p>
+      <p>そこで、下の各制度のカードの中に<strong>「様式のほかに必要になる主な書類」</strong>も載せました。ただしこれは主要制度の公募要領から拾った傾向です。<strong>提出書類の全体像は、各制度の「公募要領」に一覧で載っています。</strong>各カードの「申請の前に読む」にある公募要領を開いて、必ずそちらでご確認ください。</p>
     </div>
 
     <!-- 書類作成ページへの導線。各制度のカードの中にも同じリンクを置いているが、
@@ -2288,14 +2288,14 @@
 
 
   <section id="criteria-cta">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>採択基準・返還基準 調査ノート</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>採択基準・返還基準 調査ノート</h2></div>
     <p class="section-sub">各制度の公式な公募要領・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
   </section>
 
 
   <section id="notes">
-    <div class="section-head"><span class="section-no jp-serif">08</span><h2>留意事項</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">07</span><h2>留意事項</h2></div>
     <p>補助金・助成金の活用にあたっては、次の点にご留意ください。</p>
     <ul class="item-list" style="max-width:68ch;">
       <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
@@ -9780,6 +9780,56 @@
     return t === 'Excel' ? 'ft-xls' : t === 'Word' ? 'ft-doc'
          : t === 'ZIP' ? 'ft-zip' : 'ft-pdf';
   }
+
+  // 様式のダウンロードだけでは申請できないので、制度の種類ごとに
+  // 「様式のほかに必要になる主な書類」をカードの中に出す。
+  // 内容は 2026-08-01 に主要制度の公募要領・手引き（小規模事業者持続化補助金 第20回、
+  // デジタル化・AI導入補助金2026、キャリアアップ助成金・人材開発支援助成金・
+  // 業務改善助成金の令和8年度版、神奈川県・埼玉県・観光庁・中小機構ほか）を
+  // 開いて確認した傾向。制度ごとの正確な一覧は公募要領が正なので、
+  // 断定ではなく「求められることが多い」の書き方に統一し、必ず公募要領へ誘導する。
+  // 厚労省系（雇用関係助成金）は労務帳簿と「出す順番」が生命線なのでキー別に明記する。
+  var EMPLOYMENT_DOC_KEYS = ['career', 'jinzai', 'kaizen'];
+  function docsExtraItems(k) {
+    var p = PROGRAMS[k] || {};
+    var items = [];
+    var lead;
+    if (EMPLOYMENT_DOC_KEYS.indexOf(k) !== -1) {
+      lead = '厚生労働省系の助成金は、様式のほかに労務関係の帳簿一式を出します。出す順番を間違えると受け取れません。';
+      if (k === 'career') items.push('<strong>キャリアアップ計画書…正社員化など取組を始める日の前の日までに労働局へ提出し、受理されていること</strong>（あとから出してもさかのぼれません）');
+      if (k === 'jinzai') items.push('<strong>職業訓練実施計画届…訓練を始める日の6か月前から1か月前までの間に労働局へ提出</strong>（来月から始める研修には間に合いません）');
+      if (k === 'kaizen') items.push('<strong>交付決定の前に発注・購入したものは対象外</strong>（理由を問わず認められません）。見積書は10万円以上の物品で2者以上');
+      items.push('賃金台帳・出勤簿（タイムカード）・労働者名簿。ふだん使っている原本かそのコピーを出します（申請用に作り直すと不支給になります）');
+      items.push('雇用契約書または労働条件通知書の写し');
+      items.push('就業規則・賃金規程の写し（働く人が10人未満で届出義務が無い場合は申立書で代えられます）');
+      items.push('支給要件確認申立書などの共通様式。振込先が未登録なら支払方法・受取人住所届も');
+      items.push('申請書類の作成・提出を代理で頼めるのは、社会保険労務士または弁護士に限られます');
+    } else if (p.prefecture || p.municipality) {
+      lead = '都道府県・市区町村の制度は、地方税を納めていることの証明を求められるのがほぼ共通です。';
+      items.push('市区町村税・都道府県税の納税証明書（完納証明）。「滞納がないこと」が要件になっていることが多いです');
+      items.push('見積書（カタログ・仕様書を添える制度が多いです）');
+      items.push('法人は登記事項証明書、個人事業主は開業届や確定申告書の控え');
+      items.push('制度によっては、商工会議所・商工会の会員であることや、経営革新計画の承認などが前提になります');
+    } else {
+      lead = '国の補助金は、様式のほかに会社の実在・財務・納税が分かる書類を出します。';
+      if (k === 'jizoku') items.push('<strong>商工会議所・商工会が発行する「事業支援計画書（様式4）」が必須</strong>。申請の締切とは別に発行受付の締切があり、過ぎるといかなる理由でも発行されません');
+      items.push('見積書（相見積りを求める制度が多く、業者の返事待ちで日数がかかります）');
+      items.push('決算書（貸借対照表・損益計算書）または確定申告書の控え');
+      items.push('法人は履歴事項全部証明書（発行から3か月以内などの指定が多い）、個人事業主は本人確認書類や開業届の写し');
+      items.push('納税証明書（国税）。制度により「その1」「その2」など種類の指定があります');
+      items.push('電子申請の制度はGビズIDプライムが必要です（書類を郵送する取得方法だと最大1か月かかります）');
+    }
+    return { lead: lead, items: items };
+  }
+  function docsExtraHTML(k) {
+    var x = docsExtraItems(k);
+    return '<div class="docs-extra">' +
+      '<div class="docs-phase">様式のほかに必要になる主な書類</div>' +
+      '<p class="docs-note" style="margin-top:0.4rem;">' + x.lead + '</p>' +
+      '<ul>' + x.items.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
+      '<p class="docs-extra-note">2026年8月1日に主要制度の公募要領・手引きを開いて確認した傾向です。必要な書類は制度・公募回ごとに違うので、正確な一覧は必ずこの制度の公募要領・支給要領でご確認ください。取り寄せにかかる日数の目安は<a href="documents.html#common">申請書類の準備ページの共通書類一覧</a>にあります。</p>' +
+      '</div>';
+  }
   function renderDocs() {
     var el = document.getElementById('docsList');
     var note = document.getElementById('docsNote');
@@ -9826,6 +9876,7 @@
                 '</a></li>';
             }).join('') + '</ul></div>';
         }).join('') +
+        docsExtraHTML(k) +
         '<p class="docs-prep"><a href="documents.html?p=' + encodeURIComponent(k) + '">' +
           'この制度の書類を準備する（会社情報の転記・締切の逆算・チェックリスト） →</a></p>' +
         '<p class="docs-checked">公式サイトで確認した日：' + d.checked + '</p>' +
@@ -9865,6 +9916,9 @@
       '提出書類の全体像は各制度の「公募要領」に一覧で載っていますので、必ずそちらでご確認ください。</p>';
     var body = keys.filter(function (k) { return PROGRAM_DOCS[k]; }).map(function (k) {
       var d = PROGRAM_DOCS[k];
+      // 紙で持ち歩く一覧にも「様式のほかに必要な書類」を載せる。
+      // 画面と同じ内容を、チェック欄付き・タグ無しの文字にして出す
+      var extra = docsExtraItems(k);
       return '<h2>' + PROGRAMS[k].name + '</h2>' +
         '<p class="pmeta">確認日 ' + d.checked + '／' + d.portal.url + '</p>' +
         d.groups.map(function (g) {
@@ -9872,7 +9926,11 @@
             return '<li>□ ' + it.name + '（' + it.type + (it.size ? '・' + it.size : '') + '）' +
               '<span class="purl">' + it.url + '</span></li>';
           }).join('') + '</ul>';
-        }).join('');
+        }).join('') +
+        '<h3>様式のほかに必要になる主な書類（正確な一覧は公募要領で確認）</h3>' +
+        '<ul class="pchk">' + extra.items.map(function (t) {
+          return '<li>□ ' + t.replace(/<[^>]+>/g, '') + '</li>';
+        }).join('') + '</ul>';
     }).join('');
     var unknown = keys.filter(function (k) { return !PROGRAM_DOCS[k]; });
     var tail = unknown.length
