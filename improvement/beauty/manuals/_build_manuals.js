@@ -7,7 +7,9 @@
 // 実行: ELECTRON_RUN_AS_NODE=1 Code.exe _build_manuals.js
 //
 // 旧 beauty-ai-factory プロジェクト(2026-07-18作成)から移行。
-// 移行時に配置がフラット構成になったため _plan_data.json の参照先を ../plans/ → ../ に変更している。
+// 移行時に配置がフラット構成になったため、参照先を ../plans/ → ../ に変更している。
+// 出力するリンク（事業計画書・Excel・プロトタイプ・戻り先）も同様。移行直後は
+// ここを直し忘れていて 10ページ×4本＝40本のリンクが全部404だった（2026-08-02 修正）。
 // =============================================================
 const fs = require("fs");
 const path = require("path");
@@ -485,7 +487,7 @@ function page(item) {
 </style></head>
 <body>
 <header>
-  <span><a class="toplink" href="../index.html">← ポータルへ戻る</a></span>
+  <span><a class="toplink" href="../../index.html">← 改善計画10選へ戻る</a> ／ <a class="toplink" href="../pdca.html">1000案ボードへ</a></span>
   <span class="tag">仕様書・使い方 No.${item.no} / ${s.badge}</span>
 </header>
 <div class="wrap">
@@ -494,9 +496,9 @@ function page(item) {
     <h2>No.${item.no} ${item.title}</h2>
     <p>${item.overview}</p>
     <div class="links">
-      <a href="../prototypes/${item.key}.html">▶ プロトタイプを開く</a>
-      <a href="../plans/plan-${no2}.html">📄 事業計画書(A4×10枚)</a>
-      <a href="../plans/plan-${no2}.xlsx" download>📊 Excel版をダウンロード</a>
+      <a href="../proto-${item.key}.html">▶ プロトタイプを開く</a>
+      <a href="../plan-${no2}.html">📄 事業計画書(A4×10枚)</a>
+      <a href="../plan-${no2}.xlsx" download>📊 Excel版をダウンロード</a>
     </div>
   </div>
 

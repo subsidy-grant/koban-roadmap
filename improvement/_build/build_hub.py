@@ -134,12 +134,11 @@ def main():
     parts.append("<title>業種別・改善計画 厳選10選 | 補助金活用 業務改善ロードマップ</title>")
     parts.append('<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">')
     parts.append("<style>" + CSS + "</style></head><body><main>")
-    parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a> ／ <a href="pdca.html">選定の考え方（スコアリング全記録）</a></p>')
+    parts.append('<p class="back"><a href="../index.html">← ロードマップ本体へ</a></p>')
     parts.append("<h1>業種別・改善計画 厳選10選</h1>")
     parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業・飲食業・宿泊業・製造業・不動産業・教育業は各1000案からのPDCA評価、あわせて6業種×100施策のスコアリングと突き合わせて選定）。'
                  "各案には <strong>A4×10ページの事業計画書</strong>（Excel版つき）が付属します。"
-                 "<strong>試作プロトタイプ</strong>は美容業・飲食業で公開中、他の業種は準備中です。"
-                 '選定プロセスは<a href="pdca.html">こちら</a>で全公開しています。</p>')
+                 "<strong>試作プロトタイプ</strong>は美容業・飲食業で公開中、他の業種は準備中です。</p>")
 
     parts.append('<div class="tabs" role="tablist">')
     for i, ik in enumerate(INDUSTRY_ORDER):
@@ -198,8 +197,8 @@ def main():
         else:
             parts.append('<div class="pending">この業種の「改善計画10選」(事業計画書・プロトタイプ)は準備中です。'
                          '準備段階の評価として、'
-                         f'<a href="{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>と'
-                         '<a href="pdca.html">100施策スコアリング(選定の考え方)</a>を公開しています。</div>')
+                         f'<a href="{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>'
+                         'を公開しています。</div>')
         parts.append("</section>")
 
     parts.append('<p class="note">本コンテンツは公開情報に基づくモデルケースの試算・提案であり、個別事業者への効果や補助金の採択を保証するものではありません。'

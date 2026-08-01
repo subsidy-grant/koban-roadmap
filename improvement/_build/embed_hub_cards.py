@@ -184,8 +184,8 @@ def build_fragment():
         else:
             parts.append('<div class="imp10-pending">この業種の「改善計画10選」(事業計画書・プロトタイプ)は準備中です。'
                          '準備段階の評価として、'
-                         f'<a href="improvement/{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>と'
-                         '<a href="improvement/pdca.html">100施策スコアリング(選定の考え方)</a>を公開しています。</div>')
+                         f'<a href="improvement/{ik}/pdca.html">{esc(labels[ik])}×AI 1000案の評価ボード(採択候補TOP10つき)</a>'
+                         'を公開しています。</div>')
         parts.append("</div>")
 
     parts.append("""
@@ -209,7 +209,9 @@ def main():
     if pattern.search(html):
         html = pattern.sub(lambda m: block, html, count=1)
     else:
-        marker = '<p style="margin-top:0.8rem;"><a class="src-link" href="improvement/">改善計画10選を見る ↗</a>　<a class="src-link" href="improvement/pdca.html">選定の考え方（スコアリング全記録）↗</a></p>'
+        marker = ('<p style="margin-top:0.8rem;"><a class="src-link" href="improvement/">改善計画10選を見る ↗</a>　'
+                  '<a class="src-link" id="pdcaBoardLink" href="improvement/beauty/pdca.html">'
+                  '全1000案のPDCAファネル・一覧を見る（美容業版）↗</a></p>')
         if marker not in html:
             raise SystemExit("insertion marker not found in index.html (#improvement-cta CTA paragraph)")
         html = html.replace(marker, marker + "\n" + block, 1)
