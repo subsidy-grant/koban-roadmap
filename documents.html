@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>申請書類の準備｜補助金活用 業務改善ロードマップ</title>
-<meta name="description" content="補助金・助成金の申請書類を準備するページ。会社情報を1回入力して各書類に転記、取り寄せが必要な共通書類の確認、締切からの逆算、提出書類のチェックリストを1か所でまとめられます。登録不要・保存はお使いの端末の中だけ。">
+<meta name="description" content="補助金・助成金の申請書類を準備するページ。会社情報を1回入力すれば、ダウンロードした様式（Word・Excel）への自動入力もできます。取り寄せが必要な共通書類の確認、締切からの逆算、提出書類のチェックリストも1か所で。登録不要・処理はお使いの端末の中だけ。">
 <link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/documents.html">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="article">
@@ -208,6 +208,19 @@
   .chip button { border: 0; background: transparent; color: var(--ink-soft); font: inherit;
     cursor: pointer; font-size: 1rem; line-height: 1; padding: 0.35rem 0.45rem; min-height: 32px; }
 
+  /* ---- 様式へのドロップ（02） ----
+     破線の枠＝「ここに書類を出す窓口のトレー」。色は既存の青のまま増やさない。 */
+  .dropzone { border: 2px dashed var(--accent-soft); border-radius: 12px;
+    background: var(--paper-raised); padding: 1.6rem 1rem; text-align: center; cursor: pointer; }
+  .dropzone:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .dropzone.hover { border-color: var(--accent); background: var(--accent-wash); }
+  .dz-main { margin: 0 0 0.2rem; font-weight: 700; }
+  .dz-sub { margin: 0 0 0.9rem; color: var(--ink-soft); font-size: 0.88rem; }
+  .fillcard h3 { word-break: break-all; }
+  .fillcard .btn-dl { display: inline-block; text-decoration: none; text-align: center; }
+  .fillcard ul { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
+  .fillcard table { min-width: 480px; }
+
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
   .warn strong { color: var(--rust); }
@@ -247,6 +260,7 @@
   <nav class="toc">
     <ol>
       <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
+      <li><a href="#autofill">ダウンロードした様式に自動入力する</a>（Word・Excel）</li>
       <li><a href="#houjin">法人番号を確かめる</a></li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
       <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
@@ -269,9 +283,40 @@
     <p class="saved-note" id="savedNote"></p>
   </section>
 
-  <!-- 02 法人番号 -->
+  <!-- 02 様式への自動入力 -->
+  <section id="autofill">
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>ダウンロードした様式に自動入力する</h2></div>
+    <p class="section-sub">各制度のサイトからダウンロードした様式（Wordの .docx／Excelの .xlsx）をここに置くと、上の01で入力した会社情報を「所在地」「代表者氏名」「電話番号」などのラベルの隣の空欄に入れて、記入済みのファイルとしてお返しします。<strong>ファイルはお使いの端末（ブラウザ）の中だけで開いて書き込みます。どこにも送られません。</strong></p>
+
+    <div class="dropzone" id="dropZone" role="button" tabindex="0" aria-label="様式のファイルを選んで自動入力する">
+      <p class="dz-main">ここに様式のファイルを置いてください</p>
+      <p class="dz-sub">複数まとめてでも構いません（.docx / .xlsx）</p>
+      <button type="button" class="btn" id="pickBtn">ファイルを選ぶ</button>
+      <input type="file" id="fileInput" accept=".docx,.xlsx" multiple style="display:none;">
+    </div>
+
+    <div class="warn">
+      <strong>自動で入れた内容を、そのまま提出しないでください。</strong>
+      どの欄に入れたか・入れられなかったかを下に必ず表示しますので、保存したファイルを開いて、すべての欄をご確認ください。
+      様式のつくりによっては、欄を取り違えたり、入れられないことがあります。
+    </div>
+
+    <div id="fillResults"></div>
+
+    <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);">
+      <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
+      当サイトの様式一覧（下の07）に載っているファイルのうち、Word（.docx・298件）とExcel（.xlsx・73件）の計371件がこの自動入力の対象です。</p>
+      <ul style="margin:0;padding-left:1.2rem;">
+        <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
+        <li>古い形式（.doc / .xls）はブラウザでは開けないため対象外です。WordやExcelで開いて「.docx / .xlsx」形式で保存し直すと使えます。</li>
+        <li>「ダウンロードまで自動で」の形にはできませんでした。2026年8月に様式の配布元68か所へブラウザから取得を試したところ、57か所が他サイトからの取得を許可しない設定（CORS）だったためです。お手数ですが、様式は下のチェックリストのリンクから保存して、ここに置いてください。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 法人番号 -->
   <section id="houjin">
-    <div class="section-head"><span class="section-no jp-serif">02</span><h2>法人番号を確かめる</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>法人番号を確かめる</h2></div>
     <p class="section-sub">法人番号は13桁で、1桁目が誤りを見つけるための検査用数字になっています。上の欄に入力すると、この桁の計算が合っているかをその場で確かめます（通信はしません）。個人事業主の方に法人番号はありません。空欄のままで構いません。</p>
 
     <div class="pcard">
@@ -298,9 +343,9 @@
     </div>
   </section>
 
-  <!-- 03 共通書類 -->
+  <!-- 04 共通書類 -->
   <section id="common">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>取り寄せが必要な共通書類</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>取り寄せが必要な共通書類</h2></div>
     <p class="section-sub">様式のダウンロードだけでは申請できません。多くの制度で共通して求められるのが下の書類です。<strong>とくに橙色の行は、自分では発行できず他の人に出してもらう書類</strong>で、ここが間に合わずに締切に届かない原因になります。複数の制度に出す場合、同じ書類を必要な部数だけまとめて取り寄せると1回で済みます。</p>
 
     <p class="section-sub"><span class="who who-sage">全員</span> はほぼどの制度でも要るもの、<span class="who who-accent">法人</span> <span class="who who-accent">個人事業主</span> はどちらかに要るもの、<span class="who who-rust">該当者のみ</span> は条件に当てはまる場合だけ要るものです。</p>
@@ -332,9 +377,9 @@
     <p class="src-note" id="commonSource"></p>
   </section>
 
-  <!-- 04 逆算 -->
+  <!-- 05 逆算 -->
   <section id="leadtime">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切から逆算する</h2></div>
     <p class="section-sub">提出の締切日を入れると、上の共通書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
 
     <div class="pcard">
@@ -346,9 +391,9 @@
     <div id="leadResult"></div>
   </section>
 
-  <!-- 05 締切一覧 -->
+  <!-- 06 締切一覧 -->
   <section id="deadlines">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切一覧</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>締切一覧</h2></div>
     <p class="section-sub">下で選んだ制度の締切をまとめて並べます。<strong>日付は各制度の説明文から機械的に拾ったものです。</strong>公募回の追加や前倒しがあるため、実際に出すときは必ず公式ページでご確認ください。</p>
 
     <div class="picker">
@@ -362,9 +407,9 @@
     <div id="deadlineList"></div>
   </section>
 
-  <!-- 06 チェックリスト -->
+  <!-- 07 チェックリスト -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>提出書類のチェックリスト</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">07</span><h2>提出書類のチェックリスト</h2></div>
     <p class="section-sub"><strong>公式サイトの様式だけでなく、取り寄せが要る書類も同じ一覧に入れています。</strong>様式はそろったのに証明書が間に合わない、という事態を避けるためです。チェックを付けるとこの端末に残り、次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
     <div id="checkList"></div>
     <p style="margin-top:1.2rem;font-size:0.9rem;color:var(--ink-soft);">
@@ -616,7 +661,574 @@
       });
   }
 
-  // ---------- 02 法人番号の検査用数字 ----------
+  // ---------- 02 ダウンロードした様式への自動入力 ----------
+  // 外部ライブラリ・CDNは使わない。.docx/.xlsx はZIPなので、ブラウザ標準の
+  // DecompressionStream / CompressionStream('deflate-raw') だけで読み書きできる。
+  // これで「入力した内容は端末の中だけ」という冒頭の約束を壊さずに済む。
+  // 役所の様式をこのページから直接取りに行く形にしなかったのは、
+  // 2026年8月に配布元68ホストへ取得を試して57がCORSで拒否したため（前セッションで実測）。
+
+  // ---- ZIPの読み書き ----
+  // 仕様上むずかしい機能（ZIP64・暗号化）は使わず、読めないときは正直に断る。
+  var CRC_TABLE = (function () {
+    var t = new Uint32Array(256);
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c;
+    }
+    return t;
+  })();
+  function crc32(u8) {
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < u8.length; i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  function readZip(u8) {
+    var dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+    var eocd = -1;
+    for (var i = u8.length - 22; i >= Math.max(0, u8.length - 22 - 65535); i--) {
+      if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+    }
+    if (eocd < 0) throw new Error('notzip');
+    var count = dv.getUint16(eocd + 10, true);
+    var cdOfs = dv.getUint32(eocd + 16, true);
+    if (count === 0xFFFF || cdOfs === 0xFFFFFFFF) throw new Error('zip64');
+    var entries = [], p = cdOfs, dec = new TextDecoder('utf-8');
+    for (var n = 0; n < count; n++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('broken');
+      var flags = dv.getUint16(p + 8, true);
+      var nameLen = dv.getUint16(p + 28, true);
+      var extraLen = dv.getUint16(p + 30, true);
+      var cmtLen = dv.getUint16(p + 32, true);
+      var e = {
+        flags: flags,
+        method: dv.getUint16(p + 10, true),
+        time: dv.getUint16(p + 12, true),
+        date: dv.getUint16(p + 14, true),
+        crc: dv.getUint32(p + 16, true),
+        csize: dv.getUint32(p + 20, true),
+        usize: dv.getUint32(p + 24, true),
+        localOfs: dv.getUint32(p + 42, true),
+        nameBytes: u8.slice(p + 46, p + 46 + nameLen)
+      };
+      e.name = dec.decode(e.nameBytes);
+      if (flags & 1) throw new Error('encrypted');
+      if (e.csize === 0xFFFFFFFF || e.usize === 0xFFFFFFFF || e.localOfs === 0xFFFFFFFF) throw new Error('zip64');
+      entries.push(e);
+      p += 46 + nameLen + extraLen + cmtLen;
+    }
+    return { u8: u8, dv: dv, entries: entries };
+  }
+  function zipEntryData(zip, e) {
+    // 圧縮サイズ等はローカルヘッダでなくセントラルディレクトリの値を使う。
+    // ローカル側はデータ記述子方式（後置き）だと0のことがあるため。
+    var p = e.localOfs;
+    if (zip.dv.getUint32(p, true) !== 0x04034b50) throw new Error('broken');
+    var start = p + 30 + zip.dv.getUint16(p + 26, true) + zip.dv.getUint16(p + 28, true);
+    return zip.u8.slice(start, start + e.csize);
+  }
+  function inflateRaw(u8) {
+    var ds = new DecompressionStream('deflate-raw');
+    return new Response(new Blob([u8]).stream().pipeThrough(ds)).arrayBuffer()
+      .then(function (b) { return new Uint8Array(b); });
+  }
+  function deflateRaw(u8) {
+    var cs = new CompressionStream('deflate-raw');
+    return new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer()
+      .then(function (b) { return new Uint8Array(b); });
+  }
+  function zipFileText(zip, name) {
+    var e = null;
+    for (var i = 0; i < zip.entries.length; i++) {
+      if (zip.entries[i].name === name) { e = zip.entries[i]; break; }
+    }
+    if (!e) return Promise.resolve(null);
+    var raw = zipEntryData(zip, e);
+    var plain = e.method === 0 ? Promise.resolve(raw)
+      : e.method === 8 ? inflateRaw(raw)
+      : Promise.reject(new Error('method'));
+    return plain.then(function (u) { return new TextDecoder('utf-8').decode(u); });
+  }
+  // replacements = { 'word/document.xml': Uint8Array(無圧縮の新しい中身), ... }
+  // 差し替えない項目は元の圧縮データをそのまま写す（再圧縮しないので壊れようがない）。
+  function rebuildZip(zip, replacements) {
+    function u16(v) { return [v & 255, (v >>> 8) & 255]; }
+    function u32(v) { return [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255]; }
+    var jobs = zip.entries.map(function (e) {
+      if (replacements[e.name]) {
+        var plain = replacements[e.name];
+        return deflateRaw(plain).then(function (data) {
+          return { e: e, data: data, method: 8, crc: crc32(plain), csize: data.length, usize: plain.length };
+        });
+      }
+      return Promise.resolve({ e: e, data: zipEntryData(zip, e), method: e.method,
+        crc: e.crc, csize: e.csize, usize: e.usize });
+    });
+    return Promise.all(jobs).then(function (items) {
+      var parts = [], central = [], offset = 0;
+      items.forEach(function (it) {
+        var e = it.e;
+        var flags = e.flags & 0x0800;  // 残すのはファイル名UTF-8の印だけ
+        var lh = [].concat(u32(0x04034b50), u16(20), u16(flags), u16(it.method),
+          u16(e.time), u16(e.date), u32(it.crc), u32(it.csize), u32(it.usize),
+          u16(e.nameBytes.length), u16(0));
+        var local = new Uint8Array(lh.length + e.nameBytes.length);
+        local.set(lh, 0); local.set(e.nameBytes, lh.length);
+        var ch = [].concat(u32(0x02014b50), u16(20), u16(20), u16(flags), u16(it.method),
+          u16(e.time), u16(e.date), u32(it.crc), u32(it.csize), u32(it.usize),
+          u16(e.nameBytes.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset));
+        var cent = new Uint8Array(ch.length + e.nameBytes.length);
+        cent.set(ch, 0); cent.set(e.nameBytes, ch.length);
+        parts.push(local, it.data);
+        central.push(cent);
+        offset += local.length + it.data.length;
+      });
+      var cdSize = 0;
+      central.forEach(function (c) { parts.push(c); cdSize += c.length; });
+      parts.push(new Uint8Array([].concat(u32(0x06054b50), u16(0), u16(0),
+        u16(items.length), u16(items.length), u32(cdSize), u32(offset), u16(0))));
+      var total = 0;
+      parts.forEach(function (pp) { total += pp.length; });
+      var out = new Uint8Array(total), pos = 0;
+      parts.forEach(function (pp) { out.set(pp, pos); pos += pp.length; });
+      return out;
+    });
+  }
+
+  // ---- ラベルの見つけ方 ----
+  // 様式の表で「所在地」などのラベルの右隣が空欄なら、そこに入れる。
+  // 括弧の注記・番号・空白を取り除いてから、全体一致だけを見る（部分一致にすると
+  // 「代表者氏名の変更理由」のような欄まで拾ってしまうため）。
+  function normLabel(s) {
+    return String(s || '')
+      .replace(/[（(][^（）()]*[）)]/g, '')
+      .replace(/[\s　]+/g, '')
+      .replace(/[：:。・※◆■□◎●▼△▲◇☆★]/g, '')
+      .replace(/^[0-9０-９①-⑳]+[\.．)）]?/, '')
+      .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+      .replace(/欄$/, '');
+  }
+  // 上から順に試して最初に全体一致したものを採用。あいまいなラベル
+  // （単なる「フリガナ」など、誰のフリガナか分からないもの）は入れない。
+  var FILL_LABELS = [
+    { key: 'houjin',    re: /^法人番号$/ },
+    { key: 'zip',       re: /^(郵便番号|〒)$/ },
+    { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地)$/ },
+    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所の名称|申請者名|申請事業者名|会社名|企業名|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者)$/ },
+    { key: 'kana',      re: /^(事業者名フリガナ|名称フリガナ|会社名フリガナ)$/ },
+    { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名)$/ },
+    { key: 'title',     re: /^(代表者の役職|代表者役職|役職名|役職)$/ },
+    { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|氏名|申請者氏名|代表取締役氏名)$/ },
+    { key: 'repKana',   re: /^(代表者フリガナ|代表者氏名フリガナ)$/ },
+    { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先)$/ },
+    { key: 'fax',       re: /^(FAX|FAX番号|fax|Fax|ファックス|ファックス番号)$/ },
+    { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス)$/ },
+    { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
+    { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等)$/ },
+    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員)$/ },
+    { key: 'industry',  re: /^(業種|主な業種|主たる業種)$/ },
+    { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
+    { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名)$/ },
+    { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ }
+  ];
+  function matchLabel(text) {
+    var t = normLabel(text);
+    if (!t || t.length > 20) return null;
+    for (var i = 0; i < FILL_LABELS.length; i++) {
+      if (FILL_LABELS[i].re.test(t)) return FILL_LABELS[i].key;
+    }
+    return null;
+  }
+  function fieldLabel(key) {
+    if (key === 'titleRep') return '代表者の役職と氏名';
+    for (var i = 0; i < FIELDS.length; i++) if (FIELDS[i].id === key) return FIELDS[i].label;
+    return key;
+  }
+  // 01で保存した会社情報から、流し込める値の一覧を作る（空欄は入れない）
+  function buildFillValues() {
+    var vals = {};
+    FIELDS.forEach(function (f) {
+      var v = String(company[f.id] || '').trim();
+      if (v) vals[f.id] = v;
+    });
+    if (vals.title || vals.rep) {
+      vals.titleRep = (vals.title || '') + (vals.title && vals.rep ? '　' : '') + (vals.rep || '');
+    }
+    return vals;
+  }
+
+  // ---- Word（.docx）：表のセルに入れる ----
+  var W_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+  var XML_NS = 'http://www.w3.org/XML/1998/namespace';
+  function childrenNS(el, ns, localName) {
+    var out = [];
+    for (var n = el.firstElementChild; n; n = n.nextElementSibling) {
+      if (n.namespaceURI === ns && n.localName === localName) out.push(n);
+    }
+    return out;
+  }
+  function textOfNS(el, ns, localName) {
+    var list = el.getElementsByTagNameNS(ns, localName), s = '';
+    for (var i = 0; i < list.length; i++) s += list[i].textContent;
+    return s;
+  }
+  function parseXml(text) {
+    var doc = new DOMParser().parseFromString(text, 'application/xml');
+    if (doc.getElementsByTagName('parsererror').length) throw new Error('xml');
+    return doc;
+  }
+  function serializeXml(doc) {
+    var out = new XMLSerializer().serializeToString(doc);
+    if (out.indexOf('<?xml') !== 0) {
+      out = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r\n' + out;
+    }
+    return out;
+  }
+  function fillDocx(xmlText, vals) {
+    var doc = parseXml(xmlText);
+    var fills = [], skips = [], usedKeys = {};
+    var trs = doc.getElementsByTagNameNS(W_NS, 'tr');
+    for (var r = 0; r < trs.length; r++) {
+      var tcs = childrenNS(trs[r], W_NS, 'tc');
+      for (var i = 0; i < tcs.length - 1; i++) {
+        var labelRaw = textOfNS(tcs[i], W_NS, 't');
+        var key = matchLabel(labelRaw);
+        if (!key || !vals[key]) continue;
+        var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
+        var target = tcs[i + 1];
+        var existing = textOfNS(target, W_NS, 't').trim();
+        if (existing) {
+          if (existing !== vals[key]) {
+            skips.push({ key: key, label: label, reason: 'すでに「' + existing.slice(0, 24) + (existing.length > 24 ? '…' : '') + '」と書かれているため、上書きしませんでした' });
+          }
+          continue;
+        }
+        var ps = childrenNS(target, W_NS, 'p');
+        var p = ps.length ? ps[0] : target.appendChild(doc.createElementNS(W_NS, 'w:p'));
+        var run = doc.createElementNS(W_NS, 'w:r');
+        // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
+        var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
+        if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
+        String(vals[key]).split(/\r?\n/).forEach(function (line, idx) {
+          if (idx) run.appendChild(doc.createElementNS(W_NS, 'w:br'));
+          var t = doc.createElementNS(W_NS, 'w:t');
+          t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+          t.textContent = line;
+          run.appendChild(t);
+        });
+        p.appendChild(run);
+        usedKeys[key] = 1;
+        fills.push({ where: '表の「' + label + '」の右の欄', key: key, value: vals[key] });
+      }
+    }
+    return { fills: fills, skips: skips, usedKeys: usedKeys,
+      xml: fills.length ? serializeXml(doc) : null };
+  }
+
+  // ---- Excel（.xlsx）：ラベルの右のセルに入れる ----
+  var S_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+  var R_ATTR_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  function colToNum(s) { var n = 0; for (var i = 0; i < s.length; i++) n = n * 26 + (s.charCodeAt(i) - 64); return n; }
+  function numToCol(n) { var s = ''; while (n > 0) { var m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = (n - 1 - m) / 26; } return s; }
+  function parseCellRef(ref) {
+    var m = /^([A-Z]+)([0-9]+)$/.exec(ref || '');
+    return m ? { c: colToNum(m[1]), r: +m[2] } : null;
+  }
+  function cellString(c, shared) {
+    var t = c.getAttribute('t');
+    if (t === 's') {
+      var idx = parseInt(textOfNS(c, S_NS, 'v'), 10);
+      return isNaN(idx) ? '' : (shared[idx] || '');
+    }
+    if (t === 'inlineStr') {
+      var isEl = c.getElementsByTagNameNS(S_NS, 'is')[0];
+      return isEl ? isEl.textContent : '';
+    }
+    return textOfNS(c, S_NS, 'v');
+  }
+  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys) {
+    var doc = parseXml(xmlText);
+    var merges = [];
+    var mcs = doc.getElementsByTagNameNS(S_NS, 'mergeCell');
+    for (var i = 0; i < mcs.length; i++) {
+      var m = /^([A-Z]+[0-9]+):([A-Z]+[0-9]+)$/.exec(mcs[i].getAttribute('ref') || '');
+      if (m) merges.push({ a: parseCellRef(m[1]), b: parseCellRef(m[2]) });
+    }
+    function mergeAt(cn, rn) {
+      for (var k = 0; k < merges.length; k++) {
+        var g = merges[k];
+        if (cn >= g.a.c && cn <= g.b.c && rn >= g.a.r && rn <= g.b.r) return g;
+      }
+      return null;
+    }
+    var rows = doc.getElementsByTagNameNS(S_NS, 'row');
+    var rowByNum = {};
+    for (i = 0; i < rows.length; i++) rowByNum[rows[i].getAttribute('r')] = rows[i];
+    var changed = false;
+    for (i = 0; i < rows.length; i++) {
+      var cells = childrenNS(rows[i], S_NS, 'c');
+      for (var j = 0; j < cells.length; j++) {
+        var c = cells[j];
+        var pos = parseCellRef(c.getAttribute('r'));
+        if (!pos) continue;
+        var labelRaw = cellString(c, shared);
+        var key = matchLabel(labelRaw);
+        if (!key || !vals[key]) continue;
+        var g = mergeAt(pos.c, pos.r);
+        if (g && (g.a.c !== pos.c || g.a.r !== pos.r)) continue; // 結合の左上だけ見る
+        var tc = (g ? g.b.c : pos.c) + 1, tr = pos.r;
+        var tg = mergeAt(tc, tr);
+        if (tg) { tc = tg.a.c; tr = tg.a.r; } // 記入欄が結合セルなら、その左上に入れる
+        var tref = numToCol(tc) + tr;
+        var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
+        var rowEl = rowByNum[String(tr)];
+        if (!rowEl) {
+          skips.push({ key: key, label: label, reason: '隣に記入できる行が見つかりませんでした（' + sheetName + ' の ' + tref + '）' });
+          continue;
+        }
+        var target = null, before = null;
+        var rcs = childrenNS(rowEl, S_NS, 'c');
+        for (var k = 0; k < rcs.length; k++) {
+          var rp = parseCellRef(rcs[k].getAttribute('r'));
+          if (!rp) continue;
+          if (rp.c === tc) { target = rcs[k]; break; }
+          if (rp.c > tc) { before = rcs[k]; break; }
+        }
+        if (target) {
+          if (target.getElementsByTagNameNS(S_NS, 'f').length) {
+            skips.push({ key: key, label: label, reason: '隣のセルに数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + '）' });
+            continue;
+          }
+          var existing = cellString(target, shared).trim();
+          if (existing) {
+            if (existing !== vals[key]) {
+              skips.push({ key: key, label: label, reason: 'すでに「' + existing.slice(0, 24) + (existing.length > 24 ? '…' : '') + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
+            }
+            continue;
+          }
+        } else {
+          target = doc.createElementNS(S_NS, 'c');
+          target.setAttribute('r', tref);
+          rowEl.insertBefore(target, before);
+        }
+        target.setAttribute('t', 'inlineStr');
+        while (target.firstChild) target.removeChild(target.firstChild);
+        var isEl = doc.createElementNS(S_NS, 'is');
+        var tEl = doc.createElementNS(S_NS, 't');
+        tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+        tEl.textContent = vals[key];
+        isEl.appendChild(tEl);
+        target.appendChild(isEl);
+        usedKeys[key] = 1;
+        changed = true;
+        fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）', key: key, value: vals[key] });
+      }
+    }
+    return changed ? serializeXml(doc) : null;
+  }
+  function fillXlsx(zip, vals) {
+    var shared = [];
+    var nameByPath = {};
+    return zipFileText(zip, 'xl/sharedStrings.xml').then(function (ssXml) {
+      if (ssXml) {
+        var sis = parseXml(ssXml).getElementsByTagNameNS(S_NS, 'si');
+        for (var i = 0; i < sis.length; i++) shared.push(sis[i].textContent);
+      }
+      return Promise.all([zipFileText(zip, 'xl/workbook.xml'), zipFileText(zip, 'xl/_rels/workbook.xml.rels')]);
+    }).then(function (pair) {
+      try {
+        if (pair[0] && pair[1]) {
+          var relMap = {};
+          var rels = parseXml(pair[1]).getElementsByTagNameNS('*', 'Relationship');
+          for (var i = 0; i < rels.length; i++) {
+            var tgt = (rels[i].getAttribute('Target') || '').replace(/^\//, '').replace(/^xl\//, '');
+            relMap[rels[i].getAttribute('Id')] = 'xl/' + tgt;
+          }
+          var sheets = parseXml(pair[0]).getElementsByTagNameNS(S_NS, 'sheet');
+          for (i = 0; i < sheets.length; i++) {
+            var rid = sheets[i].getAttributeNS(R_ATTR_NS, 'id');
+            if (rid && relMap[rid]) nameByPath[relMap[rid]] = sheets[i].getAttribute('name');
+          }
+        }
+      } catch (e) { /* シート名が取れなくてもファイル名で続ける */ }
+      var fills = [], skips = [], usedKeys = {}, repl = {};
+      var sheetEntries = zip.entries.filter(function (e) {
+        return /^xl\/worksheets\/[^\/]+\.xml$/.test(e.name);
+      });
+      var chain = Promise.resolve();
+      sheetEntries.forEach(function (e) {
+        chain = chain.then(function () {
+          return zipFileText(zip, e.name).then(function (xml) {
+            var out = fillSheet(xml, vals, shared,
+              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys);
+            if (out) repl[e.name] = new TextEncoder().encode(out);
+          });
+        });
+      });
+      return chain.then(function () {
+        return { fills: fills, skips: skips, usedKeys: usedKeys, repl: repl };
+      });
+    });
+  }
+
+  // ---- 1ファイルの処理 ----
+  function zipErrorMessage(e) {
+    var msg = e && e.message;
+    if (msg === 'notzip') return 'このファイルはWord（.docx）/Excel（.xlsx）として読めませんでした。古い形式（.doc/.xls）を名前だけ変えたものの可能性があります。';
+    if (msg === 'zip64') return 'このファイルは大きすぎて（または特殊な作りで）読めませんでした。';
+    if (msg === 'encrypted') return 'このファイルはパスワードで保護されているため読めません。保護を外してからお試しください。';
+    return 'このファイルは読めませんでした。破損しているか、対応していない作りの可能性があります。';
+  }
+  function processFillFile(file) {
+    var lower = file.name.toLowerCase();
+    var kind = /\.docx$/.test(lower) ? 'docx'
+      : /\.xlsx$/.test(lower) ? 'xlsx'
+      : /\.(doc|xls)$/.test(lower) ? 'old'
+      : /\.pdf$/.test(lower) ? 'pdf' : 'other';
+    if (kind === 'old') return Promise.resolve({ error: '古い形式（.doc / .xls）はブラウザでは開けません。WordやExcelでこのファイルを開き、「名前を付けて保存」で .docx / .xlsx 形式にしてから、もう一度お試しください。' });
+    if (kind === 'pdf') return Promise.resolve({ error: 'PDFには対応していません。当サイトで確認したPDFの様式は、いずれも入力欄の無い読み取り用でした。記入用のWord・Excel版が無いか、配布ページをご確認ください。' });
+    if (kind === 'other') return Promise.resolve({ error: '対応しているのはWord（.docx）とExcel（.xlsx）です。' });
+    var vals = buildFillValues();
+    if (!Object.keys(vals).length) {
+      return Promise.resolve({ error: '先に上の「01 会社情報を1回だけ書く」をご入力ください。まだ何も保存されていません。' });
+    }
+    return file.arrayBuffer().then(function (buf) {
+      var zip;
+      try { zip = readZip(new Uint8Array(buf)); }
+      catch (e) { return { error: zipErrorMessage(e) }; }
+      var work;
+      if (kind === 'docx') {
+        work = zipFileText(zip, 'word/document.xml').then(function (xml) {
+          if (!xml) return { error: 'Wordの文書として読めませんでした（中身に word/document.xml がありません）。' };
+          var r = fillDocx(xml, vals);
+          var repl = {};
+          if (r.xml) repl['word/document.xml'] = new TextEncoder().encode(r.xml);
+          return { fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, repl: repl };
+        });
+      } else {
+        work = fillXlsx(zip, vals);
+      }
+      return work.then(function (r) {
+        if (r.error) return r;
+        if (!r.fills.length) return { none: true, skips: r.skips, vals: vals, usedKeys: r.usedKeys };
+        return rebuildZip(zip, r.repl).then(function (out) {
+          var mime = kind === 'docx'
+            ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+          return {
+            fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, vals: vals,
+            blob: new Blob([out], { type: mime }),
+            outName: file.name.replace(/\.(docx|xlsx)$/i, '') + '（記入済み）.' + kind
+          };
+        });
+      }).catch(function (e) {
+        return { error: zipErrorMessage(e) };
+      });
+    });
+  }
+
+  // ---- 結果の表示 ----
+  function renderFillResult(fileName, res) {
+    var box = document.getElementById('fillResults');
+    var card = document.createElement('div');
+    card.className = 'pcard fillcard';
+    var html = '<h3>' + esc(fileName) + '</h3>';
+    if (res.error) {
+      html += '<p style="margin:0;color:var(--rust);font-size:0.92rem;">' + esc(res.error) + '</p>';
+    } else if (res.none) {
+      html += '<p style="margin:0;font-size:0.92rem;">会社情報を入れられる欄が見つかりませんでした。' +
+        '表の中の「所在地」「電話番号」のようなラベルの右隣が空欄のときだけ入れる作りのため、' +
+        '下線に書き込む形の様式などには入れられません。お手数ですが直接ご記入ください。</p>';
+      if (res.skips.length) {
+        html += '<ul>' + res.skips.map(function (s) {
+          return '<li>「' + esc(s.label) + '」…' + esc(s.reason) + '</li>';
+        }).join('') + '</ul>';
+      }
+    } else {
+      html += '<p class="meta" style="margin:0 0 0.5rem;">' + res.fills.length + 'か所に入れました。</p>' +
+        '<div class="tbl-wrap"><table><thead><tr><th>どこに</th><th>入れた内容</th></tr></thead><tbody>' +
+        res.fills.map(function (f) {
+          return '<tr><td>' + esc(f.where) + '</td><td>' + esc(f.value) + '</td></tr>';
+        }).join('') + '</tbody></table></div>';
+      // 既記入などで意図して飛ばした項目は「様式に無い項目」の一覧に混ぜない
+      var touched = {};
+      res.skips.forEach(function (s) {
+        if (s.key) {
+          touched[s.key] = 1;
+          if (s.key === 'titleRep') { touched.title = 1; touched.rep = 1; }
+        }
+      });
+      var unfilled = [];
+      FIELDS.forEach(function (f) {
+        var used = res.usedKeys[f.id] || touched[f.id] ||
+          (res.usedKeys.titleRep && (f.id === 'title' || f.id === 'rep'));
+        if (res.vals[f.id] && !used) unfilled.push(fieldLabel(f.id));
+      });
+      if (unfilled.length) {
+        html += '<p style="margin:0.7rem 0 0;font-size:0.88rem;"><strong>入れられなかった項目：</strong>' +
+          esc(unfilled.join('・')) + '。該当するラベルの欄が見つからなかったか、様式に無い項目です。必要ならお手数ですが直接ご記入ください。</p>';
+      }
+      if (res.skips.length) {
+        html += '<p style="margin:0.7rem 0 0;font-size:0.88rem;"><strong>触らなかった欄：</strong></p><ul>' +
+          res.skips.map(function (s) {
+            return '<li>「' + esc(s.label) + '」…' + esc(s.reason) + '</li>';
+          }).join('') + '</ul>';
+      }
+      html += '<div class="warn" style="margin:0.9rem 0 0;"><strong>このまま提出しないでください。</strong>' +
+        '保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</div>' +
+        '<div class="btn-row" style="margin-top:0.8rem;"><a class="btn btn-dl" download="' + esc(res.outName) + '">記入済みファイルを保存</a></div>';
+    }
+    card.innerHTML = html;
+    if (res.blob) {
+      var a = card.querySelector('.btn-dl');
+      a.href = URL.createObjectURL(res.blob);
+    }
+    box.insertBefore(card, box.firstChild);
+  }
+
+  function handleFillFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    var chain = Promise.resolve();
+    files.forEach(function (f) {
+      chain = chain.then(function () {
+        return processFillFile(f).then(function (res) { renderFillResult(f.name, res); });
+      });
+    });
+  }
+
+  function initAutofill() {
+    var dz = document.getElementById('dropZone');
+    var input = document.getElementById('fileInput');
+    var pick = document.getElementById('pickBtn');
+    if (!dz || !input) return;
+    // ブラウザが古いと DecompressionStream が無い（Safari 16.3以前など）。
+    // その場合はドロップ枠を出さず、理由を書いて01の転記カードに誘導する。
+    if (typeof DecompressionStream === 'undefined' || typeof CompressionStream === 'undefined') {
+      dz.outerHTML = '<div class="empty">お使いのブラウザが古いため、この自動入力は使えません。' +
+        'ブラウザを最新の版に更新するか、上の「転記カードを印刷」で書き写してください。</div>';
+      return;
+    }
+    pick.addEventListener('click', function (ev) { ev.stopPropagation(); input.click(); });
+    dz.addEventListener('click', function () { input.click(); });
+    dz.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); input.click(); }
+    });
+    input.addEventListener('change', function () { handleFillFiles(input.files); input.value = ''; });
+    ['dragover', 'dragenter'].forEach(function (t) {
+      dz.addEventListener(t, function (ev) { ev.preventDefault(); dz.classList.add('hover'); });
+    });
+    ['dragleave', 'drop'].forEach(function (t) {
+      dz.addEventListener(t, function (ev) { ev.preventDefault(); dz.classList.remove('hover'); });
+    });
+    dz.addEventListener('drop', function (ev) {
+      if (ev.dataTransfer) handleFillFiles(ev.dataTransfer.files);
+    });
+  }
+
+  // ---------- 03 法人番号の検査用数字 ----------
   // 国税庁の定義：法人番号13桁は「検査用数字1桁 ＋ 基礎番号12桁」。
   //   検査用数字 = 9 − (Σ(n=1..12) Pn × Qn) mod 9
   //   Pn = 基礎番号の下からn桁目の数字、Qn = nが奇数なら1・偶数なら2
@@ -666,7 +1278,7 @@
     btn.textContent = nm ? '会社名を写す' : '会社名が未入力です';
   }
 
-  // ---------- 03 共通書類 ----------
+  // ---------- 04 共通書類 ----------
   // 2026-07-31に、実際の公募要領・手引きのPDFを開いて提出書類の一覧を拾い直した。
   // 出所（本文で確認したもの）:
   //   小規模事業者持続化補助金 公募要領（第20回・第8版）… 提出物一覧
@@ -867,7 +1479,7 @@
     if (src) src.textContent = COMMON_DOCS_SOURCE;
   }
 
-  // ---------- 04 締切からの逆算 ----------
+  // ---------- 05 締切からの逆算 ----------
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -877,7 +1489,7 @@
     var out = document.getElementById('leadResult');
     if (!v) {
       out.innerHTML = '<p class="empty">締切日を入れると、書類ごとの「いつまでに頼むか」を出します。' +
-        '下の「05 締切一覧」から日付を押しても入ります。</p>';
+        '下の「06 締切一覧」から日付を押しても入ります。</p>';
       return;
     }
     var parts = v.split('-');
@@ -912,7 +1524,7 @@
       '相手の都合で遅れます。<strong>期限ぎりぎりではなく、数日の余裕を見て依頼してください。</strong></div>';
   }
 
-  // ---------- 05 締切一覧 ----------
+  // ---------- 06 締切一覧 ----------
   // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
   // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
   function extractDates(text) {
@@ -1030,7 +1642,7 @@
     document.getElementById('leadtime').scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // ---------- 06 チェックリスト ----------
+  // ---------- 07 チェックリスト ----------
   var checks = load(K_CHECK, {});
 
   window.toggleCheck = function (progKey, url, on) {
@@ -1086,7 +1698,7 @@
     if (!picked.length) {
       el.innerHTML = commonChecklistHTML() +
         '<p class="empty">制度を選ぶと、その制度の様式もここに並びます。' +
-        '上の「05 締切一覧」で追加してください。</p>';
+        '上の「06 締切一覧」で追加してください。</p>';
       return;
     }
     var withDocs = picked.filter(function (k) { return D.docs[k]; });
@@ -1161,6 +1773,7 @@
   })();
 
   renderCompany();
+  initAutofill();
   checkHoujin();
   updateHoujinSearch();
   document.getElementById('copyNameBtn').addEventListener('click', function () {
