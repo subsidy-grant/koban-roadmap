@@ -216,6 +216,14 @@
   .dropzone.hover { border-color: var(--accent); background: var(--accent-wash); }
   .dz-main { margin: 0 0 0.2rem; font-weight: 700; }
   .dz-sub { margin: 0 0 0.9rem; color: var(--ink-soft); font-size: 0.88rem; }
+  .ow-row { display: flex; align-items: flex-start; gap: 0.55rem; margin: 0.8rem 0 0;
+    font-size: 0.9rem; cursor: pointer; }
+  .ow-row input { width: 20px; height: 20px; margin-top: 0.2rem; flex: none; accent-color: var(--accent); }
+  .fillcard { position: relative; padding-right: 3rem; }
+  .card-close { position: absolute; top: 0.6rem; right: 0.6rem; border: 1px solid var(--line);
+    background: var(--paper); color: var(--ink-soft); border-radius: 6px; font: inherit;
+    font-size: 1rem; line-height: 1; width: 36px; height: 36px; cursor: pointer; }
+  .card-close:hover { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
   .fillcard h3 { word-break: break-all; }
   .fillcard .btn-dl { display: inline-block; text-decoration: none; text-align: center; }
   .fillcard ul { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
@@ -294,6 +302,9 @@
       <button type="button" class="btn" id="pickBtn">ファイルを選ぶ</button>
       <input type="file" id="fileInput" accept=".docx,.xlsx" multiple style="display:none;">
     </div>
+
+    <label class="ow-row"><input type="checkbox" id="owToggle">
+      すでに記入がある欄も上書きする（元の内容は結果の一覧に表示します。数式のセルは触りません）</label>
 
     <div class="warn">
       <strong>自動で入れた内容を、そのまま提出しないでください。</strong>
@@ -874,6 +885,24 @@
     for (var i = 0; i < list.length; i++) s += list[i].textContent;
     return s;
   }
+  // 日本語のOffice文書はふりがなを一緒に保存している。
+  //   Excel: sharedStrings の <rPh>（例:「所在地」+「ショザイチ」）
+  //   Word : ルビの <w:rt>
+  // これを含めて読むとラベルが「所在地ショザイチ」になり照合に失敗する
+  // （実際に、ふりがな付きの様式で郵便番号（記号「〒」だけの欄）しか
+  // 入らない事故が起きた）。ふりがな要素の中の文字は数えない。
+  function textWithoutRuby(el, ns, skipLocalName) {
+    var list = el.getElementsByTagNameNS(ns, 't'), s = '';
+    for (var i = 0; i < list.length; i++) {
+      var skip = false, a = list[i].parentNode;
+      while (a && a !== el) {
+        if (a.localName === skipLocalName) { skip = true; break; }
+        a = a.parentNode;
+      }
+      if (!skip) s += list[i].textContent;
+    }
+    return s;
+  }
   function parseXml(text) {
     var doc = new DOMParser().parseFromString(text, 'application/xml');
     if (doc.getElementsByTagName('parsererror').length) throw new Error('xml');
@@ -886,24 +915,31 @@
     }
     return out;
   }
-  function fillDocx(xmlText, vals) {
+  function fillDocx(xmlText, vals, overwrite) {
     var doc = parseXml(xmlText);
     var fills = [], skips = [], usedKeys = {};
     var trs = doc.getElementsByTagNameNS(W_NS, 'tr');
     for (var r = 0; r < trs.length; r++) {
       var tcs = childrenNS(trs[r], W_NS, 'tc');
       for (var i = 0; i < tcs.length - 1; i++) {
-        var labelRaw = textOfNS(tcs[i], W_NS, 't');
+        var labelRaw = textWithoutRuby(tcs[i], W_NS, 'rt');
         var key = matchLabel(labelRaw);
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
         var target = tcs[i + 1];
-        var existing = textOfNS(target, W_NS, 't').trim();
+        var existing = textWithoutRuby(target, W_NS, 'rt').trim();
+        var prev = '';
         if (existing) {
-          if (existing !== vals[key]) {
+          if (existing === vals[key]) continue;
+          if (!overwrite) {
             skips.push({ key: key, label: label, reason: 'すでに「' + existing.slice(0, 24) + (existing.length > 24 ? '…' : '') + '」と書かれているため、上書きしませんでした' });
+            continue;
           }
-          continue;
+          // 上書き：段落の枠組みは残して、文字（w:r）だけ取り除く
+          prev = existing;
+          childrenNS(target, W_NS, 'p').forEach(function (pp) {
+            childrenNS(pp, W_NS, 'r').forEach(function (rr) { pp.removeChild(rr); });
+          });
         }
         var ps = childrenNS(target, W_NS, 'p');
         var p = ps.length ? ps[0] : target.appendChild(doc.createElementNS(W_NS, 'w:p'));
@@ -920,7 +956,9 @@
         });
         p.appendChild(run);
         usedKeys[key] = 1;
-        fills.push({ where: '表の「' + label + '」の右の欄', key: key, value: vals[key] });
+        fills.push({ where: '表の「' + label + '」の右の欄' +
+          (prev ? '（元の「' + prev.slice(0, 24) + (prev.length > 24 ? '…' : '') + '」を上書き）' : ''),
+          key: key, value: vals[key] });
       }
     }
     return { fills: fills, skips: skips, usedKeys: usedKeys,
@@ -944,11 +982,11 @@
     }
     if (t === 'inlineStr') {
       var isEl = c.getElementsByTagNameNS(S_NS, 'is')[0];
-      return isEl ? isEl.textContent : '';
+      return isEl ? textWithoutRuby(isEl, S_NS, 'rPh') : '';
     }
     return textOfNS(c, S_NS, 'v');
   }
-  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys) {
+  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys, overwrite) {
     var doc = parseXml(xmlText);
     var merges = [];
     var mcs = doc.getElementsByTagNameNS(S_NS, 'mergeCell');
@@ -967,6 +1005,48 @@
     var rowByNum = {};
     for (i = 0; i < rows.length; i++) rowByNum[rows[i].getAttribute('r')] = rows[i];
     var changed = false;
+
+    // 指定の位置のセル要素を返す（無ければ列の順序を守って作る）。行が無ければ null
+    function cellAt(cn, rn, create) {
+      var rowEl = rowByNum[String(rn)];
+      if (!rowEl) return null;
+      var found = null, before = null;
+      var rcs = childrenNS(rowEl, S_NS, 'c');
+      for (var k = 0; k < rcs.length; k++) {
+        var rp = parseCellRef(rcs[k].getAttribute('r'));
+        if (!rp) continue;
+        if (rp.c === cn) { found = rcs[k]; break; }
+        if (rp.c > cn) { before = rcs[k]; break; }
+      }
+      if (!found && create) {
+        found = doc.createElementNS(S_NS, 'c');
+        found.setAttribute('r', numToCol(cn) + rn);
+        rowEl.insertBefore(found, before);
+      }
+      return found;
+    }
+    function writeCell(cell, text) {
+      cell.setAttribute('t', 'inlineStr');
+      while (cell.firstChild) cell.removeChild(cell.firstChild);
+      var isEl = doc.createElementNS(S_NS, 'is');
+      var tEl = doc.createElementNS(S_NS, 't');
+      tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      tEl.textContent = text;
+      isEl.appendChild(tEl);
+      cell.appendChild(isEl);
+      changed = true;
+    }
+    // 書き込み先として使えるか。戻り値: {ok:true, prev:''} か {ok:false, reason:...}
+    function usable(cell) {
+      if (!cell) return { ok: true, prev: '' };  // セル自体が無い＝空欄
+      if (cell.getElementsByTagNameNS(S_NS, 'f').length) return { ok: false, reason: '数式' };
+      var ex = cellString(cell, shared).trim();
+      if (!ex) return { ok: true, prev: '' };
+      if (!overwrite) return { ok: false, reason: '記入済み', prev: ex };
+      return { ok: true, prev: ex };
+    }
+    function clip(s) { return s.slice(0, 24) + (s.length > 24 ? '…' : ''); }
+
     for (i = 0; i < rows.length; i++) {
       var cells = childrenNS(rows[i], S_NS, 'c');
       for (var j = 0; j < cells.length; j++) {
@@ -983,58 +1063,69 @@
         if (tg) { tc = tg.a.c; tr = tg.a.r; } // 記入欄が結合セルなら、その左上に入れる
         var tref = numToCol(tc) + tr;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
-        var rowEl = rowByNum[String(tr)];
-        if (!rowEl) {
+        if (!rowByNum[String(tr)]) {
           skips.push({ key: key, label: label, reason: '隣に記入できる行が見つかりませんでした（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
-        var target = null, before = null;
-        var rcs = childrenNS(rowEl, S_NS, 'c');
-        for (var k = 0; k < rcs.length; k++) {
-          var rp = parseCellRef(rcs[k].getAttribute('r'));
-          if (!rp) continue;
-          if (rp.c === tc) { target = rcs[k]; break; }
-          if (rp.c > tc) { before = rcs[k]; break; }
-        }
-        if (target) {
-          if (target.getElementsByTagNameNS(S_NS, 'f').length) {
-            skips.push({ key: key, label: label, reason: '隣のセルに数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + '）' });
-            continue;
-          }
-          var existing = cellString(target, shared).trim();
-          if (existing) {
-            if (existing !== vals[key]) {
-              skips.push({ key: key, label: label, reason: 'すでに「' + existing.slice(0, 24) + (existing.length > 24 ? '…' : '') + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
+
+        // 郵便番号は「〒 [123]-[4567]」のように、間にハイフンのセルを挟んで
+        // 2つの欄に分かれている様式がある（実際の様式で、1つ目の欄に
+        // 「150-0001」全部が入ってしまう事故が起きた）。
+        // 記入欄の次が「-」だけのセルで、その次にも欄があれば、3桁と4桁に分けて入れる。
+        if (key === 'zip') {
+          var digits = String(vals.zip).replace(/[０-９]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0); }).replace(/[^0-9]/g, '');
+          var hyC = (tg ? tg.b.c : tc) + 1;
+          var hyCell = cellAt(hyC, tr, false);
+          var hyText = hyCell ? cellString(hyCell, shared).trim() : '';
+          if (digits.length === 7 && /^[-−–―ー‐]$/.test(hyText)) {
+            var hg = mergeAt(hyC, tr);
+            var c2 = (hg ? hg.b.c : hyC) + 1;
+            var g2 = mergeAt(c2, tr);
+            if (g2) c2 = g2.a.c;
+            var cellB = cellAt(c2, tr, false);
+            var uA = usable(cellAt(tc, tr, false));
+            var uB = usable(cellB);
+            if (uA.ok && uB.ok) {
+              writeCell(cellAt(tc, tr, true), digits.slice(0, 3));
+              writeCell(cellAt(c2, tr, true), digits.slice(3));
+              usedKeys.zip = 1;
+              fills.push({ where: 'シート「' + sheetName + '」の ' + tref + ' と ' + numToCol(c2) + tr + '（' + label + '・2つの欄に分割）' +
+                (uA.prev || uB.prev ? '（元の記入を上書き）' : ''), key: key, value: digits.slice(0, 3) + '-' + digits.slice(3) });
+              continue;
             }
-            continue;
+            if (!uA.ok && uA.reason === '記入済み') {
+              skips.push({ key: key, label: label, reason: 'すでに「' + clip(uA.prev) + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
+              continue;
+            }
           }
-        } else {
-          target = doc.createElementNS(S_NS, 'c');
-          target.setAttribute('r', tref);
-          rowEl.insertBefore(target, before);
         }
-        target.setAttribute('t', 'inlineStr');
-        while (target.firstChild) target.removeChild(target.firstChild);
-        var isEl = doc.createElementNS(S_NS, 'is');
-        var tEl = doc.createElementNS(S_NS, 't');
-        tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
-        tEl.textContent = vals[key];
-        isEl.appendChild(tEl);
-        target.appendChild(isEl);
+
+        var target = cellAt(tc, tr, false);
+        var u = usable(target);
+        if (!u.ok) {
+          if (u.reason === '数式') {
+            skips.push({ key: key, label: label, reason: '隣のセルに数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + '）' });
+          } else if (u.prev !== vals[key]) {
+            skips.push({ key: key, label: label, reason: 'すでに「' + clip(u.prev) + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
+          }
+          continue;
+        }
+        if (u.prev === vals[key]) continue;
+        writeCell(cellAt(tc, tr, true), vals[key]);
         usedKeys[key] = 1;
-        changed = true;
-        fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）', key: key, value: vals[key] });
+        fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）' +
+          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: vals[key] });
       }
     }
     return changed ? serializeXml(doc) : null;
   }
-  function fillXlsx(zip, vals) {
+  function fillXlsx(zip, vals, overwrite) {
     var shared = [];
     var nameByPath = {};
     return zipFileText(zip, 'xl/sharedStrings.xml').then(function (ssXml) {
       if (ssXml) {
         var sis = parseXml(ssXml).getElementsByTagNameNS(S_NS, 'si');
-        for (var i = 0; i < sis.length; i++) shared.push(sis[i].textContent);
+        for (var i = 0; i < sis.length; i++) shared.push(textWithoutRuby(sis[i], S_NS, 'rPh'));
       }
       return Promise.all([zipFileText(zip, 'xl/workbook.xml'), zipFileText(zip, 'xl/_rels/workbook.xml.rels')]);
     }).then(function (pair) {
@@ -1062,7 +1153,7 @@
         chain = chain.then(function () {
           return zipFileText(zip, e.name).then(function (xml) {
             var out = fillSheet(xml, vals, shared,
-              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys);
+              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite);
             if (out) repl[e.name] = new TextEncoder().encode(out);
           });
         });
@@ -1094,6 +1185,8 @@
     if (!Object.keys(vals).length) {
       return Promise.resolve({ error: '先に上の「01 会社情報を1回だけ書く」をご入力ください。まだ何も保存されていません。' });
     }
+    var owEl = document.getElementById('owToggle');
+    var overwrite = !!(owEl && owEl.checked);
     return file.arrayBuffer().then(function (buf) {
       var zip;
       try { zip = readZip(new Uint8Array(buf)); }
@@ -1102,13 +1195,13 @@
       if (kind === 'docx') {
         work = zipFileText(zip, 'word/document.xml').then(function (xml) {
           if (!xml) return { error: 'Wordの文書として読めませんでした（中身に word/document.xml がありません）。' };
-          var r = fillDocx(xml, vals);
+          var r = fillDocx(xml, vals, overwrite);
           var repl = {};
           if (r.xml) repl['word/document.xml'] = new TextEncoder().encode(r.xml);
           return { fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, repl: repl };
         });
       } else {
-        work = fillXlsx(zip, vals);
+        work = fillXlsx(zip, vals, overwrite);
       }
       return work.then(function (r) {
         if (r.error) return r;
@@ -1134,7 +1227,8 @@
     var box = document.getElementById('fillResults');
     var card = document.createElement('div');
     card.className = 'pcard fillcard';
-    var html = '<h3>' + esc(fileName) + '</h3>';
+    var html = '<button type="button" class="card-close" aria-label="この結果の表示を消す" title="この結果の表示を消す">×</button>' +
+      '<h3>' + esc(fileName) + '</h3>';
     if (res.error) {
       html += '<p style="margin:0;color:var(--rust);font-size:0.92rem;">' + esc(res.error) + '</p>';
     } else if (res.none) {
@@ -1185,6 +1279,12 @@
       var a = card.querySelector('.btn-dl');
       a.href = URL.createObjectURL(res.blob);
     }
+    // 結果は用が済んだら消せる。保存用のURLもここで手放す
+    card.querySelector('.card-close').addEventListener('click', function () {
+      var dl = card.querySelector('.btn-dl');
+      if (dl && dl.href) { try { URL.revokeObjectURL(dl.href); } catch (e) {} }
+      card.remove();
+    });
     box.insertBefore(card, box.firstChild);
   }
 

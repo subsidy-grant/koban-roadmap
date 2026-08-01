@@ -145,10 +145,12 @@ def build_fragment():
                 # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="imp10-card">')
-                if pl.get("icon"):
+                # 実写の写真を最優先（2026-08-02、本人指示でアイコン絵文字から差し替え）。
+                # 写真が無い案だけ絵文字アイコンで代替する
+                if pl.get("image"):
+                    parts.append(f'<div class="thumb"><img src="improvement/{ik}/{pl["image"]}" alt="" loading="lazy" width="640" height="360"></div>')
+                elif pl.get("icon"):
                     parts.append(f'<div class="thumb"><div class="thumb-icon">{pl["icon"]}</div></div>')
-                elif pl.get("image"):
-                    parts.append(f'<div class="thumb"><img src="improvement/{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
                 else:
                     parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
