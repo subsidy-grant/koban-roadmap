@@ -615,11 +615,15 @@
   .sim-panel.advice .sim-headline { color: var(--accent); }
   .advice-disclaimer { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px dashed var(--line); }
 
-  /* ---------- お気に入り ---------- */
+  /* ---------- 気になる制度 ----------
+     もとは☆だけの丸ボタンだった。何が起きるボタンか分からないという指摘を受け、
+     文字を添えた横長のボタンに変えた（2026-08-01）。押した後の状態も文字で分かる。 */
   .fav-star {
     appearance: none; -webkit-appearance: none; border: 1px solid var(--line); background: var(--paper);
-    color: var(--ink-faint); border-radius: 100px; width: 2rem; height: 2rem; flex-shrink: 0;
-    font-size: 1rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); border-radius: 100px; flex-shrink: 0;
+    font: inherit; font-size: 0.82rem; line-height: 1; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0 0.85rem; min-height: 2.4rem; white-space: nowrap;
     margin-left: auto;
   }
   .fav-star:hover, .fav-star:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
@@ -812,7 +816,7 @@
   .picker select, #simTrackContainer select, .prefecture-row select { font-size: 1rem; }
 
   /* --- 当たり判定 44px 以上 --------------------------------------------- */
-  .fav-star { width: 2.75rem; height: 2.75rem; font-size: 1.15rem; }
+  .fav-star { min-height: 2.75rem; font-size: 0.9rem; }
   a.src-link, a.equip-link { min-height: 2.6rem; padding-top: 0.3rem; padding-bottom: 0.3rem; }
   nav.toc a { padding-left: 0.2rem; padding-right: 0.2rem; }
   .print-orientation label { min-height: 2.6rem; padding: 0 0.3rem; }
@@ -854,6 +858,14 @@
      診断エントリー（3問で自分向けの結果を先に出す）
      ========================================================================== */
   .diag { background: var(--paper-raised); border-bottom: 1px solid var(--line); }
+  /* 冒頭にあった3問ブロックを02の節へ移した後の見た目（2026-08-01）。
+     節の中に入るので、独立した帯ではなく1枚の囲みにする。 */
+  .diag-inline {
+    background: var(--accent-wash); border: 1px solid var(--accent-soft);
+    border-radius: 10px; padding: 1.1rem 1.2rem; margin: 0 0 1.4rem;
+  }
+  .diag-inline-lead { margin: 0 0 1rem; font-size: 0.96rem; color: var(--ink); max-width: none; }
+  .diag-inline .diag-result { margin-top: 1.2rem; }
   .diag-inner { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 2.4rem; }
   .diag h2 { font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; }
   .diag .diag-lead { color: var(--ink-soft); margin: 0.5rem 0 1.5rem; font-size: 1rem; }
@@ -1244,7 +1256,7 @@
 </script>
 </head>
 <body>
-<a class="skip-link" href="#diagnose">本文（3つの質問）へ移動</a>
+<a class="skip-link" href="#conditions">本文（導入のための条件）へ移動</a>
 
 <header class="hero">
   <div class="hero-inner">
@@ -1254,21 +1266,65 @@
     <h1>補助金・助成金活用<br>業務改善ロードマップ</h1>
     <div class="hero-ind">対象業種：<span class="ind-label">美容業</span></div>
     <p class="lede">美容業・飲食業・宿泊業・製造業・不動産業・教育業の事業者向けに、設備投資やIT導入に使える国・都道府県・市区町村の制度をまとめた情報サイトです。登録も費用も必要ありません。</p>
-    <!-- スマホでは最初の画面がヒーローだけで埋まり、押せるものが1つも無かった
-         （最初の入力欄まで約1.2画面ぶんスクロールが必要だった）。
-         最初の画面のうちに入口を1つ置く。 -->
-    <a class="hero-cta" href="#diagnose">3つの質問に答える<span aria-hidden="true">→</span></a>
-    <p class="hero-cta-note">業種・地域・従業員数を選ぶだけ。使える可能性のある制度がその場で分かります。</p>
   </div>
 </header>
 
-<!-- 3問診断: 長い説明を読む前に、自分向けの結果を先に出す入口 -->
-<section class="diag" id="diagnose">
-  <div class="diag-inner">
-    <h2>3つ選ぶと、使える可能性のある制度が分かります</h2>
-    <p class="diag-lead">ここで選んだ内容は、このページの解説・概算シミュレーターにもそのまま反映されます。</p>
 
-    <div class="diag-steps">
+<nav class="toc" aria-label="ページ内の目次">
+  <div class="toc-scroll">
+    <div class="row">
+      <a href="#favPanel">気になる制度</a>
+      <a href="#premise"><span class="toc-no">01</span>対象と前提</a>
+      <a href="#conditions"><span class="toc-no">02</span>導入条件</a>
+      <a href="#ranking"><span class="toc-no">03</span>業務改善の進め方</a>
+      <a href="#simulator"><span class="toc-no">04</span>概算シミュレーター</a>
+      <a href="#improvement-cta"><span class="toc-no">05</span>改善計画10選</a>
+      <a href="#docs"><span class="toc-no">06</span>申請書類・様式</a>
+      <a href="#criteria-cta"><span class="toc-no">07</span>採択・返還基準</a>
+      <a href="#notes"><span class="toc-no">08</span>留意事項</a>
+    </div>
+  </div>
+  <div class="scroll-fade toc-fade" aria-hidden="true"></div>
+</nav>
+
+<div class="util-row">
+  <button type="button" class="util-btn" id="themeToggle" onclick="toggleTheme()">
+    <span id="themeToggleIcon" aria-hidden="true">🌙</span><span id="themeToggleLabel">夜間モードにする</span>
+  </button>
+</div>
+
+<div class="fav-panel" id="favPanel">
+  <div class="fav-panel-inner">
+    <span class="fav-panel-label">気になる制度</span>
+    <span class="fav-empty-hint" id="favEmptyHint">まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに集まります。あとで比べたり、まとめて印刷したりできます。</span>
+    <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
+    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
+      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
+      <label><input type="radio" name="printOrientation" value="landscape">横</label>
+    </div>
+    <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
+  </div>
+</div>
+
+<div id="printArea"></div>
+
+<main>
+
+  <section id="premise">
+    <div class="section-head"><span class="section-no jp-serif">01</span><h2>対象業態と前提</h2></div>
+    <p class="section-sub">本資料は「<span id="premiseIndustryName">美容業（美容室・理容室・ヘアサロン、ネイル・まつげエクステ等を含む美容関連サービス業）</span>」を対象に、個人事業主・小規模事業者から、6〜20人・21〜50人・51〜100人・101人以上まで幅広い事業規模を想定しています。従業員数によって活用できる制度や上限額が変わるため、「導入のための条件」の比較表と「概算シミュレーター」で従業員規模別の違いを確認できます。</p>
+    <p>対象とした公的制度は、経済産業省「デジタル化・AI導入補助金2026」、中小企業庁「小規模事業者持続化補助金」「中小企業省力化投資補助金」、厚生労働省「業務改善助成金」「キャリアアップ助成金」「人材開発支援助成金」の6制度です（業種によっては、これに業種特有の制度が加わります）。旧・事業再構築補助金や中小企業新事業進出補助金など、既に公募を終了した制度は掲載していません。内容は2026年7月13日時点で公開されている公募要領・制度概要に基づくもので、公募スケジュールの変化に応じて随時更新しています。</p>
+  </section>
+
+  <section id="conditions">
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>導入のための条件</h2></div>
+    <!-- もとはページ冒頭に大きな「3つの質問」ブロックとして置いていたが、
+         説明を読む前に入力を求める形が重いという指摘を受けて、条件の節へ移した
+         （2026-08-01）。選択欄はページ内でここにしか無いので、消さずに移設している。
+         この節だけ既定で開いた状態にしてあるのは、折りたたむと業種すら選べなくなるため。 -->
+    <div class="diag-inline">
+      <p class="diag-inline-lead">まず<strong>業種・地域・従業員数</strong>を選んでください。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
+      <div class="diag-steps">
       <div class="diag-step">
         <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">業種を選ぶ</span></div>
         <label for="industrySelectTop">お店・会社の業種</label>
@@ -1309,61 +1365,10 @@
           <span class="unit">人</span>
         </div>
       </div>
+      </div>
+      <div class="diag-result" id="diagResult"></div>
     </div>
 
-    <div class="diag-result" id="diagResult"></div>
-  </div>
-</section>
-
-<nav class="toc" aria-label="ページ内の目次">
-  <div class="toc-scroll">
-    <div class="row">
-      <a href="#diagnose">3つの質問</a>
-      <a href="#favPanel">☆ お気に入り</a>
-      <a href="#premise"><span class="toc-no">01</span>対象と前提</a>
-      <a href="#conditions"><span class="toc-no">02</span>導入条件</a>
-      <a href="#ranking"><span class="toc-no">03</span>業務改善10分類</a>
-      <a href="#simulator"><span class="toc-no">04</span>概算シミュレーター</a>
-      <a href="#improvement-cta"><span class="toc-no">05</span>改善計画10選</a>
-      <a href="#docs"><span class="toc-no">06</span>申請書類・様式</a>
-      <a href="#criteria-cta"><span class="toc-no">07</span>採択・返還基準</a>
-      <a href="#notes"><span class="toc-no">08</span>留意事項</a>
-    </div>
-  </div>
-  <div class="scroll-fade toc-fade" aria-hidden="true"></div>
-</nav>
-
-<div class="util-row">
-  <button type="button" class="util-btn" id="themeToggle" onclick="toggleTheme()">
-    <span id="themeToggleIcon" aria-hidden="true">🌙</span><span id="themeToggleLabel">夜間モードにする</span>
-  </button>
-</div>
-
-<div class="fav-panel" id="favPanel">
-  <div class="fav-panel-inner">
-    <span class="fav-panel-label">☆ お気に入り</span>
-    <span class="fav-empty-hint" id="favEmptyHint">まだお気に入りに登録した制度はありません。制度カードや概算シミュレーターの☆ボタンから登録できます。</span>
-    <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
-    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
-      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
-      <label><input type="radio" name="printOrientation" value="landscape">横</label>
-    </div>
-    <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
-  </div>
-</div>
-
-<div id="printArea"></div>
-
-<main>
-
-  <section id="premise">
-    <div class="section-head"><span class="section-no jp-serif">01</span><h2>対象業態と前提</h2></div>
-    <p class="section-sub">本資料は「<span id="premiseIndustryName">美容業（美容室・理容室・ヘアサロン、ネイル・まつげエクステ等を含む美容関連サービス業）</span>」を対象に、個人事業主・小規模事業者から、6〜20人・21〜50人・51〜100人・101人以上まで幅広い事業規模を想定しています。従業員数によって活用できる制度や上限額が変わるため、「導入のための条件」の比較表と「概算シミュレーター」で従業員規模別の違いを確認できます。</p>
-    <p>対象とした公的制度は、経済産業省「デジタル化・AI導入補助金2026」、中小企業庁「小規模事業者持続化補助金」「中小企業省力化投資補助金」、厚生労働省「業務改善助成金」「キャリアアップ助成金」「人材開発支援助成金」の6制度です（業種によっては、これに業種特有の制度が加わります）。旧・事業再構築補助金や中小企業新事業進出補助金など、既に公募を終了した制度は掲載していません。内容は2026年7月13日時点で公開されている公募要領・制度概要に基づくもので、公募スケジュールの変化に応じて随時更新しています。</p>
-  </section>
-
-  <section id="conditions">
-    <div class="section-head"><span class="section-no jp-serif">02</span><h2>導入のための条件</h2></div>
     <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有の制度に整理しています。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示しています。</p>
     <p class="cat-legend">制度名は種別で色分けしています：
       <span class="pill hojo">補助金</span>
@@ -1397,7 +1402,7 @@
         <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
         <input type="range" id="capitalSlider" min="0" max="7" step="1" value="2" oninput="onCapitalSliderInput(this.value)">
       </div>
-      <p class="t-note">従業員数と資本金を入れると、下の各制度カードに自社が対象かどうかのバッジが表示されます。従業員数はページ上部の「3つの質問」および「概算シミュレーター」と連動しています。地域はページ上部で選んでください（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
+      <p class="t-note">従業員数と資本金を入れると、下の各制度カードに自社が対象かどうかのバッジが表示されます。従業員数はこの節の上にある選択欄および「概算シミュレーター」と連動しています。地域も同じ選択欄で選べます（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
     </div>
 
     <div class="picker is-open" id="programPicker">
@@ -1671,10 +1676,14 @@
   </section>
 
   <section id="ranking">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>業務改善内容 — 10分類ランキング</h2></div>
-    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される細かな業務改善策を100個洗い出し、テーマごとに10分類へ集約しました。経営における効果の即効性・波及範囲をもとに優先順位を付けています。各カードを開くと、分類内の10施策・必要機材・概算費用・対象制度に加え、該当する<strong>事業計画書・試作デモ</strong>（ある分類のみ）を確認できます。</p>
-
-    <div class="rank-list" id="rankList"></div>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>業務改善の進め方</h2></div>
+    <!-- もとは10分類のアコーディオンカードを並べていたが、中身が「改善計画10選」と
+         重複していてページが長くなるだけだったため、案内だけに絞った（2026-08-01）。
+         renderRankingHTML() は使わなくなったが、rankList / rankIndustryName の
+         参照が残っているので、空の入れ物は置いたままにしてある。 -->
+    <p class="section-sub"><span id="rankIndustryName">美容業</span>で想定される業務改善策を100個洗い出し、テーマごとに10分類へ集約したうえで、そこから<strong>10案を選んで事業計画書までつくってあります</strong>。分類の一覧を眺めるより、そちらを見るほうが早く進みます。</p>
+    <p style="margin-top:0.9rem;"><a class="src-link" href="#improvement-cta">改善計画10選を見る（A4×10ページの事業計画書つき） →</a></p>
+    <div class="rank-list" id="rankList" hidden></div>
   </section>
 
   <section id="simulator">
@@ -2265,7 +2274,7 @@
       <span class="sort-label">表示</span>
       <div class="sort-btns">
         <button type="button" class="active" data-docs="all" onclick="setDocsFilter('all')">使える制度すべて</button>
-        <button type="button" data-docs="fav" onclick="setDocsFilter('fav')">☆ お気に入りだけ</button>
+        <button type="button" data-docs="fav" onclick="setDocsFilter('fav')">気になる制度だけ</button>
       </div>
       <p class="sort-note" id="docsNote"></p>
     </div>
@@ -6526,7 +6535,11 @@
         '</div>' +
       '</details>';
     });
-    document.getElementById('rankList').innerHTML = html;
+    // 2026-08-01: 10分類のカードは「改善計画10選」と内容が重複していたため表示をやめた。
+    // 中で組み立てた html は使わない。分類データそのものは概算シミュレーターが
+    // 使い続けているので、この関数と INDUSTRIES は残している。
+    var rl = document.getElementById('rankList');
+    if (rl) rl.innerHTML = '';
   }
 
   // 分類を利用者自身が触ったか。触るまでの試算は「例」であることを明示する
@@ -7089,7 +7102,7 @@
         var amountMan = headCount * 140;
         headlineHtml =
           '<div class="sim-panel ok">' +
-            '<div class="sim-headline">◎ 概算受給額<button type="button" class="fav-star" data-key="career" onclick="toggleFavorite(\'career\')" aria-label="保存する">☆</button></div>' +
+            '<div class="sim-headline">◎ 概算受給額<button type="button" class="fav-star" data-key="career" onclick="toggleFavorite(\'career\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
             '<div class="sim-big tabular">' + fmtMan(amountMan) + '</div>' +
             '<div class="sim-calc tabular">対象人数 ' + currentEmployeeCount + '人（本制度は年20人まで対象）× 140万円／人 = ' + fmtMan(amountMan) + '</div>' +
             '<div class="sim-note"><ul><li>本試算は概算であり、実際の支給可否・金額は要件充足状況により変動します。</li></ul></div>' +
@@ -7098,7 +7111,7 @@
         var capDisplay = CAP_TEXT[progKey] || prog.cap;
         headlineHtml =
           '<div class="sim-panel ok">' +
-            '<div class="sim-headline">制度の上限額の目安<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="保存する">☆</button></div>' +
+            '<div class="sim-headline">制度の上限額の目安<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
             '<div class="sim-big" style="font-size:1.5rem;">' + capDisplay + '</div>' +
             '<div class="sim-note"><ul><li>この制度は対象人数に応じた単価計算ではないため、制度全体の上限額を目安として表示しています。</li></ul></div>' +
           '</div>';
@@ -7157,7 +7170,7 @@
       var trackLabelText = track ? '（' + track.label + '）' : '';
 
       html += '<div class="sim-panel ok">' +
-        '<div class="sim-headline">◎ 概算受給額' + trackLabelText + '<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="保存する">☆</button></div>' +
+        '<div class="sim-headline">◎ 概算受給額' + trackLabelText + '<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
         '<div class="sim-big tabular">' + fmtMan(totalCapped) + '</div>' +
         '<div class="sim-calc">選択した従業員規模：' + tierLabel + '（制度上限額 ' + capText + '）</div>' +
         '<div class="sim-note"><ul>';
@@ -7272,8 +7285,11 @@
       var key = btn.getAttribute('data-key');
       var active = favs.indexOf(key) !== -1;
       btn.classList.toggle('active', active);
-      btn.textContent = active ? '★' : '☆';
-      btn.setAttribute('aria-label', active ? '保存済み（クリックで解除）' : '保存する');
+      btn.textContent = active ? '★ 気になる（登録済み）' : '☆ 気になる';
+      btn.setAttribute('aria-label',
+        active ? '「気になる制度」から外す' : '「気になる制度」に入れる');
+      btn.setAttribute('title',
+        active ? 'もう一度押すと外れます' : 'あとで比べたり、まとめて印刷したりできます');
     });
   }
 
@@ -7286,7 +7302,7 @@
       btn.type = 'button';
       btn.className = 'fav-star';
       btn.setAttribute('data-key', key);
-      btn.textContent = '☆';
+      btn.textContent = '☆ 気になる';
       btn.onclick = function (e) { e.stopPropagation(); toggleFavorite(key); };
       head.appendChild(btn);
     });
@@ -9769,14 +9785,14 @@
     if (note) {
       note.textContent = docsFilter === 'fav'
         ? (getFavorites().length
-            ? 'お気に入りに入れた制度だけを表示しています。'
-            : 'お気に入りがまだありません。制度カードの☆ボタンで登録すると、ここに絞り込めます。')
+            ? '「気になる」に入れた制度だけを表示しています。'
+            : 'まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに絞り込めます。')
         : 'いま選んでいる業種・地域で使える可能性がある制度の書類です。';
     }
 
     var html = '';
     if (!keys.length) {
-      html = '<p class="docs-empty">表示する制度がありません。上の「使える制度すべて」に切り替えるか、3つの質問の条件を変えてみてください。</p>';
+      html = '<p class="docs-empty">表示する制度がありません。上の「使える制度すべて」に切り替えるか、02の選択欄で条件を変えてみてください。</p>';
       el.innerHTML = html;
       return;
     }
@@ -9859,7 +9875,7 @@
         }).join('') + '</ul>'
       : '';
     if (!body && !tail) {
-      alert('印刷できる書類がありません。表示を「使える制度すべて」に切り替えるか、お気に入りに制度を登録してください。');
+      alert('印刷できる書類がありません。表示を「使える制度すべて」に切り替えるか、気になる制度を登録してください。');
       return;
     }
     area.innerHTML = head + body + tail;
@@ -10004,12 +10020,16 @@
   var SECTION_HINT = {
     'premise': 'この資料が対象にしている業種と、掲載している制度の範囲',
     'conditions': '制度ごとの対象者・補助率・上限額・締切と、お住まいの地域だけの制度',
-    'ranking': '業務改善策100個を10分類にまとめ、優先順位を付けた一覧',
+    'ranking': '100個の改善策から選んだ10案。事業計画書つきの一覧へ',
     'improvement-cta': '業種ごとに厳選した10案。A4×10ページの事業計画書つき',
     'criteria-cta': '何が評価されて採択されるか、何をすると返還になるかの調査ノート',
     'simulator': '制度・人数・分類を選ぶと、受け取れる金額の概算を試算します',
     'notes': '申請の前に確認しておきたい5つの注意点'
   };
+
+  // 02（導入のための条件）には業種・地域・従業員数の選択欄が入っている。
+  // 折りたたんだままだと何も選べないので、この節だけ既定で開く。
+  var OPEN_BY_DEFAULT = ['conditions'];
 
   function setSectionOpen(sec, open) {
     if (!sec) return;
@@ -10034,18 +10054,30 @@
         location.pathname + location.search + (hash ? '#' + hash : ''));
     } catch (e) { /* file:// 等では失敗するが本体機能には影響させない */ }
   }
+  // 「1つでも開いていたら閉じる」だと、02が最初から開くようになった時点で
+  // 押した瞬間に全部閉じてしまい、「すべて開く」ができなくなる（2026-08-01に実測）。
+  // 全部開いているときだけ「閉じる」にする。
+  function allSectionsOpen() {
+    var secs = document.querySelectorAll('main > section');
+    if (!secs.length) return false;
+    for (var i = 0; i < secs.length; i++) {
+      if (!secs[i].querySelector('.sec-toggle')) continue;
+      if (!secs[i].classList.contains('is-open')) return false;
+    }
+    return true;
+  }
   function updateExpandAllBtn() {
     var btn = document.getElementById('expandAll');
     if (!btn) return;
-    var anyOpen = !!document.querySelector('main > section.is-open');
-    btn.textContent = anyOpen ? 'すべて閉じる' : 'すべて開く';
-    btn.setAttribute('aria-pressed', anyOpen ? 'true' : 'false');
+    var all = allSectionsOpen();
+    btn.textContent = all ? 'すべて閉じる' : 'すべて開く';
+    btn.setAttribute('aria-pressed', all ? 'true' : 'false');
   }
   function toggleAllSections() {
     var secs = document.querySelectorAll('main > section');
-    var anyOpen = !!document.querySelector('main > section.is-open');
-    Array.prototype.forEach.call(secs, function (s) { setSectionOpen(s, !anyOpen); });
-    if (anyOpen) setHashSilently('');
+    var all = allSectionsOpen();
+    Array.prototype.forEach.call(secs, function (s) { setSectionOpen(s, !all); });
+    if (all) setHashSilently('');
   }
 
   // 畳んだ一覧は7枚が完全に等価で「どれから見ればいいか」の手がかりが無い。
@@ -10149,6 +10181,9 @@
         });
         h2.appendChild(btn);
         head.appendChild(h2);
+
+        // 選択欄が入っている節は最初から開いておく（閉じていると何も選べない）
+        if (OPEN_BY_DEFAULT.indexOf(sec.id) !== -1) setSectionOpen(sec, true);
       });
 
       // 目次・診断結果・本文中のページ内リンクは、畳まれた中を指していることが
