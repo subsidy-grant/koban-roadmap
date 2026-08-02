@@ -80,11 +80,22 @@
   function renderGtSchemes() {
     var sel = document.getElementById('gtScheme');
     if (!sel) return;
+    // コースが何本もある制度は、制度名の見出し（optgroup）でまとめる。
+    // 平らに並べると似た名前が続いて選べなくなるため。
     var keys = Object.keys(G.schemes);
-    sel.innerHTML = '<option value="">制度を選んでください</option>' + keys.map(function (k) {
+    var html = '<option value="">制度を選んでください</option>';
+    var openGroup = null;
+    keys.forEach(function (k) {
+      var sc = G.schemes[k];
+      var g = sc.group || null;
+      if (openGroup && g !== openGroup) { html += '</optgroup>'; openGroup = null; }
+      if (g && g !== openGroup) { html += '<optgroup label="' + esc(g) + '">'; openGroup = g; }
       var n = G.tasks.filter(function (t) { return t.scheme === k; }).length;
-      return '<option value="' + esc(k) + '">' + esc(G.schemes[k].label) + '（' + n + '手順）</option>';
-    }).join('');
+      var label = g ? esc(sc.label).replace(esc(g) + ' ', '') : esc(sc.label);
+      html += '<option value="' + esc(k) + '">' + label + '（' + n + '手順）</option>';
+    });
+    if (openGroup) html += '</optgroup>';
+    sel.innerHTML = html;
     sel.addEventListener('change', function () { renderGtAnchors(); renderGantt(); });
   }
   function renderGtAnchors() {

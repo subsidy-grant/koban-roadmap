@@ -446,7 +446,21 @@
   }
   .cond-card.is-open .cond-head::after { transform: rotate(180deg); }
   .cond-card:not(.is-open) .pd-grid, .cond-card:not(.is-open) .cond-faq,
-  .cond-card:not(.is-open) .pd-note { display: none; }
+  .cond-card:not(.is-open) .pd-note, .cond-card:not(.is-open) .course-pick { display: none; }
+
+  /* 同じ制度の中でコースを切り替える欄。カードの見出しのすぐ下に置く */
+  .course-pick {
+    display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    margin: 0.9rem 0 0.9rem; padding: 0.65rem 0.8rem;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .course-pick > .cp-label { font-size: 0.82rem; font-weight: 700; color: var(--ink-soft); }
+  .course-pick select {
+    flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.95rem;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); color: var(--ink); min-height: 2.9rem;
+  }
+  .course-pick select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .cond-head-static { cursor: default; }
   .cond-head-static::after { content: none; }
   .cond-head-static:hover { background: transparent; }
@@ -2617,6 +2631,33 @@
       schedule: "通年受付。ただし順番が決まっています。①正社員に転換する日の前日までに「キャリアアップ計画書」を労働局へ提出 ②就業規則等に正社員への転換ルールを定める ③実際に正社員へ転換する ④正社員としての賃金を6か月分支払う ⑤その支払日の翌日から2か月以内に支給申請。①を飛ばすと受け取れません。⑤の2か月を過ぎても受け取れません",
       continuity: "恒久的な制度として毎年度実施。次年度も継続見込み（一回限りの制度ではない）"
     },
+    career_shoyo: {
+      name: "キャリアアップ助成金（賞与・退職金制度導入コース）",
+      scale: "雇用保険の適用事業所の事業主で、就業規則または労働協約により、雇っている<strong>すべての</strong>有期雇用労働者等（パート・アルバイト・契約社員。正社員は含みません）に賞与か退職金、またはその両方を<strong>新しく</strong>設けた事業主。対象になるスタッフは、制度を始める日の前日から数えて3か月以上前から雇っていて、始めた日以降も6か月以上続けて働いている人です。事業主または取締役の3親等以内の親族は対象外です",
+      expense: "設備や経費に出るお金ではありません。制度を作って実際に払った・積み立てたことに対する定額の助成です。賞与や退職金の原資そのものを埋め合わせるものではありません",
+      rate: "定額支給（中小企業）。賞与か退職金のどちらか一方を導入した場合40万円、賞与と退職金を<strong>同時に</strong>導入した場合56万8,000円。分割ではなく1回で支払われます",
+      cap: "1事業所につき<strong>通算1回だけ</strong>です（1年度に1回ではありません）。対象のスタッフが何人いても事業所ごとの定額で、人数では増えません。56万8,000円になるのは賞与と退職金を同時に就業規則へ定めた事業所だけで、片方を入れてから後で足しても差額の16万8,000円は付きません。なお従業員30人以下の事業主への上乗せはこのコースにはありません（30人以下で50万円という金額は短時間労働者労働時間延長支援コースのものです）",
+      wage: "3%昇給のような賃金要件はありません。代わりに支払う金額の下限があります。賞与は対象者1人につき6か月分相当として<strong>50,000円以上</strong>、退職金は1か月分相当として<strong>3,000円以上を6か月分</strong>（または6か月分相当18,000円以上）を事業主が全額負担して積み立てます。あわせて、制度を適用する全員について基本給と定額で支給している諸手当を減額していないことが必要です。手当の名前を変えて実質的に減らすのも認められません",
+      acceptance: "競争で選ばれる制度ではありませんが、労働局の支給審査があります。「趣旨・目的に沿った取組と判断されない場合は不支給」と案内に明記されています",
+      note: "【順番を間違えると受け取れません】キャリアアップ計画書が、制度を始める日（就業規則等に定めて周知し効力が生じた日）の前日までに労働局長に受理されている必要があります。1日でも後になると受け取れません。就業規則は周知した日から効力を持つので、発効日と施行日は同じ日にします。<strong>すでに一部のスタッフに賞与を出していて就業規則にも書いてある場合、それを全員に広げただけでは「新たに設けた」に当たらず対象外</strong>です（就業規則に書かずに慣例で払っていたものを新しく規定した場合は対象になり得ます）。過去に旧・諸手当制度共通化コース／旧・諸手当制度等共通化コースの支給を受けた事業主は対象外です（健康診断制度のみの助成を受けた場合を除く）。同じ取組に対して2つ以上の助成金は原則どちらか一方しか受けられません。申請書類の作成・提出を代理で頼めるのは社会保険労務士または弁護士に限られ、代理人が出す場合は委任状の原本が要ります。",
+      link: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html",
+      linkLabel: "厚生労働省 公式ページを見る",
+      schedule: "通年受付。ただし順番が決まっています。①制度を始める日の前日までに「キャリアアップ計画書」を労働局へ提出し受理される ②就業規則等に賞与か退職金の定めを書き加え、全員に周知して施行する ③労働基準監督署へ届け出る ④初回の賞与を支給する、または退職金の積立てを始める ⑤6か月以上運用し、6か月分の賃金を支払った日の翌日から2か月以内に支給申請。①を飛ばすと受け取れません。同時導入の場合、⑤の起点は初回の賞与支給日と初回の積立日の<strong>遅いほう</strong>です。勤務日数が11日未満の月は6か月に数えません",
+      continuity: "令和6年度・令和7年度・令和8年度と続けて実施されている定着したコース。ただし厚生労働省は年度の途中でも要件が変わる場合があると明記しています",
+      reg: {
+        universal: true,
+        family: 'career',
+        courseLabel: '賞与・退職金制度導入コース',
+        capMan: 56.8,
+        capText: '56万8,000円（賞与と退職金を同時に導入した場合。片方だけなら40万円）',
+        expenseShort: '賞与・退職金の制度を新しく作ることへの定額の助成',
+        simType: 'fixed',
+        eligibility: 'ok',
+        docKind: 'employment',
+        docNotes: ['<strong>キャリアアップ計画書…制度を始める日（就業規則に定めて周知した日）の前の日までに労働局へ提出し、受理されていること</strong>（あとから出してもさかのぼれません）',
+                   '賞与を支給したこと・退職金を積み立てたことが分かる資料（振込記録や積立の証憑）。<strong>退職金を導入した場合は、支給決定の後に積立金等が確認できる書類を出すことに同意していること自体が支給の条件</strong>です']
+      }
+    },
     jinzai: {
       name: "人材開発支援助成金（人材育成支援コース）",
       scale: "労働者に10時間以上の訓練を実施する事業主",
@@ -3238,6 +3279,14 @@
   };
 
   var PROGRAM_FAQ = {
+    career_shoyo: [
+      { q: "パートに寸志を渡していますが、それを制度にすれば対象になりますか？", a: "就業規則に賞与の定めが<strong>無く</strong>、慣例で渡していただけなら、新しく就業規則に定めることで対象になり得ます。反対に、すでに就業規則に賞与の定めがあって一部のスタッフにだけ支給していた場合、それを全員に広げても「新たに設けた」ことにならず対象外です。就業規則の実物を社会保険労務士に見てもらってから動いてください。" },
+      { q: "いくらもらえますか？", a: "中小企業で、賞与か退職金のどちらか一方を導入した場合は40万円、両方を同時に導入した場合は56万8,000円です。1事業所につき通算1回だけで、対象のスタッフが何人いても金額は変わりません。" },
+      { q: "いくら払えば要件を満たしますか？", a: "賞与は対象者1人につき6か月分相当として5万円以上、退職金は月3,000円以上を6か月分（または6か月分相当18,000円以上）を、事業主が全額負担して積み立てます。スタッフに負担させる形にすると対象外です。" },
+      { q: "先に賞与を出してしまいました。あとから申請できますか？", a: "できません。キャリアアップ計画書が、制度を始める日（就業規則に定めて周知した日）の前日までに労働局に受理されている必要があります。1日でも後になると受け取れません。" },
+      { q: "賞与を入れたあとで退職金も足せば、56万8,000円になりますか？", a: "なりません。56万8,000円になるのは、賞与と退職金を<strong>同時に</strong>就業規則へ定めた場合だけです。あとから足しても差額は付きません。ただし初回の賞与支給日と初回の積立日が同じ日である必要はありません。" },
+      { q: "この助成金をもらった後に、賞与をやめてもいいですか？", a: "支給申請の時点で6か月以上運用していることが要件です。それより前にやめると受け取れません。支給後の取扱いは支給要領の確認事項なので、管轄の労働局にご確認ください。当サイトでは確認できていません。" }
+    ],
     ai: [
       { q: "どんな費用が対象になりますか？", a: "{{EXAMPLE}}等の業務用ソフトウェア購入費、クラウドサービス利用料（最大2年分）、導入関連費が対象です。パソコンやタブレットそのものの購入費は原則対象外です。" },
       { q: "従業員数が多くても申請できますか？", a: "中小企業者の基準内であれば従業員規模を問わず申請できます。基準は業種により異なるため、本ページの資本金・従業員数の入力で確認できます。" },
@@ -3370,18 +3419,30 @@
     ]
   };
 
+  // 1つの制度（コース）ぶんのよくある質問。コース切替でも使い回す
+  function programFaqHTML(key) {
+    var list = PROGRAM_FAQ[key];
+    if (!list) return '';
+    var ex = FAQ_INDUSTRY_EXAMPLES[key] ? FAQ_INDUSTRY_EXAMPLES[key][currentIndustry] : null;
+    var itemsHTML = list.map(function (item) {
+      var q = ex ? item.q.replace('{{EXAMPLE}}', ex) : item.q;
+      var a = ex ? item.a.replace('{{EXAMPLE}}', ex) : item.a;
+      return '<details><summary>' + q + '</summary><div class="faq-a">' + a + '</div></details>';
+    }).join('');
+    return '<div class="cond-faq-title">よくある質問</div>' + itemsHTML;
+  }
+
   function initProgramFaq() {
-    var examples = FAQ_INDUSTRY_EXAMPLES;
     Object.keys(PROGRAM_FAQ).forEach(function (key) {
       var container = document.getElementById('condFaq-' + key);
       if (!container) return;
-      var industryExample = examples[key] ? examples[key][currentIndustry] : null;
-      var itemsHTML = PROGRAM_FAQ[key].map(function (item) {
-        var q = industryExample ? item.q.replace('{{EXAMPLE}}', industryExample) : item.q;
-        var a = industryExample ? item.a.replace('{{EXAMPLE}}', industryExample) : item.a;
-        return '<details><summary>' + q + '</summary><div class="faq-a">' + a + '</div></details>';
-      }).join('');
-      container.innerHTML = '<div class="cond-faq-title">よくある質問</div>' + itemsHTML;
+      container.innerHTML = programFaqHTML(key);
+    });
+    // コースを切り替えている最中の制度は、選んでいるコースのFAQに戻す
+    Object.keys(currentCourse).forEach(function (fam) {
+      if (currentCourse[fam] === fam) return;
+      var c = document.getElementById('condFaq-' + fam);
+      if (c) c.innerHTML = programFaqHTML(currentCourse[fam]);
     });
   }
 
@@ -6837,6 +6898,152 @@
   }
 
   var UNIVERSAL_PROGRAM_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'hatarakikata'];
+
+  // 人数あたりの単価計算ではなく「制度の上限額」だけを出す制度。
+  // 雇用関係助成金は定額支給なので、機材費×補助率の試算になじまない。
+  var SIM_FIXED_KEYS = ['career', 'jinzai', 'hatarakikata', 'akiya'];
+
+  // 対象判定バッジを機械判定できる制度。ここに無いものは isChusho で判定する。
+  var ELIG_ALWAYS_OK = ['shoryokuka', 'career', 'jinzai'];
+
+  // ---------- 制度を1つ増やすときの書き足し先を1か所にまとめる ----------
+  // PROGRAMS[key].reg = {
+  //   universal: true,            // 全国どこでも使える（制度を探すの一覧に出す）
+  //   capMan: 140,                // 概算シミュレーターが使う上限額（万円・数値）
+  //   capText: '140万円／人',      // 画面に出す上限額の文字（省略時は p.cap）
+  //   expenseShort: '…',          // 「対象経費の種類が異なります」で使う短い説明
+  //   optionLabel: '…',           // 制度を選ぶプルダウンの表示（省略時は名前＋上限）
+  //   simType: 'fixed',           // 定額支給（上限額だけ出す）
+  //   eligibility: 'ok',          // 対象判定バッジ（'ok' | 'warn'。省略時は資本金・人数で判定）
+  //   wageRequired: true,         // 賃上げが前提条件
+  //   docKind: 'employment',      // 厚労省系（労務帳簿と出す順番の注意を出す）
+  //   docNotes: ['…'],            // この制度だけの「出す順番」の注意（HTML可）
+  //   industries: ['beauty', …]   // 対象業種（省略時は全業種）
+  // }
+  // 既に手で書いてある値は上書きしない。既存の制度の挙動は変えない。
+  function registerPrograms() {
+    Object.keys(PROGRAMS).forEach(function (k) {
+      var prog = PROGRAMS[k], r = prog.reg;
+      if (!r) return;
+      if (r.universal && UNIVERSAL_PROGRAM_KEYS.indexOf(k) === -1) UNIVERSAL_PROGRAM_KEYS.push(k);
+      if (CAP[k] === undefined && r.capMan !== undefined) CAP[k] = r.capMan;
+      if (CAP_TEXT[k] === undefined) CAP_TEXT[k] = r.capText || prog.cap;
+      if (EXPENSE_DESC[k] === undefined && r.expenseShort) EXPENSE_DESC[k] = r.expenseShort;
+      if (OPTION_LABEL[k] === undefined && r.optionLabel) OPTION_LABEL[k] = r.optionLabel;
+      if (r.wageRequired && WAGE_REQUIRED[k] === undefined) WAGE_REQUIRED[k] = true;
+      if (r.simType === 'fixed' && SIM_FIXED_KEYS.indexOf(k) === -1) SIM_FIXED_KEYS.push(k);
+      if (r.eligibility === 'ok' && ELIG_ALWAYS_OK.indexOf(k) === -1) ELIG_ALWAYS_OK.push(k);
+      if (r.docKind === 'employment' && EMPLOYMENT_DOC_KEYS.indexOf(k) === -1) EMPLOYMENT_DOC_KEYS.push(k);
+      if (r.industries && !PROGRAM_INDUSTRIES[k]) PROGRAM_INDUSTRIES[k] = r.industries;
+      if (r.family) {
+        if (!PROGRAM_FAMILY[r.family]) PROGRAM_FAMILY[r.family] = [r.family];
+        if (PROGRAM_FAMILY[r.family].indexOf(k) === -1) PROGRAM_FAMILY[r.family].push(k);
+      }
+    });
+  }
+
+  // ---------- 同じ制度のコースを1枚のカードにまとめる ----------
+  // 'career' -> ['career', 'career_shoyo', ...]（先頭が代表＝いまの静的カード）
+  var PROGRAM_FAMILY = {};
+  var currentCourse = {};
+
+  // 属性値に入れる文字。制度名に「"」や「&」が入っても壊れないようにする
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function familyOf(k) {
+    var r = PROGRAMS[k] && PROGRAMS[k].reg;
+    return (r && r.family) || (PROGRAM_FAMILY[k] ? k : null);
+  }
+  function courseLabelOf(k) {
+    var pr = PROGRAMS[k];
+    return (pr && pr.reg && pr.reg.courseLabel) || (pr && pr.name) || k;
+  }
+
+  // 代表以外のコースの中身。項目は制度カードと同じ8つで、
+  // 強調のしかたも都道府県カードと同じ関数を使う（見た目をそろえるため）
+  function buildCourseGridHTML(pr) {
+    return '' +
+      '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(pr.scale) + '</div></div>' +
+      '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + pr.expense + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(pr.rate) + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(pr.cap) + '</div></div>' +
+      '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(pr.wage)) + '</div></div>' +
+      '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + pr.acceptance + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(pr.schedule) + '</div></div>' +
+      '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + pr.continuity + '</div></div>' +
+      (pr.note ? '<div class="pd-item pd-item-wide"><div class="k">注意</div><div class="v">' + reqHL(pr.note) + '</div></div>' : '');
+  }
+
+  function initProgramCourses() {
+    Object.keys(PROGRAM_FAMILY).forEach(function (fam) {
+      var list = PROGRAM_FAMILY[fam];
+      if (list.length < 2) return;
+      var card = document.getElementById('cond-' + fam);
+      if (!card) return;
+      var head = card.querySelector('.cond-head');
+      var grid = card.querySelector('.pd-grid');
+      if (!head || !grid) return;
+      var sub = head.querySelector('.sub');
+      var link = head.querySelector('.src-link');
+      // 代表コースの見た目は今のまま残し、戻ってきたらそっくり復元する
+      card.__base = {
+        grid: grid.innerHTML,
+        sub: sub ? sub.innerHTML : '',
+        href: link ? link.getAttribute('href') : '',
+        linkText: link ? link.textContent : ''
+      };
+      var row = document.createElement('div');
+      row.className = 'course-pick';
+      row.innerHTML = '<span class="cp-label">コースを選ぶ（' + list.length + '本）</span>' +
+        '<select id="course-' + fam + '" aria-label="' + esc(PROGRAMS[fam].name) + 'のコースを選ぶ">' +
+        list.map(function (k) {
+          return '<option value="' + esc(k) + '">' + esc(courseLabelOf(k)) + '</option>';
+        }).join('') + '</select>';
+      // 見出しを押すとカードが開閉するので、選ぶ操作が開閉に化けないように止める
+      row.addEventListener('click', function (e) { e.stopPropagation(); });
+      row.addEventListener('keydown', function (e) { e.stopPropagation(); });
+      row.querySelector('select').addEventListener('change', function () {
+        currentCourse[fam] = this.value;
+        applyCourse(fam);
+      });
+      grid.parentNode.insertBefore(row, grid);
+      currentCourse[fam] = list[0];
+    });
+  }
+
+  function applyCourse(fam) {
+    var card = document.getElementById('cond-' + fam);
+    if (!card || !card.__base) return;
+    var k = currentCourse[fam] || fam;
+    var pr = PROGRAMS[k];
+    if (!pr) return;
+    var grid = card.querySelector('.pd-grid');
+    var sub = card.querySelector('.cond-head .sub');
+    var link = card.querySelector('.cond-head .src-link');
+    var badge = card.querySelector('.elig-badge');
+    if (k === fam) {
+      grid.innerHTML = card.__base.grid;
+      if (sub) sub.innerHTML = card.__base.sub;
+      if (link) { link.setAttribute('href', card.__base.href); link.textContent = card.__base.linkText; }
+    } else {
+      grid.innerHTML = buildCourseGridHTML(pr);
+      if (sub) sub.textContent = courseLabelOf(k);
+      if (link) {
+        link.setAttribute('href', pr.link);
+        link.textContent = (pr.linkLabel || '公式ページを見る') + ' ↗';
+      }
+    }
+    // 対象判定バッジ・申請書類への導線を、選んだコースのものに向け直す
+    if (badge) badge.id = 'eligBadge-' + k;
+    var dl = card.querySelector('.cond-docs-link');
+    if (dl) dl.setAttribute('href', '#docs');
+    var faq = card.querySelector('.cond-faq');
+    if (faq) faq.innerHTML = programFaqHTML(k);
+    updateEligibilityBadges();
+  }
   var OPTION_LABEL = {
     ai: "デジタル化・AI導入補助金2026（上限450万円）",
     jizoku: "小規模事業者持続化補助金＜通常枠＞（上限50万円）",
@@ -7075,9 +7282,22 @@
 
   function renderProgramSelects(industryKey) {
     var keys = getAvailablePrograms(industryKey);
-    var optionsHTML = keys.map(function (k) {
-      return '<option value="' + k + '">' + getOptionLabel(k) + '</option>';
-    }).join('');
+    // コースが何本もある制度は、制度名の見出し（optgroup）でまとめる。
+    // 平らに並べると似た名前が続いて選べなくなるため。
+    var optionsHTML = '';
+    var openFam = null;
+    keys.forEach(function (k) {
+      var fam = familyOf(k);
+      var grouped = fam && PROGRAM_FAMILY[fam] && PROGRAM_FAMILY[fam].length > 1;
+      if (openFam && (!grouped || fam !== openFam)) { optionsHTML += '</optgroup>'; openFam = null; }
+      if (grouped && fam !== openFam) {
+        optionsHTML += '<optgroup label="' + esc(PROGRAMS[fam].name.split('（')[0]) + '">';
+        openFam = fam;
+      }
+      var label = grouped ? courseLabelOf(k) + '（上限' + (CAP_TEXT[k] || '').split('（')[0] + '）' : getOptionLabel(k);
+      optionsHTML += '<option value="' + esc(k) + '">' + esc(label) + '</option>';
+    });
+    if (openFam) optionsHTML += '</optgroup>';
     var sel1 = document.getElementById('programSelect');
     var sel2 = document.getElementById('simProgram');
     var prevSel1 = sel1.value;
@@ -7140,8 +7360,11 @@
     if (progKey === 'jizoku') {
       return employeeCount <= ind.smallBizThreshold ? 'ok' : 'ng';
     }
-    if (progKey === 'shoryokuka' || progKey === 'career' || progKey === 'jinzai') {
+    if (ELIG_ALWAYS_OK.indexOf(progKey) !== -1) {
       return 'ok';
+    }
+    if (PROGRAMS[progKey] && PROGRAMS[progKey].reg && PROGRAMS[progKey].reg.eligibility === 'warn') {
+      return 'warn';
     }
     if (progKey === 'tokyo_sogyo' || progKey === 'tokyo_soui') {
       // 創業からの年数・直近の営業利益の増減は本サイトの入力項目にないため、機械判定せず「要確認」に統一
@@ -7157,9 +7380,11 @@
 
   function updateEligibilityBadges() {
     var ind = INDUSTRIES[currentIndustry];
-    ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'].forEach(function (progKey) {
-      var badge = document.getElementById('eligBadge-' + progKey);
-      if (!badge) return;
+    // 制度を増やすたびにこの配列へ書き足す作りだと、書き忘れるとバッジが出ない。
+    // 画面にあるバッジの側から制度キーを拾う。
+    Array.prototype.forEach.call(document.querySelectorAll('[id^="eligBadge-"]'), function (badge) {
+      var progKey = badge.id.slice('eligBadge-'.length);
+      if (!PROGRAMS[progKey]) return;
       var result = computeEligibility(progKey, currentEmployeeCount, currentCapitalYen, ind);
       badge.className = 'elig-badge ' + result;
       badge.textContent = ELIG_LABEL[result];
@@ -7358,7 +7583,7 @@
     }
 
     var isLocalProgram = PROGRAMS[progKey] && (PROGRAMS[progKey].prefecture || PROGRAMS[progKey].municipality);
-    if (progKey === 'career' || progKey === 'jinzai' || progKey === 'hatarakikata' || progKey === 'akiya' || isLocalProgram) {
+    if (SIM_FIXED_KEYS.indexOf(progKey) !== -1 || isLocalProgram) {
       var headlineHtml = '';
       if (progKey === 'career') {
         var headCount = Math.min(currentEmployeeCount, 20);
@@ -7952,6 +8177,26 @@
           { name: '様式第3号 支給申請書', url: 'https://www.mhlw.go.jp/content/11909000/001683460.xlsx', type: 'Excel', size: '63KB' },
           { name: '別添様式1-1 正社員化コース内訳', url: 'https://www.mhlw.go.jp/content/11909000/001688075.xlsx', type: 'Excel', size: '48KB' },
           { name: '別添様式1-2 正社員化コース対象労働者詳細', url: 'https://www.mhlw.go.jp/content/11909000/001619196.xlsx', type: 'Excel', size: '79KB' }
+        ] }
+      ]
+    },
+    career_shoyo: {
+      checked: '2026-08-02',
+      portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
+      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。賞与・退職金制度導入コースで使う様式だけを載せています。',
+      groups: [
+        { phase: '取組の前に出す', items: [
+          { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
+          { name: '様式第2号 キャリアアップ計画書（変更届）', url: 'https://www.mhlw.go.jp/content/11909000/001688050.docx', type: 'Word', size: '100KB' }
+        ] },
+        { phase: '支給申請', items: [
+          { name: '様式第3号 支給申請書', url: 'https://www.mhlw.go.jp/content/11909000/001683460.xlsx', type: 'Excel', size: '63KB' },
+          { name: '別添様式5 賞与・退職金制度導入コース内訳', url: 'https://www.mhlw.go.jp/content/11909000/001470108.xlsx', type: 'Excel', size: '54KB' },
+          { name: '別添様式5 内訳（継紙）', url: 'https://www.mhlw.go.jp/content/11909000/001470110.xlsx', type: 'Excel', size: '17KB' },
+          { name: '様式第4号 事業所確認票', url: 'https://www.mhlw.go.jp/content/11650000/001083034.docx', type: 'Word', size: '26KB' },
+          { name: '賃金台帳等に関する確認書（ひな形）', url: 'https://www.mhlw.go.jp/content/11909000/001239272.docx', type: 'Word', size: '21KB' },
+          { name: '申立書（就業規則の届出義務が無い場合の例示様式）', url: 'https://www.mhlw.go.jp/content/11650000/001083042.docx', type: 'Word', size: '18KB' },
+          { name: '常時雇用する労働者数に係る疎明書（例示様式）', url: 'https://www.mhlw.go.jp/content/11909000/001511315.docx', type: 'Word', size: '28KB' }
         ] }
       ]
     },
@@ -10093,6 +10338,7 @@
         items.push('<strong>交付決定の前に発注・契約したものは対象外</strong>。見積書は2者以上から取ります（メーカー直販など2者から取れない場合は市場価格の分かる資料で代えられます）。パソコン・タブレット・スマートフォンの購入費用は対象外です');
         items.push('支払は事業主本人（代表者名）か法人名の名義で行うこと。<strong>個人事業主が家族名義の口座・カードで支払うと、支払ったものと認められません</strong>');
       }
+      (p.reg && p.reg.docNotes ? p.reg.docNotes : []).forEach(function (t) { items.push(t); });
       items.push('賃金台帳・出勤簿（タイムカード）・労働者名簿。ふだん使っている原本かそのコピーを出します（申請用に作り直すと不支給になります）');
       items.push('雇用契約書または労働条件通知書の写し');
       items.push('就業規則・賃金規程の写し（働く人が10人未満で届出義務が無い場合は申立書で代えられます）');
@@ -10628,11 +10874,15 @@
   // ?industry=... を消してしまい、共有されたURLで開いても復元できなくなる
   restoringState = true;
 
+  // 制度の登録は、どの描画よりも先に済ませる（一覧・上限額・バッジがこれに依存する）
+  registerPrograms();
+
   // 最初に実行する。後続の初期化でエラーが出ても「見出しだけ出て何も開かない」
   // 状態にならないようにするため
   initSectionAccordion();
 
   initCondCardToggles();
+  initProgramCourses();
   initFavoriteStars();
   renderFavPanel();
   renderProgram('ai');
