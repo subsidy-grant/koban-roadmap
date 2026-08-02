@@ -1,0 +1,38 @@
+name: 様式の控えを最新に保つ
+
+# なぜ動かすか：
+#   forms/ にある様式の控えは、配布元が差し替えると古くなる。
+#   古い様式で提出すると受け付けてもらえないので、毎日取り直して
+#   中身が変わっていたら自動で差し替える。取得日時も記録する。
+#   取り込むのは、二次利用が認められていることを規約で確認した
+#   配布元だけ（_tools/mirror_forms.py の ALLOWED を見ること）。
+
+on:
+  schedule:
+    - cron: '0 20 * * *'   # 毎日 05:00 JST（UTC 20:00）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 様式を取り直す
+        run: python3 _tools/mirror_forms.py
+      - name: 変わっていたらコミット
+        run: |
+          if [ -n "$(git status --porcelain forms)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add forms
+            git commit -m "様式の控えを更新（配布元の差し替えを反映）"
+            git push
+          else
+            echo "変わりなし"
+          fi

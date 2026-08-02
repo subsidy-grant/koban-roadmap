@@ -243,6 +243,8 @@
   .af-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.3rem; }
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.7rem; min-height: 36px; cursor: pointer; }
+  .fill-origin { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.6rem; line-height: 1.7; }
+  .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
   .af-dl-ttl { font-size: 0.86rem; font-weight: 700; margin: 0.7rem 0 0.2rem; }
   .af-dl-link { display: block; padding: 0.5rem 0.2rem; min-height: 44px; font-size: 0.9rem; }
@@ -464,7 +466,8 @@
       <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
       当サイトの様式一覧（下の06）に載っているファイルのうち、Word（.docx）とExcel（.xlsx）の421件がこの自動入力の対象です。</p>
       <ul style="margin:0;padding-left:1.2rem;">
-        <li><strong>様式を自動で取り寄せられるとは限りません。</strong>2026年8月2日に、様式の配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所（様式64件）でした。厚生労働省・農林水産省・中小機構・東京都中小企業振興公社などの56か所は、他サイトからの取得を許可しない設定（CORS）です。この場合はチェックした様式ごとに公式ページへのボタンを出しますので、落としたファイルを「様式のファイルを直接置く」に入れてください。同じように記入してお返しします。</li>
+        <li><strong>ダウンロードなしでそのまま記入できる様式には「そのまま記入できます」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
+        <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
         <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
         <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
         <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
@@ -1596,6 +1599,16 @@
     card.className = 'pcard fillcard';
     var html = '<button type="button" class="card-close" aria-label="この結果の表示を消す" title="この結果の表示を消す">×</button>' +
       '<h3>' + esc(fileName) + '</h3>';
+    if (res.origin && res.origin.via === 'mirror' && res.origin.rec) {
+      var rc = res.origin.rec;
+      html += '<p class="fill-origin">出典：' + esc(rc.org) + 'ウェブサイト（' +
+        '<a href="' + esc(res.origin.url) + '" target="_blank" rel="noopener noreferrer">配布ページ ↗</a>）。' +
+        '当サイトが<strong>' + esc(rc.fetched) + '</strong>に取得した控えを、中身を変えずに使いました。' +
+        '<strong>様式は差し替わることがあります。</strong>提出前に配布ページで最新版かご確認ください。</p>';
+    } else if (res.origin && res.origin.via === 'direct') {
+      html += '<p class="fill-origin">配布元から直接取り寄せた様式です（' +
+        '<a href="' + esc(res.origin.url) + '" target="_blank" rel="noopener noreferrer">配布ページ ↗</a>）。</p>';
+    }
     if (res.error) {
       html += '<p style="margin:0;color:var(--rust);font-size:0.92rem;">' + esc(res.error) + '</p>';
     } else if (res.none) {
@@ -1871,7 +1884,9 @@
           html += '<li><label for="' + id + '">' +
             '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
             'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
-            '<span class="fn">' + esc(it.name) + '</span>' +
+            '<span class="fn">' + esc(it.name) +
+            (mirrorOf(it.url) ? '<span class="gt-badge gt-b-ok">そのまま記入できます</span>' : '') +
+            '</span>' +
             '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
         } else {
           html += '<li class="na"><div class="af-check-row">' +
@@ -1941,15 +1956,39 @@
   function setAllAf(on) {
     document.querySelectorAll('#afForms .af-item').forEach(function (c) { c.checked = on; });
   }
-  // 公式サイトから様式を取り寄せる。取れなければ理由を投げる
-  function fetchForm(url) {
-    return fetch(url, { method: 'GET', credentials: 'omit' }).then(function (r) {
-      if (!r.ok) throw new Error('http' + r.status);
-      return r.arrayBuffer();
-    }).then(function (buf) {
+  // 配布元が二次利用を認めている様式は、当サイトに控えを置いてある
+  // （forms/manifest.json）。同じサイト内なのでブラウザの制限を受けず、
+  // 利用者が自分でダウンロードする手間が要らない。
+  // 控えが無い様式は、これまでどおり配布元へ直接取りにいく。
+  var FORM_MIRROR = null;
+  function loadMirror() {
+    return fetch('forms/manifest.json', { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { FORM_MIRROR = (j && j.files) || {}; return FORM_MIRROR; })
+      .catch(function () { FORM_MIRROR = {}; return FORM_MIRROR; });
+  }
+  function mirrorOf(url) {
+    return (FORM_MIRROR && FORM_MIRROR[url]) || null;
+  }
+  function readBody(r) {
+    if (!r.ok) throw new Error('http' + r.status);
+    return r.arrayBuffer().then(function (buf) {
       if (!buf || buf.byteLength < 200) throw new Error('empty');
       return new Uint8Array(buf);
     });
+  }
+  // 様式を取り寄せる。控えがあればそれを使い、無ければ配布元へ。
+  // 戻り値は { bytes, via: 'mirror'|'direct', rec }
+  function fetchForm(url) {
+    var rec = mirrorOf(url);
+    var direct = function () {
+      return fetch(url, { method: 'GET', credentials: 'omit' })
+        .then(readBody).then(function (u8) { return { bytes: u8, via: 'direct', rec: null }; });
+    };
+    if (!rec) return direct();
+    return fetch(rec.path, { credentials: 'omit' }).then(readBody)
+      .then(function (u8) { return { bytes: u8, via: 'mirror', rec: rec }; })
+      .catch(direct);
   }
   function fileNameFromUrl(url, fallback) {
     try {
@@ -2004,9 +2043,10 @@
     items.forEach(function (it) {
       chain = chain.then(function () {
         if (status) status.textContent = '（' + (done + 1) + '/' + items.length + '）' + it.name + ' を取り寄せています…';
-        return fetchForm(it.url).then(function (u8) {
+        return fetchForm(it.url).then(function (got1) {
           var fname = fileNameFromUrl(it.url, it.name + '.docx');
-          return processFillBytes(fname, u8).then(function (res) {
+          return processFillBytes(fname, got1.bytes).then(function (res) {
+            res.origin = { via: got1.via, rec: got1.rec, url: it.url };
             renderFillResult(fname, res);
             got++;
           });
@@ -2730,6 +2770,7 @@
 
   renderCompany();
   initAutofill();
+  loadMirror().then(function () { renderAfForms(); });
   renderAfPrograms();
   initAfFilter();
   renderGtSchemes();
