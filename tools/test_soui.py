@@ -8,7 +8,7 @@
  ・都内登記所在地の欄に本店の住所を入れない
  ・文字を幅に押し込む指定を値に持ち込まない
 """
-import json, os, sys, warnings, zipfile
+import json, os, re, sys, warnings, zipfile
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 warnings.filterwarnings("ignore")
 from playwright.sync_api import sync_playwright
@@ -22,9 +22,9 @@ SRC = os.path.join(HERE, "soui")
 OUT = os.path.join(HERE, "soui_test")
 os.makedirs(OUT, exist_ok=True)
 BASE = {
-    "name": "株式会社サンプル美容", "kana": "カブシキガイシャサンプルビヨウ", "houjin": "7000012050002",
+    "name": "株式会社サンプル美容", "kana": "カブシキガイシャサンプルビヨウ", "houjin": "1234567890123",
     "zip": "150-0001", "addr": "東京都渋谷区神宮前1-2-3",
-    "title": "代表取締役", "rep": "山田 太郎", "repKana": "タイラ ヒロシ",
+    "title": "代表取締役", "rep": "山田 太郎", "repKana": "ヤマダ タロウ",
     "tel": "03-1234-5678", "mail": "info@example.jp",
     "employees": "8", "capital": "3000000", "founded": "2019-04-01",
     "industry": "美容業", "business": "美容室の経営",
@@ -118,10 +118,10 @@ chk(not str(s1["B11"].value or "").strip() or "〒" in str(s1["B11"].value),
     "申請者1：個人事業主の郵便番号は空のまま", s1["B11"].value)
 chk(not str(s1["C29"].value or "").strip(), "申請者1：都内登記所在地に本店の住所を入れない", s1["C29"].value)
 chk(str(s1["C17"].value or "").replace("　", "") == "150-0001", "申請者1：法人の郵便番号は入る", s1["C17"].value)
-kanji = [c for c in "山田 太郎" ]
+KANJI_RE = re.compile(r"[一-龥]")
 for ref in ("B8", "C20", "B15"):
     v = str(s1[ref].value or "")
-    chk(not any(k in v for k in kanji) or ref == "X", "申請者1：%s のフリガナ欄に漢字が無い" % ref, v)
+    chk(not KANJI_RE.search(v), "申請者1：%s のフリガナ欄に漢字が無い" % ref, v)
 
 wb2 = openpyxl.load_workbook(out[SEI])
 ws2 = wb2.worksheets[0]
@@ -195,8 +195,8 @@ chk(rows2.get("都内登記所在地") == c2["regAddr"], "同意書：都内登�
 chk(rows2.get("本社所在地") == BASE["addr"], "同意書：本社所在地はそのまま", rows2.get("本社所在地"))
 
 print("\n=== 個人事業主のとき（法人番号なし・屋号だけ）===")
-c3 = {"name": "ヘアサロンこばん", "kana": "ヘアサロンコバン", "zip": "150-0001",
-      "addr": "東京都渋谷区神宮前1-2-3", "rep": "山田 太郎", "repKana": "タイラ ヒロシ",
+c3 = {"name": "ヘアサロンサンプル", "kana": "ヘアサロンコバン", "zip": "150-0001",
+      "addr": "東京都渋谷区神宮前1-2-3", "rep": "山田 太郎", "repKana": "ヤマダ タロウ",
       "tel": "03-1234-5678", "mail": "info@example.jp",
       "employees": "3", "industry": "美容業", "business": "美容室の経営"}
 out3 = run(c3, [APP])

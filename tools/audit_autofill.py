@@ -20,9 +20,9 @@ FORMS = os.path.join(ROOT, "forms", "www.mhlw.go.jp")
 PAGE = "http://127.0.0.1:8935/documents.html#autofill"
 
 COMPANY = {
-    "entity": "法人", "kana": "カブシキガイシャサンプルビヨウ", "repKana": "タイラ ヒロシ",
+    "entity": "法人", "kana": "カブシキガイシャサンプルビヨウ", "repKana": "ヤマダ タロウ",
     "industryCode": "78", "regAddr": "東京都千代田区丸の内1-1-1", "regZip": "100-0005",
-    "name": "株式会社サンプル美容", "houjin": "7000012050002", "zip": "150-0001",
+    "name": "株式会社サンプル美容", "houjin": "1234567890123", "zip": "150-0001",
     "addr": "東京都渋谷区神宮前1-2-3", "title": "代表取締役", "rep": "山田 太郎",
     "tel": "03-1234-5678", "mail": "info@example.jp", "employees": "8",
     "capital": "3000000", "founded": "2019-04-01", "industry": "美容業",

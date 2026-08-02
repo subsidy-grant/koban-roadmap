@@ -22,7 +22,7 @@ os.makedirs(OUT, exist_ok=True)
 PAGE = "http://127.0.0.1:8935/documents.html"
 C = {"entity": "法人", "name": "株式会社サンプル美容", "kana": "カブシキガイシャサンプルビヨウ",
      "houjin": "1234567890123", "zip": "150-0001", "addr": "東京都渋谷区神宮前1-2-3",
-     "title": "代表取締役", "rep": "山田 太郎", "repKana": "タイラ ヒロシ",
+     "title": "代表取締役", "rep": "山田 太郎", "repKana": "ヤマダ タロウ",
      "tel": "03-1234-5678", "mail": "info@example.jp",
      "employees": "8", "capital": "3000000", "industry": "美容業", "industryCode": "78",
      "business": "美容室の経営", "staff": "山田 太郎", "staffTel": "03-1234-5678",
@@ -84,7 +84,7 @@ chk(val(w1, "K26") == C["name"], "雇用保険適用事業所の名称", val(w1,
 chk([val(w1, "AN26"), val(w1, "AS26"), val(w1, "AZ26")] == ["1301", "123456", "7"],
     "事業所番号が4桁-6桁-1桁に分かれて入る",
     [val(w1, "AN26"), val(w1, "AS26"), val(w1, "AZ26")])
-chk(val(w1, "M27") == "113" and val(w1, "Q27") == "0021",
+chk(val(w1, "M27") == "150" and val(w1, "Q27") == "0001",
     "事業所所在地の郵便番号が枠に分かれて入る", [val(w1, "M27"), val(w1, "Q27")])
 chk(val(w1, "K28") == C["addr"], "住所は次の行の欄に入る", val(w1, "K28"))
 chk("〒" not in val(w1, "K27") or val(w1, "K27") == "（〒",
