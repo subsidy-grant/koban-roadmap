@@ -1064,15 +1064,34 @@
     return String(value);
   }
   var UNIT_SUFFIX_RE = /^(人|名|円|万円|千円)$/;
+  // 「万円」「千円」と印字された欄には、その単位に直した数を書く。
+  // 3,000,000円の欄に「3,000,000万円」と書くと1万倍になる。
+  // 端数があって割り切れないときは null を返し、その欄には書かない
+  var UNIT_DIV = { '万円': 10000, '千円': 1000 };
+  function capitalInUnit(value, unit) {
+    var div = UNIT_DIV[unit];
+    if (!div) return null;
+    var d = toHankaku(String(value)).replace(/[,，\s　円]/g, '');
+    if (!/^[0-9]+$/.test(d) || (+d) % div !== 0) return null;
+    return String((+d) / div);
+  }
   function withUnit(key, value, existing) {
-    value = formatVal(key, value);
     var u = String(existing || '').replace(/[\s　]+/g, '');
+    if (key === 'capital' && UNIT_DIV[u]) {
+      var cv = capitalInUnit(value, u);
+      return cv === null ? formatVal(key, value) : formatVal(key, cv) + u;
+    }
+    value = formatVal(key, value);
     return UNIT_SUFFIX_RE.test(u) ? String(value) + u : String(value);
   }
-  function unitCellConflict(key, existing) {
+  function unitCellConflict(key, existing, value) {
     var t = String(existing || '').replace(/[\s　]+/g, '');
     if (!t) return false;
     if (!UNIT_ONLY_RE.test(t)) return false;   // 単位だけの欄ではない
+    // 「万円」「千円」の欄は、端数があって単位に直せないなら書かない
+    if (key === 'capital' && UNIT_DIV[t]) {
+      return value !== undefined && capitalInUnit(value, t) === null;
+    }
     var ok = UNIT_OK_BY_KEY[key];
     return !(ok && ok.test(t));                // 単位が合っていれば入れてよい
   }
@@ -1528,7 +1547,7 @@
           }
         }
         // (2) 単位だけが置かれた欄（別の列の書式）を壊さない
-        if (unitCellConflict(key, existing)) {
+        if (unitCellConflict(key, existing, vals[key])) {
           var sid1 = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key;
           if (!notedSlot[sid1]) {
             notedSlot[sid1] = 1;
@@ -1930,11 +1949,14 @@
           }
         }
         // 単位だけが印字された欄（別の項目の書式）は壊さない
-        if (u.ok && unitCellConflict(key, u.prev)) {
+        if (u.ok && unitCellConflict(key, u.prev, vals[key])) {
           var xs1 = sheetName + '|' + tc + '|' + key;
           if (!notedSlot[xs1]) {
             notedSlot[xs1] = 1;
-            skips.push({ key: key, label: label, reason: '隣の欄には「' + u.prev + '」という単位だけが入っており、別の項目の欄と考えられるため入れませんでした（' + sheetName + ' の ' + tref + '）' });
+            skips.push({ key: key, label: label,
+              reason: (key === 'capital' && UNIT_DIV[String(u.prev).replace(/[\s　]+/g, '')])
+                ? '欄の単位が「' + u.prev + '」で、いまの資本金の額はこの単位で割り切れないため入れませんでした（' + sheetName + ' の ' + tref + '）。単位に合わせてご記入ください'
+                : '隣の欄には「' + u.prev + '」という単位だけが入っており、別の項目の欄と考えられるため入れませんでした（' + sheetName + ' の ' + tref + '）' });
           }
           continue;
         }
