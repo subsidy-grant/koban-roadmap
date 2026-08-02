@@ -48,6 +48,25 @@
   function gtFmt(d) { return (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function gtKey(scheme, key) { return scheme + '.' + key; }
 
+  // 「誰がやるのか」を見出しの次に目立たせる。自分で動く手順と、
+  // 頼む手順と、待つだけの手順を取り違えると着手が遅れるため、色でも分ける。
+  var OWNER_WAIT = /^(事務局|労働局|中小機構)([・、].+)?$/;
+  function ownerChip(owner) {
+    var o = String(owner || '').trim();
+    if (!o) return { cls: 'wait', text: '担当が未記入' };
+    var parts = o.split(/[・、]/);
+    var self = parts.filter(function (x) { return x === '事業主'; }).length > 0;
+    var rest = parts.filter(function (x) { return x !== '事業主'; });
+    if (self) {
+      return rest.length
+        ? { cls: 'self', text: '自分＋' + rest.join('・') }
+        : { cls: 'self', text: '自分でやる' };
+    }
+    if (OWNER_WAIT.test(o)) return { cls: 'wait', text: '待つ：' + o };
+    if (/スタッフ|労働者|対象者/.test(o)) return { cls: 'other', text: o + 'が行う' };
+    return { cls: 'other', text: o + 'に頼む' };
+  }
+
   function renderGtSchemes() {
     var sel = document.getElementById('gtScheme');
     if (!sel) return;
@@ -169,12 +188,17 @@
       var when = r.start
         ? gtFmt(r.start) + (r.t.days > 1 ? '〜' + gtFmt(r.end) : '') + '　' + r.t.when
         : '日付未定：' + r.t.when;
+      // 見出しは1行の要約。もとの文はこの下に補足として残す（意味を削らないため）
+      var head = (G.shorts && G.shorts[r.t.id]) || r.t.task;
+      var chip = ownerChip(r.t.owner);
       html += '<div class="gt-row' + (r.done ? ' done' : '') + '">' +
         '<div class="gt-left">' +
           '<label class="gt-name"><input type="checkbox" data-gt="' + esc(r.t.id) + '"' + (r.done ? ' checked' : '') + '>' +
-          '<span class="t">' + esc(r.t.task) + badges + '</span></label>' +
-          '<p class="gt-meta">' + esc(r.t.owner) + '　' +
+          '<span class="t">' + esc(head) + '</span></label>' +
+          '<p class="gt-tags"><span class="gt-who ' + chip.cls + '">' + esc(chip.text) + '</span>' + badges + '</p>' +
+          '<p class="gt-meta">' +
             '<span' + (late ? ' class="gt-late"' : '') + '>' + esc(when) + (late ? '（もう始めていないと間に合いません）' : '') + '</span></p>' +
+          (head === r.t.task ? '' : '<p class="gt-desc">' + esc(r.t.task) + '</p>') +
           (r.t.warn ? '<p class="gt-warn' + (r.t.hard ? ' hard' : '') + '">' + esc(r.t.warn) + '</p>' : '') +
           '<p class="gt-src">' + (r.t.source === 'unverified'
             ? '出典：当サイトで確認できていません'
