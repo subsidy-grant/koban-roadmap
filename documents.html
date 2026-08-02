@@ -1681,7 +1681,41 @@
     }
     return textOfNS(c, S_NS, 'v');
   }
-  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys, overwrite, previews) {
+  // 数として入れてよい項目（数量そのもの）。番号・郵便番号は文字のまま扱う。
+  // 「0021」の頭の0が消える、13桁が桁区切りになる、といった別物になるため
+  var NUMERIC_KEYS = { capital: 1, employees: 1 };
+  // Excelの組み込み書式のうち、数値のもの（1〜4は整数・小数、37〜40は会計）
+  var BUILTIN_NUM_FMT = { 1: 1, 2: 1, 3: 1, 4: 1, 37: 1, 38: 1, 39: 1, 40: 1 };
+  // styles.xml から「セルの書式番号 → 表示形式の文字列」を作る
+  function parseStyles(xmlText) {
+    var out = { xf: [], code: {} };
+    if (!xmlText) return out;
+    try {
+      var doc = parseXml(xmlText);
+      var nfs = doc.getElementsByTagNameNS(S_NS, 'numFmt');
+      for (var i = 0; i < nfs.length; i++) {
+        out.code[nfs[i].getAttribute('numFmtId')] = nfs[i].getAttribute('formatCode') || '';
+      }
+      var xfsEl = doc.getElementsByTagNameNS(S_NS, 'cellXfs')[0];
+      if (xfsEl) {
+        var xfs = childrenNS(xfsEl, S_NS, 'xf');
+        for (i = 0; i < xfs.length; i++) out.xf.push(xfs[i].getAttribute('numFmtId') || '0');
+      }
+    } catch (e) { /* 書式が読めないときは、今までどおり文字で入れる */ }
+    return out;
+  }
+  // そのセルが「数を入れる書式」か。General・文字列（@）は数扱いにしない
+  function isNumericCell(cell, styles) {
+    if (!cell || !styles || !styles.xf.length) return false;
+    var si = parseInt(cell.getAttribute('s') || '', 10);
+    if (isNaN(si) || si >= styles.xf.length) return false;
+    var id = styles.xf[si];
+    if (BUILTIN_NUM_FMT[+id]) return true;
+    var code = styles.code[id];
+    if (!code || code === '@' || code === 'General') return false;
+    return /[#0]/.test(code) && !/^\[?\$?[^#0]*$/.test(code);
+  }
+  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys, overwrite, previews, styles) {
     var doc = parseXml(xmlText);
     var pvMarks = {};
     var merges = [];
@@ -1721,10 +1755,21 @@
       }
       return found;
     }
-    function writeCell(cell, text, mark) {
+    function writeCell(cell, text, mark, key) {
       pvMarks[cell.getAttribute('r')] = mark || 'new';
-      cell.setAttribute('t', 'inlineStr');
       while (cell.firstChild) cell.removeChild(cell.firstChild);
+      // 数量の欄で、セルが数値の書式なら数として入れる。
+      // 文字で入れると、様式に合計の式があっても足し算に入らない
+      var digits = String(text).replace(/[,，\s　]/g, '');
+      if (key && NUMERIC_KEYS[key] && /^[0-9]+$/.test(digits) && isNumericCell(cell, styles)) {
+        cell.removeAttribute('t');
+        var vEl = doc.createElementNS(S_NS, 'v');
+        vEl.textContent = digits;
+        cell.appendChild(vEl);
+        changed = true;
+        return;
+      }
+      cell.setAttribute('t', 'inlineStr');
       var isEl = doc.createElementNS(S_NS, 'is');
       var tEl = doc.createElementNS(S_NS, 't');
       tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
@@ -1983,7 +2028,7 @@
           continue;
         }
         if (u.prev === vals[key]) continue;
-        writeCell(cellAt(tc, tr, true), withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals), u.prev ? 'ow' : 'new');
+        writeCell(cellAt(tc, tr, true), withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals), u.prev ? 'ow' : 'new', key);
         usedKeys[key] = 1;
         wroteSlot[xslot] = 1;
         writtenCell[cellId] = key;
@@ -2032,8 +2077,11 @@
         var sis = parseXml(ssXml).getElementsByTagNameNS(S_NS, 'si');
         for (var i = 0; i < sis.length; i++) shared.push(textWithoutRuby(sis[i], S_NS, 'rPh'));
       }
-      return Promise.all([zipFileText(zip, 'xl/workbook.xml'), zipFileText(zip, 'xl/_rels/workbook.xml.rels')]);
+      return Promise.all([zipFileText(zip, 'xl/workbook.xml'),
+                          zipFileText(zip, 'xl/_rels/workbook.xml.rels'),
+                          zipFileText(zip, 'xl/styles.xml')]);
     }).then(function (pair) {
+      var styles = parseStyles(pair[2]);
       try {
         if (pair[0] && pair[1]) {
           var relMap = {};
@@ -2058,7 +2106,7 @@
         chain = chain.then(function () {
           return zipFileText(zip, e.name).then(function (xml) {
             var out = fillSheet(xml, vals, shared,
-              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite, previews);
+              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite, previews, styles);
             if (out) repl[e.name] = new TextEncoder().encode(out);
           });
         });
