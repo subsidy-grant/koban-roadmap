@@ -1088,6 +1088,79 @@
   .docs-lead-more { margin-top: 0.7rem; }
   .docs-lead-more p + p { margin-top: 0.5rem; }
 
+  /* ---- 07 手順とスケジュール（ガント） ----
+     左に「やること」、右に帯。帯は日付の目盛りに合わせて置く。
+     色は既存の3色の役割どおり（緑=済んだこと・青=案内・橙=落とすと失格） */
+  .gt-anchors { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
+  .gt-anchors .arow { margin-top: 0.7rem; }
+  .gt-anchors .arow:first-of-type { margin-top: 0.3rem; }
+  .gt-anchors label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .gt-anchors .anote { font-size: 0.82rem; color: var(--ink-soft); margin: 0.15rem 0 0; }
+  .gt-anchors input[type="date"] { font: inherit; font-size: 0.95rem; padding: 0.45rem 0.5rem;
+    min-height: 44px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper-raised); color: var(--ink); }
+  .gt-prog { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0 0 0.6rem; }
+  .gt-prog .prog { flex: 1; min-width: 10rem; margin: 0; }
+  .gt-prog .num { font-size: 0.88rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .gt-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper-raised); -webkit-overflow-scrolling: touch; }
+  .gt-inner { min-width: 100%; }
+  .gt-row { display: flex; align-items: stretch; border-bottom: 1px dashed var(--line); }
+  .gt-row:last-child { border-bottom: 0; }
+  .gt-row.phase { background: var(--accent-wash); font-size: 0.84rem; font-weight: 700;
+    padding: 0.35rem 0.6rem; display: block; border-bottom: 1px solid var(--line); }
+  .gt-left { flex: none; width: 19rem; padding: 0.5rem 0.6rem; border-right: 1px solid var(--line);
+    background: var(--paper-raised); position: sticky; left: 0; z-index: 2; }
+  .gt-name { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; line-height: 1.6; }
+  .gt-name input[type="checkbox"] { width: 20px; height: 20px; margin-top: 0.15rem; flex: none;
+    accent-color: var(--sage); }
+  .gt-row.done .gt-name span.t { color: var(--ink-faint); text-decoration: line-through; }
+  .gt-meta { font-size: 0.76rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; }
+  .gt-badge { display: inline-block; font-size: 0.7rem; border-radius: 3px; padding: 0 0.3rem;
+    border: 1px solid; margin-left: 0.3rem; white-space: nowrap; }
+  .gt-b-hard { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
+  .gt-b-un { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
+  .gt-right { flex: 1; position: relative; min-height: 44px; }
+  .gt-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 14px;
+    border-radius: 7px; background: var(--accent); }
+  .gt-bar.hard { background: var(--rust); }
+  .gt-bar.doneb { background: var(--sage); }
+  .gt-bar.unknown { background: repeating-linear-gradient(45deg, var(--line), var(--line) 4px, transparent 4px, transparent 8px);
+    border: 1px solid var(--line); }
+  .gt-head { display: flex; border-bottom: 1px solid var(--ink); position: sticky; top: 0; z-index: 3;
+    background: var(--paper-raised); }
+  .gt-head .gt-left { font-size: 0.8rem; color: var(--ink-soft); }
+  .gt-ticks { flex: 1; position: relative; height: 1.9rem; }
+  .gt-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line);
+    font-size: 0.7rem; color: var(--ink-soft); padding-left: 0.2rem; white-space: nowrap; }
+  .gt-today { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--rust); z-index: 1; }
+  .gt-late { color: var(--rust); font-weight: 700; }
+  .gt-warn { font-size: 0.8rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; line-height: 1.7; }
+  .gt-warn.hard { color: var(--rust); }
+  .gt-src { font-size: 0.74rem; color: var(--ink-faint); margin: 0.15rem 0 0 1.7rem; }
+  .gt-src a { color: inherit; }
+  @media (max-width: 620px) { .gt-left { width: 13rem; } }
+
+  /* ---- 07 で使う共通の部品（申請書類の準備ページと同じ見た目にそろえる） ---- */
+  .picker { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 0.9rem 1.1rem; margin-bottom: 1.2rem; }
+  .picker select { font: inherit; font-size: 0.95rem; padding: 0.5rem; max-width: 100%; width: 100%;
+    min-height: 44px; background: var(--paper-raised); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; }
+  .step-ttl { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.5rem;
+    border-left: 4px solid var(--accent); padding-left: 0.6rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
+  .prog > i { display: block; height: 100%; background: var(--sage); }
+  .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
+    border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+  .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
+    padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
+  .warn strong { color: var(--rust); }
+  .src-note { font-size: 0.84rem; color: var(--ink-faint); margin-top: 0.8rem; }
+
   .docs-card {
     border: 1px solid var(--line); background: var(--paper-raised);
     padding: 1.1rem 1.2rem 1rem; margin-top: 1rem;
@@ -1316,8 +1389,9 @@
       <a href="#simulator"><span class="toc-no">03</span>概算シミュレーター</a>
       <a href="#improvement-cta"><span class="toc-no">04</span>改善計画10選</a>
       <a href="#docs"><span class="toc-no">05</span>申請書類・様式</a>
-      <a href="#criteria-cta"><span class="toc-no">06</span>採択・返還基準</a>
-      <a href="#notes"><span class="toc-no">07</span>留意事項</a>
+      <a href="#gantt"><span class="toc-no">06</span>手順とスケジュール</a>
+      <a href="#criteria-cta"><span class="toc-no">07</span>採択・返還基準</a>
+      <a href="#notes"><span class="toc-no">08</span>留意事項</a>
     </div>
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
@@ -2316,15 +2390,32 @@
   </section>
 
 
+  <!-- 06 申請の手順とスケジュール（ガント）。
+       描画は gantt_ui.js、データは gantt_data.js（出典と確認日時つき）。 -->
+  <section id="gantt">
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>申請の手順とスケジュール</h2></div>
+    <p class="section-sub">制度を選び、締切などの日付を入れると、<strong>申請までにやることを1つずつに分けて、いつ着手すればよいかを帯で表示</strong>します。終わった作業にチェックを付けると、進み具合がこの端末に残ります。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
+
+    <div class="picker">
+      <p class="step-ttl">手順1　制度を選ぶ</p>
+      <label class="sr-only" for="gtScheme">制度</label>
+      <select id="gtScheme"><option value="">制度を選んでください</option></select>
+    </div>
+
+    <div id="gtAnchors"></div>
+    <div id="gtOut"></div>
+  </section>
+
+
   <section id="criteria-cta">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>採択基準・返還基準 調査ノート</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">07</span><h2>採択基準・返還基準 調査ノート</h2></div>
     <p class="section-sub">各制度の公式な公募要領・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
   </section>
 
 
   <section id="notes">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>留意事項</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">08</span><h2>留意事項</h2></div>
     <p>補助金・助成金の活用にあたっては、次の点にご留意ください。</p>
     <ul class="item-list" style="max-width:68ch;">
       <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
@@ -10423,5 +10514,8 @@
 })();
 </script>
 <!-- ANALYTICS:END -->
+<script src="gantt_data.js"></script>
+<script src="gantt_ui.js"></script>
+<script>if (window.initGantt) initGantt();</script>
 </body>
 </html>

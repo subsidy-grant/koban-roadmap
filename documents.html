@@ -281,59 +281,6 @@
   .pv-chip.pv-ow { background: var(--rust-wash); border-color: var(--rust); }
   .pv-none { font-size: 0.82rem; color: var(--ink-faint); margin: 0.3rem 0 0; }
 
-  /* ---- 07 手順とスケジュール（ガント） ----
-     左に「やること」、右に帯。帯は日付の目盛りに合わせて置く。
-     色は既存の3色の役割どおり（緑=済んだこと・青=案内・橙=落とすと失格） */
-  .gt-anchors { background: var(--paper-raised); border: 1px solid var(--line);
-    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
-  .gt-anchors .arow { margin-top: 0.7rem; }
-  .gt-anchors .arow:first-of-type { margin-top: 0.3rem; }
-  .gt-anchors label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
-  .gt-anchors .anote { font-size: 0.82rem; color: var(--ink-soft); margin: 0.15rem 0 0; }
-  .gt-anchors input[type="date"] { font: inherit; font-size: 0.95rem; padding: 0.45rem 0.5rem;
-    min-height: 44px; border: 1px solid var(--line); border-radius: 6px;
-    background: var(--paper-raised); color: var(--ink); }
-  .gt-prog { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0 0 0.6rem; }
-  .gt-prog .prog { flex: 1; min-width: 10rem; margin: 0; }
-  .gt-prog .num { font-size: 0.88rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-  .gt-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px;
-    background: var(--paper-raised); -webkit-overflow-scrolling: touch; }
-  .gt-inner { min-width: 100%; }
-  .gt-row { display: flex; align-items: stretch; border-bottom: 1px dashed var(--line); }
-  .gt-row:last-child { border-bottom: 0; }
-  .gt-row.phase { background: var(--accent-wash); font-size: 0.84rem; font-weight: 700;
-    padding: 0.35rem 0.6rem; display: block; border-bottom: 1px solid var(--line); }
-  .gt-left { flex: none; width: 19rem; padding: 0.5rem 0.6rem; border-right: 1px solid var(--line);
-    background: var(--paper-raised); position: sticky; left: 0; z-index: 2; }
-  .gt-name { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; line-height: 1.6; }
-  .gt-name input[type="checkbox"] { width: 20px; height: 20px; margin-top: 0.15rem; flex: none;
-    accent-color: var(--sage); }
-  .gt-row.done .gt-name span.t { color: var(--ink-faint); text-decoration: line-through; }
-  .gt-meta { font-size: 0.76rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; }
-  .gt-badge { display: inline-block; font-size: 0.7rem; border-radius: 3px; padding: 0 0.3rem;
-    border: 1px solid; margin-left: 0.3rem; white-space: nowrap; }
-  .gt-b-hard { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
-  .gt-b-un { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
-  .gt-right { flex: 1; position: relative; min-height: 44px; }
-  .gt-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 14px;
-    border-radius: 7px; background: var(--accent); }
-  .gt-bar.hard { background: var(--rust); }
-  .gt-bar.doneb { background: var(--sage); }
-  .gt-bar.unknown { background: repeating-linear-gradient(45deg, var(--line), var(--line) 4px, transparent 4px, transparent 8px);
-    border: 1px solid var(--line); }
-  .gt-head { display: flex; border-bottom: 1px solid var(--ink); position: sticky; top: 0; z-index: 3;
-    background: var(--paper-raised); }
-  .gt-head .gt-left { font-size: 0.8rem; color: var(--ink-soft); }
-  .gt-ticks { flex: 1; position: relative; height: 1.9rem; }
-  .gt-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line);
-    font-size: 0.7rem; color: var(--ink-soft); padding-left: 0.2rem; white-space: nowrap; }
-  .gt-today { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--rust); z-index: 1; }
-  .gt-late { color: var(--rust); font-weight: 700; }
-  .gt-warn { font-size: 0.8rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; line-height: 1.7; }
-  .gt-warn.hard { color: var(--rust); }
-  .gt-src { font-size: 0.74rem; color: var(--ink-faint); margin: 0.15rem 0 0 1.7rem; }
-  .gt-src a { color: inherit; }
-  @media (max-width: 620px) { .gt-left { width: 13rem; } }
   .fillcard { position: relative; padding-right: 3rem; }
   .card-close { position: absolute; top: 0.6rem; right: 0.6rem; border: 1px solid var(--line);
     background: var(--paper); color: var(--ink-soft); border-radius: 6px; font: inherit;
@@ -360,6 +307,41 @@
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
 
+
+  /* ---- 節の開閉（トップページと同じ操作感にそろえる） ----
+     .has-accordion は <head> のスクリプトが付ける。JSが無効／途中で失敗した
+     ときはクラスが付かない・外れるので、従来どおり全部開いた状態で読める。 */
+  .has-accordion main > section { margin-top: 0.75rem; }
+  .has-accordion main > section > *:not(.section-head) { display: none; }
+  .has-accordion main > section.is-open > .sec-body { display: block; }
+  .has-accordion .sec-body { padding: 1.2rem 0 0.4rem; }
+  .section-head.is-toggle { display: block; margin: 0; border-bottom: 0; padding-bottom: 0; }
+  .sec-h2 { margin: 0; font-size: 1rem; }
+  .sec-toggle {
+    appearance: none; -webkit-appearance: none;
+    width: 100%; font: inherit; text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    min-height: 3.4rem; padding: 0.85rem 1rem;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper-raised); color: var(--ink);
+  }
+  .sec-toggle:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .sec-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sec-toggle .section-no { flex: none; line-height: 1.6; min-width: 2.4rem; }
+  .sec-ttl { flex: 1 1 auto; min-width: 0; font-size: 1.06rem; font-weight: 700; line-height: 1.6; }
+  .sec-hint { display: block; margin-top: 0.25rem; font-size: 0.88rem; font-weight: 400;
+    line-height: 1.7; color: var(--ink-faint); }
+  .sec-chevron { flex: none; color: var(--accent); font-size: 1.1rem; line-height: 1.6;
+    transition: transform 0.18s ease; }
+  main > section.is-open .sec-chevron { transform: rotate(180deg); }
+  .sec-util { display: flex; justify-content: flex-end; margin: 0.6rem 0 0; }
+  .sec-util button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
+    font: inherit; font-size: 0.85rem; border-radius: 6px; padding: 0.35rem 0.8rem;
+    min-height: 40px; cursor: pointer; }
+  .sec-util button:hover { background: var(--accent-wash); border-color: var(--accent); }
+  @media print { .has-accordion main > section > *:not(.section-head) { display: block; }
+    .sec-util, .sec-chevron { display: none; } }
+
   /* ---- 印刷（転記カード） ---- */
   #printArea { display: none; }
   @media print {
@@ -373,6 +355,7 @@
   }
 </style>
 </head>
+<script>document.documentElement.classList.add('has-accordion');</script>
 <body>
 <main>
   <div class="topbar">
@@ -398,7 +381,6 @@
       <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
       <li><a href="#deadlines">締切一覧</a></li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
-      <li><a href="#gantt">申請の手順とスケジュール</a>（やることを分けて帯で表示）</li>
     </ol>
   </nav>
 
@@ -550,26 +532,11 @@
     </p>
   </section>
 
-  <!-- 07 手順とスケジュール（ガントチャート） -->
-  <section id="gantt">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>申請の手順とスケジュール</h2></div>
-    <p class="section-sub">制度を選び、締切などの日付を入れると、<strong>申請までにやることを1つずつに分けて、いつ着手すればよいかを帯で表示</strong>します。終わった作業にチェックを付けると、進み具合がこの端末に残ります。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
-
-    <div class="picker">
-      <p class="step-ttl">手順1　制度を選ぶ</p>
-      <label class="sr-only" for="gtScheme">制度</label>
-      <select id="gtScheme"><option value="">制度を選んでください</option></select>
-    </div>
-
-    <div id="gtAnchors"></div>
-    <div id="gtOut"></div>
-  </section>
 </main>
 
 <div id="printArea"></div>
 
 <script src="page_data.js"></script>
-<script src="gantt_data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -2100,178 +2067,145 @@
     hint.className = 'fhint ' + (ok ? 'ok' : 'ng');
   }
 
-  // ---------- 07 手順とスケジュール（ガント） ----------
-  // 制度ごとのタスクは gantt_data.js（出典と確認日時つき）にある。
-  // 利用者が入れた基準日から各タスクの日付を計算し、帯で並べる。
-  // 日付が決まらない（交付決定日など、まだ通知が来ていない）タスクは
-  // 斜線の帯で「日付未定」と出す。ここを普通の帯で描くと
-  // 「もう発注してよい」と誤って読まれるため。
-  var G = window.KOBAN_GANTT || { anchors: {}, schemes: {}, tasks: [] };
-  var K_GANTT = 'koban_ganttDone';
-  var K_GANTT_DATES = 'koban_ganttDates';
-  var gtDone = load(K_GANTT, {});
-  var gtDates = load(K_GANTT_DATES, {});
-  if (!gtDone || typeof gtDone !== 'object') gtDone = {};
-  if (!gtDates || typeof gtDates !== 'object') gtDates = {};
 
-  function gtParse(v) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
-    if (!m) return null;
-    var d = new Date(+m[1], +m[2] - 1, +m[3]);
-    return isNaN(d.getTime()) ? null : d;
+  // ---------- 節の開閉（トップページと同じ操作感） ----------
+  // 節が7つあり、上から順に読む作りではないので、見出しだけを並べて
+  // 必要なところを開いてもらう。組み替えに失敗したら目印を外して
+  // 従来どおり全部見える状態に戻す（黙って空白のページにしない）。
+  var SEC_HINT = {
+    company: '所在地・代表者・電話番号などを1回だけ入力します',
+    autofill: '制度を選ぶと、様式に会社情報を入れて返します',
+    common: '登記事項証明書・納税証明書など、取り寄せに日数がかかる書類',
+    leadtime: '締切から逆算して、いつ何を頼むかを出します',
+    deadlines: '選んだ制度の締切を並べます',
+    checklist: 'チェックを付けると進み具合がこの端末に残ります'
+  };
+  function secOf(el) {
+    while (el && el !== document.body) {
+      if (el.tagName === 'SECTION' && el.parentNode && el.parentNode.tagName === 'MAIN') return el;
+      el = el.parentNode;
+    }
+    return null;
   }
-  function gtAddDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
-  function gtDayDiff(a, b) { return Math.round((a - b) / 86400000); }
-  function gtFmt(d) { return (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
-  function gtKey(scheme, key) { return scheme + '.' + key; }
+  function setSecOpen(sec, open) {
+    if (!sec) return;
+    sec.classList.toggle('is-open', open);
+    var b = sec.querySelector('.sec-toggle');
+    if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    syncExpandAll();
+  }
+  function allSecs() {
+    return Array.prototype.slice.call(document.querySelectorAll('main > section'));
+  }
+  function syncExpandAll() {
+    var btn = document.getElementById('expandAll');
+    if (!btn) return;
+    var secs = allSecs();
+    var all = secs.length > 0 && secs.every(function (x) { return x.classList.contains('is-open'); });
+    btn.textContent = all ? 'すべて閉じる' : 'すべて開く';
+    btn.setAttribute('aria-pressed', all ? 'true' : 'false');
+  }
+  function toggleAllSecs() {
+    var secs = allSecs();
+    var all = secs.every(function (x) { return x.classList.contains('is-open'); });
+    secs.forEach(function (x) { setSecOpen(x, !all); });
+  }
+  function initSectionAccordion() {
+    try {
+      var secs = allSecs();
+      if (!secs.length) throw new Error('main直下のsectionが無い');
+      secs.forEach(function (sec) {
+        var head = sec.querySelector(':scope > .section-head');
+        if (!head) return;
+        var noEl = head.querySelector('.section-no');
+        var h2El = head.querySelector('h2');
+        var no = noEl ? noEl.textContent : '';
+        var title = h2El ? h2El.textContent : sec.id;
+        var bodyId = 'secbody-' + sec.id;
 
-  function renderGtSchemes() {
-    var sel = document.getElementById('gtScheme');
-    if (!sel) return;
-    var keys = Object.keys(G.schemes);
-    sel.innerHTML = '<option value="">制度を選んでください</option>' + keys.map(function (k) {
-      var n = G.tasks.filter(function (t) { return t.scheme === k; }).length;
-      return '<option value="' + esc(k) + '">' + esc(G.schemes[k].label) + '（' + n + '手順）</option>';
-    }).join('');
-    sel.addEventListener('change', function () { renderGtAnchors(); renderGantt(); });
-  }
-  function renderGtAnchors() {
-    var box = document.getElementById('gtAnchors');
-    var sel = document.getElementById('gtScheme');
-    if (!box || !sel) return;
-    var k = sel.value;
-    if (!k) { box.innerHTML = ''; return; }
-    var list = G.anchors[k] || [];
-    var note = G.schemes[k] && G.schemes[k].note;
-    box.innerHTML = '<div class="gt-anchors">' +
-      (note ? '<div class="warn" style="margin:0 0 0.8rem;">' + esc(note) + '</div>' : '') +
-      '<p class="step-ttl">手順2　基準になる日付を入れる</p>' +
-      list.map(function (a) {
-        var id = 'gtd_' + k + '_' + a.key;
-        var v = gtDates[gtKey(k, a.key)] || '';
-        return '<div class="arow"><label for="' + id + '">' + esc(a.label) +
-          (a.optional ? '（分かってから入れてください）' : '') + '</label>' +
-          '<input type="date" id="' + id + '" data-anchor="' + esc(a.key) + '" value="' + esc(v) + '">' +
-          (a.note ? '<p class="anote">' + esc(a.note) + '</p>' : '') + '</div>';
-      }).join('') + '</div>';
-    box.querySelectorAll('input[type="date"]').forEach(function (inp) {
-      inp.addEventListener('change', function () {
-        gtDates[gtKey(k, inp.getAttribute('data-anchor'))] = inp.value;
-        save(K_GANTT_DATES, gtDates);
-        renderGantt();
+        // 見出し以外を1枚のパネルへ移す。要素ごと動かすので既存のidと参照は生きる
+        var body = document.createElement('div');
+        body.className = 'sec-body';
+        body.id = bodyId;
+        var node = head.nextSibling;
+        while (node) { var next = node.nextSibling; body.appendChild(node); node = next; }
+        sec.appendChild(body);
+
+        head.className = 'section-head is-toggle';
+        head.textContent = '';
+        var h2 = document.createElement('h2');
+        h2.className = 'sec-h2';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'sec-toggle';
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', bodyId);
+
+        var noSpan = document.createElement('span');
+        noSpan.className = 'section-no jp-serif';
+        noSpan.setAttribute('aria-hidden', 'true');
+        noSpan.textContent = no;
+        var ttl = document.createElement('span');
+        ttl.className = 'sec-ttl';
+        ttl.appendChild(document.createTextNode(title));
+        if (SEC_HINT[sec.id]) {
+          var hint = document.createElement('span');
+          hint.className = 'sec-hint';
+          hint.textContent = SEC_HINT[sec.id];
+          ttl.appendChild(hint);
+        }
+        var chev = document.createElement('span');
+        chev.className = 'sec-chevron';
+        chev.setAttribute('aria-hidden', 'true');
+        chev.textContent = '▾';
+        btn.appendChild(noSpan); btn.appendChild(ttl); btn.appendChild(chev);
+        btn.addEventListener('click', function () {
+          setSecOpen(sec, !sec.classList.contains('is-open'));
+        });
+        h2.appendChild(btn);
+        head.appendChild(h2);
       });
-    });
-  }
 
-  function renderGantt() {
-    var out = document.getElementById('gtOut');
-    var sel = document.getElementById('gtScheme');
-    if (!out || !sel) return;
-    var k = sel.value;
-    if (!k) { out.innerHTML = ''; return; }
-    var anchors = G.anchors[k] || [];
-    var need = anchors.filter(function (a) { return !a.optional; });
-    var have = {};
-    anchors.forEach(function (a) {
-      var d = gtParse(gtDates[gtKey(k, a.key)]);
-      if (d) have[a.key] = d;
-    });
-    var missing = need.filter(function (a) { return !have[a.key]; });
-    if (missing.length) {
-      out.innerHTML = '<p class="empty">' + esc(missing.map(function (a) { return '「' + a.label + '」'; }).join('と')) +
-        'を入れると、やることの順番と日程を表示します。</p>';
-      return;
-    }
-    var tasks = G.tasks.filter(function (t) { return t.scheme === k; });
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var rows = tasks.map(function (t) {
-      var base = have[t.anchor];
-      var st = base ? gtAddDays(base, t.offset) : null;
-      var en = st ? gtAddDays(st, Math.max(1, t.days) - 1) : null;
-      return { t: t, start: st, end: en, done: !!gtDone[t.id] };
-    });
-    var dated = rows.filter(function (r) { return r.start; });
-    if (!dated.length) { out.innerHTML = '<p class="empty">日付を計算できるタスクがありませんでした。</p>'; return; }
-    var min = dated[0].start, max = dated[0].end;
-    dated.forEach(function (r) { if (r.start < min) min = r.start; if (r.end > max) max = r.end; });
-    if (today < min) min = today;
-    if (today > max) max = today;
-    min = gtAddDays(min, -7); max = gtAddDays(max, 7);
-    var span = Math.max(1, gtDayDiff(max, min));
-    var px = Math.max(1.1, Math.min(9, 1500 / span));
-    var width = Math.round(span * px);
-    function left(d) { return Math.round(gtDayDiff(d, min) * px); }
+      // 畳まれた中を指すページ内リンクは、押した時点で開く（黙って効かなくなるのを防ぐ）
+      document.addEventListener('click', function (e) {
+        var el = e.target;
+        while (el && el !== document.body && !(el.tagName === 'A' && el.getAttribute('href'))) el = el.parentNode;
+        if (!el || el.tagName !== 'A') return;
+        var href = el.getAttribute('href') || '';
+        if (href.charAt(0) !== '#' || href.length < 2) return;
+        var t = document.getElementById(href.slice(1));
+        if (t) setSecOpen(secOf(t), true);
+      }, true);
 
-    // 月の目盛り
-    var ticks = '';
-    var cur = new Date(min.getFullYear(), min.getMonth(), 1);
-    while (cur <= max) {
-      if (cur >= min) {
-        ticks += '<span class="gt-tick" style="left:' + left(cur) + 'px;">' +
-          (cur.getMonth() === 0 ? cur.getFullYear() + '年' : '') + (cur.getMonth() + 1) + '月</span>';
+      // ページ内検索(Ctrl+F)は閉じた中身を拾えないので、まとめて開ける手段を必ず残す
+      var nav = document.querySelector('main > nav.toc') || document.querySelector('main > nav');
+      if (nav) {
+        var row = document.createElement('div');
+        row.className = 'sec-util';
+        var all = document.createElement('button');
+        all.type = 'button';
+        all.id = 'expandAll';
+        all.setAttribute('aria-pressed', 'false');
+        all.textContent = 'すべて開く';
+        all.addEventListener('click', toggleAllSecs);
+        row.appendChild(all);
+        nav.parentNode.insertBefore(row, nav.nextSibling);
       }
-      cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
-    }
-    var todayLine = '<span class="gt-today" style="left:' + left(today) + 'px;" title="今日"></span>';
 
-    var doneN = rows.filter(function (r) { return r.done; }).length;
-    var pct = Math.round(doneN / rows.length * 100);
-    var html = '<div class="gt-prog"><span class="num">' + doneN + ' / ' + rows.length + '（' + pct + '%）</span>' +
-      '<span class="prog"><i style="width:' + pct + '%;"></i></span></div>';
-
-    html += '<div class="gt-wrap"><div class="gt-inner" style="width:' + (width + 320) + 'px;">' +
-      '<div class="gt-head"><div class="gt-left">やること（終わったらチェック）</div>' +
-      '<div class="gt-ticks" style="width:' + width + 'px;">' + ticks + todayLine + '</div></div>';
-
-    var phase = null;
-    rows.forEach(function (r) {
-      if (r.t.phase !== phase) {
-        phase = r.t.phase;
-        html += '<div class="gt-row phase">' + esc(phase) + '</div>';
+      // 共有されたURLのハッシュ（例 #autofill）や、制度を指定して来た場合は開く
+      var openId = location.hash.length > 1 ? location.hash.slice(1) : '';
+      if (!openId && /[?&]p=/.test(location.search)) openId = 'checklist';
+      if (openId) {
+        var t2 = document.getElementById(openId);
+        if (t2) {
+          setSecOpen(secOf(t2), true);
+          setTimeout(function () { try { t2.scrollIntoView(); } catch (e) {} }, 0);
+        }
       }
-      var late = r.start && !r.done && r.start < today;
-      var badges = (r.t.hard ? '<span class="gt-badge gt-b-hard">落とすと対象外</span>' : '') +
-        (r.t.source === 'unverified' ? '<span class="gt-badge gt-b-un">未確認</span>' : '');
-      var when = r.start
-        ? gtFmt(r.start) + (r.t.days > 1 ? '〜' + gtFmt(r.end) : '') + '　' + r.t.when
-        : '日付未定：' + r.t.when;
-      html += '<div class="gt-row' + (r.done ? ' done' : '') + '">' +
-        '<div class="gt-left">' +
-          '<label class="gt-name"><input type="checkbox" data-gt="' + esc(r.t.id) + '"' + (r.done ? ' checked' : '') + '>' +
-          '<span class="t">' + esc(r.t.task) + badges + '</span></label>' +
-          '<p class="gt-meta">' + esc(r.t.owner) + '　' +
-            '<span' + (late ? ' class="gt-late"' : '') + '>' + esc(when) + (late ? '（もう始めていないと間に合いません）' : '') + '</span></p>' +
-          (r.t.warn ? '<p class="gt-warn' + (r.t.hard ? ' hard' : '') + '">' + esc(r.t.warn) + '</p>' : '') +
-          '<p class="gt-src">' + (r.t.source === 'unverified'
-            ? '出典：当サイトで確認できていません'
-            : '出典：<a href="' + esc(r.t.source) + '" target="_blank" rel="noopener noreferrer">一次資料 ↗</a>') +
-            '（' + esc(r.t.checked) + '確認）</p>' +
-        '</div>' +
-        '<div class="gt-right" style="width:' + width + 'px;">' +
-          (r.start
-            ? '<span class="gt-bar' + (r.done ? ' doneb' : (r.t.hard ? ' hard' : '')) + '" style="left:' + left(r.start) +
-              'px;width:' + Math.max(6, Math.round(Math.max(1, r.t.days) * px)) + 'px;"></span>'
-            : '<span class="gt-bar unknown" style="left:0;width:' + Math.min(width, 120) + 'px;"></span>') +
-          todayLine +
-        '</div></div>';
-    });
-    html += '</div></div>';
-    var undated = rows.filter(function (r) { return !r.start; }).length;
-    if (undated) {
-      html += '<p class="src-note">' + undated + '件は、まだ決まっていない日（交付決定日など）を基準にしているため日付が出せません。' +
-        '通知が届いたら上の欄に入れてください。<strong>この期間に発注してはいけない</strong>制度があります。</p>';
+      syncExpandAll();
+    } catch (e) {
+      document.documentElement.classList.remove('has-accordion');
     }
-    html += '<p class="src-note">日付は入力した基準日からの計算です。実際の期限は必ず各制度の公募要領・支給要領でご確認ください。' +
-      '申請書類の作成・提出を代理で頼めるのは、雇用関係助成金は社会保険労務士または弁護士に限られます。</p>';
-    out.innerHTML = html;
-    out.querySelectorAll('input[data-gt]').forEach(function (c) {
-      c.addEventListener('change', function () {
-        var id = c.getAttribute('data-gt');
-        if (c.checked) gtDone[id] = 1; else delete gtDone[id];
-        save(K_GANTT, gtDone);
-        renderGantt();
-      });
-    });
   }
 
   // ---------- 03 共通書類 ----------
@@ -2773,7 +2707,6 @@
   loadMirror().then(function () { renderAfForms(); });
   renderAfPrograms();
   initAfFilter();
-  renderGtSchemes();
   (function initAfSelect() {
     var sel = document.getElementById('afProgram');
     if (!sel) return;
@@ -2799,10 +2732,8 @@
     renderLead();
   });
 
-  if (/[?&]p=/.test(location.search)) {
-    var t = document.getElementById('checklist');
-    if (t) setTimeout(function () { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
-  }
+  // 描画がすべて終わってから節を畳む（中身を動かすので順番が大事）
+  initSectionAccordion();
 })();
 </script>
 </body>
