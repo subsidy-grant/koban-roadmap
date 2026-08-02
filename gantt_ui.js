@@ -32,10 +32,17 @@
   var G = window.KOBAN_GANTT || { anchors: {}, schemes: {}, tasks: [] };
   var K_GANTT = 'koban_ganttDone';
   var K_GANTT_DATES = 'koban_ganttDates';
+  var K_GANTT_PHASE = 'koban_ganttPhase';
   var gtDone = load(K_GANTT, {});
   var gtDates = load(K_GANTT_DATES, {});
+  var gtPhase = load(K_GANTT_PHASE, {});
   if (!gtDone || typeof gtDone !== 'object') gtDone = {};
   if (!gtDates || typeof gtDates !== 'object') gtDates = {};
+  if (!gtPhase || typeof gtPhase !== 'object') gtPhase = {};
+  // 段階（準備・交付申請など）の開閉。既定は開いた状態で、
+  // 閉じたものだけ憶えておく（初めて見た人に空の表を見せないため）
+  function phaseKey(scheme, phase) { return scheme + '||' + phase; }
+  function phaseOpen(scheme, phase) { return gtPhase[phaseKey(scheme, phase)] !== 0; }
 
   function gtParse(v) {
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
@@ -119,9 +126,9 @@
       var lr = lane.getBoundingClientRect();
       var mr = m.getBoundingClientRect();
       var w = lab.getBoundingClientRect().width;
-      if (mr.width >= w + 10) { m.classList.add('inb'); return; }   // 帯が広ければ中に入れる
-      if (mr.right + 6 + w <= lr.right) return;                      // 右に出して収まる
-      if (mr.left - 6 - w >= lr.left) { m.classList.add('flip'); return; } // 左なら収まる
+      if (mr.width >= w + 14) { m.classList.add('inb'); return; }   // 帯が広ければ中に入れる
+      if (mr.right + 12 + w <= lr.right) return;                     // 右に出して収まる
+      if (mr.left - 12 - w >= lr.left) { m.classList.add('flip'); return; } // 左なら収まる
       m.classList.add('inb');                                        // どちらも無理なら中に重ねる
     });
   }
@@ -210,11 +217,23 @@
       '<div class="gt-head"><div class="gt-left">やること（終わったらチェック）</div>' +
       '<div class="gt-right gt-ticks">' + ticks + todayLine + '</div></div>';
 
-    var phase = null;
+    var phase = null, pIdx = 0;
     rows.forEach(function (r) {
       if (r.t.phase !== phase) {
-        phase = r.t.phase;
-        html += '<div class="gt-row phase">' + esc(phase) + '</div>';
+        if (phase !== null) html += '</div>';
+        phase = r.t.phase; pIdx++;
+        var pid = 'gtp-' + k + '-' + pIdx;
+        var pOpen = phaseOpen(k, phase);
+        var pRows = rows.filter(function (x) { return x.t.phase === phase; });
+        var pDone = pRows.filter(function (x) { return x.done; }).length;
+        html += '<div class="gt-row phase' + (pOpen ? ' is-open' : '') + '">' +
+          '<button type="button" class="gt-phase" data-ph="' + esc(phase) + '"' +
+            ' aria-expanded="' + (pOpen ? 'true' : 'false') + '" aria-controls="' + pid + '">' +
+            '<span class="chev" aria-hidden="true">▾</span>' +
+            '<span class="nm">' + esc(phase) + '</span>' +
+            '<span class="cnt">' + pDone + ' / ' + pRows.length + '</span>' +
+          '</button></div>' +
+          '<div class="gt-phase-body' + (pOpen ? '' : ' is-closed') + '" id="' + pid + '">';
       }
       var late = r.start && !r.done && r.start < today;
       var badges = (r.t.hard ? '<span class="gt-badge gt-b-hard">落とすと対象外</span>' : '') +
@@ -252,6 +271,7 @@
           todayLine +
         '</div></div>';
     });
+    if (phase !== null) html += '</div>';   // 最後の段階のまとまりを閉じる
     html += '</div></div>';
     var undated = rows.filter(function (r) { return !r.start; }).length;
     if (undated) {
@@ -268,6 +288,20 @@
         if (c.checked) gtDone[id] = 1; else delete gtDone[id];
         save(K_GANTT, gtDone);
         renderGantt();
+      });
+    });
+    // 段階の開閉。描き直すと見ていた場所に戻れないので、ここだけ表示を切り替える
+    out.querySelectorAll('button.gt-phase').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var row = btn.parentNode;
+        var body = document.getElementById(btn.getAttribute('aria-controls'));
+        var open = !row.classList.contains('is-open');
+        row.classList.toggle('is-open', open);
+        if (body) body.classList.toggle('is-closed', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        gtPhase[phaseKey(k, btn.getAttribute('data-ph'))] = open ? 1 : 0;
+        save(K_GANTT_PHASE, gtPhase);
+        if (open && body) fitLabels(body);   // 閉じている間は幅が測れないので開いた時に測り直す
       });
     });
   }

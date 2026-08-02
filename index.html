@@ -1120,8 +1120,24 @@
   .gt-inner { width: 100%; }
   .gt-row { display: flex; align-items: stretch; border-bottom: 1px dashed var(--line); }
   .gt-row:last-child { border-bottom: 0; }
-  .gt-row.phase { background: var(--accent-wash); font-size: 0.84rem; font-weight: 700;
-    padding: 0.35rem 0.6rem; display: block; border-bottom: 1px solid var(--line); }
+  /* 申請の段階（準備・交付申請など）のまとまり。長い制度は手順が20を超えるので、
+     いま関係のない段階は畳めるようにする。既定は開いた状態。 */
+  .gt-row.phase { background: var(--accent-wash); display: block; padding: 0;
+    border-bottom: 1px solid var(--line); }
+  .gt-phase { display: flex; align-items: center; gap: 0.6rem; width: 100%;
+    font: inherit; font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    background: none; border: 0; text-align: left; cursor: pointer;
+    min-height: 46px; padding: 0.5rem 0.7rem; }
+  .gt-phase:hover { background: var(--accent); color: var(--paper); }
+  .gt-phase:hover .cnt, .gt-phase:hover .chev { color: var(--paper); }
+  .gt-phase:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .gt-phase .chev { flex: none; color: var(--accent); transition: transform 0.18s ease; }
+  .gt-row.phase:not(.is-open) .gt-phase .chev { transform: rotate(-90deg); }
+  .gt-phase .nm { flex: 1 1 auto; min-width: 0; }
+  .gt-phase .cnt { flex: none; font-size: 0.82rem; font-weight: 400; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; }
+  .gt-phase-body.is-closed { display: none; }
+  @media print { .gt-phase-body.is-closed { display: block; } }
   .gt-left { flex: 1 1 auto; min-width: 0; padding: 0.5rem 0.6rem;
     border-right: 1px solid var(--line); background: var(--paper-raised); }
   /* 見出し＝1行の要約。補足（もとの文・注意・出典）と一目で見分けられるよう、
@@ -1165,10 +1181,11 @@
     border-radius: 7px; background: var(--accent); }
   .gt-mark.hard > i { background: var(--rust); }
   .gt-mark.doneb > i { background: var(--sage); }
+  /* 帯と札は離す。近いと丸い帯と数字がくっついて読みにくい */
   .gt-blab { position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
-    margin-left: 0.4rem; font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+    margin-left: 0.75rem; font-size: 0.76rem; font-weight: 700; white-space: nowrap;
     color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-  .gt-mark.flip .gt-blab { left: auto; right: 100%; margin: 0 0.4rem 0 0; }
+  .gt-mark.flip .gt-blab { left: auto; right: 100%; margin: 0 0.75rem 0 0; }
   .gt-mark.hard .gt-blab { color: var(--rust); }
   .gt-mark.doneb .gt-blab { color: var(--sage); }
   /* 帯が広いとき、または左右どちらにも札を出せないときは帯の中に重ねる。
