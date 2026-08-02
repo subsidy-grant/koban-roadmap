@@ -2,5 +2,7 @@
 autofill_audit.json
 sweep_labels.json
 guard_out/
+jinzai_out/
+shots/
 soui_test/
 soui_out/

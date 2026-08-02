@@ -975,7 +975,9 @@
     { key: 'repKana',   re: /^(代表者フリガナ|代表者氏名フリガナ)$/ },
     { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先|電話番号本社|本社電話番号|電話番号本店|本店電話番号|代表電話番号)$/ },
     { key: 'fax',       re: /^(FAX|FAX番号|fax|Fax|ファックス|ファックス番号)$/ },
-    { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス|連絡先メールアドレス|担当者メールアドレス)$/ },
+    // 同じ「メールの欄」でも様式ごとに書き方が違う（④MAIL と ④メール など）。
+    // 一つでも欠けると、その様式だけ空欄になる
+    { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Ｅメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|EMAIL|E-MAIL|MAIL|Mail|mail|メールアドレス等|電子メール|電子メールアドレス|連絡先メールアドレス|担当者メールアドレス|担当者メール)$/ },
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
     // 「資本の額」（資本「金」が付かない）が雇用関係助成金の様式では多い
     { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等|資本金又は出資の総額|資本金の額又は出資の総額|資本の額又は出資の総額|資本の額若しくは出資の総額|企業の資本の額または出資の総額|企業の資本の額又は出資の総額|資本の額|出資の総額)$/ },
@@ -990,6 +992,8 @@
     // 代表者ではなく担当者のものとして扱う
     { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名|事務担当者|申請担当者|事業所の担当者|当該事業所の担当者|届出に関する当該事業所の担当者|申請に関する当該事業所の担当者|届出に関する担当者|申請に関する担当者)$/ },
     { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL|電話番号連絡担当者|連絡担当者電話番号|連絡担当者の電話番号|電話番号担当者)$/ },
+    // 担当者の所属・役職。担当者が代表者と同じ方なら、代表者の役職がそのまま当たる
+    { key: 'staffTitle', re: /^(担当者の所属・役職|担当者の所属役職|担当者の役職|担当者役職|所属・役職|所属役職|部署・役職|部署役職|所属部署・役職|担当者の部署・役職)$/ },
     // 「法人／個人事業主」を選ぶ欄。ここが決まらないと、その値を使って
     // 他のシートへ自動で流す様式が全部空欄のままになる（東京都の申請書で確認）
     { key: 'entity',    re: /^(事業形態|事業者形態|法人個人の別|法人個人区分|申請者の形態|申請者形態|法人又は個人の別)$/ },
@@ -1006,7 +1010,7 @@
     staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号',
     nameRep: '事業者名と代表者氏名', regAddr: '登記上の所在地', entity: '事業形態',
     officeName: '事業所の名称', regZip: '登記上の所在地の郵便番号',
-    industryCode: '日本標準産業分類の番号'
+    industryCode: '日本標準産業分類の番号', staffTitle: '担当者の所属・役職'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
 
@@ -1289,6 +1293,8 @@
     for (var k = 0; k < markers.length; k++) {
       var m = markers[k];
       if (m.r > row || row - m.r > rowSpan || m.c > col) continue;
+      // その見出しのかたまりが、この行より前で終わっているなら効かせない
+      if (m.end !== undefined && row > m.end) continue;
       if (!best || m.r > best.r || (m.r === best.r && m.c > best.c)) best = m;
     }
     return best;
@@ -1355,7 +1361,7 @@
   }
   // 担当者が代表者と同じ人か。様式に「代表者と異なる場合のみ」とある欄で使う
   function sameAsRep(vals, key) {
-    if (key !== 'staff' && key !== 'staffTel' && key !== 'mail') return false;
+    if (key !== 'staff' && key !== 'staffTel' && key !== 'mail' && key !== 'staffTitle') return false;
     var a = String(vals.staff || '').replace(/[\s　]+/g, '');
     var b = String(vals.rep || '').replace(/[\s　]+/g, '');
     return !!a && a === b;
@@ -1386,6 +1392,9 @@
     }
     // 事業所の名称が未入力なら、これまでどおり法人名を使う
     if (!vals.officeName && vals.name) vals.officeName = vals.name;
+    // 担当者が代表者と同じ方なら、担当者の役職は代表者の役職。
+    // 別の方を担当者にしているときは、その方の役職を預かっていないので空欄にする
+    if (vals.title && (!vals.staff || vals.staff === vals.rep)) vals.staffTitle = vals.title;
     // 「法人／個人事業主」を選ぶ欄。ここが空のままだと、その値をもとに
     // 他のシートへ自動で流す様式が丸ごと空欄になる
     var ek = entityKind(vals);
@@ -2107,6 +2116,35 @@
       }
       return null;
     }
+    // 配布元の様式で、1行だけ結合が抜けていることがある（上下の行は結合済みなのに）。
+    // 細い1セルに長い値を入れると、そのセルの「縮小して全体を表示」の設定で
+    // 文字が極端に小さくなり、入っているのに読めなくなる。
+    // 2026-08-03、人材開発支援助成金 様式第4-1号の法人番号の欄で実際に起きた
+    // （名称・氏名の行は AF:AZ で結合されているのに、法人番号の行だけ抜けていた）。
+    // 上下の行と同じ幅に結合してから入れる
+    function addMergeLike(cn, rn) {
+      var like = null;
+      for (var k = 0; k < merges.length; k++) {
+        var g2 = merges[k];
+        if (g2.a.c !== cn || g2.a.r !== g2.b.r || g2.b.c <= cn) continue;
+        if (g2.a.r === rn - 1 || g2.a.r === rn + 1) { like = g2; break; }
+      }
+      if (!like) return false;
+      for (var c2 = cn; c2 <= like.b.c; c2++) {
+        if (mergeAt(c2, rn)) return false;                     // 既存の結合と重ねない
+        if (c2 === cn) continue;
+        var cc = cellAt(c2, rn, false);
+        if (cc && cellString(cc, shared).trim()) return false;  // 中身のあるセルを飲み込まない
+      }
+      var host = doc.getElementsByTagNameNS(S_NS, 'mergeCells')[0];
+      if (!host) return false;
+      var el = doc.createElementNS(S_NS, 'mergeCell');
+      el.setAttribute('ref', numToCol(cn) + rn + ':' + numToCol(like.b.c) + rn);
+      host.appendChild(el);
+      host.setAttribute('count', String(childrenNS(host, S_NS, 'mergeCell').length));
+      merges.push({ a: { c: cn, r: rn }, b: { c: like.b.c, r: rn } });
+      return true;
+    }
     var rows = doc.getElementsByTagNameNS(S_NS, 'row');
     var rowByNum = {};
     for (i = 0; i < rows.length; i++) rowByNum[rows[i].getAttribute('r')] = rows[i];
@@ -2197,6 +2235,12 @@
           .split(/[-−–―‐‑－]/).filter(function (x) { return x !== ''; });
         return (pv.length >= 2 && pv.length <= 4) ? pv : null;
       }
+      // 雇用保険適用事業所番号は「4桁ｰ6桁-1桁」。様式もその3つに欄が分かれている
+      if (key === 'hokenNo') {
+        var hv = toHankaku(vals.hokenNo).replace(/[^0-9\-−–―‐‑－]/g, '')
+          .split(/[-−–―‐‑－]/).filter(function (x) { return x !== ''; });
+        return hv.length === 3 ? hv : null;
+      }
       return null;
     }
 
@@ -2212,6 +2256,37 @@
         if (mk) markers.push({ r: mpos.r, c: mpos.c, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
         var mx = exclKind(mtxt);
         if (mx) excls.push({ r: mpos.r, c: mpos.c, kind: mx });
+      }
+    }
+    // ---- 「誰の欄か」の見出しが、どこまで効くかを決める ----
+    // 様式は「代理人／社会保険労務士」の欄のあと、本文をはさんで
+    // 「１ 雇用保険適用事業所の名称」のように番号付きの項目が始まる作りが多い。
+    // 見出しの効き目を止めないと、6行下の事業所番号まで「事務代理者の欄」と読んで
+    // しまい、入るはずの欄が空欄になる（2026-08-03、人材開発支援助成金 様式第1-1号）。
+    // 行の左端に「項目番号」か「本文の段落」が現れた行で、前のかたまりは終わりにする。
+    var SECTION_NUM_RE = /^([0-9０-９]{1,2}|[①-⑳]|[Ⅰ-Ⅹ]|[一二三四五六七八九十]|[0-9０-９]{1,2}[．.、)）])$/;
+    var breaks = [];
+    for (i = 0; i < rows.length; i++) {
+      var bcs = childrenNS(rows[i], S_NS, 'c');
+      var bLeft = null, bTxt = '';
+      for (var bj = 0; bj < bcs.length; bj++) {
+        var bp = parseCellRef(bcs[bj].getAttribute('r'));
+        if (!bp) continue;
+        var bt = cellString(bcs[bj], shared).replace(/[\s　]+/g, '');
+        if (!bt) continue;
+        if (bLeft === null || bp.c < bLeft) { bLeft = bp.c; bTxt = bt; }
+      }
+      if (bLeft === null) continue;
+      if (SECTION_NUM_RE.test(bTxt) || bTxt.length > 12) {
+        breaks.push({ r: parseInt(rows[i].getAttribute('r'), 10), c: bLeft });
+      }
+    }
+    breaks.sort(function (a, b) { return a.r - b.r; });
+    for (var mi2 = 0; mi2 < markers.length; mi2++) {
+      var mk2 = markers[mi2];
+      mk2.end = Infinity;
+      for (var bk = 0; bk < breaks.length; bk++) {
+        if (breaks[bk].r > mk2.r && breaks[bk].c < mk2.c) { mk2.end = breaks[bk].r - 1; break; }
       }
     }
     var myEntity = entityKind(vals);
@@ -2420,6 +2495,50 @@
             reason: 'この欄にはすでに「' + labelName(mineX) + '」を入れたので、重ねて入れませんでした（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
+        // 「（〒　　－　　）」と印字された枠。1つのセルに郵便番号も住所もまとめて
+        // 書くと、右隣の「－」で切れて「〒113」までしか読めない。
+        // 郵便番号は枠に分けて入れ、住所はラベルが2行にまたがっていれば次の行へ入れる
+        // （2026-08-03、人材開発支援助成金 様式第1-1号の事業所所在地で確認）
+        if ((key === 'addr' || key === 'regAddr') && u.ok && u.prev && isZipFrame(u.prev)) {
+          var zk2 = key === 'addr' ? 'zip' : 'regZip';
+          var zparts = vals[zk2] ? splitParts(zk2) : null;
+          var zslots = null;
+          for (var zi = 1; zparts && zi <= 4 && !zslots; zi++) {
+            var sc0 = tc + zi, sg0 = mergeAt(sc0, tr);
+            if (sg0) { if (sg0.a.r !== tr) break; sc0 = sg0.a.c; }
+            var cand2 = splitSlots(sc0, tr, sg0, zparts.length);
+            if (cand2) {
+              var allFree = true;
+              for (var zq = 0; zq < cand2.length; zq++) {
+                var uz = usable(cellAt(cand2[zq], tr, false));
+                if (!uz.ok || uz.prev) { allFree = false; break; }
+              }
+              if (allFree) zslots = cand2;
+            }
+          }
+          // 住所を書く先：ラベルの結合が2行にまたがるなら、その2行目の欄
+          var ac2 = -1, ar2 = tr;
+          if (g && g.b.r > g.a.r && rowByNum[String(tr + 1)]) {
+            var ag3 = mergeAt(tc, tr + 1);
+            var cc2 = ag3 ? ag3.a.c : tc, rr2 = ag3 ? ag3.a.r : tr + 1;
+            var au2 = usable(cellAt(cc2, rr2, false));
+            if (au2.ok && !au2.prev) { ac2 = cc2; ar2 = rr2; }
+          }
+          if (zslots && ac2 > 0) {
+            (function (slots, ps) {
+              slots.forEach(function (cn, si) { writeCell(cellAt(cn, tr, true), ps[si], 'new'); });
+            })(zslots, zparts);
+            writeCell(cellAt(ac2, ar2, true), vals[key], 'new', key);
+            usedKeys[key] = 1; usedKeys[zk2] = 1;
+            zslots.forEach(function (cn) { writtenCell[sheetName + '|' + cn + '|' + tr] = zk2; });
+            writtenCell[sheetName + '|' + ac2 + '|' + ar2] = key;
+            fills.push({ where: 'シート「' + sheetName + '」の ' +
+              zslots.map(function (cn) { return numToCol(cn) + tr; }).join('・') +
+              '・' + numToCol(ac2) + ar2 + '（' + label + '・郵便番号と住所を分けて記入）',
+              key: key, value: vals[zk2] + '　' + vals[key] });
+            continue;
+          }
+        }
         // 書き込み先が別項目の見出しそのものなら入れない
         if (u.ok && u.prev) {
           // 別項目の欄（雇用保険被保険者番号など）は上書きしない
@@ -2509,6 +2628,8 @@
           skips.push({ key: key, label: label, reason: guard + '（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
+        // 結合が1行だけ抜けている欄は、上下の行に合わせて結合してから入れる
+        if (!tg && String(putVal).length >= 8) addMergeLike(tc, tr);
         writeCell(cellAt(tc, tr, true), putVal, u.prev ? 'ow' : 'new', key);
         usedKeys[key] = 1;
         wroteSlot[xslot] = 1;

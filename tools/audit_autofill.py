@@ -20,6 +20,8 @@ FORMS = os.path.join(ROOT, "forms", "www.mhlw.go.jp")
 PAGE = "http://127.0.0.1:8935/documents.html#autofill"
 
 COMPANY = {
+    "entity": "法人", "kana": "カブシキガイシャサンプルビヨウ", "repKana": "タイラ ヒロシ",
+    "industryCode": "78", "regAddr": "東京都千代田区丸の内1-1-1", "regZip": "100-0005",
     "name": "株式会社サンプル美容", "houjin": "7000012050002", "zip": "150-0001",
     "addr": "東京都渋谷区神宮前1-2-3", "title": "代表取締役", "rep": "山田 太郎",
     "tel": "03-1234-5678", "mail": "info@example.jp", "employees": "8",
@@ -116,7 +118,8 @@ def main():
             sus = suspicious(fills)
             total_fills += len(fills)
             total_susp += len(sus)
-            rows.append({"file": fn, "n": len(fills), "fills": fills, "susp": sus})
+            rows.append({"file": fn, "n": len(fills), "fills": fills, "susp": sus,
+                         "skips": (data or {}).get("skips", [])})
         b.close()
 
     print("=== 自動入力の精度（%d ファイル） ===" % len(files))
