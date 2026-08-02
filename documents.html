@@ -257,13 +257,9 @@
   #afKindRow button.active, #afFmtRow button.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   #afFmtRow { margin: 0 0 0.6rem; }
   .af-forms .hidden { display: none; }
-  /* 1件ずつの詳細（開閉） */
-  .af-more { margin: 0 0 0.4rem 2.2rem; }
-  .af-more > summary { font-size: 0.8rem; color: var(--accent); cursor: pointer;
-    list-style: none; display: inline-block; padding: 0.25rem 0; min-height: 32px; }
-  .af-more > summary::-webkit-details-marker { display: none; }
-  .af-more > summary::before { content: '▸ '; }
-  .af-more[open] > summary::before { content: '▾ '; }
+  /* 03〜06から、制度を選び直しに02へ戻る導線 */
+  .pick-jump { display: inline-block; margin-top: 0.4rem; padding: 0.5rem 0;
+    min-height: 44px; line-height: 1.9; font-size: 0.92rem; }
   .af-doc { border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
     margin-bottom: 0.45rem; }
   .af-doc > summary { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;
@@ -288,7 +284,6 @@
     .af-dl-tbl tr { padding: 0.35rem 0; border-bottom: 1px dashed var(--line); }
     .af-dl-tbl tr:last-child { border-bottom: 0; }
     .af-dl-tbl th { padding: 0 0 0.1rem; font-size: 0.78rem; }
-    .af-more { margin-left: 1.2rem; }
   }
   .af-other { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
   ul.af-other-list { list-style: none; margin: 0.2rem 0 1rem; padding: 0; }
@@ -454,8 +449,8 @@
       <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
       <li><a href="#autofill">制度を選んで、様式に会社情報を入れる</a>（Word・Excel）</li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
+      <li><a href="#deadlines">締切一覧</a>（いつが締切か）</li>
       <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
-      <li><a href="#deadlines">締切一覧</a></li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
     </ol>
   </nav>
@@ -570,23 +565,9 @@
     <p class="src-note" id="commonSource"></p>
   </section>
 
-  <!-- 04 逆算 -->
-  <section id="leadtime">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
-    <p class="section-sub">提出の締切日を入れると、上の共通書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
-
-    <div class="pcard">
-      <label for="deadlineInput" style="display:block;font-size:0.92rem;margin-bottom:0.4rem;">提出の締切日</label>
-      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
-      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;"></p>
-    </div>
-
-    <div id="leadResult"></div>
-  </section>
-
-  <!-- 05 締切一覧 -->
+  <!-- 04 締切一覧 -->
   <section id="deadlines">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切一覧</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切一覧</h2></div>
     <p class="section-sub">下で選んだ制度の締切をまとめて並べます。<strong>日付は各制度の説明文から機械的に拾ったものです。</strong>公募回の追加や前倒しがあるため、実際に出すときは必ず公式ページでご確認ください。</p>
 
     <div class="picker">
@@ -598,6 +579,19 @@
     </div>
 
     <div id="deadlineList"></div>
+  </section>
+  <!-- 05 逆算（締切を知ってから逆算する順にしている） -->
+  <section id="leadtime">
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切から逆算する</h2></div>
+    <p class="section-sub">提出の締切日を入れると、03の書類を<strong>いつまでに頼めばよいか</strong>を計算します。上の04で締切を押すと、この欄に入ります。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
+
+    <div class="pcard">
+      <label for="deadlineInput" style="display:block;font-size:0.92rem;margin-bottom:0.4rem;">提出の締切日</label>
+      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
+      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;"></p>
+    </div>
+
+    <div id="leadResult"></div>
   </section>
 
   <!-- 06 チェックリスト -->
@@ -626,7 +620,6 @@
   var K_COMPANY = 'koban_company';
   var K_FAV     = 'koban_savedPrograms';   // トップページの☆と共通
   var K_CHECK   = 'koban_docCheck';
-  var K_COMMON  = 'koban_commonDone';
 
   function load(key, fallback) {
     try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : fallback; }
@@ -2605,9 +2598,7 @@
           '<span class="fn">' + esc(it.name) +
           (mirrorOf(it.url) ? '<span class="gt-badge gt-b-ok">そのまま記入できます</span>' : '') +
           '</span>' +
-          '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label>' +
-          '<details class="af-more"><summary>この様式の詳細</summary>' +
-          '<div class="af-doc-body">' + afDetailRows(it) + '</div></details></li>';
+          '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
       });
       html += '</ul>';
     });
@@ -2677,9 +2668,13 @@
     var lead = run.querySelector('.lead'), sub = run.querySelector('.sub');
     if (lead) lead.textContent = n ? '手順3　' + n + '件に会社情報を入れる' : '手順3　会社情報を入れる';
     run.disabled = !n;
-    if (sub) sub.textContent = n
-      ? '押すと、この下に記入結果が' + n + '件出ます'
-      : '上でチェックを入れてください';
+    // 配布元が他サイトからの取得を許していない様式は、このページからは取り寄せられない。
+    // 押してから4件とも失敗するより、押す前に分かるほうがよい
+    var direct = afChecked().filter(function (c) { return mirrorOf(c.getAttribute('data-url')); }).length;
+    if (sub) sub.textContent = !n ? '上でチェックを入れてください'
+      : direct === n ? '押すと、この下に記入結果が' + n + '件出ます'
+      : direct === 0 ? '選んだ様式は配布元の設定でこのページから取り寄せできません。押すと、公式サイトから落として置く手順をご案内します'
+      : '押すと' + direct + '件を記入します。残り' + (n - direct) + '件は取り寄せできないため、落として置く手順をご案内します';
   }
   function setAfFmt(f) { afFmt = f || 'all'; applyAfFmt(); updateRunBtn(); }
   // 選んだ形式だけを表示する。隠した様式は checked のままでも
@@ -2729,11 +2724,15 @@
     var run = document.getElementById('afRun');
     if (!btn) return;
     var n = filledDlLinks().length;
+    var failed = document.querySelectorAll('#fillResults .af-manual').length;
     var lead = btn.querySelector('.lead'), sub = btn.querySelector('.sub');
     btn.disabled = !n;
     if (lead) lead.textContent = n ? '手順4　記入済み' + n + '件を保存する' : '手順4　記入済みを保存する';
+    // 記入できたものが1件も無いときに「先に手順3を押してください」と出すと、
+    // 押しても何も起きない人に嘘をつくことになる。起きたことをそのまま書く
     if (sub) sub.textContent = n
       ? '押すと、' + n + '件をこの端末に保存します'
+      : failed ? '取り寄せできなかったため、まだ保存するものがありません。下の案内から様式を落として置いてください'
       : '先に手順3を押してください';
     // 手順3が済んだら、塗りは手順4に渡す（いま押すべきボタンを1つに保つ）
     if (run) run.classList.toggle('done', !!n);
@@ -2920,8 +2919,21 @@
         status.textContent = '終わりました。取り寄せて記入できたのは ' + got + '件、' +
           (missed ? '取り寄せできなかったのが ' + missed + '件です。下の案内にしたがって、公式サイトから落としたファイルを置いてください。' : '取り寄せできなかったものはありません。');
       }
-      var box = document.getElementById('fillResults');
-      if (box && box.firstChild) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 結果は手順のボタンのすぐ下に出る。ここで結果の先頭へ飛ばすと
+      // 手順4のボタンが画面の外へ出てしまい、「押せない」ように見える。
+      // 手順のボタンが見えている状態を保つ
+      var steps = document.querySelector('.af-steps');
+      if (steps) {
+        var r = steps.getBoundingClientRect();
+        if (r.bottom > window.innerHeight || r.top < 0) {
+          steps.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+      // 1件も記入できなかったときは、次にやることの入口を開いておく
+      if (!got && missed) {
+        var mb = document.getElementById('afManualBox');
+        if (mb) mb.open = true;
+      }
     });
   }
 
@@ -3313,8 +3325,6 @@
     '雇用関係助成金の申請書類の作成・提出については、社会保険労務士にご相談ください。' +
     '取り寄せ日数は公的な公表値ではなく目安です。';
 
-  var commonDone = load(K_COMMON, {});
-
   function whoBadge(who) {
     var cls = who === '全員' ? 'sage' : (who === '該当者のみ' ? 'rust' : 'accent');
     return '<span class="who who-' + cls + '">' + esc(who) + '</span>';
@@ -3359,9 +3369,10 @@
           (t === 'koyou'
             ? '雇用関係助成金では、登記事項証明書や納税証明書は原則不要です（労働局が自ら確認します）。'
             : '') +
-          '上の02で制度を変えると、この一覧も変わります。';
+          '<a href="#autofill" class="pick-jump">別の制度に切り替える（02へ）</a>';
       } else {
-        pick.innerHTML = '全制度ぶんを表示しています。<strong>上の02で制度を選ぶと、その制度に必要な書類だけに絞られます。</strong>';
+        pick.innerHTML = '全制度ぶんを表示しています。<strong>制度を選ぶと、その制度に必要な書類だけに絞られます。</strong>' +
+          '<a href="#autofill" class="pick-jump">制度を選ぶ（02へ）</a>';
       }
     }
     var rowsA = commonRows('apply');
@@ -3390,7 +3401,7 @@
     }
   }
 
-  // ---------- 04 締切からの逆算 ----------
+  // ---------- 05 締切からの逆算 ----------
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -3400,7 +3411,7 @@
     var out = document.getElementById('leadResult');
     if (!v) {
       out.innerHTML = '<p class="empty">締切日を入れると、書類ごとの「いつまでに頼むか」を出します。' +
-        '下の「06 締切一覧」から日付を押しても入ります。</p>';
+        '上の「04 締切一覧」から日付を押しても入ります。</p>';
       return;
     }
     var parts = v.split('-');
@@ -3436,7 +3447,7 @@
       '相手の都合で遅れます。<strong>期限ぎりぎりではなく、数日の余裕を見て依頼してください。</strong></div>';
   }
 
-  // ---------- 05 締切一覧 ----------
+  // ---------- 04 締切一覧 ----------
   // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
   // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
   function extractDates(text) {
@@ -3507,10 +3518,16 @@
   }
 
   // 05・06で並べる制度。02で選んだ制度を先頭に必ず含める
+  // 02で選んだ制度は必ず先頭。お気に入りに入っていても順番を入れ替える
+  // （いま見ている制度が下のほうにあると、探しに行くことになるため）
   function docsPrograms() {
     var picked = getPicked().slice();
     var key = docsSelectedKey();
-    if (key && D.programs[key] && picked.indexOf(key) === -1) picked.unshift(key);
+    if (key && D.programs[key]) {
+      var i = picked.indexOf(key);
+      if (i !== -1) picked.splice(i, 1);
+      picked.unshift(key);
+    }
     return picked;
   }
   function renderDeadlines() {
@@ -3571,59 +3588,18 @@
     renderChecklist();
   };
 
-  // 共通書類のチェック。様式の一覧だけを並べると、取り寄せる書類が抜け落ちる。
-  // 「様式はそろったのに申請できない」を防ぐため、同じチェックリストの中に入れる。
-  window.toggleCommon = function (id, on) {
-    if (on) commonDone[id] = 1; else delete commonDone[id];
-    save(K_COMMON, commonDone);
-    renderChecklist();
-  };
-
-  function commonChecklistHTML() {
-    var groups = [
-      ['apply', '申請のときに出す（様式のほかに要るもの）'],
-      ['report', '事業が終わったあとに出す']
-    ];
-    var total = COMMON_DOCS.length;
-    var done = COMMON_DOCS.filter(function (c) { return commonDone[c.id]; }).length;
-    var pct = Math.round(done * 100 / total);
-    return '<div class="pcard" id="commonCheck">' +
-      '<h3>どの制度でも要る書類（取り寄せ・自社で用意）</h3>' +
-      '<p class="meta">' + done + ' / ' + total + ' 件そろいました。' +
-      '<strong>制度ごとに要不要が違います。</strong>当てはまらないものは飛ばして構いませんが、' +
-      '公募要領の提出書類一覧で必ずご確認ください。</p>' +
-      '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
-      groups.map(function (g) {
-        var items = COMMON_DOCS.filter(function (c) { return c.when === g[0]; });
-        return '<p class="phase-ttl">' + g[1] + '</p><ul class="checks">' +
-          items.map(function (c) {
-            var on = !!commonDone[c.id];
-            return '<li class="' + (on ? 'done' : '') + '">' +
-              '<label><input type="checkbox"' + (on ? ' checked' : '') +
-              ' onchange="toggleCommon(\'' + esc(c.id) + '\',this.checked)">' +
-              '<span class="ft">' + (c.third ? '要依頼' : '自分で') + '</span>' +
-              '<span class="fn">' + whoBadge(c.who) + ' ' + esc(c.doc) +
-              '<span style="display:block;color:var(--ink-faint);font-size:0.82rem;">' +
-              esc(c.where) + '／' + (c.days === 1 ? '当日' : '〜' + c.days + '日') +
-              '　' + esc(c.note) + '</span></span></label></li>';
-          }).join('') + '</ul>';
-      }).join('') +
-      '</div>';
-  }
-
   function renderChecklist() {
     var picked = docsPrograms();
     var el = document.getElementById('checkList');
     if (!picked.length) {
-      el.innerHTML = commonChecklistHTML() +
-        '<p class="empty">制度を選ぶと、その制度の様式もここに並びます。' +
-        '上の「06 締切一覧」で追加してください。</p>';
+      el.innerHTML = '<p class="empty">制度を選ぶと、その制度の書類がここに並びます。' +
+        '上の「02」で制度を選ぶか、「04 締切一覧」で追加してください。</p>';
       return;
     }
     var withDocs = picked.filter(function (k) { return D.docs[k]; });
     var without = picked.filter(function (k) { return !D.docs[k]; });
 
-    var html = commonChecklistHTML() + withDocs.map(function (k) {
+    var html = withDocs.map(function (k) {
       var p = D.programs[k], d = D.docs[k];
       var mine = checks[k] || {};
       var total = 0, done = 0;
