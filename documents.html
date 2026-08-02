@@ -565,12 +565,15 @@
   // 補助金の様式に繰り返し出てくる項目。ここに無いものは各様式で個別に書く。
   var FIELDS = [
     { id: 'name',      label: '事業者名（商号・屋号）', ph: '例）株式会社○○／○○美容室' },
-    { id: 'kana',      label: '事業者名フリガナ',       ph: '例）カブシキガイシャマルマル' },
+    { id: 'kana',      label: '事業者名（法人名）フリガナ', ph: '例）カブシキガイシャマルマル' },
     { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
     { id: 'hokenNo',   label: '雇用保険適用事業所番号',  ph: '例）1301-123456-7（雇用関係助成金の様式でよく使います）' },
     { id: 'officeName', label: '事業所の名称（適用事業所名）', ph: '法人名と同じなら空欄で構いません（例）株式会社○○　△△店' },
     { id: 'zip',       label: '郵便番号',               ph: '例）150-0001', mode: 'numeric' },
     { id: 'addr',      label: '所在地',                 ph: '例）東京都渋谷区神宮前1-2-3 ○○ビル4階', big: true },
+    // 東京都の助成金には「都内登記所在地（本店が都外の場合のみ）」の欄がある。
+    // 本店＝登記上の住所という会社が多いので、違うときだけ書いてもらう
+    { id: 'regAddr',   label: '登記上の所在地',         ph: '上の所在地と同じなら空欄で構いません（登記簿の住所が違うときだけ）', big: true },
     { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
     { id: 'rep',       label: '代表者氏名',             ph: '例）山田 太郎' },
     { id: 'repKana',   label: '代表者フリガナ',         ph: '例）ヤマダ タロウ' },
@@ -893,10 +896,20 @@
   // 括弧の注記・番号・空白を取り除いてから、全体一致だけを見る（部分一致にすると
   // 「代表者氏名の変更理由」のような欄まで拾ってしまうため）。
   function normLabel(s) {
-    return String(s || '')
+    var raw = String(s || '')
+      // 「都内登記所在地　※本店所在地が都外の場合のみ」のように、
+      // 項目名のうしろに※で注意書きが続く様式がある。注意書きまで含めると
+      // 長すぎて項目名として読めなくなるので、※から後ろは落とす
+      .replace(/※[\s\S]*$/, '');
+    // 「（役職）」「（氏名）」のように、括弧書きだけのセルが記入欄の目印に
+    // なっている様式がある（東京都の申請書 表紙で確認）。括弧を落とすと
+    // 空になって読めないので、中身をそのまま項目名として読む
+    var only = raw.replace(/[\s　]+/g, '').match(/^[（(]([^（）()]{1,8})[）)]$/);
+    if (only) raw = only[1];
+    return raw
       .replace(/[（(][^（）()]*[）)]/g, '')
       .replace(/[\s　]+/g, '')
-      .replace(/[：:。・※◆■□◎●▼△▲◇☆★]/g, '')
+      .replace(/[：:。・※◆■□◎●▼△▲◇☆★〇○◯]/g, '')
       .replace(/^[0-9０-９①-⑳]+[\.．)）]?/, '')
       // 「所在地〒」のように、住所欄の中の〒印がラベルにくっついていることがある。
       // 落とさないと「所在地」として拾えず、住所がどこにも入らない。
@@ -905,6 +918,9 @@
       .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
       // 「雇用保険適用事業所番号11桁」のように桁数を書き添えた項目名がある
       .replace(/[0-9]+桁$/, '')
+      // 記入枠が「（Tel　　　－　　　）」のように、片方の括弧だけ別のセルに
+      // 入っていることがある。対になっていない括弧は落とさないと項目名として読めない
+      .replace(/[（）()]/g, '')
       .replace(/欄$/, '');
   }
   // 上から順に試して最初に全体一致したものを採用。あいまいなラベル
@@ -913,8 +929,12 @@
     { key: 'houjin',    re: /^法人番号$/ },
     { key: 'zip',       re: /^(郵便番号|〒)$/ },
     { key: 'hokenNo',   re: /^(雇用保険適用事業所番号|適用事業所番号|事業所番号)$/ },
+    // 登記上の住所は本店所在地と別の欄。東京都の助成金では
+    // 「都内登記所在地（本店所在地が都外の場合のみ）」として並んでいる。
+    // 所在地より先に見ないと、本店の住所を登記の欄に入れてしまう
+    { key: 'regAddr',   re: /^(登記所在地|登記上の所在地|登記簿上の所在地|都内登記所在地|都内登記上の所在地|本店登記所在地|登記上の本店所在地|登記上の住所)$/ },
     { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地|事業場の所在地|雇用保険適用事業所の所在地)$/ },
-    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
+    { key: 'name',      re: /^(事業者名|事業者名称|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|法人名又は屋号|法人名屋号|法人名又は氏名|事業者名又は屋号|名称又は氏名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
     // 雇用保険の適用事業所名は、届け出た名称で法人名と違うことがある。
     // 番号と名称が合わないと労働局で照合できないので、別の項目にしている
     { key: 'officeName', re: /^(事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|適用事業所の名称|適用事業所名)$/ },
@@ -927,7 +947,7 @@
     // 「使用者側代表者名」は労働者側の代表と対になる言い方で、事業主側＝自社の代表者
     { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|申請者氏名|代表取締役氏名|事業主氏名|事業主の氏名|申請事業主氏名|申請者の氏名|使用者側代表者名|使用者側代表者氏名|使用者側の代表者名)$/ },
     { key: 'repKana',   re: /^(代表者フリガナ|代表者氏名フリガナ)$/ },
-    { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先)$/ },
+    { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先|電話番号本社|本社電話番号|電話番号本店|本店電話番号|代表電話番号)$/ },
     { key: 'fax',       re: /^(FAX|FAX番号|fax|Fax|ファックス|ファックス番号)$/ },
     { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス|連絡先メールアドレス|担当者メールアドレス)$/ },
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
@@ -938,8 +958,13 @@
     // 番号（例：78）ではなく名前（美容業）が入るのは分類項目名のほう
     { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
-    { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名|申請担当者|事業所の担当者)$/ },
-    { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ },
+    // 担当者のかたまりの見出しでもある。ここに当たると、下に並ぶ氏名・電話・メールを
+    // 代表者ではなく担当者のものとして扱う
+    { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名|事務担当者|申請担当者|事業所の担当者|当該事業所の担当者|届出に関する当該事業所の担当者|申請に関する当該事業所の担当者|届出に関する担当者|申請に関する担当者)$/ },
+    { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL|電話番号連絡担当者|連絡担当者電話番号|連絡担当者の電話番号|電話番号担当者)$/ },
+    // 「法人／個人事業主」を選ぶ欄。ここが決まらないと、その値を使って
+    // 他のシートへ自動で流す様式が全部空欄のままになる（東京都の申請書で確認）
+    { key: 'entity',    re: /^(事業形態|事業者形態|法人個人の別|法人個人区分|申請者の形態|申請者形態|法人又は個人の別)$/ },
     // 「法人名及び事業主の氏名」のように、1つの欄に会社名と代表者名を続けて書く様式がある
     { key: 'nameRep',   re: /^(法人名及び事業主の氏名|法人名及び代表者氏名|名称及び代表者職氏名|名称及び代表者氏名|事業主名及び代表者名|事業所名及び代表者名)$/ }
   ];
@@ -951,14 +976,25 @@
     tel: '電話番号', fax: 'FAX番号', mail: 'メールアドレス', founded: '設立年月日',
     capital: '資本金', employees: '従業員数', industry: '業種', business: '事業内容',
     staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号',
-    nameRep: '事業者名と代表者氏名'
+    nameRep: '事業者名と代表者氏名', regAddr: '登記上の所在地', entity: '事業形態',
+    officeName: '事業所の名称'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
 
   // 書き込み先のセルにこれらの文字があれば、そこは別の項目の欄なので入れない。
   // 当サイトの項目一覧に無い名前でも止められるようにする
   // （「氏名」の右隣が「雇用保険被保険者番号」の欄なのに上書きしていた）。
-  var BLOCK_TARGET_RE = /(雇用保険被保険者番号|被保険者番号|雇用保険適用事業所番号|適用事業所番号|事業所番号|整理番号|個人番号|マイナンバー|生年月日|性別|年齢|入社年月日|雇入年月日|雇用形態|勤務形態|職種|担当業務|訓練コース|教育訓練機関|支給申請額|支給額|振込先|口座番号|所属・役職及び氏名|所属役職及び氏名|職・氏名|職氏名|分類番号)/;
+  var BLOCK_TARGET_RE = /(雇用保険被保険者番号|被保険者番号|雇用保険適用事業所番号|適用事業所番号|事業所番号|整理番号|個人番号|マイナンバー|生年月日|性別|年齢|入社年月日|雇入年月日|雇用形態|勤務形態|職種|担当業務|訓練コース|教育訓練機関|支給申請額|支給額|振込先|口座番号|所属・役職及び氏名|所属役職及び氏名|職・氏名|職氏名|分類番号|大分類|中分類|小分類)/;
+  // 「所属：」「氏名：」のように、うしろに「：」が付いた短い語は、
+  // 記入枠ではなくその枠の項目名。上書きすると様式の案内が消える
+  // （2026-08-03、キャリアアップ助成金の担当者欄「所属：」を潰していた）
+  var LABELISH_TAIL_RE = /^[^\s　]{1,12}[：:]$/;
+  function looksLabelCell(t) {
+    return LABELISH_TAIL_RE.test(String(t || '').replace(/[\s　]+/g, ''));
+  }
+  // 「選択してください」と印字された欄は、一覧から選ぶ欄。
+  // 自由に文字を書くと様式の集計が狂うので、選択肢に当たるものが無ければ触らない
+  var PICK_PLACEHOLDER_RE = /^[（(]?(選択|選択してください|選択して下さい|プルダウンから選択|以下から選択|▼)[）)]?$/;
   function blockedTarget(text, key) {
     var t = String(text || '').replace(/[\s　]+/g, '');
     if (!t || t.length > 24) return null;
@@ -975,10 +1011,34 @@
     return AMBIGUOUS_RE.test(normLabel(text));
   }
   var AMBIGUOUS_WHY = 'この欄は「氏名」としか書かれておらず、対象労働者や代替要員の欄のことがあるため、入れませんでした。ご自身でご記入ください';
+  var KANA_ONLY_RE = /^(フリガナ|ふりがな|ヨミガナ|よみがな)$/;
+  var KANA_WHY = '「フリガナ」の欄に漢字を入れてしまわないよう、誰のふりがなの欄か読み取れたときだけ入れています。この欄は読み取れなかったので空欄にしました';
   // 「所属・役職及び氏名」「職氏名」は役職も書く欄。氏名だけでは足りない
   var TITLE_AND_NAME_RE = /^(職氏名|所属・役職及び氏名|所属役職及び氏名|職・氏名)$/;
-  function ambiguousKey(text, vals) {
-    return (TITLE_AND_NAME_RE.test(normLabel(text)) && vals.titleRep) ? 'titleRep' : 'rep';
+  // 「氏名」「フリガナ」だけの欄が、誰のものかを決める。
+  // own は nearestOwner が返した見出し（自社・担当者など）。
+  // ふりがな欄は belowKey（すぐ下の行の項目名）から決める。決まらなければ null＝入れない。
+  // 【重要】ふりがなの欄に漢字の氏名を入れると、そのまま提出すれば書き直しになる。
+  // 迷ったら入れないほうが、受け取る人にとっても書き直しが少ない
+  function ambiguousKey(text, vals, own, belowKey) {
+    var t = normLabel(text);
+    var kind = own && own.kind;
+    if (KANA_ONLY_RE.test(t)) {
+      if (belowKey === 'name' || belowKey === 'officeName' || belowKey === 'nameRep') return 'kana';
+      if (belowKey === 'rep' || belowKey === 'titleRep') return 'repKana';
+      if (belowKey === 'staff') return null;   // 担当者のふりがなは持っていない
+      if (belowKey === 'ambiguous') return kind === 'staff' ? null : 'repKana';
+      return null;
+    }
+    if (kind === 'staff') return 'staff';
+    return (TITLE_AND_NAME_RE.test(t) && vals.titleRep) ? 'titleRep' : 'rep';
+  }
+  // ふりがな欄の「すぐ下の行の項目名」を、共通の言い方に直す
+  function belowKeyOf(text) {
+    if (!text) return null;
+    var k = matchLabel(text);
+    if (k) return k;
+    return ambiguousLabel(text) && !KANA_ONLY_RE.test(normLabel(text)) ? 'ambiguous' : null;
   }
 
   // その欄の中身が、いま入れている会社情報のどれかと同じなら、
@@ -1105,8 +1165,11 @@
   // 2か所に入ってしまう（人材開発支援助成金の計画届で実際に起きた）。
   // そこで、ラベルの手前（同じ行の左、または上の行）にある「誰の欄か」の
   // 見出しを探し、自社以外の欄には書き込まない。
-  var OWNER_OTHER = /(代理人|代理者|代行者|提出代行|事務代理|受任者|委任|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者)/;
-  var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所)/;
+  // 「委任者」は依頼した側＝自社なので、他人の欄の目印にしてはいけない
+  // （2026-08-03、東京都の同意書「〇申請者（委任者）」で確認）。
+  // 「代理申請者」は「申請者」を含むため、書かないと逆に自社の欄と読んでしまう
+  var OWNER_OTHER = /(代理人|代理者|代理申請者|代理申請|申請代理人|代行者|提出代行|事務代理|受任者|委任先|事業担当者|店舗担当者|契約予定先|契約先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|納入業者|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者)/;
+  var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所|法人代表者|代表者)/;
   // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
   // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
   // 項目名そのものが「誰の欄か」を兼ねていることがある（「①事業主名」など）。
@@ -1121,7 +1184,13 @@
     // 括弧の注記だけが長いものは見出しとして読む。様式の題名のように
     // 全体が長いものは見出しではない（対象労働者一覧などの語を含むため）
     if (!t || t.length > 40 || tShort.length > 24) return null;
-    if (matchLabel(text)) {
+    var mk0 = matchLabel(text);
+    if (mk0) {
+      // 「連絡担当者」は、その下に並ぶ氏名・電話が担当者のものだという目印。
+      // 代表者の名前を入れてしまわないよう、担当者の欄として覚えておく
+      if (mk0 === 'staff') return 'staff';
+      // 「都内登記所在地」のかたまりの中の住所・郵便番号は、本店の住所ではない
+      if (mk0 === 'regAddr') return 'regAddr';
       return (OWNER_SELF_STRONG.test(t) && !OWNER_OTHER.test(t)) ? 'self' : null;
     }
     if (OWNER_OTHER.test(t)) return 'other';
@@ -1158,8 +1227,56 @@
     return (below.r - row) < (row - above.r) ? below : above;
   }
   function ownerSkipReason(m, where) {
+    if (m.kind === 'staff') {
+      return '様式に「代表者と異なる場合のみ」と書かれた担当者の欄で、担当者が代表者と同じ方なので空欄のままにしました' +
+        (where ? '（' + where + '）' : '');
+    }
     return '「' + m.text.slice(0, 16) + '」の欄なので、自社の情報は入れませんでした' +
-      (where ? '（' + where + '）' : '') + '。ここは依頼先（社労士事務所など）を書く欄です';
+      (where ? '（' + where + '）' : '') + '。' + whoseField(m.text);
+  }
+  // その欄が誰のものかを、読む人に分かる言い方で返す
+  function whoseField(text) {
+    var t = String(text || '');
+    if (/(代理申請|代理人|代理者|申請代理)/.test(t)) return 'ここは代理で申請する事務所などを書く欄です';
+    if (/(社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|提出代行|事務代理|受任者)/.test(t)) return 'ここは手続きを頼んだ先（社労士事務所など）を書く欄です';
+    if (/(取引先|契約先|契約予定先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|販売店|販売業者|委託先|納入業者)/.test(t)) return 'ここは相手先（取引先・契約先）を書く欄です';
+    if (/(対象労働者|対象者|対象従業員|対象スタッフ|受講者|訓練生|被保険者|労働者氏名|従業員氏名|代替要員|業務代替者)/.test(t)) return 'ここは対象となる従業員の方を書く欄です';
+    if (/(訓練実施機関|教育訓練機関|外部講師|登録支援機関|認定経営革新等支援機関|商工会議所|商工会|金融機関)/.test(t)) return 'ここは支援機関・実施機関を書く欄です';
+    return 'ここは自社の情報を書く欄ではありません';
+  }
+
+  // ---- 「法人」と「個人事業主」で書き分ける様式に対応する ----
+  // 1枚の様式に＜個人事業主＞と＜法人＞の欄が両方あり、当てはまるほうだけ書く
+  // つくりが多い（東京都の申請書「申請者1」で確認）。両方に書くと、受け取る側は
+  // どちらが本当か分からなくなる。
+  var CORP_NAME_RE = /(株式会社|有限会社|合同会社|合名会社|合資会社|一般社団法人|一般財団法人|公益社団法人|公益財団法人|社会福祉法人|医療法人|学校法人|宗教法人|特定非営利活動法人|NPO法人|協同組合|企業組合|㈱|㈲|\(株\)|（株）|\(有\)|（有）)/;
+  // 戻り値: '法人' / '個人事業主' / null（決められない）
+  function entityKind(vals) {
+    var d = String(vals.houjin || '').replace(/[^0-9]/g, '');
+    if (d.length === 13) return '法人';          // 法人番号は法人にしか付かない
+    if (CORP_NAME_RE.test(vals.name || '')) return '法人';
+    if (vals.name) return '個人事業主';
+    return null;
+  }
+  // 「＜法人＞」「（個人事業主の場合）」のような、書き分けの見出しか
+  var EXCL_RE = /^[＜<（(【\[]?(法人|個人事業主|個人)(の場合|の方|向け)?[＞>）)】\]]?$/;
+  function exclKind(text) {
+    var t = String(text || '').replace(/[\s　]+/g, '');
+    var m = t.match(EXCL_RE);
+    if (!m) return null;
+    return m[1] === '法人' ? '法人' : '個人事業主';
+  }
+  // 担当者が代表者と同じ人か。様式に「代表者と異なる場合のみ」とある欄で使う
+  function sameAsRep(vals, key) {
+    if (key !== 'staff' && key !== 'staffTel' && key !== 'mail') return false;
+    var a = String(vals.staff || '').replace(/[\s　]+/g, '');
+    var b = String(vals.rep || '').replace(/[\s　]+/g, '');
+    return !!a && a === b;
+  }
+  function exclSkipReason(kind, mine, where) {
+    return 'この様式は「' + kind + '」と「' + (kind === '法人' ? '個人事業主' : '法人') +
+      '」で書く欄が分かれており、' + (mine ? 'ご入力の内容から「' + mine + '」と判断したため' : '') +
+      '「' + kind + '」の欄には入れませんでした' + (where ? '（' + where + '）' : '');
   }
   function fieldLabel(key) {
     if (key === 'titleRep') return '代表者の役職と氏名';
@@ -1182,6 +1299,10 @@
     }
     // 事業所の名称が未入力なら、これまでどおり法人名を使う
     if (!vals.officeName && vals.name) vals.officeName = vals.name;
+    // 「法人／個人事業主」を選ぶ欄。ここが空のままだと、その値をもとに
+    // 他のシートへ自動で流す様式が丸ごと空欄になる
+    var ek = entityKind(vals);
+    if (ek) vals.entity = ek;
     return vals;
   }
 
@@ -1380,6 +1501,21 @@
       run.appendChild(t);
     }
   }
+  // 書体と大きさはラベル側からそろえるが、「指定した幅に文字を押し込む」
+  // 設定（w:fitText）や文字間隔の詰め（w:spacing・w:w・w:kern）まで持ち込むと、
+  // 入れた値だけ極端に小さく・詰まって表示される。
+  // 2026-08-03、東京都の同意書「代表者　役職・氏名」の欄で実際に起きた
+  // （ラベル側が fitText 1050 で、そのまま値にも掛かっていた）。
+  // 見るのは人なので、幅に押し込む指定は引き継がない
+  var RPR_DROP = { fitText: 1, spacing: 1, w: 1, kern: 1, position: 1, effect: 1 };
+  function copyRunProps(rPrSrc) {
+    var cl = rPrSrc.cloneNode(true), kids = [];
+    for (var i = 0; i < cl.childNodes.length; i++) kids.push(cl.childNodes[i]);
+    for (var j = 0; j < kids.length; j++) {
+      if (kids[j].nodeType === 1 && RPR_DROP[kids[j].localName]) cl.removeChild(kids[j]);
+    }
+    return cl;
+  }
   // 1桁ずつのマスが並ぶ欄か。マスの数と桁数がぴったり合うときだけ、1マス1桁で入れる。
   // 数が合わないときは何もしない（ずれて入るほうが困るため）
   var DIGIT_BOX_KEYS = { houjin: 1, hokenNo: 1 };
@@ -1406,7 +1542,7 @@
     var runs = childrenNS(pEl, W_NS, 'r');
     var run = doc.createElementNS(W_NS, 'w:r');
     var rPrSrc = runs.length ? runs[runs.length - 1].getElementsByTagNameNS(W_NS, 'rPr')[0] : null;
-    if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
+    if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
     appendTextRuns(doc, run, sep + text);
     pEl.appendChild(run);
     return text;
@@ -1429,6 +1565,10 @@
       // 目印として覚えたうえで、記入もする
       var ok2 = ownerKind(raw.replace(/\t/g, ''));
       if (ok2) owner = { kind: ok2, text: raw.replace(/[\t\s　]+/g, '').slice(0, 16) };
+      // すぐ下に表が続く段落は、その表の見出し。記名する行ではない
+      // （「〇申請者（委任者）」の見出しに会社名を書き足していた）
+      var nextEl = pEl.nextElementSibling;
+      if (nextEl && nextEl.namespaceURI === W_NS && nextEl.localName === 'tbl') continue;
       var plan = paraPlan(raw);
       if (!plan) {
         if (ambiguousLabel(raw.replace(PARA_TAIL_RE, '')) && !notedAmbP) {
@@ -1463,13 +1603,42 @@
       });
     }
     // 先に「誰の欄か」の見出しを拾っておく（行番号・セル番号で位置を持つ）
-    var markers = [];
+    var markers = [], excls = [];
+    var trIndex = {};
+    for (var xi = 0; xi < trs.length; xi++) { trs[xi].__ix = xi; }
     for (var mr = 0; mr < trs.length; mr++) {
       var mcs = childrenNS(trs[mr], W_NS, 'tc');
       for (var mi = 0; mi < mcs.length; mi++) {
         var mtxt = textWithoutRuby(mcs[mi], W_NS, 'rt');
         var mk = ownerKind(mtxt);
         if (mk) markers.push({ r: mr, c: mi, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
+        var xk = exclKind(mtxt);
+        if (xk) excls.push({ r: mr, c: mi, kind: xk });
+      }
+    }
+    // 表の見出しが、表の中ではなく直前の段落に書かれていることがある。
+    //   （例）「〇代理申請者」  ←段落
+    //         ┌ 法人名又は屋号 │ …
+    // 表の中だけ見ていると誰の欄か分からず、代理で申請する事務所の欄に
+    // 自社の情報を入れてしまう。2026-08-03に東京都の同意書で確認した不具合
+    for (var bi = 0; bi < tbls.length; bi++) {
+      var firstTr = childrenNS(tbls[bi], W_NS, 'tr')[0];
+      if (!firstTr || firstTr.__ix === undefined) continue;
+      var prevEl = tbls[bi].previousElementSibling, seen = 0;
+      while (prevEl && seen < 3) {
+        if (prevEl.namespaceURI === W_NS && prevEl.localName === 'p') {
+          var ptxt = textWithoutRuby(prevEl, W_NS, 'rt').trim();
+          if (ptxt) {
+            seen++;
+            var pk = ownerKind(ptxt);
+            if (pk) { markers.push({ r: firstTr.__ix, c: 0, kind: pk, text: ptxt.replace(/[\s　]+/g, '') }); break; }
+            var px = exclKind(ptxt);
+            if (px) { excls.push({ r: firstTr.__ix, c: 0, kind: px }); break; }
+          }
+        } else if (prevEl.namespaceURI === W_NS && prevEl.localName === 'tbl') {
+          break;
+        }
+        prevEl = prevEl.previousElementSibling;
       }
     }
     // 一覧表の列見出しを読む。見出しが別の項目を指しているなら、
@@ -1503,7 +1672,8 @@
       if (!hcs || colIdx >= hcs.length) return null;
       return matchLabel(textWithoutRuby(hcs[colIdx], W_NS, 'rt'));
     }
-    var wroteSlot = {}, notedSlot = {}, notedAmb = 0;
+    var wroteSlot = {}, notedSlot = {}, notedAmb = 0, notedKana = 0;
+    var myEntity = entityKind(vals);
     for (var r = 0; r < trs.length; r++) {
       var tcs = childrenNS(trs[r], W_NS, 'tc');
       for (var i = 0; i < tcs.length - 1; i++) {
@@ -1512,13 +1682,33 @@
         var own = nearestOwner(markers, i, r, 12);
         if (!key && ambiguousLabel(labelRaw)) {
           // 「氏名」だけでは誰の氏名か決まらない。「事業主」などの見出しの下に
-          // あるときだけ代表者名を入れる（面談シートの対象労働者欄に入れないため）
-          if (own && own.kind === 'self') {
-            key = ambiguousKey(labelRaw, vals);
+          // あるときだけ代表者名を入れる（面談シートの対象労働者欄に入れないため）。
+          // 「フリガナ」はすぐ下の行の項目名から、誰のふりがなかを読み取る
+          var belowK = null, trB = trs[r + 1];
+          if (trB) {
+            var bcs = childrenNS(trB, W_NS, 'tc');
+            if (bcs[i]) belowK = belowKeyOf(textWithoutRuby(bcs[i], W_NS, 'rt'));
+          }
+          if (own && (own.kind === 'self' || own.kind === 'staff')) {
+            key = ambiguousKey(labelRaw, vals, own, belowK);
+            if (!key && KANA_ONLY_RE.test(normLabel(labelRaw)) && !notedKana) {
+              notedKana = 1;
+              skips.push({ key: 'repKana', label: labelRaw.replace(/[\s　]+/g, ' ').trim(), reason: KANA_WHY });
+            }
+          } else if (own && own.kind === 'other') {
+            skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+              reason: ownerSkipReason(own, '表の「' + labelRaw.replace(/[\s　]+/g, ' ').trim() + '」の欄') });
           } else if (!notedAmb) {
             notedAmb = 1;
             skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(), reason: AMBIGUOUS_WHY });
           }
+        }
+        // 担当者のかたまりの中の「電話番号」は、担当者の連絡先の欄
+        if (own && own.kind === 'staff' && key === 'tel' && vals.staffTel) key = 'staffTel';
+        // 「都内登記所在地」のかたまりの中の住所は、本店の住所ではない
+        if (own && own.kind === 'regAddr' && r - own.r <= 3) {
+          if (key === 'addr') key = 'regAddr';
+          else if (key === 'zip') key = null;
         }
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
@@ -1527,6 +1717,17 @@
         }
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, '表の「' + label + '」の欄') });
+          continue;
+        }
+        // 「代表者と異なる場合のみ」と書かれた担当者欄は、同じ人なら空欄が正しい
+        if (own && own.kind === 'staff' && /異なる場合/.test(own.text) && sameAsRep(vals, key)) {
+          skips.push({ key: key, label: label, reason: ownerSkipReason(own, '表の「' + label + '」の欄') });
+          continue;
+        }
+        // 「＜法人＞」「＜個人事業主＞」で書き分ける様式は、当てはまるほうだけ
+        var exM = nearestOwner(excls, i, r, 30);
+        if (exM && myEntity && exM.kind !== myEntity) {
+          skips.push({ key: key, label: label, reason: exclSkipReason(exM.kind, myEntity, '表の「' + label + '」の欄') });
           continue;
         }
         var target = tcs[i + 1];
@@ -1555,13 +1756,18 @@
           continue;
         }
         // 右の欄がまた項目名なら、そこは記入欄ではない。
-        // その先が空欄ならそちらへ入れ、無ければ入れない
-        //（「届出に関する当該事業所の担当者｜①担当者氏名｜空欄」という並びがある）
-        if (matchLabel(existing) && tcs[tcol + 1]) {
-          var nx2 = textWithoutRuby(tcs[tcol + 1], W_NS, 'rt').trim();
-          if (!nx2 || !unitCellConflict(key, nx2)) {
-            target = tcs[tcol + 1]; existing = nx2; tcol = tcol + 1;
+        // 飛び越えてその先に書くと、飛び越えた項目名の欄を横取りしてしまう
+        // （「代表者｜（役職）｜空欄」で、役職の欄に役職と氏名をまとめて入れていた）。
+        // その項目名はそれ自身の番でちゃんと処理されるので、ここでは入れない
+        // 「所属：」のように「：」で終わる短い語は、記入枠ではなく項目名
+        if (looksLabelCell(existing)) {
+          var sidC = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|c';
+          if (!notedSlot[sidC]) {
+            notedSlot[sidC] = 1;
+            skips.push({ key: key, label: label,
+              reason: '右の欄は「' + existing.trim() + '」という項目名で、記入欄ではないので入れませんでした' });
           }
+          continue;
         }
         var tKey = matchLabel(existing);
         // 住所を入れる先が「〒」だけの欄なら、それは郵便番号の項目名ではなく
@@ -1569,7 +1775,8 @@
         if (tKey === 'zip' && key === 'addr' && isZipFrame(existing)) tKey = null;
         if (tKey) {
           var sidT = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|h';
-          if (!notedSlot[sidT]) {
+          // その見出し自身で入れられる項目なら、そちらの番で入るので黙って見送る
+          if (!notedSlot[sidT] && !vals[tKey]) {
             notedSlot[sidT] = 1;
             skips.push({ key: key, label: label,
               reason: '右の欄は「' + labelName(tKey) + '」の見出しで、記入欄ではないので入れませんでした' });
@@ -1612,7 +1819,7 @@
             var bps = childrenNS(bc, W_NS, 'p');
             var bp = bps.length ? bps[0] : bc.appendChild(doc.createElementNS(W_NS, 'w:p'));
             var br = doc.createElementNS(W_NS, 'w:r');
-            if (rPrBox) br.appendChild(rPrBox.cloneNode(true));
+            if (rPrBox) br.appendChild(copyRunProps(rPrBox));
             var bt = doc.createElementNS(W_NS, 'w:t');
             bt.setAttributeNS(XML_NS, 'xml:space', 'preserve');
             bt.textContent = boxes.digits.charAt(di);
@@ -1669,7 +1876,7 @@
         var run = doc.createElementNS(W_NS, 'w:r');
         // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
         var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
-        if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
+        if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
         appendTextRuns(doc, run, withZip(key, withUnit(key, vals[key], prev), prev, vals));
         p.appendChild(run);
         usedKeys[key] = 1;
@@ -1896,7 +2103,7 @@
     }
 
     // 「誰の欄か」の見出しを先に拾う（代理人・社労士の欄に自社の情報を入れないため）
-    var markers = [];
+    var markers = [], excls = [];
     for (i = 0; i < rows.length; i++) {
       var mcs = childrenNS(rows[i], S_NS, 'c');
       for (var mj = 0; mj < mcs.length; mj++) {
@@ -1905,7 +2112,43 @@
         var mtxt = cellString(mcs[mj], shared);
         var mk = ownerKind(mtxt);
         if (mk) markers.push({ r: mpos.r, c: mpos.c, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
+        var mx = exclKind(mtxt);
+        if (mx) excls.push({ r: mpos.r, c: mpos.c, kind: mx });
       }
+    }
+    var myEntity = entityKind(vals);
+    // 選ぶ欄（ドロップダウン）の選択肢を読む。用意された選択肢に無い言葉を
+    // 書き込むとExcelが警告を出すので、当てはまる選択肢があるときだけ入れる
+    var dvList = [];
+    var dvs = doc.getElementsByTagNameNS(S_NS, 'dataValidation');
+    for (i = 0; i < dvs.length; i++) {
+      if (dvs[i].getAttribute('type') !== 'list') continue;
+      var f1 = dvs[i].getElementsByTagNameNS(S_NS, 'formula1')[0];
+      var ftxt = f1 ? String(f1.textContent || '').trim() : '';
+      var qm = ftxt.match(/^"(.*)"$/);
+      if (!qm) continue;                       // 別のセル範囲を参照する形は扱わない
+      dvList.push({ sq: String(dvs[i].getAttribute('sqref') || '').split(/\s+/),
+                    opts: qm[1].split(',').map(function (x) { return x.trim(); }) });
+    }
+    function dvOptionsFor(ref) {
+      for (var k = 0; k < dvList.length; k++) {
+        for (var m2 = 0; m2 < dvList[k].sq.length; m2++) {
+          if (dvList[k].sq[m2] === ref) return dvList[k].opts;
+        }
+      }
+      return null;
+    }
+    // 選択肢の中から、入れたい値に当たるものを選ぶ（「法人」「個人事業主」など）
+    function dvPick(opts, value) {
+      var v = String(value || '').replace(/[\s　]+/g, '');
+      for (var k = 0; k < opts.length; k++) if (opts[k].replace(/[\s　]+/g, '') === v) return opts[k];
+      for (var k2 = 0; k2 < opts.length; k2++) {
+        var o = opts[k2].replace(/[\s　]+/g, '');
+        if (!o || /^[（(]?選択/.test(o)) continue;
+        if (v === '法人' && /法人/.test(o) && !/個人/.test(o)) return opts[k2];
+        if (v === '個人事業主' && /個人/.test(o)) return opts[k2];
+      }
+      return null;
     }
 
     // 一覧表の見出し行かどうか。「No.」があって項目名が2つ以上並ぶ行は、
@@ -1924,7 +2167,7 @@
     // 別のラベルから同じセルへ2回書き込むと、先に入れた値が消える
     // （「住所」で住所を入れた後、「〒」で郵便番号を上書きしていた）
     var writtenCell = {};
-    var wroteSlot = {}, notedSlot = {}, notedAmbX = 0;
+    var wroteSlot = {}, notedSlot = {}, notedAmbX = 0, notedKanaX = 0;
     for (i = 0; i < rows.length; i++) {
       var cells = childrenNS(rows[i], S_NS, 'c');
       var listHead = isListHeaderRow(cells);
@@ -1936,13 +2179,32 @@
         var key = matchLabel(labelRaw);
         var ownA = nearestOwner(markers, pos.c, pos.r, 30);
         if (!key && ambiguousLabel(labelRaw)) {
-          if (ownA && ownA.kind === 'self') {
-            key = ambiguousKey(labelRaw, vals);
+          // 「フリガナ」は、すぐ下の行の項目名から誰のふりがなかを読み取る
+          //（様式では「フリガナ」の1行下に「名称」や「氏名」が来る）
+          var belowCell = cellAt(pos.c, pos.r + 1, false);
+          var belowKx = belowCell ? belowKeyOf(cellString(belowCell, shared)) : null;
+          if (ownA && (ownA.kind === 'self' || ownA.kind === 'staff')) {
+            key = ambiguousKey(labelRaw, vals, ownA, belowKx);
+            if (!key && KANA_ONLY_RE.test(normLabel(labelRaw)) && !notedKanaX) {
+              notedKanaX = 1;
+              skips.push({ key: 'repKana', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+                reason: KANA_WHY + '（' + sheetName + '）' });
+            }
+          } else if (ownA && ownA.kind === 'other') {
+            skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+              reason: ownerSkipReason(ownA, sheetName + ' の ' + (c.getAttribute('r') || '')) });
           } else if (!notedAmbX) {
             notedAmbX = 1;
             skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
               reason: AMBIGUOUS_WHY + '（' + sheetName + '）' });
           }
+        }
+        // 担当者のかたまりの中の「電話番号」は、担当者の連絡先の欄
+        if (ownA && ownA.kind === 'staff' && key === 'tel' && vals.staffTel) key = 'staffTel';
+        // 「都内登記所在地」のかたまりの中の住所は、本店の住所ではない
+        if (ownA && ownA.kind === 'regAddr' && pos.r - ownA.r <= 3) {
+          if (key === 'addr') key = 'regAddr';
+          else if (key === 'zip') key = null;   // 登記所在地の郵便番号は預かっていない
         }
         if (!key || !vals[key]) continue;
         if (listHead) {
@@ -1967,6 +2229,27 @@
         }
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, sheetName + ' の ' + tref) });
+          continue;
+        }
+        // 見出しが、項目名より右・記入欄の上にあることがある（列のまとまりの見出し）。
+        //   （例）r18 …｜K「契約予定先」
+        //         r19 「賃借施設等」｜I「名称」｜P（記入欄）
+        // 項目名の左だけを見ていると見出しに気づかず、契約する相手の欄に
+        // 自社の名称・所在地を入れてしまう。2026-08-03に実物の様式で確認
+        var ownT = nearestOwner(markers, tc, tr, 30);
+        if (ownT && ownT.kind === 'other' && ownT.c > pos.c) {
+          skips.push({ key: key, label: label, reason: ownerSkipReason(ownT, sheetName + ' の ' + tref) });
+          continue;
+        }
+        // 「代表者と異なる場合のみ」と書かれた担当者欄は、同じ人なら空欄が正しい
+        if (own && own.kind === 'staff' && /異なる場合/.test(own.text) && sameAsRep(vals, key)) {
+          skips.push({ key: key, label: label, reason: ownerSkipReason(own, sheetName + ' の ' + tref) });
+          continue;
+        }
+        // 「＜法人＞」「＜個人事業主＞」で書き分ける様式は、当てはまるほうだけ
+        var exX = nearestOwner(excls, pos.c, pos.r, 30);
+        if (exX && myEntity && exX.kind !== myEntity) {
+          skips.push({ key: key, label: label, reason: exclSkipReason(exX.kind, myEntity, sheetName + ' の ' + tref) });
           continue;
         }
         if (!rowByNum[String(tr)]) {
@@ -2052,21 +2335,29 @@
             }
             continue;
           }
+          // 「所属：」のように「：」で終わる短い語は、記入枠ではなく項目名
+          if (looksLabelCell(u.prev)) {
+            var xs2 = sheetName + '|' + tc + '|' + key + '|c';
+            if (!notedSlot[xs2]) {
+              notedSlot[xs2] = 1;
+              skips.push({ key: key, label: label, reason: '隣の欄は「' + String(u.prev).trim() + '」という項目名で、記入欄ではないので入れませんでした（' + sheetName + ' の ' + tref + '）' });
+            }
+            continue;
+          }
           var xKey = matchLabel(u.prev);
           if (xKey === 'zip' && key === 'addr' && isZipFrame(u.prev)) xKey = null;
           if (xKey) {
-            // 隣がまた項目名なら、そこは記入欄ではない。その先が空欄ならそちらへ
-            var nc = cellAt(tc + 1, tr, false), nu = usable(nc);
-            if (nu.ok && !nu.prev) {
-              tc = tc + 1; target = nc; u = nu; tref = numToCol(tc) + tr;
-            } else {
-              var xs0 = sheetName + '|' + tc + '|' + key + '|h';
-              if (!notedSlot[xs0]) {
-                notedSlot[xs0] = 1;
-                skips.push({ key: key, label: label, reason: '隣の欄は「' + labelName(xKey) + '」の見出しで、記入欄ではないので入れませんでした（' + sheetName + ' の ' + tref + '）' });
-              }
-              continue;
+            // 隣がまた項目名なら、そこは記入欄ではない。飛び越えてその先に書くと、
+            // 飛び越えた項目名の欄を横取りしてしまう（表紙の「代表者｜（役職）｜空欄」で、
+            // 役職の欄に役職と氏名をまとめて入れ、氏名の欄が空のままになっていた）。
+            // その項目名はそれ自身の番で処理されるので、ここでは入れない
+            var xs0 = sheetName + '|' + tc + '|' + key + '|h';
+            // その見出し自身で入れられる項目なら、そちらの番で入るので黙って見送る
+            if (!notedSlot[xs0] && !vals[xKey]) {
+              notedSlot[xs0] = 1;
+              skips.push({ key: key, label: label, reason: '隣の欄は「' + labelName(xKey) + '」の見出しで、記入欄ではないので入れませんでした（' + sheetName + ' の ' + tref + '）' });
             }
+            continue;
           }
         }
         // 単位だけが印字された欄（別の項目の書式）は壊さない
@@ -2099,12 +2390,27 @@
           continue;
         }
         if (u.prev === vals[key]) continue;
-        writeCell(cellAt(tc, tr, true), withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals), u.prev ? 'ow' : 'new', key);
+        var putVal = withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals);
+        // 選ぶ欄（ドロップダウン）には、用意された選択肢に当たる言葉だけを入れる。
+        // 選択肢に無い言葉を書くとExcelが警告を出し、開いた人が直す羽目になる
+        var dvOpts = dvOptionsFor(tref);
+        var isPick = PICK_PLACEHOLDER_RE.test(String(u.prev || '').replace(/[\s　]+/g, ''));
+        if (dvOpts || isPick) {
+          var picked = dvOpts ? dvPick(dvOpts, vals[key]) : null;
+          if (!picked) {
+            skips.push({ key: key, label: label,
+              reason: 'ここは一覧から選ぶ欄なので、当サイトからは入れませんでした（' + sheetName + ' の ' + tref + '）' +
+                (dvOpts ? '。選択肢は「' + dvOpts.slice(0, 4).join('・') + '」です' : '。開いてプルダウンからお選びください') });
+            continue;
+          }
+          putVal = picked;
+        }
+        writeCell(cellAt(tc, tr, true), putVal, u.prev ? 'ow' : 'new', key);
         usedKeys[key] = 1;
         wroteSlot[xslot] = 1;
         writtenCell[cellId] = key;
         fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）' +
-          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals) });
+          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: putVal });
       }
     }
     if (!changed) return null;
@@ -2387,6 +2693,9 @@
   }
   function cssEscName(s) { return String(s).replace(/["\\]/g, '\\$&'); }
   function kindOf(fileName) { return /\.xlsx$/i.test(fileName) ? 'Excel' : 'Word'; }
+  // 点検用。様式に出てくる欄の名前を、当サイトが読めているか外から確かめられるようにする
+  // （読めていない言い回しを洗い出して、辞書に足していくため）
+  window.KOBAN_MATCH_LABEL = function (t) { return matchLabel(t); };
 
   function renderFillResult(fileName, res) {
     var kind = kindOf(fileName);
