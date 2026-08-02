@@ -232,7 +232,48 @@
   .af-filter input[type="search"]:focus-visible { outline: 3px solid var(--accent); outline-offset: -1px; }
   .af-filter-row { margin-top: 0.5rem; }
   .af-filter-row select { width: 100%; }
-  #afKindRow button.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  #afKindRow button.active, #afFmtRow button.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  #afFmtRow { margin: 0 0 0.6rem; }
+  .af-forms .hidden { display: none; }
+  /* 1件ずつの詳細（開閉） */
+  .af-more { margin: 0 0 0.4rem 2.2rem; }
+  .af-more > summary { font-size: 0.8rem; color: var(--accent); cursor: pointer;
+    list-style: none; display: inline-block; padding: 0.25rem 0; min-height: 32px; }
+  .af-more > summary::-webkit-details-marker { display: none; }
+  .af-more > summary::before { content: '▸ '; }
+  .af-more[open] > summary::before { content: '▾ '; }
+  .af-doc { border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
+    margin-bottom: 0.45rem; }
+  .af-doc > summary { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;
+    padding: 0.6rem 0.7rem; min-height: 44px; list-style: none; }
+  .af-doc > summary::-webkit-details-marker { display: none; }
+  .af-doc > summary .fn { flex: 1; font-size: 0.9rem; word-break: break-word; }
+  .af-doc > summary::after { content: '＋'; color: var(--ink-faint); flex: none; }
+  .af-doc[open] > summary::after { content: '−'; }
+  .af-doc-body { padding: 0 0.7rem 0.7rem; }
+  /* 列幅を決め打ちにしないと、長い項目名で表がスマホ幅からはみ出す */
+  /* ページ全体の table { min-width: 560px } は横長の表のための指定。
+     詳細の表は狭い枠に入れるので、その最低幅を外す */
+  .af-dl-tbl { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed;
+    font-size: 0.85rem; border-collapse: collapse; }
+  .af-dl-tbl th { text-align: left; color: var(--ink-soft); width: 7.5em;
+    font-weight: 500; vertical-align: top; padding: 0.25rem 0.7rem 0.25rem 0;
+    word-break: break-word; }
+  .af-dl-tbl td { padding: 0.25rem 0; word-break: break-word; vertical-align: top; }
+  @media (max-width: 460px) {
+    /* 幅が狭いときは、項目名を上の行に置いて1列で読ませる */
+    .af-dl-tbl, .af-dl-tbl tbody, .af-dl-tbl tr, .af-dl-tbl th, .af-dl-tbl td { display: block; width: auto; }
+    .af-dl-tbl tr { padding: 0.35rem 0; border-bottom: 1px dashed var(--line); }
+    .af-dl-tbl tr:last-child { border-bottom: 0; }
+    .af-dl-tbl th { padding: 0 0 0.1rem; font-size: 0.78rem; }
+    .af-more { margin-left: 1.2rem; }
+  }
+  .af-other { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+  ul.af-other-list { list-style: none; margin: 0.2rem 0 1rem; padding: 0; }
+  ul.af-other-list li { display: flex; gap: 0.5rem; align-items: flex-start;
+    font-size: 0.9rem; padding: 0.3rem 0; }
+  ul.af-other-list .fn { flex: 1; word-break: break-word; }
+  .af-sub-ttl { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.4rem; }
   .af-forms { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
   .af-forms ul.checks .fn { word-break: break-word; }
@@ -2459,6 +2500,27 @@
       });
     });
   }
+  // 手順2で選んでいるファイル形式（'all' / 'Word' / 'Excel'）
+  var afFmt = 'all';
+  // 様式1件の詳細（形式・大きさ・提出の時期・取得のしかた）
+  function afDetailRows(it) {
+    var rows = [
+      ['ファイルの形式', esc(it.type) + (it.size ? '（' + esc(it.size) + '）' : '')],
+      ['提出の時期', esc(it.phase)]
+    ];
+    if (it.fillable) {
+      rows.push(['このページでの記入', mirrorOf(it.url)
+        ? 'そのまま記入できます（ダウンロード不要）'
+        : '公式サイトからダウンロードして、下の「様式のファイルを直接置く」に入れてください']);
+    } else {
+      rows.push(['このページで記入できない理由', esc(naReason(it))]);
+      rows.push(['書き方', 'ダウンロードして、印刷して手書きするか、お使いのソフトでご記入ください']);
+    }
+    rows.push(['配布元', '<a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">公式サイトで開く ↗</a>']);
+    return '<table class="af-dl-tbl"><tbody>' + rows.map(function (r) {
+      return '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>';
+    }).join('') + '</tbody></table>';
+  }
   function renderAfForms() {
     var box = document.getElementById('afForms');
     var sel = document.getElementById('afProgram');
@@ -2466,32 +2528,40 @@
     var key = sel.value;
     if (!key) { box.innerHTML = ''; return; }
     var items = formItems(key);
+    var fill = items.filter(function (it) { return it.fillable; });
+    var other = items.filter(function (it) { return !it.fillable; });
+    var nW = fill.filter(function (it) { return it.type === 'Word'; }).length;
+    var nX = fill.filter(function (it) { return it.type === 'Excel'; }).length;
     var phases = [];
-    items.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
+    fill.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
     var idx = 0;
     var html = '<div class="af-forms"><p class="step-ttl">手順2　記入する様式にチェックを入れる</p>' +
-      '<p class="dz-sub" style="margin:0 0 0.5rem;">Word・Excelの様式だけが自動入力の対象です。' +
-      'PDFや古い形式（.doc / .xls）は下に灰色で並べています（チェックできません）。</p>';
+      '<p class="dz-sub" style="margin:0 0 0.5rem;">自動入力できるのはWordとExcelの様式です。' +
+      'それ以外の書類は、この下に別でまとめています。</p>';
+    // ファイルの形式で絞り込む。選んでいない形式は記入もダウンロードもしない
+    if (fill.length) {
+      html += '<div class="af-tools" id="afFmtRow">' +
+        '<button type="button" data-fmt="all">すべて（' + fill.length + '件）</button>' +
+        '<button type="button" data-fmt="Word"' + (nW ? '' : ' disabled') + '>Wordだけ（' + nW + '件）</button>' +
+        '<button type="button" data-fmt="Excel"' + (nX ? '' : ' disabled') + '>Excelだけ（' + nX + '件）</button>' +
+        '</div>';
+    } else {
+      html += '<p class="af-na-why">この制度には、自動入力できるWord・Excelの様式がありません。</p>';
+    }
     phases.forEach(function (ph) {
       html += '<p class="phase-ttl">' + esc(ph) + '</p><ul class="checks">';
-      items.filter(function (it) { return it.phase === ph; }).forEach(function (it) {
+      fill.filter(function (it) { return it.phase === ph; }).forEach(function (it) {
         var id = 'afItem' + (idx++);
         it.id = id;
-        if (it.fillable) {
-          html += '<li><label for="' + id + '">' +
-            '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
-            'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
-            '<span class="fn">' + esc(it.name) +
-            (mirrorOf(it.url) ? '<span class="gt-badge gt-b-ok">そのまま記入できます</span>' : '') +
-            '</span>' +
-            '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
-        } else {
-          html += '<li class="na"><div class="af-check-row">' +
-            '<span class="fn">' + esc(it.name) +
-            '<br><span class="af-na-why">' + esc(naReason(it)) + '。' +
-            '<a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">公式サイトで開く ↗</a></span></span>' +
-            '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></div></li>';
-        }
+        html += '<li data-fmt="' + esc(it.type) + '"><label for="' + id + '">' +
+          '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
+          'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
+          '<span class="fn">' + esc(it.name) +
+          (mirrorOf(it.url) ? '<span class="gt-badge gt-b-ok">そのまま記入できます</span>' : '') +
+          '</span>' +
+          '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label>' +
+          '<details class="af-more"><summary>この様式の詳細</summary>' +
+          '<div class="af-doc-body">' + afDetailRows(it) + '</div></details></li>';
       });
       html += '</ul>';
     });
@@ -2504,14 +2574,68 @@
       '記入済みの様式をまとめて保存</button>' +
       '<button type="button" class="btn ghost" id="afDl">' +
       'チェックした様式を公式サイトからダウンロード</button></div>' +
-      '<p class="af-status" id="afStatus"></p><div id="afDlList"></div></div>';
+      '<p class="af-status" id="afStatus"></p><div id="afDlList"></div>';
+    // 自動入力はできないが、この制度で出す必要がある書類
+    if (other.length) {
+      html += '<div class="af-other">' +
+        '<p class="step-ttl">自動入力の対象外ですが、この制度で必要な書類（' + other.length + '件）</p>' +
+        '<p class="dz-sub" style="margin:0 0 0.5rem;">PDFや古い形式（.doc / .xls）のため、このページでは記入できません。' +
+        '公式サイトから取得して、印刷して手書きするか、お使いのソフトでご記入ください。</p>' +
+        '<ul class="af-other-list">' +
+        other.map(function (it) {
+          return '<li><span class="ft">' + esc(it.type) + '</span>' +
+            '<span class="fn">' + esc(it.name) +
+            '<span class="af-na-why">（' + esc(it.phase) + '）</span></span></li>';
+        }).join('') + '</ul>' +
+        '<p class="af-sub-ttl">1件ずつの詳細（押すと開きます）</p>' +
+        other.map(function (it) {
+          return '<details class="af-doc"><summary><span class="ft">' + esc(it.type) + '</span>' +
+            '<span class="fn">' + esc(it.name) + '</span></summary>' +
+            '<div class="af-doc-body">' + afDetailRows(it) + '</div></details>';
+        }).join('') + '</div>';
+    }
+    html += '</div>';
     box.innerHTML = html;
+    var fmtRow = box.querySelector('#afFmtRow');
+    if (fmtRow) fmtRow.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () { setAfFmt(b.getAttribute('data-fmt')); });
+    });
+    applyAfFmt();
     box.querySelector('#afAll').addEventListener('click', function () { setAllAf(true); });
     box.querySelector('#afNone').addEventListener('click', function () { setAllAf(false); });
     box.querySelector('#afRun').addEventListener('click', runAfFill);
     box.querySelector('#afDlFilled').addEventListener('click', downloadFilledForms);
     box.querySelector('#afDl').addEventListener('click', downloadCheckedForms);
     updateFilledDlBtn();
+  }
+  function setAfFmt(f) { afFmt = f || 'all'; applyAfFmt(); }
+  // 選んだ形式だけを表示する。隠した様式は checked のままでも
+  // 記入・ダウンロードの対象にしない（下の afChecked が hidden を外す）
+  function applyAfFmt() {
+    var box = document.getElementById('afForms');
+    if (!box) return;
+    box.querySelectorAll('#afFmtRow button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-fmt') === afFmt);
+    });
+    box.querySelectorAll('ul.checks > li').forEach(function (li) {
+      li.classList.toggle('hidden', afFmt !== 'all' && li.getAttribute('data-fmt') !== afFmt);
+    });
+    // 見出し（提出の時期）ごと空になったら、その見出しも隠す
+    box.querySelectorAll('ul.checks').forEach(function (ul) {
+      var any = ul.querySelector('li:not(.hidden)');
+      ul.classList.toggle('hidden', !any);
+      var ttl = ul.previousElementSibling;
+      if (ttl && ttl.classList.contains('phase-ttl')) ttl.classList.toggle('hidden', !any);
+    });
+    var st = document.getElementById('afStatus');
+    if (st && afFmt !== 'all') {
+      st.textContent = afFmt + 'の様式だけを表示しています。表示していない様式は記入・ダウンロードの対象になりません。';
+    }
+  }
+  // いま画面に出ていて、チェックが付いている様式
+  function afChecked() {
+    return Array.prototype.slice.call(
+      document.querySelectorAll('#afForms ul.checks > li:not(.hidden) .af-item:checked'));
   }
   // 記入済みの結果を、1枚ずつではなくまとめて保存する。
   // 10件選ぶと保存ボタンを10回押すことになっていたため。
@@ -2552,7 +2676,7 @@
   // 「まず原本が欲しい」「記入は手で書く」という使い方のため。
   // まとめてクリックすると止められることがあるので、リンクの一覧も必ず残す。
   function downloadCheckedForms() {
-    var checks = Array.prototype.slice.call(document.querySelectorAll('#afForms .af-item:checked'));
+    var checks = afChecked();
     var status = document.getElementById('afStatus');
     var list = document.getElementById('afDlList');
     if (!checks.length) {
@@ -2590,7 +2714,9 @@
     }
   }
   function setAllAf(on) {
-    document.querySelectorAll('#afForms .af-item').forEach(function (c) { c.checked = on; });
+    // 表示している様式だけを選ぶ／外す（隠れている様式には触らない）
+    document.querySelectorAll('#afForms ul.checks > li:not(.hidden) .af-item')
+      .forEach(function (c) { c.checked = on; });
   }
   // 配布元が二次利用を認めている様式は、当サイトに控えを置いてある
   // （forms/manifest.json）。同じサイト内なのでブラウザの制限を受けず、
@@ -2658,7 +2784,7 @@
   var afRunning = false;
   function runAfFill() {
     if (afRunning) return;
-    var checks = Array.prototype.slice.call(document.querySelectorAll('#afForms .af-item:checked'));
+    var checks = afChecked();
     var status = document.getElementById('afStatus');
     var runBtn = document.getElementById('afRun');
     if (!checks.length) {
