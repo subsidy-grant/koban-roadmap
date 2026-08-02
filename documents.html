@@ -328,6 +328,18 @@
     font-size: 1rem; line-height: 1; width: 36px; height: 36px; cursor: pointer; }
   .card-close:hover { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
   .fillcard h3 { word-break: break-all; }
+  /* 結果カードは既定で閉じておく。10件記入すると縦に長すぎて読めないため */
+  .fill-det > summary { display: flex; align-items: flex-start; gap: 0.6rem;
+    cursor: pointer; list-style: none; padding: 0.1rem 0; min-height: 44px; }
+  .fill-det > summary::-webkit-details-marker { display: none; }
+  .fill-det > summary::before { content: '＋'; color: var(--ink-faint); flex: none;
+    font-size: 1.05rem; line-height: 1.6; }
+  .fill-det[open] > summary::before { content: '−'; }
+  .fill-det > summary h3 { margin: 0; font-size: 1rem; flex: 1; }
+  .fill-stat { display: block; font-size: 0.85rem; color: var(--ink-soft);
+    font-weight: 400; margin-top: 0.15rem; }
+  .fill-stat.ng { color: var(--rust); }
+  .fill-body { margin-top: 0.7rem; }
   .fillcard .btn-dl { display: inline-block; text-decoration: none; text-align: center; }
   .fillcard ul { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
   .fillcard table { min-width: 480px; }
@@ -2223,8 +2235,16 @@
     var box = document.getElementById('fillResults');
     var card = document.createElement('div');
     card.className = 'pcard fillcard';
+    // 閉じたままでも結果が分かるように、見出しに要約を出す
+    var stat, statNg = false;
+    if (res.error) { stat = '読み込めませんでした'; statNg = true; }
+    else if (res.none) { stat = '会社情報を入れられる欄がありませんでした'; statNg = true; }
+    else { stat = res.fills.length + 'か所に入れました'; }
+    if (res.skips && res.skips.length) stat += '・触らなかった欄 ' + res.skips.length + '件';
     var html = '<button type="button" class="card-close" aria-label="この結果の表示を消す" title="この結果の表示を消す">×</button>' +
-      '<h3>' + esc(fileName) + '</h3>';
+      '<details class="fill-det"><summary><h3>' + esc(fileName) +
+      '<span class="fill-stat' + (statNg ? ' ng' : '') + '">' + esc(stat) + '</span></h3></summary>' +
+      '<div class="fill-body">';
     // 名前を様式名に置き換えたときは、もとのファイル名も残す。
     // 配布ページの一覧と突き合わせるときに要るため
     if (res.rawName && res.rawName !== fileName) {
@@ -2307,6 +2327,7 @@
         '<span class="dl-ext">' + esc(outExt) + '</span></span></div>' +
         '<div class="btn-row" style="margin-top:0.8rem;"><a class="btn btn-dl" download="' + esc(res.outName) + '">記入済みファイルを保存</a></div>';
     }
+    html += '</div></details>';
     card.innerHTML = html;
     if (res.blob) {
       var a = card.querySelector('.btn-dl');
@@ -2641,9 +2662,13 @@
   // 10件選ぶと保存ボタンを10回押すことになっていたため。
   // 保存の中身は各カードのボタンと同じ（同じ Blob の URL を使う）ので、
   // カードで名前を書き換えていればその名前で保存される。
+  // 記入済みファイルの保存リンクだけを集める。
+  // 取り寄せに失敗したカードのボタンも同じ見た目（btn-dl）で href を持つので、
+  // 「保存する名前」を表す download 属性があるものだけに絞る。
+  // 絞らないと、まとめて保存の件数に失敗分が混ざり、押すと公式サイトが開く
   function filledDlLinks() {
     return Array.prototype.slice.call(
-      document.querySelectorAll('#fillResults .fillcard a.btn-dl[href]'));
+      document.querySelectorAll('#fillResults .fillcard a.btn-dl[download]'));
   }
   function updateFilledDlBtn() {
     var btn = document.getElementById('afDlFilled');
@@ -2774,12 +2799,16 @@
       '<div class="btn-row"><a class="btn btn-dl" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer">' +
       '公式サイトからこの様式をダウンロード ↗</a>' +
       '<button type="button" class="btn ghost af-open-drop">ファイルを置く欄を開く</button></div>';
-    card.querySelector('.card-close').addEventListener('click', function () { card.remove(); });
+    card.querySelector('.card-close').addEventListener('click', function () {
+      card.remove();
+      updateFilledDlBtn();
+    });
     card.querySelector('.af-open-drop').addEventListener('click', function () {
       var d = document.getElementById('afManualBox');
       if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     });
     box.insertBefore(card, box.firstChild);
+    updateFilledDlBtn();
   }
   var afRunning = false;
   function runAfFill() {
