@@ -228,6 +228,16 @@
   .fillcard .btn-dl { display: inline-block; text-decoration: none; text-align: center; }
   .fillcard ul { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
   .fillcard table { min-width: 480px; }
+  /* 保存するファイル名。拡張子は変えさせない（変えると開けなくなるため）ので、
+     入力欄の外に固定の文字として出す */
+  .dl-row { margin: 0.9rem 0 0; font-size: 0.88rem; }
+  .dl-row label { display: block; font-weight: 700; margin-bottom: 0.3rem; }
+  .dl-name-wrap { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+  .dl-name { flex: 1; min-width: 12rem; font: inherit; font-size: 0.92rem;
+    padding: 0.5rem 0.6rem; min-height: 2.9rem; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--paper); color: var(--ink); }
+  .dl-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .dl-ext { flex: none; color: var(--ink-soft); font-size: 0.9rem; }
 
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
@@ -318,6 +328,8 @@
       <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
       当サイトの様式一覧（下の07）に載っているファイルのうち、Word（.docx・298件）とExcel（.xlsx・73件）の計371件がこの自動入力の対象です。</p>
       <ul style="margin:0;padding-left:1.2rem;">
+        <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
+        <li>郵便番号「〒113−0021」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
         <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
         <li>古い形式（.doc / .xls）はブラウザでは開けないため対象外です。WordやExcelで開いて「.docx / .xlsx」形式で保存し直すと使えます。</li>
         <li>「ダウンロードまで自動で」の形にはできませんでした。2026年7月31日に様式の配布元68か所へブラウザから取得を試したところ、57か所が他サイトからの取得を許可しない設定（CORS）だったためです。お手数ですが、様式は下のチェックリストのリンクから保存して、ここに置いてください。</li>
@@ -852,6 +864,44 @@
     }
     return null;
   }
+  function toHankaku(s) {
+    return String(s || '').replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); });
+  }
+
+  // ---- 「その欄は誰のことを書く欄か」を見る ----
+  // 様式には「事業主」の欄と「代理人（社会保険労務士）」の欄が並んでいることがある。
+  // 代理人の欄は、手続きを頼んだ社労士事務所などの情報を書く場所で、
+  // 自社の情報を書く場所ではない。ラベルだけを見て入れると、同じ会社名・住所が
+  // 2か所に入ってしまう（人材開発支援助成金の計画届で実際に起きた）。
+  // そこで、ラベルの手前（同じ行の左、または上の行）にある「誰の欄か」の
+  // 見出しを探し、自社以外の欄には書き込まない。
+  var OWNER_OTHER = /(代理人|代理者|代行者|提出代行|事務代理|受任者|委任|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義)/;
+  var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所)/;
+  // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
+  // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
+  function ownerKind(text) {
+    var t = String(text || '').replace(/[\s　]+/g, '');
+    if (!t || t.length > 24) return null;
+    if (matchLabel(text)) return null;
+    if (OWNER_OTHER.test(t)) return 'other';
+    if (OWNER_SELF.test(t)) return 'self';
+    return null;
+  }
+  // 見出しの中から、その欄（col,row）にいちばん近いものを選ぶ。
+  // 「同じ行か上の行」かつ「同じ列か左の列」にあるものだけが候補。
+  function nearestOwner(markers, col, row, rowSpan) {
+    var best = null;
+    for (var k = 0; k < markers.length; k++) {
+      var m = markers[k];
+      if (m.r > row || row - m.r > rowSpan || m.c > col) continue;
+      if (!best || m.r > best.r || (m.r === best.r && m.c > best.c)) best = m;
+    }
+    return best;
+  }
+  function ownerSkipReason(m, where) {
+    return '「' + m.text.slice(0, 16) + '」の欄なので、自社の情報は入れませんでした' +
+      (where ? '（' + where + '）' : '') + '。ここは依頼先（社労士事務所など）を書く欄です';
+  }
   function fieldLabel(key) {
     if (key === 'titleRep') return '代表者の役職と氏名';
     for (var i = 0; i < FIELDS.length; i++) if (FIELDS[i].id === key) return FIELDS[i].label;
@@ -919,6 +969,16 @@
     var doc = parseXml(xmlText);
     var fills = [], skips = [], usedKeys = {};
     var trs = doc.getElementsByTagNameNS(W_NS, 'tr');
+    // 先に「誰の欄か」の見出しを拾っておく（行番号・セル番号で位置を持つ）
+    var markers = [];
+    for (var mr = 0; mr < trs.length; mr++) {
+      var mcs = childrenNS(trs[mr], W_NS, 'tc');
+      for (var mi = 0; mi < mcs.length; mi++) {
+        var mtxt = textWithoutRuby(mcs[mi], W_NS, 'rt');
+        var mk = ownerKind(mtxt);
+        if (mk) markers.push({ r: mr, c: mi, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
+      }
+    }
     for (var r = 0; r < trs.length; r++) {
       var tcs = childrenNS(trs[r], W_NS, 'tc');
       for (var i = 0; i < tcs.length - 1; i++) {
@@ -926,6 +986,11 @@
         var key = matchLabel(labelRaw);
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
+        var own = nearestOwner(markers, i, r, 12);
+        if (own && own.kind === 'other') {
+          skips.push({ key: key, label: label, reason: ownerSkipReason(own, '表の「' + label + '」の欄') });
+          continue;
+        }
         var target = tcs[i + 1];
         var existing = textWithoutRuby(target, W_NS, 'rt').trim();
         var prev = '';
@@ -1047,6 +1112,54 @@
     }
     function clip(s) { return s.slice(0, 24) + (s.length > 24 ? '…' : ''); }
 
+    // 「〒 [113] - [0021]」「[080] - [3715] - [7988]」のように、
+    // ハイフンのセルを挟んで欄が分かれている様式がある。
+    // 1つ目の欄に全部入れてしまう事故が実際に起きたので、
+    // 記入欄の右へハイフンをたどり、欄の数が値の区切り数と合えば分けて入れる。
+    // 合わなければ null を返し、いつもどおり1つの欄に入れる。
+    function splitSlots(startCol, rowNum, startMerge, n) {
+      var cols = [startCol], cur = startMerge ? startMerge.b.c : startCol;
+      for (var k = 1; k < n; k++) {
+        var hyC = cur + 1;
+        var hyCell = cellAt(hyC, rowNum, false);
+        var hyText = hyCell ? cellString(hyCell, shared).trim() : '';
+        if (!/^[-−–―ー‐‑－]$/.test(hyText)) return null;
+        var hg = mergeAt(hyC, rowNum);
+        var nc = (hg ? hg.b.c : hyC) + 1;
+        var ng = mergeAt(nc, rowNum);
+        if (ng) nc = ng.a.c;
+        cols.push(nc);
+        cur = ng ? ng.b.c : nc;
+      }
+      return cols;
+    }
+    // 分割して入れられる値かどうか。入れられないなら null
+    function splitParts(key) {
+      if (key === 'zip') {
+        var d7 = toHankaku(vals.zip).replace(/[^0-9]/g, '');
+        return d7.length === 7 ? [d7.slice(0, 3), d7.slice(3)] : null;
+      }
+      if (key === 'tel' || key === 'fax' || key === 'staffTel') {
+        var pv = toHankaku(vals[key]).replace(/[^0-9\-−–―‐‑－]/g, '')
+          .split(/[-−–―‐‑－]/).filter(function (x) { return x !== ''; });
+        return (pv.length >= 2 && pv.length <= 4) ? pv : null;
+      }
+      return null;
+    }
+
+    // 「誰の欄か」の見出しを先に拾う（代理人・社労士の欄に自社の情報を入れないため）
+    var markers = [];
+    for (i = 0; i < rows.length; i++) {
+      var mcs = childrenNS(rows[i], S_NS, 'c');
+      for (var mj = 0; mj < mcs.length; mj++) {
+        var mpos = parseCellRef(mcs[mj].getAttribute('r'));
+        if (!mpos) continue;
+        var mtxt = cellString(mcs[mj], shared);
+        var mk = ownerKind(mtxt);
+        if (mk) markers.push({ r: mpos.r, c: mpos.c, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
+      }
+    }
+
     for (i = 0; i < rows.length; i++) {
       var cells = childrenNS(rows[i], S_NS, 'c');
       for (var j = 0; j < cells.length; j++) {
@@ -1063,38 +1176,46 @@
         if (tg) { tc = tg.a.c; tr = tg.a.r; } // 記入欄が結合セルなら、その左上に入れる
         var tref = numToCol(tc) + tr;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
+        var own = nearestOwner(markers, pos.c, pos.r, 30);
+        if (own && own.kind === 'other') {
+          skips.push({ key: key, label: label, reason: ownerSkipReason(own, sheetName + ' の ' + tref) });
+          continue;
+        }
         if (!rowByNum[String(tr)]) {
           skips.push({ key: key, label: label, reason: '隣に記入できる行が見つかりませんでした（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
 
-        // 郵便番号は「〒 [123]-[4567]」のように、間にハイフンのセルを挟んで
-        // 2つの欄に分かれている様式がある（実際の様式で、1つ目の欄に
-        // 「150-0001」全部が入ってしまう事故が起きた）。
-        // 記入欄の次が「-」だけのセルで、その次にも欄があれば、3桁と4桁に分けて入れる。
-        if (key === 'zip') {
-          var digits = String(vals.zip).replace(/[０-９]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0); }).replace(/[^0-9]/g, '');
-          var hyC = (tg ? tg.b.c : tc) + 1;
-          var hyCell = cellAt(hyC, tr, false);
-          var hyText = hyCell ? cellString(hyCell, shared).trim() : '';
-          if (digits.length === 7 && /^[-−–―ー‐]$/.test(hyText)) {
-            var hg = mergeAt(hyC, tr);
-            var c2 = (hg ? hg.b.c : hyC) + 1;
-            var g2 = mergeAt(c2, tr);
-            if (g2) c2 = g2.a.c;
-            var cellB = cellAt(c2, tr, false);
-            var uA = usable(cellAt(tc, tr, false));
-            var uB = usable(cellB);
-            if (uA.ok && uB.ok) {
-              writeCell(cellAt(tc, tr, true), digits.slice(0, 3));
-              writeCell(cellAt(c2, tr, true), digits.slice(3));
-              usedKeys.zip = 1;
-              fills.push({ where: 'シート「' + sheetName + '」の ' + tref + ' と ' + numToCol(c2) + tr + '（' + label + '・2つの欄に分割）' +
-                (uA.prev || uB.prev ? '（元の記入を上書き）' : ''), key: key, value: digits.slice(0, 3) + '-' + digits.slice(3) });
+        // ハイフンで欄が分かれている場合（郵便番号・電話番号）は分けて入れる
+        var parts = splitParts(key);
+        if (parts) {
+          var slots = splitSlots(tc, tr, tg, parts.length);
+          if (slots) {
+            var us = slots.map(function (cn) { return usable(cellAt(cn, tr, false)); });
+            var allOk = us.every(function (u2) { return u2.ok; });
+            if (allOk) {
+              var over = false;
+              slots.forEach(function (cn, si) {
+                if (us[si].prev) over = true;
+                writeCell(cellAt(cn, tr, true), parts[si]);
+              });
+              usedKeys[key] = 1;
+              fills.push({
+                where: 'シート「' + sheetName + '」の ' +
+                  slots.map(function (cn) { return numToCol(cn) + tr; }).join('・') +
+                  '（' + label + '・' + parts.length + 'つの欄に分割）' + (over ? '（元の記入を上書き）' : ''),
+                key: key, value: parts.join('-')
+              });
               continue;
             }
-            if (!uA.ok && uA.reason === '記入済み') {
-              skips.push({ key: key, label: label, reason: 'すでに「' + clip(uA.prev) + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
+            var bad = null;
+            for (var bi = 0; bi < us.length; bi++) { if (!us[bi].ok) { bad = us[bi]; break; } }
+            if (bad && bad.reason === '記入済み') {
+              skips.push({ key: key, label: label, reason: 'すでに「' + clip(bad.prev) + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + ' の並び）' });
+              continue;
+            }
+            if (bad && bad.reason === '数式') {
+              skips.push({ key: key, label: label, reason: '並んだ欄に数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + ' の並び）' });
               continue;
             }
           }
@@ -1223,6 +1344,7 @@
   }
 
   // ---- 結果の表示 ----
+  var fillCardSeq = 0;
   function renderFillResult(fileName, res) {
     var box = document.getElementById('fillResults');
     var card = document.createElement('div');
@@ -1270,14 +1392,35 @@
             return '<li>「' + esc(s.label) + '」…' + esc(s.reason) + '</li>';
           }).join('') + '</ul>';
       }
+      // 保存するファイル名はその場で直せるようにする。
+      // 「様式1_交付申請書（記入済み）」のままだと、制度も日付も分からない
+      // ファイルが並んでしまうため。拡張子は中身と合っていないと開けなくなるので触らせない。
+      var dot = res.outName.lastIndexOf('.');
+      var outBase = dot > 0 ? res.outName.slice(0, dot) : res.outName;
+      var outExt = dot > 0 ? res.outName.slice(dot) : '';
+      fillCardSeq += 1;
+      var nameId = 'dlName' + fillCardSeq;
       html += '<div class="warn" style="margin:0.9rem 0 0;"><strong>このまま提出しないでください。</strong>' +
         '保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</div>' +
+        '<div class="dl-row"><label for="' + nameId + '">保存するファイル名</label>' +
+        '<span class="dl-name-wrap"><input type="text" id="' + nameId + '" class="dl-name" value="' + esc(outBase) + '" spellcheck="false">' +
+        '<span class="dl-ext">' + esc(outExt) + '</span></span></div>' +
         '<div class="btn-row" style="margin-top:0.8rem;"><a class="btn btn-dl" download="' + esc(res.outName) + '">記入済みファイルを保存</a></div>';
     }
     card.innerHTML = html;
     if (res.blob) {
       var a = card.querySelector('.btn-dl');
       a.href = URL.createObjectURL(res.blob);
+      var nameEl = card.querySelector('.dl-name');
+      if (nameEl) {
+        var ext = card.querySelector('.dl-ext').textContent;
+        nameEl.addEventListener('input', function () {
+          // Windows・macOSでファイル名に使えない文字は落とす。
+          // 空にしたときは元の名前に戻す（名前なしでは保存できないため）
+          var v = nameEl.value.replace(/[\\\/:*?"<>|\r\n\t]/g, '').replace(/^\.+/, '').trim();
+          a.setAttribute('download', (v || outBase) + ext);
+        });
+      }
     }
     // 結果は用が済んだら消せる。保存用のURLもここで手放す
     card.querySelector('.card-close').addEventListener('click', function () {
