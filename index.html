@@ -7201,7 +7201,6 @@
       if (r.wageRequired && WAGE_REQUIRED[k] === undefined) WAGE_REQUIRED[k] = true;
       if (r.simType === 'fixed' && SIM_FIXED_KEYS.indexOf(k) === -1) SIM_FIXED_KEYS.push(k);
       if (r.eligibility === 'ok' && ELIG_ALWAYS_OK.indexOf(k) === -1) ELIG_ALWAYS_OK.push(k);
-      if (r.docKind === 'employment' && EMPLOYMENT_DOC_KEYS.indexOf(k) === -1) EMPLOYMENT_DOC_KEYS.push(k);
       if (r.industries && !PROGRAM_INDUSTRIES[k]) PROGRAM_INDUSTRIES[k] = r.industries;
       if (r.family) {
         if (!PROGRAM_FAMILY[r.family]) PROGRAM_FAMILY[r.family] = [r.family];
@@ -10751,62 +10750,9 @@
          : t === 'ZIP' ? 'ft-zip' : 'ft-pdf';
   }
 
-  // 様式のダウンロードだけでは申請できないので、制度の種類ごとに
-  // 「様式のほかに必要になる主な書類」をカードの中に出す。
-  // 内容は 2026-08-01 に主要制度の公募要領・手引き（小規模事業者持続化補助金 第20回、
-  // デジタル化・AI導入補助金2026、キャリアアップ助成金・人材開発支援助成金・
-  // 業務改善助成金の令和8年度版、神奈川県・埼玉県・観光庁・中小機構ほか）を
-  // 開いて確認した傾向。制度ごとの正確な一覧は公募要領が正なので、
-  // 断定ではなく「求められることが多い」の書き方に統一し、必ず公募要領へ誘導する。
-  // 厚労省系（雇用関係助成金）は労務帳簿と「出す順番」が生命線なのでキー別に明記する。
-  var EMPLOYMENT_DOC_KEYS = ['career', 'jinzai', 'kaizen', 'hatarakikata'];
-  function docsExtraItems(k) {
-    var p = PROGRAMS[k] || {};
-    var items = [];
-    var lead;
-    if (EMPLOYMENT_DOC_KEYS.indexOf(k) !== -1) {
-      lead = '厚生労働省系の助成金は、様式のほかに労務関係の帳簿一式を出します。出す順番を間違えると受け取れません。';
-      if (k === 'career') items.push('<strong>キャリアアップ計画書…正社員化など取組を始める日の前の日までに労働局へ提出し、受理されていること</strong>（あとから出してもさかのぼれません）');
-      if (k === 'jinzai') items.push('<strong>職業訓練実施計画届…訓練を始める日の6か月前から1か月前までの間に労働局へ提出</strong>（来月から始める研修には間に合いません）');
-      if (k === 'kaizen') items.push('<strong>交付決定の前に発注・購入したものは対象外</strong>（理由を問わず認められません）。見積書は10万円以上の物品で2者以上');
-      if (k === 'hatarakikata') {
-        items.push('<strong>年次有給休暇管理簿…交付申請の時点で全事業場について作っておくこと</strong>（付与実績の有無にかかわらず必要です）');
-        items.push('<strong>常時10人以上の事業場は、年5日の時季指定について定めた就業規則を交付申請の前に労働基準監督署へ届け出ておくこと</strong>（パート用の就業規則を別に作っている場合は、そちらにも定めて届け出ないと要件を満たしません）');
-        items.push('<strong>交付決定の前に発注・契約したものは対象外</strong>。見積書は2者以上から取ります（メーカー直販など2者から取れない場合は市場価格の分かる資料で代えられます）。パソコン・タブレット・スマートフォンの購入費用は対象外です');
-        items.push('支払は事業主本人（代表者名）か法人名の名義で行うこと。<strong>個人事業主が家族名義の口座・カードで支払うと、支払ったものと認められません</strong>');
-      }
-      (p.reg && p.reg.docNotes ? p.reg.docNotes : []).forEach(function (t) { items.push(t); });
-      items.push('賃金台帳・出勤簿（タイムカード）・労働者名簿。ふだん使っている原本かそのコピーを出します（申請用に作り直すと不支給になります）');
-      items.push('雇用契約書または労働条件通知書の写し');
-      items.push('就業規則・賃金規程の写し（働く人が10人未満で届出義務が無い場合は申立書で代えられます）');
-      items.push('支給要件確認申立書などの共通様式。振込先が未登録なら支払方法・受取人住所届も');
-      items.push('申請書類の作成・提出を代理で頼めるのは、社会保険労務士または弁護士に限られます');
-    } else if (p.prefecture || p.municipality) {
-      lead = '都道府県・市区町村の制度は、地方税を納めていることの証明を求められるのがほぼ共通です。';
-      items.push('市区町村税・都道府県税の納税証明書（完納証明）。「滞納がないこと」が要件になっていることが多いです');
-      items.push('見積書（カタログ・仕様書を添える制度が多いです）');
-      items.push('法人は登記事項証明書、個人事業主は開業届や確定申告書の控え');
-      items.push('制度によっては、商工会議所・商工会の会員であることや、経営革新計画の承認などが前提になります');
-    } else {
-      lead = '国の補助金は、様式のほかに会社の実在・財務・納税が分かる書類を出します。';
-      if (k === 'jizoku') items.push('<strong>商工会議所・商工会が発行する「事業支援計画書（様式4）」が必須</strong>。申請の締切とは別に発行受付の締切があり、過ぎるといかなる理由でも発行されません');
-      items.push('見積書（相見積りを求める制度が多く、業者の返事待ちで日数がかかります）');
-      items.push('決算書（貸借対照表・損益計算書）または確定申告書の控え');
-      items.push('法人は履歴事項全部証明書（発行から3か月以内などの指定が多い）、個人事業主は本人確認書類や開業届の写し');
-      items.push('納税証明書（国税）。制度により「その1」「その2」など種類の指定があります');
-      items.push('電子申請の制度はGビズIDプライムが必要です（書類を郵送する取得方法だと最大1か月かかります）');
-    }
-    return { lead: lead, items: items };
-  }
-  function docsExtraHTML(k) {
-    var x = docsExtraItems(k);
-    return '<div class="docs-extra">' +
-      '<div class="docs-phase">様式のほかに必要になる主な書類</div>' +
-      '<p class="docs-note" style="margin-top:0.4rem;">' + x.lead + '</p>' +
-      '<ul>' + x.items.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
-      '<p class="docs-extra-note">2026年8月1日に主要制度の公募要領・手引きを開いて確認した傾向です。必要な書類は制度・公募回ごとに違うので、正確な一覧は必ずこの制度の公募要領・支給要領でご確認ください。取り寄せにかかる日数の目安は<a href="documents.html#common">申請書類の準備ページの共通書類一覧</a>にあります。</p>' +
-      '</div>';
-  }
+  // 様式のダウンロードだけでは申請できないが、「様式のほかに必要になる書類」の
+  // 一覧は 2026-08-03 に申請書類の準備ページ（documents.html の03）へ片寄せした。
+  // 同じ内容を2ページで手書きすると、片方だけ古くなって食い違うため。
   function renderDocs() {
     var el = document.getElementById('docsList');
     var note = document.getElementById('docsNote');
@@ -10844,21 +10790,19 @@
           '<span class="docs-toggle" aria-hidden="true"></span>' +
         '</summary>' +
         (d.note ? '<p class="docs-note">' + d.note + '</p>' : '') +
-        d.groups.map(function (g) {
-          return '<div class="docs-group">' +
-            '<div class="docs-phase">' + g.phase + '</div>' +
-            '<ul class="docs-files">' + g.items.map(function (it) {
-              return '<li>' +
-                '<a href="' + it.url + '" target="_blank" rel="noopener noreferrer">' +
-                  '<span class="ft ' + fileTypeClass(it.type) + '">' + it.type + '</span>' +
-                  '<span class="fn">' + it.name + '</span>' +
-                  (it.size ? '<span class="fs">' + it.size + '</span>' : '') +
-                '</a></li>';
-            }).join('') + '</ul></div>';
-        }).join('') +
-        docsExtraHTML(k) +
+        // 様式のファイル名・リンクの一覧と、様式のほかに要る書類は
+        // 申請書類の準備ページに一本化した（2026-08-03）。
+        // 同じ一覧を2ページで持つと、片方だけ古くなる
+        '<div class="docs-group">' +
+          '<div class="docs-phase">提出の時期ごとの内訳</div>' +
+          '<ul class="docs-links">' + d.groups.map(function (g) {
+            return '<li>' + g.phase + '　' + g.items.length + '件</li>';
+          }).join('') + '</ul>' +
+        '</div>' +
         '<p class="docs-prep"><a href="documents.html?p=' + encodeURIComponent(k) + '">' +
-          'この制度の書類を準備する（会社情報の転記・締切の逆算・チェックリスト）</a></p>' +
+          '様式の一覧を見て準備する（' + n + '件・会社情報の転記・取り寄せ書類・締切の逆算）→</a></p>' +
+        '<p class="docs-extra-note">様式のほかに、登記事項証明書や納税証明書など<strong>取り寄せに日数がかかる書類</strong>が要ります。' +
+          '制度ごとの要不要と日数の目安は<a href="documents.html?p=' + encodeURIComponent(k) + '#common">準備ページの取り寄せ書類</a>にまとめています。</p>' +
         '<p class="docs-checked">公式サイトで確認した日：' + d.checked + '</p>' +
         '</details>';
     }).join('');
@@ -10914,9 +10858,6 @@
       '提出書類の全体像は各制度の「公募要領」に一覧で載っていますので、必ずそちらでご確認ください。</p>';
     var body = keys.filter(function (k) { return PROGRAM_DOCS[k]; }).map(function (k) {
       var d = PROGRAM_DOCS[k];
-      // 紙で持ち歩く一覧にも「様式のほかに必要な書類」を載せる。
-      // 画面と同じ内容を、チェック欄付き・タグ無しの文字にして出す
-      var extra = docsExtraItems(k);
       return '<h2>' + PROGRAMS[k].name + '</h2>' +
         '<p class="pmeta">確認日 ' + d.checked + '／' + d.portal.url + '</p>' +
         d.groups.map(function (g) {
@@ -10925,10 +10866,12 @@
               '<span class="purl">' + it.url + '</span></li>';
           }).join('') + '</ul>';
         }).join('') +
-        '<h3>様式のほかに必要になる主な書類（正確な一覧は公募要領で確認）</h3>' +
-        '<ul class="pchk">' + extra.items.map(function (t) {
-          return '<li>□ ' + t.replace(/<[^>]+>/g, '') + '</li>';
-        }).join('') + '</ul>';
+        // 様式のほかに要る書類は、制度の類型ごとに要不要が変わるため
+        // 準備ページ側に一本化した。紙からも辿れるようURLを文字で出す
+        '<h3>様式のほかに必要になる書類</h3>' +
+        '<ul class="pchk"><li>□ 登記事項証明書・納税証明書など、取り寄せに日数がかかる書類' +
+        '<span class="purl">https://subsidy-grant.github.io/koban-roadmap/documents.html?p=' +
+        encodeURIComponent(k) + '#common</span></li></ul>';
     }).join('');
     var unknown = keys.filter(function (k) { return !PROGRAM_DOCS[k]; });
     var tail = unknown.length

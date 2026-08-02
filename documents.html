@@ -376,7 +376,6 @@
       <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
       <li><a href="#autofill">制度を選んで、様式に会社情報を入れる</a>（Word・Excel）</li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
-      <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
     </ol>
   </nav>
@@ -476,6 +475,14 @@
       <p style="margin:0.6rem 0 0;"><strong>賃金台帳・出勤簿は、ふだん使っている原本かそのコピーを出してください。</strong>申請用に作り直したものだと分かった場合は支給されません。一度出した書類は、あとから差し替えたり直したりできません。</p>
     </div>
 
+    <!-- 締切日を入れると、下の表の「いつまでに頼むか」が埋まる。
+         もとは04として別の節に同じ表をもう一度出していた（2026-08-03に統合） -->
+    <div class="pcard" id="dueBox">
+      <label for="deadlineInput" style="display:block;font-size:0.92rem;font-weight:700;margin-bottom:0.4rem;">提出の締切日を入れると、いつまでに頼めばよいかが出ます</label>
+      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
+      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;">締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
+    </div>
+
     <h3 class="sub-h">申請のとき</h3>
     <div class="tbl-wrap" id="commonApply"></div>
 
@@ -490,24 +497,11 @@
     </div>
     <p class="src-note" id="commonSource"></p>
   </section>
-  <!-- 04 逆算 -->
-  <section id="leadtime">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
-    <p class="section-sub">提出の締切日を入れると、03の書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。締切日は各制度の公式ページでご確認ください。</p>
 
-    <div class="pcard">
-      <label for="deadlineInput" style="display:block;font-size:0.92rem;margin-bottom:0.4rem;">提出の締切日</label>
-      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
-      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;"></p>
-    </div>
-
-    <div id="leadResult"></div>
-  </section>
-
-  <!-- 05 チェックリスト -->
+  <!-- 04 チェックリスト -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>提出書類のチェックリスト</h2></div>
-    <p class="section-sub">02で選んだ制度の<strong>様式</strong>を並べます。取り寄せが必要な書類は03にありますので、そちらと合わせてご確認ください。チェックを付けるとこの端末に残り、次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>取り寄せ書類の進み具合</h2></div>
+    <p class="section-sub">03に出した<strong>取り寄せが必要な書類</strong>が、いくつそろったかを追う場所です。頼んだもの・受け取ったものにチェックを付けてください。この端末に残るので、次に開いたときは続きから進められます。<strong>様式そのものは02で選んで記入します。</strong></p>
     <div id="checkList"></div>
     <p style="margin-top:1.2rem;font-size:0.9rem;color:var(--ink-soft);">
       制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。
@@ -529,7 +523,7 @@
   // 同じオリジン（subsidy-grant.github.io）に姉妹サイトが同居しているため。
   var K_COMPANY = 'koban_company';
   var K_FAV     = 'koban_savedPrograms';   // トップページの☆と共通
-  var K_CHECK   = 'koban_docCheck';
+  var K_COMMON  = 'koban_commonDone';
 
   function load(key, fallback) {
     try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : fallback; }
@@ -574,6 +568,7 @@
     { id: 'kana',      label: '事業者名フリガナ',       ph: '例）カブシキガイシャマルマル' },
     { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
     { id: 'hokenNo',   label: '雇用保険適用事業所番号',  ph: '例）1301-123456-7（雇用関係助成金の様式でよく使います）' },
+    { id: 'officeName', label: '事業所の名称（適用事業所名）', ph: '法人名と同じなら空欄で構いません（例）株式会社○○　△△店' },
     { id: 'zip',       label: '郵便番号',               ph: '例）150-0001', mode: 'numeric' },
     { id: 'addr',      label: '所在地',                 ph: '例）東京都渋谷区神宮前1-2-3 ○○ビル4階', big: true },
     { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
@@ -919,7 +914,10 @@
     { key: 'zip',       re: /^(郵便番号|〒)$/ },
     { key: 'hokenNo',   re: /^(雇用保険適用事業所番号|適用事業所番号|事業所番号)$/ },
     { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地|事業場の所在地|雇用保険適用事業所の所在地)$/ },
-    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
+    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
+    // 雇用保険の適用事業所名は、届け出た名称で法人名と違うことがある。
+    // 番号と名称が合わないと労働局で照合できないので、別の項目にしている
+    { key: 'officeName', re: /^(事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|適用事業所の名称|適用事業所名)$/ },
     { key: 'kana',      re: /^(事業者名フリガナ|名称フリガナ|会社名フリガナ)$/ },
     { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名)$/ },
     { key: 'title',     re: /^(代表者の役職|代表者役職|役職名|役職)$/ },
@@ -1129,6 +1127,24 @@
     }
     return best;
   }
+  // 「〒」の行だけは、そのかたまりの見出しが1行下にあることがある。
+  //   （例）r16 〒［　］－［　］
+  //         r17 代　理　人｜所在地
+  // 上だけを見ると、6行上の「事業主」を見出しと読んで、代理人の郵便番号欄に
+  // 自社の郵便番号を入れてしまう。2026-08-03に実物の様式3件で確認した不具合。
+  // 〒の行に限り、すぐ下の見出しも候補にして、近いほうを採用する
+  function ownerForZipRow(markers, col, row, above) {
+    var below = null;
+    for (var k = 0; k < markers.length; k++) {
+      var m = markers[k];
+      if (m.c > col || m.r <= row || m.r - row > 2) continue;
+      if (!below || m.r < below.r || (m.r === below.r && m.c > below.c)) below = m;
+    }
+    if (!below) return above;
+    if (!above) return below;
+    // 同じ距離なら、これまでどおり上の見出しを優先する
+    return (below.r - row) < (row - above.r) ? below : above;
+  }
   function ownerSkipReason(m, where) {
     return '「' + m.text.slice(0, 16) + '」の欄なので、自社の情報は入れませんでした' +
       (where ? '（' + where + '）' : '') + '。ここは依頼先（社労士事務所など）を書く欄です';
@@ -1152,6 +1168,8 @@
     if (vals.name && (vals.titleRep || vals.rep)) {
       vals.nameRep = vals.name + '　' + (vals.titleRep || vals.rep);
     }
+    // 事業所の名称が未入力なら、これまでどおり法人名を使う
+    if (!vals.officeName && vals.name) vals.officeName = vals.name;
     return vals;
   }
 
@@ -1452,6 +1470,9 @@
         }
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
+        if (key === 'zip' || isZipFrame(labelRaw)) {
+          own = ownerForZipRow(markers, i, r, own);
+        }
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, '表の「' + label + '」の欄') });
           continue;
@@ -1825,6 +1846,9 @@
         var tref = numToCol(tc) + tr;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
         var own = nearestOwner(markers, pos.c, pos.r, 30);
+        if (key === 'zip' || isZipFrame(labelRaw)) {
+          own = ownerForZipRow(markers, pos.c, pos.r, own);
+        }
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, sheetName + ' の ' + tref) });
           continue;
@@ -2828,15 +2852,13 @@
 
 
   // ---------- 節の開閉（トップページと同じ操作感） ----------
-  // 節が7つあり、上から順に読む作りではないので、見出しだけを並べて
+  // 上から順に読む作りではないので、見出しだけを並べて
   // 必要なところを開いてもらう。組み替えに失敗したら目印を外して
   // 従来どおり全部見える状態に戻す（黙って空白のページにしない）。
   var SEC_HINT = {
     company: '所在地・代表者・電話番号などを1回だけ入力します',
     autofill: '制度を選ぶと、様式に会社情報を入れて返します',
-    common: '登記事項証明書・納税証明書など、取り寄せに日数がかかる書類',
-    leadtime: '締切から逆算して、いつ何を頼むかを出します',
-    deadlines: '選んだ制度の締切を並べます',
+    common: '登記事項証明書など取り寄せに日数がかかる書類と、締切からの逆算',
     checklist: 'チェックを付けると進み具合がこの端末に残ります'
   };
   function secOf(el) {
@@ -3197,21 +3219,45 @@
     if (!c.types) return true;
     return c.types.indexOf(progDocType(key)) !== -1;
   }
+  // 締切日が入っていれば、その日から日数を引いて「いつまでに頼むか」を出す
+  function dueDate() {
+    var el = document.getElementById('deadlineInput');
+    var v = el && el.value;
+    if (!v) return null;
+    var a = v.split('-');
+    return new Date(+a[0], +a[1] - 1, +a[2]);
+  }
+  function byWhenCell(c, due) {
+    if (!due) return '<td class="num">—</td>';
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var by = new Date(due.getTime() - c.days * 86400000);
+    var left = Math.round((by - today) / 86400000);
+    return '<td class="num">' + fmt(by) + '<br>' + (by < today
+      ? '<span class="deadline near">もう過ぎています</span>'
+      : '<span class="deadline ok">あと' + left + '日</span>') + '</td>';
+  }
   function commonRows(when) {
     var key = docsSelectedKey();
-    return COMMON_DOCS.filter(function (c) { return c.when === when && docApplies(c, key); }).map(function (c) {
+    // 「いつまでに頼むか」は申請の締切からの逆算なので、実績報告の表には出さない
+    var due = when === 'apply' ? dueDate() : null;
+    return COMMON_DOCS.filter(function (c) { return c.when === when && docApplies(c, key); })
+      .sort(function (a, b) { return due ? b.days - a.days : 0; })
+      .map(function (c) {
       var days = c.days === 1 ? '当日' : ('〜' + c.days + '日');
       return '<tr class="' + (c.third ? 'third' : '') + '">' +
         '<td class="num">' + (c.third ? '他の人に頼む' : '自分で') + '</td>' +
         '<td>' + whoBadge(c.who) + ' ' + esc(c.doc) + '</td>' +
         '<td>' + esc(c.where) + '</td>' +
         '<td class="num">' + days + '</td>' +
+        (when === 'apply' ? byWhenCell(c, due) : '') +
         '<td>' + esc(c.note) + '</td>' +
         '</tr>';
     }).join('');
   }
 
   function renderCommon() {
+    var headA = '<thead><tr><th>用意する</th><th>書類</th><th>どこで</th>' +
+               '<th>かかる日数の目安</th><th>いつまでに頼むか</th><th>注意</th></tr></thead>';
     var head = '<thead><tr><th>用意する</th><th>書類</th><th>どこで</th>' +
                '<th>かかる日数の目安</th><th>注意</th></tr></thead>';
     var key = docsSelectedKey();
@@ -3232,7 +3278,7 @@
     }
     var rowsA = commonRows('apply');
     document.getElementById('commonApply').innerHTML = rowsA
-      ? '<table>' + head + '<tbody>' + rowsA + '</tbody></table>'
+      ? '<table>' + headA + '<tbody>' + rowsA + '</tbody></table>'
       : '<p class="empty">この制度の申請時に、取り寄せが要る共通書類はありません。</p>';
     var rowsR = commonRows('report');
     var repBox = document.getElementById('commonReport');
@@ -3246,6 +3292,17 @@
         ? '<table>' + head + '<tbody>' + rowsR + '</tbody></table>'
         : '<p class="empty">この制度で、事業後に取り寄せが要る共通書類はありません。</p>';
     }
+    var dp = document.getElementById('deadlinePick');
+    if (dp) {
+      var due0 = dueDate();
+      var today0 = new Date(); today0.setHours(0, 0, 0, 0);
+      dp.innerHTML = !due0
+        ? '締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。'
+        : (due0 < today0
+            ? '<strong>入れた締切日は過ぎています。</strong>次回の公募回の締切でお試しください。'
+            : '締切まであと<strong>' + Math.round((due0 - today0) / 86400000) + '日</strong>です（' + fmt(due0) + '）。'
+              + '橙色の行は他の人に出してもらう書類で、相手の都合で遅れます。数日の余裕を見て依頼してください。');
+    }
     var src = document.getElementById('commonSource');
     if (src) src.textContent = COMMON_DOCS_SOURCE;
     // 「順番で落ちる」の注意は、雇用関係助成金・業務改善助成金の類型のときだけ出す
@@ -3256,148 +3313,62 @@
     }
   }
 
-  // ---------- 04 締切からの逆算 ----------
+  // ---------- 日付の書式（03の逆算で使う） ----------
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 
-  function renderLead() {
-    var v = document.getElementById('deadlineInput').value;
-    var out = document.getElementById('leadResult');
-    if (!v) {
-      out.innerHTML = '<p class="empty">締切日を入れると、書類ごとの「いつまでに頼むか」を出します。' +
-        '締切日は各制度の公式ページでご確認ください。</p>';
-      return;
-    }
-    var parts = v.split('-');
-    var due = new Date(+parts[0], +parts[1] - 1, +parts[2]);
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var left = Math.round((due - today) / 86400000);
 
-    // 実績報告の書類は申請の締切とは関係ないので、逆算には入れない
-    var rows = COMMON_DOCS.filter(function (c) {
-      return c.when === 'apply' && docApplies(c, docsSelectedKey());
-    }).sort(function (a, b) { return b.days - a.days; }).map(function (c) {
-      var by = new Date(due.getTime() - c.days * 86400000);
-      var late = by < today;
-      return '<tr class="' + (c.third ? 'third' : '') + '">' +
-        '<td>' + whoBadge(c.who) + ' ' + esc(c.doc) + '</td>' +
-        '<td class="num">' + (c.days === 1 ? '当日' : '〜' + c.days + '日') + '</td>' +
-        '<td class="num">' + fmt(by) + '</td>' +
-        '<td class="num">' + (late
-          ? '<span class="deadline near">もう過ぎています</span>'
-          : '<span class="deadline ok">あと' + Math.round((by - today) / 86400000) + '日</span>') + '</td>' +
-        '</tr>';
-    }).join('');
-
-    var head = left < 0
-      ? '<div class="warn"><strong>入力した締切日は過ぎています。</strong>次回の公募回の締切でお試しください。</div>'
-      : '<p class="section-sub">締切まであと<strong>' + left + '日</strong>です（' + fmt(due) + '）。</p>';
-
-    out.innerHTML = head +
-      '<div class="tbl-wrap"><table><thead><tr>' +
-      '<th>書類</th><th>目安</th><th>いつまでに頼むか</th><th>残り</th>' +
-      '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<div class="warn">日数は目安です。橙色の行は他の人に出してもらう書類で、' +
-      '相手の都合で遅れます。<strong>期限ぎりぎりではなく、数日の余裕を見て依頼してください。</strong></div>';
-  }
-
-  // ---------- 04 締切一覧 ----------
-  // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
-  // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
-  function getPicked() {
-    var arr = load(K_FAV, []);
-    return Array.isArray(arr) ? arr.filter(function (k) { return D.programs[k]; }) : [];
-  }
-
-  // 05で並べる制度。02で選んだ制度を先頭に、トップページの☆を後ろに続ける
-  // （☆の登録・解除はトップページで行う）
-  // （いま見ている制度が下のほうにあると、探しに行くことになるため）
-  function docsPrograms() {
-    var picked = getPicked().slice();
-    var key = docsSelectedKey();
-    if (key && D.programs[key]) {
-      var i = picked.indexOf(key);
-      if (i !== -1) picked.splice(i, 1);
-      picked.unshift(key);
-    }
-    return picked;
-  }
-  // ---------- 05 チェックリスト ----------
-  var checks = load(K_CHECK, {});
-
-  window.toggleCheck = function (progKey, url, on) {
-    if (!checks[progKey]) checks[progKey] = {};
-    if (on) checks[progKey][url] = 1; else delete checks[progKey][url];
-    save(K_CHECK, checks);
+  // ---------- 04 取り寄せ書類の進み具合 ----------
+  // 03に出した取り寄せ書類の進み具合。様式の一覧は02にあるので、ここでは出さない
+  var commonDone = load(K_COMMON, {});
+  window.toggleCommon = function (id, on) {
+    if (on) commonDone[id] = 1; else delete commonDone[id];
+    save(K_COMMON, commonDone);
     renderChecklist();
   };
-
   function renderChecklist() {
-    var picked = docsPrograms();
     var el = document.getElementById('checkList');
+    if (!el) return;
+    var key = docsSelectedKey();
     // 制度が入れ替わった後の古いリンクで来たときの案内
     var stale = unknownFromQuery
       ? '<p class="warn">開こうとした制度が見つかりませんでした。' +
         '制度の入れ替えで、リンクが古くなっている可能性があります。お手数ですが' +
         '<a href="./#docs">トップページの申請書類</a>から開き直してください。</p>'
       : '';
-    if (!picked.length) {
-      el.innerHTML = stale + '<p class="empty">制度を選ぶと、その制度の様式がここに並びます。' +
-        '上の「02」で制度を選んでください。</p>';
+    var items = COMMON_DOCS.filter(function (c) { return docApplies(c, key); });
+    if (!items.length) {
+      el.innerHTML = stale + '<p class="empty">この制度で取り寄せが必要な共通書類はありません。</p>';
       return;
     }
-    var withDocs = picked.filter(function (k) { return D.docs[k]; });
-    var without = picked.filter(function (k) { return !D.docs[k]; });
-
-    var html = stale + withDocs.map(function (k) {
-      var p = D.programs[k], d = D.docs[k];
-      var mine = checks[k] || {};
-      var total = 0, done = 0;
-      d.groups.forEach(function (g) {
-        g.items.forEach(function (it) { total++; if (mine[it.url]) done++; });
-      });
-      var pct = total ? Math.round(done * 100 / total) : 0;
-      return '<div class="pcard" id="prog-' + esc(k) + '">' +
-        '<h3>' + esc(p.name) + '</h3>' +
-        '<p class="meta">' + done + ' / ' + total + ' 件そろいました' +
-        '（公式サイトで確認した日：' + esc(d.checked) + '）</p>' +
-        '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
-        d.groups.map(function (g) {
-          return '<p class="phase-ttl">' + esc(g.phase) + '</p><ul class="checks">' +
-            g.items.map(function (it) {
-              var on = !!mine[it.url];
-              return '<li class="' + (on ? 'done' : '') + '">' +
-                '<label><input type="checkbox"' + (on ? ' checked' : '') +
-                ' onchange="toggleCheck(\'' + esc(k) + '\',\'' + esc(it.url) + '\',this.checked)">' +
-                '<span class="ft">' + esc(it.type) + '</span>' +
-                '<span class="fn">' + esc(it.name) +
-                ' <a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">開く ↗</a>' +
-                (it.size ? '<span style="color:var(--ink-faint);font-size:0.82rem;"> ' + esc(it.size) + '</span>' : '') +
-                '</span></label></li>';
-            }).join('') + '</ul>';
-        }).join('') +
-        (d.portal ? '<p style="margin:0.8rem 0 0;font-size:0.88rem;"><a href="' + esc(d.portal.url) +
-          '" target="_blank" rel="noopener noreferrer">' + esc(d.portal.label) + ' ↗</a></p>' : '') +
-        '</div>';
-    }).join('');
-
-    if (without.length) {
-      html += '<div class="pcard">' +
-        '<h3>様式をまだ確認できていない制度（' + without.length + '件）</h3>' +
-        '<p class="meta">当サイトで様式の掲載場所を確認できていない制度です。' +
-        '<strong>書類が無いという意味ではありません。</strong>公式ページでご確認ください。</p>' +
-        '<ul style="margin:0;padding-left:1.2rem;font-size:0.9rem;">' + without.map(function (k) {
-          var p = D.programs[k];
-          return '<li><a href="' + esc(p.link) + '" target="_blank" rel="noopener noreferrer">' +
-            esc(p.name) + ' ↗</a></li>';
-        }).join('') + '</ul></div>';
-    }
-    el.innerHTML = html;
-  }
-
-  function renderPicked() {
-    renderChecklist();
+    var done = items.filter(function (c) { return commonDone[c.id]; }).length;
+    var pct = Math.round(done * 100 / items.length);
+    var groups = [['apply', '申請のときに出す'], ['report', '事業が終わったあとに出す']];
+    var head = key
+      ? '<p class="meta"><strong>' + esc((D.programs[key] || {}).name || key) + '</strong>に必要な書類だけを出しています。' +
+        '<a href="#autofill" class="pick-jump">別の制度に切り替える（02へ）</a></p>'
+      : '<p class="meta">全制度ぶんを出しています。<strong>02で制度を選ぶと絞られます。</strong>' +
+        '<a href="#autofill" class="pick-jump">制度を選ぶ（02へ）</a></p>';
+    el.innerHTML = stale + '<div class="pcard" id="commonCheck">' + head +
+      '<p class="meta">' + done + ' / ' + items.length + ' 件そろいました。</p>' +
+      '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
+      groups.map(function (g) {
+        var list = items.filter(function (c) { return c.when === g[0]; });
+        if (!list.length) return '';
+        return '<p class="phase-ttl">' + g[1] + '</p><ul class="checks">' +
+          list.map(function (c) {
+            var on = !!commonDone[c.id];
+            return '<li class="' + (on ? 'done' : '') + '">' +
+              '<label><input type="checkbox"' + (on ? ' checked' : '') +
+              ' onchange="toggleCommon(\'' + esc(c.id) + '\',this.checked)">' +
+              '<span class="ft">' + (c.third ? '要依頼' : '自分で') + '</span>' +
+              '<span class="fn">' + whoBadge(c.who) + ' ' + esc(c.doc) +
+              '<span style="display:block;color:var(--ink-faint);font-size:0.82rem;">' +
+              esc(c.where) + '／' + (c.days === 1 ? '当日' : '〜' + c.days + '日') +
+              '　' + esc(c.note) + '</span></span></label></li>';
+          }).join('') + '</ul>';
+      }).join('') + '</div>';
   }
 
   // ---------- 起動 ----------
@@ -3410,9 +3381,6 @@
     // 制度が入れ替わった後の古いリンク・ブックマークで来ることがある。
     // 黙って何も起きないと「壊れている」と受け取られるので、理由を出す。
     if (!D.programs[key]) { unknownFromQuery = true; return; }
-    var arr = load(K_FAV, []);
-    if (!Array.isArray(arr)) arr = [];
-    if (arr.indexOf(key) === -1) { arr.push(key); save(K_FAV, arr); }
   })();
 
   renderCompany();
@@ -3427,7 +3395,7 @@
       renderAfForms();
       // 03〜05はこの選択に連動する
       renderCommon();
-      renderLead();
+      renderCommon();
       renderChecklist();
     });
     // index.html の各制度カードから「この制度の書類を準備する」で来たときは、
@@ -3443,13 +3411,10 @@
   })();
   checkHoujin();
   renderCommon();
-  renderLead();
-  renderPicked();
+  renderChecklist();
   syncThemeBtn();
-  document.getElementById('deadlineInput').addEventListener('change', function () {
-    document.getElementById('deadlinePick').textContent = '';
-    renderLead();
-  });
+  // 締切日を入れ直したら、03の「いつまでに頼むか」を出し直す
+  document.getElementById('deadlineInput').addEventListener('change', renderCommon);
 
   // 描画がすべて終わってから節を畳む（中身を動かすので順番が大事）
   initSectionAccordion();
