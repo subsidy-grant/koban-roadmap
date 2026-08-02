@@ -46,6 +46,8 @@
   function gtAddDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
   function gtDayDiff(a, b) { return Math.round((a - b) / 86400000); }
   function gtFmt(d) { return (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  // 帯に添える札は横幅を食うので短く書く（例 12/2）
+  function gtShort(d) { return (d.getMonth() + 1) + '/' + d.getDate(); }
   function gtKey(scheme, key) { return scheme + '.' + key; }
 
   // 「誰がやるのか」を見出しの次に目立たせる。自分で動く手順と、
@@ -105,6 +107,32 @@
     });
   }
 
+  // 日付の札をどこに置くか。画面幅・文字の大きさで入る場所が変わるので、
+  // 決め打ちではなく実際に測って決める（帯の中→右→左の順に試す）。
+  function fitLabels(out) {
+    var marks = out.querySelectorAll('.gt-mark');
+    Array.prototype.forEach.call(marks, function (m) {
+      var lab = m.querySelector('.gt-blab');
+      var lane = m.parentNode;
+      if (!lab || !lane) return;
+      m.classList.remove('flip', 'inb');
+      var lr = lane.getBoundingClientRect();
+      var mr = m.getBoundingClientRect();
+      var w = lab.getBoundingClientRect().width;
+      if (mr.width >= w + 10) { m.classList.add('inb'); return; }   // 帯が広ければ中に入れる
+      if (mr.right + 6 + w <= lr.right) return;                      // 右に出して収まる
+      if (mr.left - 6 - w >= lr.left) { m.classList.add('flip'); return; } // 左なら収まる
+      m.classList.add('inb');                                        // どちらも無理なら中に重ねる
+    });
+  }
+  var fitTimer = null;
+  window.addEventListener('resize', function () {
+    var out = document.getElementById('gtOut');
+    if (!out || !out.querySelector('.gt-mark')) return;
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function () { fitLabels(out); }, 150);
+  });
+
   function renderGantt() {
     var out = document.getElementById('gtOut');
     var sel = document.getElementById('gtScheme');
@@ -160,15 +188,21 @@
         (d.getMonth() === 0 ? d.getFullYear() + '年' : '') + (d.getMonth() + 1) + '月</span>';
     }).join('');
     var todayLine = '<span class="gt-today" style="left:' + left(today) + ';" title="今日"></span>';
+    // 各行にも月の区切り線を引く。ヘッダーの目盛りが画面外に行っても、
+    // 帯がいつごろの話なのかを線で追えるようにするため。
+    // 線は見出しに月名を出したところだけ。全月に引くと縞模様になって読みにくい
+    var grid = months.map(function (d, i) {
+      return i % step ? '' : '<span class="gt-grid" style="left:' + left(d) + ';"></span>';
+    }).join('');
 
     var doneN = rows.filter(function (r) { return r.done; }).length;
     var pct = Math.round(doneN / rows.length * 100);
     var html = '<div class="gt-prog"><span class="num">' + doneN + ' / ' + rows.length + '（' + pct + '%）</span>' +
       '<span class="prog"><i style="width:' + pct + '%;"></i></span></div>';
 
-    html += '<p class="gt-legend"><span class="k"><i class="gt-bar"></i>やる期間</span>' +
+    html += '<p class="gt-legend"><span class="k"><i class="gt-bar"></i>やる期間（帯の横に日付）</span>' +
       '<span class="k"><i class="gt-bar hard"></i>落とすと対象外</span>' +
-      '<span class="k"><i class="gt-bar doneb"></i>終わった</span>' +
+      '<span class="k done"><i class="gt-bar doneb"></i>✓ 終わった（行に色が付きます）</span>' +
       '<span class="k"><i class="gt-bar unknown"></i>日付未定</span>' +
       '<span class="k"><i class="lg-today"></i>今日（' + gtFmt(today) + '）</span></p>';
 
@@ -205,10 +239,14 @@
             : '出典：<a href="' + esc(r.t.source) + '" target="_blank" rel="noopener noreferrer">一次資料 ↗</a>') +
             '（' + esc(r.t.checked) + '確認）</p>' +
         '</div>' +
-        '<div class="gt-right">' +
+        '<div class="gt-right">' + grid +
           (r.start
-            ? '<span class="gt-bar' + (r.done ? ' doneb' : (r.t.hard ? ' hard' : '')) + '" style="left:' + left(r.start) +
-              ';width:' + pc(Math.max(1, r.t.days)) + ';" title="' + esc(when) + '"></span>'
+            // 1日だけの用事は帯にすると点にしかならないので、必ず日付の札を添える。
+            // 札が枠の外へ出ないよう、右寄りのものは左側に出す。
+            ? '<span class="gt-mark' + (r.done ? ' doneb' : (r.t.hard ? ' hard' : '')) +
+              '" style="left:' + left(r.start) + ';width:' + pc(Math.max(1, r.t.days)) + ';" title="' + esc(when) + '">' +
+              '<i></i><b class="gt-blab">' + (r.done ? '✓ ' : '') + esc(gtShort(r.start)) +
+              (r.t.days > 1 ? '〜' + esc(gtShort(r.end)) : '') + '</b></span>'
             : '<span class="gt-bar unknown" style="left:0;width:100%;" title="日付が決まっていません">' +
               '<em>日付未定</em></span>') +
           todayLine +
@@ -223,6 +261,7 @@
     html += '<p class="src-note">日付は入力した基準日からの計算です。実際の期限は必ず各制度の公募要領・支給要領でご確認ください。' +
       '申請書類の作成・提出を代理で頼めるのは、雇用関係助成金は社会保険労務士または弁護士に限られます。</p>';
     out.innerHTML = html;
+    fitLabels(out);
     out.querySelectorAll('input[data-gt]').forEach(function (c) {
       c.addEventListener('change', function () {
         var id = c.getAttribute('data-gt');

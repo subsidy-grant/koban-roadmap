@@ -1130,6 +1130,12 @@
   .gt-name span.t { font-size: 1.08rem; font-weight: 700; color: var(--ink); }
   .gt-name input[type="checkbox"] { width: 24px; height: 24px; margin-top: 0.1rem; flex: none;
     accent-color: var(--sage); }
+  /* 終わった手順は、帯の色だけでなく行全体の地色と✓で示す。
+     青→緑の色の違いだけだと（特に小さい帯では）変わったことに気づけない。 */
+  .gt-row.done { background: var(--sage-wash); }
+  .gt-row.done .gt-left { background: var(--sage-wash); }
+  /* ✓ は緑のチェックボックスと帯の札で示す。見出しに足すと取り消し線が
+     ✓ の上にも掛かって壊れて見えるので、ここには入れない。 */
   .gt-row.done .gt-name span.t { color: var(--ink-faint); text-decoration: line-through; }
   /* 誰がやるのか。自分で動く／頼む／待つ、を色と言葉の両方で示す */
   .gt-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.4rem;
@@ -1148,7 +1154,27 @@
     border: 1px solid; white-space: nowrap; }
   .gt-b-hard { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
   .gt-b-un { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
-  .gt-right { flex: none; width: 42%; position: relative; min-height: 44px; }
+  /* overflow: clip は保険。札の位置はJSが測って決めるが、JSが動く前や
+     計算が外れたときでも、札がページの横幅を広げてしまわないようにする。 */
+  .gt-right { flex: none; width: 42%; position: relative; min-height: 44px; overflow: clip; }
+  /* 月の区切り線。ヘッダーの目盛りが画面外でも、帯がいつごろかを線で追える */
+  .gt-grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line); opacity: 0.7; }
+  /* 帯＋日付の札。1日だけの用事は点にしかならないので、札のほうが本体 */
+  .gt-mark { position: absolute; top: 50%; transform: translateY(-50%); height: 16px; z-index: 2; }
+  .gt-mark > i { display: block; width: 100%; min-width: 10px; height: 14px;
+    border-radius: 7px; background: var(--accent); }
+  .gt-mark.hard > i { background: var(--rust); }
+  .gt-mark.doneb > i { background: var(--sage); }
+  .gt-blab { position: absolute; left: 100%; top: 50%; transform: translateY(-50%);
+    margin-left: 0.4rem; font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+    color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .gt-mark.flip .gt-blab { left: auto; right: 100%; margin: 0 0.4rem 0 0; }
+  .gt-mark.hard .gt-blab { color: var(--rust); }
+  .gt-mark.doneb .gt-blab { color: var(--sage); }
+  /* 帯が広いとき、または左右どちらにも札を出せないときは帯の中に重ねる。
+     色は必ず地の色にする（帯と同じ色だと字が消えるため。この2行は上より後に置く） */
+  .gt-mark.inb .gt-blab, .gt-mark.inb.hard .gt-blab, .gt-mark.inb.doneb .gt-blab {
+    left: 0; right: auto; width: 100%; margin: 0; text-align: center; color: var(--paper); }
   .gt-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 14px;
     min-width: 8px; border-radius: 7px; background: var(--accent); }
   .gt-bar.hard { background: var(--rust); }
