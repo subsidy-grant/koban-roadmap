@@ -121,30 +121,41 @@
     if (today > max) max = today;
     min = gtAddDays(min, -7); max = gtAddDays(max, 7);
     var span = Math.max(1, gtDayDiff(max, min));
-    var px = Math.max(1.1, Math.min(9, 1500 / span));
-    var width = Math.round(span * px);
-    function left(d) { return Math.round(gtDayDiff(d, min) * px); }
+    // 帯の位置は px ではなく % で置く。こうすると画面幅がいくつでも
+    // 期間の全体が枠内に収まり、横スクロールしなくても読める。
+    // 1日しかない用事が消えないよう、細さの下限は CSS の min-width で守る。
+    function pc(days) { return (days / span * 100).toFixed(3) + '%'; }
+    function left(d) { return pc(gtDayDiff(d, min)); }
 
-    // 月の目盛り
-    var ticks = '';
+    // 月の目盛り。狭い画面で月名が重なるので、8個までに間引く。
+    var months = [];
     var cur = new Date(min.getFullYear(), min.getMonth(), 1);
     while (cur <= max) {
-      if (cur >= min) {
-        ticks += '<span class="gt-tick" style="left:' + left(cur) + 'px;">' +
-          (cur.getMonth() === 0 ? cur.getFullYear() + '年' : '') + (cur.getMonth() + 1) + '月</span>';
-      }
+      if (cur >= min) months.push(cur);
       cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
     }
-    var todayLine = '<span class="gt-today" style="left:' + left(today) + 'px;" title="今日"></span>';
+    var step = Math.max(1, Math.ceil(months.length / 8));
+    var ticks = months.map(function (d, i) {
+      if (i % step) return '';
+      return '<span class="gt-tick" style="left:' + left(d) + ';">' +
+        (d.getMonth() === 0 ? d.getFullYear() + '年' : '') + (d.getMonth() + 1) + '月</span>';
+    }).join('');
+    var todayLine = '<span class="gt-today" style="left:' + left(today) + ';" title="今日"></span>';
 
     var doneN = rows.filter(function (r) { return r.done; }).length;
     var pct = Math.round(doneN / rows.length * 100);
     var html = '<div class="gt-prog"><span class="num">' + doneN + ' / ' + rows.length + '（' + pct + '%）</span>' +
       '<span class="prog"><i style="width:' + pct + '%;"></i></span></div>';
 
-    html += '<div class="gt-wrap"><div class="gt-inner" style="width:' + (width + 320) + 'px;">' +
+    html += '<p class="gt-legend"><span class="k"><i class="gt-bar"></i>やる期間</span>' +
+      '<span class="k"><i class="gt-bar hard"></i>落とすと対象外</span>' +
+      '<span class="k"><i class="gt-bar doneb"></i>終わった</span>' +
+      '<span class="k"><i class="gt-bar unknown"></i>日付未定</span>' +
+      '<span class="k"><i class="lg-today"></i>今日（' + gtFmt(today) + '）</span></p>';
+
+    html += '<div class="gt-wrap"><div class="gt-inner">' +
       '<div class="gt-head"><div class="gt-left">やること（終わったらチェック）</div>' +
-      '<div class="gt-ticks" style="width:' + width + 'px;">' + ticks + todayLine + '</div></div>';
+      '<div class="gt-right gt-ticks">' + ticks + todayLine + '</div></div>';
 
     var phase = null;
     rows.forEach(function (r) {
@@ -170,11 +181,12 @@
             : '出典：<a href="' + esc(r.t.source) + '" target="_blank" rel="noopener noreferrer">一次資料 ↗</a>') +
             '（' + esc(r.t.checked) + '確認）</p>' +
         '</div>' +
-        '<div class="gt-right" style="width:' + width + 'px;">' +
+        '<div class="gt-right">' +
           (r.start
             ? '<span class="gt-bar' + (r.done ? ' doneb' : (r.t.hard ? ' hard' : '')) + '" style="left:' + left(r.start) +
-              'px;width:' + Math.max(6, Math.round(Math.max(1, r.t.days) * px)) + 'px;"></span>'
-            : '<span class="gt-bar unknown" style="left:0;width:' + Math.min(width, 120) + 'px;"></span>') +
+              ';width:' + pc(Math.max(1, r.t.days)) + ';" title="' + esc(when) + '"></span>'
+            : '<span class="gt-bar unknown" style="left:0;width:100%;" title="日付が決まっていません">' +
+              '<em>日付未定</em></span>') +
           todayLine +
         '</div></div>';
     });
