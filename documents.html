@@ -941,12 +941,23 @@
     { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス)$/ },
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
     { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等)$/ },
-    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員)$/ },
+    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数)$/ },
     { key: 'industry',  re: /^(業種|主な業種|主たる業種)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
     { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名)$/ },
     { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ }
   ];
+
+  // 画面に理由を出すとき、キーではなく人が読む名前で書く
+  var LABEL_NAME = {
+    houjin: '法人番号', zip: '郵便番号', addr: '所在地', name: '事業者名', kana: '事業者名フリガナ',
+    titleRep: '代表者職氏名', title: '代表者の役職', rep: '代表者氏名', repKana: '代表者フリガナ',
+    tel: '電話番号', fax: 'FAX番号', mail: 'メールアドレス', founded: '設立年月日',
+    capital: '資本金', employees: '従業員数', industry: '業種', business: '事業内容',
+    staff: '担当者氏名', staffTel: '担当者連絡先'
+  };
+  function labelName(k) { return LABEL_NAME[k] || k; }
+
   function matchLabel(text) {
     var t = normLabel(text);
     if (!t || t.length > 20) return null;
@@ -955,6 +966,43 @@
     }
     return null;
   }
+
+  // ---- 単位だけが置かれたセルを守る ----
+  // 様式では、空欄の代わりに単位（人・円・年月日など）を印字してあることがある。
+  // これは「その欄の書式」であって空欄ではない。種類の合わない値で上書きすると、
+  // 別の列の欄を壊す（様式第11号の一覧表で、郵便番号が「常時使用する労働者の数
+  // （人）」の欄に8行分入る不具合が起きた）。
+  var UNIT_ONLY_RE = /^[人名円万千年月日時分秒％%件個台枚回¥￥\-−ー－~〜・,，、。]+$/;
+  var UNIT_OK_BY_KEY = {
+    employees: /[人名]/,
+    capital: /[円万千¥￥]/,
+    founded: /[年月日]/,
+    tel: /^[\-−ー－()（）]+$/,
+    fax: /^[\-−ー－()（）]+$/,
+    zip: /^[〒\-−ー－]+$/
+  };
+  // 単位だけの欄に入れるときは単位を残す（「8」ではなく「8人」）。
+  // 年月日のように値の途中に入る単位は対象にしない。
+  var UNIT_SUFFIX_RE = /^(人|名|円|万円|千円)$/;
+  function withUnit(key, value, existing) {
+    var u = String(existing || '').replace(/[\s　]+/g, '');
+    return UNIT_SUFFIX_RE.test(u) ? String(value) + u : String(value);
+  }
+  function unitCellConflict(key, existing) {
+    var t = String(existing || '').replace(/[\s　]+/g, '');
+    if (!t) return false;
+    if (!UNIT_ONLY_RE.test(t)) return false;   // 単位だけの欄ではない
+    var ok = UNIT_OK_BY_KEY[key];
+    return !(ok && ok.test(t));                // 単位が合っていれば入れてよい
+  }
+
+  // 記入欄ではなく「小見出し」に見える語か。括弧や下線を含む記入枠は含めない。
+  var SUBLABEL_RE = /^[一-龥ぁ-んァ-ヶー・]{1,8}$/;
+  function looksSublabel(t) {
+    var x = String(t || '').replace(/[\s　]+/g, '');
+    return !!x && SUBLABEL_RE.test(x);
+  }
+
   function toHankaku(s) {
     return String(s || '').replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); });
   }
@@ -1130,6 +1178,7 @@
     for (var ti = 0; ti < tbls.length; ti++) {
       childrenNS(tbls[ti], W_NS, 'tr').forEach(function (trEl, ri) {
         trEl.__loc = { t: ti, r: ri };
+        trEl.__tbl = tbls[ti];
       });
     }
     // 先に「誰の欄か」の見出しを拾っておく（行番号・セル番号で位置を持つ）
@@ -1142,6 +1191,27 @@
         if (mk) markers.push({ r: mr, c: mi, kind: mk, text: mtxt.replace(/[\s　]+/g, '') });
       }
     }
+    // 一覧表の列見出しを読む。見出しが別の項目を指しているなら、
+    // 「ラベルの右のセル」というだけで書き込んではいけない。
+    // 見出し行＝1行目のセルが3つ以上あって、どれも空でない行。
+    // 「ラベル｜空欄」が縦に並ぶ普通の記入表は、空欄があるのでここには当たらない。
+    function headerCellsOf(tbl) {
+      if (tbl.__hcs !== undefined) return tbl.__hcs;
+      var hrows = childrenNS(tbl, W_NS, 'tr');
+      var hcs = hrows.length ? childrenNS(hrows[0], W_NS, 'tc') : [];
+      var okRow = hcs.length >= 3;
+      for (var k = 0; okRow && k < hcs.length; k++) {
+        if (!textWithoutRuby(hcs[k], W_NS, 'rt').replace(/[\s　]+/g, '')) okRow = false;
+      }
+      tbl.__hcs = okRow ? hcs : null;
+      return tbl.__hcs;
+    }
+    function headerKeyOfColumn(tbl, colIdx) {
+      var hcs = headerCellsOf(tbl);
+      if (!hcs || colIdx >= hcs.length) return null;
+      return matchLabel(textWithoutRuby(hcs[colIdx], W_NS, 'rt'));
+    }
+    var wroteSlot = {}, notedSlot = {};
     for (var r = 0; r < trs.length; r++) {
       var tcs = childrenNS(trs[r], W_NS, 'tc');
       for (var i = 0; i < tcs.length - 1; i++) {
@@ -1156,6 +1226,67 @@
         }
         var target = tcs[i + 1];
         var existing = textWithoutRuby(target, W_NS, 'rt').trim();
+        var tcol = i + 1;
+        // 右が「企業全体」のような小見出しで、その先が空欄なら、そちらに入れる
+        if (looksSublabel(existing) && !matchLabel(existing) && tcs[i + 2]) {
+          var nx = textWithoutRuby(tcs[i + 2], W_NS, 'rt').trim();
+          // 次が空欄、または種類の合う単位欄（「人」など）ならそちらが記入欄
+          if (!nx || !unitCellConflict(key, nx)) { target = tcs[i + 2]; existing = nx; tcol = i + 2; }
+        }
+        var loc0 = trs[r].__loc;
+        // (0) 書き込み先が別項目の見出しそのものなら入れない
+        //     （様式第1号の見出し行で「常時使用する労働者の数」を住所で潰していた）
+        var tKey = matchLabel(existing);
+        if (tKey && tKey !== key) {
+          var sidT = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|h';
+          if (!notedSlot[sidT]) {
+            notedSlot[sidT] = 1;
+            skips.push({ key: key, label: label, reason: '右の欄は「' + labelName(tKey) + '」の見出しなので、入れませんでした' });
+          }
+          continue;
+        }
+        // (1) 「〒」は行のラベルではなく、住所欄の中に印字された印のことがある。
+        //     一覧表の「所在地」列の中にある〒を行ラベルと取り違えると、
+        //     右隣の別の列（労働者数など）に郵便番号を書いてしまう。
+        //     〒のときだけ、その列の見出しを見て止める。
+        if (key === 'zip' && trs[r].__tbl && loc0 && loc0.r > 0) {
+          var ownK = headerKeyOfColumn(trs[r].__tbl, i);
+          if (ownK && ownK !== 'zip') {
+            var sidO = loc0.t + '|' + i + '|' + key + '|o';
+            if (!notedSlot[sidO]) {
+              notedSlot[sidO] = 1;
+              skips.push({ key: key, label: label, reason: 'この「' + label + '」は「' + labelName(ownK) + '」の列の中にある印なので、隣の欄には入れませんでした' });
+            }
+            continue;
+          }
+          var hk = headerKeyOfColumn(trs[r].__tbl, tcol);
+          if (hk && hk !== key) {
+            var sid0 = loc0.t + '|' + tcol + '|' + key;
+            if (!notedSlot[sid0]) {
+              notedSlot[sid0] = 1;
+              skips.push({ key: key, label: label, reason: 'この表の「' + label + '」の右は「' + labelName(hk) + '」を書く列なので、入れませんでした' });
+            }
+            continue;
+          }
+        }
+        // (2) 単位だけが置かれた欄（別の列の書式）を壊さない
+        if (unitCellConflict(key, existing)) {
+          var sid1 = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key;
+          if (!notedSlot[sid1]) {
+            notedSlot[sid1] = 1;
+            skips.push({ key: key, label: label, reason: '右の欄には「' + existing + '」という単位だけが印字されており、別の項目の欄と考えられるため入れませんでした' });
+          }
+          continue;
+        }
+        // (3) 同じ列に何行も同じ値を書かない（一覧表の全行を埋めてしまうため）
+        var slotId = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key;
+        if (wroteSlot[slotId]) {
+          if (!notedSlot[slotId]) {
+            notedSlot[slotId] = 1;
+            skips.push({ key: key, label: label, reason: '同じ欄が縦に並ぶ一覧表のため、1行目だけに入れました' });
+          }
+          continue;
+        }
         var prev = '';
         if (existing) {
           if (existing === vals[key]) continue;
@@ -1175,7 +1306,7 @@
         // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
         var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
         if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
-        String(vals[key]).split(/\r?\n/).forEach(function (line, idx) {
+        String(withUnit(key, vals[key], prev)).split(/\r?\n/).forEach(function (line, idx) {
           if (idx) run.appendChild(doc.createElementNS(W_NS, 'w:br'));
           var t = doc.createElementNS(W_NS, 'w:t');
           t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
@@ -1184,11 +1315,12 @@
         });
         p.appendChild(run);
         usedKeys[key] = 1;
+        wroteSlot[slotId] = 1;
         var loc = trs[r].__loc;
-        if (loc) pvMarks[loc.t + '-' + loc.r + '-' + (i + 1)] = prev ? 'ow' : 'new';
+        if (loc) pvMarks[loc.t + '-' + loc.r + '-' + tcol] = prev ? 'ow' : 'new';
         fills.push({ where: '表の「' + label + '」の右の欄' +
           (prev ? '（元の「' + prev.slice(0, 24) + (prev.length > 24 ? '…' : '') + '」を上書き）' : ''),
-          key: key, value: vals[key] });
+          key: key, value: withUnit(key, vals[key], prev) });
       }
     }
     return { fills: fills, skips: skips, usedKeys: usedKeys,
@@ -1330,6 +1462,7 @@
       }
     }
 
+    var wroteSlot = {}, notedSlot = {};
     for (i = 0; i < rows.length; i++) {
       var cells = childrenNS(rows[i], S_NS, 'c');
       for (var j = 0; j < cells.length; j++) {
@@ -1393,6 +1526,36 @@
 
         var target = cellAt(tc, tr, false);
         var u = usable(target);
+        // 書き込み先が別項目の見出しそのものなら入れない
+        if (u.ok && u.prev) {
+          var xKey = matchLabel(u.prev);
+          if (xKey && xKey !== key) {
+            var xs0 = sheetName + '|' + tc + '|' + key + '|h';
+            if (!notedSlot[xs0]) {
+              notedSlot[xs0] = 1;
+              skips.push({ key: key, label: label, reason: '隣の欄は「' + labelName(xKey) + '」の見出しなので、入れませんでした（' + sheetName + ' の ' + tref + '）' });
+            }
+            continue;
+          }
+        }
+        // 単位だけが印字された欄（別の項目の書式）は壊さない
+        if (u.ok && unitCellConflict(key, u.prev)) {
+          var xs1 = sheetName + '|' + tc + '|' + key;
+          if (!notedSlot[xs1]) {
+            notedSlot[xs1] = 1;
+            skips.push({ key: key, label: label, reason: '隣の欄には「' + u.prev + '」という単位だけが入っており、別の項目の欄と考えられるため入れませんでした（' + sheetName + ' の ' + tref + '）' });
+          }
+          continue;
+        }
+        // 同じ列に何行も同じ値を書かない
+        var xslot = sheetName + '|' + tc + '|' + key;
+        if (wroteSlot[xslot]) {
+          if (!notedSlot[xslot]) {
+            notedSlot[xslot] = 1;
+            skips.push({ key: key, label: label, reason: '同じ欄が縦に並ぶ一覧表のため、1行目だけに入れました（' + sheetName + '）' });
+          }
+          continue;
+        }
         if (!u.ok) {
           if (u.reason === '数式') {
             skips.push({ key: key, label: label, reason: '隣のセルに数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + '）' });
@@ -1402,10 +1565,11 @@
           continue;
         }
         if (u.prev === vals[key]) continue;
-        writeCell(cellAt(tc, tr, true), vals[key], u.prev ? 'ow' : 'new');
+        writeCell(cellAt(tc, tr, true), withUnit(key, vals[key], u.prev), u.prev ? 'ow' : 'new');
         usedKeys[key] = 1;
+        wroteSlot[xslot] = 1;
         fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）' +
-          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: vals[key] });
+          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: withUnit(key, vals[key], u.prev) });
       }
     }
     if (!changed) return null;
