@@ -1034,11 +1034,23 @@
     if (!/〒/.test(String(existing || ''))) return value;
     return '〒' + vals.zip + '　' + value;
   }
+  // 資本金は「3000000」「3,000,000円」「100万円」「300万」など書き方がまちまち。
+  // どれも円の数に直してから使う。直せない書き方のときは null を返す
+  var CAP_MULT = { '': 1, '円': 1, '千': 1000, '千円': 1000,
+                   '万': 10000, '万円': 10000, '億': 100000000, '億円': 100000000 };
+  function capitalYen(value) {
+    var d = toHankaku(String(value)).replace(/[,，\s　]/g, '');
+    var m = /^([0-9]+)(億円?|万円?|千円?|円)?$/.exec(d);
+    if (!m) return null;
+    var mult = CAP_MULT[m[2] || ''];
+    return mult ? String((+m[1]) * mult) : null;
+  }
+  function comma3(d) { return String(d).replace(/\B(?=([0-9]{3})+(?![0-9]))/g, ','); }
   // 資本金は桁が多く、区切りが無いと読み違える。事務では3桁区切りで書く
   function formatVal(key, value) {
     if (key === 'capital') {
-      var d = toHankaku(String(value)).replace(/[,，\s　]/g, '');
-      if (/^[0-9]+$/.test(d)) return d.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, ',');
+      var y = capitalYen(value);
+      if (y !== null) return comma3(y);
     }
     return String(value);
   }
@@ -1050,8 +1062,8 @@
   function capitalInUnit(value, unit) {
     var div = UNIT_DIV[unit];
     if (!div) return null;
-    var d = toHankaku(String(value)).replace(/[,，\s　円]/g, '');
-    if (!/^[0-9]+$/.test(d) || (+d) % div !== 0) return null;
+    var d = capitalYen(value);
+    if (d === null || (+d) % div !== 0) return null;
     return String((+d) / div);
   }
   function withUnit(key, value, existing) {
@@ -1195,14 +1207,19 @@
   // （実際に、ふりがな付きの様式で郵便番号（記号「〒」だけの欄）しか
   // 入らない事故が起きた）。ふりがな要素の中の文字は数えない。
   function textWithoutRuby(el, ns, skipLocalName) {
-    var list = el.getElementsByTagNameNS(ns, 't'), s = '';
+    // 「改行しないハイフン」（w:noBreakHyphen）は文字の要素ではないので、
+    // w:t だけを拾うと番地が「2316」のように読めてしまう。ハイフンとして数える
+    var list = el.getElementsByTagNameNS(ns, '*'), s = '';
     for (var i = 0; i < list.length; i++) {
-      var skip = false, a = list[i].parentNode;
+      var node = list[i];
+      if (node.localName !== 't' && node.localName !== 'noBreakHyphen') continue;
+      var skip = false, a = node.parentNode;
       while (a && a !== el) {
         if (a.localName === skipLocalName) { skip = true; break; }
         a = a.parentNode;
       }
-      if (!skip) s += list[i].textContent;
+      if (skip) continue;
+      s += node.localName === 'noBreakHyphen' ? '-' : node.textContent;
     }
     return s;
   }
@@ -1296,13 +1313,14 @@
     var all = pEl.getElementsByTagNameNS(W_NS, '*'), s = '';
     for (var i = 0; i < all.length; i++) {
       var nd = all[i];
-      if (nd.localName !== 't' && nd.localName !== 'tab') continue;
+      if (nd.localName !== 't' && nd.localName !== 'tab' && nd.localName !== 'noBreakHyphen') continue;
       // w:pPr の中の w:tab は「タブ位置の設定」で、文字としてのタブではない
       if (nd.localName === 'tab' && (!nd.parentNode || nd.parentNode.localName !== 'r')) continue;
       var skip = false, a = nd.parentNode;
       while (a && a !== pEl) { if (a.localName === 'rt') { skip = true; break; } a = a.parentNode; }
       if (skip) continue;
-      s += (nd.localName === 'tab') ? '\t' : (nd.textContent || '');
+      s += (nd.localName === 'tab') ? '\t'
+         : (nd.localName === 'noBreakHyphen') ? '-' : (nd.textContent || '');
     }
     return s;
   }
@@ -1343,6 +1361,43 @@
     }
   }
   // 段落の末尾に値を書き足す（段落の記名欄と、表の右端セルの両方で使う）
+  // 「東京都渋谷区神宮前1-2-3」が「2-」「3-16」と切れてしまうのを防ぐ。
+  // Wordはふつうのハイフンのうしろで行を折り返すので、
+  // 番地や電話番号のハイフンは「改行しないハイフン」（w:noBreakHyphen）で書く
+  function appendTextRuns(doc, run, text) {
+    var parts = String(text).split(/(\r?\n|[-\u2010])/);
+    for (var i = 0; i < parts.length; i++) {
+      var s = parts[i];
+      if (s === '') continue;
+      if (/^\r?\n$/.test(s)) { run.appendChild(doc.createElementNS(W_NS, 'w:br')); continue; }
+      if (s === '-' || s === '\u2010') {
+        run.appendChild(doc.createElementNS(W_NS, 'w:noBreakHyphen'));
+        continue;
+      }
+      var t = doc.createElementNS(W_NS, 'w:t');
+      t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      t.textContent = s;
+      run.appendChild(t);
+    }
+  }
+  // 1桁ずつのマスが並ぶ欄か。マスの数と桁数がぴったり合うときだけ、1マス1桁で入れる。
+  // 数が合わないときは何もしない（ずれて入るほうが困るため）
+  var DIGIT_BOX_KEYS = { houjin: 1, hokenNo: 1 };
+  var BOX_SEP_RE = /^[－ー\-‐−\s　]*$/;
+  function digitBoxPlan(key, value, cells, from) {
+    if (!DIGIT_BOX_KEYS[key]) return null;
+    var ds = toHankaku(String(value)).replace(/[^0-9]/g, '');
+    if (ds.length < 4) return null;
+    var slots = [];
+    for (var i = from; i < cells.length; i++) {
+      var t = textWithoutRuby(cells[i], W_NS, 'rt').trim();
+      if (!t) { slots.push(i); continue; }
+      if (BOX_SEP_RE.test(t)) continue;   // 「－」の区切りマスは飛ばす
+      return null;                         // 別の項目が始まっている
+    }
+    if (slots.length < 4 || slots.length !== ds.length) return null;
+    return { slots: slots, digits: ds };
+  }
   function appendParaValue(doc, pEl, raw, plan, vals) {
     var text = (plan.zipMark && plan.key === 'addr' && vals.zip)
       ? vals.zip + '　' + vals.addr : withUnit(plan.key, vals[plan.key], '');
@@ -1352,10 +1407,7 @@
     var run = doc.createElementNS(W_NS, 'w:r');
     var rPrSrc = runs.length ? runs[runs.length - 1].getElementsByTagNameNS(W_NS, 'rPr')[0] : null;
     if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
-    var tEl = doc.createElementNS(W_NS, 'w:t');
-    tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
-    tEl.textContent = sep + text;
-    run.appendChild(tEl);
+    appendTextRuns(doc, run, sep + text);
     pEl.appendChild(run);
     return text;
   }
@@ -1548,6 +1600,31 @@
             continue;
           }
         }
+        // (1.5) 1桁ずつのマスが並ぶ欄（法人番号・事業所番号）は、1マスに1桁ずつ入れる
+        var boxes = digitBoxPlan(key, vals[key], tcs, tcol);
+        if (boxes) {
+          var boxSlot = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|box';
+          if (wroteSlot[boxSlot]) continue;
+          wroteSlot[boxSlot] = 1;
+          var rPrBox = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
+          boxes.slots.forEach(function (ci2, di) {
+            var bc = tcs[ci2];
+            var bps = childrenNS(bc, W_NS, 'p');
+            var bp = bps.length ? bps[0] : bc.appendChild(doc.createElementNS(W_NS, 'w:p'));
+            var br = doc.createElementNS(W_NS, 'w:r');
+            if (rPrBox) br.appendChild(rPrBox.cloneNode(true));
+            var bt = doc.createElementNS(W_NS, 'w:t');
+            bt.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+            bt.textContent = boxes.digits.charAt(di);
+            br.appendChild(bt);
+            bp.appendChild(br);
+            if (loc0) pvMarks[loc0.t + '-' + loc0.r + '-' + ci2] = 'new';
+          });
+          usedKeys[key] = 1;
+          fills.push({ where: '表の「' + label + '」の欄（1マスに1桁ずつ・' + boxes.slots.length + 'マス）',
+                       key: key, value: boxes.digits });
+          continue;
+        }
         // (2) 単位だけが置かれた欄（別の列の書式）を壊さない
         if (unitCellConflict(key, existing, vals[key])) {
           var sid1 = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key;
@@ -1593,13 +1670,7 @@
         // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
         var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
         if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
-        String(withZip(key, withUnit(key, vals[key], prev), prev, vals)).split(/\r?\n/).forEach(function (line, idx) {
-          if (idx) run.appendChild(doc.createElementNS(W_NS, 'w:br'));
-          var t = doc.createElementNS(W_NS, 'w:t');
-          t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
-          t.textContent = line;
-          run.appendChild(t);
-        });
+        appendTextRuns(doc, run, withZip(key, withUnit(key, vals[key], prev), prev, vals));
         p.appendChild(run);
         usedKeys[key] = 1;
         wroteSlot[slotId] = 1;
