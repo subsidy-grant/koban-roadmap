@@ -927,6 +927,8 @@
       // ただし「〒」だけの欄は郵便番号のラベルそのものなので、落とすと空になって拾えなくなる
       .replace(/^(.*[^〒].*)$/, function (m) { return m.replace(/^〒/, '').replace(/〒$/, ''); })
       .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+      // 「雇用保険適用事業所番号11桁」のように桁数を書き添えた項目名がある
+      .replace(/[0-9]+桁$/, '')
       .replace(/欄$/, '');
   }
   // 上から順に試して最初に全体一致したものを採用。あいまいなラベル
@@ -936,27 +938,31 @@
     { key: 'zip',       re: /^(郵便番号|〒)$/ },
     { key: 'hokenNo',   re: /^(雇用保険適用事業所番号|適用事業所番号|事業所番号)$/ },
     { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地|事業場の所在地|雇用保険適用事業所の所在地)$/ },
-    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所の名称|申請者名|申請事業者名|会社名|企業名|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業場の名称|事業場名|雇用保険適用事業所の名称)$/ },
+    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
     { key: 'kana',      re: /^(事業者名フリガナ|名称フリガナ|会社名フリガナ)$/ },
     { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名)$/ },
     { key: 'title',     re: /^(代表者の役職|代表者役職|役職名|役職)$/ },
     // 「氏名」だけの欄には入れない。誰の氏名か決まらず、面談シートの
     // 対象労働者欄・代替要員欄に代表者名を入れてしまう事故が実際に起きた（7様式）。
     // 事業主のものだと分かる言い方のときだけ入れる
-    { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|申請者氏名|代表取締役氏名|事業主氏名|事業主の氏名|申請事業主氏名|申請者の氏名)$/ },
+    // 「使用者側代表者名」は労働者側の代表と対になる言い方で、事業主側＝自社の代表者
+    { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|申請者氏名|代表取締役氏名|事業主氏名|事業主の氏名|申請事業主氏名|申請者の氏名|使用者側代表者名|使用者側代表者氏名|使用者側の代表者名)$/ },
     { key: 'repKana',   re: /^(代表者フリガナ|代表者氏名フリガナ)$/ },
     { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先)$/ },
     { key: 'fax',       re: /^(FAX|FAX番号|fax|Fax|ファックス|ファックス番号)$/ },
     { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス|連絡先メールアドレス|担当者メールアドレス)$/ },
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
-    { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等|資本金又は出資の総額|資本金の額又は出資の総額)$/ },
-    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数)$/ },
+    // 「資本の額」（資本「金」が付かない）が雇用関係助成金の様式では多い
+    { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等|資本金又は出資の総額|資本金の額又は出資の総額|資本の額又は出資の総額|資本の額若しくは出資の総額|企業の資本の額または出資の総額|企業の資本の額又は出資の総額|資本の額|出資の総額)$/ },
+    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|企業全体で常時使用する労働者数|企業全体で常時雇用する労働者数|企業全体で常時雇用する労働者の数|企業全体の常時雇用する労働者の数|企業全体の常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数)$/ },
     // 「主たる業種」の欄は「分類番号」と「分類項目名」に分かれていることがある。
     // 番号（例：78）ではなく名前（美容業）が入るのは分類項目名のほう
     { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
     { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名|申請担当者|事業所の担当者)$/ },
-    { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ }
+    { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ },
+    // 「法人名及び事業主の氏名」のように、1つの欄に会社名と代表者名を続けて書く様式がある
+    { key: 'nameRep',   re: /^(法人名及び事業主の氏名|法人名及び代表者氏名|名称及び代表者職氏名|名称及び代表者氏名|事業主名及び代表者名|事業所名及び代表者名)$/ }
   ];
 
   // 画面に理由を出すとき、キーではなく人が読む名前で書く
@@ -965,7 +971,8 @@
     titleRep: '代表者職氏名', title: '代表者の役職', rep: '代表者氏名', repKana: '代表者フリガナ',
     tel: '電話番号', fax: 'FAX番号', mail: 'メールアドレス', founded: '設立年月日',
     capital: '資本金', employees: '従業員数', industry: '業種', business: '事業内容',
-    staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号'
+    staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号',
+    nameRep: '事業者名と代表者氏名'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
 
@@ -989,6 +996,11 @@
     return AMBIGUOUS_RE.test(normLabel(text));
   }
   var AMBIGUOUS_WHY = 'この欄は「氏名」としか書かれておらず、対象労働者や代替要員の欄のことがあるため、入れませんでした。ご自身でご記入ください';
+  // 「所属・役職及び氏名」「職氏名」は役職も書く欄。氏名だけでは足りない
+  var TITLE_AND_NAME_RE = /^(職氏名|所属・役職及び氏名|所属役職及び氏名|職・氏名)$/;
+  function ambiguousKey(text, vals) {
+    return (TITLE_AND_NAME_RE.test(normLabel(text)) && vals.titleRep) ? 'titleRep' : 'rep';
+  }
 
   // その欄の中身が、いま入れている会社情報のどれかと同じなら、
   // それは直前に自分で入れた値。上から別の項目を書くと先に入れた値が消える
@@ -1031,13 +1043,29 @@
   // 所在地の欄に「（〒　　　－　　　　）」と印字されていることがある。
   // そのまま住所で上書きすると郵便番号を書く枠が消えるので、
   // 郵便番号が分かっているときは郵便番号ごと書く。
+  // 「所在地」の右のセルに「〒」とだけ印字されていることがある。
+  // これは郵便番号の項目名ではなく、住所を書く欄の頭に付いた印。
+  // 項目名と読んで断念すると、住所も郵便番号もどこにも入らなくなる
+  var ZIP_FRAME_RE = /^〒[\s　0-9０-９\-−ー－]*$/;
+  function isZipFrame(text) {
+    return ZIP_FRAME_RE.test(String(text || '').replace(/[（）()]/g, ''));
+  }
   function withZip(key, value, existing, vals) {
     if (key !== 'addr' || !vals || !vals.zip) return value;
     if (!/〒/.test(String(existing || ''))) return value;
     return '〒' + vals.zip + '　' + value;
   }
+  // 資本金は桁が多く、区切りが無いと読み違える。事務では3桁区切りで書く
+  function formatVal(key, value) {
+    if (key === 'capital') {
+      var d = toHankaku(String(value)).replace(/[,，\s　]/g, '');
+      if (/^[0-9]+$/.test(d)) return d.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, ',');
+    }
+    return String(value);
+  }
   var UNIT_SUFFIX_RE = /^(人|名|円|万円|千円)$/;
   function withUnit(key, value, existing) {
+    value = formatVal(key, value);
     var u = String(existing || '').replace(/[\s　]+/g, '');
     return UNIT_SUFFIX_RE.test(u) ? String(value) + u : String(value);
   }
@@ -1071,10 +1099,21 @@
   var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所)/;
   // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
   // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
+  // 項目名そのものが「誰の欄か」を兼ねていることがある（「①事業主名」など）。
+  // 自社を名指しする語だけを目印として残す。「事業所名」のような広い語は
+  // 代理人の欄にも出てくるので目印にしない
+  var OWNER_SELF_STRONG = /(申請事業主|事業主|申請者|申請事業者|補助事業者|届出者|提出者)/;
   function ownerKind(text) {
     var t = String(text || '').replace(/[\s　]+/g, '');
-    if (!t || t.length > 24) return null;
-    if (matchLabel(text)) return null;
+    // 「代理人又は社会保険労務士（提出代行者・事務代理者の表示）」のように
+    // 括弧の注記が長い見出しがある。括弧の中を除いた長さで見る
+    var tShort = t.replace(/[（(][^（）()]*[）)]/g, '') || t;
+    // 括弧の注記だけが長いものは見出しとして読む。様式の題名のように
+    // 全体が長いものは見出しではない（対象労働者一覧などの語を含むため）
+    if (!t || t.length > 40 || tShort.length > 24) return null;
+    if (matchLabel(text)) {
+      return (OWNER_SELF_STRONG.test(t) && !OWNER_OTHER.test(t)) ? 'self' : null;
+    }
     if (OWNER_OTHER.test(t)) return 'other';
     if (OWNER_SELF.test(t)) return 'self';
     return null;
@@ -1096,6 +1135,7 @@
   }
   function fieldLabel(key) {
     if (key === 'titleRep') return '代表者の役職と氏名';
+    if (key === 'nameRep') return '事業者名と代表者の氏名';
     for (var i = 0; i < FIELDS.length; i++) if (FIELDS[i].id === key) return FIELDS[i].label;
     return key;
   }
@@ -1108,6 +1148,9 @@
     });
     if (vals.title || vals.rep) {
       vals.titleRep = (vals.title || '') + (vals.title && vals.rep ? '　' : '') + (vals.rep || '');
+    }
+    if (vals.name && (vals.titleRep || vals.rep)) {
+      vals.nameRep = vals.name + '　' + (vals.titleRep || vals.rep);
     }
     return vals;
   }
@@ -1166,9 +1209,14 @@
     return '<td' + (mark ? ' class="pv-' + mark + '"' : '') + '>' + esc(t) + '</td>';
   }
   // Word：表だけを描く（会社情報を入れられるのは表のセルだけのため）
-  function docxPreviewHTML(doc, marks) {
+  function docxPreviewHTML(doc, marks, paraPv) {
     var tbls = doc.getElementsByTagNameNS(W_NS, 'tbl');
     var out = '';
+    if (paraPv && paraPv.length) {
+      out += '<p class="pv-ttl">本文に入れた欄</p><div class="pv-wrap"><table class="pv"><tbody>' +
+        paraPv.map(function (t) { return '<tr>' + pvCell(t, 'new') + '</tr>'; }).join('') +
+        '</tbody></table></div>';
+    }
     for (var t = 0; t < tbls.length; t++) {
       var trs = childrenNS(tbls[t], W_NS, 'tr');
       if (!trs.length) continue;
@@ -1222,6 +1270,116 @@
       (cut ? '<p class="pv-none">行が多いため、値のある行の先頭' + PV_MAX_ROWS + '行までを表示しています。</p>' : '');
   }
 
+  // ---- Word：表を使わず、段落で作られた記名欄に入れる ----
+  // 「所在地<タブ>」「代表者職氏名<空白>」のように、項目名のうしろに
+  // タブや全角スペースで記入する余白を置いた様式がある（申立書など）。
+  // タブは \t として読む
+  function paraTextWithTabs(pEl) {
+    var all = pEl.getElementsByTagNameNS(W_NS, '*'), s = '';
+    for (var i = 0; i < all.length; i++) {
+      var nd = all[i];
+      if (nd.localName !== 't' && nd.localName !== 'tab') continue;
+      // w:pPr の中の w:tab は「タブ位置の設定」で、文字としてのタブではない
+      if (nd.localName === 'tab' && (!nd.parentNode || nd.parentNode.localName !== 'r')) continue;
+      var skip = false, a = nd.parentNode;
+      while (a && a !== pEl) { if (a.localName === 'rt') { skip = true; break; } a = a.parentNode; }
+      if (skip) continue;
+      s += (nd.localName === 'tab') ? '\t' : (nd.textContent || '');
+    }
+    return s;
+  }
+  var PARA_TAIL_RE = /[\t\s　_＿]+$/;
+  // その段落が記入欄かどうかを見る。記入欄なら {key, zipMark, head} を返す
+  function paraPlan(raw) {
+    var zipMark = false, body = raw;
+    var mz = /^([\s\S]*?)[\s　]*〒[\s　0-9０-９\-−ー－]*$/.exec(raw);
+    if (mz) { zipMark = true; body = mz[1]; }
+    var head = body.replace(PARA_TAIL_RE, '');
+    if (!head) return null;
+    // 「事業所名称：」のようにコロンで終わる書き方は、コロンが項目名の
+    // 終わりの印で、そのうしろが記入欄。余白が無くても記入欄として扱う
+    var colon = /[：:]$/.test(head);
+    if (!zipMark && !colon && head === body) return null;  // 書き込む余白が無い＝ただの文章
+    if (/[。、]$/.test(head)) return null;
+    var flat = head.replace(/[\t\s　]+/g, '');
+    if (flat.length > 24) return null;
+    var key = matchLabel(head);
+    if (!key) {
+      var mp = /^[\s　]*[（(]([^（）()]+)[）)][\s　]*$/.exec(head);
+      if (mp) key = matchLabel(mp[1]);
+    }
+    if (!key) return null;
+    return { key: key, zipMark: zipMark, head: flat };
+  }
+  // 記入欄として置かれた末尾の空白を削る（値がずっと右に出てしまうため）。タブは残す
+  function trimParaTail(pEl) {
+    var all = pEl.getElementsByTagNameNS(W_NS, 't');
+    for (var k = all.length - 1; k >= 0; k--) {
+      var t0 = all[k], inRt = false, a = t0.parentNode;
+      while (a && a !== pEl) { if (a.localName === 'rt') { inRt = true; break; } a = a.parentNode; }
+      if (inRt) continue;
+      var txt = t0.textContent || '';
+      var cut = txt.replace(/[\s　_＿]+$/, '');
+      if (cut !== txt) t0.textContent = cut;
+      if (cut) return;
+    }
+  }
+  // 段落の末尾に値を書き足す（段落の記名欄と、表の右端セルの両方で使う）
+  function appendParaValue(doc, pEl, raw, plan, vals) {
+    var text = (plan.zipMark && plan.key === 'addr' && vals.zip)
+      ? vals.zip + '　' + vals.addr : withUnit(plan.key, vals[plan.key], '');
+    if (!plan.zipMark) trimParaTail(pEl);
+    var sep = (/\t$/.test(raw) || plan.zipMark) ? '' : '　';
+    var runs = childrenNS(pEl, W_NS, 'r');
+    var run = doc.createElementNS(W_NS, 'w:r');
+    var rPrSrc = runs.length ? runs[runs.length - 1].getElementsByTagNameNS(W_NS, 'rPr')[0] : null;
+    if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
+    var tEl = doc.createElementNS(W_NS, 'w:t');
+    tEl.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+    tEl.textContent = sep + text;
+    run.appendChild(tEl);
+    pEl.appendChild(run);
+    return text;
+  }
+  function fillDocxParagraphs(doc, vals, fills, skips, usedKeys, paraPv) {
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p');
+    var allTc = doc.getElementsByTagNameNS(W_NS, 'tc');
+    for (var ci = 0; ci < allTc.length; ci++) {
+      var cps = allTc[ci].getElementsByTagNameNS(W_NS, 'p');
+      for (var cj = 0; cj < cps.length; cj++) cps[cj].__intc = 1;
+    }
+    var owner = null, notedAmbP = 0;
+    for (var pi = 0; pi < allP.length; pi++) {
+      var pEl = allP[pi];
+      if (pEl.__intc) continue;
+      var raw = paraTextWithTabs(pEl);
+      if (!raw.replace(/[\t\s　]+/g, '')) continue;
+      // 「（代理人の場合）」のように、ここから誰の欄かを示す見出し
+      // 「申請事業主　名　称」のように、項目名が「誰の欄か」も兼ねていることがある。
+      // 目印として覚えたうえで、記入もする
+      var ok2 = ownerKind(raw.replace(/\t/g, ''));
+      if (ok2) owner = { kind: ok2, text: raw.replace(/[\t\s　]+/g, '').slice(0, 16) };
+      var plan = paraPlan(raw);
+      if (!plan) {
+        if (ambiguousLabel(raw.replace(PARA_TAIL_RE, '')) && !notedAmbP) {
+          notedAmbP = 1;
+          skips.push({ key: 'rep', label: raw.replace(/[\t\s　]+/g, ' ').trim(), reason: AMBIGUOUS_WHY });
+        }
+        continue;
+      }
+      if (!vals[plan.key]) continue;
+      if (owner && owner.kind === 'other') {
+        skips.push({ key: plan.key, label: plan.head,
+          reason: ownerSkipReason(owner, '本文の「' + plan.head + '」の欄') });
+        continue;
+      }
+      var text = appendParaValue(doc, pEl, raw, plan, vals);
+      usedKeys[plan.key] = 1;
+      if (paraPv) paraPv.push(paraTextWithTabs(pEl).replace(/\t/g, '　'));
+      fills.push({ where: '本文の「' + plan.head + '」の欄', key: plan.key, value: text });
+    }
+  }
+
   function fillDocx(xmlText, vals, overwrite) {
     var doc = parseXml(xmlText);
     var fills = [], skips = [], usedKeys = {}, pvMarks = {};
@@ -1259,6 +1417,17 @@
       tbl.__hcs = okRow ? hcs : null;
       return tbl.__hcs;
     }
+    // その表の中でいちばん列数の多い行の列数
+    function maxCellsOf(tbl) {
+      if (tbl.__maxc !== undefined) return tbl.__maxc;
+      var mrows = childrenNS(tbl, W_NS, 'tr'), mx = 0;
+      for (var k = 0; k < mrows.length; k++) {
+        var cn = childrenNS(mrows[k], W_NS, 'tc').length;
+        if (cn > mx) mx = cn;
+      }
+      tbl.__maxc = mx;
+      return mx;
+    }
     function headerKeyOfColumn(tbl, colIdx) {
       var hcs = headerCellsOf(tbl);
       if (!hcs || colIdx >= hcs.length) return null;
@@ -1275,7 +1444,7 @@
           // 「氏名」だけでは誰の氏名か決まらない。「事業主」などの見出しの下に
           // あるときだけ代表者名を入れる（面談シートの対象労働者欄に入れないため）
           if (own && own.kind === 'self') {
-            key = 'rep';
+            key = ambiguousKey(labelRaw, vals);
           } else if (!notedAmb) {
             notedAmb = 1;
             skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(), reason: AMBIGUOUS_WHY });
@@ -1291,7 +1460,10 @@
         var existing = textWithoutRuby(target, W_NS, 'rt').trim();
         var tcol = i + 1;
         // 右が「企業全体」のような小見出しで、その先が空欄なら、そちらに入れる
-        if (looksSublabel(existing) && !matchLabel(existing) && tcs[i + 2]) {
+        // 単位だけのセル（「円」など）は小見出しではなく記入欄の書式。
+        // 読み飛ばすと、その先の別項目の見出しに当たって入れられなくなる
+        if (looksSublabel(existing) && !matchLabel(existing) &&
+            !UNIT_ONLY_RE.test(existing.replace(/[\s　]+/g, '')) && tcs[i + 2]) {
           var nx = textWithoutRuby(tcs[i + 2], W_NS, 'rt').trim();
           // 次が空欄、または種類の合う単位欄（「人」など）ならそちらが記入欄
           if (!nx || !unitCellConflict(key, nx)) { target = tcs[i + 2]; existing = nx; tcol = i + 2; }
@@ -1319,6 +1491,9 @@
           }
         }
         var tKey = matchLabel(existing);
+        // 住所を入れる先が「〒」だけの欄なら、それは郵便番号の項目名ではなく
+        // 住所欄の頭の印。郵便番号ごと書く（withZip）
+        if (tKey === 'zip' && key === 'addr' && isZipFrame(existing)) tKey = null;
         if (tKey) {
           var sidT = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|h';
           if (!notedSlot[sidT]) {
@@ -1362,7 +1537,9 @@
           continue;
         }
         // (3) 同じ列に何行も同じ値を書かない（一覧表の全行を埋めてしまうため）
-        var slotId = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key;
+        // 項目名まで含めて数える。同じ列でも「②企業全体の労働者数」と
+        // 「⑥この事業場の労働者数」は別の欄で、両方に書く必要がある
+        var slotId = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|' + normLabel(labelRaw);
         if (wroteSlot[slotId]) {
           if (!notedSlot[slotId]) {
             notedSlot[slotId] = 1;
@@ -1412,8 +1589,51 @@
           key: key, value: withZip(key, withUnit(key, vals[key], prev), prev, vals) });
       }
     }
+    // 表の右端のセルが「項目名＋記入する余白」になっている様式に入れる。
+    // 「所在地　〒＿＿＿」のように、ラベルと記入欄が同じセルにある作り。
+    // 一覧表（見出しが3つ以上並ぶ表）と、すでに書き込んだセルは対象外
+    var edgeNoted = {};
+    for (var er = 0; er < trs.length; er++) {
+      var ecs = childrenNS(trs[er], W_NS, 'tc');
+      if (ecs.length < 1 || ecs.length > 3) continue;
+      var eLoc = trs[er].__loc;
+      if (!eLoc || !trs[er].__tbl || headerCellsOf(trs[er].__tbl)) continue;
+      // 同じ表の中でいちばん列数の多い行より列が少ない行は、記名欄ではなく
+      // 表の一部（一覧表の見出し、チェック表の項目名）。そこには書かない
+      if (ecs.length < maxCellsOf(trs[er].__tbl)) continue;
+      if (pvMarks[eLoc.t + '-' + eLoc.r + '-' + (ecs.length - 1)]) continue;
+      var eCell = ecs[ecs.length - 1];
+      // 記入するための空行が足してあることがある。中身のある段落が
+      // 1つだけのセルを記名欄と見て、その段落の末尾に書く
+      var eps = childrenNS(eCell, W_NS, 'p'), eIdx = -1, eCnt = 0;
+      for (var eq = 0; eq < eps.length; eq++) {
+        if (paraTextWithTabs(eps[eq]).replace(/[\t\s　]+/g, '')) { eIdx = eq; eCnt++; }
+      }
+      if (eCnt !== 1) continue;
+      var eRaw = paraTextWithTabs(eps[eIdx]);
+      // 余白が無くても、右端のセルはその欄の記入場所なので入れてよい
+      var ePlan = paraPlan(eRaw) || paraPlan(eRaw + '　');
+      if (!ePlan || !vals[ePlan.key]) continue;
+      var eOwn = nearestOwner(markers, ecs.length - 1, er, 12);
+      var eLabel = ePlan.head;
+      if (eOwn && eOwn.kind === 'other') {
+        skips.push({ key: ePlan.key, label: eLabel,
+          reason: ownerSkipReason(eOwn, '表の「' + eLabel + '」の欄') });
+        continue;
+      }
+      var eSlot = eLoc.t + '|' + ePlan.key + '|' + eLabel;
+      if (edgeNoted[eSlot]) continue;
+      edgeNoted[eSlot] = 1;
+      var eText = appendParaValue(doc, eps[eIdx], eRaw, ePlan, vals);
+      usedKeys[ePlan.key] = 1;
+      pvMarks[eLoc.t + '-' + eLoc.r + '-' + (ecs.length - 1)] = 'new';
+      fills.push({ where: '表の「' + eLabel + '」の欄（同じ枠の中）', key: ePlan.key, value: eText });
+    }
+    // 表のあとに、段落だけで作られた記名欄を見る
+    var paraPv = [];
+    fillDocxParagraphs(doc, vals, fills, skips, usedKeys, paraPv);
     return { fills: fills, skips: skips, usedKeys: usedKeys,
-      preview: fills.length ? docxPreviewHTML(doc, pvMarks) : '',
+      preview: fills.length ? docxPreviewHTML(doc, pvMarks, paraPv) : '',
       xml: fills.length ? serializeXml(doc) : null };
   }
 
@@ -1580,7 +1800,7 @@
         var ownA = nearestOwner(markers, pos.c, pos.r, 30);
         if (!key && ambiguousLabel(labelRaw)) {
           if (ownA && ownA.kind === 'self') {
-            key = 'rep';
+            key = ambiguousKey(labelRaw, vals);
           } else if (!notedAmbX) {
             notedAmbX = 1;
             skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
@@ -1659,7 +1879,7 @@
               continue;
             }
             if (bad && bad.reason === '数式') {
-              skips.push({ key: key, label: label, reason: '並んだ欄に数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + ' の並び）' });
+              skips.push({ key: key, label: label, reason: '並んだ欄が様式の自動計算になっているため、触りませんでした（' + sheetName + ' の ' + tref + ' の並び）' });
               continue;
             }
           }
@@ -1687,11 +1907,13 @@
             var xsB = sheetName + '|' + tc + '|' + key + '|b';
             if (!notedSlot[xsB]) {
               notedSlot[xsB] = 1;
-              skips.push({ key: key, label: label, reason: '隣の欄は「' + xBlk + '」を書く欄なので、入れませんでした（' + sheetName + ' の ' + tref + '）' });
+              skips.push({ key: key, label: label, reason: '隣の欄は「' + xBlk + '」を書く欄なので、入れませんでした（' + sheetName + ' の ' + tref + '）' +
+              (xBlk === '分類番号' ? '。日本標準産業分類の中分類の2桁の番号を書く欄です。番号の一覧はこの様式の下のほうにあります' : '') });
             }
             continue;
           }
           var xKey = matchLabel(u.prev);
+          if (xKey === 'zip' && key === 'addr' && isZipFrame(u.prev)) xKey = null;
           if (xKey) {
             // 隣がまた項目名なら、そこは記入欄ではない。その先が空欄ならそちらへ
             var nc = cellAt(tc + 1, tr, false), nu = usable(nc);
@@ -1717,7 +1939,7 @@
           continue;
         }
         // 同じ列に何行も同じ値を書かない
-        var xslot = sheetName + '|' + tc + '|' + key;
+        var xslot = sheetName + '|' + tc + '|' + key + '|' + normLabel(labelRaw);
         if (wroteSlot[xslot]) {
           if (!notedSlot[xslot]) {
             notedSlot[xslot] = 1;
@@ -1727,7 +1949,7 @@
         }
         if (!u.ok) {
           if (u.reason === '数式') {
-            skips.push({ key: key, label: label, reason: '隣のセルに数式が入っているため触りませんでした（' + sheetName + ' の ' + tref + '）' });
+            skips.push({ key: key, label: label, reason: 'この欄は様式が自動で入れる欄（計算式）なので、触りませんでした（' + sheetName + ' の ' + tref + '）。ほかのシートに入れた内容がそのまま出ます' });
           } else if (u.prev !== vals[key]) {
             skips.push({ key: key, label: label, reason: 'すでに「' + clip(u.prev) + '」と書かれているため、上書きしませんでした（' + sheetName + ' の ' + tref + '）' });
           }
