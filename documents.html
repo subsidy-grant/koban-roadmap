@@ -224,6 +224,15 @@
     border-left: 4px solid var(--accent); padding-left: 0.6rem; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #afProgram { width: 100%; }
+  .af-filter { margin-bottom: 0.7rem; }
+  .af-filter label { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.25rem; }
+  .af-filter input[type="search"] { width: 100%; font: inherit; font-size: 0.95rem;
+    padding: 0.5rem 0.6rem; min-height: 44px; border: 1px solid var(--line);
+    border-radius: 6px; background: var(--paper-raised); color: var(--ink); }
+  .af-filter input[type="search"]:focus-visible { outline: 3px solid var(--accent); outline-offset: -1px; }
+  .af-filter-row { margin-top: 0.5rem; }
+  .af-filter-row select { width: 100%; }
+  #afKindRow button.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   .af-forms { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
   .af-forms ul.checks .fn { word-break: break-word; }
@@ -235,10 +244,94 @@
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.7rem; min-height: 36px; cursor: pointer; }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
+  .af-dl-ttl { font-size: 0.86rem; font-weight: 700; margin: 0.7rem 0 0.2rem; }
+  .af-dl-link { display: block; padding: 0.5rem 0.2rem; min-height: 44px; font-size: 0.9rem; }
   .af-summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; }
   /* 取得できなかった様式の案内。注意ではなく「次にやること」なので青で出す */
   .af-manual { border-color: var(--accent-soft); }
   .af-manual .btn-row { margin-top: 0.6rem; }
+  /* ---- 記入結果のプレビュー ----
+     表の形のまま出して、入れたセルだけ色を付ける。書体や罫線は再現しない
+     （目的は「どの欄に入ったか」の確認であって、体裁の確認ではない）。 */
+  .pv-box { margin: 1rem 0 0; padding: 0.8rem 0.9rem; background: var(--paper);
+    border: 1px solid var(--line); border-radius: 10px; }
+  .pv-head { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.4rem; }
+  .pv-legend { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.4rem; }
+  .pv-chip { display: inline-block; width: 0.95rem; height: 0.95rem; border: 1px solid var(--line);
+    vertical-align: -0.15rem; margin-right: 0.25rem; }
+  .pv-note { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.6rem; }
+  .pv-ttl { font-size: 0.84rem; color: var(--ink-soft); margin: 0.7rem 0 0.3rem;
+    border-left: 3px solid var(--accent); padding-left: 0.5rem; }
+  .pv-wrap { overflow: auto; max-height: 26rem; border: 1px solid var(--line);
+    background: var(--paper-raised); -webkit-overflow-scrolling: touch; }
+  table.pv { border-collapse: collapse; width: auto; min-width: 0; font-size: 0.78rem;
+    background: var(--paper-raised); }
+  table.pv td, table.pv th { border: 1px solid var(--line); padding: 0.25rem 0.4rem;
+    white-space: nowrap; vertical-align: middle; max-width: 16rem; overflow: hidden; }
+  table.pv th { background: var(--accent-wash); color: var(--ink-soft); font-weight: 400;
+    font-size: 0.72rem; text-align: center; position: sticky; top: 0; }
+  table.pv-sheet th:first-child { left: 0; z-index: 1; }
+  table.pv td.pv-new { background: var(--sage-wash); color: var(--ink); font-weight: 700;
+    outline: 2px solid var(--sage); outline-offset: -2px; }
+  table.pv td.pv-ow { background: var(--rust-wash); color: var(--ink); font-weight: 700;
+    outline: 2px solid var(--rust); outline-offset: -2px; }
+  .pv-chip.pv-new { background: var(--sage-wash); border-color: var(--sage); }
+  .pv-chip.pv-ow { background: var(--rust-wash); border-color: var(--rust); }
+  .pv-none { font-size: 0.82rem; color: var(--ink-faint); margin: 0.3rem 0 0; }
+
+  /* ---- 07 手順とスケジュール（ガント） ----
+     左に「やること」、右に帯。帯は日付の目盛りに合わせて置く。
+     色は既存の3色の役割どおり（緑=済んだこと・青=案内・橙=落とすと失格） */
+  .gt-anchors { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
+  .gt-anchors .arow { margin-top: 0.7rem; }
+  .gt-anchors .arow:first-of-type { margin-top: 0.3rem; }
+  .gt-anchors label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .gt-anchors .anote { font-size: 0.82rem; color: var(--ink-soft); margin: 0.15rem 0 0; }
+  .gt-anchors input[type="date"] { font: inherit; font-size: 0.95rem; padding: 0.45rem 0.5rem;
+    min-height: 44px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper-raised); color: var(--ink); }
+  .gt-prog { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0 0 0.6rem; }
+  .gt-prog .prog { flex: 1; min-width: 10rem; margin: 0; }
+  .gt-prog .num { font-size: 0.88rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .gt-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper-raised); -webkit-overflow-scrolling: touch; }
+  .gt-inner { min-width: 100%; }
+  .gt-row { display: flex; align-items: stretch; border-bottom: 1px dashed var(--line); }
+  .gt-row:last-child { border-bottom: 0; }
+  .gt-row.phase { background: var(--accent-wash); font-size: 0.84rem; font-weight: 700;
+    padding: 0.35rem 0.6rem; display: block; border-bottom: 1px solid var(--line); }
+  .gt-left { flex: none; width: 19rem; padding: 0.5rem 0.6rem; border-right: 1px solid var(--line);
+    background: var(--paper-raised); position: sticky; left: 0; z-index: 2; }
+  .gt-name { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; line-height: 1.6; }
+  .gt-name input[type="checkbox"] { width: 20px; height: 20px; margin-top: 0.15rem; flex: none;
+    accent-color: var(--sage); }
+  .gt-row.done .gt-name span.t { color: var(--ink-faint); text-decoration: line-through; }
+  .gt-meta { font-size: 0.76rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; }
+  .gt-badge { display: inline-block; font-size: 0.7rem; border-radius: 3px; padding: 0 0.3rem;
+    border: 1px solid; margin-left: 0.3rem; white-space: nowrap; }
+  .gt-b-hard { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
+  .gt-b-un { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
+  .gt-right { flex: 1; position: relative; min-height: 44px; }
+  .gt-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 14px;
+    border-radius: 7px; background: var(--accent); }
+  .gt-bar.hard { background: var(--rust); }
+  .gt-bar.doneb { background: var(--sage); }
+  .gt-bar.unknown { background: repeating-linear-gradient(45deg, var(--line), var(--line) 4px, transparent 4px, transparent 8px);
+    border: 1px solid var(--line); }
+  .gt-head { display: flex; border-bottom: 1px solid var(--ink); position: sticky; top: 0; z-index: 3;
+    background: var(--paper-raised); }
+  .gt-head .gt-left { font-size: 0.8rem; color: var(--ink-soft); }
+  .gt-ticks { flex: 1; position: relative; height: 1.9rem; }
+  .gt-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line);
+    font-size: 0.7rem; color: var(--ink-soft); padding-left: 0.2rem; white-space: nowrap; }
+  .gt-today { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--rust); z-index: 1; }
+  .gt-late { color: var(--rust); font-weight: 700; }
+  .gt-warn { font-size: 0.8rem; color: var(--ink-soft); margin: 0.2rem 0 0 1.7rem; line-height: 1.7; }
+  .gt-warn.hard { color: var(--rust); }
+  .gt-src { font-size: 0.74rem; color: var(--ink-faint); margin: 0.15rem 0 0 1.7rem; }
+  .gt-src a { color: inherit; }
+  @media (max-width: 620px) { .gt-left { width: 13rem; } }
   .fillcard { position: relative; padding-right: 3rem; }
   .card-close { position: absolute; top: 0.6rem; right: 0.6rem; border: 1px solid var(--line);
     background: var(--paper); color: var(--ink-soft); border-radius: 6px; font: inherit;
@@ -299,11 +392,11 @@
     <ol>
       <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
       <li><a href="#autofill">制度を選んで、様式に会社情報を入れる</a>（Word・Excel）</li>
-      <li><a href="#houjin">法人番号を確かめる</a></li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
       <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
       <li><a href="#deadlines">締切一覧</a></li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
+      <li><a href="#gantt">申請の手順とスケジュール</a>（やることを分けて帯で表示）</li>
     </ol>
   </nav>
 
@@ -328,15 +421,26 @@
 
     <div class="picker">
       <p class="step-ttl">手順1　制度を選ぶ</p>
+      <div class="af-filter">
+        <label for="afFilterText">制度名で絞り込む</label>
+        <input type="search" id="afFilterText" placeholder="例：持続化、キャリアアップ、川口" autocomplete="off">
+        <div class="af-filter-row">
+          <label for="afFilterArea">地域</label>
+          <select id="afFilterArea"><option value="">すべての地域</option></select>
+        </div>
+        <div class="af-tools" id="afKindRow">
+          <button type="button" data-kind="all" class="active">すべて</button>
+          <button type="button" data-kind="national">国の制度</button>
+          <button type="button" data-kind="pref">都道府県</button>
+          <button type="button" data-kind="city">市区町村</button>
+        </div>
+      </div>
       <label class="sr-only" for="afProgram">制度</label>
       <select id="afProgram"><option value="">制度を選んでください</option></select>
       <p class="dz-sub" id="afProgNote" style="margin:0.6rem 0 0;"></p>
     </div>
 
     <div id="afForms"></div>
-
-    <label class="ow-row"><input type="checkbox" id="owToggle">
-      すでに記入がある欄も上書きする（元の内容は結果の一覧に表示します。数式のセルは触りません）</label>
 
     <div class="warn">
       <strong>自動で入れた内容を、そのまま提出しないでください。</strong>
@@ -358,49 +462,20 @@
 
     <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);">
       <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
-      当サイトの様式一覧（下の07）に載っているファイルのうち、Word（.docx）とExcel（.xlsx）の421件がこの自動入力の対象です。</p>
+      当サイトの様式一覧（下の06）に載っているファイルのうち、Word（.docx）とExcel（.xlsx）の421件がこの自動入力の対象です。</p>
       <ul style="margin:0;padding-left:1.2rem;">
         <li><strong>様式を自動で取り寄せられるとは限りません。</strong>2026年8月2日に、様式の配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所（様式64件）でした。厚生労働省・農林水産省・中小機構・東京都中小企業振興公社などの56か所は、他サイトからの取得を許可しない設定（CORS）です。この場合はチェックした様式ごとに公式ページへのボタンを出しますので、落としたファイルを「様式のファイルを直接置く」に入れてください。同じように記入してお返しします。</li>
         <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
-        <li>郵便番号「〒113−0021」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
+        <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
         <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
         <li>古い形式（.doc / .xls）はブラウザでは開けないため対象外です。WordやExcelで開いて「.docx / .xlsx」形式で保存し直すと使えます。</li>
       </ul>
     </div>
   </section>
 
-  <!-- 03 法人番号 -->
-  <section id="houjin">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>法人番号を確かめる</h2></div>
-    <p class="section-sub">法人番号は13桁で、1桁目が誤りを見つけるための検査用数字になっています。上の欄に入力すると、この桁の計算が合っているかをその場で確かめます（通信はしません）。個人事業主の方に法人番号はありません。空欄のままで構いません。</p>
-
-    <div class="pcard">
-      <p class="meta" style="margin-bottom:0.6rem;">上の「法人番号」欄に入力すると、ここに結果が出ます。</p>
-      <p id="houjinResult" style="margin:0;font-size:0.98rem;">まだ入力されていません。</p>
-      <p style="margin:0.9rem 0 0;font-size:0.9rem;">
-        番号が分からないときは、国税庁の
-        <a href="https://www.houjin-bangou.nta.go.jp/" target="_blank" rel="noopener noreferrer">法人番号公表サイト ↗</a>
-        で調べられます（無料・登録不要）。開いたら「商号又は名称」の欄に会社名を入れて検索してください。
-        <button type="button" class="btn ghost" id="copyNameBtn" style="font-size:0.85rem;padding:0.4rem 0.9rem;margin-left:0.3rem;">会社名を写す</button>
-      </p>
-      <p style="margin:0.5rem 0 0;font-size:0.85rem;color:var(--ink-faint);">
-        ※検索結果を直接開くリンクは作れません。公表サイトの検索は送信方式（POST）で、
-        会社名をURLに載せて渡すことができないためです（2026年7月31日 16:05 JST にフォームの作りを確認）。
-      </p>
-    </div>
-
-    <div class="warn">
-      <strong>「法人番号を入れたら会社名と住所が自動で入る」形にはできませんでした。</strong>
-      国税庁の法人番号Web-APIと経済産業省のgBizINFOに 2026年7月31日 15:45 JST に問い合わせたところ、
-      どちらも他サイトからの呼び出しを許可する設定（CORS）を返しません。
-      このサイトはサーバーを持たない作りなので、ブラウザから直接呼ぶことができません。
-      上の検索リンクから公表サイトで確認して、お手数ですが写してください。
-    </div>
-  </section>
-
-  <!-- 04 共通書類 -->
+  <!-- 03 共通書類 -->
   <section id="common">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>取り寄せが必要な共通書類</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>取り寄せが必要な共通書類</h2></div>
     <p class="section-sub">様式のダウンロードだけでは申請できません。多くの制度で共通して求められるのが下の書類です。<strong>とくに橙色の行は、自分では発行できず他の人に出してもらう書類</strong>で、ここが間に合わずに締切に届かない原因になります。複数の制度に出す場合、同じ書類を必要な部数だけまとめて取り寄せると1回で済みます。</p>
 
     <p class="section-sub"><span class="who who-sage">全員</span> はほぼどの制度でも要るもの、<span class="who who-accent">法人</span> <span class="who who-accent">個人事業主</span> はどちらかに要るもの、<span class="who who-rust">該当者のみ</span> は条件に当てはまる場合だけ要るものです。</p>
@@ -432,9 +507,9 @@
     <p class="src-note" id="commonSource"></p>
   </section>
 
-  <!-- 05 逆算 -->
+  <!-- 04 逆算 -->
   <section id="leadtime">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切から逆算する</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
     <p class="section-sub">提出の締切日を入れると、上の共通書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
 
     <div class="pcard">
@@ -446,9 +521,9 @@
     <div id="leadResult"></div>
   </section>
 
-  <!-- 06 締切一覧 -->
+  <!-- 05 締切一覧 -->
   <section id="deadlines">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>締切一覧</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切一覧</h2></div>
     <p class="section-sub">下で選んだ制度の締切をまとめて並べます。<strong>日付は各制度の説明文から機械的に拾ったものです。</strong>公募回の追加や前倒しがあるため、実際に出すときは必ず公式ページでご確認ください。</p>
 
     <div class="picker">
@@ -462,20 +537,36 @@
     <div id="deadlineList"></div>
   </section>
 
-  <!-- 07 チェックリスト -->
+  <!-- 06 チェックリスト -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>提出書類のチェックリスト</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>提出書類のチェックリスト</h2></div>
     <p class="section-sub"><strong>公式サイトの様式だけでなく、取り寄せが要る書類も同じ一覧に入れています。</strong>様式はそろったのに証明書が間に合わない、という事態を避けるためです。チェックを付けるとこの端末に残り、次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
     <div id="checkList"></div>
     <p style="margin-top:1.2rem;font-size:0.9rem;color:var(--ink-soft);">
       制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。
     </p>
   </section>
+
+  <!-- 07 手順とスケジュール（ガントチャート） -->
+  <section id="gantt">
+    <div class="section-head"><span class="section-no jp-serif">07</span><h2>申請の手順とスケジュール</h2></div>
+    <p class="section-sub">制度を選び、締切などの日付を入れると、<strong>申請までにやることを1つずつに分けて、いつ着手すればよいかを帯で表示</strong>します。終わった作業にチェックを付けると、進み具合がこの端末に残ります。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
+
+    <div class="picker">
+      <p class="step-ttl">手順1　制度を選ぶ</p>
+      <label class="sr-only" for="gtScheme">制度</label>
+      <select id="gtScheme"><option value="">制度を選んでください</option></select>
+    </div>
+
+    <div id="gtAnchors"></div>
+    <div id="gtOut"></div>
+  </section>
 </main>
 
 <div id="printArea"></div>
 
 <script src="page_data.js"></script>
+<script src="gantt_data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -575,8 +666,7 @@
         var ok = save(K_COMPANY, company);
         showSaved(ok);
         if (f.id === 'houjin') checkHoujin();
-        if (f.id === 'name') updateHoujinSearch();
-        if (f.id === 'zip') lookupZip(node.value);
+            if (f.id === 'zip') lookupZip(node.value);
       });
     });
 
@@ -624,7 +714,6 @@
     try { localStorage.removeItem(K_COMPANY); } catch (e) {}
     renderCompany();
     checkHoujin();
-    updateHoujinSearch();
     var n = document.getElementById('savedNote');
     n.textContent = '消しました。';
     n.style.color = 'var(--ink-soft)';
@@ -997,10 +1086,82 @@
     }
     return out;
   }
+  // ---- プレビュー（記入した結果を、その場で目で確かめられるようにする） ----
+  // 「代理人の欄に入ってしまった」「別人の欄だった」に、保存して開く前に気づけるようにする。
+  var PV_MAX_ROWS = 120, PV_MAX_COLS = 26, PV_MAX_TEXT = 40;
+  function pvCell(text, mark) {
+    var t = String(text == null ? '' : text);
+    if (t.length > PV_MAX_TEXT) t = t.slice(0, PV_MAX_TEXT) + '…';
+    return '<td' + (mark ? ' class="pv-' + mark + '"' : '') + '>' + esc(t) + '</td>';
+  }
+  // Word：表だけを描く（会社情報を入れられるのは表のセルだけのため）
+  function docxPreviewHTML(doc, marks) {
+    var tbls = doc.getElementsByTagNameNS(W_NS, 'tbl');
+    var out = '';
+    for (var t = 0; t < tbls.length; t++) {
+      var trs = childrenNS(tbls[t], W_NS, 'tr');
+      if (!trs.length) continue;
+      var body = '';
+      for (var r = 0; r < trs.length && r < PV_MAX_ROWS; r++) {
+        var tcs = childrenNS(trs[r], W_NS, 'tc'), tr = '';
+        for (var c = 0; c < tcs.length && c < PV_MAX_COLS; c++) {
+          tr += pvCell(textWithoutRuby(tcs[c], W_NS, 'rt'), marks[t + '-' + r + '-' + c]);
+        }
+        body += '<tr>' + tr + '</tr>';
+      }
+      out += '<p class="pv-ttl">表' + (t + 1) + '</p>' +
+        '<div class="pv-wrap"><table class="pv">' + body + '</table></div>';
+    }
+    return out || '<p class="pv-none">この様式には表がありませんでした。</p>';
+  }
+  // Excel：値が入っている範囲だけを、行番号・列記号つきで描く
+  function sheetPreviewHTML(doc, shared, marks) {
+    var rows = doc.getElementsByTagNameNS(S_NS, 'row');
+    var list = [], maxC = 1;
+    for (var i = 0; i < rows.length; i++) {
+      var cs = childrenNS(rows[i], S_NS, 'c'), vals = {}, any = false;
+      for (var j = 0; j < cs.length; j++) {
+        var ref = cs[j].getAttribute('r'), p = parseCellRef(ref);
+        if (!p) continue;
+        var txt = cellString(cs[j], shared);
+        if (!txt && cs[j].getElementsByTagNameNS(S_NS, 'f').length) txt = '（計算式）';
+        if (txt || marks[ref]) {
+          vals[p.c] = txt; any = true;
+          if (p.c > maxC) maxC = p.c;
+        }
+      }
+      if (any) list.push({ r: rows[i].getAttribute('r'), vals: vals });
+    }
+    if (!list.length) return '<p class="pv-none">値の入っているセルがありませんでした。</p>';
+    var cut = list.length > PV_MAX_ROWS;
+    list = list.slice(0, PV_MAX_ROWS);
+    if (maxC > PV_MAX_COLS) maxC = PV_MAX_COLS;
+    var head = '<tr><th></th>';
+    for (var c = 1; c <= maxC; c++) head += '<th>' + numToCol(c) + '</th>';
+    head += '</tr>';
+    var body = '';
+    list.forEach(function (row) {
+      body += '<tr><th>' + esc(row.r) + '</th>';
+      for (var c = 1; c <= maxC; c++) {
+        body += pvCell(row.vals[c], marks[numToCol(c) + row.r]);
+      }
+      body += '</tr>';
+    });
+    return '<div class="pv-wrap"><table class="pv pv-sheet">' + head + body + '</table></div>' +
+      (cut ? '<p class="pv-none">行が多いため、値のある行の先頭' + PV_MAX_ROWS + '行までを表示しています。</p>' : '');
+  }
+
   function fillDocx(xmlText, vals, overwrite) {
     var doc = parseXml(xmlText);
-    var fills = [], skips = [], usedKeys = {};
+    var fills = [], skips = [], usedKeys = {}, pvMarks = {};
     var trs = doc.getElementsByTagNameNS(W_NS, 'tr');
+    // プレビューで位置を示せるように、各行が「何番目の表の何行目か」を覚えておく
+    var tbls = doc.getElementsByTagNameNS(W_NS, 'tbl');
+    for (var ti = 0; ti < tbls.length; ti++) {
+      childrenNS(tbls[ti], W_NS, 'tr').forEach(function (trEl, ri) {
+        trEl.__loc = { t: ti, r: ri };
+      });
+    }
     // 先に「誰の欄か」の見出しを拾っておく（行番号・セル番号で位置を持つ）
     var markers = [];
     for (var mr = 0; mr < trs.length; mr++) {
@@ -1053,16 +1214,21 @@
         });
         p.appendChild(run);
         usedKeys[key] = 1;
+        var loc = trs[r].__loc;
+        if (loc) pvMarks[loc.t + '-' + loc.r + '-' + (i + 1)] = prev ? 'ow' : 'new';
         fills.push({ where: '表の「' + label + '」の右の欄' +
           (prev ? '（元の「' + prev.slice(0, 24) + (prev.length > 24 ? '…' : '') + '」を上書き）' : ''),
           key: key, value: vals[key] });
       }
     }
     return { fills: fills, skips: skips, usedKeys: usedKeys,
+      preview: fills.length ? docxPreviewHTML(doc, pvMarks) : '',
       xml: fills.length ? serializeXml(doc) : null };
   }
 
   // ---- Excel（.xlsx）：ラベルの右のセルに入れる ----
+  // 記入したシートの表示倍率（%）。大きすぎて画面に収まらない様式が多いため下げる
+  var XLSX_ZOOM = 70;
   var S_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
   var R_ATTR_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
   function colToNum(s) { var n = 0; for (var i = 0; i < s.length; i++) n = n * 26 + (s.charCodeAt(i) - 64); return n; }
@@ -1083,8 +1249,9 @@
     }
     return textOfNS(c, S_NS, 'v');
   }
-  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys, overwrite) {
+  function fillSheet(xmlText, vals, shared, sheetName, fills, skips, usedKeys, overwrite, previews) {
     var doc = parseXml(xmlText);
+    var pvMarks = {};
     var merges = [];
     var mcs = doc.getElementsByTagNameNS(S_NS, 'mergeCell');
     for (var i = 0; i < mcs.length; i++) {
@@ -1122,7 +1289,8 @@
       }
       return found;
     }
-    function writeCell(cell, text) {
+    function writeCell(cell, text, mark) {
+      pvMarks[cell.getAttribute('r')] = mark || 'new';
       cell.setAttribute('t', 'inlineStr');
       while (cell.firstChild) cell.removeChild(cell.firstChild);
       var isEl = doc.createElementNS(S_NS, 'is');
@@ -1229,7 +1397,7 @@
               var over = false;
               slots.forEach(function (cn, si) {
                 if (us[si].prev) over = true;
-                writeCell(cellAt(cn, tr, true), parts[si]);
+                writeCell(cellAt(cn, tr, true), parts[si], us[si].prev ? 'ow' : 'new');
               });
               usedKeys[key] = 1;
               fills.push({
@@ -1264,13 +1432,44 @@
           continue;
         }
         if (u.prev === vals[key]) continue;
-        writeCell(cellAt(tc, tr, true), vals[key]);
+        writeCell(cellAt(tc, tr, true), vals[key], u.prev ? 'ow' : 'new');
         usedKeys[key] = 1;
         fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）' +
           (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: vals[key] });
       }
     }
-    return changed ? serializeXml(doc) : null;
+    if (!changed) return null;
+    // 役所の様式は表示倍率が大きいまま配られていることが多く、開くと画面から
+    // はみ出して全体が見えない。記入したシートの倍率を下げてから返す。
+    var views = doc.getElementsByTagNameNS(S_NS, 'sheetView');
+    if (views.length) {
+      for (var vi = 0; vi < views.length; vi++) {
+        var z = parseInt(views[vi].getAttribute('zoomScale') || '100', 10);
+        if (!(z > 0)) z = 100;
+        if (z > XLSX_ZOOM) {
+          views[vi].setAttribute('zoomScale', String(XLSX_ZOOM));
+          views[vi].setAttribute('zoomScaleNormal', String(XLSX_ZOOM));
+        }
+      }
+    } else {
+      // 表示倍率の指定が無い様式には作って入れる。
+      // sheetViews は sheetPr / dimension のあと、sheetFormatPr・cols・sheetData の前という
+      // 決まった順番でしか置けないので、後ろに来る要素の直前に差し込む。
+      var ws = doc.documentElement;
+      var sv = doc.createElementNS(S_NS, 'sheetViews');
+      var one = doc.createElementNS(S_NS, 'sheetView');
+      one.setAttribute('workbookViewId', '0');
+      one.setAttribute('zoomScale', String(XLSX_ZOOM));
+      one.setAttribute('zoomScaleNormal', String(XLSX_ZOOM));
+      sv.appendChild(one);
+      var after = ['sheetFormatPr', 'cols', 'sheetData'], ref = null;
+      for (var ai = 0; ai < after.length && !ref; ai++) {
+        ref = childrenNS(ws, S_NS, after[ai])[0] || null;
+      }
+      ws.insertBefore(sv, ref);
+    }
+    if (previews) previews.push({ name: sheetName, html: sheetPreviewHTML(doc, shared, pvMarks) });
+    return serializeXml(doc);
   }
   function fillXlsx(zip, vals, overwrite) {
     var shared = [];
@@ -1297,7 +1496,7 @@
           }
         }
       } catch (e) { /* シート名が取れなくてもファイル名で続ける */ }
-      var fills = [], skips = [], usedKeys = {}, repl = {};
+      var fills = [], skips = [], usedKeys = {}, repl = {}, previews = [];
       var sheetEntries = zip.entries.filter(function (e) {
         return /^xl\/worksheets\/[^\/]+\.xml$/.test(e.name);
       });
@@ -1306,13 +1505,16 @@
         chain = chain.then(function () {
           return zipFileText(zip, e.name).then(function (xml) {
             var out = fillSheet(xml, vals, shared,
-              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite);
+              nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite, previews);
             if (out) repl[e.name] = new TextEncoder().encode(out);
           });
         });
       });
       return chain.then(function () {
-        return { fills: fills, skips: skips, usedKeys: usedKeys, repl: repl };
+        var pv = previews.map(function (p) {
+          return '<p class="pv-ttl">シート「' + esc(p.name) + '」</p>' + p.html;
+        }).join('');
+        return { fills: fills, skips: skips, usedKeys: usedKeys, repl: repl, preview: pv };
       });
     });
   }
@@ -1348,8 +1550,9 @@
     if (!Object.keys(vals).length) {
       return Promise.resolve({ error: '先に上の「01 会社情報を1回だけ書く」をご入力ください。まだ何も保存されていません。' });
     }
-    var owEl = document.getElementById('owToggle');
-    var overwrite = !!(owEl && owEl.checked);
+    // すでに記入がある欄も上書きする。上書きしたことと元の内容は結果の一覧に必ず出し、
+    // プレビューでも色を分けて示す（数式のセルだけは触らない）。
+    var overwrite = true;
     return Promise.resolve().then(function () {
       var zip;
       try { zip = readZip(u8); }
@@ -1361,7 +1564,7 @@
           var r = fillDocx(xml, vals, overwrite);
           var repl = {};
           if (r.xml) repl['word/document.xml'] = new TextEncoder().encode(r.xml);
-          return { fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, repl: repl };
+          return { fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, repl: repl, preview: r.preview };
         });
       } else {
         work = fillXlsx(zip, vals, overwrite);
@@ -1374,7 +1577,7 @@
             ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
           return {
-            fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, vals: vals,
+            fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, vals: vals, preview: r.preview,
             blob: new Blob([out], { type: mime }),
             outName: file.name.replace(/\.(docx|xlsx)$/i, '') + '（記入済み）.' + kind
           };
@@ -1442,6 +1645,17 @@
       var outExt = dot > 0 ? res.outName.slice(dot) : '';
       fillCardSeq += 1;
       var nameId = 'dlName' + fillCardSeq;
+      // 入れた場所を目で確かめられるようにする。
+      // 表の見た目のまま出して、入れたセルに色を付ける（誤って別人の欄に
+      // 入っていないかは、一覧の文字だけでは気づきにくいため）
+      if (res.preview) {
+        html += '<div class="pv-box"><p class="pv-head">記入したファイルの中身（プレビュー）</p>' +
+          '<p class="pv-legend"><span class="pv-chip pv-new"></span>入れた欄　' +
+          '<span class="pv-chip pv-ow"></span>元の記入を上書きした欄</p>' +
+          '<p class="pv-note">この様式で合っているか、<strong>自社の欄に入っているか</strong>をここでご確認ください。' +
+          '書体・罫線・色は再現していません。実際の見た目は保存したファイルでご確認ください。</p>' +
+          res.preview + '</div>';
+      }
       html += '<div class="warn" style="margin:0.9rem 0 0;"><strong>このまま提出しないでください。</strong>' +
         '保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</div>' +
         '<div class="dl-row"><label for="' + nameId + '">保存するファイル名</label>' +
@@ -1539,6 +1753,20 @@
     if (/\.zip(\?|#|$)/i.test(it.url)) return 'ZIP（複数ファイルのまとまり）のため自動入力できません';
     return 'Word（.docx）・Excel（.xlsx）ではないため自動入力できません';
   }
+  var PREF_LABEL = { tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
+    chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県' };
+  var afFilter = { text: '', area: '', kind: 'all' };
+  function afAllKeys() {
+    return Object.keys(D.docs).filter(function (k) {
+      return D.programs[k] && formItems(k).some(function (it) { return it.fillable; });
+    });
+  }
+  function afKindOf(k) {
+    var p = D.programs[k] || {};
+    if (p.municipality) return 'city';
+    if (p.prefecture) return 'pref';
+    return 'national';
+  }
   function renderAfPrograms() {
     var sel = document.getElementById('afProgram');
     if (!sel) return;
@@ -1550,8 +1778,13 @@
         'ブラウザを最新の版に更新するか、上の「転記カードを印刷」で書き写してください。</div>';
       return;
     }
-    var keys = Object.keys(D.docs).filter(function (k) {
-      return D.programs[k] && formItems(k).some(function (it) { return it.fillable; });
+    var all = afAllKeys();
+    var keys = all.filter(function (k) {
+      var p = D.programs[k];
+      if (afFilter.kind !== 'all' && afKindOf(k) !== afFilter.kind) return false;
+      if (afFilter.area && p.prefecture !== afFilter.area) return false;
+      if (afFilter.text && p.name.indexOf(afFilter.text) === -1) return false;
+      return true;
     });
     keys.sort(function (a, b) {
       return D.programs[a].name.localeCompare(D.programs[b].name, 'ja');
@@ -1565,14 +1798,56 @@
         return '<option value="' + esc(k) + '">' + esc(D.programs[k].name) + '（様式' + n + '件）</option>';
       }).join('');
     }
+    var keep = sel.value;
     sel.innerHTML = '<option value="">制度を選んでください</option>' +
       (fav.length ? '<optgroup label="気になる制度">' + opts(fav) + '</optgroup>' : '') +
-      '<optgroup label="様式がある制度（' + rest.length + '件）">' + opts(rest) + '</optgroup>';
+      (rest.length ? '<optgroup label="そのほかの制度">' + opts(rest) + '</optgroup>' : '');
+    // 絞り込んでも、選んでいた制度が残っていれば選択を保つ
+    if (keep && keys.indexOf(keep) !== -1) sel.value = keep;
+    else if (keep) { sel.value = ''; renderAfForms(); }
+
+    // 地域の選択肢は、様式がある制度に実際に出てくる都道府県だけ出す
+    var area = document.getElementById('afFilterArea');
+    if (area && !area.getAttribute('data-built')) {
+      var prefs = [];
+      all.forEach(function (k) {
+        var pf = D.programs[k].prefecture;
+        if (pf && prefs.indexOf(pf) === -1) prefs.push(pf);
+      });
+      prefs.sort();
+      area.innerHTML = '<option value="">すべての地域</option>' + prefs.map(function (pf) {
+        return '<option value="' + esc(pf) + '">' + esc(PREF_LABEL[pf] || pf) + '</option>';
+      }).join('');
+      area.setAttribute('data-built', '1');
+    }
+
     var note = document.getElementById('afProgNote');
     if (note) {
-      note.textContent = '制度を選ぶと、その制度の様式が下に出ます。' +
-        '当サイトが様式の場所を確認できている' + keys.length + '制度から選べます。';
+      note.textContent = keys.length
+        ? ('様式がある' + all.length + '制度のうち ' + keys.length + '件を表示しています。制度を選ぶと、その制度の様式が下に出ます。')
+        : ('この条件に合う制度がありませんでした（様式がある制度は全部で' + all.length + '件です）。絞り込みを変えてみてください。');
     }
+  }
+  function initAfFilter() {
+    var t = document.getElementById('afFilterText');
+    var a = document.getElementById('afFilterArea');
+    var row = document.getElementById('afKindRow');
+    if (t) t.addEventListener('input', function () {
+      afFilter.text = t.value.trim(); renderAfPrograms();
+    });
+    if (a) a.addEventListener('change', function () {
+      afFilter.area = a.value; renderAfPrograms();
+    });
+    if (row) row.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        afFilter.kind = b.getAttribute('data-kind');
+        row.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        // 国の制度に絞ったときは地域の絞り込みを外す（両立しないため）
+        if (afFilter.kind === 'national' && a) { a.value = ''; afFilter.area = ''; }
+        renderAfPrograms();
+      });
+    });
   }
   function renderAfForms() {
     var box = document.getElementById('afForms');
@@ -1612,12 +1887,56 @@
       '<button type="button" id="afAll">すべて選ぶ</button>' +
       '<button type="button" id="afNone">すべて外す</button></div>' +
       '<div class="btn-row"><button type="button" class="btn" id="afRun">' +
-      '手順3　選んだ様式に会社情報を入れる</button></div>' +
-      '<p class="af-status" id="afStatus"></p></div>';
+      '手順3　選んだ様式に会社情報を入れる</button>' +
+      '<button type="button" class="btn ghost" id="afDl">' +
+      'チェックした様式を公式サイトからダウンロード</button></div>' +
+      '<p class="af-status" id="afStatus"></p><div id="afDlList"></div></div>';
     box.innerHTML = html;
     box.querySelector('#afAll').addEventListener('click', function () { setAllAf(true); });
     box.querySelector('#afNone').addEventListener('click', function () { setAllAf(false); });
     box.querySelector('#afRun').addEventListener('click', runAfFill);
+    box.querySelector('#afDl').addEventListener('click', downloadCheckedForms);
+  }
+  // チェックした様式を、記入せずそのまま公式サイトから落とす。
+  // 「まず原本が欲しい」「記入は手で書く」という使い方のため。
+  // まとめてクリックすると止められることがあるので、リンクの一覧も必ず残す。
+  function downloadCheckedForms() {
+    var checks = Array.prototype.slice.call(document.querySelectorAll('#afForms .af-item:checked'));
+    var status = document.getElementById('afStatus');
+    var list = document.getElementById('afDlList');
+    if (!checks.length) {
+      if (status) status.textContent = '様式が選ばれていません。チェックを入れてからもう一度押してください。';
+      if (list) list.innerHTML = '';
+      return;
+    }
+    var items = checks.map(function (c) {
+      return { url: c.getAttribute('data-url'), name: c.getAttribute('data-name') };
+    });
+    if (list) {
+      list.innerHTML = '<p class="af-dl-ttl">公式サイトの様式（' + items.length + '件）</p>' +
+        '<ul class="checks">' + items.map(function (it) {
+          return '<li><a class="af-dl-link" href="' + esc(it.url) + '" download target="_blank" rel="noopener noreferrer">' +
+            esc(it.name) + ' ↗</a></li>';
+        }).join('') + '</ul>';
+    }
+    // 順にクリックする。ブラウザが「複数のファイルをダウンロード」を尋ねることがある
+    items.forEach(function (it, i) {
+      setTimeout(function () {
+        var a = document.createElement('a');
+        a.href = it.url;
+        a.download = '';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }, i * 400);
+    });
+    if (status) {
+      status.textContent = items.length + '件のダウンロードを始めました。' +
+        'ブラウザが「複数のファイルをダウンロード」の確認を出したら「許可」を選んでください。' +
+        '始まらないときは、下の一覧から1件ずつ押してください。';
+    }
   }
   function setAllAf(on) {
     document.querySelectorAll('#afForms .af-item').forEach(function (c) { c.checked = on; });
@@ -1722,44 +2041,200 @@
     }
     return 9 - (sum % 9);
   }
+  // 法人番号13桁の検査用数字を検算し、01の欄の下にその場で出す。
+  // （専用の節は置かない。書き写しの誤りは入力欄のそばで気づけるほうが早い）
   function checkHoujin() {
     var raw = (company.houjin || '').replace(/[^0-9]/g, '');
     var hint = document.getElementById('hint_houjin');
-    var out = document.getElementById('houjinResult');
-    if (!hint || !out) return;
-    if (!raw) {
-      hint.textContent = ''; hint.className = 'fhint';
-      out.textContent = 'まだ入力されていません。';
-      out.style.color = 'var(--ink-soft)';
-      return;
-    }
+    if (!hint) return;
+    if (!raw) { hint.textContent = ''; hint.className = 'fhint'; return; }
     if (raw.length !== 13) {
       hint.textContent = 'いまは' + raw.length + '桁です。法人番号は13桁です。';
       hint.className = 'fhint ng';
-      out.textContent = '桁数が足りません（' + raw.length + '桁）。法人番号は13桁です。';
-      out.style.color = 'var(--rust)';
       return;
     }
     var ok = houjinCheckDigit(raw.slice(1)) === parseInt(raw.charAt(0), 10);
-    hint.textContent = ok ? '13桁・検査用数字とも合っています。' : '13桁ですが、検査用数字が合いません。';
+    hint.textContent = ok
+      ? '13桁・検査用数字とも合っています。'
+      : '13桁ですが、検査用数字が合いません。どこかの数字が違っている可能性があります。';
     hint.className = 'fhint ' + (ok ? 'ok' : 'ng');
-    out.textContent = ok
-      ? '13桁で、検査用数字の計算も合っています。書き写しの誤りは無さそうです。'
-      : '13桁ですが、検査用数字の計算が合いません。どこかの数字が違っている可能性があります。';
-    out.style.color = ok ? 'var(--sage)' : 'var(--rust)';
-  }
-  // 公表サイトの検索はPOST（CSRFトークン付き）なので、会社名をURLで渡すリンクは作れない。
-  // 代わりに会社名をコピーして、検索欄に貼れるようにする。
-  function updateHoujinSearch() {
-    var btn = document.getElementById('copyNameBtn');
-    if (!btn) return;
-    var nm = (company.name || '').trim();
-    btn.disabled = !nm;
-    btn.style.opacity = nm ? '1' : '0.5';
-    btn.textContent = nm ? '会社名を写す' : '会社名が未入力です';
   }
 
-  // ---------- 04 共通書類 ----------
+  // ---------- 07 手順とスケジュール（ガント） ----------
+  // 制度ごとのタスクは gantt_data.js（出典と確認日時つき）にある。
+  // 利用者が入れた基準日から各タスクの日付を計算し、帯で並べる。
+  // 日付が決まらない（交付決定日など、まだ通知が来ていない）タスクは
+  // 斜線の帯で「日付未定」と出す。ここを普通の帯で描くと
+  // 「もう発注してよい」と誤って読まれるため。
+  var G = window.KOBAN_GANTT || { anchors: {}, schemes: {}, tasks: [] };
+  var K_GANTT = 'koban_ganttDone';
+  var K_GANTT_DATES = 'koban_ganttDates';
+  var gtDone = load(K_GANTT, {});
+  var gtDates = load(K_GANTT_DATES, {});
+  if (!gtDone || typeof gtDone !== 'object') gtDone = {};
+  if (!gtDates || typeof gtDates !== 'object') gtDates = {};
+
+  function gtParse(v) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return null;
+    var d = new Date(+m[1], +m[2] - 1, +m[3]);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function gtAddDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+  function gtDayDiff(a, b) { return Math.round((a - b) / 86400000); }
+  function gtFmt(d) { return (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
+  function gtKey(scheme, key) { return scheme + '.' + key; }
+
+  function renderGtSchemes() {
+    var sel = document.getElementById('gtScheme');
+    if (!sel) return;
+    var keys = Object.keys(G.schemes);
+    sel.innerHTML = '<option value="">制度を選んでください</option>' + keys.map(function (k) {
+      var n = G.tasks.filter(function (t) { return t.scheme === k; }).length;
+      return '<option value="' + esc(k) + '">' + esc(G.schemes[k].label) + '（' + n + '手順）</option>';
+    }).join('');
+    sel.addEventListener('change', function () { renderGtAnchors(); renderGantt(); });
+  }
+  function renderGtAnchors() {
+    var box = document.getElementById('gtAnchors');
+    var sel = document.getElementById('gtScheme');
+    if (!box || !sel) return;
+    var k = sel.value;
+    if (!k) { box.innerHTML = ''; return; }
+    var list = G.anchors[k] || [];
+    var note = G.schemes[k] && G.schemes[k].note;
+    box.innerHTML = '<div class="gt-anchors">' +
+      (note ? '<div class="warn" style="margin:0 0 0.8rem;">' + esc(note) + '</div>' : '') +
+      '<p class="step-ttl">手順2　基準になる日付を入れる</p>' +
+      list.map(function (a) {
+        var id = 'gtd_' + k + '_' + a.key;
+        var v = gtDates[gtKey(k, a.key)] || '';
+        return '<div class="arow"><label for="' + id + '">' + esc(a.label) +
+          (a.optional ? '（分かってから入れてください）' : '') + '</label>' +
+          '<input type="date" id="' + id + '" data-anchor="' + esc(a.key) + '" value="' + esc(v) + '">' +
+          (a.note ? '<p class="anote">' + esc(a.note) + '</p>' : '') + '</div>';
+      }).join('') + '</div>';
+    box.querySelectorAll('input[type="date"]').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        gtDates[gtKey(k, inp.getAttribute('data-anchor'))] = inp.value;
+        save(K_GANTT_DATES, gtDates);
+        renderGantt();
+      });
+    });
+  }
+
+  function renderGantt() {
+    var out = document.getElementById('gtOut');
+    var sel = document.getElementById('gtScheme');
+    if (!out || !sel) return;
+    var k = sel.value;
+    if (!k) { out.innerHTML = ''; return; }
+    var anchors = G.anchors[k] || [];
+    var need = anchors.filter(function (a) { return !a.optional; });
+    var have = {};
+    anchors.forEach(function (a) {
+      var d = gtParse(gtDates[gtKey(k, a.key)]);
+      if (d) have[a.key] = d;
+    });
+    var missing = need.filter(function (a) { return !have[a.key]; });
+    if (missing.length) {
+      out.innerHTML = '<p class="empty">' + esc(missing.map(function (a) { return '「' + a.label + '」'; }).join('と')) +
+        'を入れると、やることの順番と日程を表示します。</p>';
+      return;
+    }
+    var tasks = G.tasks.filter(function (t) { return t.scheme === k; });
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var rows = tasks.map(function (t) {
+      var base = have[t.anchor];
+      var st = base ? gtAddDays(base, t.offset) : null;
+      var en = st ? gtAddDays(st, Math.max(1, t.days) - 1) : null;
+      return { t: t, start: st, end: en, done: !!gtDone[t.id] };
+    });
+    var dated = rows.filter(function (r) { return r.start; });
+    if (!dated.length) { out.innerHTML = '<p class="empty">日付を計算できるタスクがありませんでした。</p>'; return; }
+    var min = dated[0].start, max = dated[0].end;
+    dated.forEach(function (r) { if (r.start < min) min = r.start; if (r.end > max) max = r.end; });
+    if (today < min) min = today;
+    if (today > max) max = today;
+    min = gtAddDays(min, -7); max = gtAddDays(max, 7);
+    var span = Math.max(1, gtDayDiff(max, min));
+    var px = Math.max(1.1, Math.min(9, 1500 / span));
+    var width = Math.round(span * px);
+    function left(d) { return Math.round(gtDayDiff(d, min) * px); }
+
+    // 月の目盛り
+    var ticks = '';
+    var cur = new Date(min.getFullYear(), min.getMonth(), 1);
+    while (cur <= max) {
+      if (cur >= min) {
+        ticks += '<span class="gt-tick" style="left:' + left(cur) + 'px;">' +
+          (cur.getMonth() === 0 ? cur.getFullYear() + '年' : '') + (cur.getMonth() + 1) + '月</span>';
+      }
+      cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+    }
+    var todayLine = '<span class="gt-today" style="left:' + left(today) + 'px;" title="今日"></span>';
+
+    var doneN = rows.filter(function (r) { return r.done; }).length;
+    var pct = Math.round(doneN / rows.length * 100);
+    var html = '<div class="gt-prog"><span class="num">' + doneN + ' / ' + rows.length + '（' + pct + '%）</span>' +
+      '<span class="prog"><i style="width:' + pct + '%;"></i></span></div>';
+
+    html += '<div class="gt-wrap"><div class="gt-inner" style="width:' + (width + 320) + 'px;">' +
+      '<div class="gt-head"><div class="gt-left">やること（終わったらチェック）</div>' +
+      '<div class="gt-ticks" style="width:' + width + 'px;">' + ticks + todayLine + '</div></div>';
+
+    var phase = null;
+    rows.forEach(function (r) {
+      if (r.t.phase !== phase) {
+        phase = r.t.phase;
+        html += '<div class="gt-row phase">' + esc(phase) + '</div>';
+      }
+      var late = r.start && !r.done && r.start < today;
+      var badges = (r.t.hard ? '<span class="gt-badge gt-b-hard">落とすと対象外</span>' : '') +
+        (r.t.source === 'unverified' ? '<span class="gt-badge gt-b-un">未確認</span>' : '');
+      var when = r.start
+        ? gtFmt(r.start) + (r.t.days > 1 ? '〜' + gtFmt(r.end) : '') + '　' + r.t.when
+        : '日付未定：' + r.t.when;
+      html += '<div class="gt-row' + (r.done ? ' done' : '') + '">' +
+        '<div class="gt-left">' +
+          '<label class="gt-name"><input type="checkbox" data-gt="' + esc(r.t.id) + '"' + (r.done ? ' checked' : '') + '>' +
+          '<span class="t">' + esc(r.t.task) + badges + '</span></label>' +
+          '<p class="gt-meta">' + esc(r.t.owner) + '　' +
+            '<span' + (late ? ' class="gt-late"' : '') + '>' + esc(when) + (late ? '（もう始めていないと間に合いません）' : '') + '</span></p>' +
+          (r.t.warn ? '<p class="gt-warn' + (r.t.hard ? ' hard' : '') + '">' + esc(r.t.warn) + '</p>' : '') +
+          '<p class="gt-src">' + (r.t.source === 'unverified'
+            ? '出典：当サイトで確認できていません'
+            : '出典：<a href="' + esc(r.t.source) + '" target="_blank" rel="noopener noreferrer">一次資料 ↗</a>') +
+            '（' + esc(r.t.checked) + '確認）</p>' +
+        '</div>' +
+        '<div class="gt-right" style="width:' + width + 'px;">' +
+          (r.start
+            ? '<span class="gt-bar' + (r.done ? ' doneb' : (r.t.hard ? ' hard' : '')) + '" style="left:' + left(r.start) +
+              'px;width:' + Math.max(6, Math.round(Math.max(1, r.t.days) * px)) + 'px;"></span>'
+            : '<span class="gt-bar unknown" style="left:0;width:' + Math.min(width, 120) + 'px;"></span>') +
+          todayLine +
+        '</div></div>';
+    });
+    html += '</div></div>';
+    var undated = rows.filter(function (r) { return !r.start; }).length;
+    if (undated) {
+      html += '<p class="src-note">' + undated + '件は、まだ決まっていない日（交付決定日など）を基準にしているため日付が出せません。' +
+        '通知が届いたら上の欄に入れてください。<strong>この期間に発注してはいけない</strong>制度があります。</p>';
+    }
+    html += '<p class="src-note">日付は入力した基準日からの計算です。実際の期限は必ず各制度の公募要領・支給要領でご確認ください。' +
+      '申請書類の作成・提出を代理で頼めるのは、雇用関係助成金は社会保険労務士または弁護士に限られます。</p>';
+    out.innerHTML = html;
+    out.querySelectorAll('input[data-gt]').forEach(function (c) {
+      c.addEventListener('change', function () {
+        var id = c.getAttribute('data-gt');
+        if (c.checked) gtDone[id] = 1; else delete gtDone[id];
+        save(K_GANTT, gtDone);
+        renderGantt();
+      });
+    });
+  }
+
+  // ---------- 03 共通書類 ----------
   // 2026-07-31に、実際の公募要領・手引きのPDFを開いて提出書類の一覧を拾い直した。
   // 出所（本文で確認したもの）:
   //   小規模事業者持続化補助金 公募要領（第20回・第8版）… 提出物一覧
@@ -1960,7 +2435,7 @@
     if (src) src.textContent = COMMON_DOCS_SOURCE;
   }
 
-  // ---------- 05 締切からの逆算 ----------
+  // ---------- 04 締切からの逆算 ----------
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -2005,7 +2480,7 @@
       '相手の都合で遅れます。<strong>期限ぎりぎりではなく、数日の余裕を見て依頼してください。</strong></div>';
   }
 
-  // ---------- 06 締切一覧 ----------
+  // ---------- 05 締切一覧 ----------
   // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
   // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
   function extractDates(text) {
@@ -2123,7 +2598,7 @@
     document.getElementById('leadtime').scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // ---------- 07 チェックリスト ----------
+  // ---------- 06 チェックリスト ----------
   var checks = load(K_CHECK, {});
 
   window.toggleCheck = function (progKey, url, on) {
@@ -2256,6 +2731,8 @@
   renderCompany();
   initAutofill();
   renderAfPrograms();
+  initAfFilter();
+  renderGtSchemes();
   (function initAfSelect() {
     var sel = document.getElementById('afProgram');
     if (!sel) return;
@@ -2272,11 +2749,6 @@
     }
   })();
   checkHoujin();
-  updateHoujinSearch();
-  document.getElementById('copyNameBtn').addEventListener('click', function () {
-    var node = document.getElementById('f_name');
-    if (node && node.value) copyField(document.querySelector('.copy-btn[data-copy="name"]'));
-  });
   renderCommon();
   renderLead();
   renderPicked();
