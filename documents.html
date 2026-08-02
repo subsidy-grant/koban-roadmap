@@ -223,7 +223,6 @@
   .picker select { font: inherit; font-size: 0.95rem; padding: 0.5rem; max-width: 100%;
     min-height: 44px; background: var(--paper-raised); color: var(--ink);
     border: 1px solid var(--line); border-radius: 6px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
   .chip { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.84rem;
     background: var(--accent-wash); border: 1px solid var(--accent-soft); border-radius: 999px;
     padding: 0.25rem 0.4rem 0.25rem 0.8rem; }
@@ -260,37 +259,28 @@
   /* 03〜06から、制度を選び直しに02へ戻る導線 */
   .pick-jump { display: inline-block; margin-top: 0.4rem; padding: 0.5rem 0;
     min-height: 44px; line-height: 1.9; font-size: 0.92rem; }
-  .af-doc { border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
-    margin-bottom: 0.45rem; }
-  .af-doc > summary { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;
-    padding: 0.6rem 0.7rem; min-height: 44px; list-style: none; }
-  .af-doc > summary::-webkit-details-marker { display: none; }
-  .af-doc > summary .fn { flex: 1; font-size: 0.9rem; word-break: break-word; }
-  .af-doc > summary::after { content: '＋'; color: var(--ink-faint); flex: none; }
-  .af-doc[open] > summary::after { content: '−'; }
-  .af-doc-body { padding: 0 0.7rem 0.7rem; }
-  /* 列幅を決め打ちにしないと、長い項目名で表がスマホ幅からはみ出す */
-  /* ページ全体の table { min-width: 560px } は横長の表のための指定。
-     詳細の表は狭い枠に入れるので、その最低幅を外す */
-  .af-dl-tbl { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed;
-    font-size: 0.85rem; border-collapse: collapse; }
-  .af-dl-tbl th { text-align: left; color: var(--ink-soft); width: 7.5em;
-    font-weight: 500; vertical-align: top; padding: 0.25rem 0.7rem 0.25rem 0;
-    word-break: break-word; }
-  .af-dl-tbl td { padding: 0.25rem 0; word-break: break-word; vertical-align: top; }
-  @media (max-width: 460px) {
-    /* 幅が狭いときは、項目名を上の行に置いて1列で読ませる */
-    .af-dl-tbl, .af-dl-tbl tbody, .af-dl-tbl tr, .af-dl-tbl th, .af-dl-tbl td { display: block; width: auto; }
-    .af-dl-tbl tr { padding: 0.35rem 0; border-bottom: 1px dashed var(--line); }
-    .af-dl-tbl tr:last-child { border-bottom: 0; }
-    .af-dl-tbl th { padding: 0 0 0.1rem; font-size: 0.78rem; }
+  /* 記入の結果。2つの一覧（入れられなかった／記入できた）で出す */
+  .fr-block { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised);
+    padding: 0.8rem 1rem; margin-bottom: 0.8rem; }
+  .fr-block[hidden] { display: none; }
+  .fr-ttl { margin: 0 0 0.3rem; font-weight: 600; font-size: 1rem; }
+  .fr-note { margin: 0 0 0.5rem; font-size: 0.88rem; color: var(--ink-soft); }
+  .fr-foot { margin: 0.7rem 0 0; }
+  ul.fr-list { list-style: none; margin: 0; padding: 0; }
+  ul.fr-list > li { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+    padding: 0.5rem 0; border-top: 1px solid var(--line); min-height: 44px; font-size: 0.93rem; }
+  ul.fr-list > li:first-child { border-top: 0; }
+  ul.fr-list .fn { flex: 1 1 11em; min-width: 0; word-break: break-word; }
+  ul.fr-list .fr-n { font-size: 0.85rem; color: var(--ink-soft); }
+  ul.fr-list .fr-n.ng { color: var(--rust); }
+  ul.fr-list .btn { padding: 0.4rem 0.9rem; font-size: 0.88rem; min-height: 44px;
+    display: inline-flex; align-items: center; text-decoration: none; text-align: center; }
   }
   .af-other { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
   ul.af-other-list { list-style: none; margin: 0.2rem 0 1rem; padding: 0; }
   ul.af-other-list li { display: flex; gap: 0.5rem; align-items: flex-start;
     font-size: 0.9rem; padding: 0.3rem 0; }
   ul.af-other-list .fn { flex: 1; word-break: break-word; }
-  .af-sub-ttl { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.4rem; }
   .af-forms { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 0.9rem 1.1rem; margin-bottom: 1rem; }
   .af-forms ul.checks .fn { word-break: break-word; }
@@ -302,75 +292,12 @@
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
     min-height: 44px; cursor: pointer; }
-  .fill-origin { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.6rem; line-height: 1.7; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
   .af-dl-ttl { font-size: 0.86rem; font-weight: 700; margin: 0.7rem 0 0.2rem; }
   .af-dl-link { display: block; padding: 0.5rem 0.2rem; min-height: 44px; font-size: 0.9rem; }
   .af-summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; }
-  /* 取得できなかった様式の案内。注意ではなく「次にやること」なので青で出す */
-  .af-manual { border-color: var(--accent-soft); }
-  .af-manual .btn-row { margin-top: 0.6rem; }
-  /* ---- 記入結果のプレビュー ----
-     表の形のまま出して、入れたセルだけ色を付ける。書体や罫線は再現しない
-     （目的は「どの欄に入ったか」の確認であって、体裁の確認ではない）。 */
-  .pv-box { margin: 1rem 0 0; padding: 0.8rem 0.9rem; background: var(--paper);
-    border: 1px solid var(--line); border-radius: 10px; }
-  .pv-head { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.4rem; }
-  .pv-legend { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.4rem; }
-  .pv-chip { display: inline-block; width: 0.95rem; height: 0.95rem; border: 1px solid var(--line);
-    vertical-align: -0.15rem; margin-right: 0.25rem; }
-  .pv-note { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.6rem; }
-  .pv-ttl { font-size: 0.84rem; color: var(--ink-soft); margin: 0.7rem 0 0.3rem;
-    border-left: 3px solid var(--accent); padding-left: 0.5rem; }
-  .pv-wrap { overflow: auto; max-height: 26rem; border: 1px solid var(--line);
-    background: var(--paper-raised); -webkit-overflow-scrolling: touch; }
-  table.pv { border-collapse: collapse; width: auto; min-width: 0; font-size: 0.78rem;
-    background: var(--paper-raised); }
-  table.pv td, table.pv th { border: 1px solid var(--line); padding: 0.25rem 0.4rem;
-    white-space: nowrap; vertical-align: middle; max-width: 16rem; overflow: hidden; }
-  table.pv th { background: var(--accent-wash); color: var(--ink-soft); font-weight: 400;
-    font-size: 0.72rem; text-align: center; position: sticky; top: 0; }
-  table.pv-sheet th:first-child { left: 0; z-index: 1; }
-  table.pv td.pv-new { background: var(--sage-wash); color: var(--ink); font-weight: 700;
-    outline: 2px solid var(--sage); outline-offset: -2px; }
-  table.pv td.pv-ow { background: var(--rust-wash); color: var(--ink); font-weight: 700;
-    outline: 2px solid var(--rust); outline-offset: -2px; }
-  .pv-chip.pv-new { background: var(--sage-wash); border-color: var(--sage); }
-  .pv-chip.pv-ow { background: var(--rust-wash); border-color: var(--rust); }
-  .pv-none { font-size: 0.82rem; color: var(--ink-faint); margin: 0.3rem 0 0; }
 
-  .fillcard { position: relative; padding-right: 3rem; }
-  .card-close { position: absolute; top: 0.6rem; right: 0.6rem; border: 1px solid var(--line);
-    background: var(--paper); color: var(--ink-soft); border-radius: 6px; font: inherit;
-    font-size: 1rem; line-height: 1; width: 36px; height: 36px; cursor: pointer; }
-  .card-close:hover { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
-  .fillcard h3 { word-break: break-all; }
-  /* 結果カードは既定で閉じておく。10件記入すると縦に長すぎて読めないため */
-  .fill-det > summary { display: flex; align-items: flex-start; gap: 0.6rem;
-    cursor: pointer; list-style: none; padding: 0.1rem 0; min-height: 44px; }
-  .fill-det > summary::-webkit-details-marker { display: none; }
-  .fill-det > summary::before { content: '＋'; color: var(--ink-faint); flex: none;
-    font-size: 1.05rem; line-height: 1.6; }
-  .fill-det[open] > summary::before { content: '−'; }
-  .fill-det > summary h3 { margin: 0; font-size: 1rem; flex: 1; }
-  .fill-stat { display: block; font-size: 0.85rem; color: var(--ink-soft);
-    font-weight: 400; margin-top: 0.15rem; }
-  .fill-stat.ng { color: var(--rust); }
-  .fill-body { margin-top: 0.7rem; }
-  .fillcard .btn-dl { display: inline-block; text-decoration: none; text-align: center; }
-  .fillcard ul { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
-  .fillcard table { min-width: 480px; }
-  /* 保存するファイル名。拡張子は変えさせない（変えると開けなくなるため）ので、
-     入力欄の外に固定の文字として出す */
-  .dl-row { margin: 0.9rem 0 0; font-size: 0.88rem; }
-  .dl-row label { display: block; font-weight: 700; margin-bottom: 0.3rem; }
-  .dl-name-wrap { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
-  .dl-name { flex: 1; min-width: 12rem; font: inherit; font-size: 0.92rem;
-    padding: 0.5rem 0.6rem; min-height: 2.9rem; border: 1px solid var(--line);
-    border-radius: 8px; background: var(--paper); color: var(--ink); }
-  .dl-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .dl-ext { flex: none; color: var(--ink-soft); font-size: 0.9rem; }
 
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
@@ -449,7 +376,6 @@
       <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
       <li><a href="#autofill">制度を選んで、様式に会社情報を入れる</a>（Word・Excel）</li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
-      <li><a href="#deadlines">締切一覧</a>（いつが締切か）</li>
       <li><a href="#leadtime">締切から逆算する</a>（いつまでに頼むか）</li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
     </ol>
@@ -558,32 +484,16 @@
     <div class="tbl-wrap" id="commonReport"></div>
 
     <div class="warn">
-      <strong>日数はあくまで目安です。</strong>窓口の混み具合・請求方法（窓口／郵送／オンライン）・時期によって変わります。
+      <strong>日数はあくまで目安です。</strong>公的な公表値ではなく、窓口の混み具合・請求方法（窓口／郵送／オンライン）・時期によって変わります。
       必要な書類と部数は制度ごとに違うので、<strong>必ず各制度の「公募要領」の提出書類一覧でご確認ください。</strong>
       証明書には「発行後3か月以内」などの期限が付くことが多く、早く取りすぎても使えません。
     </div>
     <p class="src-note" id="commonSource"></p>
   </section>
-
-  <!-- 04 締切一覧 -->
-  <section id="deadlines">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切一覧</h2></div>
-    <p class="section-sub">下で選んだ制度の締切をまとめて並べます。<strong>日付は各制度の説明文から機械的に拾ったものです。</strong>公募回の追加や前倒しがあるため、実際に出すときは必ず公式ページでご確認ください。</p>
-
-    <div class="picker">
-      <p style="margin:0 0 0.5rem;font-size:0.93rem;">準備する制度を選んでください。<strong>トップページの☆（お気に入り）と同じもの</strong>を使っています。</p>
-      <select id="progPicker" onchange="addProgram(this.value)">
-        <option value="">＋ 制度を追加する</option>
-      </select>
-      <div class="chips" id="progChips"></div>
-    </div>
-
-    <div id="deadlineList"></div>
-  </section>
-  <!-- 05 逆算（締切を知ってから逆算する順にしている） -->
+  <!-- 04 逆算 -->
   <section id="leadtime">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>締切から逆算する</h2></div>
-    <p class="section-sub">提出の締切日を入れると、03の書類を<strong>いつまでに頼めばよいか</strong>を計算します。上の04で締切を押すと、この欄に入ります。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>締切から逆算する</h2></div>
+    <p class="section-sub">提出の締切日を入れると、03の書類を<strong>いつまでに頼めばよいか</strong>を計算します。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。締切日は各制度の公式ページでご確認ください。</p>
 
     <div class="pcard">
       <label for="deadlineInput" style="display:block;font-size:0.92rem;margin-bottom:0.4rem;">提出の締切日</label>
@@ -594,10 +504,10 @@
     <div id="leadResult"></div>
   </section>
 
-  <!-- 06 チェックリスト -->
+  <!-- 05 チェックリスト -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>提出書類のチェックリスト</h2></div>
-    <p class="section-sub"><strong>公式サイトの様式だけでなく、取り寄せが要る書類も同じ一覧に入れています。</strong>様式はそろったのに証明書が間に合わない、という事態を避けるためです。チェックを付けるとこの端末に残り、次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>提出書類のチェックリスト</h2></div>
+    <p class="section-sub">02で選んだ制度の<strong>様式</strong>を並べます。取り寄せが必要な書類は03にありますので、そちらと合わせてご確認ください。チェックを付けるとこの端末に残り、次に開いたときは続きから進められます。リンク先はすべて各制度の公式サイトです。</p>
     <div id="checkList"></div>
     <p style="margin-top:1.2rem;font-size:0.9rem;color:var(--ink-soft);">
       制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。
@@ -2248,128 +2158,129 @@
   }
 
   // ---- 結果の表示 ----
-  var fillCardSeq = 0;
-  function renderFillResult(fileName, res) {
+  // 1件ずつカードを出すと、同じ説明が何枚も並んで読めなくなる。
+  // 「記入できた」「入れられなかった」の2つの一覧にまとめる
+  function frEnsure() {
     var box = document.getElementById('fillResults');
-    var card = document.createElement('div');
-    card.className = 'pcard fillcard';
-    // 閉じたままでも結果が分かるように、見出しに要約を出す
-    var stat, statNg = false;
-    if (res.error) { stat = '読み込めませんでした'; statNg = true; }
-    else if (res.none) { stat = '会社情報を入れられる欄がありませんでした'; statNg = true; }
-    else { stat = res.fills.length + 'か所に入れました'; }
-    if (res.skips && res.skips.length) stat += '・触らなかった欄 ' + res.skips.length + '件';
-    var html = '<button type="button" class="card-close" aria-label="この結果の表示を消す" title="この結果の表示を消す">×</button>' +
-      '<details class="fill-det"><summary><h3>' + esc(fileName) +
-      '<span class="fill-stat' + (statNg ? ' ng' : '') + '">' + esc(stat) + '</span></h3></summary>' +
-      '<div class="fill-body">';
-    // 名前を様式名に置き換えたときは、もとのファイル名も残す。
-    // 配布ページの一覧と突き合わせるときに要るため
-    if (res.rawName && res.rawName !== fileName) {
-      html += '<p class="fill-origin">配布元でのファイル名：' + esc(res.rawName) + '</p>';
-    }
-    if (res.origin && res.origin.via === 'mirror' && res.origin.rec) {
-      var rc = res.origin.rec;
-      html += '<p class="fill-origin">出典：' + esc(rc.org) + 'ウェブサイト（' +
-        '<a href="' + esc(res.origin.url) + '" target="_blank" rel="noopener noreferrer">配布ページ ↗</a>）。' +
-        '当サイトが<strong>' + esc(rc.fetched) + '</strong>に取得した控えを、中身を変えずに使いました。' +
-        '<strong>様式は差し替わることがあります。</strong>提出前に配布ページで最新版かご確認ください。</p>';
-    } else if (res.origin && res.origin.via === 'direct') {
-      html += '<p class="fill-origin">配布元から直接取り寄せた様式です（' +
-        '<a href="' + esc(res.origin.url) + '" target="_blank" rel="noopener noreferrer">配布ページ ↗</a>）。</p>';
-    }
-    if (res.error) {
-      html += '<p style="margin:0;color:var(--rust);font-size:0.92rem;">' + esc(res.error) + '</p>';
-    } else if (res.none) {
-      html += '<p style="margin:0;font-size:0.92rem;">会社情報を入れられる欄が見つかりませんでした。' +
-        '表の中の「所在地」「電話番号」のようなラベルの右隣が空欄のときだけ入れる作りのため、' +
-        '下線に書き込む形の様式などには入れられません。お手数ですが直接ご記入ください。</p>';
-      if (res.skips.length) {
-        html += '<ul>' + res.skips.map(function (s) {
-          return '<li>「' + esc(s.label) + '」…' + esc(s.reason) + '</li>';
-        }).join('') + '</ul>';
-      }
-    } else {
-      html += '<p class="meta" style="margin:0 0 0.5rem;">' + res.fills.length + 'か所に入れました。</p>' +
-        '<div class="tbl-wrap"><table><thead><tr><th>どこに</th><th>入れた内容</th></tr></thead><tbody>' +
-        res.fills.map(function (f) {
-          return '<tr><td>' + esc(f.where) + '</td><td>' + esc(f.value) + '</td></tr>';
-        }).join('') + '</tbody></table></div>';
-      // 既記入などで意図して飛ばした項目は「様式に無い項目」の一覧に混ぜない
-      var touched = {};
-      res.skips.forEach(function (s) {
-        if (s.key) {
-          touched[s.key] = 1;
-          if (s.key === 'titleRep') { touched.title = 1; touched.rep = 1; }
-        }
+    if (!box) return null;
+    if (!document.getElementById('frFail')) {
+      box.insertAdjacentHTML('beforeend',
+        // 手を動かす必要があるほうを上に置く
+        '<div class="fr-block" id="frFail" hidden>' +
+        '<p class="fr-ttl"></p>' +
+        '<p class="fr-note"></p>' +
+        '<ul class="fr-list"></ul>' +
+        '<p class="fr-foot" hidden><button type="button" class="btn ghost" id="frOpenDrop">ファイルを置く欄を開く</button></p>' +
+        '</div>' +
+        '<div class="fr-block" id="frDone" hidden>' +
+        '<p class="fr-ttl"></p>' +
+        '<p class="fr-note">保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</p>' +
+        '<ul class="fr-list"></ul></div>');
+      var od = document.getElementById('frOpenDrop');
+      if (od) od.addEventListener('click', function () {
+        var d = document.getElementById('afManualBox');
+        if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       });
-      var unfilled = [];
-      FIELDS.forEach(function (f) {
-        var used = res.usedKeys[f.id] || touched[f.id] ||
-          (res.usedKeys.titleRep && (f.id === 'title' || f.id === 'rep'));
-        if (res.vals[f.id] && !used) unfilled.push(fieldLabel(f.id));
-      });
-      if (unfilled.length) {
-        html += '<p style="margin:0.7rem 0 0;font-size:0.88rem;"><strong>入れられなかった項目：</strong>' +
-          esc(unfilled.join('・')) + '。該当するラベルの欄が見つからなかったか、様式に無い項目です。必要ならお手数ですが直接ご記入ください。</p>';
-      }
-      if (res.skips.length) {
-        html += '<p style="margin:0.7rem 0 0;font-size:0.88rem;"><strong>触らなかった欄：</strong></p><ul>' +
-          res.skips.map(function (s) {
-            return '<li>「' + esc(s.label) + '」…' + esc(s.reason) + '</li>';
-          }).join('') + '</ul>';
-      }
-      // 保存するファイル名はその場で直せるようにする。
-      // 「様式1_交付申請書（記入済み）」のままだと、制度も日付も分からない
-      // ファイルが並んでしまうため。拡張子は中身と合っていないと開けなくなるので触らせない。
-      var dot = res.outName.lastIndexOf('.');
-      var outBase = dot > 0 ? res.outName.slice(0, dot) : res.outName;
-      var outExt = dot > 0 ? res.outName.slice(dot) : '';
-      fillCardSeq += 1;
-      var nameId = 'dlName' + fillCardSeq;
-      // 入れた場所を目で確かめられるようにする。
-      // 表の見た目のまま出して、入れたセルに色を付ける（誤って別人の欄に
-      // 入っていないかは、一覧の文字だけでは気づきにくいため）
-      if (res.preview) {
-        html += '<div class="pv-box"><p class="pv-head">記入したファイルの中身（プレビュー）</p>' +
-          '<p class="pv-legend"><span class="pv-chip pv-new"></span>入れた欄　' +
-          '<span class="pv-chip pv-ow"></span>元の記入を上書きした欄</p>' +
-          '<p class="pv-note">この様式で合っているか、<strong>自社の欄に入っているか</strong>をここでご確認ください。' +
-          '書体・罫線・色は再現していません。実際の見た目は保存したファイルでご確認ください。</p>' +
-          res.preview + '</div>';
-      }
-      html += '<div class="warn" style="margin:0.9rem 0 0;"><strong>このまま提出しないでください。</strong>' +
-        '保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</div>' +
-        '<div class="dl-row"><label for="' + nameId + '">保存するファイル名</label>' +
-        '<span class="dl-name-wrap"><input type="text" id="' + nameId + '" class="dl-name" value="' + esc(outBase) + '" spellcheck="false">' +
-        '<span class="dl-ext">' + esc(outExt) + '</span></span></div>' +
-        '<div class="btn-row" style="margin-top:0.8rem;"><a class="btn btn-dl" download="' + esc(res.outName) + '">記入済みファイルを保存</a></div>';
     }
-    html += '</div></details>';
-    card.innerHTML = html;
-    if (res.blob) {
-      var a = card.querySelector('.btn-dl');
-      a.href = URL.createObjectURL(res.blob);
-      var nameEl = card.querySelector('.dl-name');
-      if (nameEl) {
-        var ext = card.querySelector('.dl-ext').textContent;
-        nameEl.addEventListener('input', function () {
-          // Windows・macOSでファイル名に使えない文字は落とす。
-          // 空にしたときは元の名前に戻す（名前なしでは保存できないため）
-          var v = nameEl.value.replace(/[\\\/:*?"<>|\r\n\t]/g, '').replace(/^\.+/, '').trim();
-          a.setAttribute('download', (v || outBase) + ext);
-        });
-      }
-    }
-    // 結果は用が済んだら消せる。保存用のURLもここで手放す
-    card.querySelector('.card-close').addEventListener('click', function () {
-      var dl = card.querySelector('.btn-dl');
-      if (dl && dl.href) { try { URL.revokeObjectURL(dl.href); } catch (e) {} }
-      card.remove();
-      updateFilledDlBtn();
+    return box;
+  }
+  // 手順3は何度でも押せる。押すたびに増えていくと、どれが今回のぶんか
+  // 分からなくなるので、前回のぶんは消してから入れ直す
+  function clearFillResults() {
+    var box = document.getElementById('fillResults');
+    if (!box) return;
+    box.querySelectorAll('a.btn-dl[download]').forEach(function (a) {
+      if (a.href) { try { URL.revokeObjectURL(a.href); } catch (e) {} }
     });
-    box.insertBefore(card, box.firstChild);
+    box.innerHTML = '';
     updateFilledDlBtn();
+  }
+  function frSync() {
+    ['frFail', 'frDone'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var n = el.querySelectorAll('.fr-list > li').length;
+      el.hidden = !n;
+      el.querySelector('.fr-ttl').textContent = (id === 'frDone'
+        ? '記入できた様式（' + n + '件）'
+        : '会社情報を入れられなかった様式（' + n + '件）');
+    });
+    // 入れられなかった理由は2通りある。取り寄せできなかったもの（落として置けば入る）と、
+    // 取り寄せはできたが入れられる欄が無かったもの（置き直しても入らない）。
+    // 一括の案内文で「落として置いてください」と言うと、後者には嘘になる
+    var fail = document.getElementById('frFail');
+    if (fail) {
+      var cors = fail.querySelectorAll('.fr-list > li[data-kind="cors"]').length;
+      var note = fail.querySelector('.fr-note'), foot = fail.querySelector('.fr-foot');
+      if (note) note.textContent = cors
+        ? '配布元が他サイトからの取得を許可していないため、このページからは取り寄せできませんでした。'
+          + '下のボタンで様式を落として、「様式のファイルを直接置く」に入れてください。'
+        : 'この様式には、会社情報を入れられる欄が見つかりませんでした。'
+          + '下のボタンで落として、お手数ですが直接ご記入ください。';
+      if (foot) foot.hidden = !cors;
+    }
+    updateFilledDlBtn();
+  }
+  function frAdd(listId, name, html, kind) {
+    frEnsure();
+    var ul = document.querySelector('#' + listId + ' .fr-list');
+    if (!ul) return;
+    // 同じ様式を2回入れたときは前の行を置き換える（同じものが並ばないように）
+    ['frFail', 'frDone'].forEach(function (id) {
+      var old = document.querySelector('#' + id + ' .fr-list > li[data-name="' + cssEscName(name) + '"]');
+      if (old) {
+        var a = old.querySelector('a.btn-dl[download]');
+        if (a && a.href) { try { URL.revokeObjectURL(a.href); } catch (e) {} }
+        old.remove();
+      }
+    });
+    var li = document.createElement('li');
+    li.setAttribute('data-name', name);
+    if (kind) li.setAttribute('data-kind', kind);
+    li.innerHTML = html;
+    ul.appendChild(li);
+    frSync();
+    return li;
+  }
+  function cssEscName(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+  function kindOf(fileName) { return /\.xlsx$/i.test(fileName) ? 'Excel' : 'Word'; }
+
+  function renderFillResult(fileName, res) {
+    var kind = kindOf(fileName);
+    // 画面には出さないが、どの欄に何を入れたかは記録しておく。
+    // 「別人の欄に入っていないか」を機械で点検し続けるために要る（監査用）
+    window.KOBAN_FILL_LOG = (window.KOBAN_FILL_LOG || []).slice(-199);
+    window.KOBAN_FILL_LOG.push({
+      file: fileName, fills: res.fills || [], skips: res.skips || [],
+      error: res.error || '', none: !!res.none
+    });
+    if (!res.error && !res.none && res.blob) {
+      var li = frAdd('frDone', fileName,
+        '<span class="ft">' + esc(kind) + '</span>' +
+        '<span class="fn">' + esc(fileName) + '</span>' +
+        '<span class="fr-n">' + res.fills.length + 'か所</span>' +
+        '<a class="btn btn-dl" download="' + esc(res.outName) + '">保存</a>');
+      if (li) li.querySelector('.btn-dl').href = URL.createObjectURL(res.blob);
+      return;
+    }
+    // 欄が見つからなかった・読み込めなかったものは、すぐ落とせるようにして渡す
+    var why = res.error ? res.error : '会社情報を入れられる欄がありませんでした';
+    var url = res.origin && res.origin.url;
+    frAdd('frFail', fileName,
+      '<span class="ft">' + esc(kind) + '</span>' +
+      '<span class="fn">' + esc(fileName) + '</span>' +
+      '<span class="fr-n ng">' + esc(why) + '</span>' +
+      (url ? '<a class="btn ghost" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">公式サイトから落とす ↗</a>' : ''),
+      'nofield');
+  }
+  // 取り寄せられなかった様式。説明は一覧の上に1回だけ出す
+  function renderFetchFail(item, why) {
+    frAdd('frFail', item.name,
+      '<span class="ft">' + esc(/\.xlsx?$/i.test(item.url) ? kindOf(item.url) : '様式') + '</span>' +
+      '<span class="fn">' + esc(item.name) + '</span>' +
+      '<span class="fr-n ng">' + esc(why) + '</span>' +
+      '<a class="btn ghost" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer">公式サイトから落とす ↗</a>',
+      'cors');
   }
 
   function handleFillFiles(fileList) {
@@ -2436,12 +2347,6 @@
       });
     });
     return out;
-  }
-  function naReason(it) {
-    if (OLD_OFFICE_RE.test(it.url)) return '古い形式（.doc / .xls）のため自動入力できません';
-    if (/\.pdf(\?|#|$)/i.test(it.url)) return 'PDFのため自動入力できません';
-    if (/\.zip(\?|#|$)/i.test(it.url)) return 'ZIP（複数ファイルのまとまり）のため自動入力できません';
-    return 'Word（.docx）・Excel（.xlsx）ではないため自動入力できません';
   }
   var PREF_LABEL = { tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
     chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県' };
@@ -2541,25 +2446,6 @@
   }
   // 手順2で選んでいるファイル形式（'all' / 'Word' / 'Excel'）
   var afFmt = 'all';
-  // 様式1件の詳細（形式・大きさ・提出の時期・取得のしかた）
-  function afDetailRows(it) {
-    var rows = [
-      ['ファイルの形式', esc(it.type) + (it.size ? '（' + esc(it.size) + '）' : '')],
-      ['提出の時期', esc(it.phase)]
-    ];
-    if (it.fillable) {
-      rows.push(['このページでの記入', mirrorOf(it.url)
-        ? 'そのまま記入できます（ダウンロード不要）'
-        : '公式サイトからダウンロードして、下の「様式のファイルを直接置く」に入れてください']);
-    } else {
-      rows.push(['このページで記入できない理由', esc(naReason(it))]);
-      rows.push(['書き方', 'ダウンロードして、印刷して手書きするか、お使いのソフトでご記入ください']);
-    }
-    rows.push(['配布元', '<a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">公式サイトで開く ↗</a>']);
-    return '<table class="af-dl-tbl"><tbody>' + rows.map(function (r) {
-      return '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>';
-    }).join('') + '</tbody></table>';
-  }
   function renderAfForms() {
     var box = document.getElementById('afForms');
     var sel = document.getElementById('afProgram');
@@ -2630,16 +2516,13 @@
         '公式サイトから取得して、印刷して手書きするか、お使いのソフトでご記入ください。</p>' +
         '<ul class="af-other-list">' +
         other.map(function (it) {
+          // 詳細カードをやめたぶん、公式サイトへの導線は各行に置く
           return '<li><span class="ft">' + esc(it.type) + '</span>' +
             '<span class="fn">' + esc(it.name) +
-            '<span class="af-na-why">（' + esc(it.phase) + '）</span></span></li>';
+            '<span class="af-na-why">（' + esc(it.phase) + '）</span></span>' +
+            '<a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">開く ↗</a></li>';
         }).join('') + '</ul>' +
-        '<p class="af-sub-ttl">1件ずつの詳細（押すと開きます）</p>' +
-        other.map(function (it) {
-          return '<details class="af-doc"><summary><span class="ft">' + esc(it.type) + '</span>' +
-            '<span class="fn">' + esc(it.name) + '</span></summary>' +
-            '<div class="af-doc-body">' + afDetailRows(it) + '</div></details>';
-        }).join('') + '</div>';
+        '</div>';
     }
     html += '</div>';
     box.innerHTML = html;
@@ -2715,7 +2598,7 @@
   // 絞らないと、まとめて保存の件数に失敗分が混ざり、押すと公式サイトが開く
   function filledDlLinks() {
     return Array.prototype.slice.call(
-      document.querySelectorAll('#fillResults .fillcard a.btn-dl[download]'));
+      document.querySelectorAll('#fillResults a.btn-dl[download]'));
   }
   // 手順3と手順4の見た目を、いまの状態に合わせて変える。
   // 「押せるのはどれか」「押すとどうなるか」を色と文で示す
@@ -2724,7 +2607,7 @@
     var run = document.getElementById('afRun');
     if (!btn) return;
     var n = filledDlLinks().length;
-    var failed = document.querySelectorAll('#fillResults .af-manual').length;
+    var failed = document.querySelectorAll('#frFail .fr-list > li').length;
     var lead = btn.querySelector('.lead'), sub = btn.querySelector('.sub');
     btn.disabled = !n;
     if (lead) lead.textContent = n ? '手順4　記入済み' + n + '件を保存する' : '手順4　記入済みを保存する';
@@ -2842,33 +2725,6 @@
       return p || fallback;
     } catch (e) { return fallback; }
   }
-  // 取り寄せられなかった様式の案内（公式ページを開いて、落として、下の枠に置く）
-  function renderFetchFail(item, why) {
-    var box = document.getElementById('fillResults');
-    var card = document.createElement('div');
-    card.className = 'pcard fillcard af-manual';
-    card.innerHTML = '<button type="button" class="card-close" aria-label="この表示を消す" title="この表示を消す">×</button>' +
-      '<h3>' + esc(item.name) + '</h3>' +
-      '<p style="margin:0 0 0.5rem;font-size:0.92rem;">この様式は、配布元が他サイトからの取得を許可していないため、' +
-      'このページから直接取り寄せられませんでした（' + esc(why) + '）。お手数ですが次の順でお願いします。</p>' +
-      '<ol style="margin:0;padding-left:1.3rem;font-size:0.92rem;">' +
-      '<li>下のボタンで様式をダウンロードする</li>' +
-      '<li>このページの「様式のファイルを直接置く」に、落としたファイルを入れる</li>' +
-      '<li>記入済みのファイルがここに出ます</li></ol>' +
-      '<div class="btn-row"><a class="btn btn-dl" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer">' +
-      '公式サイトからこの様式をダウンロード ↗</a>' +
-      '<button type="button" class="btn ghost af-open-drop">ファイルを置く欄を開く</button></div>';
-    card.querySelector('.card-close').addEventListener('click', function () {
-      card.remove();
-      updateFilledDlBtn();
-    });
-    card.querySelector('.af-open-drop').addEventListener('click', function () {
-      var d = document.getElementById('afManualBox');
-      if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-    });
-    box.insertBefore(card, box.firstChild);
-    updateFilledDlBtn();
-  }
   var afRunning = false;
   function runAfFill() {
     if (afRunning) return;
@@ -2884,6 +2740,7 @@
       return;
     }
     afRunning = true;
+    clearFillResults();
     if (runBtn) {
       runBtn.disabled = true;
       var rs = runBtn.querySelector('.sub');
@@ -3321,9 +3178,7 @@
     'デジタル化・AI導入補助金2026（通常枠）、新事業進出・ものづくり商業サービス補助金（第1回）、' +
     '中小企業省力化投資補助金（第7回）などの公募要領を開いて、提出書類の一覧から拾いました。' +
     '類型ごとの要否（例：雇用関係助成金では登記事項証明書が原則不要）もこの一次資料で確認しています。' +
-    '制度ごとに必要な書類は違うので、最終確認は必ずご自分が出す制度の公募要領・支給要領で行ってください。' +
-    '雇用関係助成金の申請書類の作成・提出については、社会保険労務士にご相談ください。' +
-    '取り寄せ日数は公的な公表値ではなく目安です。';
+    '雇用関係助成金の申請書類の作成・提出については、社会保険労務士にご相談ください。';
 
   function whoBadge(who) {
     var cls = who === '全員' ? 'sage' : (who === '該当者のみ' ? 'rust' : 'accent');
@@ -3401,7 +3256,7 @@
     }
   }
 
-  // ---------- 05 締切からの逆算 ----------
+  // ---------- 04 締切からの逆算 ----------
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function fmt(d) { return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日'; }
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -3411,7 +3266,7 @@
     var out = document.getElementById('leadResult');
     if (!v) {
       out.innerHTML = '<p class="empty">締切日を入れると、書類ごとの「いつまでに頼むか」を出します。' +
-        '上の「04 締切一覧」から日付を押しても入ります。</p>';
+        '締切日は各制度の公式ページでご確認ください。</p>';
       return;
     }
     var parts = v.split('-');
@@ -3450,75 +3305,13 @@
   // ---------- 04 締切一覧 ----------
   // schedule は自由文なので、機械的に日付を拾うだけにとどめる。
   // 拾えなかったものを「締切なし」と言い切らない（通年受付・未発表の制度がある）。
-  function extractDates(text) {
-    if (!text) return [];
-    var found = [], m;
-    var reWareki = /令和\s*(\d+|元)\s*年\s*(\d+)\s*月\s*(\d+)\s*日/g;
-    while ((m = reWareki.exec(text))) {
-      var y = (m[1] === '元' ? 1 : parseInt(m[1], 10)) + 2018;
-      found.push(new Date(y, +m[2] - 1, +m[3]));
-    }
-    var reSeireki = /(20\d\d)\s*年\s*(\d+)\s*月\s*(\d+)\s*日/g;
-    while ((m = reSeireki.exec(text))) found.push(new Date(+m[1], +m[2] - 1, +m[3]));
-    return found;
-  }
-
-  function nextDeadline(text) {
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var future = extractDates(text).filter(function (d) { return d >= today; });
-    future.sort(function (a, b) { return a - b; });
-    return future.length ? future[0] : null;
-  }
-
   function getPicked() {
     var arr = load(K_FAV, []);
     return Array.isArray(arr) ? arr.filter(function (k) { return D.programs[k]; }) : [];
   }
 
-  window.addProgram = function (key) {
-    if (!key) return;
-    var arr = load(K_FAV, []);
-    if (!Array.isArray(arr)) arr = [];
-    if (arr.indexOf(key) === -1) { arr.push(key); save(K_FAV, arr); }
-    document.getElementById('progPicker').value = '';
-    renderPicked();
-  };
-  window.removeProgram = function (key) {
-    var arr = load(K_FAV, []).filter(function (k) { return k !== key; });
-    save(K_FAV, arr);
-    renderPicked();
-  };
-
-  function renderPicker() {
-    var sel = document.getElementById('progPicker');
-    var picked = getPicked();
-    var keys = Object.keys(D.programs).filter(function (k) { return picked.indexOf(k) === -1; });
-    keys.sort(function (a, b) { return D.programs[a].name.localeCompare(D.programs[b].name, 'ja'); });
-    sel.innerHTML = '<option value="">＋ 制度を追加する</option>' +
-      keys.map(function (k) {
-        return '<option value="' + esc(k) + '">' + esc(D.programs[k].name) + '</option>';
-      }).join('');
-  }
-
-  function renderChips() {
-    var picked = getPicked();
-    var el = document.getElementById('progChips');
-    var stale = unknownFromQuery
-      ? '<p class="warn" style="margin:0 0 0.6rem;">開こうとした制度が見つかりませんでした。' +
-        '制度の入れ替えで、リンクが古くなっている可能性があります。' +
-        'お手数ですが下の欄から選び直すか、<a href="./#docs">トップページの申請書類</a>から開き直してください。</p>'
-      : '';
-    el.innerHTML = stale + (picked.length
-      ? picked.map(function (k) {
-          return '<span class="chip">' + esc(D.programs[k].name) +
-            '<button type="button" title="外す" onclick="removeProgram(\'' + esc(k) + '\')">×</button></span>';
-        }).join('')
-      : '<span style="font-size:0.88rem;color:var(--ink-soft);">まだ選んでいません。上の欄から追加するか、' +
-        '<a href="./#programs">トップページの☆</a>で登録してください。</span>');
-  }
-
-  // 05・06で並べる制度。02で選んだ制度を先頭に必ず含める
-  // 02で選んだ制度は必ず先頭。お気に入りに入っていても順番を入れ替える
+  // 05で並べる制度。02で選んだ制度を先頭に、トップページの☆を後ろに続ける
+  // （☆の登録・解除はトップページで行う）
   // （いま見ている制度が下のほうにあると、探しに行くことになるため）
   function docsPrograms() {
     var picked = getPicked().slice();
@@ -3530,55 +3323,7 @@
     }
     return picked;
   }
-  function renderDeadlines() {
-    var picked = docsPrograms();
-    var el = document.getElementById('deadlineList');
-    if (!picked.length) {
-      el.innerHTML = '<p class="empty">制度を選ぶと、締切がここに並びます。</p>';
-      return;
-    }
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var rows = picked.map(function (k) {
-      var p = D.programs[k];
-      return { key: k, p: p, next: nextDeadline(p.schedule) };
-    });
-    rows.sort(function (a, b) {
-      if (a.next && b.next) return a.next - b.next;
-      if (a.next) return -1;
-      if (b.next) return 1;
-      return 0;
-    });
-    el.innerHTML = rows.map(function (r) {
-      var badge;
-      if (r.next) {
-        var left = Math.round((r.next - today) / 86400000);
-        badge = '<button type="button" class="deadline ' + (left <= 30 ? 'near' : 'ok') + '" ' +
-          'style="cursor:pointer;font:inherit;font-size:0.85rem;" ' +
-          'onclick="useDeadline(\'' + iso(r.next) + '\')">' +
-          fmt(r.next) + '（あと' + left + '日）／この日で逆算する</button>';
-      } else {
-        badge = '<span class="deadline none">説明文から締切日を拾えませんでした</span>';
-      }
-      return '<div class="pcard">' +
-        '<h3>' + esc(r.p.name) + '</h3>' +
-        '<p class="meta">' + esc(r.p.schedule || '受付期間の記載がありません') + '</p>' +
-        '<p style="margin:0 0 0.5rem;">' + badge + '</p>' +
-        (r.p.link ? '<p style="margin:0;font-size:0.88rem;"><a href="' + esc(r.p.link) +
-          '" target="_blank" rel="noopener noreferrer">' +
-          esc(r.p.linkLabel || '公式サイトを見る') + ' ↗</a></p>' : '') +
-        '</div>';
-    }).join('');
-  }
-
-  window.useDeadline = function (isoStr) {
-    var input = document.getElementById('deadlineInput');
-    input.value = isoStr;
-    renderLead();
-    document.getElementById('deadlinePick').textContent = '締切一覧から取り込みました。';
-    document.getElementById('leadtime').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // ---------- 06 チェックリスト ----------
+  // ---------- 05 チェックリスト ----------
   var checks = load(K_CHECK, {});
 
   window.toggleCheck = function (progKey, url, on) {
@@ -3591,15 +3336,21 @@
   function renderChecklist() {
     var picked = docsPrograms();
     var el = document.getElementById('checkList');
+    // 制度が入れ替わった後の古いリンクで来たときの案内
+    var stale = unknownFromQuery
+      ? '<p class="warn">開こうとした制度が見つかりませんでした。' +
+        '制度の入れ替えで、リンクが古くなっている可能性があります。お手数ですが' +
+        '<a href="./#docs">トップページの申請書類</a>から開き直してください。</p>'
+      : '';
     if (!picked.length) {
-      el.innerHTML = '<p class="empty">制度を選ぶと、その制度の書類がここに並びます。' +
-        '上の「02」で制度を選ぶか、「04 締切一覧」で追加してください。</p>';
+      el.innerHTML = stale + '<p class="empty">制度を選ぶと、その制度の様式がここに並びます。' +
+        '上の「02」で制度を選んでください。</p>';
       return;
     }
     var withDocs = picked.filter(function (k) { return D.docs[k]; });
     var without = picked.filter(function (k) { return !D.docs[k]; });
 
-    var html = withDocs.map(function (k) {
+    var html = stale + withDocs.map(function (k) {
       var p = D.programs[k], d = D.docs[k];
       var mine = checks[k] || {};
       var total = 0, done = 0;
@@ -3646,9 +3397,6 @@
   }
 
   function renderPicked() {
-    renderPicker();
-    renderChips();
-    renderDeadlines();
     renderChecklist();
   }
 
@@ -3677,10 +3425,9 @@
     if (!sel) return;
     sel.addEventListener('change', function () {
       renderAfForms();
-      // 03〜06はこの選択に連動する
+      // 03〜05はこの選択に連動する
       renderCommon();
       renderLead();
-      renderDeadlines();
       renderChecklist();
     });
     // index.html の各制度カードから「この制度の書類を準備する」で来たときは、
