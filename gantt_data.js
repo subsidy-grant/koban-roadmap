@@ -38,6 +38,11 @@ window.KOBAN_GANTT = {
       { key: 'minwage_effective_date', label: 'お店のある都道府県の最低賃金の発効日', note: '申請の締切と賃上げの期限がここで決まります' },
       { key: 'grant_decision_date', label: '交付決定の通知を受けた日', note: '通知が届いてから入れてください。設備の発注はこの日より後でないと対象外です', optional: true }
     ],
+    hatarakikata: [
+      { key: 'application_date', label: '交付申請書を提出する予定日', note: '令和8年度の締切は2026年11月30日(月)17時必着です。予算がなくなると締切前でも受付が終わります' },
+      { key: 'grant_decision_date', label: '交付決定の通知を受けた日', note: '通知が届いてから入れてください。発注・契約はこの日より後でないと対象外です', optional: true },
+      { key: 'jigyou_end', label: '改善事業を終える予定日', note: '期限は2027年1月31日(日)。支給申請の締切はここから30日後か2027年2月5日(金)の早い方です', optional: true }
+    ],
     jizoku: [
       { key: 'deadline', label: '申請の受付締切日', note: '第20回は2026年12月15日17:00です' },
       { key: 'form4_deadline', label: '事業支援計画書（様式4）の発行受付締切日', note: '申請締切とは別で、必ずこれより前にあります。第20回は2026年12月4日' },
@@ -60,6 +65,7 @@ window.KOBAN_GANTT = {
     career: { label: 'キャリアアップ助成金 正社員化コース', kind: 'josei' },
     jinzai: { label: '人材開発支援助成金 人材育成支援コース', kind: 'josei' },
     kaizen: { label: '業務改善助成金（2026年度）', kind: 'josei' },
+    hatarakikata: { label: '働き方改革推進支援助成金 労働時間短縮・年休促進支援コース', kind: 'josei', note: '同じ年度に同じ事業主が交付決定を受けられるのは1回だけです。勤務間インターバル導入コースとの併用はできません。' },
     jizoku: { label: '小規模事業者持続化補助金（第20回）', kind: 'hojo' },
     ai: { label: 'デジタル化・AI導入補助金2026（通常枠）', kind: 'hojo', note: '確定しているのは4次締切分（締切2026年8月25日17:00・交付決定日10月7日予定）までです。5次以降の日程は公表されていません（2026年8月2日13:18時点で未確認）。' },
     shoryokuka: { label: '中小企業省力化投資補助金（一般型）', kind: 'hojo', note: '下の内容は第7回公募要領（受付は終了済み）に基づきます。第8回は公募要領がまだ公開されていないため、上限額・要件・日程が変わる可能性があります（2026年8月2日13:10時点で未確認）。' }
@@ -193,12 +199,57 @@ window.KOBAN_GANTT = {
     { id: "sh22", scheme: "shoryokuka", phase: "採択後の義務", task: "入れた設備を勝手に売却・廃棄・担保にしない", owner: "事業主", days: 1825, anchor: "grant_date", offset: 601, when: "減価償却資産の耐用年数等に関する省令に定める期間", dep: ["sh21"], hard: true, warn: "処分制限期間は耐用年数省令に定める期間です。質権等の担保権設定は原則不可で、事前の事務局承認が必要です。設備を担保に借入をする場合は中小機構への事前申請が要り、担保権が実行されると国庫納付が必要です", source: "https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_07.pdf", checked: "2026-08-02 13:18 JST" },
     { id: "sh23", scheme: "shoryokuka", phase: "採択後の義務", task: "事業計画期間中は毎年、効果報告を出す", owner: "事業主", days: 14, anchor: "grant_date", offset: 900, when: "補助事業完了年度の翌年度を1年目として3〜5年、毎年", dep: ["sh21"], hard: true, warn: "労働生産性・1人当たり給与支給総額の実績を毎年報告します。基本要件が未達の場合は返還の対象になり得ます", source: "https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_07.pdf", checked: "2026-08-02 13:18 JST" },
     { id: "sh24", scheme: "shoryokuka", phase: "採択後の義務", task: "収益納付は求められないが、返還の要件があることを知っておく", owner: "事業主", days: 1, anchor: "grant_date", offset: 601, when: "補助事業の終了後", dep: ["sh21"], warn: "この補助金の公募要領は「収益納付は求めません」と明記しています。ただし基本要件の未達、善管注意義務違反、無断承継、立入検査での指摘により、交付決定取消や返還になる場合があります。持続化補助金とは扱いが違うので混同しないでください", source: "https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_07.pdf", checked: "2026-08-02 13:18 JST" }
+,
+    { id: "h01", scheme: "hatarakikata", phase: "準備", task: "労働局や働き方改革推進支援センターに事前相談する", owner: "事業主・社労士", days: 7, anchor: "application_date", offset: -90, when: "交付申請の90日前めやす", dep: [], warn: "無料で相談できます。使えるコースの選び方や書類の揃え方をここで詰めておくと、後の手戻りが減ります", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h02", scheme: "hatarakikata", phase: "準備", task: "自社が中小企業事業主に当たるか確かめる", owner: "事業主", days: 1, anchor: "application_date", offset: -75, when: "交付申請の75日前めやす", dep: ["h01"], warn: "美容業はサービス業の区分なので、資本金5,000万円以下または常時使用する労働者100人以下なら該当します。労働者の数にはふだん使っているパート・アルバイトも入ります", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h03", scheme: "hatarakikata", phase: "準備", task: "年次有給休暇管理簿を全事業場で整える", owner: "事業主・社労士", days: 14, anchor: "application_date", offset: -60, when: "交付申請の60日前までに着手", dep: ["h02"], hard: true, warn: "対象事業主の要件です。年休の付与実績があるかどうかにかかわらず、作成しておく必要があります", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h04", scheme: "hatarakikata", phase: "準備", task: "年5日の時季指定を就業規則に定めて労基署へ届け出る", owner: "事業主・社労士", days: 21, anchor: "application_date", offset: -60, when: "交付申請の日より前に届出を済ませる", dep: ["h03"], hard: true, warn: "常時10人以上の事業場が対象です。パート用の就業規則を別に作っている場合、そちらにも時季指定を定めて届け出ないと要件を満たしません", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h05", scheme: "hatarakikata", phase: "準備", task: "どの成果目標で申請するか決める", owner: "事業主・社労士", days: 3, anchor: "application_date", offset: -50, when: "交付申請の50日前めやす", dep: ["h02"], hard: true, warn: "同じ年度に同じ事業主が交付決定を受けられるのは1回だけです。勤務間インターバル導入コースと両方を受けることはできません", source: "https://www.mhlw.go.jp/content/001689316.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h06", scheme: "hatarakikata", phase: "準備", task: "いまの36協定が要件を満たすか確かめる", owner: "事業主・社労士", days: 14, anchor: "application_date", offset: -45, when: "交付申請の日より前に確認・届出を済ませる", dep: ["h05"], hard: true, warn: "時間外・休日労働時間数の削減を成果目標にする場合、（1）全事業場で2026年4月1日以前の2年間に月45時間（1年単位の変形労働時間制は42時間）を超える時間外労働の実態があること、（2）交付申請日を有効期間に含み、月60時間または80時間を超えて協定した36協定が交付申請より前に届け出てあること、の両方が必要です。要件を満たす目的で36協定の上限時間を引き上げることは制度の想定ではありません。当てはまらない場合は年次有給休暇の制度導入（25万円）を検討してください", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h07", scheme: "hatarakikata", phase: "準備", task: "見積書を2社以上から取る", owner: "事業主", days: 14, anchor: "application_date", offset: -30, when: "交付申請の30日前までに着手", dep: ["h05"], hard: true, warn: "交付申請に2者以上の見積書を付けます。メーカー直販や定価販売のみで2者から取れない場合は、市場価格が分かる資料で代えられます。見積りを交付申請より前に取ることは問題ありません。パソコン・タブレット・スマートフォンの購入費用と、乗車定員7人以上の乗用自動車等の購入費用は対象外です", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h08", scheme: "hatarakikata", phase: "準備", task: "事業実施計画と添付書類をそろえる", owner: "事業主・社労士", days: 10, anchor: "application_date", offset: -14, when: "交付申請の14日前めやす", dep: ["h07"], warn: "様式第1号の別添が事業実施計画です。添付書類が足りないと受付・審査が止まります", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h09", scheme: "hatarakikata", phase: "交付申請", task: "交付申請書を労働局へ出す", owner: "事業主・社労士", days: 1, anchor: "application_date", offset: 0, when: "2026年11月30日(月)まで（郵送は当日消印有効）", dep: ["h08"], hard: true, warn: "提出先は都道府県労働局の雇用環境・均等部（室）です。予算がなくなると11月30日より前に予告なく受付が締め切られます。郵送は当日の消印有効、窓口と電子申請（Jグランツ）は当日17時までにデータが届いていること。申請書類の作成・提出を代理で頼めるのは社会保険労務士または弁護士に限られます", source: "https://www.mhlw.go.jp/content/001696150.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h10", scheme: "hatarakikata", phase: "交付申請", task: "交付決定の通知を待つ", owner: "労働局", days: 30, anchor: "application_date", offset: 30, when: "交付申請から原則1か月以内", dep: ["h09"], hard: true, warn: "交付要綱では、交付申請のあった日から原則として1か月以内に交付決定または不交付決定を行うと定められています。この間に発注・契約をしてはいけません。通知が届く前に契約したものは改善事業に含められません", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h11", scheme: "hatarakikata", phase: "事業の実施", task: "交付決定の後に発注・契約する", owner: "事業主", days: 7, anchor: "grant_decision_date", offset: 0, when: "交付決定日の翌日以降", dep: ["h10"], hard: true, warn: "交付決定日より前の発注・契約は理由を問わず対象外です", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h12", scheme: "hatarakikata", phase: "事業の実施", task: "納品を受け、支払まで終える", owner: "事業主", days: 60, anchor: "grant_decision_date", offset: 14, when: "事業は2027年1月31日(日)まで／支払は支給申請日まで", dep: ["h11"], hard: true, warn: "契約・納品・役務の提供は、交付決定日から2027年1月31日までに終える必要があります。支払は支給申請の日までに済んでいれば認められます（クレジットカード払いは支給申請日までに口座から引き落とされていること）。ただし支給申請には支払を証明する書類を付けるため、前倒しが安全です", source: "https://www.mhlw.go.jp/content/001689316.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h13", scheme: "hatarakikata", phase: "事業の実施", task: "支払は内訳が分かる形で、事業主名義で行う", owner: "事業主", days: 1, anchor: "grant_decision_date", offset: 14, when: "支払をするとき", dep: ["h12"], hard: true, warn: "誰が・誰に・何の取引で・いつ・いくら（内訳を含む）が分かる書面やデータが必要です。ネットバンキングの履歴に品目の内訳が出ず、対象外になった例があります。支払の名義は事業主本人（代表者名）か法人名でなければならず、個人事業主が家族名義の口座・カードで支払うと、支払ったものと認められません", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h14", scheme: "hatarakikata", phase: "事業の実施", task: "成果目標を実行する（36協定・就業規則の変更）", owner: "事業主・社労士", days: 45, anchor: "grant_decision_date", offset: 7, when: "事業実施期間の中で行う", dep: ["h11"], hard: true, warn: "賃上げ加算を使う場合は、賃金計算期間の始期と就業規則を変更した時点の両方が、交付申請日から事業実施予定期間の終わりまでに入っている必要があります", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h15", scheme: "hatarakikata", phase: "事業の実施", task: "労使の話合いの場を設け、記録を残す", owner: "事業主", days: 45, anchor: "grant_decision_date", offset: 7, when: "事業実施期間の中で行う", dep: ["h11"], hard: true, warn: "労働時間等設定改善法と指針に基づく措置（労使の話合いの機会の整備・担当者の配置・計画の周知）の実施が支給の要件です。議事録や写真は支給申請の必須添付で、あとから作ることはできません", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h16", scheme: "hatarakikata", phase: "事業の実施", task: "計画を変えるときは事前に変更申請する", owner: "事業主・社労士", days: 7, anchor: "grant_decision_date", offset: 30, when: "変更が生じたとき（事前に）", dep: ["h11"], hard: true, warn: "様式第4号で申請し、労働局の承認を受けます。事後の承認は受けられません。納品の遅れによる変更申請が多く発生しています", source: "https://www.mhlw.go.jp/content/001689316.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h17", scheme: "hatarakikata", phase: "支給申請", task: "支給申請書と事業実施結果報告書を出す", owner: "事業主・社労士", days: 20, anchor: "jigyou_end", offset: 1, when: "事業終了から30日後か2027年2月5日(金)の早い方", dep: ["h12", "h14", "h15"], hard: true, warn: "様式第10号と様式第11号に、支払を証明する書類・成果目標を達成したことが分かる書類・労使の話合いの記録を添えます。郵送は当日の消印有効、電子申請は締切当日の23時59分まで受け付けます。申請書類の作成・提出を代理で頼めるのは社会保険労務士または弁護士に限られます", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h18", scheme: "hatarakikata", phase: "支給申請", task: "労働局の審査に答える", owner: "労働局", days: 30, anchor: "jigyou_end", offset: 21, when: "支給申請から1か月めやす", dep: ["h17"], warn: "標準的な審査期間は1か月です。審査の中で労働基準関係法令の違反が疑われた場合、所管の部署へ情報提供されます", source: "https://www.mhlw.go.jp/content/001696656.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h19", scheme: "hatarakikata", phase: "支給申請", task: "交付額の確定通知を受け、入金される", owner: "労働局・事業主", days: 1, anchor: "jigyou_end", offset: 51, when: "審査が終わってから", dep: ["h18"], warn: "精算払い（後払い）です。交付申請から確定までは、過去の実績で平均5〜6か月かかっています", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h20", scheme: "hatarakikata", phase: "支給後の義務", task: "賃上げ加算を受けたら状況を報告する", owner: "事業主", days: 30, anchor: "jigyou_end", offset: 180, when: "6箇月後基準日から30日以内", dep: ["h19"], hard: true, warn: "賃上げ加算を選んだ場合のみです。期限内に報告しないと加算分の返還を求められることがあります。また、加算を選んだあとに指定事業場の労働者の時給を引き下げたとき、交付申請日の3か月前以降に解雇・退職勧奨・希望退職の募集による退職があったときは、加算が支給されません", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h21", scheme: "hatarakikata", phase: "支給後の義務", task: "税込で受けた場合は消費税額を報告する", owner: "事業主・税理士", days: 14, anchor: "jigyou_end", offset: 240, when: "消費税の申告後すみやかに（遅くとも翌々年度6月末まで）", dep: ["h19"], warn: "様式第13号です。仕入税額控除の対象になった分は返還します", source: "https://www.mhlw.go.jp/content/001696657.pdf", checked: "2026-08-02 17:19 JST" },
+    { id: "h22", scheme: "hatarakikata", phase: "支給後の義務", task: "買ったものを勝手に処分しない", owner: "事業主", days: 1, anchor: "jigyou_end", offset: 240, when: "処分しようとするとき（事前に）", dep: ["h19"], hard: true, warn: "取得した財産を売却・譲渡・廃棄する前に、労働局へ申請して承認を受ける必要があります", source: "https://www.mhlw.go.jp/content/001689316.pdf", checked: "2026-08-02 17:19 JST" }
   ]
 };
 
 // 一覧で読むための1行要約（見出しに使う）。本文（task）は消していないので、
 // ここに無いタスクは本文がそのまま見出しになる。要約を書き換えても中身は変わらない。
 window.KOBAN_GANTT.shorts = {
+  h01: "労働局に事前相談する",
+  h02: "中小企業か確かめる",
+  h03: "年休管理簿を整える",
+  h04: "時季指定を定めて届出",
+  h05: "成果目標を決める",
+  h06: "36協定の要件を確認",
+  h07: "見積書を2社から取る",
+  h08: "事業実施計画を作る",
+  h09: "交付申請書を出す",
+  h10: "交付決定の通知を待つ",
+  h11: "交付決定の後に発注",
+  h12: "納品と支払を終える",
+  h13: "事業主名義で内訳を残す",
+  h14: "成果目標を実行する",
+  h15: "労使の話合いを記録",
+  h16: "変更は事前に申請する",
+  h17: "支給申請書を出す",
+  h18: "労働局の審査に答える",
+  h19: "確定通知を受けて入金",
+  h20: "賃上げ加算を報告する",
+  h21: "消費税額を報告する",
+  h22: "処分前に承認をもらう",
   c01: "雇用保険と保険料を確認",
   c02: "管理者を1人決める",
   c03: "対象者の履歴を洗い出す",
