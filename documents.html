@@ -1661,9 +1661,49 @@
     if (msg === 'encrypted') return 'このファイルはパスワードで保護されているため読めません。保護を外してからお試しください。';
     return 'このファイルは読めませんでした。破損しているか、対応していない作りの可能性があります。';
   }
-  function processFillFile(file) {
+  // ---- 保存するときのファイル名 ----
+  // 配布URLの末尾は「001687906.docx」のような番号で、何の様式か分からない。
+  // 何枚も落とすと見分けが付かず、提出前にひとつずつ開いて確かめることになる。
+  // 様式の名前を使い、ファイル名に使えない文字だけ置き換える。
+  function safeFileName(t) {
+    return String(t || '')
+      .replace(/（\.?(?:xlsx?|docx?)形式）/g, '')   // 「（.xls形式）」は名前に要らない
+      .replace(/[\\\/:*?"<>|\r\n\t]/g, '－')
+      .replace(/[\s　]+/g, ' ')
+      .replace(/^[\s.]+/, '').replace(/[\s.]+$/, '')
+      .slice(0, 80);
+  }
+  // 配布URLの末尾のファイル名 → 様式の名前
+  var FORM_NAME_BY_FILE = null;
+  function formNameOfFile(fileName) {
+    if (!FORM_NAME_BY_FILE) {
+      FORM_NAME_BY_FILE = {};
+      Object.keys(D.docs || {}).forEach(function (k) {
+        ((D.docs[k] || {}).groups || []).forEach(function (g) {
+          (g.items || []).forEach(function (it) {
+            var base = fileNameFromUrl(it.url, '').toLowerCase();
+            if (base && !FORM_NAME_BY_FILE[base]) FORM_NAME_BY_FILE[base] = it.name;
+          });
+        });
+      });
+    }
+    // 当サイトの控えは「<識別子>_<番号>.docx」という名前で保存しているので、
+    // 頭の識別子を外した形でも引けるようにする
+    var key = String(fileName || '').toLowerCase().replace(/^.*[\\\/]/, '');
+    return FORM_NAME_BY_FILE[key] ||
+           FORM_NAME_BY_FILE[key.replace(/^[0-9a-z]{6,}_/, '')] || '';
+  }
+  // 画面と保存に使う名前。様式の名前が分かればそれを使い、
+  // 分からなければ元のファイル名のままにする（勝手に変えない）。
+  function displayFileName(rawName, formName) {
+    var m = String(rawName || '').match(/\.([A-Za-z0-9]+)$/);
+    var nm = safeFileName(formName || formNameOfFile(rawName));
+    return nm ? nm + (m ? '.' + m[1] : '') : rawName;
+  }
+
+  function processFillFile(file, asName) {
     return file.arrayBuffer().then(function (buf) {
-      return processFillBytes(file.name, new Uint8Array(buf));
+      return processFillBytes(asName || file.name, new Uint8Array(buf));
     }, function () {
       return { error: 'このファイルを読み込めませんでした。もう一度お試しください。' };
     });
@@ -1730,6 +1770,11 @@
     card.className = 'pcard fillcard';
     var html = '<button type="button" class="card-close" aria-label="この結果の表示を消す" title="この結果の表示を消す">×</button>' +
       '<h3>' + esc(fileName) + '</h3>';
+    // 名前を様式名に置き換えたときは、もとのファイル名も残す。
+    // 配布ページの一覧と突き合わせるときに要るため
+    if (res.rawName && res.rawName !== fileName) {
+      html += '<p class="fill-origin">配布元でのファイル名：' + esc(res.rawName) + '</p>';
+    }
     if (res.origin && res.origin.via === 'mirror' && res.origin.rec) {
       var rc = res.origin.rec;
       html += '<p class="fill-origin">出典：' + esc(rc.org) + 'ウェブサイト（' +
@@ -1837,7 +1882,12 @@
     var chain = Promise.resolve();
     files.forEach(function (f) {
       chain = chain.then(function () {
-        return processFillFile(f).then(function (res) { renderFillResult(f.name, res); });
+        // 置かれたファイルが配布元の名前のままなら、様式の名前に直して保存できるようにする
+        var shown = displayFileName(f.name);
+        return processFillFile(f, shown).then(function (res) {
+          if (shown !== f.name) res.rawName = f.name;
+          renderFillResult(shown, res);
+        });
       });
     });
   }
@@ -2175,9 +2225,11 @@
       chain = chain.then(function () {
         if (status) status.textContent = '（' + (done + 1) + '/' + items.length + '）' + it.name + ' を取り寄せています…';
         return fetchForm(it.url).then(function (got1) {
-          var fname = fileNameFromUrl(it.url, it.name + '.docx');
+          var raw = fileNameFromUrl(it.url, it.name + '.docx');
+          var fname = displayFileName(raw, it.name);
           return processFillBytes(fname, got1.bytes).then(function (res) {
             res.origin = { via: got1.via, rec: got1.rec, url: it.url };
+            res.rawName = raw;
             renderFillResult(fname, res);
             got++;
           });
