@@ -592,6 +592,7 @@
     { id: 'name',      label: '事業者名（商号・屋号）', ph: '例）株式会社○○／○○美容室' },
     { id: 'kana',      label: '事業者名フリガナ',       ph: '例）カブシキガイシャマルマル' },
     { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
+    { id: 'hokenNo',   label: '雇用保険適用事業所番号',  ph: '例）1301-123456-7（雇用関係助成金の様式でよく使います）' },
     { id: 'zip',       label: '郵便番号',               ph: '例）150-0001', mode: 'numeric' },
     { id: 'addr',      label: '所在地',                 ph: '例）東京都渋谷区神宮前1-2-3 ○○ビル4階', big: true },
     { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
@@ -921,6 +922,10 @@
       .replace(/[\s　]+/g, '')
       .replace(/[：:。・※◆■□◎●▼△▲◇☆★]/g, '')
       .replace(/^[0-9０-９①-⑳]+[\.．)）]?/, '')
+      // 「所在地〒」のように、住所欄の中の〒印がラベルにくっついていることがある。
+      // 落とさないと「所在地」として拾えず、住所がどこにも入らない。
+      // ただし「〒」だけの欄は郵便番号のラベルそのものなので、落とすと空になって拾えなくなる
+      .replace(/^(.*[^〒].*)$/, function (m) { return m.replace(/^〒/, '').replace(/〒$/, ''); })
       .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
       .replace(/欄$/, '');
   }
@@ -929,22 +934,28 @@
   var FILL_LABELS = [
     { key: 'houjin',    re: /^法人番号$/ },
     { key: 'zip',       re: /^(郵便番号|〒)$/ },
-    { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地)$/ },
-    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所の名称|申請者名|申請事業者名|会社名|企業名|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者)$/ },
+    { key: 'hokenNo',   re: /^(雇用保険適用事業所番号|適用事業所番号|事業所番号)$/ },
+    { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地|事業場の所在地|雇用保険適用事業所の所在地)$/ },
+    { key: 'name',      re: /^(事業者名|事業者の名称|事業所名|事業所の名称|申請者名|申請事業者名|会社名|企業名|法人名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業場の名称|事業場名|雇用保険適用事業所の名称)$/ },
     { key: 'kana',      re: /^(事業者名フリガナ|名称フリガナ|会社名フリガナ)$/ },
     { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名)$/ },
     { key: 'title',     re: /^(代表者の役職|代表者役職|役職名|役職)$/ },
-    { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|氏名|申請者氏名|代表取締役氏名)$/ },
+    // 「氏名」だけの欄には入れない。誰の氏名か決まらず、面談シートの
+    // 対象労働者欄・代替要員欄に代表者名を入れてしまう事故が実際に起きた（7様式）。
+    // 事業主のものだと分かる言い方のときだけ入れる
+    { key: 'rep',       re: /^(代表者氏名|代表者名|代表者の氏名|申請者氏名|代表取締役氏名|事業主氏名|事業主の氏名|申請事業主氏名|申請者の氏名)$/ },
     { key: 'repKana',   re: /^(代表者フリガナ|代表者氏名フリガナ)$/ },
     { key: 'tel',       re: /^(電話番号|電話|TEL|Tel|tel|℡|連絡先電話番号|連絡先)$/ },
     { key: 'fax',       re: /^(FAX|FAX番号|fax|Fax|ファックス|ファックス番号)$/ },
-    { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス)$/ },
+    { key: 'mail',      re: /^(メールアドレス|メール|Eメール|Eメールアドレス|E-mail|E-mailアドレス|e-mail|Email|電子メール|電子メールアドレス|連絡先メールアドレス|担当者メールアドレス)$/ },
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
-    { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等)$/ },
-    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数)$/ },
-    { key: 'industry',  re: /^(業種|主な業種|主たる業種)$/ },
+    { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等|資本金又は出資の総額|資本金の額又は出資の総額)$/ },
+    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数)$/ },
+    // 「主たる業種」の欄は「分類番号」と「分類項目名」に分かれていることがある。
+    // 番号（例：78）ではなく名前（美容業）が入るのは分類項目名のほう
+    { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
-    { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名)$/ },
+    { key: 'staff',     re: /^(担当者氏名|担当者名|担当者|連絡担当者|連絡担当者氏名|事務担当者氏名|申請担当者|事業所の担当者)$/ },
     { key: 'staffTel',  re: /^(担当者連絡先|担当者電話番号|担当者の連絡先|担当者TEL)$/ }
   ];
 
@@ -954,9 +965,43 @@
     titleRep: '代表者職氏名', title: '代表者の役職', rep: '代表者氏名', repKana: '代表者フリガナ',
     tel: '電話番号', fax: 'FAX番号', mail: 'メールアドレス', founded: '設立年月日',
     capital: '資本金', employees: '従業員数', industry: '業種', business: '事業内容',
-    staff: '担当者氏名', staffTel: '担当者連絡先'
+    staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
+
+  // 書き込み先のセルにこれらの文字があれば、そこは別の項目の欄なので入れない。
+  // 当サイトの項目一覧に無い名前でも止められるようにする
+  // （「氏名」の右隣が「雇用保険被保険者番号」の欄なのに上書きしていた）。
+  var BLOCK_TARGET_RE = /(雇用保険被保険者番号|被保険者番号|雇用保険適用事業所番号|適用事業所番号|事業所番号|整理番号|個人番号|マイナンバー|生年月日|性別|年齢|入社年月日|雇入年月日|雇用形態|勤務形態|職種|担当業務|訓練コース|教育訓練機関|支給申請額|支給額|振込先|口座番号|所属・役職及び氏名|所属役職及び氏名|職・氏名|職氏名|分類番号)/;
+  function blockedTarget(text, key) {
+    var t = String(text || '').replace(/[\s　]+/g, '');
+    if (!t || t.length > 24) return null;
+    // その項目自体の欄なら止めない（雇用保険適用事業所番号を入れるときなど）
+    if (matchLabel(t) === key) return null;
+    var m = t.match(BLOCK_TARGET_RE);
+    return m ? m[1] : null;
+  }
+
+  // 「氏名」だけの欄は、誰の氏名か決まらないので入れない。
+  // 何も出さないと利用者が気づけないので、画面に理由を出す
+  var AMBIGUOUS_RE = /^(氏名|名前|フリガナ|ふりがな|職氏名|所属・役職及び氏名|所属役職及び氏名)$/;
+  function ambiguousLabel(text) {
+    return AMBIGUOUS_RE.test(normLabel(text));
+  }
+  var AMBIGUOUS_WHY = 'この欄は「氏名」としか書かれておらず、対象労働者や代替要員の欄のことがあるため、入れませんでした。ご自身でご記入ください';
+
+  // その欄の中身が、いま入れている会社情報のどれかと同じなら、
+  // それは直前に自分で入れた値。上から別の項目を書くと先に入れた値が消える
+  function alreadyOurs(text, vals, key) {
+    var t = String(text || '').replace(/[\s　]+/g, '');
+    if (!t) return null;
+    for (var k in vals) {
+      if (k === key) continue;
+      var v = String(vals[k] || '').replace(/[\s　]+/g, '');
+      if (v && (t === v || t === '〒' + (vals.zip || '') + v)) return k;
+    }
+    return null;
+  }
 
   function matchLabel(text) {
     var t = normLabel(text);
@@ -983,6 +1028,14 @@
   };
   // 単位だけの欄に入れるときは単位を残す（「8」ではなく「8人」）。
   // 年月日のように値の途中に入る単位は対象にしない。
+  // 所在地の欄に「（〒　　　－　　　　）」と印字されていることがある。
+  // そのまま住所で上書きすると郵便番号を書く枠が消えるので、
+  // 郵便番号が分かっているときは郵便番号ごと書く。
+  function withZip(key, value, existing, vals) {
+    if (key !== 'addr' || !vals || !vals.zip) return value;
+    if (!/〒/.test(String(existing || ''))) return value;
+    return '〒' + vals.zip + '　' + value;
+  }
   var UNIT_SUFFIX_RE = /^(人|名|円|万円|千円)$/;
   function withUnit(key, value, existing) {
     var u = String(existing || '').replace(/[\s　]+/g, '');
@@ -1014,7 +1067,7 @@
   // 2か所に入ってしまう（人材開発支援助成金の計画届で実際に起きた）。
   // そこで、ラベルの手前（同じ行の左、または上の行）にある「誰の欄か」の
   // 見出しを探し、自社以外の欄には書き込まない。
-  var OWNER_OTHER = /(代理人|代理者|代行者|提出代行|事務代理|受任者|委任|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義)/;
+  var OWNER_OTHER = /(代理人|代理者|代行者|提出代行|事務代理|受任者|委任|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者)/;
   var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所)/;
   // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
   // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
@@ -1211,15 +1264,25 @@
       if (!hcs || colIdx >= hcs.length) return null;
       return matchLabel(textWithoutRuby(hcs[colIdx], W_NS, 'rt'));
     }
-    var wroteSlot = {}, notedSlot = {};
+    var wroteSlot = {}, notedSlot = {}, notedAmb = 0;
     for (var r = 0; r < trs.length; r++) {
       var tcs = childrenNS(trs[r], W_NS, 'tc');
       for (var i = 0; i < tcs.length - 1; i++) {
         var labelRaw = textWithoutRuby(tcs[i], W_NS, 'rt');
         var key = matchLabel(labelRaw);
+        var own = nearestOwner(markers, i, r, 12);
+        if (!key && ambiguousLabel(labelRaw)) {
+          // 「氏名」だけでは誰の氏名か決まらない。「事業主」などの見出しの下に
+          // あるときだけ代表者名を入れる（面談シートの対象労働者欄に入れないため）
+          if (own && own.kind === 'self') {
+            key = 'rep';
+          } else if (!notedAmb) {
+            notedAmb = 1;
+            skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(), reason: AMBIGUOUS_WHY });
+          }
+        }
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
-        var own = nearestOwner(markers, i, r, 12);
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, '表の「' + label + '」の欄') });
           continue;
@@ -1236,12 +1299,32 @@
         var loc0 = trs[r].__loc;
         // (0) 書き込み先が別項目の見出しそのものなら入れない
         //     （様式第1号の見出し行で「常時使用する労働者の数」を住所で潰していた）
+        // 別項目の欄（雇用保険被保険者番号など）は上書きしない
+        var blk = blockedTarget(existing, key);
+        if (blk) {
+          var sidB = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|b';
+          if (!notedSlot[sidB]) {
+            notedSlot[sidB] = 1;
+            skips.push({ key: key, label: label, reason: '右の欄は「' + blk + '」を書く欄なので、入れませんでした' });
+          }
+          continue;
+        }
+        // 右の欄がまた項目名なら、そこは記入欄ではない。
+        // その先が空欄ならそちらへ入れ、無ければ入れない
+        //（「届出に関する当該事業所の担当者｜①担当者氏名｜空欄」という並びがある）
+        if (matchLabel(existing) && tcs[tcol + 1]) {
+          var nx2 = textWithoutRuby(tcs[tcol + 1], W_NS, 'rt').trim();
+          if (!nx2 || !unitCellConflict(key, nx2)) {
+            target = tcs[tcol + 1]; existing = nx2; tcol = tcol + 1;
+          }
+        }
         var tKey = matchLabel(existing);
-        if (tKey && tKey !== key) {
+        if (tKey) {
           var sidT = (loc0 ? loc0.t : '?') + '|' + tcol + '|' + key + '|h';
           if (!notedSlot[sidT]) {
             notedSlot[sidT] = 1;
-            skips.push({ key: key, label: label, reason: '右の欄は「' + labelName(tKey) + '」の見出しなので、入れませんでした' });
+            skips.push({ key: key, label: label,
+              reason: '右の欄は「' + labelName(tKey) + '」の見出しで、記入欄ではないので入れませんでした' });
           }
           continue;
         }
@@ -1287,6 +1370,12 @@
           }
           continue;
         }
+        var mineD = alreadyOurs(existing, vals, key);
+        if (mineD) {
+          skips.push({ key: key, label: label,
+            reason: 'この欄にはすでに「' + labelName(mineD) + '」を入れたので、重ねて入れませんでした' });
+          continue;
+        }
         var prev = '';
         if (existing) {
           if (existing === vals[key]) continue;
@@ -1306,7 +1395,7 @@
         // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
         var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
         if (rPrSrc) run.appendChild(rPrSrc.cloneNode(true));
-        String(withUnit(key, vals[key], prev)).split(/\r?\n/).forEach(function (line, idx) {
+        String(withZip(key, withUnit(key, vals[key], prev), prev, vals)).split(/\r?\n/).forEach(function (line, idx) {
           if (idx) run.appendChild(doc.createElementNS(W_NS, 'w:br'));
           var t = doc.createElementNS(W_NS, 'w:t');
           t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
@@ -1320,7 +1409,7 @@
         if (loc) pvMarks[loc.t + '-' + loc.r + '-' + tcol] = prev ? 'ow' : 'new';
         fills.push({ where: '表の「' + label + '」の右の欄' +
           (prev ? '（元の「' + prev.slice(0, 24) + (prev.length > 24 ? '…' : '') + '」を上書き）' : ''),
-          key: key, value: withUnit(key, vals[key], prev) });
+          key: key, value: withZip(key, withUnit(key, vals[key], prev), prev, vals) });
       }
     }
     return { fills: fills, skips: skips, usedKeys: usedKeys,
@@ -1462,16 +1551,52 @@
       }
     }
 
-    var wroteSlot = {}, notedSlot = {};
+    // 一覧表の見出し行かどうか。「No.」があって項目名が2つ以上並ぶ行は、
+    // その下にデータ行が続く見出しなので、隣の空きセルに書いてはいけない
+    var NOCOL_RE = /^(No\.?|NO\.?|ｎｏ\.?|№|番号)$/;
+    function isListHeaderRow(cellList) {
+      var hasNo = false, labels = 0;
+      for (var k = 0; k < cellList.length; k++) {
+        var s0 = String(cellString(cellList[k], shared) || '').replace(/[\s　]+/g, '');
+        if (!s0) continue;
+        if (NOCOL_RE.test(s0)) hasNo = true;
+        else if (matchLabel(s0)) labels++;
+      }
+      return hasNo && labels >= 2;
+    }
+    // 別のラベルから同じセルへ2回書き込むと、先に入れた値が消える
+    // （「住所」で住所を入れた後、「〒」で郵便番号を上書きしていた）
+    var writtenCell = {};
+    var wroteSlot = {}, notedSlot = {}, notedAmbX = 0;
     for (i = 0; i < rows.length; i++) {
       var cells = childrenNS(rows[i], S_NS, 'c');
+      var listHead = isListHeaderRow(cells);
       for (var j = 0; j < cells.length; j++) {
         var c = cells[j];
         var pos = parseCellRef(c.getAttribute('r'));
         if (!pos) continue;
         var labelRaw = cellString(c, shared);
         var key = matchLabel(labelRaw);
+        var ownA = nearestOwner(markers, pos.c, pos.r, 30);
+        if (!key && ambiguousLabel(labelRaw)) {
+          if (ownA && ownA.kind === 'self') {
+            key = 'rep';
+          } else if (!notedAmbX) {
+            notedAmbX = 1;
+            skips.push({ key: 'rep', label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+              reason: AMBIGUOUS_WHY + '（' + sheetName + '）' });
+          }
+        }
         if (!key || !vals[key]) continue;
+        if (listHead) {
+          var sidL = sheetName + '|' + pos.r + '|' + key + '|L';
+          if (!notedSlot[sidL]) {
+            notedSlot[sidL] = 1;
+            skips.push({ key: key, label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+              reason: '一覧表の見出し行なので入れませんでした（' + sheetName + '）。下のデータ行にご記入ください' });
+          }
+          continue;
+        }
         var g = mergeAt(pos.c, pos.r);
         if (g && (g.a.c !== pos.c || g.a.r !== pos.r)) continue; // 結合の左上だけ見る
         var tc = (g ? g.b.c : pos.c) + 1, tr = pos.r;
@@ -1488,11 +1613,26 @@
           skips.push({ key: key, label: label, reason: '隣に記入できる行が見つかりませんでした（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
+        // 別のラベルから同じセルへ2回書くと、先に入れた値が消える
+        // （「住所」で住所を入れた後、「〒」で郵便番号を上書きしていた）
+        var cellId = sheetName + '|' + tc + '|' + tr;
+        if (writtenCell[cellId]) {
+          skips.push({ key: key, label: label,
+            reason: 'この欄にはすでに「' + labelName(writtenCell[cellId]) + '」を入れたので、重ねて入れませんでした（' + sheetName + ' の ' + tref + '）' });
+          continue;
+        }
 
         // ハイフンで欄が分かれている場合（郵便番号・電話番号）は分けて入れる
         var parts = splitParts(key);
         if (parts) {
           var slots = splitSlots(tc, tr, tg, parts.length);
+          // 分けて入れる先が、すでに別の項目で埋めた欄なら入れない
+          var dup = (slots || []).filter(function (cn) { return writtenCell[sheetName + '|' + cn + '|' + tr]; })[0];
+          if (dup) {
+            skips.push({ key: key, label: label,
+              reason: 'この欄にはすでに「' + labelName(writtenCell[sheetName + '|' + dup + '|' + tr]) + '」を入れたので、重ねて入れませんでした（' + sheetName + ' の ' + numToCol(dup) + tr + '）' });
+            continue;
+          }
           if (slots) {
             var us = slots.map(function (cn) { return usable(cellAt(cn, tr, false)); });
             var allOk = us.every(function (u2) { return u2.ok; });
@@ -1503,6 +1643,7 @@
                 writeCell(cellAt(cn, tr, true), parts[si], us[si].prev ? 'ow' : 'new');
               });
               usedKeys[key] = 1;
+              slots.forEach(function (cn) { writtenCell[sheetName + '|' + cn + '|' + tr] = key; });
               fills.push({
                 where: 'シート「' + sheetName + '」の ' +
                   slots.map(function (cn) { return numToCol(cn) + tr; }).join('・') +
@@ -1524,18 +1665,46 @@
           }
         }
 
+        var cellId = sheetName + '|' + tc + '|' + tr;
+        if (writtenCell[cellId]) {
+          skips.push({ key: key, label: label,
+            reason: 'この欄にはすでに「' + labelName(writtenCell[cellId]) + '」を入れたので、重ねて入れませんでした（' + sheetName + ' の ' + tref + '）' });
+          continue;
+        }
         var target = cellAt(tc, tr, false);
         var u = usable(target);
+        var mineX = u.ok ? alreadyOurs(u.prev, vals, key) : null;
+        if (mineX) {
+          skips.push({ key: key, label: label,
+            reason: 'この欄にはすでに「' + labelName(mineX) + '」を入れたので、重ねて入れませんでした（' + sheetName + ' の ' + tref + '）' });
+          continue;
+        }
         // 書き込み先が別項目の見出しそのものなら入れない
         if (u.ok && u.prev) {
-          var xKey = matchLabel(u.prev);
-          if (xKey && xKey !== key) {
-            var xs0 = sheetName + '|' + tc + '|' + key + '|h';
-            if (!notedSlot[xs0]) {
-              notedSlot[xs0] = 1;
-              skips.push({ key: key, label: label, reason: '隣の欄は「' + labelName(xKey) + '」の見出しなので、入れませんでした（' + sheetName + ' の ' + tref + '）' });
+          // 別項目の欄（雇用保険被保険者番号など）は上書きしない
+          var xBlk = blockedTarget(u.prev, key);
+          if (xBlk) {
+            var xsB = sheetName + '|' + tc + '|' + key + '|b';
+            if (!notedSlot[xsB]) {
+              notedSlot[xsB] = 1;
+              skips.push({ key: key, label: label, reason: '隣の欄は「' + xBlk + '」を書く欄なので、入れませんでした（' + sheetName + ' の ' + tref + '）' });
             }
             continue;
+          }
+          var xKey = matchLabel(u.prev);
+          if (xKey) {
+            // 隣がまた項目名なら、そこは記入欄ではない。その先が空欄ならそちらへ
+            var nc = cellAt(tc + 1, tr, false), nu = usable(nc);
+            if (nu.ok && !nu.prev) {
+              tc = tc + 1; target = nc; u = nu; tref = numToCol(tc) + tr;
+            } else {
+              var xs0 = sheetName + '|' + tc + '|' + key + '|h';
+              if (!notedSlot[xs0]) {
+                notedSlot[xs0] = 1;
+                skips.push({ key: key, label: label, reason: '隣の欄は「' + labelName(xKey) + '」の見出しで、記入欄ではないので入れませんでした（' + sheetName + ' の ' + tref + '）' });
+              }
+              continue;
+            }
           }
         }
         // 単位だけが印字された欄（別の項目の書式）は壊さない
@@ -1565,11 +1734,12 @@
           continue;
         }
         if (u.prev === vals[key]) continue;
-        writeCell(cellAt(tc, tr, true), withUnit(key, vals[key], u.prev), u.prev ? 'ow' : 'new');
+        writeCell(cellAt(tc, tr, true), withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals), u.prev ? 'ow' : 'new');
         usedKeys[key] = 1;
         wroteSlot[xslot] = 1;
+        writtenCell[cellId] = key;
         fills.push({ where: 'シート「' + sheetName + '」の ' + tref + '（' + label + '）' +
-          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: withUnit(key, vals[key], u.prev) });
+          (u.prev ? '（元の「' + clip(u.prev) + '」を上書き）' : ''), key: key, value: withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals) });
       }
     }
     if (!changed) return null;
@@ -1872,8 +2042,10 @@
       var dl = card.querySelector('.btn-dl');
       if (dl && dl.href) { try { URL.revokeObjectURL(dl.href); } catch (e) {} }
       card.remove();
+      updateFilledDlBtn();
     });
     box.insertBefore(card, box.firstChild);
+    updateFilledDlBtn();
   }
 
   function handleFillFiles(fileList) {
@@ -2084,6 +2256,8 @@
       '<button type="button" id="afNone">すべて外す</button></div>' +
       '<div class="btn-row"><button type="button" class="btn" id="afRun">' +
       '手順3　選んだ様式に会社情報を入れる</button>' +
+      '<button type="button" class="btn" id="afDlFilled" disabled>' +
+      '記入済みの様式をまとめて保存</button>' +
       '<button type="button" class="btn ghost" id="afDl">' +
       'チェックした様式を公式サイトからダウンロード</button></div>' +
       '<p class="af-status" id="afStatus"></p><div id="afDlList"></div></div>';
@@ -2091,8 +2265,45 @@
     box.querySelector('#afAll').addEventListener('click', function () { setAllAf(true); });
     box.querySelector('#afNone').addEventListener('click', function () { setAllAf(false); });
     box.querySelector('#afRun').addEventListener('click', runAfFill);
+    box.querySelector('#afDlFilled').addEventListener('click', downloadFilledForms);
     box.querySelector('#afDl').addEventListener('click', downloadCheckedForms);
+    updateFilledDlBtn();
   }
+  // 記入済みの結果を、1枚ずつではなくまとめて保存する。
+  // 10件選ぶと保存ボタンを10回押すことになっていたため。
+  // 保存の中身は各カードのボタンと同じ（同じ Blob の URL を使う）ので、
+  // カードで名前を書き換えていればその名前で保存される。
+  function filledDlLinks() {
+    return Array.prototype.slice.call(
+      document.querySelectorAll('#fillResults .fillcard a.btn-dl[href]'));
+  }
+  function updateFilledDlBtn() {
+    var btn = document.getElementById('afDlFilled');
+    if (!btn) return;
+    var n = filledDlLinks().length;
+    btn.disabled = !n;
+    btn.textContent = n
+      ? '記入済みの様式をまとめて保存（' + n + '件）'
+      : '記入済みの様式をまとめて保存';
+  }
+  function downloadFilledForms() {
+    var links = filledDlLinks();
+    var status = document.getElementById('afStatus');
+    if (!links.length) {
+      if (status) status.textContent = 'まだ記入済みの様式がありません。先に「手順3　選んだ様式に会社情報を入れる」を押してください。';
+      return;
+    }
+    // 順にクリックする。ブラウザが「複数のファイルをダウンロード」を尋ねることがある
+    links.forEach(function (a, i) {
+      setTimeout(function () { a.click(); }, i * 300);
+    });
+    if (status) {
+      status.textContent = links.length + '件の保存を始めました。' +
+        'ブラウザが「複数のファイルをダウンロード」の確認を出したら「許可」を選んでください。' +
+        'このまま提出せず、保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。';
+    }
+  }
+
   // チェックした様式を、記入せずそのまま公式サイトから落とす。
   // 「まず原本が欲しい」「記入は手で書く」という使い方のため。
   // まとめてクリックすると止められることがあるので、リンクの一覧も必ず残す。
