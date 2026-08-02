@@ -1,0 +1,6 @@
+# 点検を回すたびに作られる結果ファイル。中身は毎回変わるので残さない
+autofill_audit.json
+sweep_labels.json
+guard_out/
+soui_test/
+soui_out/

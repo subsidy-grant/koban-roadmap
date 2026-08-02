@@ -275,6 +275,14 @@
   ul.fr-list .fr-n.ng { color: var(--rust); }
   ul.fr-list .btn { padding: 0.4rem 0.9rem; font-size: 0.88rem; min-height: 44px;
     display: inline-flex; align-items: center; text-decoration: none; text-align: center; }
+  /* わざと空けた欄。ふだんは畳んでおき、気になる人だけ開く */
+  .fr-skip { flex: 1 1 100%; margin: 0.1rem 0 0.2rem; }
+  .fr-skip > summary { cursor: pointer; font-size: 0.85rem; color: var(--ink-soft);
+    min-height: 32px; display: flex; align-items: center; }
+  .fr-skip ul { list-style: none; margin: 0.3rem 0 0; padding: 0 0 0 0.2rem; }
+  .fr-skip li { font-size: 0.83rem; color: var(--ink-soft); padding: 0.22rem 0;
+    line-height: 1.5; border: 0; }
+  .fr-skip b { font-weight: 600; color: var(--ink); }
   }
   .af-other { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
   ul.af-other-list { list-style: none; margin: 0.2rem 0 1rem; padding: 0; }
@@ -564,6 +572,12 @@
   // ---------- 01 会社情報 ----------
   // 補助金の様式に繰り返し出てくる項目。ここに無いものは各様式で個別に書く。
   var FIELDS = [
+    // 様式には「法人」と「個人事業主」で書く欄が分かれているものがある。
+    // 名前や法人番号から推し量ることもできるが、法人番号の入れ忘れなどで
+    // 取り違えると別の欄を埋めてしまうので、ここで決めてもらう
+    { id: 'entity',    label: '事業形態', opts: [
+      { v: '', t: '（選んでください）' }, { v: '法人', t: '法人' }, { v: '個人事業主', t: '個人事業主' }
+    ] },
     { id: 'name',      label: '事業者名（商号・屋号）', ph: '例）株式会社○○／○○美容室' },
     { id: 'kana',      label: '事業者名（法人名）フリガナ', ph: '例）カブシキガイシャマルマル' },
     { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
@@ -574,6 +588,7 @@
     // 東京都の助成金には「都内登記所在地（本店が都外の場合のみ）」の欄がある。
     // 本店＝登記上の住所という会社が多いので、違うときだけ書いてもらう
     { id: 'regAddr',   label: '登記上の所在地',         ph: '上の所在地と同じなら空欄で構いません（登記簿の住所が違うときだけ）', big: true },
+    { id: 'regZip',    label: '登記上の所在地の郵便番号', ph: '登記上の所在地を書いたときだけ（例）100-0005', mode: 'numeric' },
     { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
     { id: 'rep',       label: '代表者氏名',             ph: '例）山田 太郎' },
     { id: 'repKana',   label: '代表者フリガナ',         ph: '例）ヤマダ タロウ' },
@@ -584,6 +599,8 @@
     { id: 'capital',   label: '資本金',                 ph: '例）3,000,000円（個人事業主は空欄）' },
     { id: 'employees', label: '従業員数',               ph: '例）8人（常時使用する従業員）', mode: 'numeric' },
     { id: 'industry',  label: '業種',                   ph: '例）美容業（日本標準産業分類 7821）' },
+    // 様式には業種を「分類番号」で書かせるものがある。美容業は中分類78
+    { id: 'industryCode', label: '日本標準産業分類の番号', ph: '中分類の2桁（例）78（洗濯・理容・美容・浴場業）', mode: 'numeric' },
     { id: 'business',  label: '事業内容',               ph: '例）美容室の運営。カット・カラー・トリートメント等', big: true },
     { id: 'staff',     label: '担当者氏名',             ph: '代表者と同じなら空欄で構いません' },
     { id: 'staffTel',  label: '担当者の連絡先',         ph: '例）090-1234-5678', mode: 'tel' }
@@ -595,15 +612,24 @@
     var el = document.getElementById('companyForm');
     el.innerHTML = FIELDS.map(function (f) {
       var v = esc(company[f.id] || '');
-      var input = f.big
-        ? '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>'
-        : '<input id="f_' + f.id + '" type="text"' +
+      var input;
+      if (f.opts) {
+        input = '<select id="f_' + f.id + '">' +
+          f.opts.map(function (o) {
+            return '<option value="' + esc(o.v) + '"' + (company[f.id] === o.v ? ' selected' : '') +
+              '>' + esc(o.t) + '</option>';
+          }).join('') + '</select>';
+      } else if (f.big) {
+        input = '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>';
+      } else {
+        input = '<input id="f_' + f.id + '" type="text"' +
           (f.mode ? ' inputmode="' + f.mode + '"' : '') +
           ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
+      }
       return '<div class="frow">' +
         '<label for="f_' + f.id + '">' + esc(f.label) + '</label>' +
         input +
-        '<button type="button" class="copy-btn" data-copy="' + f.id + '">写す</button>' +
+        (f.opts ? '' : '<button type="button" class="copy-btn" data-copy="' + f.id + '">写す</button>') +
         (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
         (f.id === 'zip' ? '<p class="fhint" id="hint_zip"></p>' : '') +
         '</div>';
@@ -611,7 +637,7 @@
 
     FIELDS.forEach(function (f) {
       var node = document.getElementById('f_' + f.id);
-      node.addEventListener('input', function () {
+      node.addEventListener(f.opts ? 'change' : 'input', function () {
         company[f.id] = node.value;
         var ok = save(K_COMPANY, company);
         showSaved(ok);
@@ -956,6 +982,8 @@
     { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|企業全体で常時使用する労働者数|企業全体で常時雇用する労働者数|企業全体で常時雇用する労働者の数|企業全体の常時雇用する労働者の数|企業全体の常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数)$/ },
     // 「主たる業種」の欄は「分類番号」と「分類項目名」に分かれていることがある。
     // 番号（例：78）ではなく名前（美容業）が入るのは分類項目名のほう
+    // 業種を番号で書かせる様式がある（日本標準産業分類の中分類）
+    { key: 'industryCode', re: /^(分類番号|日本標準産業分類の番号|産業分類番号|産業分類コード|業種番号|中分類番号)$/ },
     { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
     // 担当者のかたまりの見出しでもある。ここに当たると、下に並ぶ氏名・電話・メールを
@@ -977,7 +1005,8 @@
     capital: '資本金', employees: '従業員数', industry: '業種', business: '事業内容',
     staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号',
     nameRep: '事業者名と代表者氏名', regAddr: '登記上の所在地', entity: '事業形態',
-    officeName: '事業所の名称'
+    officeName: '事業所の名称', regZip: '登記上の所在地の郵便番号',
+    industryCode: '日本標準産業分類の番号'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
 
@@ -991,6 +1020,59 @@
   var LABELISH_TAIL_RE = /^[^\s　]{1,12}[：:]$/;
   function looksLabelCell(t) {
     return LABELISH_TAIL_RE.test(String(t || '').replace(/[\s　]+/g, ''));
+  }
+  // ---- 出力前の自己点検（最後の関所）----
+  // ここまでの処理は「様式の作りを読み取って、入れてよい欄を決める」やり方。
+  // 様式の作りは無数にあり、読み違いを先回りで全部つぶすことはできない。
+  // そこで最後に、まったく別の角度からもう一度見る：
+  //   「いま入れようとしている“値”は、その“欄の名前”に本当に合っているか」
+  // 合っていなければ書かずに、理由を添えて「入れなかった欄」に回す。
+  // 読み違いが起きても、おかしな中身のまま出力されない、という二重の関所にする。
+  var KANA_VALUE_RE = /^[ァ-ヶーｦ-ﾟぁ-んA-Za-zＡ-Ｚａ-ｚ\s　・.．,，\-−ー]+$/;
+  var KANA_LABEL_RE = /(フリガナ|ふりがな|ヨミガナ|よみがな)/;
+  var GUIDE_TEXT_RE = /(してください|して下さい|ご記入|ご選択|記載|選択|例）|例\)|注意|該当するもの|入力)/;
+  function fillGuard(key, value, labelRaw, prevText) {
+    var v = String(value == null ? '' : value).trim();
+    var lab = normLabel(labelRaw);
+    var prev = String(prevText || '').replace(/[\s　]+/g, '');
+    if (!v) return '入れる中身が空だったので、何も書きませんでした';
+    // ふりがなの欄に、かな以外を入れない
+    if (KANA_LABEL_RE.test(lab) && !KANA_VALUE_RE.test(v)) {
+      return 'ふりがなの欄なので、かな以外を含む「' + v.slice(0, 12) + '」は入れませんでした';
+    }
+    // ふりがなを、ふりがな以外の欄に入れない
+    if ((key === 'kana' || key === 'repKana') && !KANA_LABEL_RE.test(lab)) {
+      return 'ふりがなは、ふりがなの欄以外には入れませんでした';
+    }
+    // 番号の欄に、数字を含まない値を入れない
+    if (/番号$/.test(lab) && !/[0-9０-９]/.test(v)) {
+      return '番号を書く欄なのに数字が入っていないため、入れませんでした';
+    }
+    // メールアドレスの形かどうか
+    if ((key === 'mail' || /(メールアドレス|Eメール|E-?mail|電子メール)/i.test(lab)) && v.indexOf('@') < 0) {
+      return 'メールアドレスの形（@を含む）になっていないため、入れませんでした';
+    }
+    if (v.indexOf('@') >= 0 && !/(メール|mail|MAIL|アドレス)/i.test(lab)) {
+      return 'メールアドレスは、メールアドレスの欄以外には入れませんでした';
+    }
+    // 郵便番号は7桁
+    if ((key === 'zip' || key === 'regZip') && toHankaku(v).replace(/[^0-9]/g, '').length !== 7) {
+      return '郵便番号が7桁になっていないため、入れませんでした';
+    }
+    // 電話・FAXは数字が並んでいるもの
+    if ((key === 'tel' || key === 'fax' || key === 'staffTel') &&
+        toHankaku(v).replace(/[^0-9]/g, '').length < 8) {
+      return '電話番号の形になっていないため、入れませんでした';
+    }
+    // 人数は数
+    if (key === 'employees' && !/^[0-9]+[人名]?$/.test(toHankaku(v).replace(/[,，\s　]/g, ''))) {
+      return '人数の欄に数以外が入るため、入れませんでした';
+    }
+    // 様式の案内文が印字された欄は、案内ごと消さない
+    if (prev && prev.length >= 4 && GUIDE_TEXT_RE.test(prev) && !PICK_PLACEHOLDER_RE.test(prev)) {
+      return 'その欄には「' + prev.slice(0, 18) + '」という様式の案内が書かれているため、上書きしませんでした';
+    }
+    return null;
   }
   // 「選択してください」と印字された欄は、一覧から選ぶ欄。
   // 自由に文字を書くと様式の集計が狂うので、選択肢に当たるものが無ければ触らない
@@ -1075,7 +1157,8 @@
     founded: /[年月日]/,
     tel: /^[\-−ー－()（）]+$/,
     fax: /^[\-−ー－()（）]+$/,
-    zip: /^[〒\-−ー－]+$/
+    zip: /^[〒\-−ー－]+$/,
+    regZip: /^[〒\-−ー－]+$/
   };
   // 単位だけの欄に入れるときは単位を残す（「8」ではなく「8人」）。
   // 年月日のように値の途中に入る単位は対象にしない。
@@ -1090,9 +1173,11 @@
     return ZIP_FRAME_RE.test(String(text || '').replace(/[（）()]/g, ''));
   }
   function withZip(key, value, existing, vals) {
-    if (key !== 'addr' || !vals || !vals.zip) return value;
+    if (!vals) return value;
+    var z = key === 'addr' ? vals.zip : (key === 'regAddr' ? vals.regZip : '');
+    if (!z) return value;
     if (!/〒/.test(String(existing || ''))) return value;
-    return '〒' + vals.zip + '　' + value;
+    return '〒' + z + '　' + value;
   }
   // 資本金は「3000000」「3,000,000円」「100万円」「300万」など書き方がまちまち。
   // どれも円の数に直してから使う。直せない書き方のときは null を返す
@@ -1231,7 +1316,7 @@
       return '様式に「代表者と異なる場合のみ」と書かれた担当者の欄で、担当者が代表者と同じ方なので空欄のままにしました' +
         (where ? '（' + where + '）' : '');
     }
-    return '「' + m.text.slice(0, 16) + '」の欄なので、自社の情報は入れませんでした' +
+    return '「' + String(m.text).replace(/※[\s\S]*$/, '').slice(0, 16) + '」の欄なので、自社の情報は入れませんでした' +
       (where ? '（' + where + '）' : '') + '。' + whoseField(m.text);
   }
   // その欄が誰のものかを、読む人に分かる言い方で返す
@@ -1252,6 +1337,8 @@
   var CORP_NAME_RE = /(株式会社|有限会社|合同会社|合名会社|合資会社|一般社団法人|一般財団法人|公益社団法人|公益財団法人|社会福祉法人|医療法人|学校法人|宗教法人|特定非営利活動法人|NPO法人|協同組合|企業組合|㈱|㈲|\(株\)|（株）|\(有\)|（有）)/;
   // 戻り値: '法人' / '個人事業主' / null（決められない）
   function entityKind(vals) {
+    // 01でご本人が選んでいれば、それが最優先（推し量って取り違えないため）
+    if (vals.entity === '法人' || vals.entity === '個人事業主') return vals.entity;
     var d = String(vals.houjin || '').replace(/[^0-9]/g, '');
     if (d.length === 13) return '法人';          // 法人番号は法人にしか付かない
     if (CORP_NAME_RE.test(vals.name || '')) return '法人';
@@ -1583,6 +1670,11 @@
           reason: ownerSkipReason(owner, '本文の「' + plan.head + '」の欄') });
         continue;
       }
+      var guardP = fillGuard(plan.key, withUnit(plan.key, vals[plan.key], ''), plan.head, '');
+      if (guardP) {
+        skips.push({ key: plan.key, label: plan.head, reason: guardP });
+        continue;
+      }
       var text = appendParaValue(doc, pEl, raw, plan, vals);
       usedKeys[plan.key] = 1;
       if (paraPv) paraPv.push(paraTextWithTabs(pEl).replace(/\t/g, '　'));
@@ -1708,7 +1800,7 @@
         // 「都内登記所在地」のかたまりの中の住所は、本店の住所ではない
         if (own && own.kind === 'regAddr' && r - own.r <= 3) {
           if (key === 'addr') key = 'regAddr';
-          else if (key === 'zip') key = null;
+          else if (key === 'zip') key = 'regZip';
         }
         if (!key || !vals[key]) continue;
         var label = labelRaw.replace(/[\s　]+/g, ' ').trim();
@@ -1856,6 +1948,12 @@
         if (mineD) {
           skips.push({ key: key, label: label,
             reason: 'この欄にはすでに「' + labelName(mineD) + '」を入れたので、重ねて入れませんでした' });
+          continue;
+        }
+        // 最後の関所：値と欄の名前が噛み合っているか、もう一度見る
+        var guardD = fillGuard(key, withUnit(key, vals[key], existing), labelRaw, existing);
+        if (guardD) {
+          skips.push({ key: key, label: label, reason: guardD });
           continue;
         }
         var prev = '';
@@ -2090,8 +2188,8 @@
     }
     // 分割して入れられる値かどうか。入れられないなら null
     function splitParts(key) {
-      if (key === 'zip') {
-        var d7 = toHankaku(vals.zip).replace(/[^0-9]/g, '');
+      if (key === 'zip' || key === 'regZip') {
+        var d7 = toHankaku(vals[key]).replace(/[^0-9]/g, '');
         return d7.length === 7 ? [d7.slice(0, 3), d7.slice(3)] : null;
       }
       if (key === 'tel' || key === 'fax' || key === 'staffTel') {
@@ -2204,7 +2302,7 @@
         // 「都内登記所在地」のかたまりの中の住所は、本店の住所ではない
         if (ownA && ownA.kind === 'regAddr' && pos.r - ownA.r <= 3) {
           if (key === 'addr') key = 'regAddr';
-          else if (key === 'zip') key = null;   // 登記所在地の郵便番号は預かっていない
+          else if (key === 'zip') key = 'regZip';
         }
         if (!key || !vals[key]) continue;
         if (listHead) {
@@ -2404,6 +2502,12 @@
             continue;
           }
           putVal = picked;
+        }
+        // 最後の関所：値と欄の名前が噛み合っているか、もう一度見る
+        var guard = fillGuard(key, putVal, labelRaw, u.prev);
+        if (guard) {
+          skips.push({ key: key, label: label, reason: guard + '（' + sheetName + ' の ' + tref + '）' });
+          continue;
         }
         writeCell(cellAt(tc, tr, true), putVal, u.prev ? 'ow' : 'new', key);
         usedKeys[key] = 1;
@@ -2697,6 +2801,32 @@
   // （読めていない言い回しを洗い出して、辞書に足していくため）
   window.KOBAN_MATCH_LABEL = function (t) { return matchLabel(t); };
 
+  // わざと空けた欄を、畳んだ形で添える。
+  // 「入れなかった」ことも結果のうちで、黙って空欄だと気づけない。
+  // ふだんは1行に畳んでおき、確かめたい人だけ開けるようにする
+  function skipHTML(skips) {
+    var list = (skips || []).filter(function (s) { return s && s.reason; });
+    if (!list.length) return '';
+    // 同じ理由が何行も並ぶと読めない。理由ごとにまとめて、欄の名前を並べる
+    var byWhy = {}, groups = [], total = 0;
+    list.forEach(function (s) {
+      var lb = String(s.label || '').replace(/※[\s\S]*$/, '')
+        .replace(/[\s　]+/g, ' ').trim().slice(0, 18);
+      var why = String(s.reason)
+        .replace(/（[^（）]*[A-Za-z]+[0-9]+[^（）]*）/g, '')   // （申請者1 の B16）のような場所書き
+        .replace(/（[^（）]*）\s*$/, '').trim() || String(s.reason);
+      if (!byWhy[why]) { byWhy[why] = { why: why, labels: [] }; groups.push(byWhy[why]); }
+      if (lb && byWhy[why].labels.indexOf(lb) < 0) { byWhy[why].labels.push(lb); total++; }
+    });
+    var rows = groups.slice(0, 14).map(function (g) {
+      var ls = g.labels.slice(0, 4).join('・') +
+        (g.labels.length > 4 ? ' ほか' + (g.labels.length - 4) + '件' : '');
+      return '<li><b>' + esc(ls || '（欄名なし）') + '</b>：' + esc(g.why) + '</li>';
+    });
+    return '<details class="fr-skip"><summary>あえて空けた欄（' + (total || list.length) +
+      '件）と、その理由を見る</summary><ul>' + rows.join('') + '</ul></details>';
+  }
+
   function renderFillResult(fileName, res) {
     var kind = kindOf(fileName);
     // 画面には出さないが、どの欄に何を入れたかは記録しておく。
@@ -2711,7 +2841,8 @@
         '<span class="ft">' + esc(kind) + '</span>' +
         '<span class="fn">' + esc(fileName) + '</span>' +
         '<span class="fr-n">' + res.fills.length + 'か所</span>' +
-        '<a class="btn btn-dl" download="' + esc(res.outName) + '">保存</a>');
+        '<a class="btn btn-dl" download="' + esc(res.outName) + '">保存</a>' +
+        skipHTML(res.skips));
       if (li) li.querySelector('.btn-dl').href = URL.createObjectURL(res.blob);
       return;
     }
