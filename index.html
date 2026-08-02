@@ -1605,10 +1605,10 @@
       <p class="t-note">従業員数と資本金を入れると、下の各制度カードに自社が対象かどうかのバッジが表示されます。従業員数はこの節の上にある選択欄および「概算シミュレーター」と連動しています。地域も同じ選択欄で選べます（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
     </div>
 
-    <div class="picker is-open" id="programPicker">
+    <div class="picker" id="programPicker">
       <label for="programSelect">制度を選択して詳細を表示（プルダウン見出し = 制度名＋上限額）</label>
       <select id="programSelect" onchange="renderProgram(this.value)"></select>
-      <button type="button" class="picker-toggle" id="pickerToggle" aria-expanded="true" aria-controls="programDetail" onclick="toggleProgramDetail()">
+      <button type="button" class="picker-toggle" id="pickerToggle" aria-expanded="false" aria-controls="programDetail" onclick="toggleProgramDetail()">
         <span class="pt-label">制度の詳細</span>
         <span class="pt-name" id="pickerToggleName"></span>
       </button>

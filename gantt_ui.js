@@ -39,10 +39,11 @@
   if (!gtDone || typeof gtDone !== 'object') gtDone = {};
   if (!gtDates || typeof gtDates !== 'object') gtDates = {};
   if (!gtPhase || typeof gtPhase !== 'object') gtPhase = {};
-  // 段階（準備・交付申請など）の開閉。既定は開いた状態で、
-  // 閉じたものだけ憶えておく（初めて見た人に空の表を見せないため）
+  // 段階（準備・交付申請など）の開閉。このサイトは畳んだ状態を既定にしているので
+  // ここも閉じて始め、開いたものだけ憶えておく（見出しに進み具合を出すので中身が
+  // 見えていなくても、どの段階がどこまで進んだかは分かる）
   function phaseKey(scheme, phase) { return scheme + '||' + phase; }
-  function phaseOpen(scheme, phase) { return gtPhase[phaseKey(scheme, phase)] !== 0; }
+  function phaseOpen(scheme, phase) { return gtPhase[phaseKey(scheme, phase)] === 1; }
 
   function gtParse(v) {
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
@@ -217,17 +218,29 @@
       '<div class="gt-head"><div class="gt-left">やること（終わったらチェック）</div>' +
       '<div class="gt-right gt-ticks">' + ticks + todayLine + '</div></div>';
 
+    // 段階は「並びの上でひとつながりになっているまとまり」で数える。
+    // 同じ名前の段階が離れて2回出る制度があるので、名前で数えると二重計上になる。
+    var groups = [];
+    rows.forEach(function (r) {
+      var g = groups[groups.length - 1];
+      if (!g || g.phase !== r.t.phase) groups.push({ phase: r.t.phase, rows: [r] });
+      else g.rows.push(r);
+    });
+    var groupOf = {};
+    groups.forEach(function (g, i) { g.idx = i + 1; g.rows.forEach(function (r) { groupOf[r.t.id] = g; }); });
+
     var phase = null, pIdx = 0;
     rows.forEach(function (r) {
       if (r.t.phase !== phase) {
         if (phase !== null) html += '</div>';
         phase = r.t.phase; pIdx++;
+        var g = groupOf[r.t.id];
         var pid = 'gtp-' + k + '-' + pIdx;
-        var pOpen = phaseOpen(k, phase);
-        var pRows = rows.filter(function (x) { return x.t.phase === phase; });
+        var pOpen = phaseOpen(k, pIdx + '.' + phase);
+        var pRows = g.rows;
         var pDone = pRows.filter(function (x) { return x.done; }).length;
         html += '<div class="gt-row phase' + (pOpen ? ' is-open' : '') + '">' +
-          '<button type="button" class="gt-phase" data-ph="' + esc(phase) + '"' +
+          '<button type="button" class="gt-phase" data-ph="' + esc(pIdx + '.' + phase) + '"' +
             ' aria-expanded="' + (pOpen ? 'true' : 'false') + '" aria-controls="' + pid + '">' +
             '<span class="chev" aria-hidden="true">▾</span>' +
             '<span class="nm">' + esc(phase) + '</span>' +
