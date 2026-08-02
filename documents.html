@@ -146,6 +146,28 @@
   }
   .btn.ghost { background: var(--paper-raised); color: var(--accent); }
   .btn:hover { filter: brightness(1.08); }
+  /* 押せないボタンは、押せるボタンと同じ色にしない。
+     色が同じだと「押したのに何も起きない」と受け取られる */
+  .btn[disabled], .btn[disabled]:hover {
+    background: var(--paper); color: var(--ink-faint); border-color: var(--line);
+    cursor: not-allowed; filter: none;
+  }
+  /* 手順のボタン。押すとどうなるかを1行添える */
+  .btn-step { display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem;
+    text-align: left; padding: 0.55rem 1.1rem; }
+  .btn-step .lead { font-weight: 700; font-size: 0.95rem; }
+  .btn-step .sub { font-size: 0.78rem; font-weight: 400; opacity: 0.92; }
+  .btn[disabled] .sub { opacity: 1; }
+  /* 済んだ手順は塗りをやめ、いま押すべきボタンだけを塗りにする */
+  .btn-step.done { background: var(--paper-raised); color: var(--accent); }
+  .btn-step.done .lead::before { content: '✓ '; }
+  .af-steps { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; align-items: stretch; }
+  .af-steps .btn { flex: 1 1 15rem; }
+  /* 様式の原本を取りにいくボタン。記入の流れとは別の用途なので、
+     手順のボタンとは離して置き、枠線だけにする */
+  .af-side { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--line); }
+  .af-side .btn { font-size: 0.86rem; padding: 0.5rem 0.9rem; }
+  .af-side p { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.45rem; }
   .saved-note { font-size: 0.86rem; color: var(--sage); margin: 0.7rem 0 0; min-height: 1.5em; }
 
   /* ---- 表 ---- */
@@ -283,7 +305,8 @@
   .af-check-row { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.2rem; min-height: 44px; }
   .af-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.3rem; }
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
-    font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.7rem; min-height: 36px; cursor: pointer; }
+    font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
+    min-height: 44px; cursor: pointer; }
   .fill-origin { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.6rem; line-height: 1.7; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
@@ -2589,13 +2612,23 @@
     html += '<div class="af-tools">' +
       '<button type="button" id="afAll">すべて選ぶ</button>' +
       '<button type="button" id="afNone">すべて外す</button></div>' +
-      '<div class="btn-row"><button type="button" class="btn" id="afRun">' +
-      '手順3　選んだ様式に会社情報を入れる</button>' +
-      '<button type="button" class="btn" id="afDlFilled" disabled>' +
-      '記入済みの様式をまとめて保存</button>' +
+      // 手順のボタンは、いま押すべきものだけを塗りにする。
+      // 押すとどうなるかを1行添える（初見の人が結果を予測できないため）
+      '<div class="af-steps">' +
+      '<button type="button" class="btn btn-step" id="afRun">' +
+      '<span class="lead">手順3　会社情報を入れる</span>' +
+      '<span class="sub">押すと、この下に記入結果が出ます</span></button>' +
+      '<button type="button" class="btn btn-step" id="afDlFilled" disabled>' +
+      '<span class="lead">手順4　記入済みを保存する</span>' +
+      '<span class="sub">先に手順3を押してください</span></button>' +
+      '</div>' +
+      '<p class="af-status" id="afStatus"></p>' +
+      // 記入とは別の用途。原本だけ欲しい人のために、手順の流れから離して置く
+      '<div class="af-side">' +
+      '<p>記入せず、白紙の様式そのものが欲しいときはこちら。</p>' +
       '<button type="button" class="btn ghost" id="afDl">' +
-      'チェックした様式を公式サイトからダウンロード</button></div>' +
-      '<p class="af-status" id="afStatus"></p><div id="afDlList"></div>';
+      'チェックした様式の原本を公式サイトから入手（記入はしません）</button>' +
+      '<div id="afDlList"></div></div>';
     // 自動入力はできないが、この制度で出す必要がある書類
     if (other.length) {
       html += '<div class="af-other">' +
@@ -2622,6 +2655,10 @@
       b.addEventListener('click', function () { setAfFmt(b.getAttribute('data-fmt')); });
     });
     applyAfFmt();
+    updateRunBtn();
+    box.addEventListener('change', function (e) {
+      if (e.target && e.target.classList && e.target.classList.contains('af-item')) updateRunBtn();
+    });
     box.querySelector('#afAll').addEventListener('click', function () { setAllAf(true); });
     box.querySelector('#afNone').addEventListener('click', function () { setAllAf(false); });
     box.querySelector('#afRun').addEventListener('click', runAfFill);
@@ -2629,7 +2666,20 @@
     box.querySelector('#afDl').addEventListener('click', downloadCheckedForms);
     updateFilledDlBtn();
   }
-  function setAfFmt(f) { afFmt = f || 'all'; applyAfFmt(); }
+  // 手順3のボタンに、いま何件が対象かを出す。
+  // 「選んだ様式」だけでは何件なのか分からず、押す前に結果が読めない
+  function updateRunBtn() {
+    var run = document.getElementById('afRun');
+    if (!run) return;
+    var n = afChecked().length;
+    var lead = run.querySelector('.lead'), sub = run.querySelector('.sub');
+    if (lead) lead.textContent = n ? '手順3　' + n + '件に会社情報を入れる' : '手順3　会社情報を入れる';
+    run.disabled = !n;
+    if (sub) sub.textContent = n
+      ? '押すと、この下に記入結果が' + n + '件出ます'
+      : '上でチェックを入れてください';
+  }
+  function setAfFmt(f) { afFmt = f || 'all'; applyAfFmt(); updateRunBtn(); }
   // 選んだ形式だけを表示する。隠した様式は checked のままでも
   // 記入・ダウンロードの対象にしない（下の afChecked が hidden を外す）
   function applyAfFmt() {
@@ -2670,14 +2720,21 @@
     return Array.prototype.slice.call(
       document.querySelectorAll('#fillResults .fillcard a.btn-dl[download]'));
   }
+  // 手順3と手順4の見た目を、いまの状態に合わせて変える。
+  // 「押せるのはどれか」「押すとどうなるか」を色と文で示す
   function updateFilledDlBtn() {
     var btn = document.getElementById('afDlFilled');
+    var run = document.getElementById('afRun');
     if (!btn) return;
     var n = filledDlLinks().length;
+    var lead = btn.querySelector('.lead'), sub = btn.querySelector('.sub');
     btn.disabled = !n;
-    btn.textContent = n
-      ? '記入済みの様式をまとめて保存（' + n + '件）'
-      : '記入済みの様式をまとめて保存';
+    if (lead) lead.textContent = n ? '手順4　記入済み' + n + '件を保存する' : '手順4　記入済みを保存する';
+    if (sub) sub.textContent = n
+      ? '押すと、' + n + '件をこの端末に保存します'
+      : '先に手順3を押してください';
+    // 手順3が済んだら、塗りは手順4に渡す（いま押すべきボタンを1つに保つ）
+    if (run) run.classList.toggle('done', !!n);
   }
   function downloadFilledForms() {
     var links = filledDlLinks();
@@ -2742,6 +2799,7 @@
     // 表示している様式だけを選ぶ／外す（隠れている様式には触らない）
     document.querySelectorAll('#afForms ul.checks > li:not(.hidden) .af-item')
       .forEach(function (c) { c.checked = on; });
+    updateRunBtn();
   }
   // 配布元が二次利用を認めている様式は、当サイトに控えを置いてある
   // （forms/manifest.json）。同じサイト内なのでブラウザの制限を受けず、
@@ -2825,7 +2883,11 @@
       return;
     }
     afRunning = true;
-    if (runBtn) runBtn.disabled = true;
+    if (runBtn) {
+      runBtn.disabled = true;
+      var rs = runBtn.querySelector('.sub');
+      if (rs) rs.textContent = '記入しています。少しお待ちください';
+    }
     var items = checks.map(function (c) {
       return { url: c.getAttribute('data-url'), name: c.getAttribute('data-name') };
     });
@@ -2851,7 +2913,7 @@
     });
     chain.then(function () {
       afRunning = false;
-      if (runBtn) runBtn.disabled = false;
+      if (runBtn) { runBtn.disabled = false; updateRunBtn(); }
       if (status) {
         status.textContent = '終わりました。取り寄せて記入できたのは ' + got + '件、' +
           (missed ? '取り寄せできなかったのが ' + missed + '件です。下の案内にしたがって、公式サイトから落としたファイルを置いてください。' : '取り寄せできなかったものはありません。');

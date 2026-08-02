@@ -1102,6 +1102,29 @@
   .docs-lead-more { margin-top: 0.7rem; }
   .docs-lead-more p + p { margin-top: 0.5rem; }
 
+  /* ---- 06 申請の流れの概要（日付なし） ----
+     縦の階段。段階名と期間の目安だけを出し、詳しい帯は schedule.html に任せる */
+  .ov-flow { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised);
+    padding: 0.4rem 0; margin-bottom: 1rem; }
+  .ov-ph { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.65rem 1rem;
+    border-bottom: 1px dashed var(--line); }
+  .ov-ph:last-child { border-bottom: 0; }
+  .ov-no { flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--accent-wash); color: var(--accent); font-weight: 700;
+    display: flex; align-items: center; justify-content: center; font-size: 0.92rem; }
+  .ov-bd { flex: 1 1 auto; min-width: 0; }
+  .ov-nm { font-weight: 700; font-size: 1rem; }
+  .ov-len { font-size: 0.85rem; color: var(--ink-soft); margin-left: 0.5rem;
+    font-variant-numeric: tabular-nums; }
+  .ov-tasks { font-size: 0.84rem; color: var(--ink-soft); margin: 0.2rem 0 0; line-height: 1.7; }
+  .ov-warn { font-size: 0.84rem; color: var(--rust); margin: 0.25rem 0 0; line-height: 1.7; }
+  .ov-cta { margin: 1rem 0 0; }
+  .ov-cta a.btn-link { display: inline-block; background: var(--accent); color: var(--on-accent);
+    border-radius: 8px; padding: 0.7rem 1.2rem; text-decoration: none; font-weight: 700;
+    font-size: 0.95rem; min-height: 44px; }
+  .ov-cta a.btn-link:hover { filter: brightness(1.08); }
+  .ov-cta .sub { font-size: 0.84rem; color: var(--ink-soft); margin: 0.4rem 0 0; }
+
   /* ---- 07 手順とスケジュール（ガント） ----
      左に「やること」、右に帯。帯は日付の目盛りに合わせて置く。
      色は既存の3色の役割どおり（緑=済んだこと・青=案内・橙=落とすと失格） */
@@ -2533,16 +2556,15 @@
        描画は gantt_ui.js、データは gantt_data.js（出典と確認日時つき）。 -->
   <section id="gantt">
     <div class="section-head"><span class="section-no jp-serif">06</span><h2>申請の手順とスケジュール</h2></div>
-    <p class="section-sub">制度を選び、締切などの日付を入れると、<strong>申請までにやることを1つずつに分けて、いつ着手すればよいかを帯で表示</strong>します。終わった作業にチェックを付けると、進み具合がこの端末に残ります。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
+    <p class="section-sub">制度を選ぶと、<strong>申請までの流れ（どんな段階を、どのくらいの期間でやるか）</strong>がその場で分かります。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
 
     <div class="picker">
-      <p class="step-ttl">手順1　制度を選ぶ</p>
+      <p class="step-ttl">制度を選ぶ</p>
       <label class="sr-only" for="gtScheme">制度</label>
       <select id="gtScheme"><option value="">制度を選んでください</option></select>
     </div>
 
-    <div id="gtAnchors"></div>
-    <div id="gtOut"></div>
+    <div id="gtOverview"></div>
   </section>
 
 
@@ -11354,6 +11376,87 @@
 </script>
 <!-- ANALYTICS:END -->
 <script src="gantt_data.js"></script>
+<script>
+  // 06 申請の流れの概要。日付なしで「段階→期間の目安」を出す。
+  // 期間は gantt_data.js の offset / days から計算する（基準日は使わない）。
+  (function () {
+    var G = window.KOBAN_GANTT || { anchors: {}, schemes: {}, tasks: [] };
+    function esc(x) {
+      return String(x == null ? '' : x)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function lenText(days) {
+      if (days <= 1) return '1日';
+      if (days < 14) return '約' + days + '日';
+      if (days < 60) return '約' + Math.round(days / 7) + '週間';
+      return '約' + Math.round(days / 30) + 'か月';
+    }
+    // 基準日（アンカー）の日本語名。交付決定日などは「その通知のあと」の段階と読める
+    function anchorName(k, key) {
+      var list = G.anchors[k] || [];
+      for (var i = 0; i < list.length; i++) if (list[i].key === key) return list[i].label;
+      return '';
+    }
+    function render() {
+      var sel = document.getElementById('gtScheme');
+      var out = document.getElementById('gtOverview');
+      if (!sel || !out) return;
+      var k = sel.value;
+      if (!k) { out.innerHTML = ''; return; }
+      var tasks = G.tasks.filter(function (t) { return t.scheme === k; });
+      if (!tasks.length) { out.innerHTML = ''; return; }
+      // 並び順のまま、段階（phase）のまとまりに切る
+      var groups = [];
+      tasks.forEach(function (t) {
+        var g = groups[groups.length - 1];
+        if (!g || g.phase !== t.phase) groups.push({ phase: t.phase, tasks: [t] });
+        else g.tasks.push(t);
+      });
+      var html = '<div class="ov-flow">' + groups.map(function (g, i) {
+        // 期間の目安：同じ基準日のタスクの offset の範囲。基準日が複数あれば長いほう
+        var byAnchor = {};
+        g.tasks.forEach(function (t) {
+          (byAnchor[t.anchor] = byAnchor[t.anchor] || []).push(t);
+        });
+        var best = 0, anchors = Object.keys(byAnchor);
+        anchors.forEach(function (a) {
+          var lo = null, hi = null;
+          byAnchor[a].forEach(function (t) {
+            var st = t.offset, en = t.offset + Math.max(1, t.days);
+            if (lo === null || st < lo) lo = st;
+            if (hi === null || en > hi) hi = en;
+          });
+          if (hi - lo > best) best = hi - lo;
+        });
+        // 交付決定日などが基準の段階は、日付ではなく「〜のあと」で示す
+        var waits = anchors.map(function (a) { return anchorName(k, a); })
+          .filter(function (x) { return /決定|通知|受理|認定/.test(x); });
+        var hard = g.tasks.filter(function (t) { return t.hard; }).length;
+        return '<div class="ov-ph"><span class="ov-no">' + (i + 1) + '</span>' +
+          '<div class="ov-bd"><span class="ov-nm">' + esc(g.phase) + '</span>' +
+          '<span class="ov-len">期間の目安：' + lenText(best) +
+          (waits.length ? '（' + esc(waits[0]) + 'のあと）' : '') + '</span>' +
+          '<p class="ov-tasks">やること' + g.tasks.length + '件：' +
+          esc(g.tasks.slice(0, 3).map(function (t) {
+            return (G.shorts && G.shorts[t.id]) || t.task;
+          }).join('／')) + (g.tasks.length > 3 ? '　ほか' : '') + '</p>' +
+          (hard ? '<p class="ov-warn">この段階には、落とすと対象外になる手順が' + hard + '件あります</p>' : '') +
+          '</div></div>';
+      }).join('') + '</div>';
+      var note = G.schemes[k] && G.schemes[k].note;
+      if (note) html = '<div class="warn" style="margin:0 0 1rem;">' + esc(note) + '</div>' + html;
+      html += '<div class="ov-cta">' +
+        '<a class="btn-link" href="schedule.html?scheme=' + encodeURIComponent(k) + '">' +
+        '日付を指定して詳細なスケジュールを確認 →</a>' +
+        '<p class="sub">締切や開始日を入れると、やること1つずつの日付と帯を表示します。終わった作業のチェックも別ページに残ります。</p></div>';
+      out.innerHTML = html;
+    }
+    var sel = document.getElementById('gtScheme');
+    if (sel) sel.addEventListener('change', render);
+    // 制度の選択肢は gantt_ui.js の renderGtSchemes が入れる（initGanttから呼ばれる）
+  })();
+</script>
 <script src="gantt_ui.js"></script>
 <script>if (window.initGantt) initGantt();</script>
 </body>
