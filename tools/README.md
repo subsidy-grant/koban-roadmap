@@ -128,8 +128,20 @@ python -m http.server 8935
 
 ## 配布元が様式を差し替えたとき（毎回ゼロから見直さないために）
 
-`.github/workflows/mirror-forms.yml` が**毎日05:00 JST**に様式を取り直し、
-中身が変わっていたら自動でコミットする。**誰にも知らせずに変わる**ということ。
+`.github/workflows/mirror-forms.yml` が**毎日05:00 JST**に様式を取り直す。
+**実物の様式が差し替わったときだけ、GitHub の Issue が自動で立つ**ので、
+そこに書いてある手順どおりに点検して、済んだら閉じる。
+
+Issue が立たなければ、様式は変わっていない。
+
+### 手で確かめるとき（コミット履歴の見方に注意）
+
+`forms/manifest.json` と `forms/README.md` は**点検した日時を毎回書き直す**ので、
+様式が1つも変わらなくても**毎日コミットが積まれる**。
+`git log -- forms` だけを見ると、毎日変わったように見えてしまう。
+実物が変わったコミットだけを見るには、この2つを外すこと。
+
+    git log --oneline -12 -- forms ":(exclude)forms/manifest.json" ":(exclude)forms/README.md"
 
 自動入力のしかけは様式ごとの決め打ちを一切していない（ファイル名で分岐する箇所は無い）。
 セルの結合の幅・字下げ・項目名の言い方といった**形**だけを見て動く。
@@ -139,10 +151,7 @@ python -m http.server 8935
 そこで `tools/autofill_audit.json`（どの様式のどのセルに何が入ったかの控え）を
 git に残してある。2回流しても中身は同じなので、比較に使える。
 
-    # 1. 様式が変わったかを見る（forms/ に自動コミットが来ていないか）
-    git log --oneline -5 -- forms
-
-    # 2. 変わっていたら、監査を流し直して控えと比べる
+    # 1. 変わっていたら、監査を流し直して控えと比べる
     python tools\audit_autofill.py
     git diff tools\autofill_audit.json
 

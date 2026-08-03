@@ -29,17 +29,32 @@ jobs:
       - name: 変わっていたらコミット
         id: mirror
         run: |
+          # manifest.json と README.md は「点検した日時」を毎回書き直すので、
+          # 様式が1つも変わらなくても必ず差分が出る。知らせるかどうかは
+          # 実物の様式ファイルが変わったかどうかだけで決める。
+          git status --porcelain forms \
+            ':(exclude)forms/manifest.json' ':(exclude)forms/README.md' \
+            | sed 's/^/  /' > /tmp/changed.txt
+
           if [ -n "$(git status --porcelain forms)" ]; then
-            # 何が変わったかを、コミットする前に控えておく（通知に使う）
-            git status --porcelain forms | sed 's/^/  /' > /tmp/changed.txt
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add forms
-            git commit -m "様式の控えを更新（配布元の差し替えを反映）"
+            if [ -s /tmp/changed.txt ]; then
+              git commit -m "様式の控えを更新（配布元の差し替えを反映）"
+            else
+              git commit -m "様式の点検日時を更新（中身の差し替えは無し）"
+            fi
             git push
-            echo "changed=1" >> "$GITHUB_OUTPUT"
           else
             echo "変わりなし"
+          fi
+
+          if [ -s /tmp/changed.txt ]; then
+            echo "実物の様式が変わった:"; cat /tmp/changed.txt
+            echo "changed=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "実物の様式は変わっていない（点検日時のみ）"
             echo "changed=0" >> "$GITHUB_OUTPUT"
           fi
 
