@@ -1275,7 +1275,7 @@
   // 「委任者」は依頼した側＝自社なので、他人の欄の目印にしてはいけない
   // （2026-08-03、東京都の同意書「〇申請者（委任者）」で確認）。
   // 「代理申請者」は「申請者」を含むため、書かないと逆に自社の欄と読んでしまう
-  var OWNER_OTHER = /(代理人|代理者|代理申請者|代理申請|申請代理人|代行者|提出代行|事務代理|受任者|委任先|事業担当者|店舗担当者|契約予定先|契約先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|納入業者|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者)/;
+  var OWNER_OTHER = /(代理人|代理者|代理申請者|代理申請|申請代理人|代行者|提出代行|事務代理|受任者|委任先|事業担当者|店舗担当者|契約予定先|契約先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|納入業者|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者|意見を聴いた労働者|労働者代表|労働者の代表|過半数代表|労働組合|申立人)/;
   var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所|法人代表者|代表者)/;
   // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
   // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
@@ -1620,6 +1620,10 @@
       // 同じ位置から始まる項目名のうち、いちばん長く読めるものを採る
       // （「申請事業主　名　称」は「名称」ではなく「申請事業主名称」）
       for (var j = si; j < segs.length && j - si < 4; j++) {
+        // 「住　所　〒」の〒は記入枠の頭に置かれた印であって、項目名の一部ではない。
+        // 「住所〒」までを1つの項目名として読むと、〒が項目名に飲まれて
+        // 郵便番号がどこにも入らなくなる（2026-08-03、業務改善助成金の6様式で確認）
+        if (j > si && ZIP_MARK_RE.test(segs[j].text)) break;
         var joined = '';
         for (var k = si; k <= j; k++) joined += segs[k].text;
         if (joined.replace(/[\s　]+/g, '').length > 24) break;
@@ -1643,6 +1647,21 @@
         zipMark = true; at = segs[nx].end; nx++;
       }
       var gapEnd = nx < segs.length ? segs[nx].start : s.length;
+      // 記入する場所がハイフンで区切られていることがある。
+      //   （例）「（℡　　　－　　　－　　）」＝ 市外・市内・番号の3つに分けて書く欄
+      // 1つ目の空きに全部入れると枠からあふれ、行が次の行へ折り返す。
+      // 2026-08-03、業務改善助成金の様式8件でこの折り返しを確認した
+      var parts = null, q = nx;
+      if (q < segs.length && BOX_SEP_RE.test(segs[q].text)) {
+        parts = [{ at: at, end: segs[q].start }];
+        while (q < segs.length && BOX_SEP_RE.test(segs[q].text)) {
+          parts.push({ at: segs[q].end,
+                       end: (q + 1 < segs.length) ? segs[q + 1].start : s.length });
+          q++;
+        }
+        gapEnd = parts[parts.length - 1].end;
+        nx = q;
+      }
       var gap = s.slice(at, gapEnd);
       var colon = /[：:]$/.test(segs[best.last].text);
       var atEnd = nx >= segs.length;
@@ -1653,8 +1672,11 @@
             (!strict && atEnd && s.replace(/[\t\s　]+/g, '').length <= 24))) {
         si = best.last + 1; continue;
       }
-      out.push({ key: best.key, head: best.head, at: at, gapEnd: gapEnd, zipMark: zipMark });
-      si = best.last + 1;
+      out.push({ key: best.key, head: best.head, at: at, gapEnd: gapEnd,
+                 zipMark: zipMark, parts: parts });
+      // 「住　所　〒」の〒を住所の枠として飲み込んだあと、その〒をもう一度
+      // 郵便番号の項目名として拾うと、郵便番号が二重に入る（2026-08-03に確認）
+      si = Math.max(best.last + 1, nx);
     }
     return out;
   }
@@ -1939,6 +1961,39 @@
     if (need) need = need * 1.03 + 240;
     return need ? Math.max(0, total - need) : 0;
   }
+  // 記名欄は右寄りに字下げして置かれていることが多く、値を入れると幅が足りずに
+  // 行が折り返す。折り返した行は読みにくいうえ、そのぶん下の内容が次のページへ
+  // あふれる（2026-08-03、業務改善助成金の申出書などで確認）。
+  // 文書ぜんぶを先に見て、いちばん長くなる行に合わせて「字下げを戻す量」を1つ決める。
+  // 全部の行から同じ量を戻せば、行どうしの頭は揃ったままになる
+  function indentShrink(doc, vals) {
+    var total = paraWidthTw(doc);
+    if (!total) return 0;
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), over = 0;
+    for (var i = 0; i < allP.length; i++) {
+      var pEl = allP[i];
+      if (pEl.__intc) continue;             // 表の中は列の幅で決まるので対象外
+      var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
+      var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
+      if (!ind) continue;
+      var left = +(ind.getAttributeNS(W_NS, 'left') || 0);
+      if (left <= 0) continue;
+      var raw = paraTextWithTabs(pEl);
+      var slots = paraSlots(raw, false), add = 0;
+      for (var j = 0; j < slots.length; j++) {
+        var st = slots[j];
+        if (st.key === '__amb' || !vals[st.key] || st.parts) continue;
+        var v = withUnit(st.key, vals[st.key], '');
+        // 値を入れたぶん、うしろの余白は詰める。増えるのはその差だけ
+        add += Math.max(0, textWidthTw('　' + v, DEFAULT_SZ) -
+                           textWidthTw(raw.slice(st.at, st.gapEnd), DEFAULT_SZ));
+      }
+      if (!add) continue;
+      var w = left + headWidthTw(pEl, paraNodes(pEl), raw.length) + add;
+      if (w - total > over) over = w - total;
+    }
+    return over > 0 ? over + 240 : 0;
+  }
   // 右揃えをやめ、決めた位置から始まる左揃えに組み替える。タブは要らなくなる
   function alignParaLeft(doc, pEl, indentTw) {
     var pPr = paraJcRight(pEl);
@@ -1961,12 +2016,51 @@
       nd.node.parentNode.removeChild(nd.node);
     }
   }
+  // ハイフンで区切られた枠に、値を分けて入れる。
+  // 区切りの数と値の区切りの数が合うときだけ行う（ずれて入るほうが困るため）
+  function writeParaParts(doc, pEl, slot, text) {
+    var vs = toHankaku(String(text)).split(/[-−ー－‐]/).filter(function (x) { return x !== ''; });
+    if (!slot.parts || vs.length !== slot.parts.length) return null;
+    var raw0 = String(paraTextWithTabs(pEl));
+    for (var i = 0; i < slot.parts.length; i++) {
+      if (gapWidth(vs[i]) > gapWidth(raw0.slice(slot.parts[i].at, slot.parts[i].end)) + 2) return null;
+    }
+    for (var j = slot.parts.length - 1; j >= 0; j--) {
+      var p = slot.parts[j], nodes = paraNodes(pEl), rPr = null;
+      // 区切りのすぐ横に数字がくっつくと読みにくい。余白があれば1つ空ける
+      var room = gapWidth(raw0.slice(p.at, p.end)) - gapWidth(vs[j]);
+      if (room >= 3) vs[j] = '　' + vs[j];
+      for (var k = 0; k < nodes.length; k++) {
+        if (nodes[k].end > p.at && !nodes[k].isTab) {
+          rPr = childrenNS(nodes[k].run, W_NS, 'rPr')[0]; break;
+        }
+      }
+      var anchor = splitParaAt(doc, pEl, nodes, p.at);
+      var run = doc.createElementNS(W_NS, 'w:r');
+      if (rPr) run.appendChild(copyRunProps(rPr));
+      appendTextRuns(doc, run, vs[j]);
+      if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(run, anchor);
+      else pEl.appendChild(run);
+      eatGap(paraNodes(pEl), p.at + vs[j].length, p.end + vs[j].length, gapWidth(vs[j]));
+    }
+    return text;
+  }
   // 項目名のすぐうしろに値を置く。
   // 段落の末尾に足すやり方だと、右揃えの段落では値が右端に飛び、
   // 項目名まで左へ押し出されて行の頭がずれる（誓約書で確認）。
   // 書式は「記入する余白そのもの」から取る。下線の引かれた記入欄なら、
   // 値にも下線が付いて、手で書き込んだのと同じ見た目になる
-  function writeParaSlot(doc, pEl, slot, vals, rightIndent) {
+  function writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut) {
+    // 字下げを戻して、値を入れても行が折り返さないようにする
+    if (indCut && !pEl.__indCut) {
+      var pPr0 = childrenNS(pEl, W_NS, 'pPr')[0];
+      var ind0 = pPr0 ? childrenNS(pPr0, W_NS, 'ind')[0] : null;
+      var lf0 = ind0 ? +(ind0.getAttributeNS(W_NS, 'left') || 0) : 0;
+      if (lf0 > 0) {
+        ind0.setAttributeNS(W_NS, 'w:left', String(Math.max(0, lf0 - indCut)));
+        pEl.__indCut = 1;
+      }
+    }
     var zipKey = slot.key === 'regAddr' ? 'regZip' : 'zip';
     var text = (slot.zipMark && (slot.key === 'addr' || slot.key === 'regAddr') && vals[zipKey])
       ? vals[zipKey] + '　' + vals[slot.key] : withUnit(slot.key, vals[slot.key], '');
@@ -1974,6 +2068,11 @@
     // タブの手前に書くと項目名と値がくっついてしまう。
     // ただし右揃えの段落では、うしろに書くと値が右端に飛んで項目名が動く。
     // その場合は左揃えに組み替え、決めた位置から始める（タブは要らなくなる）
+    if (slot.parts) {
+      var done = writeParaParts(doc, pEl, slot, text);
+      if (done) return done;
+      slot.parts = null;      // 分けて入れられないときは、いつもどおり1か所に入れる
+    }
     var rawAll = paraTextWithTabs(pEl);
     var mTab = /^[\s　]*(?:\t[\s　]*)+/.exec(rawAll.slice(slot.at, slot.gapEnd));
     if (mTab) {
@@ -2043,6 +2142,7 @@
     }
     var owner = null, notedAmbP = 0, wroteP = {};
     var rightIndent = rightAlignIndent(doc, vals);
+    var indCut = indentShrink(doc, vals);
     for (var pi = 0; pi < allP.length; pi++) {
       var pEl = allP[pi];
       var inCell = !!pEl.__intc;
@@ -2102,7 +2202,7 @@
           skips.push({ key: slot.key, label: slot.head, reason: guardP });
           continue;
         }
-        var text = writeParaSlot(doc, pEl, slot, vals, rightIndent);
+        var text = writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut);
         usedKeys[slot.key] = 1;
         wroteP[pKey] = 1;
         wrote = 1;
