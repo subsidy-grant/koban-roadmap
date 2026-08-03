@@ -1928,13 +1928,32 @@
   // 記名欄が8mm左へずれていた（2026-08-04、物価高騰の申出書で確認）。
   // 文書ごとに既定値を読み取って使う
   var docSz = DEFAULT_SZ;
+  // 既定の大きさは2か所にある。docDefaults（文書全体）と、
+  // 既定の段落スタイル（w:type="paragraph" w:default="1"）。
+  // 後者があれば、そちらが勝つ。docDefaults だけを見ていたため、
+  // 「文書の既定は10.5pt、既定の段落スタイルは12pt」という様式で
+  // 1割小さく見積もり、字下げを戻さなくなって住所と氏名が行の途中で割れ、
+  // 行が増えたぶんページまで崩れた（2026-08-04、物価高騰の申出書2件）
   function docDefaultSz(stylesXml) {
     if (!stylesXml) return DEFAULT_SZ;
     try {
       var sdoc = parseXml(stylesXml);
+      var v = 0;
       var dd = sdoc.getElementsByTagNameNS(W_NS, 'docDefaults')[0];
       var sz = dd ? dd.getElementsByTagNameNS(W_NS, 'sz')[0] : null;
-      var v = sz ? +(sz.getAttributeNS(W_NS, 'val') || 0) : 0;
+      if (sz) v = +(sz.getAttributeNS(W_NS, 'val') || 0);
+      var sts = sdoc.getElementsByTagNameNS(W_NS, 'style');
+      for (var i = 0; i < sts.length; i++) {
+        if ((sts[i].getAttributeNS(W_NS, 'type') || '') !== 'paragraph') continue;
+        if ((sts[i].getAttributeNS(W_NS, 'default') || '') !== '1') continue;
+        var rp = childrenNS(sts[i], W_NS, 'rPr')[0];
+        var s2 = rp ? childrenNS(rp, W_NS, 'sz')[0] : null;
+        if (s2) {
+          var v2 = +(s2.getAttributeNS(W_NS, 'val') || 0);
+          if (v2 > 0) v = v2;
+        }
+        break;
+      }
       return v > 0 ? v : DEFAULT_SZ;
     } catch (e) { return DEFAULT_SZ; }
   }
