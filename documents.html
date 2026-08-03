@@ -937,6 +937,10 @@
       .replace(/[\s　]+/g, '')
       .replace(/[：:。・※◆■□◎●▼△▲◇☆★〇○◯]/g, '')
       .replace(/^[0-9０-９①-⑳]+[\.．)）]?/, '')
+      // 記入枠が「（〒　　－　　）」「（Tel　　－　　）」のように、片方の括弧だけ
+      // 別のセルに入っていることがある。対になっていない括弧は先に落とさないと、
+      // 「（〒」が郵便番号の欄だと読めない（2026-08-03、業務改善助成金で確認）
+      .replace(/[（）()]/g, '')
       // 「所在地〒」のように、住所欄の中の〒印がラベルにくっついていることがある。
       // 落とさないと「所在地」として拾えず、住所がどこにも入らない。
       // ただし「〒」だけの欄は郵便番号のラベルそのものなので、落とすと空になって拾えなくなる
@@ -944,9 +948,6 @@
       .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
       // 「雇用保険適用事業所番号11桁」のように桁数を書き添えた項目名がある
       .replace(/[0-9]+桁$/, '')
-      // 記入枠が「（Tel　　　－　　　）」のように、片方の括弧だけ別のセルに
-      // 入っていることがある。対になっていない括弧は落とさないと項目名として読めない
-      .replace(/[（）()]/g, '')
       .replace(/欄$/, '');
   }
   // 上から順に試して最初に全体一致したものを採用。あいまいなラベル
@@ -1615,7 +1616,8 @@
   // 1桁ずつのマスが並ぶ欄か。マスの数と桁数がぴったり合うときだけ、1マス1桁で入れる。
   // 数が合わないときは何もしない（ずれて入るほうが困るため）
   var DIGIT_BOX_KEYS = { houjin: 1, hokenNo: 1 };
-  var BOX_SEP_RE = /^[－ー\-‐−\s　]*$/;
+  // マスの区切りに使われる横棒。様式によって字が違う（―・－・ー・‐・−・–・—）
+  var BOX_SEP_RE = /^[－ー\-‐−―‒–—\s　]*$/;
   function digitBoxPlan(key, value, cells, from) {
     if (!DIGIT_BOX_KEYS[key]) return null;
     var ds = toHankaku(String(value)).replace(/[^0-9]/g, '');
@@ -2073,7 +2075,7 @@
   var BUILTIN_NUM_FMT = { 1: 1, 2: 1, 3: 1, 4: 1, 37: 1, 38: 1, 39: 1, 40: 1 };
   // styles.xml から「セルの書式番号 → 表示形式の文字列」を作る
   function parseStyles(xmlText) {
-    var out = { xf: [], code: {} };
+    var out = { xf: [], code: {}, shrink: [] };
     if (!xmlText) return out;
     try {
       var doc = parseXml(xmlText);
@@ -2084,10 +2086,22 @@
       var xfsEl = doc.getElementsByTagNameNS(S_NS, 'cellXfs')[0];
       if (xfsEl) {
         var xfs = childrenNS(xfsEl, S_NS, 'xf');
-        for (i = 0; i < xfs.length; i++) out.xf.push(xfs[i].getAttribute('numFmtId') || '0');
+        for (i = 0; i < xfs.length; i++) {
+          out.xf.push(xfs[i].getAttribute('numFmtId') || '0');
+          // 「縮小して全体を表示」が付いた欄は、幅が足りないと文字が潰れて読めない
+          var al = xfs[i].getElementsByTagNameNS(S_NS, 'alignment')[0];
+          out.shrink.push(!!(al && /^(1|true)$/.test(al.getAttribute('shrinkToFit') || '')));
+        }
       }
     } catch (e) { /* 書式が読めないときは、今までどおり文字で入れる */ }
     return out;
+  }
+  // そのセルに「縮小して全体を表示」が付いているか
+  function isShrinkCell(cell, styles) {
+    if (!cell || !styles || !styles.shrink || !styles.shrink.length) return false;
+    var si = parseInt(cell.getAttribute('s') || '', 10);
+    if (isNaN(si) || si >= styles.shrink.length) return false;
+    return !!styles.shrink[si];
   }
   // そのセルが「数を入れる書式」か。General・文字列（@）は数扱いにしない
   function isNumericCell(cell, styles) {
@@ -2144,6 +2158,142 @@
       host.setAttribute('count', String(childrenNS(host, S_NS, 'mergeCell').length));
       merges.push({ a: { c: cn, r: rn }, b: { c: like.b.c, r: rn } });
       return true;
+    }
+    // ---- 「開いたときに読めるか」を、列の幅から見る ----
+    // 中身（XML）だけを見ていると、入っているのに読めない状態に気づけない。
+    // 2026-08-03、細いセルに13桁の法人番号が押し込まれて潰れていた。
+    // 人が開いて気づくことを、出す前に幅の計算で先回りする
+    var defaultColW = 8.43;
+    var colW = {};
+    (function () {
+      var fp = doc.getElementsByTagNameNS(S_NS, 'sheetFormatPr')[0];
+      var dw = fp && parseFloat(fp.getAttribute('defaultColWidth'));
+      if (dw > 0) defaultColW = dw;
+      var cs = doc.getElementsByTagNameNS(S_NS, 'col');
+      for (var k = 0; k < cs.length; k++) {
+        var mn = parseInt(cs[k].getAttribute('min'), 10);
+        var mx = parseInt(cs[k].getAttribute('max'), 10);
+        var w = parseFloat(cs[k].getAttribute('width'));
+        if (!(mn > 0) || !(w > 0)) continue;
+        if (!(mx > 0)) mx = mn;
+        if (mx - mn > 300) mx = mn + 300;
+        for (var c = mn; c <= mx; c++) colW[c] = w;
+      }
+    })();
+    function widthOf(c) { return colW[c] !== undefined ? colW[c] : defaultColW; }
+    function spanWidth(a, b) { var s = 0; for (var c = a; c <= b; c++) s += widthOf(c); return s; }
+    // 見た目の長さ（半角1・全角2）。Excelの列幅の単位とだいたい同じ
+    function displayLen(s) {
+      var t = String(s || ''), n = 0;
+      for (var i = 0; i < t.length; i++) n += /[\x00-\x7F｡-ﾟ]/.test(t.charAt(i)) ? 1 : 2;
+      return n;
+    }
+    // ---- ラベルの右の「細い空きセル」ではなく、本当の記入枠に書く ----
+    // 様式には「所在地｜（細い空き）｜（細い空き）｜［大きな記入枠］」という
+    // 並びがある。手前の細いセルに書くと、枠の手前で文字が切れて読めない。
+    // 2026-08-03、実際に印刷して初めて分かった不具合（両立支援等助成金【出】第1号ほか）。
+    // 空きセルを飛ばして、幅の足りる結合セルがあればそちらに書く
+    function betterTarget(tc, tr, need, isAddr) {
+      if (mergeAt(tc, tr)) return null;
+      if (spanWidth(tc, tc) >= need) return null;
+      var c = tc;
+      for (var step = 0; step < 12; step++) {
+        var g = mergeAt(c, tr);
+        var a = g ? g.a.c : c;
+        if (g && g.a.r !== tr) return null;
+        var cell = cellAt(a, tr, false);
+        if (cell && cell.getElementsByTagNameNS(S_NS, 'f').length) return 'formula';
+        var t = cell ? cellString(cell, shared).trim() : '';
+        if (t) {
+          // 「〒」だけのセルは郵便番号の枠。住所を書く欄はその次の行にある
+          // （「④ 所在地｜〒［　］」で、住所欄が1行下に置かれている様式がある）
+          if (isAddr && isZipFrame(t) && rowByNum[String(tr + 1)]) {
+            var g2 = null;
+            for (var c2 = a; c2 < a + 8; c2++) {
+              var gg = mergeAt(c2, tr + 1);
+              if (gg && gg.a.r === tr + 1) { g2 = gg; break; }
+            }
+            if (g2) {
+              var bc = cellAt(g2.a.c, g2.a.r, false);
+              if (!(bc && cellString(bc, shared).trim()) &&
+                  spanWidth(g2.a.c, g2.b.c) >= need) return { c: g2.a.c, r: g2.a.r };
+            }
+          }
+          return null;
+        }
+        if (g) return spanWidth(g.a.c, g.b.c) >= need ? { c: a, r: tr } : null;
+        c++;
+      }
+      return null;
+    }
+
+    // ---- Excelの「1マス1桁」の欄 ----
+    // 法人番号・雇用保険適用事業所番号は、1桁ずつのマスが並んでいることがある。
+    // 先頭のマスに全部書くと、次のマスの手前で切れて読めない。
+    // マスの数と桁数がぴったり合うときだけ、1桁ずつ入れる（ずれて入るほうが困る）
+    function digitBoxPlanX(key, value, startCol, rowNum) {
+      if (!DIGIT_BOX_KEYS[key]) return null;
+      var ds = toHankaku(String(value)).replace(/[^0-9]/g, '');
+      if (ds.length < 4) return null;
+      var slots = [], c = startCol, guard = 0;
+      while (guard++ < 80) {
+        var g = mergeAt(c, rowNum);
+        if (g && g.a.r !== rowNum) break;
+        var a = g ? g.a.c : c, b = g ? g.b.c : c;
+        var cell = cellAt(a, rowNum, false);
+        if (cell && cell.getElementsByTagNameNS(S_NS, 'f').length) break;
+        var t = cell ? cellString(cell, shared).trim() : '';
+        if (t) {
+          if (BOX_SEP_RE.test(t)) { c = b + 1; continue; }   // 「―」の区切りは飛ばす
+          break;                                             // 別の項目が始まっている
+        }
+        slots.push({ c: a, w: b - a + 1 });
+        if (slots.length > ds.length + 8) break;
+        c = b + 1;
+      }
+      if (slots.length < 4) return null;
+      // マス目は、1マスが複数の列を結合して作られている。
+      // ただの空きセルが横に並んでいるだけの場所をマス目と読み違えると、
+      // 入るはずの欄に何も入らなくなる（様式第4-1号の法人番号で実際に起きた）
+      var wide = 0;
+      for (var s2 = 0; s2 < slots.length; s2++) if (slots[s2].w >= 2) wide++;
+      if (wide < 4) return null;
+      // マスは同じ幅で並ぶ。うしろに続く「ただの空き」を数えないよう、
+      // 先頭と同じ幅のものだけを数える
+      var w0 = slots[0].w, n = 0;
+      while (n < slots.length && slots[n].w === w0) n++;
+      // 最後の1〜2マスだけ結合が違っていることがある（配布元の作りのばらつき）。
+      // 桁数にあと少し足りないときは、続く空きマスで埋め合わせる
+      while (n < ds.length && n < slots.length && n < 2 + (function () {
+        var k = 0; while (k < slots.length && slots[k].w === w0) k++; return k;
+      })()) n++;
+      // マスの数が桁数と合わないときは入れない。先頭のマスに全部書くと
+      // 次のマスの手前で切れて読めないので、入れずにその旨をお伝えする
+      if (n !== ds.length) return { mismatch: n };
+      return { cols: slots.slice(0, n).map(function (s) { return s.c; }), digits: ds };
+    }
+
+    // その欄に入れた値が、開いたときに読めるかどうか。
+    // Excelは、幅が足りなくても右隣が空なら、はみ出して普通に読める。
+    // 読めなくなるのは次の2つ。
+    //   ・「縮小して全体を表示」が付いている → 文字が極端に小さくなる
+    //   ・右隣に別の中身がある → そこで切れる
+    // どちらかに当たって幅も足りないときだけ、上下の行の結合に倣って広げる。
+    // それでも足りなければ false を返し、利用者に「開いて確かめて」と伝える
+    function fitWidth(tc, tr, text) {
+      var need = displayLen(text) + 1;
+      var g0 = mergeAt(tc, tr);
+      var right = g0 ? g0.b.c : tc;
+      if (spanWidth(tc, right) >= need) return true;
+      var nx = cellAt(right + 1, tr, false);
+      var blocked = !!(mergeAt(right + 1, tr) || (nx && cellString(nx, shared).trim()));
+      var shrink = isShrinkCell(cellAt(tc, tr, false), styles);
+      if (!blocked && !shrink) return true;        // はみ出して読める
+      if (!g0 && addMergeLike(tc, tr)) {
+        var g1 = mergeAt(tc, tr);
+        if (g1 && spanWidth(tc, g1.b.c) >= need) return true;
+      }
+      return false;
     }
     var rows = doc.getElementsByTagNameNS(S_NS, 'row');
     var rowByNum = {};
@@ -2438,6 +2588,40 @@
           continue;
         }
 
+        // 1マス1桁のマス目が並ぶ欄（法人番号・事業所番号）は、1桁ずつ入れる
+        var boxX = digitBoxPlanX(key, vals[key], tc, tr);
+        if (boxX && boxX.mismatch) {
+          skips.push({ key: key, label: label,
+            reason: 'ここは1マスに1桁ずつ書く欄ですが、マスが' + boxX.mismatch + 'つで桁数と合わないため入れませんでした（' +
+              sheetName + ' の ' + tref + '）。1マスずつご記入ください' });
+          continue;
+        }
+        if (boxX) {
+          var bslot = sheetName + '|' + tc + '|' + key + '|box';
+          if (wroteSlot[bslot]) continue;
+          wroteSlot[bslot] = 1;
+          boxX.cols.forEach(function (cn, di) {
+            writeCell(cellAt(cn, tr, true), boxX.digits.charAt(di), 'new');
+            writtenCell[sheetName + '|' + cn + '|' + tr] = key;
+          });
+          usedKeys[key] = 1;
+          fills.push({ where: 'シート「' + sheetName + '」の ' + numToCol(boxX.cols[0]) + tr +
+            ' から（' + label + '・1マスに1桁ずつ・' + boxX.cols.length + 'マス）',
+            key: key, value: boxX.digits });
+          continue;
+        }
+        // ラベルの右が細い空きセルで、その先に本当の記入枠があることがある。
+        // 手前に書くと枠の手前で切れて読めないので、枠のほうに書く
+        if (!tg) {
+          var bt = betterTarget(tc, tr, displayLen(withUnit(key, vals[key], '')) + 1,
+                                key === 'addr' || key === 'regAddr');
+          if (bt === 'formula') {
+            skips.push({ key: key, label: label,
+              reason: 'この欄は様式が自動で入れる欄（計算式）なので、触りませんでした（' + sheetName + ' の ' + tref + '）。ほかのシートに入れた内容がそのまま出ます' });
+            continue;
+          }
+          if (bt) { tc = bt.c; tr = bt.r; tg = mergeAt(tc, tr); tref = numToCol(tc) + tr; }
+        }
         // ハイフンで欄が分かれている場合（郵便番号・電話番号）は分けて入れる
         var parts = splitParts(key);
         if (parts) {
@@ -2628,8 +2812,13 @@
           skips.push({ key: key, label: label, reason: guard + '（' + sheetName + ' の ' + tref + '）' });
           continue;
         }
-        // 結合が1行だけ抜けている欄は、上下の行に合わせて結合してから入れる
-        if (!tg && String(putVal).length >= 8) addMergeLike(tc, tr);
+        // 開いたときに読める幅があるかを確かめ、足りなければ広げる。
+        // どうしても足りないときは、入れたうえで確認をお願いする
+        if (!fitWidth(tc, tr, putVal)) {
+          skips.push({ key: key, label: label,
+            reason: '入れましたが、欄の幅に対して文字が長いため、開いたときに小さく表示されたり切れて見えることがあります（' +
+              sheetName + ' の ' + tref + '）。開いてお確かめください' });
+        }
         writeCell(cellAt(tc, tr, true), putVal, u.prev ? 'ow' : 'new', key);
         usedKeys[key] = 1;
         wroteSlot[xslot] = 1;
@@ -2944,8 +3133,8 @@
         (g.labels.length > 4 ? ' ほか' + (g.labels.length - 4) + '件' : '');
       return '<li><b>' + esc(ls || '（欄名なし）') + '</b>：' + esc(g.why) + '</li>';
     });
-    return '<details class="fr-skip"><summary>あえて空けた欄（' + (total || list.length) +
-      '件）と、その理由を見る</summary><ul>' + rows.join('') + '</ul></details>';
+    return '<details class="fr-skip"><summary>入れなかった欄・確かめてほしい欄（' +
+      (total || list.length) + '件）と、その理由を見る</summary><ul>' + rows.join('') + '</ul></details>';
   }
 
   function renderFillResult(fileName, res) {
