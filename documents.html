@@ -2764,6 +2764,18 @@
     // 並びがある。手前の細いセルに書くと、枠の手前で文字が切れて読めない。
     // 2026-08-03、実際に印刷して初めて分かった不具合（両立支援等助成金【出】第1号ほか）。
     // 空きセルを飛ばして、幅の足りる結合セルがあればそちらに書く
+    // 左どなりの項目名が、狭いセルからはみ出して表示されていることがある。
+    // その右に書き込むと、はみ出していた項目名がそこで切れて読めなくなる。
+    // 2026-08-03、障害者雇用関係助成金の個人番号登録届で
+    // 「2.雇用保険適用事業所番号」の文字が番号に潰されていた。
+    // どれくらい切れるかを返す（0なら切れない）
+    function clipsLeftLabel(tc, tr) {
+      if (mergeAt(tc - 1, tr)) return 0;      // 結合セルは枠が決まっていて切れない
+      var lc = cellAt(tc - 1, tr, false);
+      var t = lc ? cellString(lc, shared).trim() : '';
+      if (!t) return 0;
+      return Math.max(0, displayLen(t) - spanWidth(tc - 1, tc - 1));
+    }
     function betterTarget(tc, tr, need, isAddr) {
       if (mergeAt(tc, tr)) return null;
       if (spanWidth(tc, tc) >= need) return null;
@@ -2778,6 +2790,17 @@
         if (t) {
           // 「〒」だけのセルは郵便番号の枠。住所を書く欄はその次の行にある
           // （「④ 所在地｜〒［　］」で、住所欄が1行下に置かれている様式がある）
+          // 「住　所｜〒｜［大きな記入枠］」の並びなら、〒の右のその枠が住所欄。
+          // 手前の細いセルに書くと、〒にぶつかって住所が途中で切れる
+          // （2026-08-03、業務改善助成金の簡易作成ツール5シートで確認）
+          if (isAddr && isZipFrame(t)) {
+            var gz = mergeAt(a + 1, tr);
+            if (gz && gz.a.r === tr && spanWidth(gz.a.c, gz.b.c) >= need) {
+              var zc = cellAt(gz.a.c, tr, false);
+              var zt = zc ? cellString(zc, shared).trim() : '';
+              if (!zt || /^[0-9０-９\-−ー－\s　]+$/.test(zt)) return { c: gz.a.c, r: tr, zipCell: 1 };
+            }
+          }
           if (isAddr && isZipFrame(t) && rowByNum[String(tr + 1)]) {
             var g2 = null;
             for (var c2 = a; c2 < a + 8; c2++) {
@@ -3187,6 +3210,7 @@
         }
         // ラベルの右が細い空きセルで、その先に本当の記入枠があることがある。
         // 手前に書くと枠の手前で切れて読めないので、枠のほうに書く
+        var zipInAddrCell = '';
         if (!tg) {
           var bt = betterTarget(tc, tr, displayLen(withUnit(key, vals[key], '')) + 1,
                                 key === 'addr' || key === 'regAddr');
@@ -3195,7 +3219,12 @@
               reason: 'この欄は様式が自動で入れる欄（計算式）なので、触りませんでした（' + sheetName + ' の ' + tref + '）。ほかのシートに入れた内容がそのまま出ます' });
             continue;
           }
-          if (bt) { tc = bt.c; tr = bt.r; tg = mergeAt(tc, tr); tref = numToCol(tc) + tr; }
+          if (bt) {
+            tc = bt.c; tr = bt.r; tg = mergeAt(tc, tr); tref = numToCol(tc) + tr;
+            // 〒の右の枠に住所を書くときは、郵便番号もその枠にまとめて入れる。
+            // 郵便番号だけを先に入れてあると、住所で上書きして消してしまう
+            if (bt.zipCell) zipInAddrCell = key === 'regAddr' ? vals.regZip : vals.zip;
+          }
         }
         // ハイフンで欄が分かれている場合（郵便番号・電話番号）は分けて入れる
         var parts = splitParts(key);
@@ -3367,6 +3396,11 @@
         }
         if (u.prev === vals[key]) continue;
         var putVal = withZip(key, withUnit(key, vals[key], u.prev), u.prev, vals);
+        // 〒の右の枠に住所を書くときは、郵便番号もいっしょに入れる
+        // 様式の側に「〒」が印字されているので、こちらでは付けない
+        if (zipInAddrCell && putVal.indexOf(zipInAddrCell) < 0) {
+          putVal = zipInAddrCell + '　' + putVal;
+        }
         // 選ぶ欄（ドロップダウン）には、用意された選択肢に当たる言葉だけを入れる。
         // 選択肢に無い言葉を書くとExcelが警告を出し、開いた人が直す羽目になる
         var dvOpts = dvOptionsFor(tref);
@@ -3385,6 +3419,18 @@
         var guard = fillGuard(key, putVal, labelRaw, u.prev);
         if (guard) {
           skips.push({ key: key, label: label, reason: guard + '（' + sheetName + ' の ' + tref + '）' });
+          continue;
+        }
+        // 左の項目名が大きくはみ出して表示されているなら、そこに書くと項目名が切れる。
+        // 様式の案内が読めなくなるほうが困るので、入れずに理由をお伝えする
+        // 「〒」のように1〜2文字だけはみ出しているものは、書いても支障が小さい。
+        // 項目名がまるごと読めなくなる場合だけ止める
+        var clip2 = clipsLeftLabel(tc, tr);
+        if (clip2 >= 5) {
+          skips.push({ key: key, label: label,
+            reason: '左の「' + label + '」の文字が、この欄まではみ出して表示されています。' +
+              'ここに書くと項目名が切れて読めなくなるため、入れませんでした（' +
+              sheetName + ' の ' + tref + '）。お手数ですが、様式の記入枠にご記入ください' });
           continue;
         }
         // 開いたときに読める幅があるかを確かめ、足りなければ広げる。
