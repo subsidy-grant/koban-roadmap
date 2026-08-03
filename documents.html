@@ -1158,11 +1158,20 @@
     return null;
   }
 
+  // 項目名は「（事業主名）」だけでも、そのうしろの注記に
+  // 「※法人名及び事業主の氏名」と書かれていることがある。
+  // 項目名だけを読むと会社名しか入らないが、様式は代表者名も求めている
+  // （2026-08-03、疎明書と確認書の「（事業主名）」欄で確認）
+  var NAME_AND_REP_RE = /(法人名及び事業主の氏名|法人名及び代表者|名称及び代表者|事業主名及び代表者|事業所名及び代表者)/;
   function matchLabel(text) {
     var t = normLabel(text);
     if (!t || t.length > 20) return null;
     for (var i = 0; i < FILL_LABELS.length; i++) {
-      if (FILL_LABELS[i].re.test(t)) return FILL_LABELS[i].key;
+      if (FILL_LABELS[i].re.test(t)) {
+        var k = FILL_LABELS[i].key;
+        if (k === 'name' && NAME_AND_REP_RE.test(String(text || ''))) return 'nameRep';
+        return k;
+      }
     }
     return null;
   }
@@ -2094,6 +2103,28 @@
     }
     return text;
   }
+  // 値を入れて行が紙からあふれるとき、項目名の前に置かれた空白を詰めて左へ寄せる。
+  // 字下げ（w:ind）ではなく空白で位置を作っている様式があり、そのままだと
+  // 氏名が「山田 太／郎」のように途中で折り返す
+  // （2026-08-03、疎明書・確認書の「（事業主名）」欄で確認）
+  // 入れ終わったあとの「実際の長さ」で見るので、事前の見積もりが外れても効く
+  function trimParaHead(doc, pEl) {
+    var total = paraWidthTw(pEl.ownerDocument || doc);
+    if (!total) return;
+    var raw = paraTextWithTabs(pEl);
+    var nodes = paraNodes(pEl);
+    var ind = indOf(pEl);
+    var left = ind ? +(ind.getAttributeNS(W_NS, 'left') || 0) : 0;
+    var over = headWidthTw(pEl, nodes, raw.length) + left - total;
+    if (over <= 0) return;
+    if (left > 0) {                       // 字下げで位置を作っている様式
+      ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, left - over - 240)));
+      return;
+    }
+    var m = /^[\s　]+/.exec(raw);          // 空白で位置を作っている様式
+    if (!m) return;
+    eatGap(nodes, 0, m[0].length, Math.ceil(over / (DEFAULT_SZ * 5)) + 2);
+  }
   // 項目名のすぐうしろに値を置く。
   // 段落の末尾に足すやり方だと、右揃えの段落では値が右端に飛び、
   // 項目名まで左へ押し出されて行の頭がずれる（誓約書で確認）。
@@ -2200,6 +2231,7 @@
       var moved = body.length;
       eatGap(paraNodes(pEl), slot.at + moved, slot.gapEnd + moved, gapWidth(body) + 2);
     }
+    if (!pEl.__intc) trimParaHead(doc, pEl);
     return text;
   }
   function appendParaValue(doc, pEl, raw, plan, vals) {
@@ -2274,6 +2306,14 @@
             continue;
           }
           slot.key = ak;
+        }
+        // 「※法人名及び事業主の氏名」という注記が、次の行に置かれていることがある。
+        // 項目名だけを読むと会社名しか入らないが、様式は代表者名も求めている
+        if (slot.key === 'name' && vals.nameRep) {
+          var nx2 = pEl.nextElementSibling;
+          var nxTxt = (nx2 && nx2.namespaceURI === W_NS && nx2.localName === 'p')
+            ? paraTextWithTabs(nx2) : '';
+          if (NAME_AND_REP_RE.test(nxTxt)) slot.key = 'nameRep';
         }
         if (!vals[slot.key]) continue;
         var pKey = (inCell ? 'c' : 'p') + '|' + slot.key + '|' + slot.head;
