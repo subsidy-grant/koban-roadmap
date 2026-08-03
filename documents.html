@@ -310,6 +310,14 @@
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
   .warn strong { color: var(--rust); }
+  /* 提出前の確認をお願いする注意書き。読み飛ばされないよう、
+     見出しの大きさ・色・左の太い線で、まわりの説明文と見分けられるようにする */
+  .must-check { background: var(--rust-wash); border: 1px solid var(--rust);
+    border-left: 6px solid var(--rust); border-radius: 10px;
+    padding: 0.85rem 1.05rem; margin: 0.9rem 0; }
+  .must-check b { display: block; color: var(--rust); font-size: 1.02rem;
+    line-height: 1.5; margin-bottom: 0.35rem; }
+  .must-check span { display: block; font-size: 0.88rem; color: var(--ink); line-height: 1.7; }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
 
@@ -430,10 +438,12 @@
 
     <div id="afForms"></div>
 
-    <div class="warn">
-      <strong>自動で入れた内容を、そのまま提出しないでください。</strong>
-      どの欄に入れたか・入れられなかったかを下に必ず表示しますので、保存したファイルを開いて、すべての欄をご確認ください。
-      様式のつくりによっては、欄を取り違えたり、入れられないことがあります。
+    <div class="must-check">
+      <b>必ずデータの内容を確認してから提出してください。</b>
+      <span>自動で入るのは、01で入力した会社情報だけです。どの欄に入れたか・入れられなかったかは下に必ず表示しますので、
+      保存したファイルを開いて、①入った内容が合っているか　②残りの欄（日付・金額・対象者など）
+      ③○や☑であらかじめ選ばれている項目が実態と合っているか　を確かめてください。
+      様式のつくりによっては欄を取り違えることがあり、また配布元の時点で選択肢が選ばれている様式もあります。</span>
     </div>
 
     <div id="fillResults"></div>
@@ -933,7 +943,12 @@
     var only = raw.replace(/[\s　]+/g, '').match(/^[（(]([^（）()]{1,8})[）)]$/);
     if (only) raw = only[1];
     return raw
-      .replace(/[（(][^（）()]*[）)]/g, '')
+      // 括弧書きはふつう注記なので落とす。ただし「企業規模（人数）」のように、
+      // 括弧の中に「何を書く欄か」が書かれていることがある。落とすと「企業規模」に
+      // なり、中小企業か大企業かを選ぶ欄と区別できなくなるので、そこだけ残す
+      .replace(/[（(]([^（）()]*)[）)]/g, function (m, inner) {
+        return /^(人数|人員)$/.test(inner.replace(/[\s　]+/g, '')) ? inner : '';
+      })
       .replace(/[\s　]+/g, '')
       .replace(/[：:。・※◆■□◎●▼△▲◇☆★〇○◯]/g, '')
       .replace(/^[0-9０-９①-⑳]+[\.．)）]?/, '')
@@ -982,12 +997,14 @@
     { key: 'founded',   re: /^(設立年月日|設立日|設立|創業年月日|創業|開業日|開業年月日|設立・開業日|創業・設立年月日)$/ },
     // 「資本の額」（資本「金」が付かない）が雇用関係助成金の様式では多い
     { key: 'capital',   re: /^(資本金|資本金額|資本金又は出資金|資本金・出資金|資本金等|資本金又は出資の総額|資本金の額又は出資の総額|資本の額又は出資の総額|資本の額若しくは出資の総額|企業の資本の額または出資の総額|企業の資本の額又は出資の総額|資本の額|出資の総額)$/ },
-    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|企業全体で常時使用する労働者数|企業全体で常時雇用する労働者数|企業全体で常時雇用する労働者の数|企業全体の常時雇用する労働者の数|企業全体の常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数)$/ },
+    // 「企業規模」だけの欄は中小企業か大企業かを選ぶ欄のことがあるので入れない。
+    // 「企業規模（人数）」のように人数と明記されている欄だけを人数の欄として扱う
+    { key: 'employees', re: /^(従業員数|常時使用する従業員数|常用従業員数|労働者数|常用労働者数|従業員|常時使用する労働者の数|常時使用する労働者数|労働者の数|常時雇用する労働者数|企業全体で常時使用する労働者の数|企業全体で常時使用する労働者数|企業全体で常時雇用する労働者数|企業全体で常時雇用する労働者の数|企業全体の常時雇用する労働者の数|企業全体の常時使用する労働者の数|申請月初日における常時雇用する労働者の数|常時雇用する労働者の数|企業規模人数|企業規模の人数)$/ },
     // 「主たる業種」の欄は「分類番号」と「分類項目名」に分かれていることがある。
     // 番号（例：78）ではなく名前（美容業）が入るのは分類項目名のほう
     // 業種を番号で書かせる様式がある（日本標準産業分類の中分類）
     { key: 'industryCode', re: /^(分類番号|日本標準産業分類の番号|産業分類番号|産業分類コード|業種番号|中分類番号)$/ },
-    { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名)$/ },
+    { key: 'industry',  re: /^(業種|主な業種|主たる業種|分類項目名|分類項目|業種名|主たる事業|主たる業種名|企業の主たる事業|事業所の主たる事業|主たる事業の内容)$/ },
     { key: 'business',  re: /^(事業内容|主な事業内容|事業の内容|主たる事業内容)$/ },
     // 担当者のかたまりの見出しでもある。ここに当たると、下に並ぶ氏名・電話・メールを
     // 代表者ではなく担当者のものとして扱う
@@ -1318,6 +1335,17 @@
     // 同じ距離なら、これまでどおり上の見出しを優先する
     return (below.r - row) < (row - above.r) ? below : above;
   }
+  // 項目名のセルと同じ高さ（縦につながった枠の中）にある見出しを探す。
+  // 枠の中の見出しは、離れた場所にある見出しより確かなので、そちらを採る
+  function ownerInRows(markers, col, top, bottom, above) {
+    var hit = null;
+    for (var k = 0; k < markers.length; k++) {
+      var m = markers[k];
+      if (m.c > col || m.r <= top || m.r > bottom) continue;
+      if (!hit || m.r < hit.r || (m.r === hit.r && m.c > hit.c)) hit = m;
+    }
+    return hit || above;
+  }
   function ownerSkipReason(m, where) {
     if (m.kind === 'staff') {
       return '様式に「代表者と異なる場合のみ」と書かれた担当者の欄で、担当者が代表者と同じ方なので空欄のままにしました' +
@@ -1543,6 +1571,163 @@
     return s;
   }
   var PARA_TAIL_RE = /[\t\s　_＿]+$/;
+  // ---- 段落の中の「項目名 → 記入する余地」を切り出す ----
+  // 1つの段落に項目名が2つ以上並ぶ様式がある。
+  //   （例）「事業主　　住所＿＿＿＿＿＿　電話番号＿＿＿＿」
+  //         「１　法人名：　　　　　　　　法人番号：」
+  // 段落ぜんぶを1つの項目とみなして末尾に書き足すやり方では、
+  //   ・最初の1つしか入らない（住所は入っても電話番号が空欄のまま）
+  //   ・値が行の右端に飛んで、項目名の位置まで動いてしまう
+  // という2つの崩れが起きる。2026-08-03、共通要領様式第1号と誓約書で確認した。
+  // ここでは項目名ごとに「そのうしろの余白」を切り出し、余白の頭に値を置く。
+  var GAP_CH_RE = /[\t 　 _＿]/;
+  // 記入枠の頭に置かれた印。項目名の一部として読み飛ばす
+  var ZIP_MARK_RE = /^[（(]?〒[\s　0-9０-９\-−ー－]*[）)]?$/;
+  function paraSegs(s) {
+    var out = [], i = 0, n = s.length;
+    while (i < n) {
+      while (i < n && GAP_CH_RE.test(s.charAt(i))) i++;
+      if (i >= n) break;
+      var st = i;
+      while (i < n && !GAP_CH_RE.test(s.charAt(i))) i++;
+      out.push({ text: s.slice(st, i), start: st, end: i });
+    }
+    return out;
+  }
+  // 見た目の広さを、全角を2・半角を1として数える。
+  // 余白の広さにも、入れる値の広さにも同じものさしを使う。
+  // 2026-08-03、ここで漢字を半角と数えていたため、値のぶん余白を詰めきれず、
+  // 共通要領様式第1号で行末の「電話番号」の値が次の行に回り込んでいた
+  function gapWidth(s) {
+    var w = 0, t = String(s || '');
+    for (var i = 0; i < t.length; i++) {
+      var c = t.charAt(i);
+      if (c === '\t') { w += 4; continue; }
+      w += /[\x20-\x7E｡-ﾟ]/.test(c) ? 1 : 2;
+    }
+    return w;
+  }
+  // 段落から、書き込める区間をすべて返す。
+  // 返り値: [{ key, head, at（値を置く位置）, gapEnd（余白の終わり）, zipMark }]
+  function paraSlots(raw, strict) {
+    var s = String(raw || '');
+    if (/[。、]\s*$/.test(s)) return [];       // 文章の行には書かない
+    var segs = paraSegs(s);
+    if (!segs.length) return [];
+    var out = [], si = 0;
+    while (si < segs.length) {
+      var best = null;
+      // 同じ位置から始まる項目名のうち、いちばん長く読めるものを採る
+      // （「申請事業主　名　称」は「名称」ではなく「申請事業主名称」）
+      for (var j = si; j < segs.length && j - si < 4; j++) {
+        var joined = '';
+        for (var k = si; k <= j; k++) joined += segs[k].text;
+        if (joined.replace(/[\s　]+/g, '').length > 24) break;
+        var kk = matchLabel(joined);
+        if (!kk) {
+          var mp = /^[\s　]*[（(]([^（）()]+)[）)][\s　]*$/.exec(joined);
+          if (mp) kk = matchLabel(mp[1]);
+        }
+        // 「氏名」だけの欄は誰のものか決まらない。ここでは印だけ付けて、
+        // 呼び出し側が「事業主」などの見出しから決める
+        if (!kk && !strict && ambiguousLabel(joined)) kk = '__amb';
+        if (kk) best = { key: kk, last: j, head: joined.replace(/[\s　]+/g, '') };
+      }
+      if (!best) { si++; continue; }
+      // 項目名のうしろ＝次の項目名の手前までが、その欄の記入余地
+      var at = segs[best.last].end;
+      var zipMark = false;
+      var nx = best.last + 1;
+      // 「所在地　〒　　－　　　」の〒は郵便番号の項目名ではなく、記入枠の頭の印
+      if (nx < segs.length && ZIP_MARK_RE.test(segs[nx].text)) {
+        zipMark = true; at = segs[nx].end; nx++;
+      }
+      var gapEnd = nx < segs.length ? segs[nx].start : s.length;
+      var gap = s.slice(at, gapEnd);
+      var colon = /[：:]$/.test(segs[best.last].text);
+      var atEnd = nx >= segs.length;
+      // 書き込んでよいのは、うしろに記入する余白があるか、
+      // 「：」で区切られているか、その項目名で段落が終わっているとき。
+      // 表のセルの中では、余白も「：」も無い段落はただの項目名（記入場所は右の欄）
+      if (!(colon || zipMark || gapWidth(gap) >= 2 ||
+            (!strict && atEnd && s.replace(/[\t\s　]+/g, '').length <= 24))) {
+        si = best.last + 1; continue;
+      }
+      out.push({ key: best.key, head: best.head, at: at, gapEnd: gapEnd, zipMark: zipMark });
+      si = best.last + 1;
+    }
+    return out;
+  }
+  // 段落の中の文字を、run（文字のかたまり）ごとに位置付きで並べる
+  function paraNodes(pEl) {
+    var all = pEl.getElementsByTagNameNS(W_NS, '*'), out = [], pos = 0;
+    for (var i = 0; i < all.length; i++) {
+      var nd = all[i];
+      if (nd.localName !== 't' && nd.localName !== 'tab' && nd.localName !== 'noBreakHyphen') continue;
+      if (nd.localName === 'tab' && (!nd.parentNode || nd.parentNode.localName !== 'r')) continue;
+      var skip = false, a = nd.parentNode, run = null;
+      while (a && a !== pEl) {
+        if (a.localName === 'rt') { skip = true; break; }
+        if (a.localName === 'r' && !run) run = a;
+        a = a.parentNode;
+      }
+      if (skip || !run) continue;
+      var txt = nd.localName === 'tab' ? '\t'
+              : nd.localName === 'noBreakHyphen' ? '-' : (nd.textContent || '');
+      out.push({ node: nd, run: run, isTab: nd.localName !== 't', text: txt,
+                 start: pos, end: pos + txt.length });
+      pos += txt.length;
+    }
+    return out;
+  }
+  // 文字位置 pos の直前で run を割り、そこに差し込める場所（次の兄弟）を返す
+  function splitParaAt(doc, pEl, nodes, pos) {
+    for (var i = 0; i < nodes.length; i++) {
+      var nd = nodes[i];
+      if (pos <= nd.start) return nd.run;           // run の頭：そのまま手前に入れる
+      if (pos >= nd.end) continue;
+      if (nd.isTab) return nd.run.nextSibling;      // タブは割れない
+      // w:t の途中：うしろ半分を新しい run に移す
+      var txt = nd.text, cut = pos - nd.start;
+      nd.node.textContent = txt.slice(0, cut);
+      nd.node.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      var tail = doc.createElementNS(W_NS, 'w:r');
+      var rp = childrenNS(nd.run, W_NS, 'rPr')[0];
+      if (rp) tail.appendChild(rp.cloneNode(true));
+      var t2 = doc.createElementNS(W_NS, 'w:t');
+      t2.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      t2.textContent = txt.slice(cut);
+      tail.appendChild(t2);
+      // 割った run のうしろに続く中身（同じ run の中の後続要素）も一緒に移す
+      var mv = nd.node.nextSibling;
+      while (mv) { var nxt = mv.nextSibling; tail.appendChild(mv); mv = nxt; }
+      nd.run.parentNode.insertBefore(tail, nd.run.nextSibling);
+      return tail;
+    }
+    return null;      // 段落の末尾
+  }
+  // 値の幅ぶん、うしろの余白を詰める（うしろの項目名が右へずれないように）。
+  // タブは配置そのものなので触らない
+  function eatGap(nodes, from, to, width) {
+    var left = width;
+    for (var i = 0; i < nodes.length && left > 0; i++) {
+      var nd = nodes[i];
+      if (nd.end <= from || nd.start >= to || nd.isTab) continue;
+      var txt = nd.node.textContent || '', keep = '', cut = 0;
+      for (var k = 0; k < txt.length; k++) {
+        var c = txt.charAt(k), gp = nd.start + k;
+        if (left > 0 && gp >= from && gp < to && GAP_CH_RE.test(c)) {
+          left -= /[　_＿]/.test(c) ? 2 : 1; cut++;
+          continue;
+        }
+        keep += c;
+      }
+      if (cut) {
+        nd.node.textContent = keep;
+        nd.node.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      }
+    }
+  }
   // その段落が記入欄かどうかを見る。記入欄なら {key, zipMark, head} を返す
   function paraPlan(raw) {
     var zipMark = false, body = raw;
@@ -1579,7 +1764,7 @@
     }
   }
   // 段落の末尾に値を書き足す（段落の記名欄と、表の右端セルの両方で使う）
-  // 「東京都渋谷区神宮前1-2-3」が「2-」「3-16」と切れてしまうのを防ぐ。
+  // 「東京都渋谷区神宮前1-2-3」が「1-」「2-3」と切れてしまうのを防ぐ。
   // Wordはふつうのハイフンのうしろで行を折り返すので、
   // 番地や電話番号のハイフンは「改行しないハイフン」（w:noBreakHyphen）で書く
   function appendTextRuns(doc, run, text) {
@@ -1604,7 +1789,10 @@
   // 2026-08-03、東京都の同意書「代表者　役職・氏名」の欄で実際に起きた
   // （ラベル側が fitText 1050 で、そのまま値にも掛かっていた）。
   // 見るのは人なので、幅に押し込む指定は引き継がない
-  var RPR_DROP = { fitText: 1, spacing: 1, w: 1, kern: 1, position: 1, effect: 1 };
+  // w:vertAlign（上付き・下付き）も持ち込まない。項目名のうしろに付いた注記の
+  // 「※」から書式を引き継ぐと、値だけが上付きの小さな文字になる。
+  // 2026-08-03、キャリアアップ助成金の申立書「名　称※」で実際に起きた
+  var RPR_DROP = { fitText: 1, spacing: 1, w: 1, kern: 1, position: 1, effect: 1, vertAlign: 1 };
   function copyRunProps(rPrSrc) {
     var cl = rPrSrc.cloneNode(true), kids = [];
     for (var i = 0; i < cl.childNodes.length; i++) kids.push(cl.childNodes[i]);
@@ -1613,11 +1801,33 @@
     }
     return cl;
   }
+  // 縦につながったセルの2行目以降（w:vMerge の continue）は、
+  // 上のセルの中身だけが表示される。ここに書いても紙には出ない。
+  // 2026-08-03、共通要領様式第1号で「法人名・事業所名称・雇用保険適用事業所番号」を
+  // 右の「労働局確認欄」（縦につながったセル）に書き込み、どこにも出ていなかった
+  function isVMergeCont(tc) {
+    var pr = childrenNS(tc, W_NS, 'tcPr')[0];
+    if (!pr) return false;
+    var vm = childrenNS(pr, W_NS, 'vMerge')[0];
+    if (!vm) return false;
+    var v = vm.getAttributeNS(W_NS, 'val') || vm.getAttribute('w:val') || '';
+    return v === '' || v === 'continue';
+  }
   // 1桁ずつのマスが並ぶ欄か。マスの数と桁数がぴったり合うときだけ、1マス1桁で入れる。
   // 数が合わないときは何もしない（ずれて入るほうが困るため）
   var DIGIT_BOX_KEYS = { houjin: 1, hokenNo: 1 };
   // マスの区切りに使われる横棒。様式によって字が違う（―・－・ー・‐・−・–・—）
   var BOX_SEP_RE = /^[－ー\-‐−―‒–—\s　]*$/;
+  // 斜線が引かれたマスは「ここは書かない」という印。マスの数に数えない。
+  // 2026-08-03、キャリアアップ助成金 様式第2号（共通）の事業所番号欄で、
+  // 末尾の斜線マスまで数えてマス数と桁数が合わず、番号ぜんぶが1マス目に入っていた
+  function hasDiagonal(tc) {
+    var pr = childrenNS(tc, W_NS, 'tcPr')[0];
+    if (!pr) return false;
+    var b = childrenNS(pr, W_NS, 'tcBorders')[0];
+    if (!b) return false;
+    return !!(childrenNS(b, W_NS, 'tl2br')[0] || childrenNS(b, W_NS, 'tr2bl')[0]);
+  }
   function digitBoxPlan(key, value, cells, from) {
     if (!DIGIT_BOX_KEYS[key]) return null;
     var ds = toHankaku(String(value)).replace(/[^0-9]/g, '');
@@ -1625,12 +1835,191 @@
     var slots = [];
     for (var i = from; i < cells.length; i++) {
       var t = textWithoutRuby(cells[i], W_NS, 'rt').trim();
-      if (!t) { slots.push(i); continue; }
+      if (!t) {
+        if (hasDiagonal(cells[i]) || isVMergeCont(cells[i])) continue;
+        slots.push(i); continue;
+      }
       if (BOX_SEP_RE.test(t)) continue;   // 「－」の区切りマスは飛ばす
       return null;                         // 別の項目が始まっている
     }
     if (slots.length < 4 || slots.length !== ds.length) return null;
     return { slots: slots, digits: ds };
+  }
+  // ---- 右揃えの記名欄を、位置を保ったまま書けるようにする ----
+  // 「住　所<タブ><タブ><タブ><タブ>」を右揃えで並べた様式がある（誓約書）。
+  // 右揃えのままうしろに値を足すと、行が長くなったぶん項目名が左へ動き、
+  // 4行の頭がバラバラの階段になる。2026-08-03に実物で確認した。
+  // 左揃えに直したうえで、元の項目名の位置を字下げ（w:ind）で留める。
+  // 同じ計算をどの行にも使うので、少なくとも行どうしはきれいに揃う
+  var DEFAULT_TAB_TW = 840;      // Wordの既定のタブ幅（settings.xml の既定値）
+  // 文字の大きさが書かれていないときの見積もり。小さく見積もると
+  // 「入るはず」と判断した値が折り返してしまうので、大きめに取る（12pt）
+  var DEFAULT_SZ = 24;
+  function paraWidthTw(doc) {
+    var secs = doc.getElementsByTagNameNS(W_NS, 'sectPr');
+    var sec = secs.length ? secs[secs.length - 1] : null;
+    if (!sec) return 0;
+    var sz = sec.getElementsByTagNameNS(W_NS, 'pgSz')[0];
+    var mg = sec.getElementsByTagNameNS(W_NS, 'pgMar')[0];
+    if (!sz || !mg) return 0;
+    var w = +(sz.getAttributeNS(W_NS, 'w') || 0);
+    var l = +(mg.getAttributeNS(W_NS, 'left') || 0);
+    var r = +(mg.getAttributeNS(W_NS, 'right') || 0);
+    return (w && w - l - r > 0) ? w - l - r : 0;
+  }
+  // 段落の先頭から pos までの幅（twips）を見積もる
+  function headWidthTw(pEl, nodes, pos) {
+    var w = 0, lastFit = null;
+    for (var i = 0; i < nodes.length; i++) {
+      var nd = nodes[i];
+      if (nd.start >= pos) break;
+      var rPr = childrenNS(nd.run, W_NS, 'rPr')[0];
+      var ft = rPr ? childrenNS(rPr, W_NS, 'fitText')[0] : null;
+      if (ft) {
+        // 「幅を指定して押し込む」設定。同じ指定の続きは1つのかたまり
+        var id = (ft.getAttributeNS(W_NS, 'id') || '') + ':' + (ft.getAttributeNS(W_NS, 'val') || '');
+        if (id !== lastFit) { w += +(ft.getAttributeNS(W_NS, 'val') || 0); lastFit = id; }
+        continue;
+      }
+      lastFit = null;
+      if (nd.isTab) { w += DEFAULT_TAB_TW; continue; }
+      var szEl = rPr ? childrenNS(rPr, W_NS, 'sz')[0] : null;
+      var sz = szEl ? +(szEl.getAttributeNS(W_NS, 'val') || DEFAULT_SZ) : DEFAULT_SZ;
+      var txt = nd.text.slice(0, Math.max(0, pos - nd.start));
+      for (var k = 0; k < txt.length; k++) {
+        w += /[\x20-\x7E｡-ﾟ]/.test(txt.charAt(k)) ? sz * 5 : sz * 10;
+      }
+    }
+    return w;
+  }
+  // 文字の幅を見積もる（twips）。半角は全角の半分
+  function textWidthTw(text, sz) {
+    var w = 0, s = String(text || '');
+    for (var i = 0; i < s.length; i++) w += /[\x20-\x7E｡-ﾟ]/.test(s.charAt(i)) ? sz * 5 : sz * 10;
+    return w;
+  }
+  function paraJcRight(pEl) {
+    var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
+    if (!pPr) return null;
+    var jc = childrenNS(pPr, W_NS, 'jc')[0];
+    return (jc && (jc.getAttributeNS(W_NS, 'val') || '') === 'right') ? pPr : null;
+  }
+  // 右揃えの記名欄は、行ごとに値の長さが違うと頭がバラバラになる。
+  // 文書ぜんぶを先に見て、いちばん長くなる行に合わせた共通の位置を1つ決める。
+  // 全部の行を同じ位置から始めれば、階段状の崩れは起きない
+  function rightAlignIndent(doc, vals) {
+    var total = paraWidthTw(doc);
+    if (!total) return 0;
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), need = 0;
+    for (var i = 0; i < allP.length; i++) {
+      var pEl = allP[i];
+      if (!paraJcRight(pEl)) continue;
+      var raw = paraTextWithTabs(pEl);
+      if (raw.indexOf('\t') < 0) continue;
+      var slots = paraSlots(raw, false);
+      for (var j = 0; j < slots.length; j++) {
+        var st = slots[j];
+        if (st.key === '__amb' || !vals[st.key]) continue;
+        var nodes = paraNodes(pEl);
+        var sz = DEFAULT_SZ;
+        for (var k = nodes.length - 1; k >= 0; k--) {
+          if (nodes[k].start >= st.at || nodes[k].isTab) continue;
+          var rp = childrenNS(nodes[k].run, W_NS, 'rPr')[0];
+          var se = rp ? childrenNS(rp, W_NS, 'sz')[0] : null;
+          if (se) sz = +(se.getAttributeNS(W_NS, 'val') || DEFAULT_SZ);
+          break;
+        }
+        var w = headWidthTw(pEl, nodes, st.at) +
+                textWidthTw('　' + withUnit(st.key, vals[st.key], ''), sz);
+        if (w > need) need = w;
+      }
+    }
+    // ぴったりに収めると、書体の違いで1文字ぶんはみ出して折り返す。
+    // 折り返した行はいちばん読みにくいので、1文字ぶんの余裕を持たせる
+    if (need) need = need * 1.03 + 240;
+    return need ? Math.max(0, total - need) : 0;
+  }
+  // 右揃えをやめ、決めた位置から始まる左揃えに組み替える。タブは要らなくなる
+  function alignParaLeft(doc, pEl, indentTw) {
+    var pPr = paraJcRight(pEl);
+    if (!pPr || !indentTw) return false;
+    pPr.removeChild(childrenNS(pPr, W_NS, 'jc')[0]);
+    var ind = childrenNS(pPr, W_NS, 'ind')[0];
+    if (!ind) { ind = doc.createElementNS(W_NS, 'w:ind'); pPr.appendChild(ind); }
+    ind.setAttributeNS(W_NS, 'w:left', String(Math.round(indentTw)));
+    ind.removeAttributeNS(W_NS, 'firstLine');
+    ind.removeAttributeNS(W_NS, 'hanging');
+    return true;
+  }
+  // 段落から、位置合わせのためだけに置かれたタブを取り除く
+  function dropTabs(pEl, from, to) {
+    var nodes = paraNodes(pEl);
+    for (var i = nodes.length - 1; i >= 0; i--) {
+      var nd = nodes[i];
+      if (!nd.isTab || nd.node.localName !== 'tab') continue;
+      if (nd.start < from || nd.end > to) continue;
+      nd.node.parentNode.removeChild(nd.node);
+    }
+  }
+  // 項目名のすぐうしろに値を置く。
+  // 段落の末尾に足すやり方だと、右揃えの段落では値が右端に飛び、
+  // 項目名まで左へ押し出されて行の頭がずれる（誓約書で確認）。
+  // 書式は「記入する余白そのもの」から取る。下線の引かれた記入欄なら、
+  // 値にも下線が付いて、手で書き込んだのと同じ見た目になる
+  function writeParaSlot(doc, pEl, slot, vals, rightIndent) {
+    var zipKey = slot.key === 'regAddr' ? 'regZip' : 'zip';
+    var text = (slot.zipMark && (slot.key === 'addr' || slot.key === 'regAddr') && vals[zipKey])
+      ? vals[zipKey] + '　' + vals[slot.key] : withUnit(slot.key, vals[slot.key], '');
+    // タブは「ここまで飛ばす」という指定。記入するのはタブのうしろで、
+    // タブの手前に書くと項目名と値がくっついてしまう。
+    // ただし右揃えの段落では、うしろに書くと値が右端に飛んで項目名が動く。
+    // その場合は左揃えに組み替え、決めた位置から始める（タブは要らなくなる）
+    var rawAll = paraTextWithTabs(pEl);
+    var mTab = /^[\s　]*(?:\t[\s　]*)+/.exec(rawAll.slice(slot.at, slot.gapEnd));
+    if (mTab) {
+      if (alignParaLeft(doc, pEl, rightIndent)) {
+        dropTabs(pEl, slot.at, slot.gapEnd);
+        slot.gapEnd -= (mTab[0].match(/\t/g) || []).length;
+      } else {
+        slot.at += mTab[0].length;
+      }
+    }
+    var nodes = paraNodes(pEl);
+    // 余白の頭にある文字の書式を使う。無ければ項目名の最後の文字から
+    var rPrSrc = null;
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].end > slot.at && !nodes[i].isTab) {
+        rPrSrc = childrenNS(nodes[i].run, W_NS, 'rPr')[0]; break;
+      }
+    }
+    if (!rPrSrc) {
+      for (var j = nodes.length - 1; j >= 0; j--) {
+        if (nodes[j].start < slot.at && !nodes[j].isTab) {
+          rPrSrc = childrenNS(nodes[j].run, W_NS, 'rPr')[0]; break;
+        }
+      }
+    }
+    // 項目名と値の間は必ず空ける。うしろの余白は値のぶんだけ詰めるので、
+    // 空けずに置くと「所在地東京都…」とくっついて読みにくくなる。
+    // 「：」や「〒」で区切られているときは、それが区切りなので足さない
+    var head = String(paraTextWithTabs(pEl)).slice(0, slot.at).replace(/[\s　\t]+$/, '');
+    var sep = (/[：:]$/.test(head) || slot.zipMark) ? '' : '　';
+    var body = sep + text;
+    var anchor = splitParaAt(doc, pEl, nodes, slot.at);
+    var run = doc.createElementNS(W_NS, 'w:r');
+    if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
+    appendTextRuns(doc, run, body);
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(run, anchor);
+    else pEl.appendChild(run);
+    // 入れたぶんだけ、うしろの余白を詰める。うしろに続く項目名を動かさないため。
+    // 半角文字の実際の幅は書体によって見積もりより広く、ぴったり詰めると
+    // 行末の項目が次の行へ回り込む。1文字ぶん多めに詰めて余裕を作る
+    // （2026-08-03、共通要領様式第1号の「住所＿＿　電話番号＿＿」で確認）
+    if (slot.gapEnd > slot.at) {
+      var moved = body.length;
+      eatGap(paraNodes(pEl), slot.at + moved, slot.gapEnd + moved, gapWidth(body) + 2);
+    }
+    return text;
   }
   function appendParaValue(doc, pEl, raw, plan, vals) {
     var text = (plan.zipMark && plan.key === 'addr' && vals.zip)
@@ -1652,47 +2041,93 @@
       var cps = allTc[ci].getElementsByTagNameNS(W_NS, 'p');
       for (var cj = 0; cj < cps.length; cj++) cps[cj].__intc = 1;
     }
-    var owner = null, notedAmbP = 0;
+    var owner = null, notedAmbP = 0, wroteP = {};
+    var rightIndent = rightAlignIndent(doc, vals);
     for (var pi = 0; pi < allP.length; pi++) {
       var pEl = allP[pi];
-      if (pEl.__intc) continue;
+      var inCell = !!pEl.__intc;
+      // 表のセルの中の段落は、そのセル自身に記入する余白があるときだけ扱う。
+      // 「①事業主名（必須）」のような項目名だけのセルは、右の欄が記入場所
+      if (inCell && !pEl.__cellSlot) continue;
       var raw = paraTextWithTabs(pEl);
       if (!raw.replace(/[\t\s　]+/g, '')) continue;
       // 「（代理人の場合）」のように、ここから誰の欄かを示す見出し
       // 「申請事業主　名　称」のように、項目名が「誰の欄か」も兼ねていることがある。
       // 目印として覚えたうえで、記入もする
-      var ok2 = ownerKind(raw.replace(/\t/g, ''));
-      if (ok2) owner = { kind: ok2, text: raw.replace(/[\t\s　]+/g, '').slice(0, 16) };
-      // すぐ下に表が続く段落は、その表の見出し。記名する行ではない
-      // （「〇申請者（委任者）」の見出しに会社名を書き足していた）
-      var nextEl = pEl.nextElementSibling;
-      if (nextEl && nextEl.namespaceURI === W_NS && nextEl.localName === 'tbl') continue;
-      var plan = paraPlan(raw);
-      if (!plan) {
-        if (ambiguousLabel(raw.replace(PARA_TAIL_RE, '')) && !notedAmbP) {
+      if (!inCell) {
+        var ok2 = ownerKind(raw.replace(/\t/g, ''));
+        if (ok2) owner = { kind: ok2, text: raw.replace(/[\t\s　]+/g, '').slice(0, 16) };
+        // すぐ下に表が続く段落は、その表の見出し。記名する行ではない
+        // （「〇申請者（委任者）」の見出しに会社名を書き足していた）
+        var nextEl = pEl.nextElementSibling;
+        if (nextEl && nextEl.namespaceURI === W_NS && nextEl.localName === 'tbl') continue;
+      }
+      var own = inCell ? pEl.__cellOwner : owner;
+      var slots = paraSlots(raw, inCell);
+      if (!slots.length) {
+        if (!inCell && ambiguousLabel(raw.replace(PARA_TAIL_RE, '')) && !notedAmbP) {
           notedAmbP = 1;
           skips.push({ key: 'rep', label: raw.replace(/[\t\s　]+/g, ' ').trim(), reason: AMBIGUOUS_WHY });
         }
         continue;
       }
-      if (!vals[plan.key]) continue;
-      if (owner && owner.kind === 'other') {
-        skips.push({ key: plan.key, label: plan.head,
-          reason: ownerSkipReason(owner, '本文の「' + plan.head + '」の欄') });
-        continue;
+      var wrote = 0;
+      // うしろの欄から先に入れる。先に前を入れると、そのぶんうしろの位置がずれる
+      for (var qi = slots.length - 1; qi >= 0; qi--) {
+        var slot = slots[qi];
+        if (slot.key === '__amb') {
+          if (own && own.kind === 'other') continue;
+          var ak = (own && (own.kind === 'self' || own.kind === 'staff'))
+            ? ambiguousKey(slot.head, vals, own, null) : null;
+          if (!ak) {
+            if (!notedAmbP) {
+              notedAmbP = 1;
+              skips.push({ key: 'rep', label: slot.head, reason: AMBIGUOUS_WHY });
+            }
+            continue;
+          }
+          slot.key = ak;
+        }
+        if (!vals[slot.key]) continue;
+        var pKey = (inCell ? 'c' : 'p') + '|' + slot.key + '|' + slot.head;
+        if (wroteP[pKey]) continue;
+        if (own && own.kind === 'other') {
+          skips.push({ key: slot.key, label: slot.head,
+            reason: ownerSkipReason(own, '本文の「' + slot.head + '」の欄') });
+          continue;
+        }
+        if (own && own.kind === 'staff' && slot.key === 'tel' && vals.staffTel) slot.key = 'staffTel';
+        var guardP = fillGuard(slot.key, withUnit(slot.key, vals[slot.key], ''), slot.head, '');
+        if (guardP) {
+          skips.push({ key: slot.key, label: slot.head, reason: guardP });
+          continue;
+        }
+        var text = writeParaSlot(doc, pEl, slot, vals, rightIndent);
+        usedKeys[slot.key] = 1;
+        wroteP[pKey] = 1;
+        wrote = 1;
+        fills.push({ where: (inCell ? '表の「' : '本文の「') + slot.head + '」の欄',
+          key: slot.key, value: text });
       }
-      var guardP = fillGuard(plan.key, withUnit(plan.key, vals[plan.key], ''), plan.head, '');
-      if (guardP) {
-        skips.push({ key: plan.key, label: plan.head, reason: guardP });
-        continue;
-      }
-      var text = appendParaValue(doc, pEl, raw, plan, vals);
-      usedKeys[plan.key] = 1;
-      if (paraPv) paraPv.push(paraTextWithTabs(pEl).replace(/\t/g, '　'));
-      fills.push({ where: '本文の「' + plan.head + '」の欄', key: plan.key, value: text });
+      if (wrote && paraPv) paraPv.push(paraTextWithTabs(pEl).replace(/\t/g, '　'));
     }
   }
 
+  // 「右の欄には入れられなかったが、同じ欄の中には書けた」ということがある。
+  //   （例）「２　事業所名称：」…右は縦につながった確認欄なので書けないが、
+  //         その項目名と同じセルの中には書けた
+  // 入っているのに「入れなかった欄」に並ぶと、空欄だと誤解させてしまう。
+  // 同じ項目名で書けたものは、入れなかった一覧から外す
+  function dropSolvedSkips(fills, skips) {
+    return (skips || []).filter(function (s) {
+      var lb = normLabel(s && s.label);
+      if (!lb || !s.key) return true;
+      for (var i = 0; i < fills.length; i++) {
+        if (fills[i].key === s.key && normLabel(String(fills[i].where)).indexOf(lb) >= 0) return false;
+      }
+      return true;
+    });
+  }
   function fillDocx(xmlText, vals, overwrite) {
     var doc = parseXml(xmlText);
     var fills = [], skips = [], usedKeys = {}, pvMarks = {};
@@ -1834,6 +2269,17 @@
           continue;
         }
         var target = tcs[i + 1];
+        // 縦につながったセルの2行目以降は表示されない。そこに書くと、
+        // 入れたつもりで紙には何も出ない
+        if (isVMergeCont(target)) {
+          var sidV = (trs[r].__loc ? trs[r].__loc.t : '?') + '|' + (i + 1) + '|' + key + '|v';
+          if (!notedSlot[sidV]) {
+            notedSlot[sidV] = 1;
+            skips.push({ key: key, label: labelRaw.replace(/[\s　]+/g, ' ').trim(),
+              reason: '右の欄は上のセルと縦につながっていて、書いても表示されないため入れませんでした' });
+          }
+          continue;
+        }
         var existing = textWithoutRuby(target, W_NS, 'rt').trim();
         var tcol = i + 1;
         // 右が「企業全体」のような小見出しで、その先が空欄なら、そちらに入れる
@@ -1990,6 +2436,7 @@
         p.appendChild(run);
         usedKeys[key] = 1;
         wroteSlot[slotId] = 1;
+        tcs[i].__wrote = 1;
         var loc = trs[r].__loc;
         if (loc) pvMarks[loc.t + '-' + loc.r + '-' + tcol] = prev ? 'ow' : 'new';
         fills.push({ where: '表の「' + label + '」の右の欄' +
@@ -2034,12 +2481,31 @@
       edgeNoted[eSlot] = 1;
       var eText = appendParaValue(doc, eps[eIdx], eRaw, ePlan, vals);
       usedKeys[ePlan.key] = 1;
+      eCell.__wrote = 1;
       pvMarks[eLoc.t + '-' + eLoc.r + '-' + (ecs.length - 1)] = 'new';
       fills.push({ where: '表の「' + eLabel + '」の欄（同じ枠の中）', key: ePlan.key, value: eText });
+    }
+    // 表のセルの中に「項目名：　　　　」と記入する余白が同居していることがある。
+    //   （例）「１　法人名：　　　　　　　　　法人番号：」＝1つのセルに2項目
+    // 右の欄に書くやり方では届かない（右が縦につながった確認欄だったりする）。
+    // まだ書いていないセルに限り、そのセルの中に直接書けるよう印を付ける
+    for (var sr = 0; sr < trs.length; sr++) {
+      var scs = childrenNS(trs[sr], W_NS, 'tc');
+      for (var sc = 0; sc < scs.length; sc++) {
+        if (scs[sc].__wrote || isVMergeCont(scs[sc])) continue;
+        var sOwn = nearestOwner(markers, sc, sr, 12);
+        var sps = childrenNS(scs[sc], W_NS, 'p');
+        for (var sp = 0; sp < sps.length; sp++) {
+          if (!paraSlots(paraTextWithTabs(sps[sp]), true).length) continue;
+          sps[sp].__cellSlot = 1;
+          sps[sp].__cellOwner = sOwn;
+        }
+      }
     }
     // 表のあとに、段落だけで作られた記名欄を見る
     var paraPv = [];
     fillDocxParagraphs(doc, vals, fills, skips, usedKeys, paraPv);
+    skips = dropSolvedSkips(fills, skips);
     return { fills: fills, skips: skips, usedKeys: usedKeys,
       preview: fills.length ? docxPreviewHTML(doc, pvMarks, paraPv) : '',
       xml: fills.length ? serializeXml(doc) : null };
@@ -2136,7 +2602,11 @@
     // 2026-08-03、人材開発支援助成金 様式第4-1号の法人番号の欄で実際に起きた
     // （名称・氏名の行は AF:AZ で結合されているのに、法人番号の行だけ抜けていた）。
     // 上下の行と同じ幅に結合してから入れる
-    function addMergeLike(cn, rn) {
+    // 上か下の行と同じ形にセルを結合する。
+    // need（必要な幅）を満たさない結合は作らない。狭い結合をまねると、
+    // それまで右へはみ出して読めていた文字が、逆に切れて読めなくなる
+    // （2026-08-03、様式第3号の「⑤企業の名称」が「株式会社」で切れた）
+    function addMergeLike(cn, rn, need) {
       var like = null;
       for (var k = 0; k < merges.length; k++) {
         var g2 = merges[k];
@@ -2144,6 +2614,7 @@
         if (g2.a.r === rn - 1 || g2.a.r === rn + 1) { like = g2; break; }
       }
       if (!like) return false;
+      if (need && spanWidth(cn, like.b.c) < need) return false;
       for (var c2 = cn; c2 <= like.b.c; c2++) {
         if (mergeAt(c2, rn)) return false;                     // 既存の結合と重ねない
         if (c2 === cn) continue;
@@ -2289,10 +2760,7 @@
       var blocked = !!(mergeAt(right + 1, tr) || (nx && cellString(nx, shared).trim()));
       var shrink = isShrinkCell(cellAt(tc, tr, false), styles);
       if (!blocked && !shrink) return true;        // はみ出して読める
-      if (!g0 && addMergeLike(tc, tr)) {
-        var g1 = mergeAt(tc, tr);
-        if (g1 && spanWidth(tc, g1.b.c) >= need) return true;
-      }
+      if (!g0 && addMergeLike(tc, tr, need)) return true;
       return false;
     }
     var rows = doc.getElementsByTagNameNS(S_NS, 'row');
@@ -2353,7 +2821,7 @@
     }
     function clip(s) { return s.slice(0, 24) + (s.length > 24 ? '…' : ''); }
 
-    // 「〒 [113] - [0021]」「[080] - [3715] - [7988]」のように、
+    // 「〒 [150] - [0001]」「[03] - [1234] - [5678]」のように、
     // ハイフンのセルを挟んで欄が分かれている様式がある。
     // 1つ目の欄に全部入れてしまう事故が実際に起きたので、
     // 記入欄の右へハイフンをたどり、欄の数が値の区切り数と合えば分けて入れる。
@@ -2550,6 +3018,13 @@
         if (key === 'zip' || isZipFrame(labelRaw)) {
           own = ownerForZipRow(markers, pos.c, pos.r, own);
         }
+        // 項目名のセルが縦につながっていて、その見出しが下の行にあることがある。
+        //   （例）r10 「所在地」（r10〜r11の縦つなぎ）｜〒｜［　　］
+        //         r11 「代理人または事務代理者・提出代行者」
+        // 上だけを見ると5行上の「事業主」を見出しと読み、代理人の欄に自社の住所を
+        // 入れてしまう。2026-08-03、キャリアアップ助成金 様式第3号で実際に起きた。
+        // 同じ高さの枠の中にある見出しは、遠くの見出しより確かなので優先する
+        if (g && g.b.r > pos.r) own = ownerInRows(markers, pos.c, pos.r, g.b.r, own);
         if (own && own.kind === 'other') {
           skips.push({ key: key, label: label, reason: ownerSkipReason(own, sheetName + ' の ' + tref) });
           continue;
@@ -2902,7 +3377,29 @@
           });
         });
       });
+      // ○のボタンが、配布された時点ですでに選ばれている様式がある。
+      // 2026-08-03、キャリアアップ助成金 様式第3号は「⑦企業規模」が
+      // 「大企業」に選ばれた状態で配られていた（当サイトは触っていない）。
+      // 気づかずに出すと、実態と違う内容の書類を提出することになる。
+      // 触っていない箇所でも、こちらで気づけることは伝える
+      var ctrlEntries = zip.entries.filter(function (e) {
+        return /^xl\/ctrlProps\/[^\/]+\.xml$/.test(e.name);
+      });
+      var preChecked = 0;
+      ctrlEntries.forEach(function (e) {
+        chain = chain.then(function () {
+          return zipFileText(zip, e.name).then(function (xml) {
+            if (/checked\s*=\s*"(Checked|1)"/i.test(xml)) preChecked++;
+          }).catch(function () { /* 読めないときは黙って飛ばす */ });
+        });
+      });
       return chain.then(function () {
+        if (preChecked) {
+          skips.push({ key: '', label: '○で選ぶ欄',
+            reason: 'この様式には、配布された時点ですでに選ばれている○（ラジオボタン）が' +
+              preChecked + 'か所あります。当サイトは選択の欄には触れていません。' +
+              '企業規模など、ご自身の状況と合っているかを開いてお確かめください' });
+        }
         var pv = previews.map(function (p) {
           return '<p class="pv-ttl">シート「' + esc(p.name) + '」</p>' + p.html;
         }).join('');
@@ -3037,7 +3534,11 @@
         '</div>' +
         '<div class="fr-block" id="frDone" hidden>' +
         '<p class="fr-ttl"></p>' +
-        '<p class="fr-note">保存したファイルを開いて、入れた内容と残りの欄を必ずご確認ください。</p>' +
+        '<p class="must-check"><b>必ずデータの内容を確認してから提出してください。</b>' +
+        '<span>自動で入るのは会社情報だけです。保存したファイルを開いて、' +
+        '①入った内容が合っているか　②残りの欄（日付・金額・対象者など）　' +
+        '③○や☑であらかじめ選ばれている項目が実態と合っているか　を確かめてください。' +
+        '様式によっては、配布元の時点で選択肢が選ばれていることがあります。</span></p>' +
         '<ul class="fr-list"></ul></div>');
       var od = document.getElementById('frOpenDrop');
       if (od) od.addEventListener('click', function () {

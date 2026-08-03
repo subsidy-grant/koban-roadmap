@@ -18,7 +18,7 @@
     tools\render_out\*.png  … 目で見るための画像（1ページ目から数枚）
     画面に「紙に出てこなかった値」の一覧（＝潰れている・切れている疑い）
 """
-import glob, json, os, re, sys, warnings
+import glob, json, os, re, shutil, sys, warnings
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 warnings.filterwarnings("ignore")
 
@@ -154,9 +154,30 @@ def norm(s):
     return re.sub(r"[\s　\-−ー–―‐‑－]", "", str(s or ""))
 
 
+def blank_pages(paths):
+    """空の様式も同じやり方で紙にする。
+
+    2026-08-03の反省：記入後だけを見ても「元からそうだったのか、
+    こちらが崩したのか」が判断できない。誓約書の項目名の位置ずれも、
+    様式第3号の「大企業」が選ばれている件も、空の様式と並べて初めて分かった。
+    """
+    out = []
+    for s in paths:
+        d = os.path.join(OUT, "空_" + os.path.basename(s))
+        try:
+            shutil.copy2(s, d)
+            pdfs = to_pdf(d)
+            _, pngs = pdf_text_and_png(pdfs, max_png=2)
+            out += pngs
+        except Exception as e:
+            print("   （空の様式を紙にできず: %s）" % str(e)[:60])
+    return out
+
+
 def main():
     fill_flag = "--fill" in sys.argv
     args = [a for a in sys.argv[1:] if os.path.exists(a)]
+    srcs = args if args else DEFAULT_TARGETS
     if args and fill_flag:
         print("当サイトに記入させています…")
         filled, logs = fill_with_site(args)
@@ -165,6 +186,10 @@ def main():
     else:
         print("当サイトに記入させています…")
         filled, logs = fill_with_site(DEFAULT_TARGETS)
+    if fill_flag or not args:
+        b = blank_pages(srcs)
+        if b:
+            print("見比べ用に、空の様式も紙にしました（%d枚）" % len(b))
     ng_total = 0
     for f in filled:
         fn = os.path.basename(f)
