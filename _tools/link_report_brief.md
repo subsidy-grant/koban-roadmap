@@ -1,22 +1,28 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-07-31 16:33**（JST）
-- 確認したURL：**1047件**
+- 確認時刻：**2026-08-03 21:46**（JST）
+- 確認したURL：**1102件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🟠 移転（URLの書き換えを推奨） **1件**／🔵 新規（今回から監視） **165件**／✅ 変化なし **881件**
+🟡 接続できない（目視が要る） **3件**／🔵 新規（今回から監視） **54件**／✅ 変化なし **1045件**
 
-## 🟠 移転（URLの書き換えを推奨）
+## 🟡 接続できない（目視が要る）
 
-- **新事業進出・ものづくり商業サービス補助金／資料ダウンロード（公式）**
-  - https://shinjigyou-monodukuri.smrj.go.jp/document/
-  - 恒久リダイレクト → https://shinjigyou-monodukuri.smrj.go.jp/document
+- **（出典・参考リンク）**
+  - http://schemas.openxmlformats.org/officeDocument/2006/relationships
+  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /officeDocument/2006/rela
+- **（出典・参考リンク）**
+  - http://schemas.openxmlformats.org/spreadsheetml/2006/main
+  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /spreadsheetml/2006/main 
+- **（出典・参考リンク）**
+  - http://schemas.openxmlformats.org/wordprocessingml/2006/main
+  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /wordprocessingml/2006/ma
 
 ## 🔵 新規（今回から監視）
 
-165件（一覧は _tools/link_report.md）
+54件（一覧は _tools/link_report.md）
 
 ---
 
