@@ -1559,13 +1559,18 @@
     var all = pEl.getElementsByTagNameNS(W_NS, '*'), s = '';
     for (var i = 0; i < all.length; i++) {
       var nd = all[i];
-      if (nd.localName !== 't' && nd.localName !== 'tab' && nd.localName !== 'noBreakHyphen') continue;
+      // 段落の中の改行（w:br）も1文字として数える。数えないと、改行より
+      // うしろにある項目名の位置がずれ、そこに書けなくなる
+      // （2026-08-03、公募要領の「（応募者）所在地／名　称／代表者…」で確認）
+      if (nd.localName !== 't' && nd.localName !== 'tab' &&
+          nd.localName !== 'noBreakHyphen' && nd.localName !== 'br') continue;
       // w:pPr の中の w:tab は「タブ位置の設定」で、文字としてのタブではない
       if (nd.localName === 'tab' && (!nd.parentNode || nd.parentNode.localName !== 'r')) continue;
       var skip = false, a = nd.parentNode;
       while (a && a !== pEl) { if (a.localName === 'rt') { skip = true; break; } a = a.parentNode; }
       if (skip) continue;
       s += (nd.localName === 'tab') ? '\t'
+         : (nd.localName === 'br') ? '\n'
          : (nd.localName === 'noBreakHyphen') ? '-' : (nd.textContent || '');
     }
     return s;
@@ -1581,15 +1586,20 @@
   // という2つの崩れが起きる。2026-08-03、共通要領様式第1号と誓約書で確認した。
   // ここでは項目名ごとに「そのうしろの余白」を切り出し、余白の頭に値を置く。
   var GAP_CH_RE = /[\t 　 _＿]/;
+  // 改行（\n）も区切りとして数える。1つの段落の中で改行して
+  // 「所在地／名　称／代表者…」と並べる様式があり、区切りとして見ないと
+  // 2つ目以降の項目名を拾えない
   // 記入枠の頭に置かれた印。項目名の一部として読み飛ばす
   var ZIP_MARK_RE = /^[（(]?〒[\s　0-9０-９\-−ー－]*[）)]?$/;
+  // 改行も区切りとして数える。ただし余白として削ってはいけない（行が消えるため）
+  function isGapCh(c) { return c === '\n' || GAP_CH_RE.test(c); }
   function paraSegs(s) {
     var out = [], i = 0, n = s.length;
     while (i < n) {
-      while (i < n && GAP_CH_RE.test(s.charAt(i))) i++;
+      while (i < n && isGapCh(s.charAt(i))) i++;
       if (i >= n) break;
       var st = i;
-      while (i < n && !GAP_CH_RE.test(s.charAt(i))) i++;
+      while (i < n && !isGapCh(s.charAt(i))) i++;
       out.push({ text: s.slice(st, i), start: st, end: i });
     }
     return out;
@@ -1685,7 +1695,8 @@
     var all = pEl.getElementsByTagNameNS(W_NS, '*'), out = [], pos = 0;
     for (var i = 0; i < all.length; i++) {
       var nd = all[i];
-      if (nd.localName !== 't' && nd.localName !== 'tab' && nd.localName !== 'noBreakHyphen') continue;
+      if (nd.localName !== 't' && nd.localName !== 'tab' &&
+          nd.localName !== 'noBreakHyphen' && nd.localName !== 'br') continue;
       if (nd.localName === 'tab' && (!nd.parentNode || nd.parentNode.localName !== 'r')) continue;
       var skip = false, a = nd.parentNode, run = null;
       while (a && a !== pEl) {
@@ -1695,6 +1706,7 @@
       }
       if (skip || !run) continue;
       var txt = nd.localName === 'tab' ? '\t'
+              : nd.localName === 'br' ? '\n'
               : nd.localName === 'noBreakHyphen' ? '-' : (nd.textContent || '');
       out.push({ node: nd, run: run, isTab: nd.localName !== 't', text: txt,
                  start: pos, end: pos + txt.length });
