@@ -1983,7 +1983,11 @@
       for (var j = 0; j < slots.length; j++) {
         var st = slots[j];
         if (st.key === '__amb' || !vals[st.key] || st.parts) continue;
-        var v = withUnit(st.key, vals[st.key], '');
+        // 「住　所　〒」の欄には郵便番号もいっしょに入る。そのぶんを数えないと
+        // 戻す量が足りず、番地だけが次の行にぶら下がる（2026-08-03に確認）
+        var zk = st.key === 'regAddr' ? 'regZip' : 'zip';
+        var v = (st.zipMark && (st.key === 'addr' || st.key === 'regAddr') && vals[zk])
+          ? vals[zk] + '　' + vals[st.key] : withUnit(st.key, vals[st.key], '');
         // 値を入れたぶん、うしろの余白は詰める。増えるのはその差だけ
         add += Math.max(0, textWidthTw('　' + v, DEFAULT_SZ) -
                            textWidthTw(raw.slice(st.at, st.gapEnd), DEFAULT_SZ));
@@ -2050,6 +2054,38 @@
   // 項目名まで左へ押し出されて行の頭がずれる（誓約書で確認）。
   // 書式は「記入する余白そのもの」から取る。下線の引かれた記入欄なら、
   // 値にも下線が付いて、手で書き込んだのと同じ見た目になる
+  // 表のセルの中の段落にも字下げが付いていることがある。
+  // セルの幅から字下げを引いた残りに値が入りきらないと、値が右へ寄ったまま
+  // 途中で改行される（2026-08-03、キャリアアップ計画書の「①事業主名」が
+  // 「株式会社サンプル／美容」と2行に割れていた）。入る幅になるまで字下げを戻す
+  function fitCellIndent(doc, pEl, needTw) {
+    var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
+    var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
+    if (!ind) return;
+    var left = +(ind.getAttributeNS(W_NS, 'left') || 0);
+    // 1行目だけの字下げ（firstLine）しか無いこともある。left だけを見て
+    // 抜けてしまうと、そちらに気づけない
+    if (left <= 0 && +(ind.getAttributeNS(W_NS, 'firstLine') || 0) <= 0) return;
+    var tc = pEl.parentNode;
+    while (tc && tc.localName !== 'tc') tc = tc.parentNode;
+    if (!tc) return;
+    var pr = childrenNS(tc, W_NS, 'tcPr')[0];
+    var w = pr ? childrenNS(pr, W_NS, 'tcW')[0] : null;
+    var cw = w ? +(w.getAttributeNS(W_NS, 'w') || 0) : 0;
+    if (!cw) return;
+    // 1行目だけの字下げ（w:firstLine）が、セルの幅より大きく設定されている
+    // ことがある。そのままだと1行目に値を置く場所が残らず、値が右端に押し出されて
+    // 途中で改行される。セルに収まらない1行目の字下げは外す
+    var fl = +(ind.getAttributeNS(W_NS, 'firstLine') || 0);
+    if (fl > 0 && cw - left - fl - 200 < needTw) {
+      ind.setAttributeNS(W_NS, 'w:firstLine', '0');
+      ind.setAttributeNS(W_NS, 'w:firstLineChars', '0');
+      fl = 0;
+    }
+    var room = cw - left - fl - 200;        // 200twips＝セルの左右の余白ぶん
+    if (room >= needTw) return;
+    ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, left - (needTw - room))));
+  }
   function writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut) {
     // 字下げを戻して、値を入れても行が折り返さないようにする
     if (indCut && !pEl.__indCut) {
@@ -2104,6 +2140,7 @@
     var head = String(paraTextWithTabs(pEl)).slice(0, slot.at).replace(/[\s　\t]+$/, '');
     var sep = (/[：:]$/.test(head) || slot.zipMark) ? '' : '　';
     var body = sep + text;
+    fitCellIndent(doc, pEl, textWidthTw(body, DEFAULT_SZ));
     var anchor = splitParaAt(doc, pEl, nodes, slot.at);
     var run = doc.createElementNS(W_NS, 'w:r');
     if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
@@ -2129,6 +2166,7 @@
     var run = doc.createElementNS(W_NS, 'w:r');
     var rPrSrc = runs.length ? runs[runs.length - 1].getElementsByTagNameNS(W_NS, 'rPr')[0] : null;
     if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
+    fitCellIndent(doc, pEl, textWidthTw(sep + text, DEFAULT_SZ));
     appendTextRuns(doc, run, sep + text);
     pEl.appendChild(run);
     return text;
@@ -2532,7 +2570,10 @@
         // 文字の大きさ・書体はラベル側のセルからそろえる（無ければ様式の既定のまま）
         var rPrSrc = tcs[i].getElementsByTagNameNS(W_NS, 'rPr')[0];
         if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
-        appendTextRuns(doc, run, withZip(key, withUnit(key, vals[key], prev), prev, vals));
+        var putD = withZip(key, withUnit(key, vals[key], prev), prev, vals);
+        // 字下げのせいでセルに入りきらず、値が途中で改行されることがある
+        fitCellIndent(doc, p, textWidthTw(putD, DEFAULT_SZ));
+        appendTextRuns(doc, run, putD);
         p.appendChild(run);
         usedKeys[key] = 1;
         wroteSlot[slotId] = 1;
