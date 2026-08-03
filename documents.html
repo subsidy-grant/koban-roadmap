@@ -2755,7 +2755,10 @@
         if (wroteSlot[slotId]) {
           if (!notedSlot[slotId]) {
             notedSlot[slotId] = 1;
-            skips.push({ key: key, label: label, reason: '同じ欄が縦に並ぶ一覧表のため、1行目だけに入れました' });
+            skips.push({ key: key, label: label,
+              reason: '同じ項目名がこの様式に何度も出てくるため、最初の1か所だけに入れました。' +
+                '2枚目以降（継紙など）や、ほかの事業所の欄にも同じ項目があるときは、' +
+                'それぞれの内容をご確認のうえご記入ください' });
           }
           continue;
         }
@@ -3697,7 +3700,16 @@
         if (wroteSlot[xslot]) {
           if (!notedSlot[xslot]) {
             notedSlot[xslot] = 1;
-            skips.push({ key: key, label: label, reason: '同じ欄が縦に並ぶ一覧表のため、1行目だけに入れました（' + sheetName + '）' });
+            // 同じ項目名が繰り返し出てくる理由は2通りある。
+            //   ・一覧表（事業所を何か所も書く欄）… 全部を自社で埋めては困る
+            //   ・継紙（2枚目以降の同じ様式）… 本当は同じ内容を書く
+            // どちらかを機械で見分けると、前者で誤って埋める危険があるため、
+            // 最初の1か所だけに入れて、残りはご自身で判断していただく
+            // （2026-08-04、キャリアアップ助成金 様式第3号の継紙で確認）
+            skips.push({ key: key, label: label,
+              reason: '同じ項目名がこのシートに何度も出てくるため、最初の1か所だけに入れました（' +
+                sheetName + '）。2枚目以降（継紙など）や、ほかの事業所の欄にも同じ項目があるときは、' +
+                'それぞれの内容をご確認のうえご記入ください' });
           }
           continue;
         }
