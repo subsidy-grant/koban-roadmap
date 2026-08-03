@@ -3327,6 +3327,15 @@
 
         // 1マス1桁のマス目が並ぶ欄（法人番号・事業所番号）は、1桁ずつ入れる
         var boxX = digitBoxPlanX(key, vals[key], tc, tr);
+        // マス目が項目名の1〜2行下に置かれている様式がある。
+        // 同じ行に見つからないときは、下の行も見る
+        // （2026-08-03、障害者雇用関係助成金の個人番号登録届で確認）
+        if (!boxX || boxX.mismatch) {
+          for (var bdr = 1; bdr <= 2; bdr++) {
+            var b2 = digitBoxPlanX(key, vals[key], pos.c, pos.r + bdr);
+            if (b2 && !b2.mismatch) { boxX = b2; tr = pos.r + bdr; tref = numToCol(tc) + tr; break; }
+          }
+        }
         if (boxX && boxX.mismatch) {
           skips.push({ key: key, label: label,
             reason: 'ここは1マスに1桁ずつ書く欄ですが、マスが' + boxX.mismatch + 'つで桁数と合わないため入れませんでした（' +
