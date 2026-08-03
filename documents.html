@@ -976,7 +976,7 @@
     // 所在地より先に見ないと、本店の住所を登記の欄に入れてしまう
     { key: 'regAddr',   re: /^(登記所在地|登記上の所在地|登記簿上の所在地|都内登記所在地|都内登記上の所在地|本店登記所在地|登記上の本店所在地|登記上の住所)$/ },
     { key: 'addr',      re: /^(所在地|住所|主たる事業所の所在地|事業所の所在地|本店所在地|本社所在地|事業所所在地|事業実施場所|申請者住所|住所又は所在地|事業場の所在地|雇用保険適用事業所の所在地)$/ },
-    { key: 'name',      re: /^(事業者名|事業者名称|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|法人名又は屋号|法人名屋号|法人名又は氏名|事業者名又は屋号|名称又は氏名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称)$/ },
+    { key: 'name',      re: /^(事業者名|事業者名称|事業者の名称|事業所名|事業所名称|事業所の名称|申請者名|申請事業者名|会社名|企業名|企業の名称|法人名|法人名又は屋号|法人名屋号|法人名又は氏名|事業者名又は屋号|名称又は氏名|商号|商号又は名称|名称|氏名又は名称|申請者の氏名又は名称|店舗名|屋号|申請者|事業主名|事業主の名称|申請事業主名|申請事業主名称|申請事業主の名称|団体名|団体名称|団体の名称|応募者名|応募団体名)$/ },
     // 雇用保険の適用事業所名は、届け出た名称で法人名と違うことがある。
     // 番号と名称が合わないと労働局で照合できないので、別の項目にしている
     { key: 'officeName', re: /^(事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|適用事業所の名称|適用事業所名)$/ },
@@ -1284,7 +1284,13 @@
   // 「委任者」は依頼した側＝自社なので、他人の欄の目印にしてはいけない
   // （2026-08-03、東京都の同意書「〇申請者（委任者）」で確認）。
   // 「代理申請者」は「申請者」を含むため、書かないと逆に自社の欄と読んでしまう
-  var OWNER_OTHER = /(代理人|代理者|代理申請者|代理申請|申請代理人|代行者|提出代行|事務代理|受任者|委任先|事業担当者|店舗担当者|契約予定先|契約先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|納入業者|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者|意見を聴いた労働者|労働者代表|労働者の代表|過半数代表|労働組合|申立人)/;
+  // 「事業担当者」「店舗担当者」は、申請する側の担当者のこと。
+  // 他人の欄の目印にすると、担当者の氏名・所属・連絡先がどこにも入らなくなる
+  // （2026-08-04、農水省の課題提案書で、担当者の表がまるごと空欄になっていた）。
+  // いっぽう「経理担当者」は同じ表の別のかたまりで、事業担当者と同じ方とは限らない。
+  // 担当者としてお預かりしているのは1名なので、そちらは入れずにその旨をお伝えする
+  var OWNER_STAFF_MARK = /(事業担当者|店舗担当者|実務担当者|窓口担当者)/;
+  var OWNER_OTHER = /(代理人|代理者|代理申請者|代理申請|申請代理人|代行者|提出代行|事務代理|受任者|委任先|経理担当者|会計担当者|契約予定先|契約先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|納入業者|社会保険労務士|社労士|税理士|行政書士|弁護士|中小企業診断士|認定経営革新等支援機関|登録支援機関|商工会議所|商工会|金融機関|取引先|販売店|販売業者|訓練実施機関|教育訓練機関|委託先|外部講師|対象労働者|対象者|保証人|立会人|証明者|口座名義|面談|被面談者|代替要員|業務代替者|対象従業員|対象スタッフ|受講者|訓練生|子の氏名|配偶者|労働者氏名|従業員氏名|被保険者|意見を聴いた労働者|労働者代表|労働者の代表|過半数代表|労働組合|申立人)/;
   var OWNER_SELF = /(事業主|申請者|申請事業者|補助事業者|届出者|提出者|事業者|自社|本社|本店|会社|事業所|法人代表者|代表者)/;
   // 「誰の欄か」の見出しとして読める文字列なら 'self' / 'other' を返す。
   // 記入対象のラベルそのもの（「従業員数」など）は見出しとして数えない。
@@ -1309,6 +1315,7 @@
       if (mk0 === 'regAddr') return 'regAddr';
       return (OWNER_SELF_STRONG.test(t) && !OWNER_OTHER.test(t)) ? 'self' : null;
     }
+    if (OWNER_STAFF_MARK.test(t)) return 'staff';
     if (OWNER_OTHER.test(t)) return 'other';
     if (OWNER_SELF.test(t)) return 'self';
     return null;
@@ -1371,6 +1378,7 @@
     if (/(取引先|契約先|契約予定先|賃貸人|貸主|売主|購入先|発注先|見積先|支払先|販売店|販売業者|委託先|納入業者)/.test(t)) return 'ここは相手先（取引先・契約先）を書く欄です';
     if (/(対象労働者|対象者|対象従業員|対象スタッフ|受講者|訓練生|被保険者|労働者氏名|従業員氏名|代替要員|業務代替者)/.test(t)) return 'ここは対象となる従業員の方を書く欄です';
     if (/(訓練実施機関|教育訓練機関|外部講師|登録支援機関|認定経営革新等支援機関|商工会議所|商工会|金融機関)/.test(t)) return 'ここは支援機関・実施機関を書く欄です';
+    if (/(経理担当者|会計担当者)/.test(t)) return 'ここは経理を担当される方の欄です。お預かりしている担当者の方と同じなら、同じ内容をご記入ください';
     return 'ここは自社の情報を書く欄ではありません';
   }
 
@@ -1848,6 +1856,12 @@
   // 上のセルの中身だけが表示される。ここに書いても紙には出ない。
   // 2026-08-03、共通要領様式第1号で「法人名・事業所名称・雇用保険適用事業所番号」を
   // 右の「労働局確認欄」（縦につながったセル）に書き込み、どこにも出ていなかった
+  // そのセルが横にいくつぶん結合されているか（w:gridSpan）
+  function spanOf(tc) {
+    var pr = childrenNS(tc, W_NS, 'tcPr')[0];
+    var gs = pr ? childrenNS(pr, W_NS, 'gridSpan')[0] : null;
+    return gs ? (+(gs.getAttributeNS(W_NS, 'val') || 1) || 1) : 1;
+  }
   function isVMergeCont(tc) {
     var pr = childrenNS(tc, W_NS, 'tcPr')[0];
     if (!pr) return false;
@@ -1941,7 +1955,8 @@
     if (!ind) return total;
     var left = (pEl.__left0 != null)
       ? pEl.__left0 : +(ind.getAttributeNS(W_NS, 'left') || 0);
-    return total - left - (+(ind.getAttributeNS(W_NS, 'right') || 0));
+    return total - left - (+(ind.getAttributeNS(W_NS, 'firstLine') || 0))
+                 - (+(ind.getAttributeNS(W_NS, 'right') || 0));
   }
   // 段落の先頭から pos までの幅（twips）を見積もる
   function headWidthTw(pEl, nodes, pos) {
@@ -2025,6 +2040,30 @@
   // （2026-08-04、物価高騰の申出書で、住所の行だけが8文字ぶん左へ寄っていた）。
   // 同じ字下げの段落は、値の入らない行もふくめて同じ量だけ戻す。
   // そうしないと「（代理人の場合）」などと頭が揃わなくなる
+  // 位置の作り方は様式によって2通りある。段落ぜんぶを字下げする w:left と、
+  // 1行目だけを字下げする w:firstLine。記名欄は firstLine で作られていることもあり、
+  // left だけを見ていると、そちらの行があふれても直せない
+  // （2026-08-04、疎明書・賃金台帳確認書の「（事業主名）」で確認。
+  //   文字が13ptで、336tw＝1.3文字ぶん足りず「郎」だけが次の行に落ちていた）
+  // 「※法人名及び事業主の氏名」という注記が、次の行に置かれていることがある。
+  // 項目名だけを読むと会社名しか入らないが、様式は代表者名も求めている。
+  // 書くときと幅を見積もるときで同じ判断をしないと、戻す量が足りずに行があふれる
+  // （2026-08-04、疎明書の「（事業主名）」で「郎」だけが次の行に落ちていた）
+  function slotKeyWithNote(pEl, key, vals) {
+    if (key !== 'name' || !vals.nameRep) return key;
+    var nx = pEl.nextElementSibling;
+    var t = (nx && nx.namespaceURI === W_NS && nx.localName === 'p')
+      ? paraTextWithTabs(nx) : '';
+    return NAME_AND_REP_RE.test(t) ? 'nameRep' : key;
+  }
+  function indentKeyOf(ind) {
+    if (!ind) return null;
+    var l = +(ind.getAttributeNS(W_NS, 'left') || 0);
+    if (l > 0) return { attr: 'left', chars: 'leftChars', v: l, k: 'l' + l };
+    var f = +(ind.getAttributeNS(W_NS, 'firstLine') || 0);
+    if (f > 0) return { attr: 'firstLine', chars: 'firstLineChars', v: f, k: 'f' + f };
+    return null;
+  }
   function indentShrinkMap(doc, vals) {
     var allP = doc.getElementsByTagNameNS(W_NS, 'p'), cuts = {};
     for (var i = 0; i < allP.length; i++) {
@@ -2034,19 +2073,21 @@
       if (!total) continue;
       var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
       var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
-      if (!ind) continue;
-      var left = +(ind.getAttributeNS(W_NS, 'left') || 0);
-      if (left <= 0) continue;
+      var ik = indentKeyOf(ind);
+      if (!ik) continue;
+      var left = ik.v;
       var raw = paraTextWithTabs(pEl);
       var slots = paraSlots(raw, false), add = 0;
       for (var j = 0; j < slots.length; j++) {
         var st = slots[j];
-        if (st.key === '__amb' || !vals[st.key] || st.parts) continue;
+        if (st.key === '__amb' || st.parts) continue;
+        var sk = slotKeyWithNote(pEl, st.key, vals);
+        if (!vals[sk]) continue;
         // 「住　所　〒」の欄には郵便番号もいっしょに入る。そのぶんを数えないと
         // 戻す量が足りず、番地だけが次の行にぶら下がる（2026-08-03に確認）
-        var zk = st.key === 'regAddr' ? 'regZip' : 'zip';
-        var v = (st.zipMark && (st.key === 'addr' || st.key === 'regAddr') && vals[zk])
-          ? vals[zk] + '　' + vals[st.key] : withUnit(st.key, vals[st.key], '');
+        var zk = sk === 'regAddr' ? 'regZip' : 'zip';
+        var v = (st.zipMark && (sk === 'addr' || sk === 'regAddr') && vals[zk])
+          ? vals[zk] + '　' + vals[sk] : withUnit(sk, vals[sk], '');
         // 住所を下の空行に書く様式では、この行に入るのは郵便番号だけ。
         // 住所ぶんまで数えると、動かす必要のない行まで左へ戻してしまう
         if (zipAddrNextLine(doc, pEl, st, vals)) v = vals[zk];
@@ -2057,8 +2098,10 @@
       if (!add) continue;
       var w = left + headWidthTw(pEl, paraNodes(pEl), raw.length) + add;
       var over = w - total;
-      // ぴったりに収めると書体の違いではみ出すので、1文字ぶん余裕を持たせる
-      if (over > 0 && over + 240 > (cuts[left] || 0)) cuts[left] = over + 240;
+      // ぴったりに収めると書体の違いではみ出すので、1文字ぶん余裕を持たせる。
+      // 幅の見積もりは12ptで数えているが、実際にはもう少し大きい書体のことがある。
+      // 足りないと結局あふれるので、はみ出しぶんは多めに見ておく
+      if (over > 0 && over * 1.2 + 240 > (cuts[ik.k] || 0)) cuts[ik.k] = over * 1.2 + 240;
     }
     return cuts;
   }
@@ -2072,16 +2115,18 @@
     for (i = 0; i < allP.length; i++) {
       var pEl = allP[i];
       if (pEl.__intc) continue;
-      var ind = indOf(pEl);
-      if (!ind) continue;
-      var lf = +(ind.getAttributeNS(W_NS, 'left') || 0);
-      if (lf > 0 && cuts[lf]) todo.push({ p: pEl, ind: ind, lf: lf, cut: cuts[lf] });
+      var ik = indentKeyOf(indOf(pEl));
+      if (ik && cuts[ik.k]) todo.push({ p: pEl, ind: indOf(pEl), ik: ik, cut: cuts[ik.k] });
     }
     for (i = 0; i < todo.length; i++) {
       var t = todo[i];
-      t.p.__left0 = t.lf;
+      if (t.ik.attr === 'left') t.p.__left0 = t.ik.v;
       t.p.__indCut = 1;
-      t.ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, t.lf - t.cut)));
+      t.ind.setAttributeNS(W_NS, 'w:' + t.ik.attr,
+        String(Math.round(Math.max(0, t.ik.v - t.cut))));
+      // 「文字数で指定した字下げ」が残っていると Word はそちらを優先し、
+      // twips のほうを書き換えても位置が変わらない
+      try { t.ind.removeAttributeNS(W_NS, t.ik.chars); } catch (e) { /* 無ければそれでよい */ }
     }
   }
   function indOf(pEl) {
@@ -2355,7 +2400,7 @@
         if (nextEl && nextEl.namespaceURI === W_NS && nextEl.localName === 'tbl') continue;
       }
       var own = inCell ? pEl.__cellOwner : owner;
-      var slots = paraSlots(raw, inCell);
+      var slots = paraSlots(raw, inCell && !pEl.__cellLoose);
       if (!slots.length) {
         if (!inCell && ambiguousLabel(raw.replace(PARA_TAIL_RE, '')) && !notedAmbP) {
           notedAmbP = 1;
@@ -2380,14 +2425,7 @@
           }
           slot.key = ak;
         }
-        // 「※法人名及び事業主の氏名」という注記が、次の行に置かれていることがある。
-        // 項目名だけを読むと会社名しか入らないが、様式は代表者名も求めている
-        if (slot.key === 'name' && vals.nameRep) {
-          var nx2 = pEl.nextElementSibling;
-          var nxTxt = (nx2 && nx2.namespaceURI === W_NS && nx2.localName === 'p')
-            ? paraTextWithTabs(nx2) : '';
-          if (NAME_AND_REP_RE.test(nxTxt)) slot.key = 'nameRep';
-        }
+        slot.key = slotKeyWithNote(pEl, slot.key, vals);
         if (!vals[slot.key]) continue;
         var pKey = (inCell ? 'c' : 'p') + '|' + slot.key + '|' + slot.head;
         if (wroteP[pKey]) continue;
@@ -2818,9 +2856,25 @@
         if (scs[sc].__wrote || isVMergeCont(scs[sc])) continue;
         var sOwn = nearestOwner(markers, sc, sr, 12);
         var sps = childrenNS(scs[sc], W_NS, 'p');
+        // ふつうは「項目名のセル」の右の欄が記入場所なので、
+        // 余白も「：」も無い項目名だけのセルには書かない。
+        // ただし、そのセルが行のいちばん右で横に結合されていると、右に書く場所が無い。
+        // その場合はそのセル自身が記入場所なので、項目名のうしろに書く
+        // （2026-08-04、農水省の課題提案書で確認。団体名・所在地・E-mail が
+        //   すべて横4つ分に結合された1つのセルで、表がまるごと空欄になっていた）
+        var loose = (sc === scs.length - 1) && sc > 0 && spanOf(scs[sc]) >= 2;
+        // ただし、下の行の同じ位置が空欄なら、そこが記入場所で、このセルは列の見出し。
+        // 見出しのうしろに書くと、表の列名を汚したうえ、どの行の値かも分からなくなる
+        // （2026-08-04、事業所確認票で「雇用保険適用事業所番号」という列見出しの
+        //   うしろに番号を書き込んでいた。しかもこの表は自社以外の事業所を書く欄）
+        if (loose && sr + 1 < trs.length) {
+          var ncs = childrenNS(trs[sr + 1], W_NS, 'tc');
+          if (ncs[sc] && !textWithoutRuby(ncs[sc], W_NS, 'rt').trim()) loose = false;
+        }
         for (var sp = 0; sp < sps.length; sp++) {
-          if (!paraSlots(paraTextWithTabs(sps[sp]), true).length) continue;
+          if (!paraSlots(paraTextWithTabs(sps[sp]), !loose).length) continue;
           sps[sp].__cellSlot = 1;
+          sps[sp].__cellLoose = loose ? 1 : 0;
           sps[sp].__cellOwner = sOwn;
         }
       }
