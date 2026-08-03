@@ -3022,13 +3022,19 @@
       // 引っ張られて、桁数と合わなくなる
       // （2026-08-04、キャリアアップ助成金 様式第3号の雇用保険適用事業所番号で確認。
       //   項目名 D12 の右の D14・E14 が幅1の空きセルで、その先の F14 から本物のマスが並ぶ）
-      var base = -1, runLen = 0;
+      // 桁数とぴったり合うかたまりがあればそれを採る。無ければいちばん長いもの
+      var base = -1, runLen = 0, exact = -1, exactLen = 0;
       for (var i0 = 0; i0 < slots.length; ) {
         var j0 = i0 + 1;
         while (j0 < slots.length && slots[j0].w === slots[i0].w) j0++;
-        if (slots[i0].w >= 2 && j0 - i0 > runLen) { base = i0; runLen = j0 - i0; }
+        var len0 = j0 - i0;
+        if (slots[i0].w >= 2) {
+          if (len0 === ds.length && exact < 0) { exact = i0; exactLen = len0; }
+          if (len0 > runLen) { base = i0; runLen = len0; }
+        }
         i0 = j0;
       }
+      if (exact >= 0) { base = exact; runLen = exactLen; }
       if (base < 0) return null;
       var n = runLen;
       // 最後の1〜2マスだけ結合が違っていることがある（配布元の作りのばらつき）。
