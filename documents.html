@@ -2010,6 +2010,39 @@
     }
     return over > 0 ? over + 240 : 0;
   }
+  // 字下げを戻すときは、同じ字下げで並んでいる段落をまとめて動かす。
+  // 値の入る行だけを動かすと、すぐ下の「（代理人の場合）」などと頭が揃わなくなる
+  // （2026-08-03、業務改善助成金の様式2件で、記名欄だけが左へずれていた）
+  function applyIndentShrink(doc, vals, cut) {
+    if (!cut) return;
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), lefts = {}, i, pEl, ind;
+    for (i = 0; i < allP.length; i++) {
+      pEl = allP[i];
+      if (pEl.__intc) continue;
+      ind = indOf(pEl);
+      if (!ind) continue;
+      var lf = +(ind.getAttributeNS(W_NS, 'left') || 0);
+      if (lf <= 0) continue;
+      var slots = paraSlots(paraTextWithTabs(pEl), false);
+      for (var j = 0; j < slots.length; j++) {
+        if (slots[j].key !== '__amb' && vals[slots[j].key]) { lefts[lf] = 1; break; }
+      }
+    }
+    for (i = 0; i < allP.length; i++) {
+      pEl = allP[i];
+      if (pEl.__intc) continue;
+      ind = indOf(pEl);
+      if (!ind) continue;
+      var lf2 = +(ind.getAttributeNS(W_NS, 'left') || 0);
+      if (!lefts[lf2]) continue;
+      ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, lf2 - cut)));
+      pEl.__indCut = 1;
+    }
+  }
+  function indOf(pEl) {
+    var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
+    return pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
+  }
   // 右揃えをやめ、決めた位置から始まる左揃えに組み替える。タブは要らなくなる
   function alignParaLeft(doc, pEl, indentTw) {
     var pPr = paraJcRight(pEl);
@@ -2192,6 +2225,10 @@
     }
     var owner = null, notedAmbP = 0, wroteP = {};
     var rightIndent = rightAlignIndent(doc, vals);
+    // 【やってみて取り消した】同じ字下げの段落をまとめて動かすと、行の頭は
+    // 揃うが、囲みの線（図形）は動かないので線が文字に重なる。
+    // 2026-08-03、業務改善助成金の「（代理人の場合）」の囲みで実際に起きた。
+    // 値の入る行だけを動かす（頭は揃わないが、文字は読める）
     var indCut = indentShrink(doc, vals);
     for (var pi = 0; pi < allP.length; pi++) {
       var pEl = allP[pi];
