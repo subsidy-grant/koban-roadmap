@@ -1028,7 +1028,8 @@
     staff: '担当者氏名', staffTel: '担当者連絡先', hokenNo: '雇用保険適用事業所番号',
     nameRep: '事業者名と代表者氏名', regAddr: '登記上の所在地', entity: '事業形態',
     officeName: '事業所の名称', regZip: '登記上の所在地の郵便番号',
-    industryCode: '日本標準産業分類の番号', staffTitle: '担当者の所属・役職'
+    industryCode: '日本標準産業分類の番号', staffTitle: '担当者の所属・役職',
+    staffTitleName: '担当者の所属・役職と氏名'
   };
   function labelName(k) { return LABEL_NAME[k] || k; }
 
@@ -1134,7 +1135,12 @@
       if (belowKey === 'ambiguous') return kind === 'staff' ? null : 'repKana';
       return null;
     }
-    if (kind === 'staff') return 'staff';
+    // 担当者のかたまりの中の「所属・役職及び氏名」は、所属・役職も書く欄。
+    // 氏名だけ入れると、様式が求めている所属・役職が抜けたまま提出することになる
+    // （2026-08-04、両立支援等助成金【柔】【代】【育】様式第1号で確認）
+    if (kind === 'staff') {
+      return (TITLE_AND_NAME_RE.test(t) && vals.staffTitleName) ? 'staffTitleName' : 'staff';
+    }
     return (TITLE_AND_NAME_RE.test(t) && vals.titleRep) ? 'titleRep' : 'rep';
   }
   // ふりがな欄の「すぐ下の行の項目名」を、共通の言い方に直す
@@ -1441,6 +1447,10 @@
     // 担当者が代表者と同じ方なら、担当者の役職は代表者の役職。
     // 別の方を担当者にしているときは、その方の役職を預かっていないので空欄にする
     if (vals.title && (!vals.staff || vals.staff === vals.rep)) vals.staffTitle = vals.title;
+    // 「所属・役職及び氏名」のように、担当者の役職と氏名をまとめて書く欄がある
+    if (vals.staffTitle && (vals.staff || vals.rep)) {
+      vals.staffTitleName = vals.staffTitle + '　' + (vals.staff || vals.rep);
+    }
     // 「法人／個人事業主」を選ぶ欄。ここが空のままだと、その値をもとに
     // 他のシートへ自動で流す様式が丸ごと空欄になる
     var ek = entityKind(vals);
@@ -1912,6 +1922,22 @@
   // 文字の大きさが書かれていないときの見積もり。小さく見積もると
   // 「入るはず」と判断した値が折り返してしまうので、大きめに取る（12pt）
   var DEFAULT_SZ = 24;
+  // ただし、多くの様式は run に大きさを書かず、文書の既定（styles.xml の
+  // docDefaults）に任せている。役所の様式は10.5ptが多く、12ptで数えると
+  // 幅を1割ほど大きく見積もる。そのぶん要らない字下げ戻しが起きて、
+  // 記名欄が8mm左へずれていた（2026-08-04、物価高騰の申出書で確認）。
+  // 文書ごとに既定値を読み取って使う
+  var docSz = DEFAULT_SZ;
+  function docDefaultSz(stylesXml) {
+    if (!stylesXml) return DEFAULT_SZ;
+    try {
+      var sdoc = parseXml(stylesXml);
+      var dd = sdoc.getElementsByTagNameNS(W_NS, 'docDefaults')[0];
+      var sz = dd ? dd.getElementsByTagNameNS(W_NS, 'sz')[0] : null;
+      var v = sz ? +(sz.getAttributeNS(W_NS, 'val') || 0) : 0;
+      return v > 0 ? v : DEFAULT_SZ;
+    } catch (e) { return DEFAULT_SZ; }
+  }
   function sectWidthTw(sec) {
     if (!sec) return 0;
     var sz = sec.getElementsByTagNameNS(W_NS, 'pgSz')[0];
@@ -1975,13 +2001,26 @@
       lastFit = null;
       if (nd.isTab) { w += DEFAULT_TAB_TW; continue; }
       var szEl = rPr ? childrenNS(rPr, W_NS, 'sz')[0] : null;
-      var sz = szEl ? +(szEl.getAttributeNS(W_NS, 'val') || DEFAULT_SZ) : DEFAULT_SZ;
+      var sz = szEl ? +(szEl.getAttributeNS(W_NS, 'val') || docSz) : docSz;
       var txt = nd.text.slice(0, Math.max(0, pos - nd.start));
       for (var k = 0; k < txt.length; k++) {
         w += /[\x20-\x7E｡-ﾟ]/.test(txt.charAt(k)) ? sz * 5 : sz * 10;
       }
     }
     return w;
+  }
+  // その位置に書く文字の大きさ。run に指定があればそれ、無ければ文書の既定。
+  // 「文書の既定」と「その段落の指定」は別物で、混ぜると見積もりを外す。
+  // 既定10.5pt・その段落は12pt、という様式が実際にある
+  // （2026-08-04、業務改善助成金の様式第7号）
+  function szAt(pEl, nodes, pos) {
+    for (var i = nodes.length - 1; i >= 0; i--) {
+      if (nodes[i].start >= pos || nodes[i].isTab) continue;
+      var rp = childrenNS(nodes[i].run, W_NS, 'rPr')[0];
+      var se = rp ? childrenNS(rp, W_NS, 'sz')[0] : null;
+      return se ? (+(se.getAttributeNS(W_NS, 'val') || docSz) || docSz) : docSz;
+    }
+    return docSz;
   }
   // 文字の幅を見積もる（twips）。半角は全角の半分
   function textWidthTw(text, sz) {
@@ -2014,14 +2053,7 @@
         var tw = paraWidthTw(doc, pEl);
         if (tw && (!total || tw < total)) total = tw;
         var nodes = paraNodes(pEl);
-        var sz = DEFAULT_SZ;
-        for (var k = nodes.length - 1; k >= 0; k--) {
-          if (nodes[k].start >= st.at || nodes[k].isTab) continue;
-          var rp = childrenNS(nodes[k].run, W_NS, 'rPr')[0];
-          var se = rp ? childrenNS(rp, W_NS, 'sz')[0] : null;
-          if (se) sz = +(se.getAttributeNS(W_NS, 'val') || DEFAULT_SZ);
-          break;
-        }
+        var sz = szAt(pEl, nodes, st.at);
         var w = headWidthTw(pEl, nodes, st.at) +
                 textWidthTw('　' + withUnit(st.key, vals[st.key], ''), sz);
         if (w > need) need = w;
@@ -2091,17 +2123,20 @@
         // 住所を下の空行に書く様式では、この行に入るのは郵便番号だけ。
         // 住所ぶんまで数えると、動かす必要のない行まで左へ戻してしまう
         if (zipAddrNextLine(doc, pEl, st, vals)) v = vals[zk];
+        // 幅は、その欄で実際に使われている文字の大きさで測る。
+        // ずっと12ptで数えていたため、10.5ptの様式では要らない戻しをして
+        // 記名欄が8mm左へずれ、13ptの様式では戻しが足りずに行があふれていた
+        // （2026-08-04、物価高騰の申出書と疎明書で確認）
+        var szP = szAt(pEl, paraNodes(pEl), st.at);
         // 値を入れたぶん、うしろの余白は詰める。増えるのはその差だけ
-        add += Math.max(0, textWidthTw('　' + v, DEFAULT_SZ) -
-                           textWidthTw(raw.slice(st.at, st.gapEnd), DEFAULT_SZ));
+        add += Math.max(0, textWidthTw('　' + v, szP) -
+                           textWidthTw(raw.slice(st.at, st.gapEnd), szP));
       }
       if (!add) continue;
       var w = left + headWidthTw(pEl, paraNodes(pEl), raw.length) + add;
       var over = w - total;
-      // ぴったりに収めると書体の違いではみ出すので、1文字ぶん余裕を持たせる。
-      // 幅の見積もりは12ptで数えているが、実際にはもう少し大きい書体のことがある。
-      // 足りないと結局あふれるので、はみ出しぶんは多めに見ておく
-      if (over > 0 && over * 1.2 + 240 > (cuts[ik.k] || 0)) cuts[ik.k] = over * 1.2 + 240;
+      // ぴったりに収めると書体の違いではみ出すので、1文字ぶん余裕を持たせる
+      if (over > 0 && over + 240 > (cuts[ik.k] || 0)) cuts[ik.k] = over + 240;
     }
     return cuts;
   }
@@ -2204,7 +2239,7 @@
     if (left > 0 || pEl.__left0 != null) return;
     var m = /^[\s　]+/.exec(raw);          // 空白で位置を作っている様式
     if (!m) return;
-    eatGap(nodes, 0, m[0].length, Math.ceil(over / (DEFAULT_SZ * 5)) + 2);
+    eatGap(nodes, 0, m[0].length, Math.ceil(over / (docSz * 5)) + 2);
   }
   // 項目名のすぐうしろに値を置く。
   // 段落の末尾に足すやり方だと、右揃えの段落では値が右端に飛び、
@@ -2266,8 +2301,9 @@
     if (!(la > 0) || la !== lb) return null;
     // 1行に収まるなら、そのままでよい。収まるものまで動かさない
     var usable = paraUsableTw(doc, pEl);
-    var need = headWidthTw(pEl, paraNodes(pEl), slot.at) +
-               textWidthTw(vals[zipKey] + '　' + vals[slot.key], DEFAULT_SZ);
+    var nds0 = paraNodes(pEl);
+    var need = headWidthTw(pEl, nds0, slot.at) +
+               textWidthTw(vals[zipKey] + '　' + vals[slot.key], szAt(pEl, nds0, slot.at));
     return (usable > 0 && need > usable) ? nx : null;
   }
   function writeZipThenAddr(doc, pEl, nxEl, slot, vals, rightIndent) {
@@ -2276,7 +2312,30 @@
     for (k in vals) tmp[k] = vals[k];
     tmp[slot.key] = vals[zipKey];
     tmp[zipKey] = '';                    // 〒の右に置くのは郵便番号だけ
+    // 2行目の住所は、1行目の郵便番号と頭を揃える。行頭から書くと、
+    // 「住　所　〒」のラベルの下に値だけが左へ張り出して見える
+    // （2026-08-04、業務改善助成金の様式3件で指摘された）。
+    // ただし、揃えたぶん2行目が狭くなって住所が折り返すなら、行頭から書く
+    var nds0 = paraNodes(pEl);
+    var headTw = headWidthTw(pEl, nds0, slot.at);
+    var szV = szAt(pEl, nds0, slot.at);
     writeParaSlot(doc, pEl, slot, tmp, rightIndent);
+    if (headTw > 0 &&
+        paraUsableTw(doc, nxEl) - headTw >= textWidthTw(vals[slot.key], szV)) {
+      var pPrN = childrenNS(nxEl, W_NS, 'pPr')[0];
+      if (!pPrN) {
+        pPrN = doc.createElementNS(W_NS, 'w:pPr');
+        nxEl.insertBefore(pPrN, nxEl.firstChild);
+      }
+      var indN = childrenNS(pPrN, W_NS, 'ind')[0];
+      if (!indN) {
+        indN = doc.createElementNS(W_NS, 'w:ind');
+        // pPr の中で w:rPr は最後に来る決まりなので、その手前に入れる
+        pPrN.insertBefore(indN, childrenNS(pPrN, W_NS, 'rPr')[0] || null);
+      }
+      indN.setAttributeNS(W_NS, 'w:firstLine', String(Math.round(headTw)));
+      try { indN.removeAttributeNS(W_NS, 'firstLineChars'); } catch (e) { /* 無ければよい */ }
+    }
     // 住所は、様式が空けてある次の行へ。書式は郵便番号と同じものを使う
     var nds = paraNodes(pEl), src = null;
     for (var i = nds.length - 1; i >= 0; i--) {
@@ -2334,7 +2393,7 @@
     var head = String(paraTextWithTabs(pEl)).slice(0, slot.at).replace(/[\s　\t]+$/, '');
     var sep = (/[：:]$/.test(head) || slot.zipMark) ? '' : '　';
     var body = sep + text;
-    fitCellIndent(doc, pEl, textWidthTw(body, DEFAULT_SZ));
+    fitCellIndent(doc, pEl, textWidthTw(body, docSz));
     var anchor = splitParaAt(doc, pEl, nodes, slot.at);
     var run = doc.createElementNS(W_NS, 'w:r');
     if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
@@ -2361,7 +2420,7 @@
     var run = doc.createElementNS(W_NS, 'w:r');
     var rPrSrc = runs.length ? runs[runs.length - 1].getElementsByTagNameNS(W_NS, 'rPr')[0] : null;
     if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
-    fitCellIndent(doc, pEl, textWidthTw(sep + text, DEFAULT_SZ));
+    fitCellIndent(doc, pEl, textWidthTw(sep + text, docSz));
     appendTextRuns(doc, run, sep + text);
     pEl.appendChild(run);
     return text;
@@ -2449,7 +2508,7 @@
         //   別の項目名と1行につながり、どの値がどの項目のものか読めなくなる）
         var usableTw = inCell ? 0 : paraUsableTw(doc, pEl);
         if (usableTw > 0 && usableTw < 3000 &&
-            textWidthTw(vals[slot.key], DEFAULT_SZ) > usableTw) {
+            textWidthTw(vals[slot.key], szAt(pEl, paraNodes(pEl), slot.at)) > usableTw) {
           skips.push({ key: slot.key, label: slot.head,
             reason: 'この欄は幅がとても狭く（' + Math.round(usableTw / 240) +
               '文字ぶん）、入れると値が途中で行に分かれて読めなくなるため入れませんでした（本文の「' +
@@ -2486,7 +2545,8 @@
       return true;
     });
   }
-  function fillDocx(xmlText, vals, overwrite) {
+  function fillDocx(xmlText, vals, overwrite, defSz) {
+    docSz = defSz > 0 ? defSz : DEFAULT_SZ;
     var doc = parseXml(xmlText);
     var fills = [], skips = [], usedKeys = {}, pvMarks = {};
     var trs = doc.getElementsByTagNameNS(W_NS, 'tr');
@@ -2795,7 +2855,7 @@
         if (rPrSrc) run.appendChild(copyRunProps(rPrSrc));
         var putD = withZip(key, withUnit(key, vals[key], prev), prev, vals);
         // 字下げのせいでセルに入りきらず、値が途中で改行されることがある
-        fitCellIndent(doc, p, textWidthTw(putD, DEFAULT_SZ));
+        fitCellIndent(doc, p, textWidthTw(putD, docSz));
         appendTextRuns(doc, run, putD);
         p.appendChild(run);
         usedKeys[key] = 1;
@@ -4006,9 +4066,14 @@
       catch (e) { return { error: zipErrorMessage(e) }; }
       var work;
       if (kind === 'docx') {
-        work = zipFileText(zip, 'word/document.xml').then(function (xml) {
+        // styles.xml には文字の大きさの既定値が入っている。
+        // 幅の見積もりに使うので、いっしょに読む（無ければ12ptとみなす）
+        work = Promise.all([zipFileText(zip, 'word/document.xml'),
+                            zipFileText(zip, 'word/styles.xml').catch(function () { return ''; })
+                           ]).then(function (pair) {
+          var xml = pair[0];
           if (!xml) return { error: 'Wordの文書として読めませんでした（中身に word/document.xml がありません）。' };
-          var r = fillDocx(xml, vals, overwrite);
+          var r = fillDocx(xml, vals, overwrite, docDefaultSz(pair[1]));
           var repl = {};
           if (r.xml) repl['word/document.xml'] = new TextEncoder().encode(r.xml);
           return { fills: r.fills, skips: r.skips, usedKeys: r.usedKeys, repl: repl, preview: r.preview };
