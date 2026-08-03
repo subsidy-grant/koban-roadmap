@@ -1898,9 +1898,7 @@
   // 文字の大きさが書かれていないときの見積もり。小さく見積もると
   // 「入るはず」と判断した値が折り返してしまうので、大きめに取る（12pt）
   var DEFAULT_SZ = 24;
-  function paraWidthTw(doc) {
-    var secs = doc.getElementsByTagNameNS(W_NS, 'sectPr');
-    var sec = secs.length ? secs[secs.length - 1] : null;
+  function sectWidthTw(sec) {
     if (!sec) return 0;
     var sz = sec.getElementsByTagNameNS(W_NS, 'pgSz')[0];
     var mg = sec.getElementsByTagNameNS(W_NS, 'pgMar')[0];
@@ -1910,15 +1908,40 @@
     var r = +(mg.getAttributeNS(W_NS, 'right') || 0);
     return (w && w - l - r > 0) ? w - l - r : 0;
   }
+  // 用紙の大きさは、1つの文書の途中で変わることがある
+  // （縦向きの申請書のうしろに、横向きの別紙がつながっている様式がある）。
+  // いつも最後の設定で測っていると、1ページ目の欄を横向きの幅で測ってしまい、
+  // 収まらない値を「収まる」と判断して行が折り返す
+  // （2026-08-04、業務改善助成金の様式第3号で確認。1ページ目9921tw／別紙14796tw。
+  //   配布されている docx のうち、幅が途中で変わるものが4件あった）
+  // 区切りの設定は「その区切りの最後の段落」の中に入っているので、
+  // その段落より後ろにある最初の区切りが、その段落の属する用紙になる
+  function paraWidthTw(doc, pEl) {
+    var secs = doc.getElementsByTagNameNS(W_NS, 'sectPr');
+    if (!secs.length) return 0;
+    if (pEl && pEl.compareDocumentPosition) {
+      for (var i = 0; i < secs.length; i++) {
+        var rel = pEl.compareDocumentPosition(secs[i]);
+        if ((rel & 4) || (rel & 16)) {          // うしろにある／この段落の中にある
+          var w = sectWidthTw(secs[i]);
+          if (w) return w;
+        }
+      }
+    }
+    return sectWidthTw(secs[secs.length - 1]);
+  }
   // その段落が実際に使える横幅（twips）。字下げのぶんだけ狭くなる
+  // __left0 は「字下げを戻す前の位置」。戻したあとの位置で測ると、
+  // 戻す量を決めたときの前提と食い違い、同じ段落の判断が前後で変わる
   function paraUsableTw(doc, pEl) {
-    var total = paraWidthTw(doc);
+    var total = paraWidthTw(doc, pEl);
     if (!total) return 0;
     var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
     var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
     if (!ind) return total;
-    return total - (+(ind.getAttributeNS(W_NS, 'left') || 0))
-                 - (+(ind.getAttributeNS(W_NS, 'right') || 0));
+    var left = (pEl.__left0 != null)
+      ? pEl.__left0 : +(ind.getAttributeNS(W_NS, 'left') || 0);
+    return total - left - (+(ind.getAttributeNS(W_NS, 'right') || 0));
   }
   // 段落の先頭から pos までの幅（twips）を見積もる
   function headWidthTw(pEl, nodes, pos) {
@@ -1961,9 +1984,9 @@
   // 文書ぜんぶを先に見て、いちばん長くなる行に合わせた共通の位置を1つ決める。
   // 全部の行を同じ位置から始めれば、階段状の崩れは起きない
   function rightAlignIndent(doc, vals) {
-    var total = paraWidthTw(doc);
-    if (!total) return 0;
-    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), need = 0;
+    // 決めた位置は文書ぜんぶで1つなので、用紙が途中で変わる様式では
+    // いちばん狭いページに合わせる（広いほうに合わせると狭いページで折り返す）
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), need = 0, total = 0;
     for (var i = 0; i < allP.length; i++) {
       var pEl = allP[i];
       if (!paraJcRight(pEl)) continue;
@@ -1973,6 +1996,8 @@
       for (var j = 0; j < slots.length; j++) {
         var st = slots[j];
         if (st.key === '__amb' || !vals[st.key]) continue;
+        var tw = paraWidthTw(doc, pEl);
+        if (tw && (!total || tw < total)) total = tw;
         var nodes = paraNodes(pEl);
         var sz = DEFAULT_SZ;
         for (var k = nodes.length - 1; k >= 0; k--) {
@@ -1990,20 +2015,23 @@
     // ぴったりに収めると、書体の違いで1文字ぶんはみ出して折り返す。
     // 折り返した行はいちばん読みにくいので、1文字ぶんの余裕を持たせる
     if (need) need = need * 1.03 + 240;
-    return need ? Math.max(0, total - need) : 0;
+    return (need && total) ? Math.max(0, total - need) : 0;
   }
   // 記名欄は右寄りに字下げして置かれていることが多く、値を入れると幅が足りずに
   // 行が折り返す。折り返した行は読みにくいうえ、そのぶん下の内容が次のページへ
   // あふれる（2026-08-03、業務改善助成金の申出書などで確認）。
-  // 文書ぜんぶを先に見て、いちばん長くなる行に合わせて「字下げを戻す量」を1つ決める。
-  // 全部の行から同じ量を戻せば、行どうしの頭は揃ったままになる
-  function indentShrink(doc, vals) {
-    var total = paraWidthTw(doc);
-    if (!total) return 0;
-    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), over = 0;
+  // 戻す量は「字下げの値ごと」に決める。文書ぜんぶで1つの量にすると、
+  // 遠くの長い行に引っ張られて、動かす必要のない欄まで大きく左へ寄る
+  // （2026-08-04、物価高騰の申出書で、住所の行だけが8文字ぶん左へ寄っていた）。
+  // 同じ字下げの段落は、値の入らない行もふくめて同じ量だけ戻す。
+  // そうしないと「（代理人の場合）」などと頭が揃わなくなる
+  function indentShrinkMap(doc, vals) {
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), cuts = {};
     for (var i = 0; i < allP.length; i++) {
       var pEl = allP[i];
       if (pEl.__intc) continue;             // 表の中は列の幅で決まるので対象外
+      var total = paraWidthTw(doc, pEl);    // 用紙は文書の途中で変わることがある
+      if (!total) continue;
       var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
       var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
       if (!ind) continue;
@@ -2019,43 +2047,41 @@
         var zk = st.key === 'regAddr' ? 'regZip' : 'zip';
         var v = (st.zipMark && (st.key === 'addr' || st.key === 'regAddr') && vals[zk])
           ? vals[zk] + '　' + vals[st.key] : withUnit(st.key, vals[st.key], '');
+        // 住所を下の空行に書く様式では、この行に入るのは郵便番号だけ。
+        // 住所ぶんまで数えると、動かす必要のない行まで左へ戻してしまう
+        if (zipAddrNextLine(doc, pEl, st, vals)) v = vals[zk];
         // 値を入れたぶん、うしろの余白は詰める。増えるのはその差だけ
         add += Math.max(0, textWidthTw('　' + v, DEFAULT_SZ) -
                            textWidthTw(raw.slice(st.at, st.gapEnd), DEFAULT_SZ));
       }
       if (!add) continue;
       var w = left + headWidthTw(pEl, paraNodes(pEl), raw.length) + add;
-      if (w - total > over) over = w - total;
+      var over = w - total;
+      // ぴったりに収めると書体の違いではみ出すので、1文字ぶん余裕を持たせる
+      if (over > 0 && over + 240 > (cuts[left] || 0)) cuts[left] = over + 240;
     }
-    return over > 0 ? over + 240 : 0;
+    return cuts;
   }
-  // 字下げを戻すときは、同じ字下げで並んでいる段落をまとめて動かす。
+  // 同じ字下げで並んでいる段落を、まとめて同じ量だけ動かす。
   // 値の入る行だけを動かすと、すぐ下の「（代理人の場合）」などと頭が揃わなくなる
-  // （2026-08-03、業務改善助成金の様式2件で、記名欄だけが左へずれていた）
-  function applyIndentShrink(doc, vals, cut) {
-    if (!cut) return;
-    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), lefts = {}, i, pEl, ind;
+  // （2026-08-03、業務改善助成金の様式2件で、記名欄だけが左へずれていた）。
+  // 動かす前の位置は覚えておく。あとで「収まるかどうか」を測るときは、
+  // 動かしたあとの位置で測ると、戻す量を決めたときの前提と食い違う
+  function applyIndentShrink(doc, cuts) {
+    var allP = doc.getElementsByTagNameNS(W_NS, 'p'), todo = [], i;
     for (i = 0; i < allP.length; i++) {
-      pEl = allP[i];
+      var pEl = allP[i];
       if (pEl.__intc) continue;
-      ind = indOf(pEl);
+      var ind = indOf(pEl);
       if (!ind) continue;
       var lf = +(ind.getAttributeNS(W_NS, 'left') || 0);
-      if (lf <= 0) continue;
-      var slots = paraSlots(paraTextWithTabs(pEl), false);
-      for (var j = 0; j < slots.length; j++) {
-        if (slots[j].key !== '__amb' && vals[slots[j].key]) { lefts[lf] = 1; break; }
-      }
+      if (lf > 0 && cuts[lf]) todo.push({ p: pEl, ind: ind, lf: lf, cut: cuts[lf] });
     }
-    for (i = 0; i < allP.length; i++) {
-      pEl = allP[i];
-      if (pEl.__intc) continue;
-      ind = indOf(pEl);
-      if (!ind) continue;
-      var lf2 = +(ind.getAttributeNS(W_NS, 'left') || 0);
-      if (!lefts[lf2]) continue;
-      ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, lf2 - cut)));
-      pEl.__indCut = 1;
+    for (i = 0; i < todo.length; i++) {
+      var t = todo[i];
+      t.p.__left0 = t.lf;
+      t.p.__indCut = 1;
+      t.ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, t.lf - t.cut)));
     }
   }
   function indOf(pEl) {
@@ -2119,7 +2145,7 @@
   // （2026-08-03、疎明書・確認書の「（事業主名）」欄で確認）
   // 入れ終わったあとの「実際の長さ」で見るので、事前の見積もりが外れても効く
   function trimParaHead(doc, pEl) {
-    var total = paraWidthTw(pEl.ownerDocument || doc);
+    var total = paraWidthTw(pEl.ownerDocument || doc, pEl);
     if (!total) return;
     var raw = paraTextWithTabs(pEl);
     var nodes = paraNodes(pEl);
@@ -2127,10 +2153,10 @@
     var left = ind ? +(ind.getAttributeNS(W_NS, 'left') || 0) : 0;
     var over = headWidthTw(pEl, nodes, raw.length) + left - total;
     if (over <= 0) return;
-    if (left > 0) {                       // 字下げで位置を作っている様式
-      ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, left - over - 240)));
-      return;
-    }
+    // 字下げで位置を作っている様式は、ここでは触らない。
+    // この段落だけを動かすと、同じ字下げで並ぶほかの行と頭が揃わなくなる。
+    // 戻す量は書く前に字下げの値ごとにまとめて決めてある（indentShrinkMap）
+    if (left > 0 || pEl.__left0 != null) return;
     var m = /^[\s　]+/.exec(raw);          // 空白で位置を作っている様式
     if (!m) return;
     eatGap(nodes, 0, m[0].length, Math.ceil(over / (DEFAULT_SZ * 5)) + 2);
@@ -2172,17 +2198,54 @@
     if (room >= needTw) return;
     ind.setAttributeNS(W_NS, 'w:left', String(Math.max(0, left - (needTw - room))));
   }
-  function writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut) {
-    // 字下げを戻して、値を入れても行が折り返さないようにする
-    if (indCut && !pEl.__indCut) {
-      var pPr0 = childrenNS(pEl, W_NS, 'pPr')[0];
-      var ind0 = pPr0 ? childrenNS(pPr0, W_NS, 'ind')[0] : null;
-      var lf0 = ind0 ? +(ind0.getAttributeNS(W_NS, 'left') || 0) : 0;
-      if (lf0 > 0) {
-        ind0.setAttributeNS(W_NS, 'w:left', String(Math.max(0, lf0 - indCut)));
-        pEl.__indCut = 1;
-      }
+  // ---- 「住　所　〒」の下の空行は、住所を書くための2行目 ----
+  // 記名欄が「住　所　〒」「（空行）」「事業場名」の順に並ぶ様式がある。
+  // 空行は同じ字下げで置かれていて、様式はもともと住所を2行で書かせるつもりで作られている。
+  // 1行目に郵便番号と住所をまとめて詰め込むと幅が足りず、字下げを戻すことになる。
+  // すると値の入る行だけが左へずれ、すぐ下の「（代理人の場合）」と頭が揃わなくなる
+  // （2026-08-04、業務改善助成金の様式第7号・第1号・第3号ほかで確認）。
+  // 空行があるなら、郵便番号は〒の右に、住所はその空行に置く。何も動かさずに済む
+  function zipAddrNextLine(doc, pEl, slot, vals) {
+    if (slot.key !== 'addr' && slot.key !== 'regAddr') return null;
+    if (!slot.zipMark) return null;
+    var zipKey = slot.key === 'regAddr' ? 'regZip' : 'zip';
+    if (!vals[zipKey] || !vals[slot.key]) return null;
+    var nx = pEl.nextElementSibling;
+    if (!nx || nx.namespaceURI !== W_NS || nx.localName !== 'p') return null;
+    if (paraTextWithTabs(nx).replace(/[\s　\t]+/g, '')) return null;   // 空行でなければ使えない
+    var a = indOf(pEl), b = indOf(nx);
+    var la = (pEl.__left0 != null) ? pEl.__left0
+           : (a ? +(a.getAttributeNS(W_NS, 'left') || 0) : 0);
+    var lb = (nx.__left0 != null) ? nx.__left0
+           : (b ? +(b.getAttributeNS(W_NS, 'left') || 0) : 0);
+    if (!(la > 0) || la !== lb) return null;
+    // 1行に収まるなら、そのままでよい。収まるものまで動かさない
+    var usable = paraUsableTw(doc, pEl);
+    var need = headWidthTw(pEl, paraNodes(pEl), slot.at) +
+               textWidthTw(vals[zipKey] + '　' + vals[slot.key], DEFAULT_SZ);
+    return (usable > 0 && need > usable) ? nx : null;
+  }
+  function writeZipThenAddr(doc, pEl, nxEl, slot, vals, rightIndent) {
+    var zipKey = slot.key === 'regAddr' ? 'regZip' : 'zip';
+    var tmp = {}, k;
+    for (k in vals) tmp[k] = vals[k];
+    tmp[slot.key] = vals[zipKey];
+    tmp[zipKey] = '';                    // 〒の右に置くのは郵便番号だけ
+    writeParaSlot(doc, pEl, slot, tmp, rightIndent);
+    // 住所は、様式が空けてある次の行へ。書式は郵便番号と同じものを使う
+    var nds = paraNodes(pEl), src = null;
+    for (var i = nds.length - 1; i >= 0; i--) {
+      if (!nds[i].isTab) { src = childrenNS(nds[i].run, W_NS, 'rPr')[0]; break; }
     }
+    var run = doc.createElementNS(W_NS, 'w:r');
+    if (src) run.appendChild(copyRunProps(src));
+    appendTextRuns(doc, run, vals[slot.key]);
+    nxEl.appendChild(run);
+    return vals[zipKey] + '　' + vals[slot.key];
+  }
+  function writeParaSlot(doc, pEl, slot, vals, rightIndent) {
+    // 字下げを戻す量は、書く前に字下げの値ごとにまとめて決めて適用してある
+    // （indentShrinkMap → applyIndentShrink）。ここでは触らない
     var zipKey = slot.key === 'regAddr' ? 'regZip' : 'zip';
     var text = (slot.zipMark && (slot.key === 'addr' || slot.key === 'regAddr') && vals[zipKey])
       ? vals[zipKey] + '　' + vals[slot.key] : withUnit(slot.key, vals[slot.key], '');
@@ -2271,7 +2334,7 @@
     // 揃うが、囲みの線（図形）は動かないので線が文字に重なる。
     // 2026-08-03、業務改善助成金の「（代理人の場合）」の囲みで実際に起きた。
     // 値の入る行だけを動かす（頭は揃わないが、文字は読める）
-    var indCut = indentShrink(doc, vals);
+    applyIndentShrink(doc, indentShrinkMap(doc, vals));
     for (var pi = 0; pi < allP.length; pi++) {
       var pEl = allP[pi];
       var inCell = !!pEl.__intc;
@@ -2355,7 +2418,11 @@
               slot.head + '」の欄）。お手数ですが直接ご記入ください' });
           continue;
         }
-        var text = writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut);
+        // 「住　所　〒」の下に空行がある様式は、郵便番号と住所を2行に分けて置く
+        var nxLine = zipAddrNextLine(doc, pEl, slot, vals);
+        var text = nxLine
+          ? writeZipThenAddr(doc, pEl, nxLine, slot, vals, rightIndent)
+          : writeParaSlot(doc, pEl, slot, vals, rightIndent);
         usedKeys[slot.key] = 1;
         wroteP[pKey] = 1;
         wrote = 1;
