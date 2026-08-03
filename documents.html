@@ -981,7 +981,7 @@
     // 番号と名称が合わないと労働局で照合できないので、別の項目にしている
     { key: 'officeName', re: /^(事業場の名称|事業場名|雇用保険適用事業所の名称|雇用保険適用事業所名|適用事業所の名称|適用事業所名)$/ },
     { key: 'kana',      re: /^(事業者名フリガナ|名称フリガナ|会社名フリガナ)$/ },
-    { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名)$/ },
+    { key: 'titleRep',  re: /^(代表者|代表者職氏名|代表者役職氏名|役職氏名|代表者職・氏名|代表者の役職及び氏名|代表者の役職・氏名|代表者役職及び氏名|代表者の職名及び氏名|代表者職名及び氏名|代表者の役職名及び氏名)$/ },
     { key: 'title',     re: /^(代表者の役職|代表者役職|役職名|役職)$/ },
     // 「氏名」だけの欄には入れない。誰の氏名か決まらず、面談シートの
     // 対象労働者欄・代替要員欄に代表者名を入れてしまう事故が実際に起きた（7様式）。
@@ -1910,6 +1910,16 @@
     var r = +(mg.getAttributeNS(W_NS, 'right') || 0);
     return (w && w - l - r > 0) ? w - l - r : 0;
   }
+  // その段落が実際に使える横幅（twips）。字下げのぶんだけ狭くなる
+  function paraUsableTw(doc, pEl) {
+    var total = paraWidthTw(doc);
+    if (!total) return 0;
+    var pPr = childrenNS(pEl, W_NS, 'pPr')[0];
+    var ind = pPr ? childrenNS(pPr, W_NS, 'ind')[0] : null;
+    if (!ind) return total;
+    return total - (+(ind.getAttributeNS(W_NS, 'left') || 0))
+                 - (+(ind.getAttributeNS(W_NS, 'right') || 0));
+  }
   // 段落の先頭から pos までの幅（twips）を見積もる
   function headWidthTw(pEl, nodes, pos) {
     var w = 0, lastFit = null;
@@ -2327,6 +2337,22 @@
         var guardP = fillGuard(slot.key, withUnit(slot.key, vals[slot.key], ''), slot.head, '');
         if (guardP) {
           skips.push({ key: slot.key, label: slot.head, reason: guardP });
+          continue;
+        }
+        // 幅のごく狭い段落に、収まらない値を入れると、値そのものが途中で行に割れる。
+        // 農水省の公募要領 別紙様式は、字下げで幅を4文字ぶんまで狭めた段落の中に
+        // 「（応募者）所在地　名　称」を折り返して3行に見せている作りで、
+        // ここに会社名を入れると「株式会社／サンプル／美容」と割れて読めなくなった。
+        // 割れると分かっている欄には入れず、その旨をお伝えする
+        // （字下げを緩めて広げる手も試したが、項目名の折り返し位置まで動いて
+        //   別の項目名と1行につながり、どの値がどの項目のものか読めなくなる）
+        var usableTw = inCell ? 0 : paraUsableTw(doc, pEl);
+        if (usableTw > 0 && usableTw < 3000 &&
+            textWidthTw(vals[slot.key], DEFAULT_SZ) > usableTw) {
+          skips.push({ key: slot.key, label: slot.head,
+            reason: 'この欄は幅がとても狭く（' + Math.round(usableTw / 240) +
+              '文字ぶん）、入れると値が途中で行に分かれて読めなくなるため入れませんでした（本文の「' +
+              slot.head + '」の欄）。お手数ですが直接ご記入ください' });
           continue;
         }
         var text = writeParaSlot(doc, pEl, slot, vals, rightIndent, indCut);
@@ -2991,19 +3017,27 @@
       var wide = 0;
       for (var s2 = 0; s2 < slots.length; s2++) if (slots[s2].w >= 2) wide++;
       if (wide < 4) return null;
-      // マスは同じ幅で並ぶ。うしろに続く「ただの空き」を数えないよう、
-      // 先頭と同じ幅のものだけを数える
-      var w0 = slots[0].w, n = 0;
-      while (n < slots.length && slots[n].w === w0) n++;
+      // マスは同じ幅で並ぶ。並びの中で「同じ幅がいちばん長く続くところ」をマス目とみなす。
+      // 先頭から数えると、項目名とマス目の間に挟まった細い空きセルに幅の基準を
+      // 引っ張られて、桁数と合わなくなる
+      // （2026-08-04、キャリアアップ助成金 様式第3号の雇用保険適用事業所番号で確認。
+      //   項目名 D12 の右の D14・E14 が幅1の空きセルで、その先の F14 から本物のマスが並ぶ）
+      var base = -1, runLen = 0;
+      for (var i0 = 0; i0 < slots.length; ) {
+        var j0 = i0 + 1;
+        while (j0 < slots.length && slots[j0].w === slots[i0].w) j0++;
+        if (slots[i0].w >= 2 && j0 - i0 > runLen) { base = i0; runLen = j0 - i0; }
+        i0 = j0;
+      }
+      if (base < 0) return null;
+      var n = runLen;
       // 最後の1〜2マスだけ結合が違っていることがある（配布元の作りのばらつき）。
       // 桁数にあと少し足りないときは、続く空きマスで埋め合わせる
-      while (n < ds.length && n < slots.length && n < 2 + (function () {
-        var k = 0; while (k < slots.length && slots[k].w === w0) k++; return k;
-      })()) n++;
+      while (n < ds.length && base + n < slots.length && n < runLen + 2) n++;
       // マスの数が桁数と合わないときは入れない。先頭のマスに全部書くと
       // 次のマスの手前で切れて読めないので、入れずにその旨をお伝えする
       if (n !== ds.length) return { mismatch: n };
-      return { cols: slots.slice(0, n).map(function (s) { return s.c; }), digits: ds };
+      return { cols: slots.slice(base, base + n).map(function (s) { return s.c; }), digits: ds };
     }
 
     // その欄に入れた値が、開いたときに読めるかどうか。
@@ -3668,10 +3702,12 @@
       var sheetEntries = zip.entries.filter(function (e) {
         return /^xl\/worksheets\/[^\/]+\.xml$/.test(e.name);
       });
+      var hasFormula = false;
       var chain = Promise.resolve();
       sheetEntries.forEach(function (e) {
         chain = chain.then(function () {
           return zipFileText(zip, e.name).then(function (xml) {
+            if (!hasFormula && /<f[\s>\/]/.test(xml)) hasFormula = true;
             var out = fillSheet(xml, vals, shared,
               nameByPath[e.name] || e.name.replace(/^.*\//, ''), fills, skips, usedKeys, overwrite, previews, styles);
             if (out) repl[e.name] = new TextEncoder().encode(out);
@@ -3693,6 +3729,42 @@
             if (/checked\s*=\s*"(Checked|1)"/i.test(xml)) preChecked++;
           }).catch(function () { /* 読めないときは黙って飛ばす */ });
         });
+      });
+      // ---- 開いたときに計算し直させる ----
+      // 様式によっては、あるシートに書いた内容が、別のシートへ式で自動転記される
+      // （最低賃金引上げ支援の様式では、実績報告のシートがほぼ全部これ）。
+      // ところが配布ファイルには「計算済み」の印が付いたまま保存されていて、
+      // 中身を書き換えても Excel は開いたときに計算し直さない。
+      // その結果、転記先のシートが空のまま見え、気づかずに提出しかねない。
+      // 2026-08-04、Excel に直接開かせて確認した：開いた直後は空、
+      // CalculateFull を呼んだ瞬間に全部入った。配布されている xlsx 31本のうち
+      // 式を持つ15本すべてに、この印が付いていなかった。
+      function setFullCalcOnLoad(wbXml) {
+        var wdoc = parseXml(wbXml);
+        var wroot = wdoc.documentElement;
+        if (!wroot) return null;
+        var cp = childrenNS(wroot, S_NS, 'calcPr')[0];
+        if (!cp) {
+          cp = wdoc.createElementNS(S_NS, 'calcPr');
+          // calcPr は決まった順番の位置にしか置けない。後ろに来る要素の手前に入れる
+          var beforeEl = null;
+          var tail = ['oleSize', 'customWorkbookViews', 'pivotCaches', 'smartTagPr',
+                      'smartTagTypes', 'webPublishing', 'fileRecoveryPr',
+                      'webPublishObjects', 'extLst'];
+          for (var ti = 0; ti < tail.length && !beforeEl; ti++) {
+            beforeEl = childrenNS(wroot, S_NS, tail[ti])[0] || null;
+          }
+          wroot.insertBefore(cp, beforeEl);
+        }
+        cp.setAttribute('fullCalcOnLoad', '1');
+        return serializeXml(wdoc);
+      }
+      chain = chain.then(function () {
+        if (!hasFormula || !Object.keys(repl).length || !pair[0]) return;
+        try {
+          var wbOut = setFullCalcOnLoad(pair[0]);
+          if (wbOut) repl['xl/workbook.xml'] = new TextEncoder().encode(wbOut);
+        } catch (e) { /* 印を付けられなくても、記入そのものは進める */ }
       });
       return chain.then(function () {
         if (preChecked) {

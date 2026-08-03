@@ -13,6 +13,9 @@ r"""全様式を「実際に開いた姿」にして、目で見られる形に�
 使い方（Excel／Wordの入っている端末で）：
     python tools\sweep_render.py            … 会社情報が入る様式ぜんぶ
     python tools\sweep_render.py 5          … 先頭5件だけ（試すとき）
+    python tools\sweep_render.py 270ee ed32 … ファイル名にその字が入るものだけ
+                                              （直した1〜2件をすぐ見たいとき。
+                                               このときは既存の出力を消さない）
 """
 import glob, json, os, re, shutil, sys, time, warnings
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -181,16 +184,24 @@ def to_png(pdfs, keep_pdf=False):
 
 def main():
     t0 = time.time()
-    limit = 0
+    limit, only = 0, []
     for a in sys.argv[1:]:
         if a.isdigit():
             limit = int(a)
-    if os.path.isdir(OUT):
+        else:
+            only.append(a)
+    # 絞り込んだときに全部消すと、他の様式の前回の姿が見られなくなる
+    if os.path.isdir(OUT) and not only:
         shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT, exist_ok=True)
     tg = targets()
+    if only:
+        tg = [t for t in tg if any(k in os.path.basename(t[0]) for k in only)]
     if limit:
         tg = tg[:limit]
+    if not tg:
+        print("あてはまる様式がありません:", only)
+        return
     print("様式 %d件 に記入させています…" % len(tg))
     got, logs = fill_all([p for p, _ in tg])
     print("記入できた様式: %d件（%.0f秒）" % (len(got), time.time() - t0))
