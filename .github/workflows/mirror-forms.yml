@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   mirror:
@@ -26,13 +27,58 @@ jobs:
       - name: 様式を取り直す
         run: python3 _tools/mirror_forms.py
       - name: 変わっていたらコミット
+        id: mirror
         run: |
           if [ -n "$(git status --porcelain forms)" ]; then
+            # 何が変わったかを、コミットする前に控えておく（通知に使う）
+            git status --porcelain forms | sed 's/^/  /' > /tmp/changed.txt
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add forms
             git commit -m "様式の控えを更新（配布元の差し替えを反映）"
             git push
+            echo "changed=1" >> "$GITHUB_OUTPUT"
           else
             echo "変わりなし"
+            echo "changed=0" >> "$GITHUB_OUTPUT"
           fi
+
+      # なぜ立てるか：
+      #   このワークフローは誰にも知らせずに forms/ を差し替える。
+      #   様式の形が変わると自動入力が崩れることがあるので、
+      #   気づく手がかりを必ず残す。点検手順は tools/README.md にある。
+      - name: 差し替わったことを Issue で知らせる
+        if: steps.mirror.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "配布元が様式を差し替えたので、控えを更新しました。"
+            echo ""
+            echo "## 変わったファイル"
+            echo '```'
+            cat /tmp/changed.txt
+            echo '```'
+            echo ""
+            echo "## やること（tools/README.md「配布元が様式を差し替えたとき」）"
+            echo ""
+            echo '```'
+            echo "cd D:\\Claudecode\\koban-roadmap"
+            echo "git pull"
+            echo "python -m http.server 8935      # 別の窓で立てておく"
+            echo "python tools\\audit_autofill.py"
+            echo "git diff tools\\autofill_audit.json"
+            echo "python tools\\sweep_render.py <上の変わったファイル名の一部>"
+            echo '```'
+            echo ""
+            echo "**監査の差分が出なくても、変わった様式は紙にして目で見ること。**"
+            echo "控えは「どのセルに何を入れたか」しか持っていないので、"
+            echo "列幅だけの変更は差分に出ないまま紙で潰れる。"
+            echo ""
+            echo "確認して問題なければ、この Issue は閉じてよい。"
+            echo ""
+            echo "- 実行: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > /tmp/issue.md
+          gh issue create \
+            --title "様式が差し替わった（$(TZ=Asia/Tokyo date '+%Y-%m-%d') 取得）— 自動入力の点検が必要" \
+            --body-file /tmp/issue.md
