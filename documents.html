@@ -138,6 +138,86 @@
     .fhint { grid-column: 1 / 3; }
   }
 
+  /* ---- 会社情報：質問形式（ウィザード） ----
+     #companyForm は「質問形式」と「まとめて確認・修正」の2モードを持つ。
+     どちらのモードでも同じ .frow（同じ id の input/textarea/select）を使い回す。
+     モードの見た目の違いはCSSだけで作り、JSはクラスの付け替えとフォーカス移動だけを行う
+     （フィールドをDOMから作り直すと、郵便番号→住所の非同期取得が完了する前に
+     次の質問へ進んだ場合に書き込み先が消えてしまうため）。 */
+  .wz-topbar { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .wz-progress { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; }
+  .wz-modebtn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
+    font: inherit; font-size: 0.85rem; border-radius: 8px; padding: 0.5rem 0.9rem;
+    min-height: 44px; cursor: pointer; }
+  .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
+  .wz-progress-track { height: 6px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 999px; overflow: hidden; margin: 0 0 1rem; }
+  .wz-progress-fill { display: block; height: 100%; width: 0; background: var(--accent);
+    transition: width 0.2s ease; }
+  #companyForm.mode-review .wz-progress-track,
+  #companyForm.mode-review .wz-nav { display: none; }
+
+  /* 質問形式のときは、いま出ている .fstep 以外を隠す */
+  #companyForm.mode-wizard .wz-steps { border: 0; border-radius: 0; overflow: visible; background: transparent; }
+  #companyForm.mode-wizard .wz-steps .fstep { display: none; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current {
+    display: block; background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.3rem 1.2rem; box-shadow: 0 1px 3px var(--shadow);
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow { display: block; border: 0; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow + .frow { margin-top: 1.1rem;
+    padding-top: 1.1rem; border-top: 1px dashed var(--line); }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow > label {
+    display: block; background: transparent; border: 0; padding: 0 0 0.6rem;
+    font-size: 1.12rem; font-weight: 700; color: var(--ink);
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow input,
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow textarea {
+    border: 1px solid var(--line); border-radius: 8px; padding: 0.85rem 0.9rem;
+    font-size: 1.12rem; background: var(--paper); min-height: 52px;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .copy-btn {
+    display: block; margin-top: 0.7rem; border: 1px solid var(--line); border-radius: 8px;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint { grid-column: auto; margin: 0.6rem 0 0; padding: 0; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ok {
+    background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage);
+    border-radius: 8px; padding: 0.6rem 0.8rem; font-weight: 700;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ng {
+    background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust);
+    border-radius: 8px; padding: 0.6rem 0.8rem;
+  }
+
+  /* 事業形態：大きなタップ2択（下の select は質問形式のときだけ隠す。値の器はselectのまま） */
+  .ent-choice { display: none; gap: 0.7rem; margin-top: 0.3rem; flex-wrap: wrap; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .ent-choice { display: flex; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current select#f_entity { position: absolute;
+    width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ent-btn { flex: 1 1 9rem; min-height: 64px; font: inherit; font-size: 1.02rem; font-weight: 700;
+    border: 2px solid var(--line); border-radius: 10px; background: var(--paper-raised);
+    color: var(--ink); cursor: pointer; }
+  .ent-btn:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .ent-btn.is-sel { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); }
+
+  /* 従業員数・資本金：大まかに選ぶスライダー（下の数値欄はそのまま残す） */
+  .slider-wrap { display: none; margin-top: 0.7rem; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .slider-wrap { display: block; }
+  .slider-wrap input[type="range"] { width: 100%; height: 2.6rem; accent-color: var(--accent); }
+  .slider-label { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+  /* まとめて確認・修正モードでは、質問のまとまり（.fstep）を挟んでも
+     元の表と同じ罫線に見えるよう、境界線をここで引き直す */
+  .wz-steps .fstep .frow:last-child { border-bottom: 1px solid var(--line); }
+  .wz-steps .fstep:last-child .frow:last-child { border-bottom: 0; }
+
+  .wz-nav { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+  .wz-navhint { flex: 1 1 auto; text-align: center; margin: 0; font-size: 0.82rem;
+    color: var(--ink-faint); min-width: 9rem; }
+
   .btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
   .btn {
     border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
@@ -401,7 +481,7 @@
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報を1回だけ書く</h2></div>
     <p class="section-sub">補助金の様式は、どの制度でもほぼ同じ項目（所在地・代表者・電話番号など）を繰り返し書かせます。ここに1回入力しておけば、各項目の「写す」を押すだけで様式に貼り付けられます。手書きの方は、下の「転記カードを印刷」で1枚にまとめて持てます。<strong>郵便番号を7桁入れると、住所が自動で入ります。</strong></p>
 
-    <div class="form-grid" id="companyForm"></div>
+    <div id="companyForm"></div>
 
     <div class="btn-row">
       <button type="button" class="btn" onclick="printCard()">転記カードを印刷 / PDF保存</button>
@@ -619,33 +699,130 @@
 
   var company = load(K_COMPANY, {});
 
+  // ---------- 会社情報フォーム：質問形式（ウィザード）まわりの下ごしらえ ----------
+  // FIELDSのid・件数・意味はいっさい変えない（自動転記エンジンがこのidをキーに使うため）。
+  // ここで作るのは「同じFIELDSを、どのグループ（質問1画面）に出すか」の並び替えだけ。
+  var FIELDS_BY_ID = {};
+  FIELDS.forEach(function (f) { FIELDS_BY_ID[f.id] = f; });
+
+  // 郵便番号→住所は既存のlookupZip()がf_addrへ直接書き込むので、
+  // 「郵便番号」と「所在地」は同じ質問画面にまとめて出す（zipのすぐ次がaddrなので並びは変わらない）。
+  var MERGE_NEXT = { zip: 'addr' };
+  var MERGED_AWAY = { addr: 1 };
+  var STEP_GROUPS = [];
+  FIELDS.forEach(function (f) {
+    if (MERGED_AWAY[f.id]) return;
+    var ids = [f.id];
+    if (MERGE_NEXT[f.id]) ids.push(MERGE_NEXT[f.id]);
+    STEP_GROUPS.push(ids);
+  });
+
+  // 事業形態は元のselect（値の器）はそのまま残し、その上に大きな2択ボタンを重ねる
+  var ENTITY_CHOICES = ['法人', '個人事業主'];
+
+  // 従業員数・資本金はテキスト欄（元のFIELDS定義のまま）に加えて、
+  // 大まかに選べるスライダーを添える。スライダーが書き込む先も同じテキスト欄なので、
+  // 自動転記エンジンから見える値の形式（company.employees / company.capital の文字列）は変わらない。
+  function yenLabel(y) {
+    y = +y || 0;
+    if (y === 0) return '0円';
+    if (y % 100000000 === 0) return (y / 100000000) + '億円';
+    if (y % 10000 === 0) return (y / 10000).toLocaleString('ja-JP') + '万円';
+    return y.toLocaleString('ja-JP') + '円';
+  }
+  var SLIDER_CFG = {
+    employees: {
+      presets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30, 40, 50, 70, 100, 150, 200, 300, 500, 1000],
+      toValue: function (p) { return String(p); },
+      toLabel: function (p) { return p + '人'; }
+    },
+    capital: {
+      presets: [0, 100000, 300000, 500000, 1000000, 2000000, 3000000, 5000000,
+                10000000, 20000000, 30000000, 50000000, 100000000, 300000000],
+      toValue: function (p) { return String(p); },
+      toLabel: yenLabel
+    }
+  };
+  function nearestPresetIndex(presets, raw) {
+    var n = parseInt(String(raw || '').replace(/[^0-9]/g, ''), 10);
+    if (isNaN(n)) return 0;
+    var bestI = 0, bestD = Infinity;
+    presets.forEach(function (p, i) {
+      var d = Math.abs(p - n);
+      if (d < bestD) { bestD = d; bestI = i; }
+    });
+    return bestI;
+  }
+
+  // 1項目ぶんの行を作る。中身（input/textarea/select、写すボタン、法人番号・郵便番号のヒント欄）は
+  // 元のrenderCompany()とまったく同じ。質問形式でだけ使う追加パーツ（2択ボタン・スライダー）を
+  // 末尾に足すだけで、どちらのモードでも同じidの要素を1個ずつ使い回す。
+  function fieldRowHtml(f) {
+    var v = esc(company[f.id] || '');
+    var input;
+    if (f.opts) {
+      input = '<select id="f_' + f.id + '">' +
+        f.opts.map(function (o) {
+          return '<option value="' + esc(o.v) + '"' + (company[f.id] === o.v ? ' selected' : '') +
+            '>' + esc(o.t) + '</option>';
+        }).join('') + '</select>';
+    } else if (f.big) {
+      input = '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>';
+    } else {
+      input = '<input id="f_' + f.id + '" type="text"' +
+        (f.mode ? ' inputmode="' + f.mode + '"' : '') +
+        ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
+    }
+    var extra = '';
+    if (f.id === 'entity') {
+      extra += '<div class="ent-choice" role="group" aria-label="事業形態を選ぶ">' +
+        ENTITY_CHOICES.map(function (c) {
+          return '<button type="button" class="ent-btn" data-v="' + esc(c) + '">' + esc(c) + '</button>';
+        }).join('') + '</div>';
+    }
+    if (SLIDER_CFG[f.id]) {
+      extra += '<div class="slider-wrap">' +
+        '<input type="range" id="sl_' + f.id + '" min="0" max="' + (SLIDER_CFG[f.id].presets.length - 1) + '" step="1">' +
+        '<p class="slider-label" id="sllabel_' + f.id + '"></p>' +
+        '</div>';
+    }
+    return '<div class="frow">' +
+      '<label for="f_' + f.id + '">' + esc(f.label) + '</label>' +
+      input +
+      (f.opts ? '' : '<button type="button" class="copy-btn" data-copy="' + f.id + '">写す</button>') +
+      (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
+      (f.id === 'zip' ? '<p class="fhint" id="hint_zip"></p>' : '') +
+      extra +
+      '</div>';
+  }
+
+  var wzMode = 'wizard';
+  var wzIdx = 0;
+  var wzAdvTimer = null;
+
   function renderCompany() {
     var el = document.getElementById('companyForm');
-    el.innerHTML = FIELDS.map(function (f) {
-      var v = esc(company[f.id] || '');
-      var input;
-      if (f.opts) {
-        input = '<select id="f_' + f.id + '">' +
-          f.opts.map(function (o) {
-            return '<option value="' + esc(o.v) + '"' + (company[f.id] === o.v ? ' selected' : '') +
-              '>' + esc(o.t) + '</option>';
-          }).join('') + '</select>';
-      } else if (f.big) {
-        input = '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>';
-      } else {
-        input = '<input id="f_' + f.id + '" type="text"' +
-          (f.mode ? ' inputmode="' + f.mode + '"' : '') +
-          ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
-      }
-      return '<div class="frow">' +
-        '<label for="f_' + f.id + '">' + esc(f.label) + '</label>' +
-        input +
-        (f.opts ? '' : '<button type="button" class="copy-btn" data-copy="' + f.id + '">写す</button>') +
-        (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
-        (f.id === 'zip' ? '<p class="fhint" id="hint_zip"></p>' : '') +
-        '</div>';
+    el.className = '';
+
+    var stepsHtml = STEP_GROUPS.map(function (ids, gi) {
+      var inner = ids.map(function (id) { return fieldRowHtml(FIELDS_BY_ID[id]); }).join('');
+      return '<div class="fstep" data-group="' + gi + '">' + inner + '</div>';
     }).join('');
 
+    el.innerHTML =
+      '<div class="wz-topbar">' +
+        '<p class="wz-progress" id="wzProgress" aria-live="polite"></p>' +
+        '<button type="button" class="wz-modebtn" id="wzModeBtn"></button>' +
+      '</div>' +
+      '<div class="wz-progress-track"><span class="wz-progress-fill" id="wzProgressFill"></span></div>' +
+      '<div class="wz-steps form-grid" id="wzSteps">' + stepsHtml + '</div>' +
+      '<div class="wz-nav" id="wzNav">' +
+        '<button type="button" class="btn ghost" id="wzBackBtn">← 戻る</button>' +
+        '<p class="wz-navhint">空欄のまま次へ進めても構いません</p>' +
+        '<button type="button" class="btn" id="wzNextBtn">次へ →</button>' +
+      '</div>';
+
+    // ---- 既存の結線（写す・保存・法人番号のチェック・郵便番号→住所）はそのまま ----
     FIELDS.forEach(function (f) {
       var node = document.getElementById('f_' + f.id);
       node.addEventListener(f.opts ? 'change' : 'input', function () {
@@ -653,13 +830,134 @@
         var ok = save(K_COMPANY, company);
         showSaved(ok);
         if (f.id === 'houjin') checkHoujin();
-            if (f.id === 'zip') lookupZip(node.value);
+        if (f.id === 'zip') lookupZip(node.value);
+        if (f.id === 'entity') syncEntityButtons();
+        if (SLIDER_CFG[f.id]) syncSlider(f.id);
       });
+      // 自由記述の欄はEnterキーで次の質問へ（テキストエリアは改行を優先するので対象外）
+      if (!f.opts && !f.big) {
+        node.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter' || wzMode !== 'wizard') return;
+          e.preventDefault();
+          wzGoNext();
+        });
+      }
     });
 
     el.querySelectorAll('.copy-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { copyField(btn); });
     });
+
+    // ---- ここから質問形式だけの結線 ----
+    el.querySelectorAll('.ent-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var node = document.getElementById('f_entity');
+        node.value = btn.getAttribute('data-v');
+        node.dispatchEvent(new Event('change', { bubbles: true }));
+        wzAutoAdvanceSoon();
+      });
+    });
+
+    Object.keys(SLIDER_CFG).forEach(function (id) {
+      var sl = document.getElementById('sl_' + id);
+      if (!sl) return;
+      sl.addEventListener('input', function () {
+        var cfg = SLIDER_CFG[id];
+        var p = cfg.presets[+sl.value] || 0;
+        var target = document.getElementById('f_' + id);
+        target.value = cfg.toValue(p);
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      sl.addEventListener('change', function () { wzAutoAdvanceSoon(); });
+    });
+
+    document.getElementById('wzBackBtn').addEventListener('click', function () {
+      clearTimeout(wzAdvTimer);
+      wzShowStep(wzIdx - 1);
+    });
+    document.getElementById('wzNextBtn').addEventListener('click', wzGoNext);
+    document.getElementById('wzModeBtn').addEventListener('click', function () {
+      if (wzMode === 'wizard') {
+        wzSetMode('review');
+      } else {
+        wzIdx = wzFirstIncompleteIdx();
+        wzSetMode('wizard');
+      }
+    });
+
+    syncEntityButtons();
+    Object.keys(SLIDER_CFG).forEach(syncSlider);
+
+    var hasData = FIELDS.some(function (f) { return (company[f.id] || '').toString().trim(); });
+    wzSetMode(hasData ? 'review' : 'wizard');
+  }
+
+  function wzGoNext() {
+    clearTimeout(wzAdvTimer);
+    if (wzIdx >= STEP_GROUPS.length - 1) { wzSetMode('review'); return; }
+    wzShowStep(wzIdx + 1);
+  }
+  function wzAutoAdvanceSoon() {
+    if (wzMode !== 'wizard') return;
+    clearTimeout(wzAdvTimer);
+    wzAdvTimer = setTimeout(wzGoNext, 380);
+  }
+  function wzShowStep(idx) {
+    wzIdx = Math.max(0, Math.min(idx, STEP_GROUPS.length - 1));
+    var steps = document.querySelectorAll('#wzSteps .fstep');
+    steps.forEach(function (s, i) { s.classList.toggle('is-current', i === wzIdx); });
+    var prog = document.getElementById('wzProgress');
+    if (prog) prog.textContent = '質問 ' + (wzIdx + 1) + ' / ' + STEP_GROUPS.length;
+    var fill = document.getElementById('wzProgressFill');
+    if (fill) fill.style.width = Math.round(((wzIdx + 1) / STEP_GROUPS.length) * 100) + '%';
+    var back = document.getElementById('wzBackBtn');
+    if (back) back.disabled = (wzIdx === 0);
+    var next = document.getElementById('wzNextBtn');
+    if (next) next.textContent = (wzIdx === STEP_GROUPS.length - 1) ? '確認画面へ進む' : '次へ →';
+    syncEntityButtons();
+    Object.keys(SLIDER_CFG).forEach(syncSlider);
+    var cur = document.querySelector('#wzSteps .fstep.is-current');
+    if (cur) {
+      var focusable = cur.querySelector('input, textarea, .ent-btn');
+      if (focusable) {
+        try { focusable.focus({ preventScroll: true }); } catch (e1) { try { focusable.focus(); } catch (e2) {} }
+      }
+    }
+  }
+  function wzSetMode(mode) {
+    wzMode = mode;
+    var el = document.getElementById('companyForm');
+    if (!el) return;
+    el.classList.toggle('mode-wizard', mode === 'wizard');
+    el.classList.toggle('mode-review', mode === 'review');
+    var btn = document.getElementById('wzModeBtn');
+    if (btn) btn.textContent = mode === 'wizard' ? 'まとめて確認・修正する' : '質問形式で1つずつ答える';
+    if (mode === 'wizard') wzShowStep(wzIdx);
+  }
+  function wzFirstIncompleteIdx() {
+    for (var i = 0; i < STEP_GROUPS.length; i++) {
+      var filled = STEP_GROUPS[i].some(function (id) { return (company[id] || '').toString().trim(); });
+      if (!filled) return i;
+    }
+    return 0;
+  }
+  function syncEntityButtons() {
+    document.querySelectorAll('.ent-btn').forEach(function (btn) {
+      btn.classList.toggle('is-sel', btn.getAttribute('data-v') === (company.entity || ''));
+    });
+  }
+  function syncSlider(id) {
+    var cfg = SLIDER_CFG[id];
+    var sl = document.getElementById('sl_' + id);
+    if (!cfg || !sl) return;
+    var idx = nearestPresetIndex(cfg.presets, company[id]);
+    sl.value = idx;
+    var label = document.getElementById('sllabel_' + id);
+    if (!label) return;
+    var v = (company[id] || '').toString().trim();
+    label.textContent = v
+      ? 'いまの入力：' + v + '（近いのは ' + cfg.toLabel(cfg.presets[idx]) + '）'
+      : 'スライダーでおおまかに選べます（' + cfg.toLabel(cfg.presets[idx]) + '〜）';
   }
 
   var savedTimer = null;
