@@ -1080,7 +1080,12 @@
   .timetable .tt-state { font-size: 1rem; font-weight: 700; color: var(--ink-soft); line-height: 1.35; }
   .timetable .tt-state small { display: block; font-size: 0.78rem; font-weight: 400; color: var(--ink-faint); }
 
-  .timetable .tt-nm { font-size: 1rem; font-weight: 700; line-height: 1.55; }
+  .timetable .tt-nm {
+    font-size: 1rem; font-weight: 700; line-height: 1.55;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem;
+  }
+  .timetable .tt-nm .fav-star { min-height: 1.9rem; padding: 0 0.65rem; font-size: 0.76rem; margin-left: 0; }
+  .timetable .tt-nm .elig-badge { font-size: 0.72rem; padding: 0.15rem 0.55rem; }
   .timetable .tt-region {
     display: block; font-size: 0.8rem; font-weight: 400; color: var(--sage); margin-top: 0.15rem;
   }
@@ -1446,9 +1451,12 @@
   }
   .cond-docs-link:hover, .cond-docs-link:focus-visible { background: var(--accent-wash); }
 
-  /* ---------- コンパクトな制度一覧（2026-08-05）----------
-     .cond-card の8項目フル pd-grid をベタ書きしていたのをやめ、renderCondList()
-     が制度名・種別・補助率/上限額・受付状況の要点だけを組み立てる。全詳細は
+  /* ---------- コンパクトな制度一覧（2026-08-05導入 → 同日中に#programSummaryへ統合）----------
+     .cond-card の8項目フル pd-grid をやめ、制度名・補助率/上限額・受付状況の要点だけを
+     見せるカード（.cond-compact）を作ったが、上にあった #programSummary（比較表）と
+     全く同じ制度一覧を2種類の見た目で重複表示していたため、本人指示でカードは撤去し
+     比較表に一本化した。以下の .cond-compact 系CSSはカードの生成コード自体が
+     もう無いため未使用（他ページ流用時の参考として残置）。全詳細は
      program.html（同じ PROGRAMS データを参照）へ移した。
      .cond-card は使わず .cond-compact という別クラスにしてあるのは、.cond-card
      に付いている「畳んで見出しだけにする」アコーディオンCSS/JS
@@ -1604,10 +1612,8 @@
       <a href="#conditions"><span class="toc-no">01</span>制度を探す</a>
       <a href="#simulator"><span class="toc-no">02</span>概算シミュレーター</a>
       <a href="#improvement-cta"><span class="toc-no">03</span>改善計画10選</a>
-      <a href="#docs"><span class="toc-no">04</span>申請書類・様式</a>
-      <a href="#gantt"><span class="toc-no">05</span>手順とスケジュール</a>
-      <a href="#criteria-cta"><span class="toc-no">06</span>採択・返還基準</a>
-      <a href="#notes"><span class="toc-no">07</span>留意事項</a>
+      <a href="#criteria-cta"><span class="toc-no">04</span>採択・返還基準</a>
+      <a href="#notes"><span class="toc-no">05</span>留意事項</a>
     </div>
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
@@ -1681,7 +1687,7 @@
         </div>
       </div>
       </div>
-      <p class="t-note">上で選んだ地域・従業員数・資本金は、下の各制度カードに自社が対象かどうかのバッジを表示するために使います。従業員数は「概算シミュレーター」の人数欄とも連動しています。地域は現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応（他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
+      <p class="t-note">上で選んだ地域・従業員数・資本金は、下の一覧に自社が対象かどうかのバッジを表示するために使います。従業員数は「概算シミュレーター」の人数欄とも連動しています。地域は現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応（他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは当サイトでまだ調査できていません。一覧に追加行が出ない場合も「制度が無い」という意味ではありません。</strong></p>
       <div class="diag-result" id="diagResult"></div>
     </div>
 
@@ -1691,7 +1697,7 @@
       <span class="pill josei">助成金</span>
       <span class="pill other">名称から種別を判別できない制度</span>
     </p>
-    <p class="pd-legend">各制度カードでは、まず見るべき3項目を色分けしています。<strong>青はいくら戻るか、橙はいつまでか</strong>です：
+    <p class="pd-legend">下の一覧では、まず見るべき3項目を色分けしています。<strong>青はいくら戻るか、橙はいつまでか</strong>です：
       <span><i style="background:var(--accent)"></i>補助率</span>
       <span><i style="background:var(--accent)"></i>上限額</span>
       <span><i style="background:var(--rust)"></i>受付期間・次回締切</span>
@@ -1709,18 +1715,11 @@
       </div>
       <p class="sort-note" id="summarySortNote"></p>
     </div>
-    <div class="twrap" id="programSummaryWrap"><div class="timetable" id="programSummary"></div></div>
-
-    <div class="cond-list" id="condList">
-      <!-- ここは静的HTMLを持たない。renderCondList()（同ファイル内スクリプト）が
-           業種・地域・従業員数に応じて実行時に組み立てる。制度の全項目を
-           ベタ書きしていたものを2026-08-05にコンパクトな一覧へ置き換えた。
-           出所は renderProgram() と同じ PROGRAMS データなので内容は食い違わない。
-           全詳細は program.html?key=<制度キー> （1ページ1制度）で見る。 -->
-    </div>
-    <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合はカードが追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
+    <div class="twrap" id="condList"><div class="timetable" id="programSummary"></div></div>
+    <p class="sort-note" style="margin-top:0.6rem;">選んだ都道府県・市区町村の制度が上の一覧に出ない場合、「制度が無い」のではなく「当サイトでまだ未調査」の可能性があります。<strong>未調査は制度が無いという意味ではありません。</strong>お急ぎの場合は自治体の産業振興担当窓口や商工会議所・商工会へ直接お問い合わせください。</p>
+    <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合は一覧に追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
     <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算に上限があり、審査で採択・不採択が決まります。「助成金」は競争ではなく要件を満たすことが基本ですが、<strong>労働局の審査があり、書類の不備や要件の行き違いで不支給になることがあります</strong>。業務改善助成金のように予算枠があり、締切前に受付が終わる制度もあります。「申請すれば必ずもらえる」制度ではありません。</p>
-    <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度のカードが上記に追加表示されます（現時点では東京都のみ調査済みで、他の道府県は今後順次追加予定です）。</p>
+    <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度が上記の一覧に追加表示されます（現時点では東京都のみ調査済みで、他の道府県は今後順次追加予定です）。</p>
   </section>
 
   <!-- 「03 業務改善の進め方」は2026-08-02に廃止（案内文だけの節になっており、
@@ -2287,73 +2286,19 @@
   <!-- IMPROVEMENT_HUB_EMBED:END -->
   </section>
 
-  <!-- 05 申請書類。事業計画書を作った直後・提出の直前に必要になるので、
-       04（事業計画書）と06（採択基準）の間に置いている。
-       中身は PROGRAM_DOCS から描画し、いま選んでいる業種・地域で
-       使える制度のぶんだけを出す。 -->
-  <section id="docs">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>申請書類・様式をそろえる</h2></div>
-    <p class="section-sub">選んだ条件で使える制度について、<strong>公式サイトで配布されている最新の様式・要領</strong>へのダウンロードリンクをまとめています。リンク先はすべて各制度の公式サイトです（当サイトはファイルを保管していません）。</p>
 
-    <div class="docs-lead">
-      <p><strong>提出までの順番で並べています。</strong>制度によっては「取組を始める前に出す書類」があり、後から出すと対象外になります。まずその段の書類をご確認ください。</p>
-    </div>
-
-    <div class="docs-lead docs-lead-more">
-      <p><strong>ここに載っているのは、公式サイトからダウンロードできる様式だけです。これだけでは足りない制度があります。</strong></p>
-      <p>様式のほかに、事業者ご自身で用意する書類（見積書、決算書・確定申告書、登記事項証明書、納税証明書、賃金台帳・労働者名簿など）や、第三者に出してもらう書類（商工会議所・商工会の事業支援計画書、認定経営革新等支援機関の確認書など）を求められることがあります。取得に日数がかかるものや、電子申請用のIDのように事前の準備が要るものもあります。</p>
-      <p>そこで、下の各制度のカードの中に<strong>「様式のほかに必要になる主な書類」</strong>も載せました。ただしこれは主要制度の公募要領から拾った傾向です。<strong>提出書類の全体像は、各制度の「公募要領」に一覧で載っています。</strong>各カードの「申請の前に読む」にある公募要領を開いて、必ずそちらでご確認ください。</p>
-    </div>
-
-    <!-- 書類作成ページへの導線。各制度のカードの中にも同じリンクを置いているが、
-         ここにも出さないと「まず何をすればいいか」が分からないため。 -->
-    <p class="docs-prep" style="margin-top:1.1rem;">
-      <a href="documents.html">申請書類の準備ページを開く（会社情報の転記・共通書類・締切の逆算・チェックリスト）</a>
-    </p>
-
-    <div class="sort-row" id="docsToolRow">
-      <span class="sort-label">表示</span>
-      <div class="sort-btns">
-        <button type="button" class="active" data-docs="all" onclick="setDocsFilter('all')">使える制度すべて</button>
-        <button type="button" data-docs="fav" onclick="setDocsFilter('fav')">気になる制度だけ</button>
-      </div>
-      <p class="sort-note" id="docsNote"></p>
-    </div>
-
-    <div id="docsList"></div>
-
-    <p style="margin-top:1.4rem;">
-      <button type="button" class="fav-print-btn" onclick="printDocsChecklist()">この書類一覧を印刷 / PDF保存</button>
-    </p>
-    <p class="docs-caution">様式は年度・公募回ごとに差し替わります。上のリンクは<strong>2026年7月31日</strong>に各公式サイトで確認したものです。実際に提出する際は、必ず各制度の公式ページで最新版をご確認ください。</p>
-  </section>
-
-
-  <!-- 06 申請の手順とスケジュール（ガント）。
-       描画は gantt_ui.js、データは gantt_data.js（出典と確認日時つき）。 -->
-  <section id="gantt">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>申請の手順とスケジュール</h2></div>
-    <p class="section-sub">制度を選ぶと、<strong>申請までの流れ（どんな段階を、どのくらいの期間でやるか）</strong>がその場で分かります。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
-
-    <div class="picker">
-      <p class="step-ttl">制度を選ぶ</p>
-      <label class="sr-only" for="gtScheme">制度</label>
-      <select id="gtScheme"><option value="">制度を選んでください</option></select>
-    </div>
-
-    <div id="gtOverview"></div>
-  </section>
-
-
+  <!-- 04・05（旧・申請書類そろえる／申請の手順とスケジュールの概要）は2026-08-05に削除。
+       申請書類は documents.html に、手順とスケジュールの概要は program.html の
+       「申請とスケジュール」に一本化した（同じ一覧を複数ページで持つと片方だけ古くなるため）。 -->
   <section id="criteria-cta">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>採択基準・返還基準 調査ノート</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>採択基準・返還基準 調査ノート</h2></div>
     <p class="section-sub">各制度の公式な公募要領・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
   </section>
 
 
   <section id="notes">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>留意事項</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>留意事項</h2></div>
     <p>補助金・助成金の活用にあたっては、次の点にご留意ください。</p>
     <ul class="item-list" style="max-width:68ch;">
       <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
@@ -3138,10 +3083,10 @@
   }
 
   // renderProgram(key) / toggleProgramDetail() ＝ プルダウン選択式の単体詳細パネル
-  // （#programPicker、旧・8項目フルpd-grid表示）は、.cond-list の condCompactCardHTML と
-  // 完全に重複していたため2026-08-05に削除した（本人指示）。呼び出し元は
-  // switchIndustry・renderProgramSelects・collapseCardsOnNarrowScreens・初期化処理にあったが、
-  // いずれも #programPicker 削除に合わせて整理済み。詳細は program.html?key=<制度キー> のみで見せる。
+  // （#programPicker、旧・8項目フルpd-grid表示）は、当時のカード一覧（.cond-list）と
+  // 完全に重複していたため2026-08-05に削除した（本人指示）。その .cond-list 自体も、
+  // 同日中に #programSummary（比較表）と重複していたため撤去済み。詳細は
+  // program.html?key=<制度キー> のみで見せる。
 
   var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, food_labor: 1.0, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
 
@@ -7062,7 +7007,7 @@
     // 対象判定バッジ・申請書類への導線を、選んだコースのものに向け直す
     if (badge) badge.id = 'eligBadge-' + k;
     var dl = card.querySelector('.cond-docs-link');
-    if (dl) dl.setAttribute('href', '#docs');
+    if (dl) dl.setAttribute('href', 'documents.html?p=' + encodeURIComponent(k));
     var faq = card.querySelector('.cond-faq');
     if (faq) faq.innerHTML = programFaqHTML(k);
     updateEligibilityBadges();
@@ -7099,221 +7044,15 @@
     return keys;
   }
 
-  // ---------- コンパクトな制度一覧（2026-08-05）----------
-  // 900行のフル pd-grid をベタ書きしていたのをやめ、制度名・種別・補助率/上限額・
-  // 受付状況の要点だけを表示する。全詳細（8項目）は
-  // program.html?key=<制度キー> に移した。ここで作るHTMLは PROGRAMS のデータを
-  // そのまま使うので、program.html の内容と食い違うことはない。
-  var COND_COMMON_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'hatarakikata', 'ryouritsu_ikuji'];
-  var COND_EXTRA = [
-    { key: 'food_labor', industryOnly: 'food', tag: '飲食業限定の制度' },
-    { key: 'kanko_shoryokuka', industryOnly: 'lodging', tag: '宿泊業限定の制度' },
-    { key: 'monodukuri', industryOnly: 'manufacturing', tag: '製造業と相性が良い制度' },
-    { key: 'akiya', industryOnly: 'realestate', tag: '不動産業と相性が良い制度' }
-  ];
-  var COND_TOKYO_KEYS = ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'];
-  // カードの「sub」欄（制度名の下の小さい説明）。もとの静的カードにあった文言を踏襲する
-  var COND_SUB_LABEL = {
-    ai: '旧IT導入補助金／通常枠',
-    jizoku: '＜一般型・通常枠＞（第20回）',
-    kaizen: '2026年度／50・70・90円コース',
-    shoryokuka: '＜一般型＞',
-    career: '正社員化コース',
-    jinzai: '人材育成支援コース',
-    hatarakikata: '労働時間短縮・年休促進支援コース',
-    ryouritsu_ikuji: '育児休業等支援コース',
-    food_labor: '農林水産省・厚生労働省',
-    kanko_shoryokuka: '観光庁',
-    monodukuri: '旧ものづくり補助金＋新事業進出補助金の統合制度',
-    akiya: '国土交通省',
-    tokyo_sogyo: '東京都・東京都中小企業振興公社（TOKYO創業ステーション）',
-    tokyo_digital: '東京都・東京都中小企業振興公社',
-    tokyo_soui: '東京都・東京都中小企業振興公社'
-  };
-
-  // 上限額の短い表示。CAP_TEXT（シミュレーター用の短文）があればそれを使い、
-  // 無い制度（akiya・両立支援等助成金など）は PROGRAMS[].cap の先頭の一文で代える
-  function capShort(k) {
-    if (CAP_TEXT[k]) return CAP_TEXT[k].split('（')[0];
-    var t = (PROGRAMS[k] && PROGRAMS[k].cap) || '—';
-    var head = t.split(/[。、]/)[0];
-    return head.length > 42 ? head.slice(0, 42) + '…' : head;
-  }
-
-  // 受付状況の要点。sched-flag のクラス名(open/upcoming/ongoing)は使わず、
-  // parseNextDeadline() が実際の受付期間テキストから具体的な日付を拾えるかどうかで
-  // 表示を決める。並び順（sortCondKeysByDue）と同じ判定基準にすることで、
-  // 「一覧の並びと表示の説明が食い違う」ことが起きないようにしている。
-  function condDueBadgeHTML(k) {
-    var pr = PROGRAMS[k];
-    var d = pr ? parseNextDeadline(pr.schedule) : null;
-    if (d) {
-      var days = daysUntil(d);
-      return '<span class="sched-flag open"><span class="dot2"></span>次回締切 ' + fmtDate(d) +
-        (days >= 0 ? '<span class="sub">あと' + days + '日</span>' : '') + '</span>';
-    }
-    return '<span class="sched-flag ongoing"><span class="dot2"></span>通年・随時など<span class="sub">具体的な次回締切は未定</span></span>';
-  }
-
-  // 一覧の並び順：具体的な締切がある制度を先に、無い制度をあとに（本人指示 2026-08-05）。
-  // sched-flag のクラス名だけでは判定しない。hatarakikata のように旧カードでは
-  // ongoing クラスでも実際は具体的な終了日（2026年11月30日）があったケースがあるため、
-  // 実際の受付期間テキストから parseNextDeadline() で日付を拾えるかどうかで決める。
-  // 同じ区分（締切あり／なし）の中は元の掲載順を保つ（安定ソート）。
-  function sortCondKeysByDue(keys) {
-    var withDate = [], withoutDate = [];
-    keys.forEach(function (k, i) {
-      var pr = PROGRAMS[k];
-      var d = pr ? parseNextDeadline(pr.schedule) : null;
-      (d ? withDate : withoutDate).push({ k: k, d: d, i: i });
-    });
-    withDate.sort(function (a, b) { return a.d - b.d || a.i - b.i; });
-    return withDate.concat(withoutDate).map(function (x) { return x.k; });
-  }
-
-  // 1件ぶんのコンパクトカード。共通制度・業種限定制度・都道府県/市区町村限定制度の
-  // すべてがここを通る（見た目の食い違いをなくすため、経路を1本にしている）
-  function condCompactCardHTML(key, opts) {
-    opts = opts || {};
-    var p = PROGRAMS[key];
-    if (!p) return '';
-    var sub = opts.sub || '';
-    var tagHTML = opts.tag ? '<div class="' + (opts.tagClass || 'cond-card-extra-tag') + '">' + opts.tag + '</div>' : '';
-    var detailHref = 'program.html?key=' + encodeURIComponent(key) + '&industry=' + encodeURIComponent(currentIndustry);
-    return (
-      '<div class="cond-compact" id="cond-' + key + '" data-key="' + key + '">' +
-        tagHTML +
-        '<div class="cond-head">' +
-          '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name.split('（')[0] + '</span>' +
-          (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>' +
-          '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
-          '<span class="elig-badge" id="eligBadge-' + key + '"></span>' +
-        '</div>' +
-        '<div class="cond-facts">' +
-          '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(rateShort(key)) +
-            (rateHasMore(key) ? '<span class="sub">条件で変わる（詳しく見るで確認）</span>' : '') + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(capShort(key)) + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付状況</div><div class="v">' + condDueBadgeHTML(key) + '</div></div>' +
-        '</div>' +
-        '<div class="cond-compact-actions">' +
-          '<a class="cond-detail-link" href="' + detailHref + '">この制度を詳しく見る →</a>' +
-          '<a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>' +
-        '</div>' +
-      '</div>'
-    );
-  }
-
-  // .cond-list 本体（共通8制度＋業種限定4制度＋東京都限定3制度）を組み立てる。
-  // 都道府県・市区町村の制度は別スロット（#prefectureCardSlot/#municipalityCardSlot）
-  // に updatePrefectureCards/renderMunicipalityCard が続けて描く。
-  function renderCondList() {
-    var list = document.getElementById('condList');
-    if (!list) return;
-    var items = [];
-    COND_COMMON_KEYS.forEach(function (k) {
-      if (!PROGRAMS[k]) return;
-      items.push({ key: k, html: condCompactCardHTML(k, { sub: COND_SUB_LABEL[k] }) });
-    });
-    COND_EXTRA.forEach(function (e) {
-      if (e.industryOnly !== currentIndustry || !PROGRAMS[e.key]) return;
-      items.push({ key: e.key, html: condCompactCardHTML(e.key, { sub: COND_SUB_LABEL[e.key], tag: e.tag }) });
-    });
-    if (currentPrefecture === 'tokyo') {
-      COND_TOKYO_KEYS.forEach(function (k) {
-        if (!PROGRAMS[k] || !programFitsIndustry(k)) return;
-        items.push({ key: k, html: condCompactCardHTML(k, { sub: COND_SUB_LABEL[k], tag: '東京都限定の制度', tagClass: 'cond-card-prefecture-tag' }) });
-      });
-    }
-    var order = sortCondKeysByDue(items.map(function (it) { return it.key; }));
-    var byKey = {};
-    items.forEach(function (it) { byKey[it.key] = it.html; });
-    list.innerHTML = order.map(function (k) { return byKey[k]; }).join('') +
-      '<div id="prefectureCardSlot"></div><div id="municipalityCardSlot"></div>';
-    initFavoriteStars();
-  }
-
-  // 県レベル・市区町村の制度カードを1件ぶん組み立てる（静的な東京都カードと同じ見た目）
   function programFitsIndustry(key) {
     var list = PROGRAM_INDUSTRIES[key];
     return !list || list.indexOf(currentIndustry) !== -1;
   }
 
-  function fitsCurrentIndustry(keys) {
-    return (keys || []).filter(programFitsIndustry);
-  }
-
-  // 制度自体はあるが、いま選んでいる業種が対象外のときに出すカード。
-  // 「確認できませんでした」と言うと嘘になる（制度はある）ので、対象業種のほうを伝える
-  function buildOtherIndustryCardHTML(keys, areaLabel) {
-    var rows = keys.map(function (k) {
-      var p = PROGRAMS[k];
-      if (!p) return '';
-      var inds = (PROGRAM_INDUSTRIES[k] || []).map(function (i) {
-        return (INDUSTRIES[i] && INDUSTRIES[i].label) || i;
-      }).join('・');
-      return '<li style="margin-bottom:0.35rem;"><a href="' + p.link +
-        '" target="_blank" rel="noopener noreferrer">' + p.name + ' ↗</a>' +
-        (inds ? '<span style="color:var(--ink-soft);">（対象：' + inds + '）</span>' : '') + '</li>';
-    }).join('');
-    return (
-      '<div class="cond-card cond-card-prefecture municipality-otherindustry" style="display:block;">' +
-        '<div class="cond-head cond-head-static"><div class="stack"><span class="pill alt">' + areaLabel +
-          '</span><span class="sub">制度はあるが対象業種が異なる</span></div></div>' +
-        '<div class="cond-card-prefecture-tag">' + areaLabel + '</div>' +
-        '<p style="margin:0.7rem 0 0.4rem; font-size:0.88rem; color:var(--ink-soft); max-width:none;">' +
-          areaLabel + 'には事業者向けの制度がありますが、いま選んでいる業種は対象に含まれていません。' +
-          '<strong>制度が無いという意味ではありません。</strong>次の制度は対象業種が異なります。' +
-        '</p>' +
-        '<ul style="margin:0; padding-left:1.2rem; font-size:0.88rem;">' + rows + '</ul>' +
-      '</div>'
-    );
-  }
-
-  // 県の制度カードと市区町村の制度カードは同じ形。以前は8項目のフル pd-grid を
-  // 個別に組み立てていたが、一覧側と見た目の食い違いが起きないよう
-  // condCompactCardHTML に一本化した（2026-08-05）。「△ 要確認」バッジは
-  // computeEligibility() 側で municipality/prefecture 系のキーを見て
-  // 自動的に warn 判定になるため、ここで個別に付けなくてもよい。
-  function buildAreaCardHTML(key, areaLabel, tagLabel) {
-    return condCompactCardHTML(key, { sub: areaLabel, tag: tagLabel, tagClass: 'cond-card-prefecture-tag' });
-  }
-
-  function updatePrefectureCards() {
-    // 東京都の3制度の表示・非表示もここで一括して描き直す
-    renderCondList();
-    // 東京都以外は PROGRAMS から動的に描く（県ごとに静的HTMLを書き足さずに増やせる）
-    var slot = document.getElementById('prefectureCardSlot');
-    if (!slot) return;
-    var label = PREFECTURE_LABEL[currentPrefecture] || '';
-    if (!currentPrefecture || currentPrefecture === 'tokyo') { slot.innerHTML = ''; return; }
-    var allKeys = PREFECTURE_PROGRAM_KEYS[currentPrefecture] || [];
-    var keys = sortCondKeysByDue(fitsCurrentIndustry(allKeys));
-    if (keys.length) {
-      slot.innerHTML = keys.map(function (k) {
-        return PROGRAMS[k] ? buildAreaCardHTML(k, label + '限定の制度', label + '限定の制度') : '';
-      }).join('');
-      initFavoriteStars();
-    } else if (allKeys.length) {
-      slot.innerHTML = buildOtherIndustryCardHTML(allKeys, label);
-    } else {
-      var note = PREFECTURE_NOT_FOUND[currentPrefecture];
-      slot.innerHTML =
-        '<div class="cond-card cond-card-prefecture" style="display:block;">' +
-          '<div class="cond-head cond-head-static"><div class="stack"><span class="pill alt">' + label + '</span><span class="sub">県独自の汎用制度は確認できず</span></div></div>' +
-          '<div class="cond-card-prefecture-tag">' + label + '</div>' +
-          '<p style="margin:0.7rem 0 0; font-size:0.88rem; color:var(--ink-soft); max-width:none;">' +
-            (note || (label + '独自の、業種を問わず使える設備投資・IT導入系の補助金は確認できませんでした。')) +
-          '</p>' +
-        '</div>';
-    }
-  }
-
   function onPrefectureChange(value) {
     currentPrefecture = value;
     currentMunicipality = '';
-    updatePrefectureCards();
     renderMunicipalitySelect();
-    renderMunicipalityCard();
     renderProgramSelects(currentIndustry);
     renderTrackSelect(document.getElementById('simProgram').value);
     updateEligibilityBadges();
@@ -7342,60 +7081,10 @@
 
   function onMunicipalityChange(value) {
     currentMunicipality = value;
-    renderMunicipalityCard();
     renderProgramSelects(currentIndustry);
     renderTrackSelect(document.getElementById('simProgram').value);
     renderIndustryChrome(currentIndustry);
     runSimulation();
-  }
-
-  function renderMunicipalityCard() {
-    var slot = document.getElementById('municipalityCardSlot');
-    if (!slot) return;
-    if (!currentPrefecture || !currentMunicipality) { slot.innerHTML = ''; return; }
-    var wardName = (MUNICIPALITY_LABEL[currentPrefecture] || {})[currentMunicipality] || currentMunicipality;
-    var allKeys = (MUNICIPALITY_PROGRAM_KEYS[currentPrefecture] || {})[currentMunicipality] || [];
-    var progKeys = fitsCurrentIndustry(allKeys);
-    // 制度はあるが、いま選んでいる業種が対象外のとき。
-    // MUNICIPALITY_NOT_FOUND に「なぜ使えないか」を書いてあればそちらを優先する
-    // （調査時に書いた理由のほうが、機械的な一覧より読み手の役に立つ）
-    if (!progKeys.length && allKeys.length &&
-        !(MUNICIPALITY_NOT_FOUND[currentPrefecture] || {})[currentMunicipality]) {
-      slot.innerHTML = buildOtherIndustryCardHTML(allKeys, wardName);
-      return;
-    }
-    if (progKeys && progKeys.length) {
-      progKeys = sortCondKeysByDue(progKeys);
-      var html = progKeys.map(function (key) {
-        return PROGRAMS[key] ? buildAreaCardHTML(key, wardName + '限定の制度', wardName + '限定の制度') : '';
-      }).join('');
-      slot.innerHTML = html;
-      initFavoriteStars();
-    } else if (!isMunicipalityChecked(currentPrefecture, currentMunicipality)) {
-      // 未調査。「制度が無い」と書いてしまうと嘘になるので、調べていないことをそのまま伝える
-      slot.innerHTML =
-        '<div class="cond-card cond-card-prefecture municipality-pending" style="display:block;">' +
-          '<div class="cond-head cond-head-static"><div class="stack"><span class="pill other">' + wardName + '</span><span class="sub">当サイトでは未調査</span></div></div>' +
-          '<div class="cond-card-prefecture-tag">' + wardName + '</div>' +
-          '<p style="margin:0.7rem 0 0; font-size:0.88rem; color:var(--ink-soft); max-width:none;">' +
-            wardName + '独自の制度は、当サイトではまだ調査できていません。' +
-            '<strong>制度が無いという意味ではありません。</strong>' +
-            '順次調査して掲載していきますが、お急ぎの場合は' + wardName + 'の産業振興担当窓口、' +
-            'または地域の商工会議所・商工会へ直接お問い合わせください。' +
-          '</p>' +
-        '</div>';
-    } else {
-      var note = (MUNICIPALITY_NOT_FOUND[currentPrefecture] || {})[currentMunicipality];
-      slot.innerHTML =
-        '<div class="cond-card cond-card-prefecture municipality-notfound" style="display:block;">' +
-          '<div class="cond-head cond-head-static"><div class="stack"><span class="pill alt">' + wardName + '</span><span class="sub">独自の汎用制度は確認できず</span></div></div>' +
-          '<div class="cond-card-prefecture-tag">' + wardName + '</div>' +
-          '<p style="margin:0.7rem 0 0; font-size:0.88rem; color:var(--ink-soft); max-width:none;">' +
-            (note || (wardName + '独自の、業種を問わず使える設備投資・IT導入系の補助金は確認できませんでした。')) +
-            ' 最新の情報は' + wardName + 'の産業振興担当窓口へ直接お問い合わせください。' +
-          '</p>' +
-        '</div>';
-    }
   }
 
   function getOptionLabel(key) {
@@ -7606,11 +7295,6 @@
     renderCategoryCheckboxes(key);
     renderProgramSelects(key);
     renderTrackSelect(document.getElementById('simProgram').value);
-    // renderCondList()（.cond-list 本体の再描画）は updatePrefectureCards() の中で
-    // 一括して行う。業種限定カードの表示・非表示もそちらに含まれる
-    // （地域の制度は対象業種が違うことがある＝製造業限定など。業種を変えたら描き直す）
-    updatePrefectureCards();
-    renderMunicipalityCard();
     updateEligibilityBadges();
     initProgramFaq();
     runSimulation();
@@ -7906,10 +7590,11 @@
   }
 
   function initFavoriteStars() {
-    // .cond-card は旧・フル詳細カードのクラス（都道府県・市区町村の案内カード等、
-    // 他の場所でまだ使うことがある）。.cond-compact は2026-08-05のコンパクト一覧のカード。
-    // renderCondList() 等がカードを丸ごと作り直すたびに呼ばれるので、
-    // 既に★が付いている見出しはスキップして二重に足さないようにしている。
+    // .cond-card/.cond-compact は旧・一覧カードのクラス。2026-08-05にトップページの
+    // 制度一覧を #programSummary（比較表）へ一本化した際にカード自体は無くなったが、
+    // このスキャン自体は他ページ・将来のカードUIでも安全に使えるよう残してある
+    // （該当要素が無ければ何もしないだけ）。比較表側の★は renderProgramSummary() が
+    // 行ごとに直接ボタンを描画し、updateFavoriteStars() で状態を同期している。
     document.querySelectorAll('.cond-card[data-key], .cond-compact[data-key]').forEach(function (card) {
       var key = card.getAttribute('data-key');
       var head = card.querySelector('.cond-head');
@@ -7923,7 +7608,6 @@
       head.appendChild(btn);
     });
     updateFavoriteStars();
-    try { renderDocs(); } catch (e) { /* 書類一覧が無くても本体は動く */ }
   }
 
   function renderFavPanel() {
@@ -10572,6 +10256,8 @@
         limCell +
         '<div class="tt-nm">' + p.name +
           (isRegionProgram(r.key) ? '<span class="tt-region">この地域だけの制度</span>' : '') +
+          '<span class="elig-badge" id="eligBadge-' + r.key + '"></span>' +
+          '<button type="button" class="fav-star" data-key="' + r.key + '" onclick="event.stopPropagation(); toggleFavorite(\'' + r.key + '\')">☆ 気になる</button>' +
         '</div>' +
         '<div class="tt-rate"><span class="tt-k">補助率</span><span class="tt-v">' + rateShort(r.key) + '</span>' +
           (rateHasMore(r.key) ? '<span class="tt-more">枠・条件で変動</span>' : '') + '</div>' +
@@ -10582,177 +10268,9 @@
     table.innerHTML =
       '<div class="tt-hdr" aria-hidden="true"><span>次の期日／残り</span><span>制度名</span>' +
         '<span>補助率</span><span>上限額</span><span></span></div>' + body;
-  }
-
-  // ---------- 6. 申請書類・様式 ----------
-  // PROGRAM_DOCS に載っているのは公式サイトで実在を確認できた制度だけ。
-  // 載っていない制度は「まだ確認できていない」であって「書類が無い」ではないので、
-  // 公式ページへの導線だけを出す（推測で書類名を書かない）。
-  var docsFilter = 'all';
-  function setDocsFilter(mode) {
-    docsFilter = mode;
-    var row = document.getElementById('docsToolRow');
-    if (row) row.querySelectorAll('button').forEach(function (b) {
-      b.classList.toggle('active', b.getAttribute('data-docs') === mode);
-    });
-    renderDocs();
-  }
-  function docsTargetKeys() {
-    var keys = getUsableProgramKeys();
-    if (docsFilter === 'fav') {
-      var favs = getFavorites();
-      keys = keys.filter(function (k) { return favs.indexOf(k) !== -1; });
-    }
-    return keys;
-  }
-  function fileTypeClass(t) {
-    // ZIP は「開いたら中に様式が入っている」ので、PDF等と同じ色にすると誤解を招く
-    return t === 'Excel' ? 'ft-xls' : t === 'Word' ? 'ft-doc'
-         : t === 'ZIP' ? 'ft-zip' : 'ft-pdf';
-  }
-
-  // 様式のダウンロードだけでは申請できないが、「様式のほかに必要になる書類」の
-  // 一覧は 2026-08-03 に申請書類の準備ページ（documents.html の03）へ片寄せした。
-  // 同じ内容を2ページで手書きすると、片方だけ古くなって食い違うため。
-  function renderDocs() {
-    var el = document.getElementById('docsList');
-    var note = document.getElementById('docsNote');
-    if (!el) return;
-    var keys = docsTargetKeys();
-    var withDocs = keys.filter(function (k) { return PROGRAM_DOCS[k]; });
-    var without = keys.filter(function (k) { return !PROGRAM_DOCS[k]; });
-
-    if (note) {
-      note.textContent = docsFilter === 'fav'
-        ? (getFavorites().length
-            ? '「気になる」に入れた制度だけを表示しています。'
-            : 'まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに絞り込めます。')
-        : 'いま選んでいる業種・地域で使える可能性がある制度の書類です。制度名を押すと、その制度の書類一覧が開きます。';
-    }
-
-    var html = '';
-    if (!keys.length) {
-      html = '<p class="docs-empty">表示する制度がありません。上の「使える制度すべて」に切り替えるか、02の選択欄で条件を変えてみてください。</p>';
-      el.innerHTML = html;
-      return;
-    }
-
-    html += withDocs.map(function (k) {
-      var p = PROGRAMS[k], d = PROGRAM_DOCS[k];
-      var n = d.groups.reduce(function (a, g) { return a + g.items.length; }, 0);
-      // 制度カードは閉じた状態で出す。中の公式リンクを押したときは
-      // 開閉させない（stopPropagation で summary に届かないようにする）
-      return '<details class="docs-card">' +
-        '<summary class="docs-head">' +
-          // 制度名は program.html（1ページ1制度の詳細）への導線にする。カード自体の
-          // 開閉トグルと競合しないよう、クリック時は stopPropagation で summary に
-          // 伝播させない（d.portal.url の公式リンクと同じ書き方）。
-          '<a class="docs-ttl" href="program.html?key=' + encodeURIComponent(k) + '" onclick="event.stopPropagation();">' + p.name + '</a>' +
-          '<div class="docs-meta"><span class="docs-count">' + n + '件</span>' +
-            '<a class="src-link" href="' + d.portal.url + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">' +
-            d.portal.label + ' ↗</a></div>' +
-          '<span class="docs-toggle" aria-hidden="true"></span>' +
-        '</summary>' +
-        (d.note ? '<p class="docs-note">' + d.note + '</p>' : '') +
-        // 様式のファイル名・リンクの一覧と、様式のほかに要る書類は
-        // 申請書類の準備ページに一本化した（2026-08-03）。
-        // 同じ一覧を2ページで持つと、片方だけ古くなる
-        '<div class="docs-group">' +
-          '<div class="docs-phase">提出の時期ごとの内訳</div>' +
-          '<ul class="docs-links">' + d.groups.map(function (g) {
-            return '<li>' + g.phase + '　' + g.items.length + '件</li>';
-          }).join('') + '</ul>' +
-        '</div>' +
-        '<p class="docs-prep"><a href="documents.html?p=' + encodeURIComponent(k) + '">' +
-          '様式の一覧を見て準備する（' + n + '件・会社情報の転記・取り寄せ書類・締切の逆算）→</a></p>' +
-        '<p class="docs-extra-note">様式のほかに、登記事項証明書や納税証明書など<strong>取り寄せに日数がかかる書類</strong>が要ります。' +
-          '制度ごとの要不要と日数の目安は<a href="documents.html?p=' + encodeURIComponent(k) + '#common">準備ページの取り寄せ書類</a>にまとめています。</p>' +
-        '<p class="docs-checked">公式サイトで確認した日：' + d.checked + '</p>' +
-        '</details>';
-    }).join('');
-
-    if (without.length) {
-      html += '<details class="docs-card docs-card-unknown">' +
-        '<summary class="docs-head"><div class="docs-ttl">様式をまだ確認できていない制度（' + without.length + '件）</div>' +
-        '<span class="docs-toggle" aria-hidden="true"></span></summary>' +
-        '<p class="docs-note">当サイトで様式の掲載場所を確認できていない制度です。<strong>書類が無いという意味ではありません。</strong>公式ページで配布状況をご確認ください。</p>' +
-        '<ul class="docs-links">' + without.map(function (k) {
-          var p = PROGRAMS[k];
-          return '<li><a href="' + p.link + '" target="_blank" rel="noopener noreferrer">' +
-            p.name + ' — ' + (p.linkLabel || '公式サイト') + ' ↗</a></li>';
-        }).join('') + '</ul></details>';
-    }
-    el.innerHTML = html;
-  }
-
-  // 閉じたカードの中身は、画面をそのまま印刷しても出ない（ブラウザの仕様）。
-  // 印刷の直前に全部開き、終わったら元の開閉状態に戻す。
-  // 「印刷したら制度名だけの紙が出てきた」を防ぐため。
-  (function keepDocsCardsPrintable() {
-    var reopened = [];
-    window.addEventListener('beforeprint', function () {
-      reopened = [];
-      document.querySelectorAll('details.docs-card:not([open])').forEach(function (d) {
-        d.open = true; reopened.push(d);
-      });
-    });
-    window.addEventListener('afterprint', function () {
-      reopened.forEach(function (d) { d.open = false; });
-      reopened = [];
-    });
-  })();
-
-  // 書類一覧の印刷。窓口や商工会議所に持っていく用なので、
-  // チェック欄（□）を付けて、URLも文字として残す（紙で見たときに辿れるように）
-  function printDocsChecklist() {
-    var keys = docsTargetKeys();
-    var area = document.getElementById('printArea');
-    if (!area) return;
-    var head = '<h1>申請書類チェックリスト</h1>' +
-      '<p class="pmeta">' + INDUSTRIES[currentIndustry].label +
-      '／' + (currentPrefecture ? (PREFECTURE_LABEL[currentPrefecture] || currentPrefecture) : '全国共通') +
-      '／従業員' + currentEmployeeCount + '人' +
-      '　印刷日：' + new Date().toLocaleDateString('ja-JP') + '</p>' +
-      '<p class="pmeta">様式は年度・公募回ごとに差し替わります。提出前に必ず各制度の公式ページで最新版をご確認ください。</p>' +
-      // 紙で窓口に持っていく前提の一覧なので、画面と同じ注意を必ず載せる。
-      // 「この紙にある分をそろえれば足りる」と読まれると困る
-      '<p class="pwarn">このリストは、公式サイトからダウンロードできる様式だけです。' +
-      'ほかに見積書・決算書・登記事項証明書・納税証明書・賃金台帳などの添付や、' +
-      '商工会議所・認定支援機関に出してもらう書類が必要な制度があります。' +
-      '提出書類の全体像は各制度の「公募要領」に一覧で載っていますので、必ずそちらでご確認ください。</p>';
-    var body = keys.filter(function (k) { return PROGRAM_DOCS[k]; }).map(function (k) {
-      var d = PROGRAM_DOCS[k];
-      return '<h2>' + PROGRAMS[k].name + '</h2>' +
-        '<p class="pmeta">確認日 ' + d.checked + '／' + d.portal.url + '</p>' +
-        d.groups.map(function (g) {
-          return '<h3>' + g.phase + '</h3><ul class="pchk">' + g.items.map(function (it) {
-            return '<li>□ ' + it.name + '（' + it.type + (it.size ? '・' + it.size : '') + '）' +
-              '<span class="purl">' + it.url + '</span></li>';
-          }).join('') + '</ul>';
-        }).join('') +
-        // 様式のほかに要る書類は、制度の類型ごとに要不要が変わるため
-        // 準備ページ側に一本化した。紙からも辿れるようURLを文字で出す
-        '<h3>様式のほかに必要になる書類</h3>' +
-        '<ul class="pchk"><li>□ 登記事項証明書・納税証明書など、取り寄せに日数がかかる書類' +
-        '<span class="purl">https://subsidy-grant.github.io/koban-roadmap/documents.html?p=' +
-        encodeURIComponent(k) + '#common</span></li></ul>';
-    }).join('');
-    var unknown = keys.filter(function (k) { return !PROGRAM_DOCS[k]; });
-    var tail = unknown.length
-      ? '<h2>様式をまだ確認できていない制度</h2><ul class="pchk">' + unknown.map(function (k) {
-          return '<li>□ ' + PROGRAMS[k].name + '<span class="purl">' + PROGRAMS[k].link + '</span></li>';
-        }).join('') + '</ul>'
-      : '';
-    if (!body && !tail) {
-      alert('印刷できる書類がありません。表示を「使える制度すべて」に切り替えるか、気になる制度を登録してください。');
-      return;
-    }
-    area.innerHTML = head + body + tail;
-    // 印刷の仕組みはお気に入り印刷と同じ（@media print で #printArea 以外を隠す）。
-    // 独自の仕掛けを足すと2系統になって片方だけ壊れるので揃えている。
-    var styleEl = document.getElementById('printOrientationStyle');
-    if (styleEl) styleEl.textContent = '@page { size: portrait; margin: 1.5cm; }';
-    window.print();
+    // 行を丸ごと作り直すたびに ★気になる・✓対象バッジも消えるため、ここで描き直す
+    updateFavoriteStars();
+    updateEligibilityBadges();
   }
 
   // ---------- 3. URLへの状態保持 ----------
@@ -11072,7 +10590,6 @@
   function refreshPublicViews() {
     renderDiagnosis();
     renderProgramSummary();
-    renderDocs();
     syncURLState();
   }
   ['switchIndustry', 'onPrefectureChange', 'onMunicipalityChange', 'onEmployeeCountInput'].forEach(function (name) {
@@ -11100,7 +10617,6 @@
   initProgramCourses();
   initFavoriteStars();
   renderFavPanel();
-  updatePrefectureCards();
   renderMunicipalitySelect();
   switchIndustry('beauty');
 
@@ -11150,89 +10666,5 @@
 })();
 </script>
 <!-- ANALYTICS:END -->
-<script src="gantt_data.js"></script>
-<script>
-  // 06 申請の流れの概要。日付なしで「段階→期間の目安」を出す。
-  // 期間は gantt_data.js の offset / days から計算する（基準日は使わない）。
-  (function () {
-    var G = window.KOBAN_GANTT || { anchors: {}, schemes: {}, tasks: [] };
-    function esc(x) {
-      return String(x == null ? '' : x)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
-    function lenText(days) {
-      if (days <= 1) return '1日';
-      if (days < 14) return '約' + days + '日';
-      if (days < 60) return '約' + Math.round(days / 7) + '週間';
-      return '約' + Math.round(days / 30) + 'か月';
-    }
-    // 基準日（アンカー）の日本語名。交付決定日などは「その通知のあと」の段階と読める
-    function anchorName(k, key) {
-      var list = G.anchors[k] || [];
-      for (var i = 0; i < list.length; i++) if (list[i].key === key) return list[i].label;
-      return '';
-    }
-    function render() {
-      var sel = document.getElementById('gtScheme');
-      var out = document.getElementById('gtOverview');
-      if (!sel || !out) return;
-      var k = sel.value;
-      if (!k) { out.innerHTML = ''; return; }
-      var tasks = G.tasks.filter(function (t) { return t.scheme === k; });
-      if (!tasks.length) { out.innerHTML = ''; return; }
-      // 並び順のまま、段階（phase）のまとまりに切る
-      var groups = [];
-      tasks.forEach(function (t) {
-        var g = groups[groups.length - 1];
-        if (!g || g.phase !== t.phase) groups.push({ phase: t.phase, tasks: [t] });
-        else g.tasks.push(t);
-      });
-      var html = '<div class="ov-flow">' + groups.map(function (g, i) {
-        // 期間の目安：同じ基準日のタスクの offset の範囲。基準日が複数あれば長いほう
-        var byAnchor = {};
-        g.tasks.forEach(function (t) {
-          (byAnchor[t.anchor] = byAnchor[t.anchor] || []).push(t);
-        });
-        var best = 0, anchors = Object.keys(byAnchor);
-        anchors.forEach(function (a) {
-          var lo = null, hi = null;
-          byAnchor[a].forEach(function (t) {
-            var st = t.offset, en = t.offset + Math.max(1, t.days);
-            if (lo === null || st < lo) lo = st;
-            if (hi === null || en > hi) hi = en;
-          });
-          if (hi - lo > best) best = hi - lo;
-        });
-        // 交付決定日などが基準の段階は、日付ではなく「〜のあと」で示す
-        var waits = anchors.map(function (a) { return anchorName(k, a); })
-          .filter(function (x) { return /決定|通知|受理|認定/.test(x); });
-        var hard = g.tasks.filter(function (t) { return t.hard; }).length;
-        return '<div class="ov-ph"><span class="ov-no">' + (i + 1) + '</span>' +
-          '<div class="ov-bd"><span class="ov-nm">' + esc(g.phase) + '</span>' +
-          '<span class="ov-len">期間の目安：' + lenText(best) +
-          (waits.length ? '（' + esc(waits[0]) + 'のあと）' : '') + '</span>' +
-          '<p class="ov-tasks">やること' + g.tasks.length + '件：' +
-          esc(g.tasks.slice(0, 3).map(function (t) {
-            return (G.shorts && G.shorts[t.id]) || t.task;
-          }).join('／')) + (g.tasks.length > 3 ? '　ほか' : '') + '</p>' +
-          (hard ? '<p class="ov-warn">この段階には、落とすと対象外になる手順が' + hard + '件あります</p>' : '') +
-          '</div></div>';
-      }).join('') + '</div>';
-      var note = G.schemes[k] && G.schemes[k].note;
-      if (note) html = '<div class="warn" style="margin:0 0 1rem;">' + esc(note) + '</div>' + html;
-      html += '<div class="ov-cta">' +
-        '<a class="btn-link" href="schedule.html?scheme=' + encodeURIComponent(k) + '">' +
-        '日付を指定して詳細なスケジュールを確認 →</a>' +
-        '<p class="sub">締切や開始日を入れると、やること1つずつの日付と帯を表示します。終わった作業のチェックも別ページに残ります。</p></div>';
-      out.innerHTML = html;
-    }
-    var sel = document.getElementById('gtScheme');
-    if (sel) sel.addEventListener('change', render);
-    // 制度の選択肢は gantt_ui.js の renderGtSchemes が入れる（initGanttから呼ばれる）
-  })();
-</script>
-<script src="gantt_ui.js"></script>
-<script>if (window.initGantt) initGantt();</script>
 </body>
 </html>
