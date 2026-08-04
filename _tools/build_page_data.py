@@ -27,9 +27,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "index.html")
 OUT = os.path.join(ROOT, "page_data.js")
 
-# documents.html が使う項目だけを持ち出す。全部入れるとファイルが重くなり、
-# 中高年・非IT層が多い読者の回線で初期表示が遅くなる。
-PROGRAM_FIELDS = ["name", "prefecture", "municipality", "schedule", "link", "linkLabel"]
+# documents.html と program.html（1ページ1制度の詳細ページ、2026-08-05新設）が
+# 使う項目だけを持ち出す。全部入れるとファイルが重くなり、中高年・非IT層が多い
+# 読者の回線で初期表示が遅くなる。program.html は renderProgram() と同じ8項目
+# （事業規模・対象経費・補助率・上限額・賃金上昇要件・採択率・受付期間・継続性）
+# ＋note を pd-grid として組み立てるため、その素材となるフィールドを追加した。
+PROGRAM_FIELDS = [
+    "name", "prefecture", "municipality", "schedule", "link", "linkLabel",
+    "scale", "expense", "rate", "cap", "wage", "acceptance", "note", "continuity"
+]
 
 EXTRACT = """() => {
   if (typeof PROGRAMS === 'undefined' || typeof PROGRAM_DOCS === 'undefined') return null;

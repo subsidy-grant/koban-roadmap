@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>制度の詳細｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="補助金・助成金1制度ぶんの詳細（事業規模・対象経費・補助率・上限額・賃金上昇要件・採択率・受付期間・継続性）を1ページで確認できます。">
+<link rel="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体はトップページ（index.html）の「窓口の案内サイン」をそのまま使う。
+     このページは1ページ1制度の詳細（program.html?key=<制度キー>）。
+     手動の夜間モード切替は無く、OS設定への自動追従（prefers-color-scheme）のみ
+     （2026-08-05にindex.htmlのボタンを外したのに合わせている）。 */
+  :root {
+    --paper: #f1f3f5; --paper-raised: #ffffff; --ink: #14161a; --ink-soft: #454b55;
+    --ink-faint: #565c66; --accent: #00519e; --accent-soft: #a8c6e4; --accent-wash: #e7f0f8;
+    --on-accent: #ffffff; --sage: #1f6b47; --sage-wash: #e2f0e8; --rust: #b34700;
+    --rust-wash: #fdf0e6; --cat-hojo: #00519e; --cat-hojo-wash: #e7f0f8;
+    --cat-josei: #6b5210; --cat-josei-wash: #faf3e2;
+    --line: #c9ced6; --shadow: rgba(20, 22, 26, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #10141c; --paper-raised: #161b26; --ink: #e8ebf1; --ink-soft: #b7c0d1;
+      --ink-faint: #9aa6bd; --accent: #7fa4d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --sage: #7fbf9c; --sage-wash: #16261d; --rust: #e0897a; --rust-wash: #2e1c17;
+      --cat-hojo: #7fa4d9; --cat-hojo-wash: #1a2740; --cat-josei: #d9b463; --cat-josei-wash: #2b2415;
+      --line: #262d3c; --shadow: rgba(0, 0, 0, 0.45);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Hiragino Sans","Meiryo",sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
+  main { max-width: 880px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
+  a { color: var(--accent); }
+  .topbar { margin-bottom: 1.2rem; }
+  .back { font-size: 0.92rem; margin: 0; }
+
+  .area-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--sage); background: var(--sage-wash); border-radius: 100px;
+    padding: 0.15rem 0.6rem; margin-bottom: 0.6rem;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+  .pill {
+    display: inline-block; font-size: 0.82rem; padding: 0.18rem 0.6rem;
+    border-radius: 100px; white-space: normal; font-weight: 600;
+  }
+  .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
+  .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
+  .pill.other { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); font-weight: 500; }
+
+  h1.pt-name {
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
+    font-weight: 600; font-size: clamp(1.35rem, 3.4vw, 1.9rem);
+    margin: 0 0 1.1rem; line-height: 1.55; text-wrap: balance;
+  }
+  .pt-loading { color: var(--ink-soft); }
+
+  .wage-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; }
+  .wage-flag .dot2 { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
+  .wage-flag.req { color: var(--rust); font-weight: 700; }
+  .wage-flag.req .dot2 { background: var(--rust); }
+  .wage-flag.opt .dot2 { background: var(--ink-faint); }
+  .wage-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-weight: 400; display: block; }
+
+  .pd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.9rem; margin-top: 0.4rem; }
+  .pd-item { border: 1px solid var(--line); border-radius: 6px; padding: 0.75rem 0.9rem; background: var(--paper-raised); }
+  .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 0.3rem; }
+  .pd-item .v { font-size: 0.95rem; line-height: 1.65; }
+  .pd-item .v .sub { display: block; font-size: 0.8rem; color: var(--ink-faint); margin-top: 0.2rem; }
+  .pd-item-wide { grid-column: 1 / -1; }
+  .pd-item-key { border-left: 4px solid var(--hl); background: var(--hl-wash); }
+  .pd-item-key .k { color: var(--hl); font-weight: 700; }
+  .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
+  .pd-item-amount { --hl: var(--accent); --hl-wash: var(--accent-wash); }
+  .pd-item-due { --hl: var(--rust); --hl-wash: var(--rust-wash); }
+  .req-strong { color: var(--rust); font-weight: 700; }
+  .num-strong {
+    background: #ffffff; color: #1d3a63; font-weight: 700; font-style: italic;
+    font-size: 1.12em; padding: 0.05em 0.35em; border-radius: 4px;
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  }
+  .num-weak { font-weight: 600; }
+  .pd-note {
+    margin-top: 1.2rem; font-size: 0.87rem; color: var(--ink-soft);
+    background: var(--sage-wash); border-radius: 8px; padding: 0.9rem 1.05rem;
+  }
+  a.src-link {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.85rem; color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid var(--accent-soft);
+  }
+  a.src-link:hover, a.src-link:focus-visible { border-bottom-color: var(--accent); }
+
+  .pt-actions {
+    display: flex; flex-wrap: wrap; gap: 0.7rem 1.3rem; align-items: center;
+    margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px dashed var(--line);
+  }
+  .pt-btn {
+    display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem;
+    padding: 0.5rem 1.1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 700;
+    text-decoration: none;
+  }
+  .pt-btn.primary { background: var(--accent); color: var(--on-accent); }
+  .pt-btn.primary:hover, .pt-btn.primary:focus-visible { opacity: 0.88; }
+  .pt-btn.ghost { border: 1px solid var(--accent); color: var(--accent); }
+  .pt-btn.ghost:hover, .pt-btn.ghost:focus-visible { background: var(--accent-wash); }
+
+  #notFound {
+    display: none; background: var(--rust-wash); border: 1px solid var(--rust);
+    border-radius: 10px; padding: 1.1rem 1.2rem; font-size: 0.95rem;
+  }
+  .privacy-note { margin-top: 2.2rem; font-size: 0.82rem; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <p class="back"><a href="index.html">← 補助金活用 業務改善ロードマップ に戻る</a></p>
+  </div>
+
+  <div id="notFound" role="alert">
+    指定された制度が見つかりませんでした。URLの <code>?key=</code> の値をご確認いただくか、
+    <a href="index.html#condList">制度の一覧</a>から選び直してください。
+  </div>
+
+  <article id="programArticle">
+    <div class="area-tag" id="ptAreaTag" style="display:none;"></div>
+    <div class="pill-row"><span class="pill" id="ptPill"></span></div>
+    <h1 class="pt-name" id="ptName"><span class="pt-loading">読み込み中…</span></h1>
+
+    <div class="pd-grid" id="ptGrid"></div>
+    <div class="pd-note" id="ptNote" style="display:none;"></div>
+
+    <div class="pt-actions">
+      <a class="pt-btn primary" id="ptSrcLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">公式サイトを見る ↗</a>
+      <a class="pt-btn ghost" id="ptDocsLink" href="documents.html">この制度の申請書類・様式を見る →</a>
+      <a class="pt-btn ghost" id="ptBackLink" href="index.html#condList">← 制度の一覧に戻る</a>
+    </div>
+  </article>
+
+  <p class="privacy-note">入力した内容は、お使いの端末（ブラウザ）の中だけで処理されます。このページ自体は URL の <code>?key=</code> を読むだけで、送信するデータはありません。</p>
+</main>
+
+<script src="page_data.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = (window.KOBAN_DATA && window.KOBAN_DATA.programs) || {};
+
+  // ---------- index.html の renderProgram() と同じ組み立てロジック ----------
+  // データの出所は page_data.js（= index.html の PROGRAMS を機械的に書き出したもの、
+  // _tools/build_page_data.py が生成）。テキストのベタ書きコピーはしていない。
+  function reqHL(text) {
+    if (!text) return text;
+    return String(text).replace(/(必須|対象外)/g, '<strong class="req-strong">$1</strong>');
+  }
+  function wageNumHL(text) {
+    if (!text) return text;
+    return String(text).replace(/(\d[\d,]*\s?(?:%|円))/g, '<strong class="num-strong">$1</strong>');
+  }
+  function numStrong(text) { return text ? '<strong class="num-strong">' + text + '</strong>' : text; }
+  function numWeak(text) { return text ? '<span class="num-weak">' + text + '</span>' : text; }
+  function pillClass(text) {
+    var t = String(text || '');
+    if (t.indexOf('助成') !== -1) return 'josei';
+    if (t.indexOf('補助') !== -1) return 'hojo';
+    return 'other';
+  }
+  // 都道府県コードの日本語表示。index.html側の一覧(6都県)と同じ範囲だけを持つ、
+  // 単なるコード→表示名の対応表（内容データではないため複製の対象にしていない）
+  var PREFECTURE_LABEL_JA = {
+    tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
+    chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県'
+  };
+
+  function buildGridHTML(p) {
+    return (
+      '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
+      '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
+      '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
+      '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
+      '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
+      '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>'
+    );
+  }
+
+  function render() {
+    var params = new URLSearchParams(location.search);
+    var key = params.get('key') || '';
+    var p = D[key];
+    var notFound = document.getElementById('notFound');
+    var article = document.getElementById('programArticle');
+    if (!p) {
+      if (notFound) notFound.style.display = 'block';
+      if (article) article.style.display = 'none';
+      document.title = '制度が見つかりません｜補助金活用 業務改善ロードマップ';
+      return;
+    }
+
+    document.title = p.name + '｜補助金活用 業務改善ロードマップ';
+
+    var pill = document.getElementById('ptPill');
+    if (pill) { pill.className = 'pill ' + pillClass(p.name); pill.textContent = p.name; }
+
+    var areaTag = document.getElementById('ptAreaTag');
+    if (areaTag) {
+      if (p.municipality) {
+        areaTag.style.display = 'inline-block';
+        areaTag.textContent = '市区町村限定の制度（コード: ' + p.municipality + '）';
+      } else if (p.prefecture) {
+        areaTag.style.display = 'inline-block';
+        areaTag.textContent = (PREFECTURE_LABEL_JA[p.prefecture] || p.prefecture) + '限定の制度';
+      } else {
+        areaTag.style.display = 'none';
+      }
+    }
+
+    var nameEl = document.getElementById('ptName');
+    if (nameEl) nameEl.textContent = p.name;
+
+    var grid = document.getElementById('ptGrid');
+    if (grid) grid.innerHTML = buildGridHTML(p);
+
+    var noteEl = document.getElementById('ptNote');
+    if (noteEl) {
+      if (p.note) { noteEl.style.display = 'block'; noteEl.innerHTML = reqHL(p.note); }
+      else { noteEl.style.display = 'none'; }
+    }
+
+    var srcLink = document.getElementById('ptSrcLink');
+    if (srcLink) {
+      if (p.link) {
+        srcLink.style.display = 'inline-flex';
+        srcLink.setAttribute('href', p.link);
+        srcLink.textContent = (p.linkLabel || '公式サイトを見る') + ' ↗';
+      } else {
+        srcLink.style.display = 'none';
+      }
+    }
+
+    var docsLink = document.getElementById('ptDocsLink');
+    if (docsLink) docsLink.setAttribute('href', 'documents.html?p=' + encodeURIComponent(key));
+
+    // industry を受け取っていれば一覧への戻りリンクにも引き継ぐ（診断結果の続きに戻れるように）
+    var industry = params.get('industry');
+    var backLink = document.getElementById('ptBackLink');
+    if (backLink && industry) {
+      backLink.setAttribute('href', 'index.html?industry=' + encodeURIComponent(industry) + '#condList');
+    }
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

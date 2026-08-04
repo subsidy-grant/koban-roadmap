@@ -180,6 +180,32 @@
     font-size: 0.92rem;
   }
 
+  /* ---------- 冒頭の業種選択（2026-08-05）----------
+     以前はここに3問（業種・地域・従業員数）の大きな入力ブロックがあったが、
+     「説明を読む前に入力を求める形が重い」という指摘で02の節へ移した経緯がある
+     （下の #conditions 内のコメント参照）。今回はその逆で、業種だけを冒頭に
+     戻す指示。地域・従業員数は02に残すため、3問ブロックの再現はしない。 */
+  .hero-industry {
+    background: var(--accent-wash);
+    border-bottom: 1px solid var(--accent-soft);
+  }
+  .hero-industry-inner {
+    max-width: 880px; margin: 0 auto; padding: 1.1rem 1.5rem;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1.1rem;
+  }
+  .hero-industry-lead { margin: 0; font-size: 0.96rem; color: var(--ink); flex: 1 1 240px; }
+  .hero-industry select {
+    font: inherit; font-size: 1rem; font-weight: 600; min-height: 2.9rem;
+    padding: 0.5rem 2.2rem 0.5rem 0.8rem; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper-raised) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23887d63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.7rem center;
+    background-size: 1rem; color: var(--ink); appearance: none; -webkit-appearance: none; cursor: pointer;
+    flex: 1 1 260px; max-width: 360px;
+  }
+  @media (max-width: 480px) {
+    .hero-industry-inner { padding: 1rem 1.1rem; }
+    .hero-industry select { max-width: none; width: 100%; }
+  }
+
   .hero h1 {
     font-size: clamp(1.9rem, 4.4vw, 3rem);
     font-weight: 600;
@@ -883,7 +909,9 @@
   .diag-inner { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 2.4rem; }
   .diag h2 { font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; }
   .diag .diag-lead { color: var(--ink-soft); margin: 0.5rem 0 1.5rem; font-size: 1rem; }
-  .diag-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  /* 2026-08-05に業種の質問を冒頭のヒーローへ移したため、ここは地域・従業員数の
+     2枚だけになった（3枚前提の repeat(3,1fr) だと右側に空欄が残るため変更）。 */
+  .diag-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
   @media (max-width: 760px) { .diag-steps { grid-template-columns: 1fr; } }
   .diag-step { border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.1rem 1.1rem; background: var(--paper); }
   .diag-step > .dhead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.7rem; }
@@ -1319,7 +1347,15 @@
   details.docs-card > summary.docs-head:hover .docs-ttl,
   details.docs-card > summary.docs-head:focus-visible .docs-ttl { text-decoration: underline; }
   @media print { .docs-toggle { display: none; } }
-  .docs-ttl { font-size: 1.06rem; font-weight: 700; flex: 1; min-width: 14rem; }
+  /* 2026-08-05: 制度名を program.html への<a>にした。デフォルトの下線は
+     カード開閉のクリック領域と紛らわしいので消し、キーボード操作の
+     フォーカスだけ見えるようにする（クリックはstopPropagationでカードの
+     開閉と分離しているので、下線が常時あると別ボタンに見えて誤解を招く） */
+  .docs-ttl {
+    font-size: 1.06rem; font-weight: 700; flex: 1; min-width: 14rem;
+    color: inherit; text-decoration: none;
+  }
+  .docs-ttl:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
   .docs-meta { display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
   .docs-count {
     font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", serif;
@@ -1400,6 +1436,36 @@
     color: var(--accent); font-size: 0.9rem; font-weight: 700; text-decoration: none;
   }
   .cond-docs-link:hover, .cond-docs-link:focus-visible { background: var(--accent-wash); }
+
+  /* ---------- コンパクトな制度一覧（2026-08-05）----------
+     .cond-card の8項目フル pd-grid をベタ書きしていたのをやめ、renderCondList()
+     が制度名・種別・補助率/上限額・受付状況の要点だけを組み立てる。全詳細は
+     program.html（renderProgram と同じ PROGRAMS データを参照）へ移した。
+     .cond-card は使わず .cond-compact という別クラスにしてあるのは、.cond-card
+     に付いている「畳んで見出しだけにする」アコーディオンCSS/JS
+     （initCondCardToggles・.cond-card:not(.is-open) 系のルール）を
+     一切引き継がないため。常に開いた状態の軽いカードとして扱う。 */
+  .cond-compact {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.1rem 1.3rem 1.3rem;
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+  .cond-compact .cond-head { cursor: default; margin-bottom: 0.7rem; }
+  .cond-compact .cond-head:hover { background: transparent; }
+  .cond-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 0.7rem; }
+  .cond-compact-actions {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.2rem; margin-top: 0.9rem;
+  }
+  .cond-detail-link {
+    display: inline-flex; align-items: center; gap: 0.3rem; min-height: 2.75rem;
+    padding: 0.4rem 1rem; border-radius: 4px;
+    background: var(--accent); color: var(--on-accent);
+    font-size: 0.9rem; font-weight: 700; text-decoration: none;
+  }
+  .cond-detail-link:hover, .cond-detail-link:focus-visible { opacity: 0.87; }
+  .cond-compact .cond-docs-link { margin-top: 0; }
 
   @media (max-width: 700px) {
     .docs-files a { gap: 0.5rem; }
@@ -1507,28 +1573,38 @@
   </div>
 </header>
 
+<div class="hero-industry">
+  <div class="hero-industry-inner">
+    <p class="hero-industry-lead">まずは<strong>業種</strong>を選んでください。このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
+    <label for="industrySelectTop" class="sr-only">お店・会社の業種</label>
+    <select id="industrySelectTop" onchange="switchIndustry(this.value)">
+      <option value="beauty">美容業（美容室・サロン等）</option>
+      <option value="food">飲食業（レストラン・カフェ・居酒屋等）</option>
+      <option value="lodging">宿泊業（ホテル・旅館等）</option>
+      <option value="manufacturing">製造業（工場・ものづくり事業者等）</option>
+      <option value="realestate">不動産業、物品賃貸業</option>
+      <option value="education">教育、学習支援業（学習塾・スクール等）</option>
+    </select>
+  </div>
+</div>
 
 <nav class="toc" aria-label="ページ内の目次">
   <div class="toc-scroll">
     <div class="row">
       <a href="#favPanel">気になる制度</a>
-      <a href="#premise"><span class="toc-no">01</span>対象と前提</a>
-      <a href="#conditions"><span class="toc-no">02</span>制度を探す</a>
-      <a href="#simulator"><span class="toc-no">03</span>概算シミュレーター</a>
-      <a href="#improvement-cta"><span class="toc-no">04</span>改善計画10選</a>
-      <a href="#docs"><span class="toc-no">05</span>申請書類・様式</a>
-      <a href="#gantt"><span class="toc-no">06</span>手順とスケジュール</a>
-      <a href="#criteria-cta"><span class="toc-no">07</span>採択・返還基準</a>
-      <a href="#notes"><span class="toc-no">08</span>留意事項</a>
+      <a href="#conditions"><span class="toc-no">01</span>制度を探す</a>
+      <a href="#simulator"><span class="toc-no">02</span>概算シミュレーター</a>
+      <a href="#improvement-cta"><span class="toc-no">03</span>改善計画10選</a>
+      <a href="#docs"><span class="toc-no">04</span>申請書類・様式</a>
+      <a href="#gantt"><span class="toc-no">05</span>手順とスケジュール</a>
+      <a href="#criteria-cta"><span class="toc-no">06</span>採択・返還基準</a>
+      <a href="#notes"><span class="toc-no">07</span>留意事項</a>
     </div>
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
 </nav>
 
 <div class="util-row">
-  <button type="button" class="util-btn" id="themeToggle" onclick="toggleTheme()">
-    <span id="themeToggleIcon" aria-hidden="true">🌙</span><span id="themeToggleLabel">夜間モードにする</span>
-  </button>
 </div>
 
 <div class="fav-panel" id="favPanel">
@@ -1548,35 +1624,17 @@
 
 <main>
 
-  <section id="premise">
-    <div class="section-head"><span class="section-no jp-serif">01</span><h2>対象業態と前提</h2></div>
-    <p class="section-sub">本資料は「<span id="premiseIndustryName">美容業（美容室・理容室・ヘアサロン、ネイル・まつげエクステ等を含む美容関連サービス業）</span>」を対象に、個人事業主・小規模事業者から、6〜20人・21〜50人・51〜100人・101人以上まで幅広い事業規模を想定しています。従業員数によって活用できる制度や上限額が変わるため、「補助金・助成金の制度を探す」の比較表と「概算シミュレーター」で従業員規模別の違いを確認できます。</p>
-    <p>対象とした公的制度は、経済産業省「デジタル化・AI導入補助金2026」、中小企業庁「小規模事業者持続化補助金」「中小企業省力化投資補助金」、厚生労働省「業務改善助成金」「キャリアアップ助成金」「人材開発支援助成金」の6制度です（業種によっては、これに業種特有の制度が加わります）。旧・事業再構築補助金や中小企業新事業進出補助金など、既に公募を終了した制度は掲載していません。内容は2026年7月13日時点で公開されている公募要領・制度概要に基づくもので、公募スケジュールの変化に応じて随時更新しています。</p>
-  </section>
-
   <section id="conditions">
-    <div class="section-head"><span class="section-no jp-serif">02</span><h2>補助金・助成金の制度を探す</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">01</span><h2>補助金・助成金の制度を探す</h2></div>
     <!-- もとはページ冒頭に大きな「3つの質問」ブロックとして置いていたが、
          説明を読む前に入力を求める形が重いという指摘を受けて、条件の節へ移した
-         （2026-08-01）。選択欄はページ内でここにしか無いので、消さずに移設している。 -->
+         （2026-08-01）。2026-08-05に「業種」だけ再びページ冒頭のヒーローへ戻した
+         （本人指示）。地域・従業員数の選択欄はここに残す。 -->
     <div class="diag-inline">
-      <p class="diag-inline-lead">まず<strong>業種・地域・従業員数</strong>を選んでください。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
+      <p class="diag-inline-lead"><strong>地域・従業員数</strong>を選んでください（業種はページ上部で選択済み）。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
       <div class="diag-steps">
       <div class="diag-step">
-        <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">業種を選ぶ</span></div>
-        <label for="industrySelectTop">お店・会社の業種</label>
-        <select id="industrySelectTop" onchange="switchIndustry(this.value)">
-          <option value="beauty">美容業（美容室・サロン等）</option>
-          <option value="food">飲食業（レストラン・カフェ・居酒屋等）</option>
-          <option value="lodging">宿泊業（ホテル・旅館等）</option>
-          <option value="manufacturing">製造業（工場・ものづくり事業者等）</option>
-          <option value="realestate">不動産業、物品賃貸業</option>
-          <option value="education">教育、学習支援業（学習塾・スクール等）</option>
-        </select>
-      </div>
-
-      <div class="diag-step">
-        <div class="dhead"><span class="dnum" aria-hidden="true">2</span><span class="dttl">地域を選ぶ</span></div>
+        <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">地域を選ぶ</span></div>
         <label for="prefectureSelect">都道府県（任意）</label>
         <select id="prefectureSelect" onchange="onPrefectureChange(this.value)">
           <option value="">選択しない（全国共通の制度のみ）</option>
@@ -1594,7 +1652,7 @@
       </div>
 
       <div class="diag-step">
-        <div class="dhead"><span class="dnum" aria-hidden="true">3</span><span class="dttl">従業員数を入れる</span></div>
+        <div class="dhead"><span class="dnum" aria-hidden="true">2</span><span class="dttl">従業員数を入れる</span></div>
         <label for="employeeCountInput">常時使用する従業員の人数</label>
         <div class="diag-emp">
           <input type="number" id="employeeCountInput" min="1" max="100" step="1" value="5"
@@ -1652,294 +1710,12 @@
       <div class="program-detail" id="programDetail"></div>
     </div>
 
-    <div class="cond-list">
-
-      <div class="cond-card" id="cond-ai" data-key="ai">
-        <div class="cond-head"><div class="stack"><span class="pill hojo">デジタル化・AI導入補助金2026</span><span class="sub">旧IT導入補助金／通常枠</span></div><a class="src-link" href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）を見る ↗</a><span class="elig-badge" id="eligBadge-ai"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者が対象。<strong>中小企業者の基準（上記ボックス参照）の範囲内なら6人以上でも対象</strong>で、この制度自体には従業員数による上限額の変動はない</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2以内</strong><span class="sub">要件充足で2/3</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">5万〜450万円</strong><span class="sub">通常枠。ほかにインボイス枠(対応類型・上限350万円)、セキュリティ対策推進枠(上限150万円)等があり、概算シミュレーターで枠ごとに試算できる</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金未満雇用者要件で補助率優遇</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">43.9%<span class="sub">2026年1次・通常枠</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>通年・複数回締切<span class="sub num-weak">次回：3次締切 2026年7月21日17:00／4次締切 8月25日</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2017年度から継続実施中。名称・要件は年度改定あり、次年度以降も何らかの形での継続が見込まれる</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-ai"></div>
-      </div>
-
-      <div class="cond-card" id="cond-jizoku" data-key="jizoku">
-        <div class="cond-head"><div class="stack"><span class="pill hojo">小規模事業者持続化補助金</span><span class="sub">＜一般型・通常枠＞（第20回）</span></div><a class="src-link" href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">第20回公募要領を見る ↗</a><span class="elig-badge" id="eligBadge-jizoku"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>「小規模事業者持続化補助金の対象基準」（上記ボックス参照）以下の常時使用従業員数</strong>が対象。個人事業主も対象。<strong style="color:var(--rust);">基準を超える場合は「小規模事業者」に該当せず対象外</strong>（この場合はデジタル化・AI導入補助金や省力化投資補助金を検討）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">2/3以内</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">上限50万円</strong><span class="sub">賃金引上げ枠で200万円、インボイス特例併用で250万円（いずれも対象基準以下が前提）。概算シミュレーターで枠ごとに試算できる</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>通常枠は任意<span class="sub">賃金引上げ枠を選ぶ場合は<strong class="req-strong">必須</strong></span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">51.1%<span class="sub">第19回（採択発表待ち）</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>現在受付中の回なし<span class="sub num-weak">第20回：2026年11月5日〜12月15日17:00</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">長年継続的に実施。次年度以降も継続見込み</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-jizoku"></div>
-      </div>
-
-      <div class="cond-card" id="cond-kaizen" data-key="kaizen">
-        <div class="cond-head"><div class="stack"><span class="pill josei">業務改善助成金</span><span class="sub">2026年度／50・70・90円コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-kaizen"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業・小規模事業者（基準は上記ボックス参照）で、事業場内最低賃金が地域別最低賃金を下回る事業場。<strong class="req-strong">時給50円以上の引き上げ</strong>が要件。<strong>従業員規模を問わず対象</strong>（上限額は引き上げる従業員数によって変動）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">生産性向上に資する設備・機器の導入費（施術機器・什器等）</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">3/4〜4/5</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">450万円</strong><span class="sub">特例600万円。50円／70円／90円の3コースがあり、コースと引き上げ人数に応じて上限額が変動（概算シミュレーターでコース別に試算可能）</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub"><strong class="num-strong">50円</strong>以上の賃上げが前提条件</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付前<span class="sub num-weak">2026年9月1日開始／締切は最低賃金発効日前日か11月30日の早い方</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">毎年度実施。2027年度以降も継続見込み</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-kaizen"></div>
-      </div>
-
-      <div class="cond-card" id="cond-shoryokuka" data-key="shoryokuka">
-        <div class="cond-head"><div class="stack"><span class="pill hojo">中小企業省力化投資補助金</span><span class="sub">＜一般型＞</span></div><a class="src-link" href="https://shoryokuka.smrj.go.jp/ippan/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a><span class="elig-badge" id="eligBadge-shoryokuka"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・小規模事業者（<strong class="req-strong">GビズIDプライム必須</strong>）。<strong>従業員数に応じて上限額が変動</strong>（右の上限額欄を参照）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">1/2</strong><span class="sub">小規模2/3。最低賃金引上げ特例でさらに優遇</span></div></div>
-          <div class="pd-item pd-item-wide">
-            <div class="k">上限額（従業員規模別）</div>
-            <ul class="tier-list">
-              <li><span>5人以下</span><span class="tabular"><strong class="num-strong">750万円</strong><span class="sub">（特例1,000万円）</span></span></li>
-              <li><span>6〜20人</span><span class="tabular"><strong class="num-strong">1,500万円</strong><span class="sub">（特例2,000万円）</span></span></li>
-              <li><span>21〜50人</span><span class="tabular"><strong class="num-strong">3,000万円</strong><span class="sub">（特例4,000万円）</span></span></li>
-              <li><span>51〜100人</span><span class="tabular"><strong class="num-strong">5,000万円</strong><span class="sub">（特例6,500万円）</span></span></li>
-              <li><span>101人以上</span><span class="tabular"><strong class="num-strong">8,000万円</strong><span class="sub">（特例1億円）</span></span></li>
-            </ul>
-            <p class="track-desc" style="margin-top:0.6rem;">上記は「一般型」。ほかに登録済みの汎用製品から選ぶだけで申請できる「カタログ注文型」（上限は5人以下500万円〜21人以上1,000万円）があり、概算シミュレーターで両方を試算できる。</p>
-          </div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">最低賃金引上げ特例で補助率優遇</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">直近公募分は未公表</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第7回受付中<span class="sub num-weak">2026年7月1日〜7月31日17:00／第8回は10月頃開始見込み</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2024年度創設。年3〜4回のペースで継続公募中、次年度以降は予算措置次第</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-shoryokuka"></div>
-      </div>
-
-      <div class="cond-card" id="cond-hatarakikata" data-key="hatarakikata">
-        <div class="cond-head"><div class="stack"><span class="pill josei">働き方改革推進支援助成金</span><span class="sub">労働時間短縮・年休促進支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000120692.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-hatarakikata"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労災保険の適用事業主で中小企業に当たること。<strong>美容業はこの助成金の業種区分ではサービス業扱い</strong>なので、資本金5,000万円以下または常時使用する労働者100人以下なら該当（パート・アルバイトも人数に入ります）。年5日の年休取得に向けて年休管理簿・就業規則を整えていること、<strong>交付申請日の前日から過去1年間に労働基準関係法令の違反がないこと</strong>も条件</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修、周知・啓発、外部専門家のコンサル、就業規則・労使協定の整備、人材確保に向けた取組（求人サイト掲載費など）、労務管理用ソフト・機器、労働能率の増進に資する設備の導入費。<strong>パソコン・タブレット・スマートフォンは対象外</strong>。法令で義務づけられている措置そのものも対象外</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">3/4</strong><span class="sub">30人以下＋機器等30万円超なら4/5</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">150万円</strong><span class="sub"><strong>時間外労働の削減を選べるのは、過去2年に月45時間超の残業実態があり、月60/80時間超の36協定を申請前に届け出ている事業主だけ</strong>です。当てはまらない場合は年休の制度導入で25万円。ほかに賃上げ加算・割増賃金率引上げ加算（最大100万円）</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">賃上げすると加算。<strong class="num-strong">3%／5%／7%</strong>の3段階。小規模の割増（2倍・2.5倍）が効くのは<strong>5%以上と7%以上だけ</strong>で、3%以上は規模にかかわらず同額</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）。ただし予算がなくなると締切前でも受付終了</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>2026年4月13日〜11月30日(月)<span class="sub num-weak">郵送は当日消印有効、窓口・電子申請は当日17時まで。事業を終える期限は2027年1月31日。支給申請は終了30日後か2027年2月5日の早い方</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">働き方改革関連法にあわせて毎年度実施。年度ごとにコースの新設・改廃あり（令和8年度は取引環境改善コースが新設）</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-hatarakikata"></div>
-      </div>
-
-
-      <div class="cond-card" id="cond-ryouritsu_ikuji" data-key="ryouritsu_ikuji">
-        <div class="cond-head"><div class="stack"><span class="pill josei">両立支援等助成金</span><span class="sub">育児休業等支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-ryouritsu_ikuji"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v"><strong>中小企業のみ</strong>（美容業はサービス業なので、資本金5,000万円以下または常時使用する労働者100人以下）。育児休業と育児のための短時間勤務を<strong>就業規則に定めている</strong>こと（「法に準ずる」だけの記載は不可）。あわせて<strong>一般事業主行動計画を作り、労働局へ届け出て、公表・周知</strong>していること。働く人が100人以下だと法律上は努力義務ですが、この助成金では必須です</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">経費の補助ではなく<strong>定額</strong>です。育休復帰支援プランを作り、そのとおりに引き継ぎをして、育休から復帰してもらうことに対して出ます</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">定額支給</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">60万円／人</strong><span class="sub">育休取得時30万円＋職場復帰時30万円。<strong>無期雇用1人＋有期雇用1人の計2人まで</strong>で、同じ雇用形態から2人は取れません。ほかに情報公表加算2万円（制度全体で通算1回）</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>不要<span class="sub">賃上げの要件はありません。ただし復帰後6か月の間に雇用形態や給与形態を不合理に変えないこと（育休を理由に時給や手当を下げると不支給）</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）。公募回・締切日一斉方式ではなく通年</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">育休取得時は<strong>育休開始日から3か月経過する日の翌日から2か月以内</strong>、職場復帰時は<strong>育休終了日の翌日から6か月経過する日の翌日から2か月以内</strong>。早すぎても遅すぎても受け付けられません</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">令和8年4月8日改正版で継続中。年度ごとにコースの新設・改廃があり、令和8年度は介護離職防止支援コースと柔軟な働き方選択制度等支援コースに「有給化支援」が新設されました</div></div>
-          <div class="pd-item pd-item-wide"><div class="k">注意</div><div class="v"><strong>この助成金には計画届がありません。</strong>労働局へ事前に出す書類はなく、①支援方針を全員に知らせる ②本人と面談して面談シートに記録 ③育休復帰支援プランを作る ④プランにそって引き継ぐ、の4つを<strong>育児休業の開始日の前日まで</strong>（産後休業から続けて育休に入る場合は<strong>産前休業の開始日の前日まで</strong>）に終えておく必要があります。<strong>プランによらず先に引き継ぎを終えている場合は対象外</strong>です。育児休業は<strong>連続3か月以上</strong>必要で、1〜2か月では対象になりません。職場復帰時は、原職または原職相当職に復帰させ、復帰後6か月以上雇用保険被保険者として続けて雇い、その6か月の<strong>就業割合が5割以上</strong>であることが要ります。出生時両立支援コース（男性労働者の育児休業取得）とは、同じ人の同じ育児休業について併給できません。申請書類の作成・提出を代理で頼めるのは社会保険労務士または弁護士に限られます。</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-ryouritsu_ikuji"></div>
-      </div>
-
-      <div class="cond-card" id="cond-career" data-key="career">
-        <div class="cond-head"><div class="stack"><span class="pill josei">キャリアアップ助成金</span><span class="sub">正社員化コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-career"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">有期雇用労働者等を正社員化する事業主。事業所あたり年20名まで。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）か大企業かで支給額が異なる</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">正社員転換に伴う人件費相当（設備投資ではない）</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">定額支給</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">140万円／人</strong><span class="sub">加算込。中小企業向け金額（大企業はより低額）</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">転換後に賃金<strong class="num-strong">3%</strong>以上の引上げが要件</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給。事前のキャリアアップ計画届出が必要</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">恒久的な制度として毎年度実施。次年度も継続見込み</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-career"></div>
-      </div>
-
-      <div class="cond-card" id="cond-jinzai" data-key="jinzai">
-        <div class="cond-head"><div class="stack"><span class="pill josei">人材開発支援助成金</span><span class="sub">人材育成支援コース</span></div><a class="src-link" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページを見る ↗</a><span class="elig-badge" id="eligBadge-jinzai"></span></div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">労働者に<strong class="req-strong">10時間以上の訓練を実施する</strong>事業主。<strong>企業規模を問わず対象</strong>だが、中小企業（基準は上記ボックス参照）は助成率が優遇される</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">研修・訓練費用、訓練期間中の賃金</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular"><strong class="num-strong">経費助成45%</strong><span class="sub">＋賃金助成。大企業は30%（中小企業の基準内であれば45%を維持）</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular"><strong class="num-strong">年間1,000万円</strong></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>基本不要<span class="sub">一部コースで賃金要件充足時に助成単価上乗せ</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">—<span class="sub">要件充足型（競争審査なし）</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag ongoing"><span class="dot2"></span>通年受付<span class="sub num-weak">公募型ではなく随時支給</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">恒久的な制度として毎年度実施。次年度も継続見込み</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-jinzai"></div>
-      </div>
-
-      <div class="cond-card cond-card-extra" data-industry-only="food" data-key="food_labor" id="cond-food_labor">
-        <div class="cond-head">
-          <div class="stack"><span class="pill hojo">飲食業労働生産性向上支援補助金</span><span class="sub">農林水産省・厚生労働省</span></div>
-          <a class="src-link" href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページを見る ↗</a>
-        </div>
-        <div class="cond-card-extra-tag">飲食業限定の制度</div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小・中堅規模の飲食店（他業種は対象外）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">調理・接客・店舗管理の各領域における自動化・省力化設備・システム。<strong style="color:var(--rust);">リース契約に限る（購入・レンタルは対象外）</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">定額（10/10、全額補助）</div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">1領域100万〜500万円<span class="sub">3領域併願で最大1,500万円</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし<span class="sub">公募要領に賃上げ必須要件の記載はない</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">2026年度分は選定手続き中</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">2026年度は3/26〜4/10・4/1〜5/29で終了。次回は未発表</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">2026年度新設。年度内複数回の公募実績があり継続の可能性は高いが確定情報ではない</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-food_labor"></div>
-      </div>
-
-      <div class="cond-card cond-card-extra" data-industry-only="lodging" data-key="kanko_shoryokuka" id="cond-kanko_shoryokuka">
-        <div class="cond-head">
-          <div class="stack"><span class="pill hojo">観光地・観光産業における省力化投資補助事業</span><span class="sub">観光庁</span></div>
-          <a class="src-link" href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイトを見る ↗</a>
-        </div>
-        <div class="cond-card-extra-tag">宿泊業限定の制度</div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">旅館業法第3条第1項の許可を受けた宿泊事業者（風俗営業・住宅宿泊事業＝民泊は対象外）。地域（DMO・自治体等）と連携した取組が要件</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">自動チェックイン機、PMS、配膳ロボット、清掃支援設備等の省力化・省人化設備</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2</div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">1施設あたり1,000万円</div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>明記なし</span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は3/27〜5/29で終了。二次公募の実施可否は検討中</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧・人材不足対策事業からの継続制度。次年度以降の実施可否は予算措置次第</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-kanko_shoryokuka"></div>
-      </div>
-
-      <div class="cond-card cond-card-extra" data-industry-only="manufacturing" data-key="monodukuri" id="cond-monodukuri">
-        <div class="cond-head">
-          <div class="stack"><span class="pill hojo">新事業進出・ものづくり商業サービス補助金</span><span class="sub">旧ものづくり補助金＋新事業進出補助金の統合制度</span></div>
-          <a class="src-link" href="https://shinjigyou-monodukuri.smrj.go.jp/" target="_blank" rel="noopener noreferrer">公式サイトを見る ↗</a>
-        </div>
-        <div class="cond-card-extra-tag">製造業と相性が良い制度</div>
-        <div class="pd-grid">
-          <div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">中小企業者・中堅企業者（基準は上記ボックス参照）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウド利用費等</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2<span class="sub">特例2/3。グローバル枠は2/3</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">750万〜7,000万円<span class="sub">3つの申請枠（革新的新製品・サービス枠／新事業進出枠／グローバル枠）で対象・上限額が異なる。概算シミュレーターで枠ごとに試算できる</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag req"><span class="dot2"></span>必須<span class="sub">給与支給総額+3.5%以上／事業場内最低賃金+30円以上を3〜5年維持</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">第1回公募のため実績なし</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag open"><span class="dot2"></span>第1回公募<span class="sub">2026年6月29日公募開始／8月31日申請受付開始／9月30日18:00締切</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">旧ものづくり補助金（2026年5月公募終了）と新事業進出補助金の統合により2026年度新設。継続実施見込みだが次年度以降の詳細は未定</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-monodukuri"></div>
-      </div>
-
-      <div class="cond-card cond-card-extra" data-industry-only="realestate" data-key="akiya" id="cond-akiya">
-        <div class="cond-head">
-          <div class="stack"><span class="pill other">空き家対策モデル事業</span><span class="sub">国土交通省</span></div>
-          <a class="src-link" href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_tk3_000131.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページを見る ↗</a>
-        </div>
-        <div class="cond-card-extra-tag">不動産業と相性が良い制度</div>
-        <div class="pd-grid">
-          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">民間事業者（不動産事業者を含む）・NPO・地方公共団体等の提案主体。<strong style="color:var(--accent);">他制度と異なり、個別の設備導入費ではなく先進的な空き家対策の事業提案に対する競争的な公募</strong>である点に注意</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">空き家の改修・除却工事（ハード事業）、相談体制構築等の事業スキーム構築（ソフト事業）</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">工事費は最大2/5<span class="sub">ソフト事業は定額</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">提案内容により異なる</div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>対象外</span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">競争的提案公募型<span class="sub">令和8年度は36件採択</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>受付終了<span class="sub">令和8年度は5/20正午締切。採択発表は7月上旬予定。次年度は例年3〜5月頃見込み</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">国土交通省が毎年度実施。次年度以降も継続実施が見込まれる</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-akiya"></div>
-      </div>
-
-      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_sogyo" id="cond-tokyo_sogyo">
-        <div class="cond-head">
-          <div class="stack"><span class="pill josei">創業助成事業</span><span class="sub">東京都・東京都中小企業振興公社（TOKYO創業ステーション）</span></div>
-          <a class="src-link" href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション 公式ページを見る ↗</a>
-          <span class="elig-badge" id="eligBadge-tokyo_sogyo"></span>
-        </div>
-        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
-        <div class="pd-grid">
-          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内で創業予定の個人、または創業から5年未満の中小企業者等（申請時点で、個人事業主または法人の代表者として経営に従事している期間が通算5年未満であること）</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">賃借料・広告費・器具備品購入費・産業財産権出願導入費・専門家指導費等の事業費、従業員人件費、市場調査・分析費</div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">400万円<span class="sub">下限100万円。事業費・人件費分は上限300万円、委託費分は上限100万円の内訳制約あり</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表<span class="sub">審査による選考制。応募状況により変動</span></div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月29日〜10月8日<span class="sub">第1回（4/7〜4/16）は受付終了</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">東京都・東京都中小企業振興公社が例年実施。次年度以降も継続実施が見込まれる</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-tokyo_sogyo"></div>
-      </div>
-
-      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_digital" id="cond-tokyo_digital">
-        <div class="cond-head">
-          <div class="stack"><span class="pill hojo">中小企業デジタル導入促進補助事業</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
-          <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
-          <span class="elig-badge" id="eligBadge-tokyo_digital"></span>
-        </div>
-        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
-        <div class="pd-grid">
-          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業者等（会社・個人事業主・中小企業団体）。従業員規模を問わず対象</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">新たに導入するデジタルツール（ソフトウェア・クラウドサービス）本体費、および初期設定・カスタマイズ・運用保守サポート費。<strong style="color:var(--accent);">ハード機器本体・OS・汎用セキュリティソフト等は対象外</strong></div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">1/2以内<span class="sub">小規模事業者、または環境負荷軽減に資するツールは2/3以内</span></div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">150万円<span class="sub">下限5万円</span></div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>特になし</span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：令和8年9月頃受付開始予定<span class="sub">第1回（6/11〜7/3）は受付終了</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-tokyo_digital"></div>
-      </div>
-
-      <div class="cond-card cond-card-prefecture" data-prefecture="tokyo" data-key="tokyo_soui" id="cond-tokyo_soui">
-        <div class="cond-head">
-          <div class="stack"><span class="pill other">創意工夫チャレンジ促進事業（業務改善コース）</span><span class="sub">東京都・東京都中小企業振興公社</span></div>
-          <a class="src-link" href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 公式ページを見る ↗</a>
-          <span class="elig-badge" id="eligBadge-tokyo_soui"></span>
-        </div>
-        <div class="cond-card-prefecture-tag">東京都限定の制度</div>
-        <div class="pd-grid">
-          <div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">都内中小企業等で、<strong style="color:var(--rust);">直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している事業者</strong>が対象。業績が堅調な事業者は対象外</div></div>
-          <div class="pd-item"><div class="k">主な対象経費</div><div class="v">原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目<span class="sub">市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可</span></div></div>
-          <div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">2/3以内</div></div>
-          <div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">600万円</div></div>
-          <div class="pd-item"><div class="k">賃金上昇要件</div><div class="v"><span class="wage-flag opt"><span class="dot2"></span>任意<span class="sub">賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある</span></span></div></div>
-          <div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">非公表</div></div>
-          <div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v"><span class="sched-flag upcoming"><span class="dot2"></span>第2回：8/3〜8/14 16時<span class="sub">第3回：11/2〜11/13 16時／第4回：令和9年2/1〜2/12 16時</span></span></div></div>
-          <div class="pd-item"><div class="k">制度の継続性</div><div class="v">年複数回の公募を継続実施中。次年度以降の実施は予算措置次第</div></div>
-        </div>
-        <a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>
-        <div class="cond-faq" id="condFaq-tokyo_soui"></div>
-      </div>
-
-      <div id="prefectureCardSlot"></div>
-      <div id="municipalityCardSlot"></div>
-
+    <div class="cond-list" id="condList">
+      <!-- ここは静的HTMLを持たない。renderCondList()（同ファイル内スクリプト）が
+           業種・地域・従業員数に応じて実行時に組み立てる。制度の全項目を
+           ベタ書きしていたものを2026-08-05にコンパクトな一覧へ置き換えた。
+           出所は renderProgram() と同じ PROGRAMS データなので内容は食い違わない。
+           全詳細は program.html?key=<制度キー> （1ページ1制度）で見る。 -->
     </div>
     <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合はカードが追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
     <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算に上限があり、審査で採択・不採択が決まります。「助成金」は競争ではなく要件を満たすことが基本ですが、<strong>労働局の審査があり、書類の不備や要件の行き違いで不支給になることがあります</strong>。業務改善助成金のように予算枠があり、締切前に受付が終わる制度もあります。「申請すれば必ずもらえる」制度ではありません。</p>
@@ -1951,7 +1727,7 @@
        getElementById が null ガード付きなので、節ごと消しても JS はそのまま動く。 -->
 
   <section id="simulator">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>概算シミュレーター</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>概算シミュレーター</h2></div>
     <p class="section-sub">使いたい制度・従業員数・業務改善の分類（複数選択可）を選ぶと、見込める補助金・助成金の概算受給額を試算します。対象経費の種類が一致しない分類は注意として表示します。</p>
 
     <div class="picker">
@@ -1988,7 +1764,7 @@
   </section>
 
   <section id="improvement-cta">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>業種別・改善計画 厳選10選</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>業種別・改善計画 厳選10選</h2></div>
     <p class="section-sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（各業種1000案からのPDCA評価と、6業種×100施策のスコアリングを突き合わせて選定）。各案に<strong>A4×10ページの事業計画書</strong>（Excel版つき）を用意しています。<strong>導入システムの試作プロトタイプ</strong>は美容業・飲食業で公開中、ほかの業種は準備中です。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" id="pdcaBoardLink" href="improvement/beauty/pdca.html">全1000案のPDCAファネル・一覧を見る（美容業版）↗</a></p>
   <!-- IMPROVEMENT_HUB_EMBED:START (embed_hub_cards.py で自動生成、手編集しないこと) -->
@@ -2515,7 +2291,7 @@
        中身は PROGRAM_DOCS から描画し、いま選んでいる業種・地域で
        使える制度のぶんだけを出す。 -->
   <section id="docs">
-    <div class="section-head"><span class="section-no jp-serif">05</span><h2>申請書類・様式をそろえる</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>申請書類・様式をそろえる</h2></div>
     <p class="section-sub">選んだ条件で使える制度について、<strong>公式サイトで配布されている最新の様式・要領</strong>へのダウンロードリンクをまとめています。リンク先はすべて各制度の公式サイトです（当サイトはファイルを保管していません）。</p>
 
     <div class="docs-lead">
@@ -2555,7 +2331,7 @@
   <!-- 06 申請の手順とスケジュール（ガント）。
        描画は gantt_ui.js、データは gantt_data.js（出典と確認日時つき）。 -->
   <section id="gantt">
-    <div class="section-head"><span class="section-no jp-serif">06</span><h2>申請の手順とスケジュール</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">05</span><h2>申請の手順とスケジュール</h2></div>
     <p class="section-sub">制度を選ぶと、<strong>申請までの流れ（どんな段階を、どのくらいの期間でやるか）</strong>がその場で分かります。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
 
     <div class="picker">
@@ -2569,14 +2345,14 @@
 
 
   <section id="criteria-cta">
-    <div class="section-head"><span class="section-no jp-serif">07</span><h2>採択基準・返還基準 調査ノート</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">06</span><h2>採択基準・返還基準 調査ノート</h2></div>
     <p class="section-sub">各制度の公式な公募要領・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
   </section>
 
 
   <section id="notes">
-    <div class="section-head"><span class="section-no jp-serif">08</span><h2>留意事項</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">07</span><h2>留意事項</h2></div>
     <p>補助金・助成金の活用にあたっては、次の点にご留意ください。</p>
     <ul class="item-list" style="max-width:68ch;">
       <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
@@ -7349,10 +7125,137 @@
     return keys;
   }
 
-  function updateIndustrySpecificCards(industryKey) {
-    document.querySelectorAll('.cond-card-extra').forEach(function (card) {
-      card.style.display = (card.getAttribute('data-industry-only') === industryKey) ? 'block' : 'none';
+  // ---------- コンパクトな制度一覧（2026-08-05）----------
+  // 900行のフル pd-grid をベタ書きしていたのをやめ、制度名・種別・補助率/上限額・
+  // 受付状況の要点だけを表示する。全詳細（renderProgram と同じ8項目）は
+  // program.html?key=<制度キー> に移した。ここで作るHTMLは PROGRAMS のデータを
+  // そのまま使うので、program.html の内容と食い違うことはない。
+  var COND_COMMON_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'hatarakikata', 'ryouritsu_ikuji'];
+  var COND_EXTRA = [
+    { key: 'food_labor', industryOnly: 'food', tag: '飲食業限定の制度' },
+    { key: 'kanko_shoryokuka', industryOnly: 'lodging', tag: '宿泊業限定の制度' },
+    { key: 'monodukuri', industryOnly: 'manufacturing', tag: '製造業と相性が良い制度' },
+    { key: 'akiya', industryOnly: 'realestate', tag: '不動産業と相性が良い制度' }
+  ];
+  var COND_TOKYO_KEYS = ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'];
+  // カードの「sub」欄（制度名の下の小さい説明）。もとの静的カードにあった文言を踏襲する
+  var COND_SUB_LABEL = {
+    ai: '旧IT導入補助金／通常枠',
+    jizoku: '＜一般型・通常枠＞（第20回）',
+    kaizen: '2026年度／50・70・90円コース',
+    shoryokuka: '＜一般型＞',
+    career: '正社員化コース',
+    jinzai: '人材育成支援コース',
+    hatarakikata: '労働時間短縮・年休促進支援コース',
+    ryouritsu_ikuji: '育児休業等支援コース',
+    food_labor: '農林水産省・厚生労働省',
+    kanko_shoryokuka: '観光庁',
+    monodukuri: '旧ものづくり補助金＋新事業進出補助金の統合制度',
+    akiya: '国土交通省',
+    tokyo_sogyo: '東京都・東京都中小企業振興公社（TOKYO創業ステーション）',
+    tokyo_digital: '東京都・東京都中小企業振興公社',
+    tokyo_soui: '東京都・東京都中小企業振興公社'
+  };
+
+  // 上限額の短い表示。CAP_TEXT（シミュレーター用の短文）があればそれを使い、
+  // 無い制度（akiya・両立支援等助成金など）は PROGRAMS[].cap の先頭の一文で代える
+  function capShort(k) {
+    if (CAP_TEXT[k]) return CAP_TEXT[k].split('（')[0];
+    var t = (PROGRAMS[k] && PROGRAMS[k].cap) || '—';
+    var head = t.split(/[。、]/)[0];
+    return head.length > 42 ? head.slice(0, 42) + '…' : head;
+  }
+
+  // 受付状況の要点。sched-flag のクラス名(open/upcoming/ongoing)は使わず、
+  // parseNextDeadline() が実際の受付期間テキストから具体的な日付を拾えるかどうかで
+  // 表示を決める。並び順（sortCondKeysByDue）と同じ判定基準にすることで、
+  // 「一覧の並びと表示の説明が食い違う」ことが起きないようにしている。
+  function condDueBadgeHTML(k) {
+    var pr = PROGRAMS[k];
+    var d = pr ? parseNextDeadline(pr.schedule) : null;
+    if (d) {
+      var days = daysUntil(d);
+      return '<span class="sched-flag open"><span class="dot2"></span>次回締切 ' + fmtDate(d) +
+        (days >= 0 ? '<span class="sub">あと' + days + '日</span>' : '') + '</span>';
+    }
+    return '<span class="sched-flag ongoing"><span class="dot2"></span>通年・随時など<span class="sub">具体的な次回締切は未定</span></span>';
+  }
+
+  // 一覧の並び順：具体的な締切がある制度を先に、無い制度をあとに（本人指示 2026-08-05）。
+  // sched-flag のクラス名だけでは判定しない。hatarakikata のように旧カードでは
+  // ongoing クラスでも実際は具体的な終了日（2026年11月30日）があったケースがあるため、
+  // 実際の受付期間テキストから parseNextDeadline() で日付を拾えるかどうかで決める。
+  // 同じ区分（締切あり／なし）の中は元の掲載順を保つ（安定ソート）。
+  function sortCondKeysByDue(keys) {
+    var withDate = [], withoutDate = [];
+    keys.forEach(function (k, i) {
+      var pr = PROGRAMS[k];
+      var d = pr ? parseNextDeadline(pr.schedule) : null;
+      (d ? withDate : withoutDate).push({ k: k, d: d, i: i });
     });
+    withDate.sort(function (a, b) { return a.d - b.d || a.i - b.i; });
+    return withDate.concat(withoutDate).map(function (x) { return x.k; });
+  }
+
+  // 1件ぶんのコンパクトカード。共通制度・業種限定制度・都道府県/市区町村限定制度の
+  // すべてがここを通る（見た目の食い違いをなくすため、経路を1本にしている）
+  function condCompactCardHTML(key, opts) {
+    opts = opts || {};
+    var p = PROGRAMS[key];
+    if (!p) return '';
+    var sub = opts.sub || '';
+    var tagHTML = opts.tag ? '<div class="' + (opts.tagClass || 'cond-card-extra-tag') + '">' + opts.tag + '</div>' : '';
+    var detailHref = 'program.html?key=' + encodeURIComponent(key) + '&industry=' + encodeURIComponent(currentIndustry);
+    return (
+      '<div class="cond-compact" id="cond-' + key + '" data-key="' + key + '">' +
+        tagHTML +
+        '<div class="cond-head">' +
+          '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name.split('（')[0] + '</span>' +
+          (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>' +
+          '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
+          '<span class="elig-badge" id="eligBadge-' + key + '"></span>' +
+        '</div>' +
+        '<div class="cond-facts">' +
+          '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(rateShort(key)) +
+            (rateHasMore(key) ? '<span class="sub">条件で変わる（詳しく見るで確認）</span>' : '') + '</div></div>' +
+          '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(capShort(key)) + '</div></div>' +
+          '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付状況</div><div class="v">' + condDueBadgeHTML(key) + '</div></div>' +
+        '</div>' +
+        '<div class="cond-compact-actions">' +
+          '<a class="cond-detail-link" href="' + detailHref + '">この制度を詳しく見る →</a>' +
+          '<a class="cond-docs-link" href="#docs">この制度の申請書類・様式を見る →</a>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  // .cond-list 本体（共通8制度＋業種限定4制度＋東京都限定3制度）を組み立てる。
+  // 都道府県・市区町村の制度は別スロット（#prefectureCardSlot/#municipalityCardSlot）
+  // に updatePrefectureCards/renderMunicipalityCard が続けて描く。
+  function renderCondList() {
+    var list = document.getElementById('condList');
+    if (!list) return;
+    var items = [];
+    COND_COMMON_KEYS.forEach(function (k) {
+      if (!PROGRAMS[k]) return;
+      items.push({ key: k, html: condCompactCardHTML(k, { sub: COND_SUB_LABEL[k] }) });
+    });
+    COND_EXTRA.forEach(function (e) {
+      if (e.industryOnly !== currentIndustry || !PROGRAMS[e.key]) return;
+      items.push({ key: e.key, html: condCompactCardHTML(e.key, { sub: COND_SUB_LABEL[e.key], tag: e.tag }) });
+    });
+    if (currentPrefecture === 'tokyo') {
+      COND_TOKYO_KEYS.forEach(function (k) {
+        if (!PROGRAMS[k] || !programFitsIndustry(k)) return;
+        items.push({ key: k, html: condCompactCardHTML(k, { sub: COND_SUB_LABEL[k], tag: '東京都限定の制度', tagClass: 'cond-card-prefecture-tag' }) });
+      });
+    }
+    var order = sortCondKeysByDue(items.map(function (it) { return it.key; }));
+    var byKey = {};
+    items.forEach(function (it) { byKey[it.key] = it.html; });
+    list.innerHTML = order.map(function (k) { return byKey[k]; }).join('') +
+      '<div id="prefectureCardSlot"></div><div id="municipalityCardSlot"></div>';
+    initFavoriteStars();
   }
 
   // 県レベル・市区町村の制度カードを1件ぶん組み立てる（静的な東京都カードと同じ見た目）
@@ -7392,54 +7295,30 @@
     );
   }
 
-  // 県の制度カードと市区町村の制度カードは同じ形。extraClass だけが違う。
-  // 以前は市区町村側に同じHTMLがもう一組あり、片方だけ直して表示が食い違ったので1本にした
-  // key は時刻表の「条件を見る」からのアンカー用。渡さなくても従来どおり動く。
-  function buildAreaCardHTML(p, areaLabel, tagLabel, extraClass, key) {
-    return (
-      '<div class="cond-card cond-card-prefecture' + (extraClass ? ' ' + extraClass : '') + '"' +
-        (key ? ' id="cond-' + key + '" data-key="' + key + '"' : '') + ' style="display:block;">' +
-        '<div class="cond-head">' +
-          // 末尾の括弧は落とさない。「（タイプA）」「（B.生産性向上枠）」「（DX部門）」は
-          // 同じ制度の別枠と区別する情報で、消すと補助率・上限額がどの枠の数字か分からなくなる
-          '<div class="stack"><span class="pill ' + pillClass(p.name) + '">' + p.name + '</span><span class="sub">' + areaLabel + '</span></div>' +
-          '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>' +
-          '<span class="elig-badge warn">△ 要確認</span>' +
-        '</div>' +
-        '<div class="cond-card-prefecture-tag">' + tagLabel + '</div>' +
-        '<div class="pd-grid">' +
-          '<div class="pd-item pd-item-wide"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
-          '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
-          '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
-          '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
-          '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
-        '</div>' +
-        '<div class="pd-note">' + reqHL(p.note) + '</div>' +
-      '</div>'
-    );
+  // 県の制度カードと市区町村の制度カードは同じ形。以前は8項目のフル pd-grid を
+  // 個別に組み立てていたが、一覧側と見た目の食い違いが起きないよう
+  // condCompactCardHTML に一本化した（2026-08-05）。「△ 要確認」バッジは
+  // computeEligibility() 側で municipality/prefecture 系のキーを見て
+  // 自動的に warn 判定になるため、ここで個別に付けなくてもよい。
+  function buildAreaCardHTML(key, areaLabel, tagLabel) {
+    return condCompactCardHTML(key, { sub: areaLabel, tag: tagLabel, tagClass: 'cond-card-prefecture-tag' });
   }
 
   function updatePrefectureCards() {
-    // 東京都は静的HTMLのカード（FAQ・対象判定バッジ付き）を使う
-    document.querySelectorAll('[data-prefecture]').forEach(function (card) {
-      card.style.display = (currentPrefecture && card.getAttribute('data-prefecture') === currentPrefecture) ? 'block' : 'none';
-    });
+    // 東京都の3制度の表示・非表示もここで一括して描き直す
+    renderCondList();
     // 東京都以外は PROGRAMS から動的に描く（県ごとに静的HTMLを書き足さずに増やせる）
     var slot = document.getElementById('prefectureCardSlot');
     if (!slot) return;
     var label = PREFECTURE_LABEL[currentPrefecture] || '';
     if (!currentPrefecture || currentPrefecture === 'tokyo') { slot.innerHTML = ''; return; }
     var allKeys = PREFECTURE_PROGRAM_KEYS[currentPrefecture] || [];
-    var keys = fitsCurrentIndustry(allKeys);
+    var keys = sortCondKeysByDue(fitsCurrentIndustry(allKeys));
     if (keys.length) {
       slot.innerHTML = keys.map(function (k) {
-        var p = PROGRAMS[k];
-        return p ? buildAreaCardHTML(p, label, label + '限定の制度', '', k) : '';
+        return PROGRAMS[k] ? buildAreaCardHTML(k, label + '限定の制度', label + '限定の制度') : '';
       }).join('');
-      initCondCardToggles(slot);
+      initFavoriteStars();
     } else if (allKeys.length) {
       slot.innerHTML = buildOtherIndustryCardHTML(allKeys, label);
     } else {
@@ -7512,13 +7391,12 @@
       return;
     }
     if (progKeys && progKeys.length) {
+      progKeys = sortCondKeysByDue(progKeys);
       var html = progKeys.map(function (key) {
-        var p = PROGRAMS[key];
-        if (!p) return '';
-        return buildAreaCardHTML(p, wardName, wardName + '限定の制度', 'cond-card-municipality', key);
+        return PROGRAMS[key] ? buildAreaCardHTML(key, wardName + '限定の制度', wardName + '限定の制度') : '';
       }).join('');
       slot.innerHTML = html;
-      initCondCardToggles(slot);
+      initFavoriteStars();
     } else if (!isMunicipalityChecked(currentPrefecture, currentMunicipality)) {
       // 未調査。「制度が無い」と書いてしまうと嘘になるので、調べていないことをそのまま伝える
       slot.innerHTML =
@@ -7755,8 +7633,9 @@
     renderCategoryCheckboxes(key);
     renderProgramSelects(key);
     renderTrackSelect(document.getElementById('simProgram').value);
-    updateIndustrySpecificCards(key);
-    // 地域の制度は対象業種が違うことがある（製造業限定など）。業種を変えたら描き直す
+    // renderCondList()（.cond-list 本体の再描画）は updatePrefectureCards() の中で
+    // 一括して行う。業種限定カードの表示・非表示もそちらに含まれる
+    // （地域の制度は対象業種が違うことがある＝製造業限定など。業種を変えたら描き直す）
     updatePrefectureCards();
     renderMunicipalityCard();
     updateEligibilityBadges();
@@ -8055,7 +7934,11 @@
   }
 
   function initFavoriteStars() {
-    document.querySelectorAll('.cond-card[data-key]').forEach(function (card) {
+    // .cond-card は旧・フル詳細カードのクラス（#programDetail のピッカー等、他の場所で
+    // まだ使うことがある）。.cond-compact は2026-08-05のコンパクト一覧のカード。
+    // renderCondList() 等がカードを丸ごと作り直すたびに呼ばれるので、
+    // 既に★が付いている見出しはスキップして二重に足さないようにしている。
+    document.querySelectorAll('.cond-card[data-key], .cond-compact[data-key]').forEach(function (card) {
       var key = card.getAttribute('data-key');
       var head = card.querySelector('.cond-head');
       if (!head || head.querySelector('.fav-star')) return;
@@ -8456,7 +8339,7 @@
     career_shoyo: {
       checked: '2026-08-02',
       portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
-      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。賞与・退職金制度導入コースで使う様式だけを載せています。',
+      note: '掲載しているのは令和8年4月8日以降版のキャリアアップ計画書です。賞与・退職金制度導入コースで使う様式だけを載せています。',
       groups: [
         { phase: '取組の前に出す', items: [
           { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
@@ -8476,7 +8359,7 @@
     career_kaitei: {
       checked: '2026-08-02',
       portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
-      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。賃金規定等改定コースで使う様式だけを載せています。',
+      note: '掲載しているのは令和8年4月8日以降版のキャリアアップ計画書です。賃金規定等改定コースで使う様式だけを載せています。',
       groups: [
         { phase: '取組の前に出す', items: [
           { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
@@ -8497,7 +8380,7 @@
     career_kyotsu: {
       checked: '2026-08-02',
       portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
-      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。賃金規定等共通化コースで使う様式だけを載せています。',
+      note: '掲載しているのは令和8年4月8日以降版のキャリアアップ計画書です。賃金規定等共通化コースで使う様式だけを載せています。',
       groups: [
         { phase: '取組の前に出す', items: [
           { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
@@ -8517,7 +8400,7 @@
     career_tanjikan: {
       checked: '2026-08-02',
       portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
-      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。短時間労働者労働時間延長支援コースで使う様式だけを載せています。事業所確認票は、常時雇用する労働者が30人以下であること（50万円の区分）を示すのに使います。',
+      note: '掲載しているのは令和8年4月8日以降版のキャリアアップ計画書です。短時間労働者労働時間延長支援コースで使う様式だけを載せています。事業所確認票は、常時雇用する労働者が30人以下であること（50万円の区分）を示すのに使います。',
       groups: [
         { phase: '取組の前に出す', items: [
           { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
@@ -8537,7 +8420,7 @@
     career_shogai: {
       checked: '2026-08-02',
       portal: { label: '申請様式（令和8年4月8日以降の取組）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000118801_00022.html' },
-      note: '令和8年度の様式ページは「4月1日以降」と「4月8日以降」の2つがあり、キャリアアップ計画書は中身が差し替わっています。ここに載せているのは新しい4月8日以降の版です。障害者正社員化コースで使う様式だけを載せています。別添様式2-3は、障害者手帳等の写しに代えて出せるマイナンバーの登録届です。',
+      note: '掲載しているのは令和8年4月8日以降版のキャリアアップ計画書です。障害者正社員化コースで使う様式だけを載せています。別添様式2-3は、障害者手帳等の写しに代えて出せるマイナンバーの登録届です。',
       groups: [
         { phase: '取組の前に出す', items: [
           { name: '様式第1号 キャリアアップ計画書', url: 'https://www.mhlw.go.jp/content/11909000/001688046.docx', type: 'Word', size: '101KB' },
@@ -8559,7 +8442,7 @@
     ryouritsu_ikuji: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。育児休業等支援コースで使う様式だけを載せています。面談シートとプランは、育児休業の開始日の前日までに作っておく必要があります。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。育児休業等支援コースで使う様式だけを載せています。面談シートとプランは、育児休業の開始日の前日までに作っておく必要があります。',
       groups: [
         { phase: '支給申請', items: [
           { name: '支給申請書一式【育】様式第1〜5号', url: 'https://www.mhlw.go.jp/content/001722325.xlsx', type: 'Excel', size: '122KB' },
@@ -8573,7 +8456,7 @@
     ryouritsu_shusseiji: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。出生時両立支援コースで使う様式だけを載せています。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。出生時両立支援コースで使う様式だけを載せています。',
       groups: [
         { phase: '支給申請', items: [
           { name: '支給申請書一式【出】様式第1〜4号', url: 'https://www.mhlw.go.jp/content/001722329.xlsx', type: 'Excel', size: '120KB' },
@@ -8584,7 +8467,7 @@
     ryouritsu_kaigo: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。介護離職防止支援コースで使う様式だけを載せています。両立支援プランと面談シートは、原則として介護休業の開始日の前日までに作っておく必要があります。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。介護離職防止支援コースで使う様式だけを載せています。両立支援プランと面談シートは、原則として介護休業の開始日の前日までに作っておく必要があります。',
       groups: [
         { phase: '支給申請', items: [
           { name: '支給申請書一式【介】様式第1〜6号', url: 'https://www.mhlw.go.jp/content/001722328.xlsx', type: 'Excel', size: '183KB' },
@@ -8598,7 +8481,7 @@
     ryouritsu_juunan: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。柔軟な働き方選択制度等支援コースで使う様式だけを載せています。面談シートとプランは、制度利用開始日の前日までに作っておく必要があります。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。柔軟な働き方選択制度等支援コースで使う様式だけを載せています。面談シートとプランは、制度利用開始日の前日までに作っておく必要があります。',
       groups: [
         { phase: '支給申請', items: [
           { name: '支給申請書一式【柔】様式第1〜5号', url: 'https://www.mhlw.go.jp/content/001722322.xlsx', type: 'Excel', size: '143KB' },
@@ -8612,7 +8495,7 @@
     ryouritsu_daitai: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。育休中等業務代替支援コースで使う様式だけを載せています。様式第1号から第6号までが1つのファイルにまとまっています。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。育休中等業務代替支援コースで使う様式だけを載せています。様式第1号から第6号までが1つのファイルにまとまっています。',
       groups: [
         { phase: '支給申請', items: [
           { name: '支給申請書一式【代】様式第1〜6号', url: 'https://www.mhlw.go.jp/content/001722323.xlsx', type: 'Excel', size: '223KB' },
@@ -8623,7 +8506,7 @@
     ryouritsu_funin: {
       checked: '2026-08-02',
       portal: { label: '両立支援等助成金の申請様式（令和8年度）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html' },
-      note: '両立支援等助成金には計画届の提出がありません。労働局へ事前に出す書類はなく、就業規則の整備・方針の周知・面談・プランの作成を取組の前に社内で終わらせておきます。不妊治療及び女性の健康課題対応両立支援コースの様式は、旧形式（.xls／.doc）のまま配布されています。区分ごとにファイルが分かれているので、使う区分のものを選んでください。',
+      note: '両立支援等助成金に計画届の提出はなく、就業規則整備・周知・面談・プラン作成を取組前に済ませます。不妊治療及び女性の健康課題対応両立支援コースの様式は、旧形式（.xls／.doc）のまま配布されています。区分ごとにファイルが分かれているので、使う区分のものを選んでください。',
       groups: [
         { phase: '支給申請', items: [
           { name: '【不妊治療】様式第1号①② 支給申請書（.xls形式）', url: 'https://www.mhlw.go.jp/content/001470798.xls', type: 'Excel', size: '111KB' },
@@ -10630,7 +10513,11 @@
           '<div class="dr-s">' + dueSub + '</div></div>' +
       '</div>' +
       '<div class="diag-cta">' +
-        '<a href="#conditions">制度の一覧と条件を見る</a>' +
+        // #conditions（自分自身が入っているセクション）へのリンクだと、タップ時に
+        // そのセクションの先頭まで画面が戻ってしまう（節の開閉処理が、開いたあと
+        // ネイティブのアンカー送りで見出しへ戻す形になるため）。実際に一覧が
+        // 表示される #condList を指す（2026-08-05）。
+        '<a href="#condList">制度の一覧と条件を見る</a>' +
         '<a class="ghost" href="#simulator">受給額を試算する</a>' +
         '<a class="ghost" href="#improvement-cta">改善計画の実例を見る</a>' +
       '</div>' +
@@ -10783,7 +10670,10 @@
       // 開閉させない（stopPropagation で summary に届かないようにする）
       return '<details class="docs-card">' +
         '<summary class="docs-head">' +
-          '<div class="docs-ttl">' + p.name + '</div>' +
+          // 制度名は program.html（1ページ1制度の詳細）への導線にする。カード自体の
+          // 開閉トグルと競合しないよう、クリック時は stopPropagation で summary に
+          // 伝播させない（d.portal.url の公式リンクと同じ書き方）。
+          '<a class="docs-ttl" href="program.html?key=' + encodeURIComponent(k) + '" onclick="event.stopPropagation();">' + p.name + '</a>' +
           '<div class="docs-meta"><span class="docs-count">' + n + '件</span>' +
             '<a class="src-link" href="' + d.portal.url + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">' +
             d.portal.label + ' ↗</a></div>' +
@@ -10937,31 +10827,11 @@
   }
 
   // ---------- 4. 夜間モード ----------
-  function prefersDark() {
-    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  }
-  function applyTheme(theme) {
-    var root = document.documentElement;
-    if (theme === 'dark' || theme === 'light') root.setAttribute('data-theme', theme);
-    else root.removeAttribute('data-theme');
-    var isDark = theme === 'dark' || (theme !== 'light' && prefersDark());
-    var icon = document.getElementById('themeToggleIcon');
-    var label = document.getElementById('themeToggleLabel');
-    if (icon) icon.textContent = isDark ? '☀' : '🌙';
-    if (label) label.textContent = isDark ? '昼間モードにする' : '夜間モードにする';
-  }
-  function toggleTheme() {
-    var cur = document.documentElement.getAttribute('data-theme');
-    var isDark = cur === 'dark' || (!cur && prefersDark());
-    var next = isDark ? 'light' : 'dark';
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    applyTheme(next);
-  }
-  function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    applyTheme(saved);
-  }
+  // 手動切替のボタンは2026-08-05に削除した（本人指示）。
+  // OS側のダークモード設定への自動追従（prefers-color-scheme）はCSS側だけで
+  // 完結しており、ここにJSは不要。:root[data-theme="dark"/"light"] のCSSは
+  // 手動切替の名残りで、いまは何も data-theme 属性を付けないため発火しない
+  // （消していないのは、他ページとCSS変数の並びをそろえておくため）。
 
   // ---------- 4. トップへ戻る・現在地ナビ ----------
   function scrollToTop() {
@@ -11023,7 +10893,6 @@
   // 見出しだけだと中に何があるか分からないので、1行の手がかりを添える。
   // セクションを増やしたらここにも1行足すこと（無くても動くが説明が出ない）。
   var SECTION_HINT = {
-    'premise': 'この資料が対象にしている業種と、掲載している制度の範囲',
     'conditions': 'ここで業種・地域・従業員数を選びます。対象者・補助率・上限額・締切もこの中',
     'ranking': '100個の改善策から選んだ10案。事業計画書つきの一覧へ',
     'improvement-cta': '業種ごとに厳選した10案。A4×10ページの事業計画書つき',
@@ -11270,7 +11139,6 @@
   renderMunicipalitySelect();
   switchIndustry('beauty');
 
-  initTheme();
   applyURLState();
   collapseCardsOnNarrowScreens();
 
