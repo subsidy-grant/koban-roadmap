@@ -909,9 +909,10 @@
   .diag-inner { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 2.4rem; }
   .diag h2 { font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 700; }
   .diag .diag-lead { color: var(--ink-soft); margin: 0.5rem 0 1.5rem; font-size: 1rem; }
-  /* 2026-08-05に業種の質問を冒頭のヒーローへ移したため、ここは地域・従業員数の
-     2枚だけになった（3枚前提の repeat(3,1fr) だと右側に空欄が残るため変更）。 */
-  .diag-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+  /* 2026-08-05に業種の質問を冒頭のヒーローへ移し、一時的に地域・従業員数の2枚だけに
+     なったが、同日中に .threshold-box にあった資本金スライダーをここへ統合し、
+     地域・従業員数・資本金の3枚に戻した（本人指示。従業員数の重複入力を解消するため）。 */
+  .diag-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
   @media (max-width: 760px) { .diag-steps { grid-template-columns: 1fr; } }
   .diag-step { border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.1rem 1.1rem; background: var(--paper); }
   .diag-step > .dhead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.7rem; }
@@ -937,6 +938,14 @@
   .diag-emp { display: flex; align-items: center; gap: 0.7rem; }
   .diag-emp input[type="number"] { max-width: 6.5rem; text-align: right; }
   .diag-emp .unit { font-size: 1rem; color: var(--ink-soft); }
+  /* 資本金ステップは中に .slider-row（旧 .threshold-box の見た目）をそのまま入れ子にしている。
+     .diag-step label の display:block が .slider-row label の display:flex を後勝ちで
+     打ち消してしまうため、ここだけ元の「ラベルと値を横並び」に戻す。 */
+  .diag-step .slider-row label {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem;
+    font-size: 0.78rem; margin: 0 0 0.6rem;
+  }
+  .diag-step .slider-row label:first-of-type { margin-top: 0; }
   /* 診断結果は「交付決定通知」の体裁。3つ答えた結果が返ってくる、という
      関係を、利用者が実際に受け取る紙の形で示している。
      角丸とカード分割をやめ、太い外枠＋青の見出し帯＋縦罫の3欄にした。 */
@@ -1440,7 +1449,7 @@
   /* ---------- コンパクトな制度一覧（2026-08-05）----------
      .cond-card の8項目フル pd-grid をベタ書きしていたのをやめ、renderCondList()
      が制度名・種別・補助率/上限額・受付状況の要点だけを組み立てる。全詳細は
-     program.html（renderProgram と同じ PROGRAMS データを参照）へ移した。
+     program.html（同じ PROGRAMS データを参照）へ移した。
      .cond-card は使わず .cond-compact という別クラスにしてあるのは、.cond-card
      に付いている「畳んで見出しだけにする」アコーディオンCSS/JS
      （initCondCardToggles・.cond-card:not(.is-open) 系のルール）を
@@ -1631,7 +1640,7 @@
          （2026-08-01）。2026-08-05に「業種」だけ再びページ冒頭のヒーローへ戻した
          （本人指示）。地域・従業員数の選択欄はここに残す。 -->
     <div class="diag-inline">
-      <p class="diag-inline-lead"><strong>地域・従業員数</strong>を選んでください（業種はページ上部で選択済み）。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
+      <p class="diag-inline-lead"><strong>地域・従業員数・資本金</strong>を選んでください（業種はページ上部で選択済み）。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
       <div class="diag-steps">
       <div class="diag-step">
         <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">地域を選ぶ</span></div>
@@ -1660,7 +1669,19 @@
           <span class="unit">人</span>
         </div>
       </div>
+
+      <!-- 資本金は、もとは下の .threshold-box に単独のスライダーとして置いていたが、
+           従業員数（上のステップ2）と同じ「対象判定の入力」であるため、
+           2026-08-05にこの3ステップ目へ統合した（本人指示）。 -->
+      <div class="diag-step">
+        <div class="dhead"><span class="dnum" aria-hidden="true">3</span><span class="dttl">資本金を選ぶ</span></div>
+        <div class="slider-row">
+          <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
+          <input type="range" id="capitalSlider" min="0" max="7" step="1" value="2" oninput="onCapitalSliderInput(this.value)">
+        </div>
       </div>
+      </div>
+      <p class="t-note">上で選んだ地域・従業員数・資本金は、下の各制度カードに自社が対象かどうかのバッジを表示するために使います。従業員数は「概算シミュレーター」の人数欄とも連動しています。地域は現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応（他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
       <div class="diag-result" id="diagResult"></div>
     </div>
 
@@ -1679,36 +1700,16 @@
     <div class="sort-row" id="summarySortRow">
       <span class="sort-label">一覧の並び順</span>
       <div class="sort-btns">
-        <button type="button" class="active" data-sort="default" onclick="setSummarySort('default')">掲載順</button>
-        <button type="button" data-sort="due" onclick="setSummarySort('due')">締切が近い順</button>
+        <!-- 既定は「締切が近い順」（2026-08-05）。以前は「掲載順」（PROGRAMS掲載順＝締切と無関係）が
+             既定で、通年受付の制度と締切間近の制度が交互に並んで見えた（本人がスクショで発見）。
+             「掲載順」は並び順に一貫性を持たせるという目的に対して意味を持たないため削除した。 -->
+        <button type="button" class="active" data-sort="due" onclick="setSummarySort('due')">締切が近い順</button>
         <button type="button" data-sort="cap" onclick="setSummarySort('cap')">上限額が大きい順</button>
         <button type="button" data-sort="rate" onclick="setSummarySort('rate')">補助率が高い順</button>
       </div>
       <p class="sort-note" id="summarySortNote"></p>
     </div>
     <div class="twrap" id="programSummaryWrap"><div class="timetable" id="programSummary"></div></div>
-
-    <div class="threshold-box">
-      <div class="slider-row">
-        <label for="employeeSizeSlider">自社の常時使用従業員数を選択<output for="employeeSizeSlider" id="employeeSizeSliderOut" class="slider-out">5人</output></label>
-        <input type="range" id="employeeSizeSlider" min="1" max="100" step="1" value="5" oninput="onEmployeeCountInput(this.value, this)">
-      </div>
-      <div class="slider-row">
-        <label for="capitalSlider">資本金<output for="capitalSlider" id="capitalSliderOut" class="slider-out">500万円</output></label>
-        <input type="range" id="capitalSlider" min="0" max="7" step="1" value="2" oninput="onCapitalSliderInput(this.value)">
-      </div>
-      <p class="t-note">従業員数と資本金を入れると、下の各制度カードに自社が対象かどうかのバッジが表示されます。従業員数はこの節の上にある選択欄および「概算シミュレーター」と連動しています。地域も同じ選択欄で選べます（現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応。他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは「未調査」と表示されます。未調査は「制度が無い」という意味ではありません。</strong></p>
-    </div>
-
-    <div class="picker" id="programPicker">
-      <label for="programSelect">制度を選択して詳細を表示（プルダウン見出し = 制度名＋上限額）</label>
-      <select id="programSelect" onchange="renderProgram(this.value)"></select>
-      <button type="button" class="picker-toggle" id="pickerToggle" aria-expanded="false" aria-controls="programDetail" onclick="toggleProgramDetail()">
-        <span class="pt-label">制度の詳細</span>
-        <span class="pt-name" id="pickerToggleName"></span>
-      </button>
-      <div class="program-detail" id="programDetail"></div>
-    </div>
 
     <div class="cond-list" id="condList">
       <!-- ここは静的HTMLを持たない。renderCondList()（同ファイル内スクリプト）が
@@ -3136,38 +3137,11 @@
     return '<span class="num-weak">' + text + '</span>';
   }
 
-  function renderProgram(key) {
-    var p = PROGRAMS[key];
-    var el = document.getElementById('programDetail');
-    if (!p || !el) return;
-    el.innerHTML =
-      '<div class="pd-name">' + p.name + '</div>' +
-      '<div class="pd-grid">' +
-        '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + reqHL(p.scale) + '</div></div>' +
-        '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-        '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v tabular">' + numStrong(p.rate) + '</div></div>' +
-        '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v tabular">' + numStrong(p.cap) + '</div></div>' +
-        '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + reqHL(wageNumHL(p.wage)) + '</div></div>' +
-        '<div class="pd-item"><div class="k">採択率／支給傾向</div><div class="v tabular">' + p.acceptance + '</div></div>' +
-        '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + numWeak(p.schedule) + '</div></div>' +
-        '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
-      '</div>' +
-      '<div class="pd-note">' + reqHL(p.note) + '</div>' +
-      '<a class="src-link" href="' + p.link + '" target="_blank" rel="noopener noreferrer">' + p.linkLabel + ' ↗</a>';
-    // 折りたたんでいても「どの制度を選んでいるか」がバーに残るようにする
-    var nameEl = document.getElementById('pickerToggleName');
-    if (nameEl) nameEl.textContent = p.name;
-  }
-
-  // 制度詳細の開閉。閉じているときはバーだけが残り、選択中の制度名が見える。
-  function toggleProgramDetail(force) {
-    var picker = document.getElementById('programPicker');
-    var btn = document.getElementById('pickerToggle');
-    if (!picker || !btn) return;
-    var open = (typeof force === 'boolean') ? force : !picker.classList.contains('is-open');
-    picker.classList.toggle('is-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
+  // renderProgram(key) / toggleProgramDetail() ＝ プルダウン選択式の単体詳細パネル
+  // （#programPicker、旧・8項目フルpd-grid表示）は、.cond-list の condCompactCardHTML と
+  // 完全に重複していたため2026-08-05に削除した（本人指示）。呼び出し元は
+  // switchIndustry・renderProgramSelects・collapseCardsOnNarrowScreens・初期化処理にあったが、
+  // いずれも #programPicker 削除に合わせて整理済み。詳細は program.html?key=<制度キー> のみで見せる。
 
   var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, food_labor: 1.0, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
 
@@ -7127,7 +7101,7 @@
 
   // ---------- コンパクトな制度一覧（2026-08-05）----------
   // 900行のフル pd-grid をベタ書きしていたのをやめ、制度名・種別・補助率/上限額・
-  // 受付状況の要点だけを表示する。全詳細（renderProgram と同じ8項目）は
+  // 受付状況の要点だけを表示する。全詳細（8項目）は
   // program.html?key=<制度キー> に移した。ここで作るHTMLは PROGRAMS のデータを
   // そのまま使うので、program.html の内容と食い違うことはない。
   var COND_COMMON_KEYS = ['ai', 'jizoku', 'kaizen', 'shoryokuka', 'career', 'jinzai', 'hatarakikata', 'ryouritsu_ikuji'];
@@ -7449,13 +7423,12 @@
       optionsHTML += '<option value="' + esc(k) + '">' + esc(label) + '</option>';
     });
     if (openFam) optionsHTML += '</optgroup>';
-    var sel1 = document.getElementById('programSelect');
+    // #programSelect（旧・プルダウン単体詳細パネル）は2026-08-05に削除済み。
+    // #simProgram（概算シミュレーターの制度選択）だけが残っている。
     var sel2 = document.getElementById('simProgram');
-    var prevSel1 = sel1.value;
+    if (!sel2) return;
     var prevSel2 = sel2.value;
-    sel1.innerHTML = optionsHTML;
     sel2.innerHTML = optionsHTML;
-    sel1.value = keys.indexOf(prevSel1) !== -1 ? prevSel1 : 'ai';
     sel2.value = keys.indexOf(prevSel2) !== -1 ? prevSel2 : 'ai';
   }
 
@@ -7639,7 +7612,6 @@
     updatePrefectureCards();
     renderMunicipalityCard();
     updateEligibilityBadges();
-    renderProgram(document.getElementById('programSelect').value);
     initProgramFaq();
     runSimulation();
   }
@@ -7934,8 +7906,8 @@
   }
 
   function initFavoriteStars() {
-    // .cond-card は旧・フル詳細カードのクラス（#programDetail のピッカー等、他の場所で
-    // まだ使うことがある）。.cond-compact は2026-08-05のコンパクト一覧のカード。
+    // .cond-card は旧・フル詳細カードのクラス（都道府県・市区町村の案内カード等、
+    // 他の場所でまだ使うことがある）。.cond-compact は2026-08-05のコンパクト一覧のカード。
     // renderCondList() 等がカードを丸ごと作り直すたびに呼ばれるので、
     // 既に★が付いている見出しはスキップして二重に足さないようにしている。
     document.querySelectorAll('.cond-card[data-key], .cond-compact[data-key]').forEach(function (card) {
@@ -10525,7 +10497,9 @@
   }
 
   // ---------- 2. 制度の締切・上限額サマリー ----------
-  var summarySort = 'default';
+  // 既定値は 'due'（締切が近い順）。以前は 'default'（PROGRAMS掲載順）が既定で、
+  // 締切と無関係な順に並ぶため通年受付の制度と締切間近の制度が交互に見えていた（2026-08-05修正）。
+  var summarySort = 'due';
   function setSummarySort(mode) {
     summarySort = mode;
     document.querySelectorAll('#summarySortRow button').forEach(function (b) {
@@ -10602,7 +10576,7 @@
         '<div class="tt-rate"><span class="tt-k">補助率</span><span class="tt-v">' + rateShort(r.key) + '</span>' +
           (rateHasMore(r.key) ? '<span class="tt-more">枠・条件で変動</span>' : '') + '</div>' +
         '<div class="tt-cap"><span class="tt-k">上限額</span>' + capCell + '</div>' +
-        '<a class="tt-go" href="#cond-' + r.key + '">条件を見る</a>' +
+        '<a class="tt-go" href="program.html?key=' + encodeURIComponent(r.key) + '&industry=' + encodeURIComponent(currentIndustry) + '">詳しく見る</a>' +
         '</div>';
     }).join('');
     table.innerHTML =
@@ -10877,14 +10851,6 @@
     Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
   }
 
-  // ---------- 狭い画面では既定で畳む ----------
-  // 制度の詳細パネルは開いた状態で約1,800px あり、スマホでは上の一覧表と
-  // 内容が重なる。一覧表を先に見せ、詳細は必要な人だけ開く形にする。
-  function collapseCardsOnNarrowScreens() {
-    if (window.innerWidth > 760) return;
-    try { toggleProgramDetail(false); } catch (e) {}
-  }
-
   // ---------- セクションのアコーディオン ----------
   // 1ページに全部並べると縦に長すぎるため、既定は見出しだけを見せ、押した分
   // だけ開く。HTMLを書き換えず読み込み時に組み替えているのは、03セクションの
@@ -11134,13 +11100,11 @@
   initProgramCourses();
   initFavoriteStars();
   renderFavPanel();
-  renderProgram('ai');
   updatePrefectureCards();
   renderMunicipalitySelect();
   switchIndustry('beauty');
 
   applyURLState();
-  collapseCardsOnNarrowScreens();
 
   restoringState = false;
   refreshPublicViews();
