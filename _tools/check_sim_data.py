@@ -32,7 +32,7 @@ SIM_DATA = os.path.join(ROOT, "sim_data.js")
 # program.html の計算エンジンが解釈できる語。ここにない type は画面に出ない。
 KNOWN_TYPES = ["expense_rate", "per_person", "checkbox_sum", "multi_part", "none"]
 # そのうち、いま実際に計算まで通る型（残りは「準備中」に落ちる）
-IMPLEMENTED_TYPES = ["expense_rate", "none"]
+IMPLEMENTED_TYPES = ["expense_rate", "per_person", "none"]
 KNOWN_Q_TYPES = ["number", "choice", "checkbox", "number_list"]
 # number_list が入力から作れる値の作り方。ここにない how は program.html が無視する
 KNOWN_DERIVE = ["min", "countBelow"]
@@ -130,10 +130,39 @@ def fmt_man(v):
 
 
 def cap_of(calc, cap_key):
-    cap = calc.get("cap") or {}
+    # 上限額の区分表（expense_rate の cap）と単価の区分表（per_person の unit）は
+    # まったく同じ形。top.capKey はどちらも指せる。
+    cap = calc.get("cap") or calc.get("unit") or {}
     if cap_key:
         return (cap.get("values") or {}).get(cap_key)
     return cap.get("fixedMan")
+
+
+def check_cap_table(key, cap, seen, need_q, where):
+    """区分表（axes / values）の点検。上限額でも per_person の単価でも同じ形なので共通。"""
+    if not cap.get("axes"):
+        return
+    cands = []
+    for ax in cap["axes"]:
+        need_q(ax.get("q"), where + ".axes")
+        c = axis_candidates(ax, seen, key)
+        if not c:
+            err(key, "%s の軸 '%s' の候補が取れない（brackets も options も無い）"
+                % (where, ax.get("q")))
+        cands.append(c)
+    # 全組み合わせが区分表に載っているか（1つでも欠けるとその条件で「準備中」になる）
+    combos = [[]]
+    for c in cands:
+        combos = [x + [y] for x in combos for y in c]
+    expect = set("|".join(c) for c in combos)
+    actual = set((cap.get("values") or {}).keys())
+    for miss in sorted(expect - actual):
+        err(key, "%s に '%s' が無い。この組み合わせを選ぶと試算が出せない" % (where, miss))
+    for extra in sorted(actual - expect):
+        err(key, "%s の '%s' はどの組み合わせにも当たらない（キーの打ち間違い？）" % (where, extra))
+    for k2, v in (cap.get("values") or {}).items():
+        if not isinstance(v, (int, float)):
+            err(key, "%s の '%s' の値が数値でない（%r）" % (where, k2, v))
 
 
 def check_top(key, d, calc, caps):
@@ -365,6 +394,48 @@ def check_program(key, d, program_keys, caps):
         warn(key, "notes が %d 件ある。常に見せるのは5件までにして、残りは notesMore へ"
              % len(d["notes"]))
 
+    # --- per_person（1人あたりの額 × 人数 ＋ 加算）---
+    # 単価の区分表は上限額の区分表とまったく同じ形なので、そのまま check_cap_table に渡す。
+    if ctype == "per_person":
+        unit = calc.get("unit") or {}
+        if unit.get("fixedMan") is None and not unit.get("axes"):
+            err(key, "per_person なのに calc.unit に fixedMan も axes も無い（単価が決まらない）")
+        check_cap_table(key, unit, seen, need_q, "calc.unit")
+        if calc.get("countQ"):
+            need_q(calc["countQ"], "calc.countQ")
+            cq = seen.get(calc["countQ"]) or {}
+            if cq.get("type") != "number":
+                err(key, "calc.countQ '%s' は number でないと人数として使えない" % calc["countQ"])
+            if calc.get("maxCount") is not None and not calc.get("overNote"):
+                err(key, "calc.maxCount があるのに overNote が無い。"
+                         "人数を戻したことが画面に出ない")
+            # overNote では {typed}（入力された人数）と {used}（実際に使った人数）だけ使える
+            if isinstance(calc.get("overNote"), str):
+                if calc["overNote"].count("[[") != calc["overNote"].count("]]"):
+                    err(key, "calc.overNote の [[ ]] の数が合っていない")
+                for nm in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", calc["overNote"]):
+                    if nm not in ("typed", "used"):
+                        err(key, "calc.overNote の {%s} は使えない（使えるのは {typed} と {used}）" % nm)
+        if calc.get("adds"):
+            aq_id = (calc["adds"] or {}).get("q")
+            need_q(aq_id, "calc.adds.q")
+            aq = seen.get(aq_id) or {}
+            if aq.get("type") != "checkbox":
+                err(key, "calc.adds.q '%s' は checkbox でないと加算にできない" % aq_id)
+            for o in (aq.get("options") or []):
+                if o.get("man") is None and not o.get("manBy"):
+                    err(key, "加算の選択肢 '%s' に man も manBy も無い" % o.get("v"))
+                if o.get("manBy"):
+                    need_q(o["manBy"].get("q"), "加算 '%s' の manBy.q" % o.get("v"))
+                    mq = seen.get(o["manBy"].get("q")) or {}
+                    for opt in (mq.get("options") or []):
+                        if opt.get("v") not in (o["manBy"].get("values") or {}):
+                            err(key, "加算 '%s' の manBy.values に '%s' が無い。"
+                                     "この区分を選ぶと加算が消える" % (o.get("v"), opt.get("v")))
+                check_text(o.get("t"), "加算の選択肢 '%s' の文言" % o.get("v"))
+        check_top(key, d, calc, caps)
+        return
+
     # --- 計算が参照する質問 ---
     need_q(calc.get("expenseQ"), "calc.expenseQ")
     if not calc.get("expenseQ"):
@@ -445,31 +516,7 @@ def check_program(key, d, program_keys, caps):
     cap = calc.get("cap") or {}
     if cap.get("fixedMan") is None and not cap.get("axes"):
         err(key, "calc.cap に fixedMan も axes も無い（上限額が決まらない）")
-    cap_values = []
-    if cap.get("axes"):
-        cands = []
-        for ax in cap["axes"]:
-            need_q(ax.get("q"), "calc.cap.axes")
-            c = axis_candidates(ax, seen, key)
-            if not c:
-                err(key, "軸 '%s' の候補が取れない（brackets も options も無い）" % ax.get("q"))
-            cands.append(c)
-        # 全組み合わせが区分表に載っているか（1つでも欠けるとその条件で「準備中」になる）
-        combos = [[]]
-        for c in cands:
-            combos = [x + [y] for x in combos for y in c]
-        expect = set("|".join(c) for c in combos)
-        actual = set((cap.get("values") or {}).keys())
-        for miss in sorted(expect - actual):
-            err(key, "区分表に '%s' が無い。この組み合わせを選ぶと試算が出せない" % miss)
-        for extra in sorted(actual - expect):
-            err(key, "区分表の '%s' はどの組み合わせにも当たらない（キーの打ち間違い？）" % extra)
-        cap_values = [v for v in (cap.get("values") or {}).values() if isinstance(v, (int, float))]
-        for k2, v in (cap.get("values") or {}).items():
-            if not isinstance(v, (int, float)):
-                err(key, "区分表 '%s' の値が数値でない（%r）" % (k2, v))
-    elif cap.get("fixedMan") is not None:
-        cap_values = [cap["fixedMan"]]
+    check_cap_table(key, cap, seen, need_q, "calc.cap")
 
     # --- top（トップページが読む値）---
     # 2026-08-05に、上限額・補助率・受付期間の出所を sim_data.js に一本化した。
@@ -500,6 +547,16 @@ def check_no_duplicate_literals(sim_keys):
             if re.search(r"(^|[\s{,])%s\s*:" % re.escape(k), body):
                 err(k, "index.html の %s に直書きが残っている。"
                        "この値は sim_data.js の top から流し込む決まり" % name)
+    # OPTION_LABEL（制度を選ぶプルダウンの表示）にも上限額を書いていたことがあり、
+    # applySimNumbers() は「未定義のキーだけ」補う実装なので上書きされず生き残った。
+    # 金額らしき文字が入っていたら落とす。
+    m = re.search(r"\n  var OPTION_LABEL = \{(.*?)\n  \};", src, re.S)
+    if m:
+        for line in m.group(1).split("\n"):
+            for k in sim_keys:
+                if re.search(r"(^|[\s{,])%s\s*:" % re.escape(k), line) and re.search(r"\d[\d,\.]*万円", line):
+                    err(k, "index.html の OPTION_LABEL に金額が書いてある。"
+                           "ここは applySimNumbers() が上書きしないので古いまま残る")
     # PROGRAMS の中の rate / cap / schedule も sim_data.js が持つ
     for k in sim_keys:
         m = re.search(r"\n    %s: \{(.*?)\n    \},?\n" % re.escape(k), src, re.S)
