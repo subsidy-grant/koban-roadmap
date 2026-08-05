@@ -412,6 +412,17 @@
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
     min-height: 44px; cursor: pointer; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
+  /* 選んだ制度の書類についての前置き（docs.note / docs.portal / docs.checked）。
+     「受付は終了しています」「取組を始める前に計画書の提出が必要です」のように、
+     様式を落とす前に読んでほしい内容が入るので、手順2の上に置く。 */
+  .af-src { border: 1px solid var(--accent-soft); background: var(--accent-wash);
+    border-radius: 8px; padding: 0.7rem 0.9rem; margin: 0 0 0.9rem; }
+  .af-src-ttl { font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.3rem; }
+  .af-src-note { font-size: 0.88rem; color: var(--ink); line-height: 1.75; margin: 0; }
+  .af-src-foot { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; align-items: baseline;
+    margin: 0.5rem 0 0; font-size: 0.84rem; }
+  .af-src-foot a { min-height: 44px; display: inline-flex; align-items: center; }
+  .af-src-day { color: var(--ink-faint); }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
   .af-dl-ttl { font-size: 0.86rem; font-weight: 700; margin: 0.7rem 0 0.2rem; }
   .af-dl-link { display: block; padding: 0.5rem 0.2rem; min-height: 44px; font-size: 0.9rem; }
@@ -557,7 +568,7 @@
 
     <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);">
       <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
-      当サイトの様式一覧（下の06）に載っているファイルのうち、Word（.docx）とExcel（.xlsx）の421件がこの自動入力の対象です。</p>
+      当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
       <ul style="margin:0;padding-left:1.2rem;">
         <li><strong>ダウンロードなしでそのまま記入できる様式には「そのまま記入できます」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
         <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
@@ -4970,8 +4981,14 @@
     var rest = keys.filter(function (k) { return fav.indexOf(k) === -1; });
     function opts(list) {
       return list.map(function (k) {
-        var n = formItems(k).filter(function (it) { return it.fillable; }).length;
-        return '<option value="' + esc(k) + '">' + esc(D.programs[k].name) + '（様式' + n + '件）</option>';
+        var all = formItems(k);
+        var n = all.filter(function (it) { return it.fillable; }).length;
+        // 「様式0件」だけだと、書類そのものが無いように読める。
+        // 様式がPDF・ZIPでしか配られていない制度も選べるようにした（2026-08-05）ので、
+        // 自動入力できる件数と、この制度の書類の件数を分けて出す。
+        return '<option value="' + esc(k) + '">' + esc(D.programs[k].name) +
+          (n ? '（自動入力できる様式' + n + '件／書類' + all.length + '件）'
+             : '（書類' + all.length + '件・自動入力は不可）') + '</option>';
       }).join('');
     }
     var keep = sel.value;
@@ -5000,8 +5017,8 @@
     var note = document.getElementById('afProgNote');
     if (note) {
       note.textContent = keys.length
-        ? ('様式がある' + all.length + '制度のうち ' + keys.length + '件を表示しています。制度を選ぶと、その制度の様式が下に出ます。')
-        : ('この条件に合う制度がありませんでした（様式がある制度は全部で' + all.length + '件です）。絞り込みを変えてみてください。');
+        ? ('書類を調べた' + all.length + '制度のうち ' + keys.length + '件を表示しています。制度を選ぶと、その制度の書類が下に出ます。')
+        : ('この条件に合う制度がありませんでした（書類を調べた制度は全部で' + all.length + '件です）。絞り込みを変えてみてください。');
     }
   }
   function initAfFilter() {
@@ -5027,6 +5044,32 @@
   }
   // 手順2で選んでいるファイル形式（'all' / 'Word' / 'Excel'）
   var afFmt = 'all';
+  // 「2026-07-31」を「2026年7月31日」にする。書類を調べた日を画面に出すため。
+  function afDay(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+    return m ? (m[1] + '年' + (+m[2]) + '月' + (+m[3]) + '日') : '';
+  }
+  // 選んだ制度の書類についての前置き。
+  // note・portal・checked は108制度すべてに書いてあったのに、これまでどのページにも
+  // 出していなかった（2026-08-05に実測して判明）。「受付は終了しています」
+  // 「取組を始める前に計画書の提出が必要です」「申請パンフレットは204ページ・約29MB」
+  // のように、様式を落とす前に読んでほしい内容がここに入っている。
+  function afSrcHTML(key) {
+    var d = D.docs[key] || {};
+    if (!d.note && !d.portal) return '';
+    // note は index.html で当サイトが書いている文で、<strong> を含むものがある。
+    // esc() を通すとタグが文字のまま出る（program.html で同じ間違いをしていた）ので、
+    // 制度の注意書き（index.html の reqHL(p.note)）と同じくHTMLとして入れる。
+    return '<div class="af-src">' +
+      '<p class="af-src-ttl">この制度の書類について</p>' +
+      (d.note ? '<p class="af-src-note">' + d.note + '</p>' : '') +
+      '<p class="af-src-foot">' +
+      (d.portal ? '<a href="' + esc(d.portal.url) + '" target="_blank" rel="noopener noreferrer">' +
+        esc(d.portal.label) + ' ↗</a>' : '') +
+      (d.checked ? '<span class="af-src-day">当サイトが' + esc(afDay(d.checked)) +
+        'に確認した内容です</span>' : '') +
+      '</p></div>';
+  }
   function renderAfForms() {
     var box = document.getElementById('afForms');
     var sel = document.getElementById('afProgram');
@@ -5041,7 +5084,8 @@
     var phases = [];
     fill.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
     var idx = 0;
-    var html = '<div class="af-forms"><p class="step-ttl">手順2　記入する様式にチェックを入れる</p>' +
+    var html = '<div class="af-forms">' + afSrcHTML(key) +
+      '<p class="step-ttl">手順2　記入する様式にチェックを入れる</p>' +
       '<p class="dz-sub" style="margin:0 0 0.5rem;">自動入力できるのはWordとExcelの様式です。' +
       'それ以外の書類は、この下に別でまとめています。</p>';
     // ファイルの形式で絞り込む。選んでいない形式は記入もダウンロードもしない
@@ -5945,6 +5989,18 @@
   loadMirror().then(function () { renderAfForms(); });
   renderAfPrograms();
   initAfFilter();
+  // 自動入力の対象件数は、以前この文の中に「421件」と直接書いてあった。
+  // 書類を足しても数字は直らないので、2026-08-05時点で実際の538件とずれていた。
+  // 同じ判定（FILLABLE_RE）でその場で数える。
+  (function showAfTotals() {
+    var all = 0, fill = 0;
+    Object.keys(D.docs || {}).forEach(function (k) {
+      formItems(k).forEach(function (it) { all++; if (it.fillable) fill++; });
+    });
+    var a = document.getElementById('afDocsTotal'), f = document.getElementById('afFillTotal');
+    if (a) a.textContent = String(all);
+    if (f) f.textContent = String(fill);
+  })();
   (function initAfSelect() {
     var sel = document.getElementById('afProgram');
     if (!sel) return;
