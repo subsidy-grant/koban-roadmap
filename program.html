@@ -585,6 +585,18 @@
   // 満たす）ときだけ使える区分。入力から機械的に判定できる要件は、諦めずにここで判定する。
   function simWhenOk(w) {
     if (!w) return true;
+    // 組み合わせ条件。公募要領は「特例Aを使う人は特例Bを使えない」という形の
+    // 排他条件を注釈で書いていることが多く、1つの比較では表せない。
+    var i;
+    if (w.all) {
+      for (i = 0; i < w.all.length; i++) if (!simWhenOk(w.all[i])) return false;
+      return true;
+    }
+    if (w.any) {
+      for (i = 0; i < w.any.length; i++) if (simWhenOk(w.any[i])) return true;
+      return false;
+    }
+    if (w.not) return !simWhenOk(w.not);
     var v = simNum(w.q);
     if (w.lt != null && !(v < w.lt)) return false;
     if (w.lte != null && !(v <= w.lte)) return false;
@@ -618,7 +630,19 @@
     var v = simVal(ax.q);
     var q = simFindQ(ax.q), opts = (q && q.options) || [];
     for (var i = 0; i < opts.length; i++) {
-      if (opts[i].v === v) return { k: opts[i].v, t: opts[i].s || opts[i].t };
+      if (opts[i].v !== v) continue;
+      var o = opts[i];
+      // 選択肢にも when を付けられる。ほかの答えと組み合わせると使えない特例
+      // （省力化やものづくりの「最低賃金の特例と賃上げの特例は併用不可」）を、
+      // 選ばせたうえで else の側へ落とす。
+      if (o.when && !simWhenOk(o.when)) {
+        for (var j = 0; j < opts.length; j++) {
+          if (opts[j].v === o['else']) {
+            return { k: opts[j].v, t: opts[j].s || opts[j].t, note: o.elseNote };
+          }
+        }
+      }
+      return { k: o.v, t: o.s || o.t, note: o.when ? (o.whenNote || o.note) : o.note };
     }
     return { k: String(v), t: String(v) };
   }
@@ -626,6 +650,18 @@
   function simResolveRate(rate) {
     if (!rate) return { value: 1, label: '' };
     if (rate.fixed != null) return { value: rate.fixed, label: rate.label || '', note: rate.note };
+    // 補助率が「事業者の区分」で決まる制度（中小1/2・小規模2/3 など）。
+    // 選択肢そのものに rate を持たせ、選ばれた選択肢から引く。
+    if (rate.optionsOf) {
+      var oq = simFindQ(rate.optionsOf), ov = simVal(rate.optionsOf);
+      var list = (oq && oq.options) || [];
+      for (var k = 0; k < list.length; k++) {
+        if (list[k].v === ov) {
+          return { value: list[k].rate, label: list[k].rateLabel || list[k].s || '', note: list[k].note };
+        }
+      }
+      return { value: 1, label: '' };
+    }
     var v = simNum(rate.q), list = rate.thresholds || [];
     for (var i = 0; i < list.length; i++) {
       if (list[i].lt == null || v < list[i].lt) {
@@ -691,6 +727,12 @@
     var q = simFindQ(id), v = simVal(id), opts = (q && q.options) || [];
     for (var i = 0; i < opts.length; i++) if (opts[i].v === v) return Number(opts[i].add) || 0;
     return 0;
+  }
+  // {名前} を渡された値で置き換えるだけの版（質問に紐づかない文で使う）
+  function simFillTextPlain(t, map) {
+    if (!t) return '';
+    Object.keys(map || {}).forEach(function (k) { t = t.split('{' + k + '}').join(String(map[k])); });
+    return t;
   }
   function simFillText(t, q) {
     if (!t) return '';
@@ -784,7 +826,7 @@
     // 下限を割っていると金額そのものが出ないので、計算より先に見る。
     // ここを飛ばすと「4万円もらえる」と読める画面が出てしまう（実際は不支給）。
     var fl = c.floor;
-    if (fl && simNum(fl.q) < fl.min) {
+    if (fl && fl.q && simNum(fl.q) < fl.min) {
       return { blocked: true, message: fl.message };
     }
 
@@ -792,6 +834,19 @@
     var cap = simResolveCap(c.cap);
     if (!cap) return null;
     var raw = simFloorMan(expense * rate.value);
+
+    // 「補助金の額」そのものに下限がある制度（デジタル化・AI導入補助金は5万円、
+    // ものづくり系は枠ごとに100万円／750万円）。経費ではなく計算後の額で見る。
+    if (fl && (fl.amount != null || fl.amountBy)) {
+      var lo = fl.amount;
+      if (fl.amountBy) lo = (fl.amountBy.values || {})[simVal(fl.amountBy.q)];
+      if (lo != null && raw < lo) {
+        return {
+          blocked: true,
+          message: simFillTextPlain(fl.message, { min: fmtMan(lo), amount: fmtMan(raw) })
+        };
+      }
+    }
     var rows = [{
       k: ((expQ && expQ.label) || '対象経費') + ' ' + fmtMan(expense) + ' × ' + simTermRate() + ' ' + rate.label,
       v: fmtMan(raw)

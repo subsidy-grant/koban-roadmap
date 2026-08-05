@@ -296,14 +296,31 @@ def check_program(key, d, program_keys, caps):
     if not calc.get("expenseQ"):
         err(key, "expense_rate なのに expenseQ（経費を聞く質問）が無い")
 
-    # --- 下限額（これを割ると金額が出せない制度がある） ---
+    # --- 下限（これを割ると金額が出せない制度がある） ---
+    # 2種類ある。q+min＝対象経費そのものの下限／amount・amountBy＝補助金の額の下限。
     fl = calc.get("floor")
     if fl:
-        need_q(fl.get("q"), "calc.floor.q")
-        if fl.get("min") is None:
-            err(key, "calc.floor に min が無い")
+        kinds = [fl.get("q") is not None, fl.get("amount") is not None, fl.get("amountBy") is not None]
+        if sum(1 for x in kinds if x) != 1:
+            err(key, "calc.floor は q+min か amount か amountBy のどれか1つだけを書くこと")
+        if fl.get("q") is not None:
+            need_q(fl.get("q"), "calc.floor.q")
+            if fl.get("min") is None:
+                err(key, "calc.floor に q があるのに min が無い")
+        if fl.get("amountBy"):
+            ab = fl["amountBy"]
+            need_q(ab.get("q"), "calc.floor.amountBy.q")
+            aq = seen.get(ab.get("q")) or {}
+            opts = [o.get("v") for o in (aq.get("options") or [])]
+            for v in opts:
+                if v not in (ab.get("values") or {}):
+                    err(key, "calc.floor.amountBy.values に '%s' が無い。この枠だけ下限が効かない" % v)
         if not fl.get("message"):
             err(key, "calc.floor に message（下限を割ったときに画面に出す説明）が無い")
+        else:
+            for name in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", fl["message"]):
+                if name not in ("min", "amount"):
+                    err(key, "calc.floor.message の {%s} は使えない（使えるのは {min} と {amount}）" % name)
 
     # --- 受付の状況 ---
     st = d.get("status")
@@ -318,8 +335,23 @@ def check_program(key, d, program_keys, caps):
         warn(key, "status（受付中か終了か）が無い。締切済みの制度で金額だけ見せると誤解される")
 
     rate = calc.get("rate") or {}
-    if rate.get("fixed") is None and not rate.get("thresholds"):
-        err(key, "calc.rate に fixed も thresholds も無い（補助率が決まらない）")
+    if rate.get("fixed") is None and not rate.get("thresholds") and not rate.get("optionsOf"):
+        err(key, "calc.rate に fixed も thresholds も optionsOf も無い（補助率が決まらない）")
+    # 補助率を選択肢そのものに持たせる形（中小1/2・小規模2/3 など）
+    if rate.get("optionsOf"):
+        need_q(rate["optionsOf"], "calc.rate.optionsOf")
+        rq = seen.get(rate["optionsOf"]) or {}
+        if rq.get("type") != "choice":
+            err(key, "calc.rate.optionsOf '%s' は choice でないと補助率を持てない" % rate["optionsOf"])
+        for o in (rq.get("options") or []):
+            r = o.get("rate")
+            if r is None:
+                err(key, "選択肢 '%s' に rate が無い。選ぶと補助率が決まらない" % o.get("v"))
+            elif not (0 < r <= 1):
+                err(key, "選択肢 '%s' の補助率 %r が 0〜1 の範囲外（1/2 なら 1/2 と書く）" % (o.get("v"), r))
+            elif not o.get("rateLabel"):
+                warn(key, "選択肢 '%s' に rateLabel が無い。内訳に補助率の名前が出ない" % o.get("v"))
+            check_text(o.get("note"), "選択肢 '%s' の note" % o.get("v"))
     if rate.get("thresholds"):
         need_q(rate.get("q"), "calc.rate.q")
         th = rate["thresholds"]
