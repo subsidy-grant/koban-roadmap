@@ -4924,9 +4924,17 @@
   var PREF_LABEL = { tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
     chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県' };
   var afFilter = { text: '', area: '', kind: 'all' };
+  // 制度を選ぶプルダウンに出す制度。
+  // 以前は「記入できるWord・Excelの様式が1つでもある制度」だけに絞っていた。
+  // そのため、様式がPDFやZIPでしか配られていない制度（2026-08-06時点で18制度・
+  // 書類94件）が、このページからまったく辿れなかった。小規模事業者持続化補助金や
+  // 創業助成事業のような、よく使う制度も落ちていた。
+  // 選んだあとの表示は「この制度には、自動入力できるWord・Excelの様式がありません。」と
+  // 「自動入力の対象外ですが、この制度で必要な書類」に分かれて出る作りが既にあるので、
+  // 書類が1件でもある制度は出す。
   function afAllKeys() {
     return Object.keys(D.docs).filter(function (k) {
-      return D.programs[k] && formItems(k).some(function (it) { return it.fillable; });
+      return D.programs[k] && formItems(k).length > 0;
     });
   }
   function afKindOf(k) {

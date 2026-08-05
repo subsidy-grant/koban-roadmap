@@ -1337,11 +1337,16 @@
 
   // 試算の定義がまだ無い制度。セクションごと消さずに、分かっている範囲を出す
   // （index.html からの誘導リンクが空振りしないようにするため）。
+  //
+  // rate と cap は index.html（PROGRAMS）で書いている説明文で、同じページの
+  // buildGridHTML では numStrong() を通してそのまま HTML として入れている。
+  // ここだけ esc() を通していたため、<strong> を含む制度（創業助成事業）で
+  // タグが文字のまま画面に出ていた。2026-08-06に、同じページの中で扱いを揃えた。
   function simFallbackHTML(p) {
     return '<div class="sim-panel info">' +
       '<div class="sim-headline">この制度の詳しい試算は準備中です</div>' +
-      '<p class="sim-fb-row"><span class="sim-fb-k">補助率・助成率</span>' + esc(p.rate || '記載なし') + '</p>' +
-      '<p class="sim-fb-row"><span class="sim-fb-k">上限額</span>' + esc(p.cap || '記載なし') + '</p>' +
+      '<p class="sim-fb-row"><span class="sim-fb-k">補助率・助成率</span>' + (p.rate || '記載なし') + '</p>' +
+      '<p class="sim-fb-row"><span class="sim-fb-k">上限額</span>' + (p.cap || '記載なし') + '</p>' +
       '<div class="sim-note">おおまかな金額は<a href="index.html#simulator">トップページの概算シミュレーター</a>でも確認できます。' +
       '正確な要件と金額は、下の公式サイトでご確認ください。</div>' +
     '</div>';
