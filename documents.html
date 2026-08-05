@@ -5574,9 +5574,13 @@
         nav.parentNode.insertBefore(row, nav.nextSibling);
       }
 
-      // 共有されたURLのハッシュ（例 #autofill）や、制度を指定して来た場合は開く
+      // 共有されたURLのハッシュ（例 #autofill）で来た場合は、その節を開いて送る。
+      // 以前は制度を指定しただけ（?p=キー、#ハッシュなし）でも04（提出書類の
+      // チェックリスト）へ自動で送っていたが、詳細ページの「この制度の申請書類・
+      // 様式を見る」からはページ先頭（01 会社情報）に着地させたい、との指示により
+      // 2026-08-05に外した。制度の選択自体は #autofill セクション初期化の別処理
+      // （fromQuery）が引き続き引き継ぐので、開く節を変えても選択状態は保たれる。
       var openId = location.hash.length > 1 ? location.hash.slice(1) : '';
-      if (!openId && /[?&]p=/.test(location.search)) openId = 'checklist';
       if (openId) {
         var t2 = document.getElementById(openId);
         if (t2) {

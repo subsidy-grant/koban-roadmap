@@ -165,21 +165,6 @@
     padding-bottom: 1.1rem;
   }
 
-  .eyebrow {
-    font-size: 0.84rem;
-    letter-spacing: 0.22em;
-    color: var(--ink-faint);
-  }
-
-  /* 対象業種は様式の「該当に○」に相当する。枠で囲って記入済みの欄に見せる */
-  .hero-ind {
-    display: inline-block;
-    margin-top: 0.85rem;
-    padding: 0.15rem 0.9rem;
-    border: 1px solid var(--ink);
-    font-size: 0.92rem;
-  }
-
   /* ---------- 冒頭の業種選択（2026-08-05）----------
      以前はここに3問（業種・地域・従業員数）の大きな入力ブロックがあったが、
      「説明を読む前に入力を求める形が重い」という指摘で02の節へ移した経緯がある
@@ -826,10 +811,6 @@
   html { font-size: 17px; }
   @media (max-width: 400px) { html { font-size: 16px; } }
 
-  /* 狭い画面で業種名だけが1文字ずつ縦に折れるのを防ぐ */
-  .eyebrow { flex-wrap: wrap; }
-  .eyebrow .ind-label { white-space: nowrap; }
-
   /* スマホではヒーローだけで1画面以上あり、入口のボタンが最初の画面に
      入らなかった。上下の余白と説明文を詰めて、ボタンまでを1画面に収める。 */
   .hero { padding: 2.2rem 1.5rem 2.2rem; }
@@ -995,15 +976,6 @@
   }
   nav.toc a.is-current .toc-no { color: var(--accent); }
 
-  .util-row { display: flex; justify-content: flex-end; gap: 0.5rem; max-width: 880px; margin: 0 auto; padding: 0.5rem 1.5rem 0; }
-  .util-btn {
-    appearance: none; font: inherit; font-size: 0.88rem; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem;
-    padding: 0.35rem 0.85rem; border-radius: 100px;
-    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
-  }
-  .util-btn:hover { border-color: var(--accent); color: var(--accent); }
-
   #toTop {
     position: fixed; right: 1rem; bottom: 1rem; z-index: 30;
     width: 3.2rem; height: 3.2rem; border-radius: 50%;
@@ -1015,7 +987,7 @@
   }
   #toTop.is-visible { opacity: 1; visibility: visible; }
   #toTop:hover { background: var(--accent-wash); }
-  @media print { #toTop, .util-row { display: none !important; } }
+  @media print { #toTop { display: none !important; } }
   @media (prefers-reduced-motion: reduce) { #toTop { transition: none; } html { scroll-behavior: auto; } }
 
   /* ==========================================================================
@@ -1572,12 +1544,8 @@
 
 <header class="hero">
   <div class="hero-inner">
-    <!-- 申請の様式（記入例つき）の頭に見立てている。英語のeyebrowを置いていた場所だが、
-         この資料の読者が普段扱っている紙は申請書であって英文ではないため差し替えた。 -->
-    <div class="eyebrow">様式第１号（記入例つき）</div>
     <h1>補助金・助成金活用<br>業務改善ロードマップ</h1>
-    <div class="hero-ind">対象業種：<span class="ind-label">美容業</span></div>
-    <p class="lede">美容業・飲食業・宿泊業・製造業・不動産業・教育業の事業者向けに、設備投資やIT導入に使える国・都道府県・市区町村の制度をまとめた情報サイトです。登録も費用も必要ありません。</p>
+    <p class="lede">美容業・飲食業・宿泊業・製造業・不動産業・教育業の事業者向けに、設備投資やIT導入に使える国・都道府県・市区町村の制度をまとめた情報サイトです。</p>
   </div>
 </header>
 
@@ -1609,22 +1577,6 @@
   </div>
   <div class="scroll-fade toc-fade" aria-hidden="true"></div>
 </nav>
-
-<div class="util-row">
-</div>
-
-<div class="fav-panel" id="favPanel">
-  <div class="fav-panel-inner">
-    <span class="fav-panel-label">気になる制度</span>
-    <span class="fav-empty-hint" id="favEmptyHint">まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに集まります。あとで比べたり、まとめて印刷したりできます。</span>
-    <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
-    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
-      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
-      <label><input type="radio" name="printOrientation" value="landscape">横</label>
-    </div>
-    <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
-  </div>
-</div>
 
 <div id="printArea"></div>
 
@@ -2285,6 +2237,23 @@
   </section>
 
 </main>
+
+<!-- 気になる制度。以前はページ冒頭（目次の直下）に置いていたが、2026-08-05に
+     ページ下部へ移動した（本人指示）。制度カードを見終えたあとにまとめて
+     振り返る使い方に合わせている。id・class は変えていないので、目次の
+     「気になる制度」リンク（#favPanel）はそのまま効く。 -->
+<div class="fav-panel" id="favPanel">
+  <div class="fav-panel-inner">
+    <span class="fav-panel-label">気になる制度</span>
+    <span class="fav-empty-hint" id="favEmptyHint">まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに集まります。あとで比べたり、まとめて印刷したりできます。</span>
+    <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
+    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
+      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
+      <label><input type="radio" name="printOrientation" value="landscape">横</label>
+    </div>
+    <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
+  </div>
+</div>
 
 <footer>
   <div class="inner">
@@ -10609,19 +10578,13 @@
         if (target) setSectionOpen(sectionOf(target), true);
       }, true);
 
-      // 「すべて開く／すべて閉じる」。ブラウザのページ内検索(Ctrl+F)は閉じた
-      // 中身を拾えないため、まとめて開ける手段を必ず1つ残しておく。
-      var util = document.querySelector('.util-row');
-      if (util) {
-        var all = document.createElement('button');
-        all.type = 'button';
-        all.className = 'util-btn';
-        all.id = 'expandAll';
-        all.setAttribute('aria-pressed', 'false');
-        all.textContent = 'すべて開く';
-        all.addEventListener('click', toggleAllSections);
-        util.appendChild(all);
-      }
+      // 「すべて開く」ボタンは2026-08-05に削除（本人指示）。ブラウザの
+      // ページ内検索(Ctrl+F)は閉じた節の中身を拾えなくなるため、共有された
+      // URLのハッシュを開いたときの展開（このすぐ下）は引き続き残している。
+      // toggleAllSections/allSectionsOpen/updateExpandAllBtn はボタン以外からは
+      // 呼ばれないが、setSectionOpen からの updateExpandAllBtn() 呼び出しは
+      // #expandAll が無ければ何もしない安全弁のまま残しているので、
+      // 開閉そのものの動作には影響しない。
 
       // 共有されたURLのハッシュ（例 #simulator）で開いた場合は、その場所を開く
       if (location.hash.length > 1) {
