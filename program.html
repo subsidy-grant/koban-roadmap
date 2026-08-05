@@ -118,6 +118,96 @@
     background: var(--sage-wash); border-radius: 8px; padding: 0.9rem 1.05rem;
   }
 
+  /* 詳細な試算（2026-08-05追加）。制度ごとの質問と計算ルールは sim_data.js に持ち、
+     このページは「質問を並べて、答えを計算式に流し込む」だけを担う（制度ごとの
+     決め打ちはコードに書かない）。入力された数値はこのページのJS変数にしか置かず、
+     保存も送信もしない。パネルの見た目は index.html の概算シミュレーター
+     （.sim-panel 系、index.html:632-651）から移植した。 */
+  .pd-sim { margin-top: 1.6rem; }
+  .pd-sim h2 {
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
+    font-weight: 600; font-size: 1.05rem; margin: 0 0 0.6rem;
+  }
+  .pd-sim .section-sub { font-size: 0.88rem; color: var(--ink-soft); margin: 0 0 0.8rem; max-width: 60ch; }
+  .sim-form { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; }
+  .sim-q { padding: 0.85rem 0; border-bottom: 1px dashed var(--line); }
+  .sim-q:first-child { padding-top: 0; }
+  .sim-q:last-child { padding-bottom: 0; border-bottom: none; }
+  .sim-q .sim-label { display: block; font-weight: 700; font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .sim-q .sim-help { font-size: 0.82rem; color: var(--ink-faint); margin: 0 0 0.5rem; line-height: 1.7; }
+  .sim-inline { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .sim-form input[type="number"], .sim-form select {
+    font: inherit; font-size: 1rem; color: var(--ink); background: var(--paper);
+    border: 1px solid var(--line); border-radius: 6px; padding: 0.55rem 0.7rem; min-height: 2.75rem;
+  }
+  .sim-form input[type="number"] { width: 9.5rem; text-align: right; font-variant-numeric: tabular-nums; }
+  .sim-form select {
+    width: 100%; max-width: 28rem; padding-right: 2.4rem; cursor: pointer;
+    appearance: none; -webkit-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23767d8a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    background-repeat: no-repeat; background-position: right 0.8rem center; background-size: 1rem;
+  }
+  .sim-form input:focus-visible, .sim-form select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .sim-unit { font-size: 0.92rem; color: var(--ink-soft); }
+  .sim-result { margin-top: 1.2rem; }
+  .sim-panel { border-radius: 8px; padding: 1.2rem 1.3rem; }
+  .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
+  .sim-panel.info { background: var(--accent-wash); border: 1px solid var(--accent); }
+  .sim-panel.alert { background: var(--rust-wash); border: 1px solid var(--rust); }
+  .sim-panel.alert .sim-headline { color: var(--rust); }
+  /* 受付が終わっている・まだ始まっていない制度は、金額より先に上に出す */
+  .sim-status {
+    border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.8rem;
+    font-size: 0.88rem; font-weight: 700; line-height: 1.7;
+  }
+  .sim-status.alert { background: var(--rust-wash); border: 1px solid var(--rust); color: var(--rust); }
+  .sim-status.info { background: var(--accent-wash); border: 1px solid var(--accent); color: var(--accent); }
+  /* そのほかの条件（既定は閉じる）。8項目グリッドと同じ素の<details> */
+  .sim-more { margin-top: 0.7rem; font-size: 0.86rem; }
+  .sim-more > summary {
+    cursor: pointer; list-style: none; font-weight: 700; color: var(--accent);
+    padding: 0.5rem 0; min-height: 2.75rem; display: flex; align-items: center;
+  }
+  .sim-more > summary::-webkit-details-marker { display: none; }
+  .sim-more > summary::after { content: "＋"; margin-left: 0.4rem; }
+  .sim-more[open] > summary::after { content: "−"; }
+  .sim-more ul { margin: 0.2rem 0 0; padding-left: 1.1rem; }
+  .sim-more li { margin-bottom: 0.4rem; line-height: 1.7; }
+  .sim-headline {
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif; font-weight: 600;
+    font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+  .sim-panel.info .sim-headline { color: var(--accent); }
+  /* まだ何も触っていないときは、初期値で出している数字だと分かるようにする
+     （index.html の「これは例です」注記と同じ考え方） */
+  .sim-example {
+    font-family: "BIZ UDPGothic","Noto Sans JP",sans-serif; font-size: 0.72rem; font-weight: 700;
+    color: var(--on-accent); background: var(--accent); border-radius: 100px; padding: 0.1rem 0.6rem;
+  }
+  .sim-big {
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif; font-weight: 600;
+    font-size: clamp(1.9rem, 6vw, 2.4rem); margin: 0.5rem 0 0.2rem; font-variant-numeric: tabular-nums;
+  }
+  .sim-calc { font-size: 0.86rem; color: var(--ink-soft); margin-top: 0.7rem; }
+  .sim-calc-row {
+    display: flex; justify-content: space-between; gap: 0.3rem 1rem; flex-wrap: wrap;
+    padding: 0.4rem 0; border-bottom: 1px dashed var(--line); line-height: 1.7;
+  }
+  .sim-calc-row:last-child { border-bottom: none; }
+  .sim-calc-k { flex: 1 1 14rem; min-width: 0; }
+  .sim-calc-v { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 700; }
+  .sim-calc-row.is-total { color: var(--ink); font-weight: 700; }
+  .sim-fb-row { margin: 0.5rem 0 0; }
+  .sim-fb-k { display: block; font-size: 0.76rem; letter-spacing: 0.05em; color: var(--ink-faint); font-weight: 700; }
+  .sim-note { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--line); font-size: 0.86rem; }
+  .sim-note ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+  .sim-note li { margin-bottom: 0.4rem; line-height: 1.7; }
+  .sim-sources {
+    margin-top: 0.8rem; padding-top: 0.7rem; border-top: 1px dashed var(--line);
+    display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; align-items: center;
+    font-size: 0.82rem; color: var(--ink-faint);
+  }
+
   /* 申請とスケジュール（2026-08-05追加）。index.html 旧05セクションのrender()と
      同じロジックで gantt_data.js を日付なしで要約し、schedule.html へ橋渡しする。
      window.KOBAN_GANTT.schemes[key] が無い制度ではセクションごと出さない。 */
@@ -198,6 +288,13 @@
     <div class="pd-grid" id="ptGrid"></div>
     <div class="pd-note" id="ptNote" style="display:none;"></div>
 
+    <section class="pd-sim" id="ptSim" style="display:none;">
+      <h2>詳細な試算</h2>
+      <p class="section-sub" id="ptSimIntro"></p>
+      <div id="ptSimForm"></div>
+      <div class="sim-result" id="ptSimResult" aria-live="polite"></div>
+    </section>
+
     <section class="pd-schedule" id="ptSchedule" style="display:none;">
       <h2>申請とスケジュール</h2>
       <p class="section-sub">申請までの流れ（どんな段階を、どのくらいの期間でやるか）の目安です。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
@@ -211,11 +308,12 @@
     </div>
   </article>
 
-  <p class="privacy-note">入力した内容は、お使いの端末（ブラウザ）の中だけで処理されます。このページ自体は URL の <code>?key=</code> を読むだけで、送信するデータはありません。</p>
+  <p class="privacy-note">入力した内容は、お使いの端末（ブラウザ）の中だけで処理されます。「詳細な試算」に入れた時給・人数・金額もこの端末の中だけで計算し、保存も送信もしません（ページを離れると消えます）。このページ自体は URL の <code>?key=</code> を読むだけで、送信するデータはありません。</p>
 </main>
 
 <script src="page_data.js"></script>
 <script src="gantt_data.js"></script>
+<script src="sim_data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -346,6 +444,349 @@
     section.style.display = '';
   }
 
+  // ---------- 詳細な試算 ----------
+  // 制度ごとの質問と計算ルールは sim_data.js（window.KOBAN_SIM）が持つ。ここには
+  // 制度ごとの決め打ちを一切書かない。定義を読んで質問を並べ、答えを計算式に流し込むだけ。
+  // だから制度を増やすときに触るのは sim_data.js だけでよい（地域限定の97制度を
+  // このあと足すため、この境界は守る）。
+  // 入力された数値は simState（このページのJS変数）にしか置かない。localStorage にも
+  // 書かず、どこにも送信しない。
+  var SIM = (window.KOBAN_SIM && window.KOBAN_SIM.programs) || {};
+  var simDef = null;       // いま表示している制度の試算定義
+  var simState = {};       // 質問id → 回答
+  var simTouched = false;  // 利用者が一度でも触ったか（「例」バッジの出し分けに使う）
+
+  // 補助金と助成金では、もらえるまでの筋道が違う。この違いは金額より大事なので
+  // 制度ごとの notes とは別に、kind から必ず出す。
+  // first＝常に見せる／more＝開閉式の中。全部並べると誰も読まないので分けている。
+  var SIM_COMMON_NOTES = {
+    josei: {
+      first: [
+        'これは要件を満たした場合に支給される助成金の目安です。申請すれば必ず受け取れるものではありません。',
+        '助成金が振り込まれるのは、取組を終えて実績を報告した後です（後払い）。設備の代金などは先に自分で支払う必要があります。'
+      ],
+      more: [
+        '要件に当てはまるかどうかの確認と、申請書類の作成・提出は社会保険労務士の業務です。最終的な確認は社会保険労務士にご相談ください。'
+      ]
+    },
+    hojo: {
+      first: [
+        'これは審査で採択された場合に交付される補助金の目安です。申請しても採択されないことがあります。',
+        '交付決定の通知が届く前に発注・契約したものは対象になりません。',
+        '補助金が振り込まれるのは、事業を終えて実績を報告した後です（精算払い）。代金は先に自分で支払う必要があります。'
+      ],
+      more: [
+        '申請の準備は、商工会・商工会議所や認定経営革新等支援機関に相談できます。'
+      ]
+    },
+    all: {
+      first: [
+        'ここに出る金額は目安です。実際に受け取れる額は、労働局・事務局の審査で決まります。'
+      ],
+      more: [
+        '受け取った補助金・助成金は、原則として課税の対象になります。処理は税理士にご確認ください。'
+      ]
+    }
+  };
+
+  // 金額の整形。index.html の fmtMan（index.html:3387）と同じ。
+  function fmtMan(n) {
+    return (Math.round(n * 10) / 10).toLocaleString('ja-JP') + '万円';
+  }
+  // 1,000円未満の端数は切り捨てる（業務改善助成金 交付要綱第4条第2項）。
+  // 端数の扱いは制度ごとに違いうるが、切り捨ては必ず安全側（少なめ）に出るので既定にする。
+  function simFloorMan(n) {
+    return Math.floor(n * 10) / 10;
+  }
+  function simTermRate() { return (simDef && simDef.kind === 'josei') ? '助成率' : '補助率'; }
+  function simFindQ(id) {
+    var qs = (simDef && simDef.questions) || [];
+    for (var i = 0; i < qs.length; i++) if (qs[i].id === id) return qs[i];
+    return null;
+  }
+  function simNum(id) {
+    var n = parseFloat(simState[id]);
+    return isFinite(n) ? n : 0;
+  }
+
+  // 別の質問の答えを見る条件（when）。区分に条件を付けるときに使う。
+  // 例：業務改善助成金の「10人以上」は、時給が1,050円未満（＝特例事業者の賃金要件を
+  // 満たす）ときだけ使える区分。入力から機械的に判定できる要件は、諦めずにここで判定する。
+  function simWhenOk(w) {
+    if (!w) return true;
+    var v = simNum(w.q);
+    if (w.lt != null && !(v < w.lt)) return false;
+    if (w.lte != null && !(v <= w.lte)) return false;
+    if (w.gte != null && !(v >= w.gte)) return false;
+    if (w.gt != null && !(v > w.gt)) return false;
+    if (w.eq != null && simState[w.q] !== w.eq) return false;
+    return true;
+  }
+
+  // 数値の回答を区分に直す。brackets は max の小さい順に並べ、
+  // max を持たない最後の1つが受け皿になる。
+  // when が付いた区分は、条件を満たさなければ else が指す区分に落とす（＝少なめに見積もる）。
+  function simBracketOf(value, brackets) {
+    for (var i = 0; i < brackets.length; i++) {
+      var b = brackets[i];
+      if (b.max != null && value > b.max) continue;
+      if (b.when && !simWhenOk(b.when)) {
+        for (var j = 0; j < brackets.length; j++) {
+          if (brackets[j].k === b['else']) {
+            return { k: brackets[j].k, t: brackets[j].t, note: b.elseNote || brackets[j].note };
+          }
+        }
+      }
+      return b.when ? { k: b.k, t: b.t, note: b.whenNote || b.note } : b;
+    }
+    return brackets[brackets.length - 1];
+  }
+  // 区分表の軸1つを解決する。choice はその選択肢、number は brackets の区分。
+  function simAxisPart(ax) {
+    if (ax.brackets) return simBracketOf(simNum(ax.q), ax.brackets);
+    var v = simState[ax.q];
+    var q = simFindQ(ax.q), opts = (q && q.options) || [];
+    for (var i = 0; i < opts.length; i++) {
+      if (opts[i].v === v) return { k: opts[i].v, t: opts[i].s || opts[i].t };
+    }
+    return { k: String(v), t: String(v) };
+  }
+  // 補助率・助成率。固定値（fixed）か、数値のしきい値（thresholds）で決まる。
+  function simResolveRate(rate) {
+    if (!rate) return { value: 1, label: '' };
+    if (rate.fixed != null) return { value: rate.fixed, label: rate.label || '' };
+    var v = simNum(rate.q), list = rate.thresholds || [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].lt == null || v < list[i].lt) return { value: list[i].rate, label: list[i].label || '' };
+    }
+    var last = list[list.length - 1] || {};
+    return { value: last.rate == null ? 1 : last.rate, label: last.label || '' };
+  }
+  // 上限額。固定値（fixedMan）か、軸ごとの区分表（axes / values）で決まる。
+  function simResolveCap(cap) {
+    if (!cap) return null;
+    if (cap.fixedMan != null) return { man: cap.fixedMan, label: cap.label || '', notes: [] };
+    var keys = [], labels = [], notes = [];
+    for (var i = 0; i < (cap.axes || []).length; i++) {
+      var part = simAxisPart(cap.axes[i]);
+      keys.push(part.k);
+      labels.push(part.t);
+      if (part.note) notes.push(part.note);
+    }
+    var man = cap.values[keys.join('|')];
+    if (man == null) return null;  // 区分表に無い組み合わせ（データ側の穴。準備中表示に落とす）
+    return { man: man, label: labels.join('・'), notes: notes };
+  }
+
+  // min（経費 × 率、上限額）。地域限定の制度もほとんどがこの形になる。
+  function simCalcExpenseRate() {
+    var c = simDef.calc;
+    var expense = simNum(c.expenseQ);
+    var expQ = simFindQ(c.expenseQ);
+
+    // 対象経費に下限がある制度（業務改善助成金は税抜10万円、IT導入系は補助額5万円など）。
+    // 下限を割っていると金額そのものが出ないので、計算より先に見る。
+    // ここを飛ばすと「4万円もらえる」と読める画面が出てしまう（実際は不支給）。
+    var fl = c.floor;
+    if (fl && simNum(fl.q) < fl.min) {
+      return { blocked: true, message: fl.message };
+    }
+
+    var rate = simResolveRate(c.rate);
+    var cap = simResolveCap(c.cap);
+    if (!cap) return null;
+    var raw = simFloorMan(expense * rate.value);
+    var rows = [{
+      k: ((expQ && expQ.label) || '対象経費') + ' ' + fmtMan(expense) + ' × ' + simTermRate() + ' ' + rate.label,
+      v: fmtMan(raw)
+    }];
+    var amount = raw;
+    rows.push({ k: '上限額（' + cap.label + '）', v: fmtMan(cap.man) });
+    if (cap.man < raw) {
+      amount = cap.man;
+      rows.push({ k: '安いほうの金額になるため、上限額が適用されます', v: fmtMan(amount), total: true });
+    } else {
+      rows.push({ k: '上限額に届かないため、計算した金額がそのまま目安になります', v: fmtMan(amount), total: true });
+    }
+    return { amountMan: amount, rows: rows, notes: cap.notes };
+  }
+
+  function simFieldHTML(q) {
+    var id = 'simq_' + q.id, body = '';
+    if (q.type === 'number') {
+      body = '<div class="sim-inline">' +
+        '<input type="number" id="' + id + '" inputmode="numeric"' +
+          (q.min != null ? ' min="' + esc(q.min) + '"' : '') +
+          (q.max != null ? ' max="' + esc(q.max) + '"' : '') +
+          ' step="' + esc(q.step || 1) + '" value="' + esc(simState[q.id]) + '">' +
+        (q.unit ? '<span class="sim-unit">' + esc(q.unit) + '</span>' : '') +
+      '</div>';
+    } else if (q.type === 'choice') {
+      var opts = (q.options || []).map(function (o) {
+        return '<option value="' + esc(o.v) + '"' + (simState[q.id] === o.v ? ' selected' : '') + '>' + esc(o.t) + '</option>';
+      }).join('');
+      body = '<select id="' + id + '">' + opts + '</select>';
+    } else {
+      return '';  // 未対応の型は出さない（画面が壊れるより、出ないほうがまし）
+    }
+    return '<div class="sim-q">' +
+      '<label class="sim-label" for="' + id + '">' + esc(q.label) + '</label>' +
+      (q.help ? '<p class="sim-help">' + esc(q.help) + '</p>' : '') +
+      body +
+    '</div>';
+  }
+
+  function simSourceHTML(def) {
+    var s = def.source;
+    if (!s || !s.url) return '';
+    return '<div class="sim-sources">' +
+      '<a class="src-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' +
+        esc(s.label || '出典') + ' ↗</a>' +
+      '<span>数値の確認: ' + esc(s.checked || '未確認') + '</span>' +
+    '</div>';
+  }
+  function simLiList(list) {
+    return list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
+  }
+  // 注意書きは2段。金額と可否に直結するものだけ常に見せ、残りは開閉式にする。
+  // 10個並べると誰も読まず、読まれない注意書きは無いのと同じになる。
+  function simNotesHTML(first, more) {
+    var html = '';
+    if (first.length) {
+      html += '<div class="sim-note"><strong>この金額を見るときの注意</strong><ul>' +
+        simLiList(first) + '</ul></div>';
+    }
+    if (more.length) {
+      html += '<details class="sim-more"><summary>そのほかの条件を見る（' + more.length + '件）</summary>' +
+        '<ul>' + simLiList(more) + '</ul></details>';
+    }
+    return html;
+  }
+  // 受付が終わっている・まだ始まっていない制度は、金額より先にそれを言う。
+  // 締切済みの制度で見込み額だけ見せると、いま申請できると誤解される。
+  function simStatusHTML(def) {
+    var st = def.status;
+    if (!st || !st.text) return '';
+    var cls = (st.state === 'closed') ? 'alert' : 'info';
+    return '<div class="sim-status ' + cls + '">' + esc(st.text) + '</div>';
+  }
+
+  // 試算の定義がまだ無い制度。セクションごと消さずに、分かっている範囲を出す
+  // （index.html からの誘導リンクが空振りしないようにするため）。
+  function simFallbackHTML(p) {
+    return '<div class="sim-panel info">' +
+      '<div class="sim-headline">この制度の詳しい試算は準備中です</div>' +
+      '<p class="sim-fb-row"><span class="sim-fb-k">補助率・助成率</span>' + esc(p.rate || '記載なし') + '</p>' +
+      '<p class="sim-fb-row"><span class="sim-fb-k">上限額</span>' + esc(p.cap || '記載なし') + '</p>' +
+      '<div class="sim-note">おおまかな金額は<a href="index.html#simulator">トップページの概算シミュレーター</a>でも確認できます。' +
+      '正確な要件と金額は、下の公式サイトでご確認ください。</div>' +
+    '</div>';
+  }
+  // 金額の試算になじまない制度（提案内容で額が決まるものなど）
+  function simNoneHTML(def) {
+    return '<div class="sim-panel info">' +
+      '<div class="sim-headline">この制度は金額の試算になじみません</div>' +
+      '<p style="margin:0.5rem 0 0;">' + esc(def.reason || '金額が個別の審査で決まるため、試算の形にできません。') + '</p>' +
+      simSourceHTML(def) +
+    '</div>';
+  }
+
+  function simRenderResult() {
+    var box = document.getElementById('ptSimResult');
+    if (!box || !simDef) return;
+    var res = null;
+    if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
+    // per_person / checkbox_sum / multi_part はこれから作る。
+    // 定義だけ先に入っても壊れないよう、計算できない型は「準備中」に落とす。
+    if (!res) { box.innerHTML = simFallbackHTML(simCurrentProgram || {}); return; }
+
+    var kindNotes = SIM_COMMON_NOTES[simDef.kind] || { first: [], more: [] };
+
+    // 下限に届かず、そもそも対象にならない場合。金額は出さない。
+    if (res.blocked) {
+      box.innerHTML = simStatusHTML(simDef) + '<div class="sim-panel alert">' +
+        '<div class="sim-headline">この条件では、この制度は使えません</div>' +
+        '<p style="margin:0.5rem 0 0;">' + esc(res.message) + '</p>' +
+        simSourceHTML(simDef) +
+      '</div>';
+      return;
+    }
+
+    var isJosei = simDef.kind === 'josei';
+    var head = isJosei ? '見込みの助成額（要件を満たした場合）' : '見込みの補助額（採択された場合）';
+    var first = (res.notes || [])
+      .concat(simDef.notes || [])
+      .concat(kindNotes.first || [])
+      .concat(SIM_COMMON_NOTES.all.first);
+    var more = (simDef.notesMore || [])
+      .concat(kindNotes.more || [])
+      .concat(SIM_COMMON_NOTES.all.more);
+
+    box.innerHTML = simStatusHTML(simDef) + '<div class="sim-panel ok">' +
+      '<div class="sim-headline">' + esc(head) +
+        (simTouched ? '' : '<span class="sim-example">例</span>') + '</div>' +
+      '<div class="sim-big">' + esc(fmtMan(res.amountMan)) + '</div>' +
+      '<div class="sim-calc">' + res.rows.map(function (r) {
+        return '<div class="sim-calc-row' + (r.total ? ' is-total' : '') + '">' +
+          '<span class="sim-calc-k">' + esc(r.k) + '</span>' +
+          '<span class="sim-calc-v">' + esc(r.v) + '</span></div>';
+      }).join('') + '</div>' +
+      simNotesHTML(first, more) +
+      simSourceHTML(simDef) +
+    '</div>';
+  }
+
+  function simWire() {
+    (simDef.questions || []).forEach(function (q) {
+      var el = document.getElementById('simq_' + q.id);
+      if (!el) return;
+      var handler = function () {
+        // 入力中の値をそのまま持つ（勝手に丸めると打っている途中で数字が飛ぶ）。
+        // 範囲の判断は計算側の区分表に任せる。
+        simState[q.id] = el.value;
+        simTouched = true;
+        simRenderResult();
+      };
+      el.addEventListener('input', handler);
+      el.addEventListener('change', handler);
+    });
+  }
+
+  var simCurrentProgram = null;
+  function initSim(key, p) {
+    var sec = document.getElementById('ptSim');
+    var intro = document.getElementById('ptSimIntro');
+    var form = document.getElementById('ptSimForm');
+    var result = document.getElementById('ptSimResult');
+    if (!sec || !intro || !form || !result) return;
+    simCurrentProgram = p;
+    simDef = SIM[key] || null;
+    simState = {};
+    simTouched = false;
+    sec.style.display = '';
+
+    if (!simDef) {
+      intro.textContent = 'この制度は、いまわかっている上限額と補助率をそのまま載せています。';
+      form.innerHTML = '';
+      result.innerHTML = simFallbackHTML(p);
+      return;
+    }
+    if (simDef.calc && simDef.calc.type === 'none') {
+      intro.textContent = simDef.intro || '';
+      form.innerHTML = '';
+      result.innerHTML = simNoneHTML(simDef);
+      return;
+    }
+
+    (simDef.questions || []).forEach(function (q) { simState[q.id] = (q.def != null ? q.def : ''); });
+    intro.textContent = (simDef.intro ? simDef.intro + ' ' : '') +
+      '下の質問に答えると、見込みの金額と計算のしかたが出ます。入力した内容はこの端末の中だけで計算し、保存も送信もしません。';
+    form.innerHTML = '<div class="sim-form">' +
+      (simDef.questions || []).map(simFieldHTML).join('') + '</div>';
+    simWire();
+    simRenderResult();
+  }
+
   function render() {
     var params = new URLSearchParams(location.search);
     var key = params.get('key') || '';
@@ -383,6 +824,7 @@
     var grid = document.getElementById('ptGrid');
     if (grid) grid.innerHTML = buildGridHTML(p);
 
+    initSim(key, p);
     renderScheduleOverview(key);
 
     var noteEl = document.getElementById('ptNote');
