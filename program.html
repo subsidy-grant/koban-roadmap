@@ -658,6 +658,13 @@
   function simResolveRate(rate) {
     if (!rate) return { value: 1, label: '' };
     if (rate.fixed != null) return { value: rate.fixed, label: rate.label || '', note: rate.note };
+    // 助成率が複数の軸で決まる制度（人材開発支援助成金は 訓練メニュー×企業規模×
+    // 賃金要件の3つで決まる）。上限額の区分表とまったく同じ形なので使い回す。
+    if (rate.axes) {
+      var t = simResolveCap(rate);
+      if (!t) return { value: 0, label: '' };
+      return { value: t.man, label: rate.label || t.label, notes: t.notes };
+    }
     // 補助率が「事業者の区分」で決まる制度（中小1/2・小規模2/3 など）。
     // 選択肢そのものに rate を持たせ、選ばれた選択肢から引く。
     if (rate.optionsOf) {
@@ -818,6 +825,133 @@
     });
     if (!picked) notes.push(c.emptyNote || '当てはまる取組を1つ以上選ぶと、見込みの額が出ます。');
     rows.push({ k: '合計', v: fmtMan(total), total: true });
+    return { amountMan: total, rows: rows, notes: notes };
+  }
+
+  // ---- multi_part：性格の違う助成を足し合わせる型 ----
+  // 1つの申請の中に、計算のしかたが違う部品が並ぶ制度のためのもの。
+  //   人材開発支援助成金       … 経費助成（経費×率）＋賃金助成（単価×時間×人数）＋OJT実施助成
+  //   育休中等業務代替支援コース … 業務体制整備経費（定額）＋業務代替手当の3/4（月あたり上限）
+  // 部品の kind は fixed / expense_rate / per_person の3つだけで、いずれも
+  // 既にある計算をそのまま呼ぶ。新しい計算規則は増やさない。
+  //
+  // 上限額に perCountQ を書くと「1人あたりの上限 × 人数」「1か月あたりの上限 × 月数」に
+  // なる。人材開発の経費助成（1労働者1訓練あたり）と、業務代替手当（月10万円・24か月分
+  // まで）がこの形で、これを持たないと上限が1人分・1か月分のまま出てしまう。
+  function simPartCap(cap) {
+    var r = simResolveCap(cap);
+    if (!r || !cap.perCountQ) return r;
+    var n = Math.floor(simNum(cap.perCountQ)), over = 0;
+    if (!isFinite(n) || n < 1) n = 1;
+    if (cap.maxPerCount != null && n > cap.maxPerCount) { over = n; n = cap.maxPerCount; }
+    return {
+      man: simFloorMan(r.man * n), label: r.label, notes: r.notes,
+      per: r.man, count: n, over: over
+    };
+  }
+  function simCalcMultiPart() {
+    var c = simDef.calc, rows = [], notes = [], total = 0, used = 0;
+
+    (c.parts || []).forEach(function (p) {
+      if (p.when && !simWhenOk(p.when)) {
+        if (p.whenNote) notes.push(p.whenNote);
+        return;
+      }
+      var sub = null, detail = '';
+
+      if (p.kind === 'fixed') {
+        sub = simAddMan(p);
+        if (sub == null) return;
+
+      } else if (p.kind === 'expense_rate') {
+        var rate = simResolveRate(p.rate);
+        var raw = simFloorMan(simNum(p.expenseQ) * rate.value);
+        var cap = p.cap ? simPartCap(p.cap) : null;
+        if (p.cap && !cap) return;   // 区分表の穴。黙って0にせず、その部品を出さない
+        sub = (cap && cap.man < raw) ? cap.man : raw;
+        detail = fmtMan(simNum(p.expenseQ)) + ' × ' + simTermRate() +
+          (rate.label ? ' ' + rate.label : '');
+        if (cap) {
+          detail += cap.count != null
+            ? ('（上限 ' + fmtMan(cap.per) + ' × ' + cap.count + (p.cap.countUnit || '') + '）')
+            : ('（上限 ' + fmtMan(cap.man) + '）');
+          if (cap.over && p.cap.overNote) {
+            notes.push(simFillTextPlain(p.cap.overNote, { typed: cap.over, used: cap.count }));
+          }
+        }
+
+      } else if (p.kind === 'per_person') {
+        var unit = simResolveCap(p.unit);
+        if (!unit) return;
+        var n = 1;
+        if (p.countQ) {
+          n = Math.floor(simNum(p.countQ));
+          if (!isFinite(n) || n < 1) n = 1;
+          if (p.maxCount != null && n > p.maxCount) {
+            if (p.overNote) notes.push(simFillTextPlain(p.overNote, { typed: n, used: p.maxCount }));
+            n = p.maxCount;
+          }
+        }
+        // 時間で決まる助成（人材開発の賃金助成は 1人1時間あたりの単価 × 時間 × 人数）
+        var h = 1;
+        if (p.hoursQ) {
+          h = simNum(p.hoursQ);
+          if (!isFinite(h) || h < 0) h = 0;
+          if (p.maxHours != null && h > p.maxHours) {
+            if (p.hoursOverNote) {
+              notes.push(simFillTextPlain(p.hoursOverNote, { typed: h, used: p.maxHours }));
+            }
+            h = p.maxHours;
+          }
+        }
+        sub = simFloorMan(unit.man * n * h);
+        detail = fmtMan(unit.man) + (unit.label ? '（' + unit.label + '）' : '') +
+          (p.hoursQ ? ' × ' + h + (p.hoursUnit || '時間') : '') +
+          (p.countQ ? ' × ' + n + '人' : '');
+        (unit.notes || []).forEach(function (t) { notes.push(t); });
+
+      } else {
+        return;  // 知らない kind は足さない（黙って0を混ぜるより、出ないほうがまし）
+      }
+
+      if (sub == null) return;
+      total = simFloorMan(total + sub);
+      used++;
+      rows.push({ k: p.label + (detail ? '　' + detail : ''), v: fmtMan(sub) });
+    });
+
+    if (!used) notes.push(c.emptyNote || '当てはまる助成が1つも無い組み合わせです。');
+
+    // 加算（checkbox）。選択肢に when を書くと、条件を満たすときだけ足す。
+    // ここを見ていなかったため、育休中等業務代替支援コースで「業務代替期間が
+    // 1か月以上の場合に限る」有期雇用労働者加算が、7日以上14日未満の枠でも
+    // 足されていた（2026-08-06の監修で発覚。10万円の過大見積もり）。
+    if (c.adds && c.adds.q) {
+      var aq = simFindQ(c.adds.q), sel = simState[c.adds.q] || [];
+      ((aq && aq.options) || []).forEach(function (o) {
+        if (sel.indexOf(o.v) < 0) return;
+        if (o.when && !simWhenOk(o.when)) {
+          if (o.whenNote) notes.push(o.whenNote);
+          return;
+        }
+        var man = simAddMan(o);
+        if (man == null) return;
+        total = simFloorMan(total + man);
+        rows.push({ k: '加算：' + (o.s || o.t), v: fmtMan(man) });
+      });
+    }
+
+    // 事業所あたり・年度あたりの全体上限（人材開発支援助成金の1,000万円）
+    var whole = c.cap ? simPartCap(c.cap) : null;
+    if (whole && whole.man < total) {
+      rows.push({ k: '合計', v: fmtMan(total) });
+      rows.push({ k: '上限額（' + (whole.label || c.capLabel || '') + '）', v: fmtMan(whole.man) });
+      rows.push({ k: '安いほうの金額になるため、上限額が適用されます', v: fmtMan(whole.man), total: true });
+      total = whole.man;
+    } else {
+      if (whole) rows.push({ k: '上限額（' + (whole.label || c.capLabel || '') + '）', v: fmtMan(whole.man) });
+      rows.push({ k: '合計', v: fmtMan(total), total: true });
+    }
     return { amountMan: total, rows: rows, notes: notes };
   }
 
@@ -1184,7 +1318,7 @@
     if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
     if (simDef.calc && simDef.calc.type === 'per_person') res = simCalcPerPerson();
     if (simDef.calc && simDef.calc.type === 'checkbox_sum') res = simCalcCheckboxSum();
-    // multi_part はこれから作る（人材開発支援助成金・育休中等業務代替支援コース）。
+    if (simDef.calc && simDef.calc.type === 'multi_part') res = simCalcMultiPart();
     // 定義だけ先に入っても壊れないよう、計算できない型は「準備中」に落とす。
     if (!res) { box.innerHTML = simFallbackHTML(simCurrentProgram || {}); return; }
 

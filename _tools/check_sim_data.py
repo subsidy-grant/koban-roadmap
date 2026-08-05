@@ -32,7 +32,9 @@ SIM_DATA = os.path.join(ROOT, "sim_data.js")
 # program.html の計算エンジンが解釈できる語。ここにない type は画面に出ない。
 KNOWN_TYPES = ["expense_rate", "per_person", "checkbox_sum", "multi_part", "none"]
 # そのうち、いま実際に計算まで通る型（残りは「準備中」に落ちる）
-IMPLEMENTED_TYPES = ["expense_rate", "per_person", "checkbox_sum", "none"]
+IMPLEMENTED_TYPES = ["expense_rate", "per_person", "checkbox_sum", "multi_part", "none"]
+# multi_part の部品。ここにない kind は program.html が黙って飛ばす
+KNOWN_PART_KINDS = ["fixed", "expense_rate", "per_person"]
 KNOWN_Q_TYPES = ["number", "choice", "checkbox", "number_list"]
 # number_list が入力から作れる値の作り方。ここにない how は program.html が無視する
 KNOWN_DERIVE = ["min", "countBelow"]
@@ -142,6 +144,21 @@ def cap_of(calc, cap_key, d=None):
     # まったく同じ形。top.capKey はどちらも指せる。
     # checkbox_sum だけは区分表を持たず、取組ごとの額を checkbox の選択肢に持つので、
     # capKey は選択肢の v を '+' でつないだ形（例 'shutoku+fukki'）で書き、その合計を返す。
+    # multi_part は部品ごとに表を持つ。全体の上限（calc.cap）があるならそれ、
+    # 無い制度は capKey を「部品のid:区分表のキー」の形で書いて指す。
+    if calc.get("type") == "multi_part":
+        if not cap_key:
+            return (calc.get("cap") or {}).get("fixedMan")
+        if ":" not in str(cap_key):
+            return None
+        pid, k2 = str(cap_key).split(":", 1)
+        for p in (calc.get("parts") or []):
+            if p.get("id") != pid:
+                continue
+            tbl = p.get("unit") or p.get("cap") or {}
+            v = (tbl.get("values") or {}).get(k2)
+            return v if v is not None else p.get("man")
+        return None
     if calc.get("type") == "checkbox_sum":
         q = None
         for x in ((d or {}).get("questions") or []):
@@ -457,6 +474,107 @@ def check_program(key, d, program_keys, caps):
                         if opt.get("v") not in (o["manBy"].get("values") or {}):
                             err(key, "加算 '%s' の manBy.values に '%s' が無い。"
                                      "この区分を選ぶと加算が消える" % (o.get("v"), opt.get("v")))
+                check_text(o.get("t"), "加算の選択肢 '%s' の文言" % o.get("v"))
+        check_top(key, d, calc, caps)
+        return
+
+    # --- multi_part（性格の違う助成を足し合わせる）---
+    # 部品ごとに計算のしかたが違うので、点検も部品ごとに分ける。
+    if ctype == "multi_part":
+        parts = calc.get("parts") or []
+        if not parts:
+            err(key, "multi_part なのに parts が空")
+        pids = [p.get("id") for p in parts]
+        for pid in pids:
+            if pids.count(pid) > 1:
+                err(key, "部品のid '%s' が重複している" % pid)
+        for p in parts:
+            pid = p.get("id") or "(id無し)"
+            if not p.get("id"):
+                err(key, "id の無い部品がある")
+            if not p.get("label"):
+                err(key, "部品 '%s' に label が無い（内訳の行に名前が出ない）" % pid)
+            kind = p.get("kind")
+            if kind not in KNOWN_PART_KINDS:
+                err(key, "部品 '%s' の kind %r は使えない。%s のどれか"
+                    % (pid, kind, "／".join(KNOWN_PART_KINDS)))
+                continue
+            # 条件付きの部品は、外れたときに理由を出さないと黙って消える。
+            # ただし「別の型を選んだから出ない」だけのものは説明が要らないので、
+            # その場合は whenSilent: true と書いて意図を残す
+            if p.get("when") and not p.get("whenNote") and not p.get("whenSilent"):
+                warn(key, "部品 '%s' に when があるのに whenNote が無い。"
+                          "条件から外れたとき、なぜ足されないのかが画面に出ない" % pid)
+            check_text(p.get("whenNote"), "部品 '%s' の whenNote" % pid)
+
+            if kind == "fixed":
+                if p.get("man") is None and not p.get("manBy"):
+                    err(key, "部品 '%s' に man も manBy も無い（額が決まらない）" % pid)
+                if p.get("manBy"):
+                    need_q(p["manBy"].get("q"), "部品 '%s' の manBy.q" % pid)
+                    mq = seen.get(p["manBy"].get("q")) or {}
+                    for opt in (mq.get("options") or []):
+                        if opt.get("v") not in (p["manBy"].get("values") or {}):
+                            err(key, "部品 '%s' の manBy.values に '%s' が無い。"
+                                     "この区分を選ぶとこの部品が消える" % (pid, opt.get("v")))
+
+            elif kind == "expense_rate":
+                need_q(p.get("expenseQ"), "部品 '%s' の expenseQ" % pid)
+                r = p.get("rate") or {}
+                if r.get("fixed") is None and not r.get("axes") and not r.get("thresholds") \
+                        and not r.get("optionsOf"):
+                    err(key, "部品 '%s' の rate が決まらない" % pid)
+                if r.get("axes"):
+                    check_cap_table(key, r, seen, need_q, "部品 '%s' の rate" % pid)
+                    for k2, v in (r.get("values") or {}).items():
+                        if not (0 < v <= 1):
+                            err(key, "部品 '%s' の助成率 '%s'=%r が 0〜1 の範囲外"
+                                     "（3/4 なら 0.75 と書く）" % (pid, k2, v))
+                if r.get("fixed") is not None and not (0 < r["fixed"] <= 1):
+                    err(key, "部品 '%s' の助成率 %r が 0〜1 の範囲外" % (pid, r["fixed"]))
+
+            elif kind == "per_person":
+                u = p.get("unit") or {}
+                if u.get("fixedMan") is None and not u.get("axes"):
+                    err(key, "部品 '%s' の unit に fixedMan も axes も無い（単価が決まらない）" % pid)
+                check_cap_table(key, u, seen, need_q, "部品 '%s' の unit" % pid)
+                if p.get("countQ"):
+                    need_q(p["countQ"], "部品 '%s' の countQ" % pid)
+                    if p.get("maxCount") is not None and not p.get("overNote"):
+                        err(key, "部品 '%s' に maxCount があるのに overNote が無い" % pid)
+                if p.get("hoursQ"):
+                    need_q(p["hoursQ"], "部品 '%s' の hoursQ" % pid)
+                    if p.get("maxHours") is not None and not p.get("hoursOverNote"):
+                        err(key, "部品 '%s' に maxHours があるのに hoursOverNote が無い" % pid)
+
+            # 部品ごとの上限。perCountQ を書くと「1人あたりの上限 × 人数」になる
+            pcap = p.get("cap")
+            if pcap:
+                check_cap_table(key, pcap, seen, need_q, "部品 '%s' の cap" % pid)
+                if pcap.get("fixedMan") is None and not pcap.get("axes"):
+                    err(key, "部品 '%s' の cap に fixedMan も axes も無い" % pid)
+                if pcap.get("perCountQ"):
+                    need_q(pcap["perCountQ"], "部品 '%s' の cap.perCountQ" % pid)
+                    if pcap.get("maxPerCount") is not None and not pcap.get("overNote"):
+                        err(key, "部品 '%s' の cap に maxPerCount があるのに overNote が無い。"
+                                 "戻したことが画面に出ない" % pid)
+                elif pcap.get("maxPerCount") is not None:
+                    err(key, "部品 '%s' の cap に perCountQ が無いのに maxPerCount がある" % pid)
+
+        whole = calc.get("cap")
+        if whole:
+            if whole.get("fixedMan") is None and not whole.get("axes"):
+                err(key, "calc.cap に fixedMan も axes も無い")
+            check_cap_table(key, whole, seen, need_q, "calc.cap")
+        if calc.get("adds"):
+            aid = (calc["adds"] or {}).get("q")
+            need_q(aid, "calc.adds.q")
+            aq = seen.get(aid) or {}
+            if aq.get("type") != "checkbox":
+                err(key, "calc.adds.q '%s' は checkbox でないと加算にできない" % aid)
+            for o in (aq.get("options") or []):
+                if o.get("man") is None and not o.get("manBy"):
+                    err(key, "加算の選択肢 '%s' に man も manBy も無い" % o.get("v"))
                 check_text(o.get("t"), "加算の選択肢 '%s' の文言" % o.get("v"))
         check_top(key, d, calc, caps)
         return
