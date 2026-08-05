@@ -117,6 +117,80 @@ def axis_candidates(ax, questions_by_id, key):
     return [o.get("v") for o in (q.get("options") or [])]
 
 
+def fmt_man(v):
+    """index.html の fmtMan と同じ整形。capText にこの文字列が入っているかを見る。"""
+    n = round(v * 10) / 10
+    s = ("%d" % n) if float(n).is_integer() else ("%.1f" % n)
+    if abs(n) >= 1000:
+        i = s.split(".")[0]
+        frac = s[len(i):]
+        i = "{:,}".format(int(i))
+        s = i + frac
+    return s + "万円"
+
+
+def cap_of(calc, cap_key):
+    cap = calc.get("cap") or {}
+    if cap_key:
+        return (cap.get("values") or {}).get(cap_key)
+    return cap.get("fixedMan")
+
+
+def check_top(key, d, calc, caps):
+    top = d.get("top")
+    if not top:
+        err(key, "top が無い。トップページに出す上限額・補助率・受付期間の出所が決まらない")
+        return
+    for f in ("rate", "cap", "schedule"):
+        if not top.get(f):
+            err(key, "top.%s が無い（index.html 側から移した説明文。空だと画面が欠ける）" % f)
+    if top.get("noTopEstimate"):
+        if key in caps:
+            err(key, "top.noTopEstimate なのに index.html の CAP に残っている")
+        return
+
+    man = cap_of(calc, top.get("capKey"))
+    if man is None:
+        err(key, "top.capKey %r が区分表に無い（fixedMan の制度なら capKey を書かない）"
+            % top.get("capKey"))
+    else:
+        if not top.get("capText"):
+            err(key, "top.capText が無い")
+        elif fmt_man(man) not in top["capText"]:
+            err(key, "top.capText に上限額 %s が入っていない（いまは %r）。"
+                     "capKey が指す額と表示がずれている" % (fmt_man(man), top["capText"]))
+        # index.html は applySimNumbers() でここから読む。読んだ結果が一致しなければ
+        # どこかで上書きされている（＝一本化が崩れている）。
+        if key in caps and abs(caps[key] - man) > 0.01:
+            err(key, "index.html の CAP が top.capKey の額と違う（index=%s / sim=%s）。"
+                     "index.html 側にまだ数字が残っていないか確認すること" % (caps[key], man))
+        elif key not in caps:
+            err(key, "index.html の CAP に流し込まれていない。"
+                     "applySimNumbers() が呼ばれているか、top の書き方を確認すること")
+
+    tracks = top.get("tracks") or {}
+    keys = [o.get("key") for o in (tracks.get("options") or [])]
+    if tracks and tracks.get("default") not in keys:
+        err(key, "top.tracks.default %r が options に無い" % tracks.get("default"))
+    for o in (tracks.get("options") or []):
+        if not o.get("label"):
+            err(key, "top.tracks の '%s' に label が無い" % o.get("key"))
+        ways = [o.get("capKey"), o.get("capMan"), o.get("capKeyByTier"), o.get("capManByTier")]
+        if sum(1 for w in ways if w is not None) != 1:
+            err(key, "top.tracks の '%s' は capKey / capMan / capKeyByTier / capManByTier の"
+                     "どれか1つだけを書くこと" % o.get("key"))
+        if o.get("capKey") and cap_of(calc, o["capKey"]) is None:
+            err(key, "top.tracks の '%s' の capKey %r が区分表に無い" % (o.get("key"), o["capKey"]))
+        for tier, ck in (o.get("capKeyByTier") or {}).items():
+            if cap_of(calc, ck) is None:
+                err(key, "top.tracks の '%s' の capKeyByTier[%s] %r が区分表に無い"
+                    % (o.get("key"), tier, ck))
+        # 数字を直書きする枠（calc に無い枠）は、なぜ直書きなのかが分かるようにしておく
+        if (o.get("capMan") is not None or o.get("capManByTier")) and not o.get("capText") \
+                and not o.get("capTextByTier"):
+            err(key, "top.tracks の '%s' は額を直書きしているので capText も書くこと" % o.get("key"))
+
+
 def check_program(key, d, program_keys, caps):
     # --- 制度キーが実在するか ---
     if key not in program_keys:
@@ -397,16 +471,45 @@ def check_program(key, d, program_keys, caps):
     elif cap.get("fixedMan") is not None:
         cap_values = [cap["fixedMan"]]
 
-    # --- index.html が持っている上限額（CAP）との突合 ---
-    # 同じ数字を2か所に置いている以上、片方だけ古くなる。大きくずれたら気づけるようにする。
-    # わざと違えている場合は capDiffOk に理由を書く（黙って消さず、理由を残して黙らせる）。
-    if cap_values and key in caps:
-        top = max(cap_values)
-        if abs(top - caps[key]) > 0.01 and not d.get("capDiffOk"):
-            warn(key, "上限額の最大が index.html の CAP と違う（sim_data.js=%s万円 / "
-                      "index.html=%s万円）。どちらかが古くないか確認すること。"
-                      "わざと違えているなら capDiffOk に理由を書くこと"
-                 % (top, caps[key]))
+    # --- top（トップページが読む値）---
+    # 2026-08-05に、上限額・補助率・受付期間の出所を sim_data.js に一本化した。
+    # index.html は起動時にここから読む。数字を書き写さず区分表のキーで指す約束なので、
+    # そのキーが実在するか、表示テキストがその額を含んでいるかを見る。
+    check_top(key, d, calc, caps)
+
+
+def check_no_duplicate_literals(sim_keys):
+    """index.html の中に、試算のある制度の数値が直書きで残っていないか。
+
+    一本化しても、あとから「ここだけ直接書いたほうが早い」と戻してしまうと、
+    また片方だけ古い状態に戻る。ソースを文字列として見て、それを止める。
+    """
+    with open(INDEX_HTML, encoding="utf-8") as f:
+        src = f.read()
+    # applySimNumbers() より前に置かれた var 宣言の中身だけを見る。
+    # 中括弧を含まない形（var RATE_BASE = {};）を先に見ること。複数行用の正規表現を
+    # 先に当てると、空の宣言のときに次の宣言まで飲み込んで誤検知する。
+    for name in ("CAP", "CAP_TEXT", "RATE_BASE", "PROGRAM_TRACKS"):
+        m = re.search(r"\n  var %s = \{([^{}]*)\};" % name, src)
+        if not m:
+            m = re.search(r"\n  var %s = \{(.*?)\n  \};" % name, src, re.S)
+        if not m:
+            continue
+        body = m.group(1)
+        for k in sim_keys:
+            if re.search(r"(^|[\s{,])%s\s*:" % re.escape(k), body):
+                err(k, "index.html の %s に直書きが残っている。"
+                       "この値は sim_data.js の top から流し込む決まり" % name)
+    # PROGRAMS の中の rate / cap / schedule も sim_data.js が持つ
+    for k in sim_keys:
+        m = re.search(r"\n    %s: \{(.*?)\n    \},?\n" % re.escape(k), src, re.S)
+        if not m:
+            continue
+        body = m.group(1)
+        for f in ("rate", "cap", "schedule"):
+            if re.search(r"\n      %s: \"" % f, body):
+                err(k, "index.html の PROGRAMS.%s に %s が直書きで残っている。"
+                       "この文章は sim_data.js の top.%s が持つ決まり" % (k, f, f))
 
 
 def main():
@@ -417,6 +520,7 @@ def main():
 
     for key in sorted(programs.keys()):
         check_program(key, programs[key], program_keys, caps)
+    check_no_duplicate_literals(sorted(programs.keys()))
 
     for w in warns:
         print("  注意 " + w)

@@ -2296,62 +2296,53 @@
 
 <button type="button" id="toTop" onclick="scrollToTop()" aria-label="ページの先頭へ戻る" title="ページの先頭へ戻る">↑</button>
 
+<!-- 試算の定義。上限額・補助率・受付期間は、試算のある制度についてはこちらが唯一の出所。
+     このページは起動時に window.KOBAN_SIM から読む（applySimNumbers）。 -->
+<script src="sim_data.js"></script>
 <script>
   var PROGRAMS = {
     ai: {
       name: "デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）",
       scale: "中小企業・小規模事業者。中小企業者の基準は業種により異なる（02「補助金・助成金の制度を探す」の基準ボックスを参照）。基準内であれば従業員規模を問わず対象",
       expense: "予約・顧客管理・会計等のソフトウェア購入費、クラウド利用料（最大2年分）、導入関連費",
-      rate: "1/2以内（要件充足で2/3）",
-      cap: "5万〜450万円（通常枠）",
       wage: "必須ではない（全従業員の30%以上が最低賃金未満で雇用の場合など要件充足で補助率を2/3に優遇）",
       acceptance: "43.9%（2026年1次・通常枠）。全体では46.3%。2025年度は年間30〜50%で推移",
       note: "予約・顧客管理DXやバックオフィス効率化など、ソフト・クラウド費用が中心の分類が主な対象。通常枠のほかインボイス枠（対応類型・上限350万円）、セキュリティ対策推進枠（上限150万円）があり、概算シミュレーターで枠ごとに試算可能。",
       link: "https://it-shien.smrj.go.jp/applicant/subsidy/normal/",
       linkLabel: "公式サイト（通常枠）を見る",
-      schedule: "通年で複数回の締切を設定。受付中で、日付が確定しているのは4次締切分：2026年8月25日（火）17:00締切／交付決定日2026年10月7日（水）予定。5次・6次締切分は見出しのみで日付未公表（2026年8月5日時点。予算上限に達した枠は早期終了の可能性あり）",
       continuity: "2017年度のIT導入補助金創設以来、継続的に実施。名称・要件は年度ごとに改定されており、次年度以降も何らかの形での継続が見込まれる（一回限りの制度ではない）"
     },
     jizoku: {
       name: "小規模事業者持続化補助金＜一般型・通常枠＞（第20回）",
       scale: "「小規模事業者」の基準（業種により5人以下または20人以下。02「補助金・助成金の制度を探す」の基準ボックスを参照）以下の常時使用従業員数の事業者が対象（個人事業主も対象）",
       expense: "機械装置等費、広報費、ウェブサイト関連費、展示会等出展費、旅費、開発費、委託外注費",
-      rate: "2/3以内（賃金引上げ特例のうち、直近1期の課税所得がゼロ以下の赤字事業者は3/4）",
-      cap: "通常50万円／インボイス特例で+50万円（100万円）／賃金引上げ特例で+150万円（200万円）／両方の特例で+200万円（250万円）",
       wage: "特例を使わない場合は任意。「賃金引上げ特例」（上限+150万円）を使う場合は、2027年4月1日から補助事業実施期限日（2028年3月31日）までの12か月と前年同月の12か月を比べ、従業員1人あたり給与支給総額を年平均3.0%以上増加させることが必須。あわせて事業場内最低賃金が地域別最低賃金以上である必要があります。要件を1つでも満たさないと、上乗せ分だけでなく補助金の全額が交付されません",
       acceptance: "51.1%（第19回）。直近は概ね45〜51%で推移（公募回により変動）",
       note: "広報費・Web関連費や機械装置等費が中心の分類と相性が良い。3つの枠があり、概算シミュレーターで枠ごとに試算可能。",
       link: "https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html",
       linkLabel: "第20回公募要領を見る",
-      schedule: "現在受付中の回はなし。第19回（2026年3月6日〜4月30日）は採択発表待ち。第20回は2026年11月5日に受付開始、2026年12月15日17:00締切の予定。商工会・商工会議所に出してもらう事業支援計画書（様式4）の発行受付締切は2026年12月4日で、こちらが先に来ます",
       continuity: "長年にわたり継続的に実施（回を重ねて継続、一回限りの制度ではない）。次年度以降も継続実施が見込まれる"
     },
     kaizen: {
       name: "業務改善助成金（2026年度／50・70・90円コース）",
       scale: "中小企業・小規模事業者（大企業と密接な関係のある「みなし大企業」は対象外）で、事業場内でいちばん低い時給が令和8年度の地域別最低賃金を下回る事業場。申請は店舗・工場など事業場ごとに行います。従業員数で対象外にはなりませんが、事業場規模30人未満かどうかで上限額が変わります",
       expense: "生産性向上に資する設備・機器の導入費（施術機器、什器、POSレジ等）",
-      rate: "4/5（いまの事業場内最低賃金が1,050円未満）／3/4（1,050円以上）。賃上げ後の金額ではなく、引き上げる前の金額で判定します",
-      cap: "1人を引き上げる場合（30人未満の事業場／30人以上の事業場）＝50円コース40万／30万円、70円コース50万／40万円、90円コース100万／90万円。引き上げる人数が多いほど上限が上がり、90円コースで8人以上なら450万円。最高額の600万円は特例事業者が10人以上を引き上げる場合に限られます",
       wage: "必須。事業場内最低賃金を50円以上引き上げることが前提。引き上げる対象になるのは週の所定労働時間が20時間以上の雇用保険加入者で、雇い入れから6か月を過ぎた人です。何回かに分けて引き上げることはできません。引き上げ後の金額を就業規則等に定める必要があります",
       acceptance: "競争で選ばれる制度ではありませんが、労働局による申請内容の審査があります。厚生労働省は「予算の範囲内で交付するため、申請期間内に募集を終了する場合があります」と明記しており、予算がなくなれば締切前でも受付が終わります。申請は同一事業場につき年度内1回までです",
       note: "【順番を間違えると受け取れません】設備を買うのは交付決定の通知が届いた後です。申請前・交付決定前に発注や購入をすると対象外になります。事業を終える期限は交付決定を受けた年度の1月31日。提出先は都道府県労働局の雇用環境・均等部（室）です。令和8年度から、助成対象経費の特例だった自動車（特種用途自動車を除く）は対象外になりました。3つのコースがあり、概算シミュレーターでコースごとに試算できます。",
       link: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html",
       linkLabel: "厚生労働省 公式ページを見る",
-      schedule: "受付前。2026年9月1日受付開始の予定。締切は、申請する事業所の都道府県で令和8年度の地域別最低賃金が変わる日の前日か、2026年11月30日のいずれか早いほうまで",
       continuity: "最低賃金引上げ支援策として毎年度実施。2027年度以降も継続見込み（一回限りの制度ではない）"
     },
     shoryokuka: {
       name: "中小企業省力化投資補助金＜一般型＞",
       scale: "中小企業者・小規模事業者（GビズIDプライムが必須）。従業員数に応じて上限額が変動（5人以下〜101人以上まで対応）",
       expense: "自動化・省人化機器（自動洗髪機、自動精算機、清掃ロボット等）",
-      rate: "中小企業1/2（小規模事業者・再生事業者2/3）。最低賃金引上げ特例適用で2/3に優遇",
-      cap: "一般型：5人以下750万円〜101人以上8,000万円（各区分とも大幅賃上げ時は増額）／カタログ注文型：5人以下500万円〜21人以上1,000万円",
       wage: "必須ではない。最低賃金引上げの特例（2024年10月〜2025年9月の間に「その時点の地域別最低賃金以上〜2025年度改定の地域別最低賃金未満」で雇っている従業員が全従業員の30%以上ある月が3か月以上）で補助率を2/3に優遇。別に「大幅賃上げ特例」（事業場内最低賃金を地域別最低賃金+50円以上）があり、こちらは上限額が上がりますが、最低賃金引上げの特例とは併用できません",
       acceptance: "公募回により変動。第7回公募は2026年7月1日〜31日受付で終了、採択率は未公表",
       note: "自動化・省人化機器が中心の分類が対象になりやすい。一般型・カタログ注文型の2類型があり、概算シミュレーターで両方を試算可能。",
       link: "https://shoryokuka.smrj.go.jp/ippan/",
       linkLabel: "公式サイトを見る",
-      schedule: "第7回は2026年7月31日（金）17:00で受付終了。第8回は「8月中旬に公募開始、9月中旬に申請受付開始、10月中旬に申請締切」の予定と公式サイトに掲載（2026年8月5日時点。詳細は後日発表）",
       continuity: "2024年度創設の比較的新しい制度。年3〜4回のペースで継続公募中だが、次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
     },
     career: {
@@ -2671,14 +2662,11 @@
       industryOnly: "lodging",
       scale: "旅館業法第3条第1項の許可を受けた宿泊事業者（風俗営業・住宅宿泊事業＝民泊は対象外）。地域（DMO・自治体等）と連携した人手不足対策の取組が要件",
       expense: "自動チェックイン機、PMS（宿泊管理システム）、配膳ロボット、清掃支援設備等の省力化・省人化設備",
-      rate: "1/2",
-      cap: "1施設あたり上限1,000万円",
       wage: "明記なし（賃上げは必須要件ではない）",
       acceptance: "非公表",
       note: "フロント・チェックイン自動化、客室清掃・リネン管理効率化、レストラン・館内設備の効率化の各分類と対象設備が重なる。",
       link: "https://kanko-jinzai.go.jp/",
       linkLabel: "観光庁 特設サイトを見る",
-      schedule: "令和8年度は2026年3月27日13:00〜5月29日17:00で受付終了。二次公募の実施可否は申請状況を踏まえて検討中（2026年7月時点で未確定）",
       continuity: "旧・人材不足対策事業からの継続制度。毎年度実施されているが、次年度以降の実施可否・内容は予算措置次第"
     },
     monodukuri: {
@@ -2686,8 +2674,6 @@
       industryOnly: "manufacturing",
       scale: "中小企業者・中堅企業者。旧ものづくり補助金と旧新事業進出補助金（ともに公募終了）の統合後継制度",
       expense: "機械装置・システム構築費、技術導入費、知的財産権等関連経費、外注費、専門家経費、クラウドサービス利用費、原材料費、広告宣伝・販売促進費等（枠により建物費・海外旅費等も対象）",
-      rate: "1/2（特例2/3）。グローバル枠は2/3",
-      cap: "革新的新製品・サービス枠750万〜3,500万円／新事業進出枠2,500万〜9,000万円／グローバル枠2,500万〜9,000万円（いずれも従業員規模により変動）",
       wage: "必須。補助事業終了後3〜5年の事業計画で、給与支給総額の年平均成長率+3.5%以上、事業場内最低賃金が地域別最低賃金より+30円以上高い水準を維持する計画が必要",
       acceptance: "第1回公募のため非公表",
       note: "産業用ロボット・協働ロボット導入、品質管理・検査工程の自動化など、製造業の大型設備投資と相性が良い。3つの枠があり、概算シミュレーターで枠ごとに試算可能。",
@@ -2695,7 +2681,6 @@
       linkLabel: "公式サイトを見る",
       // 変更前の日付（8月31日・9月30日）を本文に書くと、締切抽出がそちらを拾ってしまう。
       // 経緯は sim_data.js の status に書き、ここには現行の日付だけを置く。
-      schedule: "第1回公募：2026年6月29日公募開始／2026年9月30日（水）申請受付開始／2026年10月30日（金）18:00締切（2026年7月17日にスケジュールが後ろにずれました。2026年8月5日時点）",
       continuity: "旧ものづくり補助金（2026年5月公募終了）と新事業進出補助金の統合により2026年度新設。継続実施される見込みだが、統合直後のため次年度以降の詳細は未定"
     },
     akiya: {
@@ -2703,14 +2688,11 @@
       industryOnly: "realestate",
       scale: "民間事業者（不動産事業者を含む）・NPO・地方公共団体等の提案主体。<strong>個別の設備導入費ではなく、先進的な空き家対策の事業提案に対する競争的な公募</strong>である点が他制度と大きく異なる",
       expense: "空き家の改修・除却工事（ハード事業）、相談体制構築・情報発信等の事業スキーム構築（ソフト事業）",
-      rate: "費用の種類ごとに異なります。調査検討・計画策定・普及広報は定額、空き家の<strong>改修</strong>工事と除却後の土地整備は1/3、空き家の<strong>除却</strong>工事のみ2/5（木造36,000円/㎡・非木造51,000円/㎡が限度）",
-      cap: "提案内容・規模により異なる（募集要領を要確認）",
       wage: "対象外（賃上げ要件はない）",
       acceptance: "競争的な提案公募型。令和8年度は36件採択",
       note: "本表の「業務改善」分類とは性質が異なり、日常的な設備導入というより新たな空き家活用ビジネスモデルの提案が対象。",
       link: "https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html",
       linkLabel: "国土交通省 令和8年度の募集ページを見る",
-      schedule: "令和8年度は2026年5月20日（水）正午締切で受付終了。次年度の公募時期は例年3〜5月頃の見込み",
       continuity: "国土交通省が毎年度実施している事業。次年度以降も継続実施が見込まれる"
     },
     tokyo_sogyo: {
@@ -3065,13 +3047,17 @@
   // 同日中に #programSummary（比較表）と重複していたため撤去済み。詳細は
   // program.html?key=<制度キー> のみで見せる。
 
+  // ここに書くのは「試算の定義がまだ無い制度」だけ。試算のある制度（sim_data.js の
+  // window.KOBAN_SIM.programs にあるもの）の上限額・補助率は、下の applySimNumbers() が
+  // sim_data.js から流し込む。同じ数字を2か所に置いていたせいで、片方だけ古い状態が
+  // 4件見つかったため、2026-08-05に出所を1つにした。
   // food_labor は、リンク先が飲食店向けではなく支援側事業者の公募だと分かり（2026-08-05確認）、
   // 補助率・上限額の一次資料が取れていない。裏の取れていない数値で概算を出さないため、
-  // RATE_BASE と CAP から外して akiya と同じ「概算を出さない」扱いにしている。
-  var RATE_BASE = { ai: 0.5, jizoku: 0.667, kaizen: 0.75, shoryokuka: 0.5, kanko_shoryokuka: 0.5, monodukuri: 0.5 };
+  // 試算の定義を作らず、ここにも書かない（akiya と同じ「概算を出さない」扱い）。
+  var RATE_BASE = {};
 
   var CAP = {
-    ai: 450, jizoku: 50, kaizen: 450, shoryokuka: 750, career: 140, jinzai: 1000, hatarakikata: 150, kanko_shoryokuka: 1000, monodukuri: 7000,
+    career: 140, jinzai: 1000, hatarakikata: 150,
     tokyo_sogyo: 400, tokyo_digital: 150, tokyo_soui: 600,
     tokyo_minato_software: 60, tokyo_bunkyo_seisansei: 100, tokyo_taito_keiei: 20, tokyo_sumida_digital: 50, tokyo_koto_ict: 50,
     tokyo_shinagawa_digital: 60, tokyo_meguro_shoryokuka: 40, tokyo_setagaya_keiei: 40, tokyo_nakano_keieiryoku: 20, tokyo_suginami_digital: 50,
@@ -3080,11 +3066,8 @@
     tokyo_hachioji_keizoku: 100, tokyo_mitaka_sangyo: 300, tokyo_fuchu_hanro: 30, tokyo_hamura_kiban: 10, tokyo_nishitokyo_dx: 20
   };
   var CAP_TEXT = {
-    ai: "450万円", jizoku: "50万円（インボイス特例100万円・賃金引上げ特例200万円・両方250万円）", kaizen: "450万円（特例600万円）",
-    shoryokuka: "750万円（特例1,000万円）",
     career: "140万円／人", jinzai: "1,000万円／年（事業所）",
     hatarakikata: "150万円（時間外労働の削減。ただし過去の残業実態と36協定の要件あり）。年休の制度導入は25万円",
-    kanko_shoryokuka: "1,000万円／施設（1事業者3施設まで）", monodukuri: "7,000万円（特例9,000万円）",
     tokyo_sogyo: "400万円（下限100万円）", tokyo_digital: "150万円（下限5万円）", tokyo_soui: "600万円",
     tokyo_minato_software: "ソフト40万円＋機器20万円（合計上限60万円）",
     tokyo_bunkyo_seisansei: "通常枠50万円（賃上げ枠100万円）",
@@ -3393,79 +3376,85 @@
     return (Math.round(n * 10) / 10).toLocaleString('ja-JP') + '万円';
   }
 
-  var SHORYOKUKA_CAP_BY_TIER = { t5: 750, t20: 1500, t50: 3000, t100: 5000, t101: 8000 };
-  var SHORYOKUKA_CAP_TEXT_BY_TIER = {
-    t5: "750万円（特例1,000万円）", t20: "1,500万円（特例2,000万円）", t50: "3,000万円（特例4,000万円）",
-    t100: "5,000万円（特例6,500万円）", t101: "8,000万円（特例1億円）"
-  };
+  // 省力化投資補助金の従業員規模別の上限。sim_data.js の一般型の枠から作る（下の applySimNumbers）。
+  var SHORYOKUKA_CAP_BY_TIER = {};
+  var SHORYOKUKA_CAP_TEXT_BY_TIER = {};
 
   // 通常枠以外の申請枠を持つ制度。tierを持つcapByTierはEMPLOYEE_TIER(t5/t20/t50/t100/t101)に対応。
-  // 出典: 中小企業庁・各制度公式サイトの公募要領（2026年7月時点の情報を基に自己チェック済み）
-  var PROGRAM_TRACKS = {
-    jizoku: {
-      default: 'normal',
-      options: [
-        { key: 'normal', label: '特例を使わない', cap: 50, capText: '50万円', wageRequired: false,
-          desc: '' },
-        { key: 'invoice', label: 'インボイス特例のみ', cap: 100, capText: '100万円（通常50万円＋インボイス特例50万円）', wageRequired: false,
-          desc: '免税事業者からインボイス発行事業者に変わった場合' },
-        { key: 'wage', label: '賃金引上げ特例のみ', cap: 200, capText: '200万円（通常50万円＋賃金引上げ特例150万円）', wageRequired: true,
-          desc: '従業員1人あたり給与支給総額を年平均3.0%以上増加させることが要件。要件を1つでも満たさないと補助金の全額が交付されない' },
-        { key: 'wage_invoice', label: '賃金引上げ特例＋インボイス特例', cap: 250, capText: '250万円（通常50万円＋両特例200万円）', wageRequired: true,
-          desc: '賃金引上げ特例とインボイス特例の両方の要件を満たす場合' }
-      ]
-    },
-    ai: {
-      default: 'normal',
-      options: [
-        { key: 'normal', label: '通常枠', cap: 450, capText: '450万円',
-          desc: '' },
-        { key: 'invoice', label: 'インボイス枠（インボイス対応類型）', cap: 350, capText: '350万円', rate: 0.667,
-          desc: '会計・受発注・決済ソフトやPC・タブレット、レジ・券売機等の導入費が対象。補助率はその他事業者2/3、小規模事業者は3/4に優遇' },
-        { key: 'security', label: 'セキュリティ対策推進枠', cap: 150, capText: '150万円', rate: 0.5,
-          desc: '「サイバーセキュリティお助け隊サービス」の利用料（最大2年分）が対象。補助率は中小企業1/2、小規模事業者は2/3に優遇' }
-      ]
-    },
-    kaizen: {
-      default: 'c90',
-      options: [
-        { key: 'c50', label: '50円コース', cap: 40, capText: '40万円（1人引き上げ時の目安）',
-          desc: '事業場内最低賃金を50円以上引き上げるコース' },
-        { key: 'c70', label: '70円コース', cap: 50, capText: '50万円（1人引き上げ時の目安）',
-          desc: '事業場内最低賃金を70円以上引き上げるコース' },
-        { key: 'c90', label: '90円コース', cap: 100, capText: '100万円（1人引き上げ時の目安）〜最大600万円（10人以上・特例事業者）',
-          desc: '事業場内最低賃金を90円以上引き上げるコース。引き上げる人数が多いほど上限額が上昇し、一般事業者は最大450万円（7人以上）、特例事業者は最大600万円（10人以上）' }
-      ]
-    },
-    shoryokuka: {
-      default: 'general',
-      options: [
-        { key: 'general', label: '一般型', capByTier: { t5: 750, t20: 1500, t50: 3000, t100: 5000, t101: 8000 },
-          capTextByTier: { t5: '750万円（特例1,000万円）', t20: '1,500万円（特例2,000万円）', t50: '3,000万円（特例4,000万円）', t100: '5,000万円（特例6,500万円）', t101: '8,000万円（特例1億円）' },
-          desc: 'カタログに掲載されていない設備も含め自由に選定できる一方、事業計画書の作成が必要' },
-        { key: 'catalog', label: 'カタログ注文型', capByTier: { t5: 500, t20: 750, t50: 1000, t100: 1000, t101: 1000 },
-          capTextByTier: { t5: '500万円（特例750万円）', t20: '750万円（特例1,000万円）', t50: '1,000万円（特例1,500万円）', t100: '1,000万円（特例1,500万円）', t101: '1,000万円（特例1,500万円）' },
-          desc: '登録済みの汎用製品をカタログから選ぶだけで申請可能。事業計画書の作成は不要で随時申請できる' }
-      ]
-    },
-    monodukuri: {
-      default: 'innovative',
-      options: [
-        { key: 'innovative', label: '革新的新製品・サービス枠', rate: 0.5,
-          capByTier: { t5: 750, t20: 1000, t50: 1500, t100: 2500, t101: 2500 },
-          capTextByTier: { t5: '750万円（特例850万円）', t20: '1,000万円（特例1,250万円）', t50: '1,500万円（特例2,500万円）', t100: '2,500万円（特例3,500万円）', t101: '2,500万円（特例3,500万円、51人以上は同額）' },
-          desc: '革新的な新製品・新サービスの開発が対象。実施期間の目安は10か月' },
-        { key: 'newbiz', label: '新事業進出枠', rate: 0.5,
-          capByTier: { t5: 2500, t20: 2500, t50: 4000, t100: 5500, t101: 7000 },
-          capTextByTier: { t5: '2,500万円（特例3,000万円、1〜20人は同額）', t20: '2,500万円（特例3,000万円）', t50: '4,000万円（特例5,000万円）', t100: '5,500万円（特例7,000万円）', t101: '7,000万円（特例9,000万円）' },
-          desc: '既存事業と異なる新市場・高付加価値事業への進出が対象。実施期間の目安は14か月' },
-        { key: 'global', label: 'グローバル枠', rate: 0.667,
-          capByTier: { t5: 2500, t20: 2500, t50: 4000, t100: 5500, t101: 7000 },
-          capTextByTier: { t5: '2,500万円（特例3,000万円、1〜20人は同額）', t20: '2,500万円（特例3,000万円）', t50: '4,000万円（特例5,000万円）', t100: '5,500万円（特例7,000万円）', t101: '7,000万円（特例9,000万円）' },
-          desc: '海外市場開拓（輸出）に向けた国内体制強化が対象。補助率は一律2/3で他の2枠より高い' }
-      ]
+  // 試算の定義がある制度（kaizen / ai / jizoku / shoryokuka / monodukuri）の枠は
+  // sim_data.js の top.tracks が唯一の出所で、applySimNumbers() がここに流し込む。
+  // ここに直接書いてよいのは、試算の定義がまだ無い制度の枠だけ。
+  var PROGRAM_TRACKS = {};
+
+  // ---------- sim_data.js から数値と説明文を流し込む ----------
+  // 上限額・補助率・受付期間を index.html と sim_data.js の両方に書いていたせいで、
+  // 片方だけ古い状態が4件見つかった（2026-08-05）。そこで、試算の定義がある制度の
+  // これらは sim_data.js を唯一の出所にし、起動時にここへ流し込む形にした。
+  // sim_data.js 側は数字を書き写さず、区分表（calc.cap.values）のキーで指している。
+  function simCapMan(def, key) {
+    var cap = ((def || {}).calc || {}).cap || {};
+    if (key) return (cap.values || {})[key];
+    return cap.fixedMan;
+  }
+  // 補助率の基本値。calc に出てくる率のうちいちばん低いもの＝安全側を代表値にする。
+  function simBaseRate(def) {
+    var r = ((def || {}).calc || {}).rate || {}, list = [];
+    if (r.fixed != null) list.push(r.fixed);
+    (r.thresholds || []).forEach(function (t) { if (t.rate != null) list.push(t.rate); });
+    if (r.optionsOf) {
+      (def.questions || []).forEach(function (q) {
+        if (q.id !== r.optionsOf) return;
+        (q.options || []).forEach(function (o) { if (o.rate != null) list.push(o.rate); });
+      });
     }
-  };
+    return list.length ? Math.min.apply(null, list) : null;
+  }
+  function simTrackFromTop(def, o) {
+    var t = { key: o.key, label: o.label, desc: o.desc || '' };
+    if (o.rate != null) t.rate = o.rate;
+    if (o.wageRequired != null) t.wageRequired = o.wageRequired;
+    if (o.capKey) { t.cap = simCapMan(def, o.capKey); t.capText = o.capText || fmtMan(t.cap); }
+    else if (o.capMan != null) { t.cap = o.capMan; t.capText = o.capText || fmtMan(o.capMan); }
+    if (o.capKeyByTier || o.capManByTier) {
+      t.capByTier = {};
+      Object.keys(o.capKeyByTier || o.capManByTier).forEach(function (tier) {
+        t.capByTier[tier] = o.capKeyByTier ? simCapMan(def, o.capKeyByTier[tier]) : o.capManByTier[tier];
+      });
+      if (o.capTextByTier) t.capTextByTier = o.capTextByTier;
+    }
+    return t;
+  }
+  function applySimNumbers() {
+    var S = (window.KOBAN_SIM && window.KOBAN_SIM.programs) || {};
+    Object.keys(S).forEach(function (k) {
+      var def = S[k], top = def.top;
+      if (!top || !PROGRAMS[k]) return;
+      // 一覧と制度詳細ページに出す説明文
+      if (top.rate) PROGRAMS[k].rate = top.rate;
+      if (top.cap) PROGRAMS[k].cap = top.cap;
+      if (top.schedule) PROGRAMS[k].schedule = top.schedule;
+      // 概算シミュレーターが使う数値
+      if (top.noTopEstimate) return;
+      var man = simCapMan(def, top.capKey), rate = simBaseRate(def);
+      if (man != null) { CAP[k] = man; CAP_TEXT[k] = top.capText || fmtMan(man); }
+      if (rate != null) RATE_BASE[k] = rate;
+      if (top.tracks) {
+        PROGRAM_TRACKS[k] = {
+          default: top.tracks.default,
+          options: (top.tracks.options || []).map(function (o) { return simTrackFromTop(def, o); })
+        };
+      }
+    });
+    // 省力化投資補助金は、枠を選んでいないときに従業員規模別の上限を使う。
+    // 一般型の枠から作れるので、ここでも数字は書かない。
+    var sr = PROGRAM_TRACKS.shoryokuka;
+    (sr ? sr.options : []).forEach(function (o) {
+      if (o.key !== 'general') return;
+      SHORYOKUKA_CAP_BY_TIER = o.capByTier || {};
+      SHORYOKUKA_CAP_TEXT_BY_TIER = o.capTextByTier || {};
+    });
+  }
+
 
   var INDUSTRIES = {
     beauty: {
@@ -6692,6 +6681,10 @@
       }
     };
     Object.keys(ADDED_NF).forEach(function (k) { MUNICIPALITY_NOT_FOUND[k] = ADDED_NF[k]; });
+    // 地域限定の制度を足し終えたところで、試算の定義がある制度の上限額・補助率・
+    // 受付期間を sim_data.js から流し込む。ADDED より後に置くのは、
+    // 同じキーが両方にあった場合に sim_data.js（出典と確認日時つき）を勝たせるため。
+    applySimNumbers();
     // ここに載っている自治体だけが調査済み。載っていない自治体は『未調査』であり、
     // 『制度が無い』ことを意味しない。210市区町村を一度に調べ切れないための区別。
     MUNICIPALITY_CHECKED.tokyo = '*';
