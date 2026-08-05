@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """本体サイト index.html の「03 業種別・改善計画 厳選10選」セクションに、
-improvement/index.html と同じタブ切替＋カード一覧をそのまま埋め込む（リンクのみ表示ではなく全表示）。
+improvement/index.html と同じカード一覧をそのまま埋め込む（リンクのみ表示ではなく全表示）。
+業種ごとに1枚ずつパネルを作るが、業種タブ自体は持たない（2026-08-05に廃止。
+ページ冒頭の業種選択と二重表示になっていたため）。表示する1枚は本体側の
+renderIndustryChrome() が showImp10Tab(key) を呼んで切り替える。
 data/plans/{industry}.json または data/external/{industry}.json を業種ごとに参照する
 （build_hub.py・score.py と同じソース／同じ EXTERNAL_INDUSTRIES 判定）。
 マーカーコメントで置換するため冪等。
@@ -49,12 +52,6 @@ END = "  <!-- IMPROVEMENT_HUB_EMBED:END -->"
 
 CSS = """
 <style>
-  #improvement-cta .imp10-tabs { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1.3rem 0 0; }
-  #improvement-cta .imp10-tabs button { font:inherit; font-size:0.86rem; font-weight:600; padding:0.45rem 1rem;
-    border:1px solid var(--line); border-radius:100px; background:var(--paper-raised);
-    color:var(--ink-soft); cursor:pointer; }
-  #improvement-cta .imp10-tabs button.active { background:var(--accent-wash); border-color:var(--accent); color:var(--accent); }
-  #improvement-cta .imp10-tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   #improvement-cta .imp10-panel { display:none; margin-top:1rem; }
   #improvement-cta .imp10-panel.active { display:block; }
   #improvement-cta .imp10-note { font-size:0.82rem; color:var(--ink-soft); margin:0 0 0.8rem; }
@@ -79,7 +76,6 @@ CSS = """
   #improvement-cta .imp10-card .meta { font-size:0.87rem; }
   #improvement-cta .imp10-card .links { font-size:0.9rem; }
   #improvement-cta .imp10-card .links a { display:inline-flex; align-items:center; min-height:2.6rem; }
-  #improvement-cta .imp10-tabs button { font-size:0.95rem; min-height:2.6rem; }
 
   /* スマートフォンでは10枚のカードで約3,400px になり、その先の
      シミュレーターまで届かない。最初は4枚だけ見せ、続きは任意で開く。 */
@@ -124,12 +120,11 @@ def build_fragment():
             with open(p, encoding="utf-8") as f:
                 plans[ik] = json.load(f)
 
+    # 業種タブは2026-08-05に廃止（本人指示：ページ冒頭の業種選択と二重になっていた）。
+    # パネル自体は業種ごとに作り、表示する1枚を showImp10Tab(key) で切り替える方式は残す。
+    # 呼び出し元は本体 index.html 側の renderIndustryChrome()（業種を切り替えるたびに
+    # 呼ばれる、既存の「業種依存の表示を揃える」関数）で、タブ操作からは呼ばない。
     parts = [CSS]
-    parts.append('<div class="imp10-tabs" role="tablist">')
-    for i, ik in enumerate(INDUSTRY_ORDER):
-        cls = " active" if i == 0 else ""
-        parts.append(f'<button class="{cls.strip()}" data-imp10-ind="{ik}" onclick="showImp10Tab(\'{ik}\')">{esc(labels[ik])}</button>')
-    parts.append("</div>")
 
     for i, ik in enumerate(INDUSTRY_ORDER):
         cls = "imp10-panel active" if i == 0 else "imp10-panel"
@@ -201,7 +196,6 @@ def build_fragment():
 <script>
   function showImp10Tab(key) {
     document.querySelectorAll('#improvement-cta .imp10-panel').forEach(function (s) { s.classList.toggle('active', s.id === 'imp10-' + key); });
-    document.querySelectorAll('#improvement-cta .imp10-tabs button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-imp10-ind') === key); });
   }
 </script>""")
     return "\n".join(parts)

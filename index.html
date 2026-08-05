@@ -866,7 +866,6 @@
   .fav-chip button { min-width: 2rem; min-height: 2rem; }
   .cat-check { min-height: 2.75rem; }
   .cat-check input { width: 1.25rem; height: 1.25rem; }
-  #improvement-cta .imp10-tabs button { min-height: 2.6rem; }
   /* つまみは指で掴める大きさに、軌道は狙いやすい太さに広げる */
   .slider-row input[type="range"] { height: 10px; }
   .slider-row input[type="range"]::-webkit-slider-thumb { width: 30px; height: 30px; }
@@ -1770,12 +1769,6 @@
   <!-- IMPROVEMENT_HUB_EMBED:START (embed_hub_cards.py で自動生成、手編集しないこと) -->
 
 <style>
-  #improvement-cta .imp10-tabs { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1.3rem 0 0; }
-  #improvement-cta .imp10-tabs button { font:inherit; font-size:0.86rem; font-weight:600; padding:0.45rem 1rem;
-    border:1px solid var(--line); border-radius:100px; background:var(--paper-raised);
-    color:var(--ink-soft); cursor:pointer; }
-  #improvement-cta .imp10-tabs button.active { background:var(--accent-wash); border-color:var(--accent); color:var(--accent); }
-  #improvement-cta .imp10-tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
   #improvement-cta .imp10-panel { display:none; margin-top:1rem; }
   #improvement-cta .imp10-panel.active { display:block; }
   #improvement-cta .imp10-note { font-size:0.82rem; color:var(--ink-soft); margin:0 0 0.8rem; }
@@ -1800,7 +1793,6 @@
   #improvement-cta .imp10-card .meta { font-size:0.87rem; }
   #improvement-cta .imp10-card .links { font-size:0.9rem; }
   #improvement-cta .imp10-card .links a { display:inline-flex; align-items:center; min-height:2.6rem; }
-  #improvement-cta .imp10-tabs button { font-size:0.95rem; min-height:2.6rem; }
 
   /* スマートフォンでは10枚のカードで約3,400px になり、その先の
      シミュレーターまで届かない。最初は4枚だけ見せ、続きは任意で開く。 */
@@ -1817,14 +1809,6 @@
   }
 </style>
 
-<div class="imp10-tabs" role="tablist">
-<button class="active" data-imp10-ind="beauty" onclick="showImp10Tab('beauty')">美容業</button>
-<button class="" data-imp10-ind="food" onclick="showImp10Tab('food')">飲食業</button>
-<button class="" data-imp10-ind="lodging" onclick="showImp10Tab('lodging')">宿泊業</button>
-<button class="" data-imp10-ind="manufacturing" onclick="showImp10Tab('manufacturing')">製造業</button>
-<button class="" data-imp10-ind="realestate" onclick="showImp10Tab('realestate')">不動産業、物品賃貸業</button>
-<button class="" data-imp10-ind="education" onclick="showImp10Tab('education')">教育、学習支援業</button>
-</div>
 <div class="imp10-panel active" id="imp10-beauty">
 <p class="imp10-note">この業種の10案は、6業種共通の100施策スコアリングではなく、美容業に特化した独自のPDCA評価（美容業×AI 1000案 → 100 → 30 → 10）で選定しています。5軸スコア（市場性・省力化度・実現性・補助金適合・差別化、各5点満点）はその評価基準に基づきます。</p>
 <div class="imp10-cards">
@@ -2280,7 +2264,6 @@
 <script>
   function showImp10Tab(key) {
     document.querySelectorAll('#improvement-cta .imp10-panel').forEach(function (s) { s.classList.toggle('active', s.id === 'imp10-' + key); });
-    document.querySelectorAll('#improvement-cta .imp10-tabs button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-imp10-ind') === key); });
   }
 </script>
   <!-- IMPROVEMENT_HUB_EMBED:END -->
@@ -7141,6 +7124,10 @@
       boardEl.href = 'improvement/' + industryKey + '/pdca.html';
       boardEl.textContent = '全1000案のPDCAファネル・一覧を見る（' + ind.label + '版）↗';
     }
+    // 03の改善計画10選は、以前は自前の業種タブを持っていたが、ここ(冒頭の業種選択)と
+    // 二重になっていたため2026-08-05にタブを廃止した（本人指示）。以後は showImp10Tab
+    // （embed_hub_cards.py が埋め込むパネル切替関数）をここから直接呼んで揃える。
+    if (typeof showImp10Tab === 'function') showImp10Tab(industryKey);
   }
 
   // ---------- 従業員数・資本金スライダー ----------
