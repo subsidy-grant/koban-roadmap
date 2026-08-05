@@ -82,6 +82,39 @@ def load():
     return got["sim"], got["programKeys"], (caps or {})
 
 
+def walk_when(w, need_q, where):
+    """when 条件が参照する質問idを全部たどる。
+
+    綴りを間違えても program.html は例外を出さず、その条件が黙って「満たさない」に
+    なるだけなので、金額が静かに減る（または加算が永久に付かない）。ここで捕まえる。
+    """
+    if not isinstance(w, dict):
+        return
+    for k in ("all", "any"):
+        for sub in (w.get(k) or []):
+            walk_when(sub, need_q, where)
+    if w.get("not"):
+        walk_when(w["not"], need_q, where)
+    if w.get("q"):
+        need_q(w["q"], where)
+    # 複数の質問の答えを足して見る形（改善事業に要した費用の合計額）
+    for qid in (w.get("sum") or []):
+        need_q(qid, where + " の sum")
+
+
+def any_q(w):
+    """その when が、どこかで質問を1つでも見ているか。"""
+    if not isinstance(w, dict):
+        return False
+    if w.get("q") or w.get("sum"):
+        return True
+    for k in ("all", "any"):
+        for sub in (w.get(k) or []):
+            if any_q(sub):
+                return True
+    return any_q(w.get("not")) if w.get("not") else False
+
+
 def axis_candidates(ax, questions_by_id, key):
     """区分表の軸1つが取りうるキーの一覧。網羅チェックに使う。"""
     if ax.get("brackets"):
@@ -95,11 +128,17 @@ def axis_candidates(ax, questions_by_id, key):
                         % b.get("k"))
                 elif b.get("else") not in ks:
                     err(key, "区分 '%s' の else が指す '%s' は同じ軸に無い" % (b.get("k"), b.get("else")))
-                if not b["when"].get("q"):
-                    err(key, "区分 '%s' の when に q（見にいく質問id）が無い" % b.get("k"))
-                elif b["when"]["q"] not in questions_by_id:
-                    err(key, "区分 '%s' の when が参照する id '%s' が questions にも derive にも無い"
-                        % (b.get("k"), b["when"]["q"]))
+
+                # when は all / any / not で組んだ複合条件にもなる。参照している
+                # 質問idを全部たどって、1つでも実在しなければ落とす。
+                def _need(qid, where, _k=b.get("k")):
+                    if qid and qid not in questions_by_id:
+                        err(key, "%s が参照する id '%s' が questions にも derive にも無い"
+                            % (where, qid))
+
+                walk_when(b["when"], _need, "区分 '%s' の when" % b.get("k"))
+                if not any_q(b["when"]):
+                    err(key, "区分 '%s' の when が質問を1つも見ていない" % b.get("k"))
         # max は小さい順に並べ、最後の1つだけが受け皿（max なし）でなければならない
         maxes = [b.get("max") for b in ax["brackets"]]
         if maxes[-1] is not None:
@@ -175,6 +214,17 @@ def cap_of(calc, cap_key, d=None):
             total += man
         return total
     cap = calc.get("cap") or calc.get("unit") or {}
+    # 上限額が足し算で決まる制度（cap.sum）は、トップページに出せる代表値が1つしかない。
+    # capKey は「項目のid」か「項目のid:区分表のキー」で、その項目1つ分を名指しする。
+    if cap.get("sum"):
+        if not cap_key:
+            return None
+        eid, sep, k2 = str(cap_key).partition(":")
+        for e in cap["sum"]:
+            if e.get("id") != eid:
+                continue
+            return (e.get("values") or {}).get(k2) if sep else e.get("fixedMan")
+        return None
     if cap_key:
         return (cap.get("values") or {}).get(cap_key)
     return cap.get("fixedMan")
@@ -205,6 +255,62 @@ def check_cap_table(key, cap, seen, need_q, where):
     for k2, v in (cap.get("values") or {}).items():
         if not isinstance(v, (int, float)):
             err(key, "%s の '%s' の値が数値でない（%r）" % (where, k2, v))
+
+
+def check_cap_sum(key, cap, seen, need_q, check_text, where0):
+    """上限が「条件を満たした項目の額の足し算」で決まる形（cap.sum）の点検。
+
+    2か所で使う。助成額の上限（calc.cap）と、助成対象経費そのものの上限
+    （calc.expenseParts[].cap）。仕組みは同じなので点検も共通にする。
+    """
+    eids = [e.get("id") for e in cap["sum"]]
+    for eid in eids:
+        if eids.count(eid) > 1:
+            err(key, "%s.sum の項目id '%s' が重複している" % (where0, eid))
+    for e in cap["sum"]:
+        where = "%s.sum '%s'" % (where0, e.get("id") or "(id無し)")
+        if not e.get("id"):
+            err(key, "%s.sum に id の無い項目がある" % where0)
+        if not e.get("label"):
+            err(key, "%s に label が無い（内訳に名前が出ない）" % where)
+        if e.get("fixedMan") is None and not e.get("axes"):
+            err(key, "%s に fixedMan も axes も無い（額が決まらない）" % where)
+        check_cap_table(key, e, seen, need_q, where)
+        # 条件から外れた項目は、理由を出さないと黙って上限が下がる。
+        # 「その取組を選んでいないだけ」なら説明は要らないので whenSilent を書く。
+        if e.get("when"):
+            walk_when(e["when"], need_q, where + ".when")
+            if not e.get("whenNote") and not e.get("whenSilent"):
+                warn(key, "%s に when があるのに whenNote が無い。"
+                          "外れたとき、なぜ上限に入らないのかが画面に出ない" % where)
+        # needs は「選んではいるが前提を満たさない」ための条件。落ちる理由が複数
+        # あるので [{ when, note }] の並びで書き、note は1つずつ必須にする。
+        # 黙って落とすと「選んだのに増えない」としか見えないため。
+        if e.get("needs") is not None and not isinstance(e["needs"], list):
+            err(key, "%s の needs は [{ when, note }] の配列で書くこと" % where)
+        for ni, nd in enumerate(e.get("needs") or []):
+            if not nd.get("when"):
+                err(key, "%s の needs[%d] に when が無い" % (where, ni))
+            else:
+                walk_when(nd["when"], need_q, "%s の needs[%d].when" % (where, ni))
+            if not nd.get("note"):
+                err(key, "%s の needs[%d] に note が無い。"
+                         "選んだのに上限が増えない理由が画面に出ない" % (where, ni))
+            check_text(nd.get("note"), "%s の needs[%d].note" % (where, ni))
+        if e.get("perCountQ"):
+            need_q(e["perCountQ"], where + ".perCountQ")
+            if e.get("maxPerCount") is not None and not e.get("overNote"):
+                err(key, "%s に maxPerCount があるのに overNote が無い。"
+                         "人数を戻したことが画面に出ない" % where)
+        elif e.get("maxPerCount") is not None:
+            err(key, "%s に perCountQ が無いのに maxPerCount がある" % where)
+        if isinstance(e.get("overNote"), str):
+            for nm in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", e["overNote"]):
+                if nm not in ("typed", "used"):
+                    err(key, "%s の overNote の {%s} は使えない"
+                             "（使えるのは {typed} と {used}）" % (where, nm))
+        check_text(e.get("label"), where + " の label")
+        check_text(e.get("whenNote"), where + " の whenNote")
 
 
 def check_top(key, d, calc, caps):
@@ -389,6 +495,27 @@ def check_program(key, d, program_keys, caps):
         if qid and qid not in seen:
             err(key, "%s が参照する id '%s' が questions にも derive にも無い" % (where, qid))
 
+    # 選択肢そのものに付けた when（ほかの答えと組み合わせると使えない区分）。
+    # 条件を満たさないときは else が指す選択肢に落ちる。落とし先が無いと、
+    # その選択肢を選んだ瞬間に区分が決まらなくなる。
+    for q in questions:
+        if q.get("type") != "choice":
+            continue
+        vs = [o.get("v") for o in (q.get("options") or [])]
+        for o in (q.get("options") or []):
+            if not o.get("when"):
+                continue
+            walk_when(o["when"], need_q, "質問 '%s' の選択肢 '%s' の when" % (q.get("id"), o.get("v")))
+            if not o.get("else"):
+                err(key, "質問 '%s' の選択肢 '%s' に when があるのに else"
+                         "（条件を満たさないときの落とし先）が無い" % (q.get("id"), o.get("v")))
+            elif o["else"] not in vs:
+                err(key, "質問 '%s' の選択肢 '%s' の else が指す '%s' が同じ質問に無い"
+                    % (q.get("id"), o.get("v"), o["else"]))
+            if not o.get("elseNote") and not o.get("whenNote"):
+                err(key, "質問 '%s' の選択肢 '%s' に when があるのに elseNote も whenNote も無い。"
+                         "落とされた理由が画面に出ない" % (q.get("id"), o.get("v")))
+
     # --- 注意書きの記法 ---
     # [[ ]]＝赤の太字。閉じ忘れると記号がそのまま画面に出る。
     # {…}＝自動で作った値の差し込み。綴りを間違えると「{wage}円」と出てしまう。
@@ -428,6 +555,10 @@ def check_program(key, d, program_keys, caps):
         check_text(q.get("overNote"), "質問 '%s' の overNote" % qid)
         for d2 in (q.get("derive") or []):
             check_text(d2.get("dropNote"), "derive '%s' の dropNote" % d2.get("id"))
+        for o in (q.get("options") or []):
+            check_text(o.get("t"), "質問 '%s' の選択肢 '%s' の文言" % (qid, o.get("v")))
+            check_text(o.get("elseNote"), "質問 '%s' の選択肢 '%s' の elseNote" % (qid, o.get("v")))
+            check_text(o.get("whenNote"), "質問 '%s' の選択肢 '%s' の whenNote" % (qid, o.get("v")))
     for i, t in enumerate(d.get("notes") or []):
         check_text(t, "notes[%d]" % i)
     for i, t in enumerate(d.get("notesMore") or []):
@@ -642,9 +773,45 @@ def check_program(key, d, program_keys, caps):
         return
 
     # --- 計算が参照する質問 ---
-    need_q(calc.get("expenseQ"), "calc.expenseQ")
-    if not calc.get("expenseQ"):
-        err(key, "expense_rate なのに expenseQ（経費を聞く質問）が無い")
+    # 経費の聞き方は2通り。1つの質問で聞く（expenseQ）か、取組ごとに助成対象経費の
+    # 上限が違うので分けて聞く（expenseParts）か。両方書くと、どちらを使うのか
+    # 読んでも分からなくなる。
+    if calc.get("expenseParts") and calc.get("expenseQ"):
+        err(key, "calc に expenseQ と expenseParts の両方がある。どちらか1つにすること")
+    if calc.get("expenseParts"):
+        ids = [p.get("id") for p in calc["expenseParts"]]
+        for pid in ids:
+            if ids.count(pid) > 1:
+                err(key, "calc.expenseParts の id '%s' が重複している" % pid)
+        for p in calc["expenseParts"]:
+            pid = p.get("id") or "(id無し)"
+            where = "calc.expenseParts '%s'" % pid
+            if not p.get("id"):
+                err(key, "calc.expenseParts に id の無い部分がある")
+            if not p.get("label"):
+                err(key, "%s に label が無い（内訳に名前が出ない）" % where)
+            need_q(p.get("q"), where + ".q")
+            pq = seen.get(p.get("q")) or {}
+            if pq.get("type") != "number":
+                err(key, "%s の q '%s' は number でないと金額として使えない" % (where, p.get("q")))
+            if p.get("cap"):
+                check_cap_sum(key, p["cap"], seen, need_q, check_text, where + ".cap")
+                if not p.get("overNote"):
+                    err(key, "%s に cap があるのに overNote が無い。"
+                             "経費を切り下げたことが画面に出ない" % where)
+                if isinstance(p.get("overNote"), str):
+                    if p["overNote"].count("[[") != p["overNote"].count("]]"):
+                        err(key, "%s の overNote の [[ ]] の数が合っていない" % where)
+                    for nm in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", p["overNote"]):
+                        if nm not in ("typed", "used"):
+                            err(key, "%s の overNote の {%s} は使えない"
+                                     "（使えるのは {typed} と {used}）" % (where, nm))
+            elif p.get("overNote"):
+                err(key, "%s に cap が無いのに overNote がある（永久に出ない）" % where)
+    else:
+        need_q(calc.get("expenseQ"), "calc.expenseQ")
+        if not calc.get("expenseQ"):
+            err(key, "expense_rate なのに expenseQ（経費を聞く質問）が無い")
 
     # --- 下限（これを割ると金額が出せない制度がある） ---
     # 2種類ある。q+min＝対象経費そのものの下限／amount・amountBy＝補助金の額の下限。
@@ -684,9 +851,28 @@ def check_program(key, d, program_keys, caps):
     else:
         warn(key, "status（受付中か終了か）が無い。締切済みの制度で金額だけ見せると誤解される")
 
+    # --- そもそも受けられない組み合わせ（blocks）---
+    for bi, b in enumerate(calc.get("blocks") or []):
+        if not b.get("when"):
+            err(key, "calc.blocks[%d] に when が無い（いつ止めるのかが決まらない）" % bi)
+        else:
+            walk_when(b["when"], need_q, "calc.blocks[%d].when" % bi)
+        if not b.get("message"):
+            err(key, "calc.blocks[%d] に message が無い。止めた理由が画面に出ない" % bi)
+        check_text(b.get("message"), "calc.blocks[%d].message" % bi)
+
     rate = calc.get("rate") or {}
-    if rate.get("fixed") is None and not rate.get("thresholds") and not rate.get("optionsOf"):
-        err(key, "calc.rate に fixed も thresholds も optionsOf も無い（補助率が決まらない）")
+    if rate.get("fixed") is None and not rate.get("thresholds") and not rate.get("optionsOf") \
+            and not rate.get("axes"):
+        err(key, "calc.rate に fixed も thresholds も optionsOf も axes も無い（補助率が決まらない）")
+    # 補助率が区分表で決まる形（働き方改革推進支援助成金の 3/4 と 4/5）
+    if rate.get("axes"):
+        check_cap_table(key, rate, seen, need_q, "calc.rate")
+        for k2, v in (rate.get("values") or {}).items():
+            if not isinstance(v, (int, float)):
+                continue
+            if not (0 < v <= 1):
+                err(key, "補助率 '%s'=%r が 0〜1 の範囲外（3/4 なら 0.75 と書く）" % (k2, v))
     # 補助率を選択肢そのものに持たせる形（中小1/2・小規模2/3 など）
     if rate.get("optionsOf"):
         need_q(rate["optionsOf"], "calc.rate.optionsOf")
@@ -719,9 +905,12 @@ def check_program(key, d, program_keys, caps):
 
     # --- 上限額 ---
     cap = calc.get("cap") or {}
-    if cap.get("fixedMan") is None and not cap.get("axes"):
-        err(key, "calc.cap に fixedMan も axes も無い（上限額が決まらない）")
-    check_cap_table(key, cap, seen, need_q, "calc.cap")
+    if cap.get("sum"):
+        check_cap_sum(key, cap, seen, need_q, check_text, "calc.cap")
+    else:
+        if cap.get("fixedMan") is None and not cap.get("axes"):
+            err(key, "calc.cap に fixedMan も axes も無い（上限額が決まらない）")
+        check_cap_table(key, cap, seen, need_q, "calc.cap")
 
     # --- top（トップページが読む値）---
     # 2026-08-05に、上限額・補助率・受付期間の出所を sim_data.js に一本化した。

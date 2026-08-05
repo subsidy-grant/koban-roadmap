@@ -605,7 +605,16 @@
       return false;
     }
     if (w.not) return !simWhenOk(w.not);
-    var v = simNum(w.q);
+    // checkbox の質問で「その項目を選んでいるか」を見る。選択は配列なので eq では比べられない。
+    if (w.has != null) {
+      var picked = simState[w.q];
+      return !!picked && picked.indexOf(w.has) >= 0;
+    }
+    // 複数の質問の答えを足した値で見る。「改善事業に要した費用の合計額が30万円を
+    // 超えるとき」のように、経費を分けて聞いているのに条件は合計で決まる場合に使う。
+    var v = w.sum
+      ? w.sum.reduce(function (a, id) { return a + simNum(id); }, 0)
+      : simNum(w.q);
     if (w.lt != null && !(v < w.lt)) return false;
     if (w.lte != null && !(v <= w.lte)) return false;
     if (w.gte != null && !(v >= w.gte)) return false;
@@ -689,6 +698,7 @@
   // 上限額。固定値（fixedMan）か、軸ごとの区分表（axes / values）で決まる。
   function simResolveCap(cap) {
     if (!cap) return null;
+    if (cap.sum) return simSumCap(cap);
     if (cap.fixedMan != null) return { man: cap.fixedMan, label: cap.label || '', notes: [] };
     var keys = [], labels = [], notes = [];
     for (var i = 0; i < (cap.axes || []).length; i++) {
@@ -700,6 +710,42 @@
     var man = cap.values[keys.join('|')];
     if (man == null) return null;  // 区分表に無い組み合わせ（データ側の穴。準備中表示に落とす）
     return { man: man, label: labels.join('・'), notes: notes };
+  }
+
+  // 上限額そのものが「選んだ成果目標ごとの額の足し算」で決まる制度のためのもの。
+  //   働き方改革推進支援助成金 … 成果目標①〜③の上限額＋賃上げ加算＋割増賃金率引上げ加算
+  // 1つの区分表では表せないので、項目（sum）を並べて足す。項目1つ分の額の決め方は
+  // 上限額の区分表とまったく同じなので simPartCap をそのまま使う（perCountQ も効く）。
+  //
+  // when  … その項目を選んでいるか。外れたら数えない（whenSilent なら説明も出さない）
+  // needs … 選んではいるが、制度上の前提を満たさないので0になる条件。[{ when, note }] の
+  //          並びで書き、満たさなかった最初の1つの note を必ず画面に出す。落ちる理由が
+  //          複数ある（人数を入れていない／解雇があった／規模と人数が噛み合わない）ので、
+  //          1つの条件に畳むと「なぜ増えないのか」が言えなくなる。
+  function simSumCap(cap) {
+    var rows = [], notes = [], total = 0, used = 0;
+    (cap.sum || []).forEach(function (e) {
+      if (e.when && !simWhenOk(e.when)) { if (e.whenNote) notes.push(e.whenNote); return; }
+      var stop = null;
+      (e.needs || []).forEach(function (nd) {
+        if (stop === null && !simWhenOk(nd.when)) stop = nd.note || '';
+      });
+      if (stop !== null) { if (stop) notes.push(stop); return; }
+      var r = simPartCap(e);
+      if (!r) return;               // 区分表の穴。足さずに飛ばす（少なめに出る側）
+      (r.notes || []).forEach(function (n) { notes.push(n); });
+      if (r.over) notes.push(simFillTextPlain(e.overNote || '', { typed: r.over, used: r.count }));
+      if (!r.man) return;           // 0円の項目は内訳に出さない（選ばれていないのと同じ）
+      total = simFloorMan(total + r.man);
+      used++;
+      rows.push({
+        k: e.label + (e.perCountQ ? '（' + fmtMan(r.per) + ' × ' + r.count + '人）' : ''),
+        v: fmtMan(r.man)
+      });
+    });
+    return {
+      man: total, label: cap.label || '', notes: notes, parts: rows, used: used
+    };
   }
 
   // ---- per_person：1人あたりの額 × 人数（＋事業所あたりの加算）----
@@ -1087,8 +1133,43 @@
   // min（経費 × 率、上限額）。地域限定の制度もほとんどがこの形になる。
   function simCalcExpenseRate() {
     var c = simDef.calc;
-    var expense = simNum(c.expenseQ);
     var expQ = simFindQ(c.expenseQ);
+
+    // そもそも受けられない組み合わせ（働き方改革推進支援助成金で成果目標を1つも
+    // 選べていない場合など）。金額の話に入る前に止める。
+    var blocks = c.blocks || [];
+    for (var bi = 0; bi < blocks.length; bi++) {
+      if (simWhenOk(blocks[bi].when)) return { blocked: true, message: blocks[bi].message };
+    }
+
+    // 対象経費。ほとんどの制度は1つの質問で聞く（expenseQ）。
+    // 取組ごとに助成対象経費そのものの上限が決まっている制度（働き方改革推進支援
+    // 助成金 支給要領 表3）だけ、上限のかかる部分とかからない部分を分けて聞き、
+    // 部分ごとに上限を当ててから足す（expenseParts）。合計に1回だけ上限を当てると、
+    // 上限のない設備費と混ざって上限が事実上消える（設備10万円＋コンサル490万円で
+    // 500万円が丸ごと対象になってしまう。実際の対象は20万円）。
+    var expense = 0, expRows = [], expNotes = [];
+    if (c.expenseParts) {
+      c.expenseParts.forEach(function (p) {
+        var v = simNum(p.q), lim = p.cap ? simResolveCap(p.cap) : null;
+        if (lim) {
+          (lim.notes || []).forEach(function (n) { if (n) expNotes.push(n); });
+          (lim.parts || []).forEach(function (pr) {
+            expRows.push({ k: '　経費の上限：' + pr.k, v: pr.v });
+          });
+          if (v > lim.man) {
+            expNotes.push(simFillTextPlain(p.overNote || '',
+              { typed: fmtMan(v), used: fmtMan(lim.man) }));
+            v = lim.man;
+          }
+        }
+        if (!v) return;
+        expense = simFloorMan(expense + v);
+        expRows.push({ k: '対象経費：' + p.label, v: fmtMan(v) });
+      });
+    } else {
+      expense = simNum(c.expenseQ);
+    }
 
     // 対象経費に下限がある制度（業務改善助成金は税抜10万円、IT導入系は補助額5万円など）。
     // 下限を割っていると金額そのものが出ないので、計算より先に見る。
@@ -1115,11 +1196,17 @@
         };
       }
     }
-    var rows = [{
-      k: ((expQ && expQ.label) || '対象経費') + ' ' + fmtMan(expense) + ' × ' + simTermRate() + ' ' + rate.label,
+    var rows = expRows.concat([{
+      k: (c.expenseParts ? '対象経費の合計' : ((expQ && expQ.label) || '対象経費')) +
+         ' ' + fmtMan(expense) + ' × ' + simTermRate() + ' ' + rate.label,
       v: fmtMan(raw)
-    }];
+    }]);
     var amount = raw;
+    // 上限額が足し算で決まる制度は、その内訳も出す。何を選ぶと上限がいくら増えるのかが
+    // 見えないと、成果目標を選び直しようがないため。
+    (cap.parts || []).forEach(function (p) {
+      rows.push({ k: '上限額の内訳：' + p.k, v: p.v });
+    });
     rows.push({ k: '上限額（' + cap.label + '）', v: fmtMan(cap.man) });
     if (cap.man < raw) {
       amount = cap.man;
@@ -1128,7 +1215,12 @@
       rows.push({ k: '上限額に届かないため、計算した金額がそのまま目安になります', v: fmtMan(amount), total: true });
     }
     var notes = (cap.notes || []).slice();
+    // 補助率が区分表（axes）で決まる制度は、選択肢の when を外したときの理由が
+    // notes（複数）に入る。note（単数）だけを見ていると、補助率が下がったのに
+    // その理由が画面に出ない。
+    (rate.notes || []).forEach(function (n) { if (n) notes.unshift(n); });
     if (rate.note) notes.unshift(rate.note);
+    expNotes.forEach(function (n) { if (n) notes.unshift(n); });
     return { amountMan: amount, rows: rows, notes: notes };
   }
 
