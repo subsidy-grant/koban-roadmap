@@ -742,6 +742,85 @@
     return { amountMan: total, rows: rows, notes: notes };
   }
 
+  // ---- checkbox_sum：当てはまる取組ごとの定額を合算する型 ----
+  // 両立支援等助成金のように、1つの制度の中に独立した助成が何本もあり、
+  // 事業主は当てはまるものだけを取る形の制度のための型。per_person と違って
+  // 「本体」が複数あり、しかも本数ごとに人数の上限が別々に決まっている。
+  //
+  // 項目（checkbox の option）ごとに書けること：
+  //   man / manBy … 額（manBy はほかの質問の答えで変わる場合。区分表と同じ書き方）
+  //   countQ / maxCount / overNote … その項目だけ人数倍する
+  //                （1事業主5人まで・2回までなど、本数ごとに違うので項目側に持たせる）
+  //   requires … これを取っていないと取れない項目（職場復帰時は育休取得時が要る、など）
+  //   excludes … これと同時には取れない項目（出生時両立支援の2つのルート）
+  //   when     … 条件を満たすときだけ足す
+  //
+  // 取れない組み合わせを選んだときは、黙って落とさずに理由を注記に出す。
+  // チェックを押せなくするより、なぜ足せないのかが読めるほうが次の手につながる。
+  //
+  // 条件（when）と排他（excludes）は「利用者が選んだもの」で見る。
+  function simItemExcluded(o, sel) {
+    if (o.excludes) {
+      var ex = [].concat(o.excludes);
+      for (var i = 0; i < ex.length; i++) if (sel.indexOf(ex[i]) >= 0) return o.excludesNote || '';
+    }
+    if (o.when && !simWhenOk(o.when)) return o.whenNote || '';
+    return null;
+  }
+  function simCalcCheckboxSum() {
+    var c = simDef.calc, q = simFindQ(c.q);
+    if (!q) return null;
+    var sel = simState[c.q] || [];
+    var opts = (q.options || []).filter(function (o) { return sel.indexOf(o.v) >= 0; });
+    var rows = [], notes = [], total = 0, picked = 0, dropped = {};
+
+    opts.forEach(function (o) {
+      var stop = simItemExcluded(o, sel);
+      if (stop !== null) { dropped[o.v] = true; if (stop) notes.push(stop); }
+    });
+    // 前提（requires）は「落ちずに残ったもの」に対して見る。ここを「利用者が
+    // 選んだもの」で見ると、本体が排他で落ちているのに加算だけが生き残る。
+    // （出生時両立支援コースで、取得率ルートが排他で落ちてもプラチナくるみん
+    //   加算15万円が足され、上限52万円のはずが57万円になっていた。2026-08-05修正）
+    // 加算が加算を前提にする書き方もありうるので、変化が止まるまで繰り返す。
+    for (var pass = 0; pass <= opts.length; pass++) {
+      var changed = false;
+      opts.forEach(function (o) {
+        if (dropped[o.v] || !o.requires) return;
+        var req = [].concat(o.requires), met = false;
+        req.forEach(function (r) { if (sel.indexOf(r) >= 0 && !dropped[r]) met = true; });
+        if (met) return;
+        dropped[o.v] = true;
+        changed = true;
+        if (o.requiresNote) notes.push(o.requiresNote);
+      });
+      if (!changed) break;
+    }
+
+    opts.forEach(function (o) {
+      if (dropped[o.v]) return;
+      var man = simAddMan(o);
+      if (man == null) return;
+      var n = 1, over = 0;
+      if (o.countQ) {
+        n = Math.floor(simNum(o.countQ));
+        if (!isFinite(n) || n < 1) n = 1;
+        if (o.maxCount != null && n > o.maxCount) { over = n; n = o.maxCount; }
+        if (over && o.overNote) notes.push(simFillTextPlain(o.overNote, { typed: over, used: n }));
+      }
+      var sub = simFloorMan(man * n);
+      total = simFloorMan(total + sub);
+      picked++;
+      rows.push({
+        k: (o.s || o.t) + (o.countQ ? ('　' + fmtMan(man) + ' × ' + n + '人') : ''),
+        v: fmtMan(sub)
+      });
+    });
+    if (!picked) notes.push(c.emptyNote || '当てはまる取組を1つ以上選ぶと、見込みの額が出ます。');
+    rows.push({ k: '合計', v: fmtMan(total), total: true });
+    return { amountMan: total, rows: rows, notes: notes };
+  }
+
   // ---- number_list：ほかの質問の人数に合わせて入力欄を並べる型 ----
   // 「何人」だけを聞くと、その全員が人数に数えられる前提の金額が出る。実際には
   // 業務改善助成金の場合、数えられるのは「事業場内最低賃金の人」と「引き上げによって
@@ -1104,7 +1183,8 @@
     var res = null;
     if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
     if (simDef.calc && simDef.calc.type === 'per_person') res = simCalcPerPerson();
-    // per_person / checkbox_sum / multi_part はこれから作る。
+    if (simDef.calc && simDef.calc.type === 'checkbox_sum') res = simCalcCheckboxSum();
+    // multi_part はこれから作る（人材開発支援助成金・育休中等業務代替支援コース）。
     // 定義だけ先に入っても壊れないよう、計算できない型は「準備中」に落とす。
     if (!res) { box.innerHTML = simFallbackHTML(simCurrentProgram || {}); return; }
 

@@ -32,7 +32,7 @@ SIM_DATA = os.path.join(ROOT, "sim_data.js")
 # program.html の計算エンジンが解釈できる語。ここにない type は画面に出ない。
 KNOWN_TYPES = ["expense_rate", "per_person", "checkbox_sum", "multi_part", "none"]
 # そのうち、いま実際に計算まで通る型（残りは「準備中」に落ちる）
-IMPLEMENTED_TYPES = ["expense_rate", "per_person", "none"]
+IMPLEMENTED_TYPES = ["expense_rate", "per_person", "checkbox_sum", "none"]
 KNOWN_Q_TYPES = ["number", "choice", "checkbox", "number_list"]
 # number_list が入力から作れる値の作り方。ここにない how は program.html が無視する
 KNOWN_DERIVE = ["min", "countBelow"]
@@ -129,9 +129,34 @@ def fmt_man(v):
     return s + "万円"
 
 
-def cap_of(calc, cap_key):
+def opt_man(o):
+    """取組1つ分の額。選択で変わる場合（manBy）は大きいほうを採る（index.html と同じ）。"""
+    if o.get("man") is not None:
+        return o["man"]
+    vals = (o.get("manBy") or {}).get("values") or {}
+    return max(vals.values()) if vals else None
+
+
+def cap_of(calc, cap_key, d=None):
     # 上限額の区分表（expense_rate の cap）と単価の区分表（per_person の unit）は
     # まったく同じ形。top.capKey はどちらも指せる。
+    # checkbox_sum だけは区分表を持たず、取組ごとの額を checkbox の選択肢に持つので、
+    # capKey は選択肢の v を '+' でつないだ形（例 'shutoku+fukki'）で書き、その合計を返す。
+    if calc.get("type") == "checkbox_sum":
+        q = None
+        for x in ((d or {}).get("questions") or []):
+            if x.get("id") == calc.get("q"):
+                q = x
+        if not q or not cap_key:
+            return None
+        by_v = {o.get("v"): o for o in (q.get("options") or [])}
+        total = 0
+        for v in str(cap_key).split("+"):
+            man = opt_man(by_v[v]) if v in by_v else None
+            if man is None:
+                return None
+            total += man
+        return total
     cap = calc.get("cap") or calc.get("unit") or {}
     if cap_key:
         return (cap.get("values") or {}).get(cap_key)
@@ -178,7 +203,7 @@ def check_top(key, d, calc, caps):
             err(key, "top.noTopEstimate なのに index.html の CAP に残っている")
         return
 
-    man = cap_of(calc, top.get("capKey"))
+    man = cap_of(calc, top.get("capKey"), d)
     if man is None:
         err(key, "top.capKey %r が区分表に無い（fixedMan の制度なら capKey を書かない）"
             % top.get("capKey"))
@@ -208,10 +233,10 @@ def check_top(key, d, calc, caps):
         if sum(1 for w in ways if w is not None) != 1:
             err(key, "top.tracks の '%s' は capKey / capMan / capKeyByTier / capManByTier の"
                      "どれか1つだけを書くこと" % o.get("key"))
-        if o.get("capKey") and cap_of(calc, o["capKey"]) is None:
+        if o.get("capKey") and cap_of(calc, o["capKey"], d) is None:
             err(key, "top.tracks の '%s' の capKey %r が区分表に無い" % (o.get("key"), o["capKey"]))
         for tier, ck in (o.get("capKeyByTier") or {}).items():
-            if cap_of(calc, ck) is None:
+            if cap_of(calc, ck, d) is None:
                 err(key, "top.tracks の '%s' の capKeyByTier[%s] %r が区分表に無い"
                     % (o.get("key"), tier, ck))
         # 数字を直書きする枠（calc に無い枠）は、なぜ直書きなのかが分かるようにしておく
@@ -436,6 +461,68 @@ def check_program(key, d, program_keys, caps):
         check_top(key, d, calc, caps)
         return
 
+    # --- checkbox_sum（当てはまる取組ごとの定額を合算）---
+    # 額も人数の上限も、項目（checkbox の選択肢）ごとに違う。だから点検も項目ごと。
+    if ctype == "checkbox_sum":
+        need_q(calc.get("q"), "calc.q")
+        iq = seen.get(calc.get("q")) or {}
+        if iq.get("type") != "checkbox":
+            err(key, "calc.q '%s' は checkbox でないと取組を選べない" % calc.get("q"))
+        opts = iq.get("options") or []
+        vs = [o.get("v") for o in opts]
+        for v in vs:
+            if vs.count(v) > 1:
+                err(key, "取組の値 '%s' が重複している" % v)
+        for o in opts:
+            v = o.get("v")
+            if o.get("man") is None and not o.get("manBy"):
+                err(key, "取組 '%s' に man も manBy も無い（額が決まらない）" % v)
+            if o.get("manBy"):
+                need_q(o["manBy"].get("q"), "取組 '%s' の manBy.q" % v)
+                mq = seen.get(o["manBy"].get("q")) or {}
+                for opt in (mq.get("options") or []):
+                    if opt.get("v") not in (o["manBy"].get("values") or {}):
+                        err(key, "取組 '%s' の manBy.values に '%s' が無い。"
+                                 "この区分を選ぶとこの取組が消える" % (v, opt.get("v")))
+            # 人数倍する項目。上限があるのに「戻したこと」を書いていないと、
+            # 画面上は入力どおりの人数で計算されたように見える
+            if o.get("countQ"):
+                need_q(o["countQ"], "取組 '%s' の countQ" % v)
+                cq = seen.get(o["countQ"]) or {}
+                if cq.get("type") != "number":
+                    err(key, "取組 '%s' の countQ '%s' は number でないと人数にできない"
+                        % (v, o["countQ"]))
+                if o.get("maxCount") is not None and not o.get("overNote"):
+                    err(key, "取組 '%s' に maxCount があるのに overNote が無い。"
+                             "人数を戻したことが画面に出ない" % v)
+                if isinstance(o.get("overNote"), str):
+                    for nm in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", o["overNote"]):
+                        if nm not in ("typed", "used"):
+                            err(key, "取組 '%s' の overNote の {%s} は使えない"
+                                     "（使えるのは {typed} と {used}）" % (v, nm))
+            elif o.get("maxCount") is not None:
+                err(key, "取組 '%s' に countQ が無いのに maxCount がある" % v)
+            # 取れない組み合わせは、理由を出さないと「なぜ足されないのか」が分からない
+            for fld, note in (("requires", "requiresNote"), ("excludes", "excludesNote")):
+                if not o.get(fld):
+                    continue
+                for ref in ([o[fld]] if isinstance(o[fld], str) else o[fld]):
+                    if ref not in vs:
+                        err(key, "取組 '%s' の %s が指す '%s' が選択肢に無い" % (v, fld, ref))
+                    if ref == v:
+                        err(key, "取組 '%s' の %s が自分自身を指している" % (v, fld))
+                if not o.get(note):
+                    err(key, "取組 '%s' に %s があるのに %s が無い。"
+                             "足されない理由が画面に出ない" % (v, fld, note))
+            check_text(o.get("t"), "取組 '%s' の文言" % v)
+            check_text(o.get("requiresNote"), "取組 '%s' の requiresNote" % v)
+            check_text(o.get("excludesNote"), "取組 '%s' の excludesNote" % v)
+        # 既定が空だと、開いた直後に0万円が出る
+        if not (iq.get("def") or []):
+            warn(key, "取組の質問 '%s' に def（最初から選んでおく取組）が無い" % calc.get("q"))
+        check_top(key, d, calc, caps)
+        return
+
     # --- 計算が参照する質問 ---
     need_q(calc.get("expenseQ"), "calc.expenseQ")
     if not calc.get("expenseQ"):
@@ -567,6 +654,13 @@ def check_no_duplicate_literals(sim_keys):
             if re.search(r"\n      %s: \"" % f, body):
                 err(k, "index.html の PROGRAMS.%s に %s が直書きで残っている。"
                        "この文章は sim_data.js の top.%s が持つ決まり" % (k, f, f))
+        # reg.capMan / reg.capText も上限額の置き場所。registerPrograms() が
+        # 「CAP[k] が未定義のときだけ」入れる実装なので、applySimNumbers() が先に
+        # 入れていれば上書きされず、古い数字がソースに生き残る（OPTION_LABEL と同じ罠）。
+        for f in ("capMan", "capText"):
+            if re.search(r"(^|[\s{,])%s\s*:" % f, body):
+                err(k, "index.html の PROGRAMS.%s.reg に %s が残っている。"
+                       "上限額は sim_data.js の top.capKey が持つ決まり" % (k, f))
 
 
 def main():
