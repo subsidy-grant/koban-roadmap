@@ -6752,11 +6752,29 @@
     return compat;
   }
 
+  // カテゴリの programs は「この分類の経費に合う制度」を人手で書いた一覧で、
+  // 概算シミュレーターが実際に金額を出せるかとは別の情報。RATE_BASE に登録が無く
+  // SIM_FIXED_KEYS でも地域限定制度でもない制度は、選んでも compat[key] が空のまま
+  // なので runSimulation() は必ず「対象外」を返す（simulateしても絶対に使えない）。
+  // そういう制度を「利用できる制度」「〜の活用を検討してください」に名前で出すと、
+  // 受付終了・再開未定の制度が使える制度のように見えてしまう。
+  // 2026-08-05、飲食業で実測：飲食業の3分類（モバイルオーダー・厨房設備・
+  // バックオフィス）が「飲食業労働生産性向上支援補助金」をprogramsに持っているが、
+  // 同制度は受付終了・次回未定のため2026-08-06にRATE_BASEから外してある
+  // （このファイル内「概算の対象にはしない」のコメント参照）。他の制度を選んだときの
+  // 「利用できる制度」欄に、この制度が3回名前で出ていた。
+  function isSimUsableProgram(key) {
+    if (RATE_BASE[key] !== undefined) return true;
+    if (SIM_FIXED_KEYS.indexOf(key) !== -1) return true;
+    var p = PROGRAMS[key];
+    return !!(p && (p.prefecture || p.municipality));
+  }
   function getCategoryOkPrograms(industryKey) {
     var map = getCategoriesMap(industryKey);
     var result = {};
     Object.keys(map).forEach(function (ck) {
-      result[ck] = map[ck].programs.map(function (p) { return p.key; });
+      result[ck] = map[ck].programs.map(function (p) { return p.key; })
+        .filter(isSimUsableProgram);
     });
     return result;
   }
@@ -7376,6 +7394,30 @@
           '<div class="sim-headline">✕ この制度は対象外です</div>' +
           '<p style="margin:0.6rem 0 0;">小規模事業者持続化補助金は、選択中の業種（' + ind.label + '）の場合「常時使用する従業員' + ind.smallBizThreshold + '人以下」が対象です。選択した従業員規模（' + tierLabel + '）では小規模事業者に該当しないため、選択した分類に関わらず対象外です。</p>' +
           '<div class="sim-note"><ul><li>基準を超える場合は「デジタル化・AI導入補助金2026」や「中小企業省力化投資補助金」を検討してください。</li></ul></div>' +
+        '</div>';
+      return;
+    }
+
+    // categoryOkPrograms と同じ判定（isSimUsableProgram）でここも止める。
+    // 通さずに進むと compat[progKey] が空のまま okList が常に0件になり、
+    // 「選んだ分類が経費区分に合わない」ように読める表示（対象外の理由：本カテゴリで
+    // 想定する機器…に該当しないため）が全カテゴリに出る。実際の理由は経費区分の
+    // 不一致ではなく、この制度がいま試算の対象外（例：受付終了・次回未定）だから。
+    // 2026-08-05に飲食業労働生産性向上支援補助金で実測して見つけた。
+    if (!isSimUsableProgram(progKey)) {
+      var altSet = {};
+      catKeys.forEach(function (k) {
+        (categoryOkPrograms[k] || []).forEach(function (p) { altSet[p] = true; });
+      });
+      var altNames = Object.keys(altSet).map(function (k) { return PROGRAMS[k].name; }).join('、');
+      out.innerHTML =
+        '<div class="sim-panel alert">' +
+          '<div class="sim-headline">△ この制度は、いまの概算シミュレーターでは試算できません</div>' +
+          '<p style="margin:0.6rem 0 0;">' + prog.name + 'は現在、募集や制度の状況により概算の対象外としています。詳しい内容と理由は制度のページでご確認ください。</p>' +
+          '<div class="sim-note"><ul>' +
+            '<li><a href="program.html?key=' + encodeURIComponent(progKey) + '">' + prog.name + 'のページを見る →</a></li>' +
+            (altNames ? '<li>選んだ分類で試算できる制度：' + altNames + '</li>' : '') +
+          '</ul></div>' +
         '</div>';
       return;
     }
