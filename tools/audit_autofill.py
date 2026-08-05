@@ -90,7 +90,12 @@ def main():
     files = sorted(f for f in os.listdir(FORMS) if f.lower().endswith((".docx", ".xlsx")))
     rows, total_fills, total_susp = [], 0, 0
     with sync_playwright() as pw:
-        b = pw.chromium.launch()
+        # 2026-08-06、この端末で同梱の headless_shell が Windowsのアプリケーション制御
+        # ポリシーにブロックされる事象が起きた。失敗したらシステムのChromeへ切り替える。
+        try:
+            b = pw.chromium.launch()
+        except Exception:
+            b = pw.chromium.launch(channel="chrome")
         page = b.new_context(viewport={"width": 1280, "height": 900}).new_page()
         errs = []
         page.on("pageerror", lambda e: errs.append(str(e)))

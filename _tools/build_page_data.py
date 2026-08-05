@@ -55,7 +55,12 @@ def extract():
     url = "file:///" + SRC.replace("\\", "/")
     errors = []
     with sync_playwright() as pw:
-        b = pw.chromium.launch()
+        # 2026-08-06、この端末で同梱の headless_shell が Windowsのアプリケーション制御
+        # ポリシーにブロックされる事象が起きた。失敗したらシステムのChromeへ切り替える。
+        try:
+            b = pw.chromium.launch()
+        except Exception:
+            b = pw.chromium.launch(channel="chrome")
         pg = b.new_page()
         pg.on("pageerror", lambda e: errors.append(str(e)))
         pg.goto(url, wait_until="load")

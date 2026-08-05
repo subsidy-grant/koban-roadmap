@@ -56,7 +56,13 @@ def load():
     from playwright.sync_api import sync_playwright
     page_errors = []
     with sync_playwright() as pw:
-        b = pw.chromium.launch()
+        # 2026-08-06、この端末で同梱の headless_shell が Windowsのアプリケーション制御
+        # ポリシーにブロックされる事象が起きた（Start-Process で直接確認）。同梱chromiumの
+        # 起動に失敗したら、システムにインストール済みのChromeへ自動で切り替える。
+        try:
+            b = pw.chromium.launch()
+        except Exception:
+            b = pw.chromium.launch(channel="chrome")
         pg = b.new_page()
         pg.on("pageerror", lambda e: page_errors.append(str(e)))
         pg.goto("file:///" + PROGRAM_HTML.replace("\\", "/"), wait_until="load")
@@ -795,7 +801,16 @@ def check_program(key, d, program_keys, caps):
             if pq.get("type") != "number":
                 err(key, "%s の q '%s' は number でないと金額として使えない" % (where, p.get("q")))
             if p.get("cap"):
-                check_cap_sum(key, p["cap"], seen, need_q, check_text, where + ".cap")
+                # calc.cap（913〜919行目）と同じ分岐。expenseParts の cap は sum に
+                # 限らず fixedMan・axes も使える（省力化投資補助金で初めて fixedMan を
+                # 使ったところ、ここが sum 決め打ちで落ちた。2026-08-06に発見）。
+                pcap = p["cap"]
+                if pcap.get("sum"):
+                    check_cap_sum(key, pcap, seen, need_q, check_text, where + ".cap")
+                else:
+                    if pcap.get("fixedMan") is None and not pcap.get("axes"):
+                        err(key, "%s.cap に fixedMan も axes も sum も無い（上限額が決まらない）" % where)
+                    check_cap_table(key, pcap, seen, need_q, where + ".cap")
                 if not p.get("overNote"):
                     err(key, "%s に cap があるのに overNote が無い。"
                              "経費を切り下げたことが画面に出ない" % where)
