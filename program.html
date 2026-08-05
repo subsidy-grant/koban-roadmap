@@ -149,6 +149,39 @@
   }
   .sim-form input:focus-visible, .sim-form select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .sim-unit { font-size: 0.92rem; color: var(--ink-soft); }
+  /* 注意書きの中で「これに当たると金額や可否が変わる」条件は赤の太字にする。
+     sim_data.js 側で [[ ]] で囲んだところが対象。見た目は既存の .req-strong に揃える。 */
+  .sim-help .req-strong { color: var(--rust); font-weight: 700; }
+  /* 1問答えたら次が開く。既定では最初の1問だけ見せる（読ませる前に触らせる） */
+  .sim-q[hidden] { display: none; }
+  .sim-next { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; padding-top: 0.9rem; }
+  .sim-next-btn {
+    font: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    color: var(--on-accent); background: var(--accent); border: 1px solid var(--accent);
+    border-radius: 8px; padding: 0.6rem 1.3rem; min-height: 2.75rem;
+  }
+  .sim-next-btn:hover { filter: brightness(1.08); }
+  .sim-next-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .sim-prog { font-size: 0.84rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .sim-privacy { margin: 0.9rem 0 0; font-size: 0.76rem; color: var(--ink-faint); line-height: 1.6; }
+  /* 人数分の時給入力（number_list）。1人ずつの額から、いちばん低い時給と
+     「引上げ労働者数に数えられる人数」を自動で出す */
+  .sim-rows { display: grid; gap: 0.4rem; }
+  .sim-row { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+  .sim-rowlab { font-size: 0.88rem; color: var(--ink-soft); min-width: 4.5rem; }
+  .sim-rowlab-wide { flex: 1 1 16rem; min-width: 0; line-height: 1.6; }
+  .sim-rowflag {
+    display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;
+    font-size: 0.8rem; color: var(--ink-faint); min-height: 2.75rem; padding: 0 0.2rem;
+  }
+  /* 四角そのものは小さくても、囲っている label 全体（min-height 2.75rem）が
+     タップ領域になる。文字を押しても切り替わる。 */
+  .sim-rowflag input { width: 1.4rem; height: 1.4rem; accent-color: var(--accent); }
+  .sim-derived {
+    margin: 0.7rem 0 0; font-size: 0.86rem; line-height: 1.7; color: var(--ink);
+    background: var(--accent-wash); border-radius: 6px; padding: 0.6rem 0.8rem;
+  }
+  .sim-derived .req-strong { color: var(--rust); font-weight: 700; }
   .sim-result { margin-top: 1.2rem; }
   .sim-panel { border-radius: 8px; padding: 1.2rem 1.3rem; }
   .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
@@ -212,6 +245,20 @@
      同じロジックで gantt_data.js を日付なしで要約し、schedule.html へ橋渡しする。
      window.KOBAN_GANTT.schemes[key] が無い制度ではセクションごと出さない。 */
   .pd-schedule { margin-top: 1.6rem; }
+  /* 申請とスケジュールは既定を閉じる。先に試算を触ってもらうため、
+     ここは「必要になったら開く」置き方にする（中身は開いたときに読める） */
+  .pd-fold { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised); }
+  .pd-fold > summary {
+    cursor: pointer; list-style: none; padding: 0.9rem 1.1rem; min-height: 2.75rem;
+    display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+  }
+  .pd-fold > summary::-webkit-details-marker { display: none; }
+  .pd-fold > summary::after { content: "＋"; margin-left: auto; font-weight: 700; color: var(--accent); }
+  .pd-fold[open] > summary::after { content: "−"; }
+  .pd-fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .pd-fold > summary h2 { margin: 0 !important; }
+  .pd-fold-hint { font-size: 0.82rem; color: var(--ink-faint); }
+  .pd-fold-body { padding: 0 1.1rem 1.1rem; }
   .pd-schedule h2 {
     font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
     font-weight: 600; font-size: 1.05rem; margin: 0 0 0.6rem;
@@ -288,17 +335,26 @@
     <div class="pd-grid" id="ptGrid"></div>
     <div class="pd-note" id="ptNote" style="display:none;"></div>
 
+    <!-- 見出しのすぐ下は入力欄にする。趣旨の説明は質問の後ろ（#ptSimAbout）へ回した。
+         読ませてから触らせるより、触らせてから読ませるほうが最後まで届く。 -->
     <section class="pd-sim" id="ptSim" style="display:none;">
       <h2>詳細な試算</h2>
-      <p class="section-sub" id="ptSimIntro"></p>
       <div id="ptSimForm"></div>
       <div class="sim-result" id="ptSimResult" aria-live="polite"></div>
+      <details class="sim-more" id="ptSimAbout" style="display:none;">
+        <summary>この試算について</summary>
+        <p id="ptSimIntro"></p>
+      </details>
     </section>
 
     <section class="pd-schedule" id="ptSchedule" style="display:none;">
-      <h2>申請とスケジュール</h2>
-      <p class="section-sub">申請までの流れ（どんな段階を、どのくらいの期間でやるか）の目安です。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
-      <div id="ptScheduleBody"></div>
+      <details class="pd-fold">
+        <summary><h2>申請とスケジュール</h2><span class="pd-fold-hint">流れと期間の目安を見る</span></summary>
+        <div class="pd-fold-body">
+          <p class="section-sub">申請までの流れ（どんな段階を、どのくらいの期間でやるか）の目安です。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
+          <div id="ptScheduleBody"></div>
+        </div>
+      </details>
     </section>
 
     <div class="pt-actions">
@@ -453,8 +509,11 @@
   // 書かず、どこにも送信しない。
   var SIM = (window.KOBAN_SIM && window.KOBAN_SIM.programs) || {};
   var simDef = null;       // いま表示している制度の試算定義
-  var simState = {};       // 質問id → 回答
+  var simState = {};       // 質問id → 回答（number_list は {v:入力値, f:チェック} の配列）
+  var simDerived = {};     // 入力から機械的に出した値（いちばん低い時給・数えられる人数など）
+  var simNotesAuto = [];   // 自動判定の結果、金額と一緒に必ず伝えること
   var simTouched = false;  // 利用者が一度でも触ったか（「例」バッジの出し分けに使う）
+  var simOpen = 1;         // いま開いている質問の数。1問答えると1つ増える
 
   // 補助金と助成金では、もらえるまでの筋道が違う。この違いは金額より大事なので
   // 制度ごとの notes とは別に、kind から必ず出す。
@@ -463,26 +522,28 @@
     josei: {
       first: [
         'これは要件を満たした場合に支給される助成金の目安です。申請すれば必ず受け取れるものではありません。',
-        '助成金が振り込まれるのは、取組を終えて実績を報告した後です（後払い）。設備の代金などは先に自分で支払う必要があります。'
+        '助成金が振り込まれるのは、取組を終えて実績を報告した後です（後払い）。設備の代金などは先に自分で支払う必要があります。',
+        'ここに出る金額は目安です。実際に受け取れる額は、都道府県労働局の審査で決まります。'
       ],
       more: [
-        '要件に当てはまるかどうかの確認と、申請書類の作成・提出は社会保険労務士の業務です。最終的な確認は社会保険労務士にご相談ください。'
+        // 社労士法第2条の独占業務は書類の作成・提出代行・事務代理。要件の相談は
+        // 3号業務（非独占）なので、そこは「確認先」として書き分ける。
+        '申請書類の作成・提出は社会保険労務士の業務です。要件に当てはまるかどうかも、最終的には社会保険労務士か管轄の労働局にご確認ください。'
       ]
     },
     hojo: {
       first: [
         'これは審査で採択された場合に交付される補助金の目安です。申請しても採択されないことがあります。',
         '交付決定の通知が届く前に発注・契約したものは対象になりません。',
-        '補助金が振り込まれるのは、事業を終えて実績を報告した後です（精算払い）。代金は先に自分で支払う必要があります。'
+        '補助金が振り込まれるのは、事業を終えて実績を報告した後です（精算払い）。代金は先に自分で支払う必要があります。',
+        'ここに出る金額は目安です。実際に受け取れる額は、事務局の審査で決まります。'
       ],
       more: [
         '申請の準備は、商工会・商工会議所や認定経営革新等支援機関に相談できます。'
       ]
     },
     all: {
-      first: [
-        'ここに出る金額は目安です。実際に受け取れる額は、労働局・事務局の審査で決まります。'
-      ],
+      first: [],
       more: [
         '受け取った補助金・助成金は、原則として課税の対象になります。処理は税理士にご確認ください。'
       ]
@@ -504,9 +565,19 @@
     for (var i = 0; i < qs.length; i++) if (qs[i].id === id) return qs[i];
     return null;
   }
+  // 質問の答えと、入力から自動で出した値（simDerived）を同じ名前空間で引く。
+  // 計算式の側は「wage」が直接聞いた答えか自動判定かを気にしなくてよくなる。
+  function simVal(id) {
+    return simDerived.hasOwnProperty(id) ? simDerived[id] : simState[id];
+  }
   function simNum(id) {
-    var n = parseFloat(simState[id]);
+    var n = parseFloat(simVal(id));
     return isFinite(n) ? n : 0;
+  }
+  // 注意書きの中で [[ ]] で囲まれたところを赤の太字にする。
+  // esc() を通したあとに置換するので、データ側にHTMLを書いても効かない（安全側のまま）。
+  function simMark(text) {
+    return esc(text).replace(/\[\[([\s\S]+?)\]\]/g, '<strong class="req-strong">$1</strong>');
   }
 
   // 別の質問の答えを見る条件（when）。区分に条件を付けるときに使う。
@@ -519,7 +590,7 @@
     if (w.lte != null && !(v <= w.lte)) return false;
     if (w.gte != null && !(v >= w.gte)) return false;
     if (w.gt != null && !(v > w.gt)) return false;
-    if (w.eq != null && simState[w.q] !== w.eq) return false;
+    if (w.eq != null && simVal(w.q) !== w.eq) return false;
     return true;
   }
 
@@ -544,7 +615,7 @@
   // 区分表の軸1つを解決する。choice はその選択肢、number は brackets の区分。
   function simAxisPart(ax) {
     if (ax.brackets) return simBracketOf(simNum(ax.q), ax.brackets);
-    var v = simState[ax.q];
+    var v = simVal(ax.q);
     var q = simFindQ(ax.q), opts = (q && q.options) || [];
     for (var i = 0; i < opts.length; i++) {
       if (opts[i].v === v) return { k: opts[i].v, t: opts[i].s || opts[i].t };
@@ -554,13 +625,15 @@
   // 補助率・助成率。固定値（fixed）か、数値のしきい値（thresholds）で決まる。
   function simResolveRate(rate) {
     if (!rate) return { value: 1, label: '' };
-    if (rate.fixed != null) return { value: rate.fixed, label: rate.label || '' };
+    if (rate.fixed != null) return { value: rate.fixed, label: rate.label || '', note: rate.note };
     var v = simNum(rate.q), list = rate.thresholds || [];
     for (var i = 0; i < list.length; i++) {
-      if (list[i].lt == null || v < list[i].lt) return { value: list[i].rate, label: list[i].label || '' };
+      if (list[i].lt == null || v < list[i].lt) {
+        return { value: list[i].rate, label: list[i].label || '', note: list[i].note };
+      }
     }
     var last = list[list.length - 1] || {};
-    return { value: last.rate == null ? 1 : last.rate, label: last.label || '' };
+    return { value: last.rate == null ? 1 : last.rate, label: last.label || '', note: last.note };
   }
   // 上限額。固定値（fixedMan）か、軸ごとの区分表（axes / values）で決まる。
   function simResolveCap(cap) {
@@ -576,6 +649,129 @@
     var man = cap.values[keys.join('|')];
     if (man == null) return null;  // 区分表に無い組み合わせ（データ側の穴。準備中表示に落とす）
     return { man: man, label: labels.join('・'), notes: notes };
+  }
+
+  // ---- number_list：ほかの質問の人数に合わせて入力欄を並べる型 ----
+  // 「何人」だけを聞くと、その全員が人数に数えられる前提の金額が出る。実際には
+  // 業務改善助成金の場合、数えられるのは「事業場内最低賃金の人」と「引き上げによって
+  // 追い抜かれる人」だけで、追い抜かれない人は入れられない（Q&A 令和8年7月7日版 問20）。
+  // 1人ずつの時給を聞けば、その線引きも、いちばん低い時給（＝助成率と特例事業者の判定に
+  // 使う値。交付要綱第4条）も機械的に出せる。
+  function simListCount(q) {
+    var n = Math.floor(simNum(q.countQ));
+    if (!isFinite(n) || n < 1) n = 1;
+    return n;
+  }
+  // 人数が多すぎるときは1欄に畳む（30人分の欄を並べても誰も埋めない）
+  function simListFolded(q) {
+    return q.maxFields != null && simListCount(q) > q.maxFields;
+  }
+  function simListSync(q) {
+    var want = simListFolded(q) ? 1 : simListCount(q);
+    var rows = simState[q.id];
+    if (!Array.isArray(rows)) rows = [];
+    while (rows.length < want) rows.push({ v: (q.def != null ? String(q.def) : ''), f: [] });
+    if (rows.length > want) rows = rows.slice(0, want);
+    simState[q.id] = rows;
+    // 畳んだときは「そのうち何人が数えられるか」を別に聞く。ここを聞かずに
+    // 入力人数をそのまま使うと、追い抜かれない人まで数えて上限額が跳ね上がる。
+    if (simListFolded(q)) {
+      var n = parseFloat(simState[q.id + '_count']);
+      if (!isFinite(n) || n < 1 || n > simListCount(q)) simState[q.id + '_count'] = String(simListCount(q));
+    }
+    return rows;
+  }
+  function simIndexOf(q) {
+    var qs = (simDef && simDef.questions) || [];
+    for (var i = 0; i < qs.length; i++) if (qs[i].id === q.id) return i;
+    return 0;
+  }
+  // choice の選択肢が持つ加算値（業務改善助成金なら 50/70/90 円コースの引上げ額）
+  function simChoiceAdd(id) {
+    var q = simFindQ(id), v = simVal(id), opts = (q && q.options) || [];
+    for (var i = 0; i < opts.length; i++) if (opts[i].v === v) return Number(opts[i].add) || 0;
+    return 0;
+  }
+  function simFillText(t, q) {
+    if (!t) return '';
+    Object.keys(simDerived).forEach(function (k) {
+      var v = simDerived[k];
+      // 1000 ではなく 1,000 と出す（桁が読み取れないと金額の確認にならない）
+      t = t.split('{' + k + '}').join(typeof v === 'number' ? v.toLocaleString('ja-JP') : String(v));
+    });
+    return t.split('{rows}').join(String((simState[q.id] || []).length))
+            .split('{n}').join(String(simListCount(q)));
+  }
+  // 入力された1人ずつの値から、計算に使う値を作る。定義（derive）の順に処理するので、
+  // min で出した値を、そのあとの countBelow がしきい値に使える。
+  function simDeriveAll() {
+    simDerived = {};
+    simNotesAuto = [];
+    var qs = (simDef && simDef.questions) || [];
+
+    // 「別の質問の答えを超えられない」数値（引き上げる人数 ≦ 事業場の人数）。
+    // 超えた分は計算に使う値のほうを戻す。入力欄はそのままにして、戻したことを画面に書く
+    // （黙って書き換えると、なぜ金額が変わったのか分からなくなる）。
+    qs.forEach(function (q) {
+      if (q.type !== 'number' || !q.maxQ) return;
+      var v = simNum(q.id), lim = simNum(q.maxQ);
+      simDerived[q.id + '_typed'] = v;
+      simDerived[q.id + '_max'] = lim;
+      if (lim > 0 && v > lim) {
+        simDerived[q.id] = lim;
+        if (q.overNote) simNotesAuto.push(simFillText(q.overNote, q));
+      }
+    });
+
+    qs.forEach(function (q) {
+      if (q.type !== 'number_list') return;
+      var rows = simListSync(q);
+      var folded = simListFolded(q);
+      var flags = q.rowFlags || [];
+      var all = [], pool = [];
+      rows.forEach(function (r) {
+        var n = parseFloat(r.v);
+        if (!isFinite(n)) return;
+        var skipAll = false, skipMin = false;
+        (r.f || []).forEach(function (on, fi) {
+          if (!on || !flags[fi]) return;
+          // excludeFromCount＝人数からも外す（雇用保険に入っていない人。Q&A問21後段）
+          if (flags[fi].excludeFromCount) skipAll = true;
+          // excludeFromMin＝いちばん低い額の判定からだけ外す（入社6か月未満・見習い・
+          // 試用期間中。Q&A問11・問12）。人数には数える。
+          if (flags[fi].excludeFromMin) skipMin = true;
+        });
+        if (skipAll) return;
+        all.push(n);
+        if (!skipMin) pool.push(n);
+      });
+      if (!pool.length && all.length) {
+        pool = all;
+        if (q.allExcludedNote) simNotesAuto.push(q.allExcludedNote);
+      }
+      (q.derive || []).forEach(function (d) {
+        if (d.how === 'min') {
+          simDerived[d.id] = pool.length ? Math.min.apply(null, pool) : 0;
+        } else if (d.how === 'countBelow') {
+          var lim = simNum(d.base) + simChoiceAdd(d.plusFrom);
+          var total = folded ? simListCount(q) : all.length;
+          var c;
+          if (folded) {
+            c = Math.floor(parseFloat(simState[q.id + '_count']));
+            if (!isFinite(c) || c < 1) c = 1;
+            if (c > total) c = total;
+          } else {
+            c = 0;
+            all.forEach(function (n) { if (n < lim) c++; });
+          }
+          simDerived[d.id] = c;
+          simDerived[d.id + '_limit'] = lim;
+          simDerived[d.id + '_in'] = total;
+          simDerived[d.id + '_drop'] = total - c;
+          if (c < total && d.dropNote) simNotesAuto.push(simFillText(d.dropNote, q));
+        }
+      });
+    });
   }
 
   // min（経費 × 率、上限額）。地域限定の制度もほとんどがこの形になる。
@@ -608,30 +804,74 @@
     } else {
       rows.push({ k: '上限額に届かないため、計算した金額がそのまま目安になります', v: fmtMan(amount), total: true });
     }
-    return { amountMan: amount, rows: rows, notes: cap.notes };
+    var notes = (cap.notes || []).slice();
+    if (rate.note) notes.unshift(rate.note);
+    return { amountMan: amount, rows: rows, notes: notes };
   }
 
-  function simFieldHTML(q) {
-    var id = 'simq_' + q.id, body = '';
-    if (q.type === 'number') {
-      body = '<div class="sim-inline">' +
-        '<input type="number" id="' + id + '" inputmode="numeric"' +
-          (q.min != null ? ' min="' + esc(q.min) + '"' : '') +
-          (q.max != null ? ' max="' + esc(q.max) + '"' : '') +
-          ' step="' + esc(q.step || 1) + '" value="' + esc(simState[q.id]) + '">' +
-        (q.unit ? '<span class="sim-unit">' + esc(q.unit) + '</span>' : '') +
+  function simNumInput(domId, q, val) {
+    return '<input type="number" id="' + domId + '" inputmode="numeric"' +
+      (q.min != null ? ' min="' + esc(q.min) + '"' : '') +
+      (q.max != null ? ' max="' + esc(q.max) + '"' : '') +
+      ' step="' + esc(q.step || 1) + '" value="' + esc(val) + '">';
+  }
+  function simRowsHTML(q) {
+    var rows = simState[q.id] || [];
+    var flags = q.rowFlags || [];
+    var unit = q.unit ? '<span class="sim-unit">' + esc(q.unit) + '</span>' : '';
+    if (simListFolded(q)) {
+      // 欄を畳んだときは「いちばん低い額」と「そのうち数えられる人数」の2つを聞く。
+      // 人数を聞かずに入力人数をそのまま使うと、上限額が実際より高く出る。
+      var fid0 = 'simq_' + q.id + '_0';
+      var cid = 'simq_' + q.id + '_cnt';
+      return '<div class="sim-row">' +
+          '<label class="sim-rowlab" for="' + fid0 + '">' + esc(q.foldedLabel || q.label) + '</label>' +
+          simNumInput(fid0, q, rows[0] ? rows[0].v : '') + unit +
+        '</div>' +
+        '<div class="sim-row">' +
+          '<label class="sim-rowlab sim-rowlab-wide" for="' + cid + '">' +
+            esc(simFillText(q.foldedCountLabel || 'そのうち数えられる人数', q)) + '</label>' +
+          '<input type="number" id="' + cid + '" inputmode="numeric" min="1" max="' +
+            esc(simListCount(q)) + '" step="1" value="' + esc(simState[q.id + '_count']) + '">' +
+          '<span class="sim-unit">人</span>' +
+        '</div>';
+    }
+    return rows.map(function (r, i) {
+      var fid = 'simq_' + q.id + '_' + i;
+      return '<div class="sim-row">' +
+        '<label class="sim-rowlab" for="' + fid + '">' +
+          esc((q.rowLabel || '{n}').replace('{n}', String(i + 1))) + '</label>' +
+        simNumInput(fid, q, r.v) + unit +
+        flags.map(function (fl, fi) {
+          return '<label class="sim-rowflag"><input type="checkbox" id="' + fid + '_f' + fi + '"' +
+            ((r.f || [])[fi] ? ' checked' : '') + '>' + esc(fl.label) + '</label>';
+        }).join('') +
       '</div>';
+    }).join('');
+  }
+  function simFieldHTML(q, i) {
+    var id = 'simq_' + q.id, body = '', head;
+    if (q.type === 'number') {
+      body = '<div class="sim-inline">' + simNumInput(id, q, simState[q.id]) +
+        (q.unit ? '<span class="sim-unit">' + esc(q.unit) + '</span>' : '') + '</div>';
     } else if (q.type === 'choice') {
       var opts = (q.options || []).map(function (o) {
         return '<option value="' + esc(o.v) + '"' + (simState[q.id] === o.v ? ' selected' : '') + '>' + esc(o.t) + '</option>';
       }).join('');
       body = '<select id="' + id + '">' + opts + '</select>';
+    } else if (q.type === 'number_list') {
+      body = '<div class="sim-rows" id="simrows_' + q.id + '">' + simRowsHTML(q) + '</div>' +
+             '<p class="sim-derived" id="simderived_' + q.id + '"></p>';
     } else {
       return '';  // 未対応の型は出さない（画面が壊れるより、出ないほうがまし）
     }
-    return '<div class="sim-q">' +
-      '<label class="sim-label" for="' + id + '">' + esc(q.label) + '</label>' +
-      (q.help ? '<p class="sim-help">' + esc(q.help) + '</p>' : '') +
+    // number_list は欄が複数あるので、見出しを label にはしない（for の相手が決まらない）
+    head = (q.type === 'number_list')
+      ? '<span class="sim-label">' + esc(q.label) + '</span>'
+      : '<label class="sim-label" for="' + id + '">' + esc(q.label) + '</label>';
+    return '<div class="sim-q" data-i="' + i + '"' + (i < simOpen ? '' : ' hidden') + '>' +
+      head +
+      (q.help ? '<p class="sim-help">' + simMark(q.help) + '</p>' : '') +
       body +
     '</div>';
   }
@@ -646,7 +886,7 @@
     '</div>';
   }
   function simLiList(list) {
-    return list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
+    return list.map(function (t) { return '<li>' + simMark(t) + '</li>'; }).join('');
   }
   // 注意書きは2段。金額と可否に直結するものだけ常に見せ、残りは開閉式にする。
   // 10個並べると誰も読まず、読まれない注意書きは無いのと同じになる。
@@ -691,9 +931,57 @@
     '</div>';
   }
 
+  // 1問ずつ開く。表示の切り替えと進み具合の更新だけを行い、計算は呼び出し側でやる。
+  function simApplyOpen() {
+    var form = document.getElementById('ptSimForm');
+    if (!form || !simDef) return;
+    var total = (simDef.questions || []).length;
+    if (simOpen > total) simOpen = total;
+    var qs = form.querySelectorAll('.sim-q');
+    for (var i = 0; i < qs.length; i++) {
+      if (i < simOpen) qs[i].removeAttribute('hidden');
+      else qs[i].setAttribute('hidden', '');
+    }
+    var wrap = document.getElementById('simNextWrap');
+    if (wrap) wrap.style.display = (simOpen >= total) ? 'none' : '';
+    var prog = document.getElementById('simProg');
+    if (prog) prog.textContent = simOpen + ' / ' + total + '問';
+  }
+  // 回答したら次の質問を開く（すでに先まで開いていれば何もしない＝勝手に閉じない）
+  function simAdvance(i) {
+    var total = (simDef.questions || []).length;
+    if (i + 2 > simOpen && simOpen < total) { simOpen = i + 2; simApplyOpen(); }
+  }
+
   function simRenderResult() {
     var box = document.getElementById('ptSimResult');
     if (!box || !simDef) return;
+    simDeriveAll();
+    // 質問の下に出す「自動で判定した値」を更新する
+    (simDef.questions || []).forEach(function (q) {
+      if (q.type !== 'number_list') return;
+      // 畳んだときの「人数」欄は、しきい値も上限も他の答えで動く。作り直さずに中身だけ直す。
+      var cnt = document.getElementById('simq_' + q.id + '_cnt');
+      if (cnt) {
+        cnt.max = simListCount(q);
+        var lab = document.querySelector('label[for="simq_' + q.id + '_cnt"]');
+        if (lab) lab.textContent = simFillText(q.foldedCountLabel || 'そのうち数えられる人数', q);
+      }
+      var el = document.getElementById('simderived_' + q.id);
+      if (!el) return;
+      var t = simFillText(simListFolded(q) ? (q.derivedTextFolded || q.derivedText) : q.derivedText, q);
+      el.innerHTML = simMark(t);
+      el.style.display = t ? '' : 'none';
+    });
+    // 全部の質問が出そろうまでは金額を出さない。既定値のままの数字を
+    // 「自分の答え」と読み違えるのを防ぐ。
+    var total = (simDef.questions || []).length;
+    if (simOpen < total) {
+      box.innerHTML = '<div class="sim-panel info">' +
+        '<div class="sim-headline">残り' + (total - simOpen) + '問です</div>' +
+        '<p style="margin:0.5rem 0 0;">すべての質問に答えると、見込みの金額と計算のしかたがここに出ます。</p></div>';
+      return;
+    }
     var res = null;
     if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
     // per_person / checkbox_sum / multi_part はこれから作る。
@@ -714,7 +1002,10 @@
 
     var isJosei = simDef.kind === 'josei';
     var head = isJosei ? '見込みの助成額（要件を満たした場合）' : '見込みの補助額（採択された場合）';
-    var first = (res.notes || [])
+    // simNotesAuto＝入力から機械的に判定した結果（数えられない人がいた等）。
+    // 金額が変わった理由なので、いちばん上に置く。
+    var first = simNotesAuto
+      .concat(res.notes || [])
       .concat(simDef.notes || [])
       .concat(kindNotes.first || [])
       .concat(SIM_COMMON_NOTES.all.first);
@@ -736,8 +1027,57 @@
     '</div>';
   }
 
-  function simWire() {
+  // 人数の答えが変わったら、時給の欄の数を作り直す。数が同じときは触らない
+  // （毎回作り直すと、入力している最中にフォーカスとカーソル位置が飛ぶ）。
+  function simSyncLists() {
+    // 先に計算に使う値を出しておく。人数を事業場の人数まで戻す処理（maxQ）が
+    // ここより後だと、戻す前の人数で欄を作ってしまう。
+    simDeriveAll();
     (simDef.questions || []).forEach(function (q) {
+      if (q.type !== 'number_list') return;
+      var box = document.getElementById('simrows_' + q.id);
+      if (!box) return;
+      // 比べる相手は「いま画面に出ている欄の数」。simDeriveAll が simState 側を
+      // 先に合わせてしまうので、simState と比べても永久に一致してしまう。
+      var folded = simListFolded(q);
+      var wantDom = folded ? 2 : simListCount(q);   // 畳んだときは 時給欄＋人数欄 の2つ
+      var hasCnt = !!document.getElementById('simq_' + q.id + '_cnt');
+      if (box.querySelectorAll('.sim-row').length === wantDom && folded === hasCnt) return;
+      simListSync(q);
+      box.innerHTML = simRowsHTML(q);
+      simWireList(q);
+    });
+  }
+  function simWireList(q) {
+    var i = simIndexOf(q);
+    var bump = function () { simTouched = true; simAdvance(i); simRenderResult(); };
+    (simState[q.id] || []).forEach(function (r, k) {
+      var el = document.getElementById('simq_' + q.id + '_' + k);
+      if (el) {
+        var h = function () { simState[q.id][k].v = el.value; bump(); };
+        el.addEventListener('input', h);
+        el.addEventListener('change', h);
+      }
+      (q.rowFlags || []).forEach(function (unused, fi) {
+        var fl = document.getElementById('simq_' + q.id + '_' + k + '_f' + fi);
+        if (!fl) return;
+        fl.addEventListener('change', function () {
+          if (!Array.isArray(simState[q.id][k].f)) simState[q.id][k].f = [];
+          simState[q.id][k].f[fi] = fl.checked;
+          bump();
+        });
+      });
+    });
+    var cnt = document.getElementById('simq_' + q.id + '_cnt');
+    if (cnt) {
+      var hc = function () { simState[q.id + '_count'] = cnt.value; bump(); };
+      cnt.addEventListener('input', hc);
+      cnt.addEventListener('change', hc);
+    }
+  }
+  function simWire() {
+    (simDef.questions || []).forEach(function (q, i) {
+      if (q.type === 'number_list') { simWireList(q); return; }
       var el = document.getElementById('simq_' + q.id);
       if (!el) return;
       var handler = function () {
@@ -745,25 +1085,40 @@
         // 範囲の判断は計算側の区分表に任せる。
         simState[q.id] = el.value;
         simTouched = true;
+        simSyncLists();
+        simAdvance(i);
         simRenderResult();
       };
       el.addEventListener('input', handler);
       el.addEventListener('change', handler);
+    });
+    var btn = document.getElementById('simNextBtn');
+    // 既定のままでよい人のための逃げ道。触らなくても次へ進める。
+    if (btn) btn.addEventListener('click', function () {
+      simOpen = simOpen + 1;
+      simApplyOpen();
+      simRenderResult();
     });
   }
 
   var simCurrentProgram = null;
   function initSim(key, p) {
     var sec = document.getElementById('ptSim');
+    var about = document.getElementById('ptSimAbout');
     var intro = document.getElementById('ptSimIntro');
     var form = document.getElementById('ptSimForm');
     var result = document.getElementById('ptSimResult');
-    if (!sec || !intro || !form || !result) return;
+    if (!sec || !about || !intro || !form || !result) return;
     simCurrentProgram = p;
     simDef = SIM[key] || null;
     simState = {};
+    simDerived = {};
+    simNotesAuto = [];
     simTouched = false;
+    simOpen = 1;
     sec.style.display = '';
+    about.style.display = '';
+    about.open = false;
 
     if (!simDef) {
       intro.textContent = 'この制度は、いまわかっている上限額と補助率をそのまま載せています。';
@@ -778,12 +1133,24 @@
       return;
     }
 
-    (simDef.questions || []).forEach(function (q) { simState[q.id] = (q.def != null ? q.def : ''); });
+    (simDef.questions || []).forEach(function (q) {
+      if (q.type === 'number_list') { simState[q.id] = []; simListSync(q); }
+      else simState[q.id] = (q.def != null ? q.def : '');
+    });
+    // 趣旨の説明は #ptSimAbout（質問の後ろ・既定は閉じた開閉式）に置く。
+    // 見出しの直後は入力欄にして、まず触ってもらう。
     intro.textContent = (simDef.intro ? simDef.intro + ' ' : '') +
-      '下の質問に答えると、見込みの金額と計算のしかたが出ます。入力した内容はこの端末の中だけで計算し、保存も送信もしません。';
+      '質問に答えると、見込みの金額と計算のしかたが出ます。入力した内容はこの端末の中だけで計算し、保存も送信もしません。';
     form.innerHTML = '<div class="sim-form">' +
-      (simDef.questions || []).map(simFieldHTML).join('') + '</div>';
+      (simDef.questions || []).map(simFieldHTML).join('') +
+      '<div class="sim-next" id="simNextWrap">' +
+        '<button type="button" class="sim-next-btn" id="simNextBtn">次の質問へ →</button>' +
+        '<span class="sim-prog" id="simProg"></span>' +
+      '</div>' +
+      '<p class="sim-privacy">入力した内容は、この端末の中だけで計算します。保存も送信もしません。</p>' +
+    '</div>';
     simWire();
+    simApplyOpen();
     simRenderResult();
   }
 

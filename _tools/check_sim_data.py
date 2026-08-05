@@ -19,6 +19,7 @@
 """
 import json
 import os
+import re
 import sys
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -32,7 +33,9 @@ SIM_DATA = os.path.join(ROOT, "sim_data.js")
 KNOWN_TYPES = ["expense_rate", "per_person", "checkbox_sum", "multi_part", "none"]
 # そのうち、いま実際に計算まで通る型（残りは「準備中」に落ちる）
 IMPLEMENTED_TYPES = ["expense_rate", "none"]
-KNOWN_Q_TYPES = ["number", "choice", "checkbox"]
+KNOWN_Q_TYPES = ["number", "choice", "checkbox", "number_list"]
+# number_list が入力から作れる値の作り方。ここにない how は program.html が無視する
+KNOWN_DERIVE = ["min", "countBelow"]
 
 errors = []
 warns = []
@@ -93,7 +96,7 @@ def axis_candidates(ax, questions_by_id, key):
                 if not b["when"].get("q"):
                     err(key, "区分 '%s' の when に q（見にいく質問id）が無い" % b.get("k"))
                 elif b["when"]["q"] not in questions_by_id:
-                    err(key, "区分 '%s' の when が参照する質問id '%s' が questions に無い"
+                    err(key, "区分 '%s' の when が参照する id '%s' が questions にも derive にも無い"
                         % (b.get("k"), b["when"]["q"]))
         # max は小さい順に並べ、最後の1つだけが受け皿（max なし）でなければならない
         maxes = [b.get("max") for b in ax["brackets"]]
@@ -179,9 +182,114 @@ def check_program(key, d, program_keys, caps):
             if q.get("def") is not None and q.get("def") not in [o.get("v") for o in opts]:
                 err(key, "質問 '%s' の初期値 %r が options に無い" % (qid, q.get("def")))
 
+    # --- number_list（人数分の欄を並べて、そこから値を作る型） ---
+    # ここで作った値（derive の id）は、質問の答えと同じ名前で cap の軸や when から
+    # 参照できる。参照先の実在チェックで質問と同じ扱いにするため seen に足す。
+    for q in questions:
+        if q.get("type") != "number_list":
+            continue
+        qid = q.get("id")
+        if not q.get("countQ"):
+            err(key, "質問 '%s' に countQ（欄の数を決める質問）が無い" % qid)
+        elif q["countQ"] not in seen:
+            err(key, "質問 '%s' の countQ '%s' が questions に無い" % (qid, q["countQ"]))
+        if q.get("maxFields") is None:
+            warn(key, "質問 '%s' に maxFields が無い。人数を大きくすると欄が際限なく増える" % qid)
+        if q.get("def") is None:
+            warn(key, "質問 '%s' に def（各欄の初期値）が無い" % qid)
+        for fi, fl in enumerate(q.get("rowFlags") or []):
+            if not fl.get("label"):
+                err(key, "質問 '%s' の rowFlags[%d] に label が無い" % (qid, fi))
+            if not fl.get("excludeFromMin") and not fl.get("excludeFromCount"):
+                err(key, "質問 '%s' の rowFlags[%d] は何も除外しない（チェックしても計算が変わらない）"
+                    % (qid, fi))
+        if q.get("rowFlag"):
+            err(key, "質問 '%s' の rowFlag は rowFlags（配列）に変わった。program.html は読まない" % qid)
+        if q.get("maxFields") is not None and not q.get("foldedCountLabel"):
+            err(key, "質問 '%s' に foldedCountLabel が無い。欄を畳んだとき人数を聞けず、"
+                     "入力人数をそのまま使って上限額が過大になる" % qid)
+        derive = q.get("derive") or []
+        if not derive:
+            err(key, "質問 '%s' に derive が無い。number_list は作った値でしか計算に使えない" % qid)
+        for d2 in derive:
+            did = d2.get("id")
+            if not did:
+                err(key, "質問 '%s' の derive に id の無い項目がある" % qid)
+                continue
+            if did in seen:
+                err(key, "derive の '%s' が質問idと重なっている（どちらを見るか決まらない）" % did)
+            if d2.get("how") not in KNOWN_DERIVE:
+                err(key, "derive '%s' の how %r は program.html が知らない語。使えるのは %s"
+                    % (did, d2.get("how"), "／".join(KNOWN_DERIVE)))
+            if d2.get("how") == "countBelow":
+                # しきい値 = base の値 ＋ plusFrom で選ばれた選択肢の add
+                if d2.get("base") not in seen:
+                    err(key, "derive '%s' の base '%s' が先に作られていない"
+                        % (did, d2.get("base")))
+                pf = seen.get(d2.get("plusFrom"))
+                if not pf:
+                    err(key, "derive '%s' の plusFrom '%s' が questions に無い"
+                        % (did, d2.get("plusFrom")))
+                elif pf.get("type") != "choice":
+                    err(key, "derive '%s' の plusFrom '%s' は choice でないと add を持てない"
+                        % (did, d2.get("plusFrom")))
+                else:
+                    for o in (pf.get("options") or []):
+                        if o.get("add") is None:
+                            err(key, "選択肢 '%s' に add が無い。derive '%s' のしきい値が出せない"
+                                % (o.get("v"), did))
+            seen[did] = {"id": did, "type": "derived"}
+
     def need_q(qid, where):
         if qid and qid not in seen:
-            err(key, "%s が参照する質問id '%s' が questions に無い" % (where, qid))
+            err(key, "%s が参照する id '%s' が questions にも derive にも無い" % (where, qid))
+
+    # --- 注意書きの記法 ---
+    # [[ ]]＝赤の太字。閉じ忘れると記号がそのまま画面に出る。
+    # {…}＝自動で作った値の差し込み。綴りを間違えると「{wage}円」と出てしまう。
+    placeholders = set(["rows", "n"])
+    for q in questions:
+        for d2 in (q.get("derive") or []):
+            if d2.get("id"):
+                placeholders.add(d2["id"])
+                for suf in ("_limit", "_in", "_drop"):
+                    placeholders.add(d2["id"] + suf)
+        # 上限のある数値（maxQ）は、入力値・上限・戻したあとの値の3つを差し込める
+        if q.get("maxQ"):
+            need_ids = [q.get("id"), q.get("id") + "_typed", q.get("id") + "_max"]
+            placeholders.update(need_ids)
+            if q["maxQ"] not in [x.get("id") for x in questions]:
+                err(key, "質問 '%s' の maxQ '%s' が questions に無い" % (q.get("id"), q["maxQ"]))
+            if not q.get("overNote"):
+                warn(key, "質問 '%s' に maxQ があるのに overNote が無い。"
+                          "計算に使う値を戻したことが画面に出ない" % q.get("id"))
+
+    def check_text(text, where):
+        if not isinstance(text, str):
+            return
+        if text.count("[[") != text.count("]]"):
+            err(key, "%s の [[ ]] の数が合っていない（閉じ忘れ）" % where)
+        for name in re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", text):
+            if name not in placeholders:
+                err(key, "%s の {%s} は作られていない値。画面にそのまま出る" % (where, name))
+
+    for q in questions:
+        qid = q.get("id")
+        check_text(q.get("help"), "質問 '%s' の help" % qid)
+        check_text(q.get("derivedText"), "質問 '%s' の derivedText" % qid)
+        check_text(q.get("derivedTextFolded"), "質問 '%s' の derivedTextFolded" % qid)
+        check_text(q.get("foldedCountLabel"), "質問 '%s' の foldedCountLabel" % qid)
+        check_text(q.get("allExcludedNote"), "質問 '%s' の allExcludedNote" % qid)
+        check_text(q.get("overNote"), "質問 '%s' の overNote" % qid)
+        for d2 in (q.get("derive") or []):
+            check_text(d2.get("dropNote"), "derive '%s' の dropNote" % d2.get("id"))
+    for i, t in enumerate(d.get("notes") or []):
+        check_text(t, "notes[%d]" % i)
+    for i, t in enumerate(d.get("notesMore") or []):
+        check_text(t, "notesMore[%d]" % i)
+    if len(d.get("notes") or []) > 5:
+        warn(key, "notes が %d 件ある。常に見せるのは5件までにして、残りは notesMore へ"
+             % len(d["notes"]))
 
     # --- 計算が参照する質問 ---
     need_q(calc.get("expenseQ"), "calc.expenseQ")
@@ -215,6 +323,8 @@ def check_program(key, d, program_keys, caps):
     if rate.get("thresholds"):
         need_q(rate.get("q"), "calc.rate.q")
         th = rate["thresholds"]
+        for i, t in enumerate(th):
+            check_text(t.get("note"), "calc.rate.thresholds[%d].note" % i)
         if th and th[-1].get("lt") is not None:
             err(key, "calc.rate.thresholds の最後に受け皿（lt を書かない段）が無い")
         for t in th:
