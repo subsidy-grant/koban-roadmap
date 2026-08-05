@@ -1542,14 +1542,6 @@
        （0.87rem=13.9px だった。中高年の利用を想定） */
     font-size: 0.92rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
   }
-  /* 3問診断が案内している3つの目印。押す前に「どれから見るか」を決められる */
-  .sec-primary {
-    display: inline-block; margin-top: 0.45rem;
-    padding: 0.2rem 0.6rem; border-radius: 100px;
-    background: var(--accent); color: var(--paper-raised);
-    /* ヒント文と同じく14pxを下回らせない（スマホの1rem=16px基準） */
-    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
-  }
   .sec-chevron {
     flex: none; color: var(--accent); font-size: 1.15rem; line-height: 1.6;
     transition: transform 0.18s ease;
@@ -10426,38 +10418,6 @@
     if (all) setHashSilently('');
   }
 
-  // 畳んだ一覧は7枚が完全に等価で「どれから見ればいいか」の手がかりが無い。
-  // 3問診断の結果が案内している行き先＝主要導線なので、そこに印を付ける。
-  // 行き先はリンクから読み取るので、CTAを変えても表示がズレない。
-  // 何度呼んでも二重に付かない。
-  function markPrimarySections() {
-    var links = document.querySelectorAll('#diagResult a[href^="#"]');
-    if (!links.length) return;
-    var ids = {};
-    Array.prototype.forEach.call(links, function (a) {
-      var id = (a.getAttribute('href') || '').slice(1);
-      if (id) ids[id] = true;
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('main > section'), function (sec) {
-      var btn = sec.querySelector('.sec-toggle');
-      if (!btn) return;
-      var isPrimary = !!ids[sec.id];
-      var badge = btn.querySelector('.sec-primary');
-      sec.classList.toggle('is-primary', isPrimary);
-      if (isPrimary && !badge) {
-        badge = document.createElement('span');
-        badge.className = 'sec-primary';
-        badge.textContent = '診断からの案内先';
-        // 見出しの横に置くと、狭い画面でタイトルとヒントの幅を奪って
-        // 「導入のた／めの条件」のように折れる。文字の下（同じ列）に置く。
-        var ttlEl = btn.querySelector('.sec-ttl');
-        (ttlEl || btn).appendChild(badge);
-      } else if (!isPrimary && badge) {
-        badge.parentNode.removeChild(badge);
-      }
-    });
-  }
-
   function initSectionAccordion() {
     try {
       var secs = document.querySelectorAll('main > section');
@@ -10611,8 +10571,6 @@
 
   restoringState = false;
   refreshPublicViews();
-  // 診断結果が描かれた後でないと案内先を読み取れないので、ここで印を付ける
-  try { markPrimarySections(); } catch (e) { /* 印が出なくても本体は動く */ }
   initToTop();
   initScrollSpy();
 
