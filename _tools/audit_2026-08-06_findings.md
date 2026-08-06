@@ -626,12 +626,14 @@ gh api -X POST repos/{owner}/{repo}/pages -f "source[branch]=main" -f "source[pa
 
 **次に同じ症状が出たときのチェック手順（一次情報コマンド）**：
 ```
-gh api repos/{owner}/{repo}/pages/builds/latest   # 実際のビルド状態（メール通知より正確）
-gh run view {run_id} --log-failed                  # 失敗ログの実際の文言
-gh api repos/{owner}/{repo}/pages                   # Pages設定とstatus
-curl -s https://www.githubstatus.com/api/v2/status.json  # GitHub全体障害の有無
+gh run list --repo {owner}/{repo} --limit 5         # 実際のビルド状態（下の訂正参照）
+gh run view {run_id} --log-failed                    # 失敗ログの実際の文言
+gh api repos/{owner}/{repo}/pages                     # Pages設定とstatus
+curl -s https://www.githubstatus.com/api/v2/summary.json  # GitHub全体障害の有無（コンポーネント別）
 ```
-rerun・空コミットを2回程度試して`deployment_queued`のまま進まなければ、それ以上繰り返さず**無効化→再有効化**に切り替える方が早い（今回は4回の試行錯誤の後にようやくこれに気づいた）。
+rerun・空コミットを2回程度試して`deployment_queued`のまま進まなければ、それ以上繰り返さず**無効化→再有効化**に切り替える方が早い（今回は4回の試行錯誤の後にようやくこれに気づいた）。**ただしGitHub全体障害が進行中のときは無効化→再有効化を打たない**（下記2026-08-07の追記参照）。
+
+**【2026-08-07 訂正】上の「`pages/builds/latest`が実際のビルド状態としてメール通知より正確」は誤りだった。** 翌日dc0c76fのデプロイで、このAPIが`status:building`のまま2時間46分`updated_at`が更新されず停止して見えたが、実際は`gh run list`で見ると当該ワークフローは30分で`completed failure`していた（ランナー未割当）。**`pages/builds/latest`は腐った値を返すことがあるため、進捗の生死判定には使わず`gh run list`/`gh run view`を主たる一次情報にする。** さらにこのときはGitHub全体障害（Actions/Pages major_outage）が同時進行しており、5視点（ログ文言・リポジトリ設定・失敗の時間分散・githubstatus.comのコンポーネント別status・同一アカウント内の他リポジトリとの比較）で外部要因と確認した上で、無効化→再有効化は打たずrerunで様子を見た。手順を汎用スキル化した：`deploy-outage-triage`（`~/.claude/skills/`）参照。
 
 ---
 
