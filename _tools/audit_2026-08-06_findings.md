@@ -604,7 +604,34 @@
   されていること、`noTopEstimate`指定の6制度〈none型5件＋富士見市〉は注入されないことを確認、
   20/20 PASS）、`build_page_data.py --check`（top.schedule等の変更を反映するため再生成が必要と
   検知→再生成→再チェックで「最新」）で行った。
-- **未対応・次に残る97制度拡大分**：千葉9・群馬9・栃木6の計24制度は未着手。
+## GitHub Pagesデプロイ障害と対処（2026-08-06）
+
+千葉・群馬・栃木24制度のコミット（e4126c8）push後、GitHub Pagesの自動デプロイが**6回連続で失敗**した。原因はコード内容ではなく、GitHub Pages基盤（legacy build）側のキュー詰まりだった（直近の成功実行は同日11:11 UTC、4分18秒で完了。12:44 UTC以降だけ詰まり始めた）。
+
+**症状**：`Current status: deployment_queued`のまま10分間変化せず、`Timeout reached, aborting!`で強制キャンセル。GitHub Status（githubstatus.com）は終始「All Systems Operational」で全体障害ではなかった＝このリポジトリ（アカウント）固有の詰まり。
+
+**試して効かなかった対処**（4回試行、いずれも同じ`deployment_queued`止まり）：
+- 失敗したworkflow runの`gh run rerun {run_id}`
+- 空コミットでの新規push（新しいworkflow runとして仕切り直し）
+- `gh api -X POST repos/{owner}/{repo}/pages/builds`での明示的ビルドリクエスト（これも`building`のまま7分以上停滞）
+
+**効いた対処**：Pages機能自体をDELETE→POSTで無効化→再有効化し、内部キューをリセットする。
+
+```
+gh api -X DELETE repos/{owner}/{repo}/pages
+gh api -X POST repos/{owner}/{repo}/pages -f "source[branch]=main" -f "source[path]=/"
+```
+
+実行直後は`status:building`のまま数分〜10分ほど動いていないように見えるが、慌てて追加の操作を重ねず、`gh api repos/{owner}/{repo}/pages/builds/latest`の`status`と`updated_at`で実際の完了（`status:built`）を確認してから次の判断をすること。今回は無効化操作から約10分後（14:34→14:44 UTC）に裏で成功していたのに、直後のポーリングでは「まだbuilding」としか見えず、追加対応を検討しかけた。
+
+**次に同じ症状が出たときのチェック手順（一次情報コマンド）**：
+```
+gh api repos/{owner}/{repo}/pages/builds/latest   # 実際のビルド状態（メール通知より正確）
+gh run view {run_id} --log-failed                  # 失敗ログの実際の文言
+gh api repos/{owner}/{repo}/pages                   # Pages設定とstatus
+curl -s https://www.githubstatus.com/api/v2/status.json  # GitHub全体障害の有無
+```
+rerun・空コミットを2回程度試して`deployment_queued`のまま進まなければ、それ以上繰り返さず**無効化→再有効化**に切り替える方が早い（今回は4回の試行錯誤の後にようやくこれに気づいた）。
 
 ---
 
@@ -660,3 +687,28 @@ expense_rate+optionsOf／type:'none'）の実例コードをスタイルガイ�
   `build_page_data.py --check`（再生成が必要と検知→再生成→再チェックで「最新」）で行った。
 - **97制度拡大プロジェクトの完了**：東京都26・神奈川27・埼玉20・千葉9・群馬9・栃木6の全97制度に
   ついて、詳細な試算機能（sim_data.js）の追加が完了した。
+
+## S6：概算シミュレーター（index.html）と詳細な試算（program.html）の連携（2026-08-06）
+
+計画（`snazzy-humming-map.md`）のS6が未着手のまま残っていたことに気づき着手。
+
+- **note文言の見直し**：`PROGRAMS[k].note`内の「概算シミュレーターで枠ごとに試算可能」等、場所を
+  名指しした文言が6箇所（ai／jizoku／kaizen／shoryokuka／monodukuri本文＋aiのFAQ1件）に残っていた。
+  詳細な試算ページ（program.html側）の存在を前提に、場所に依存しない文言（「枠ごとに試算可能」等）
+  へ書き換えた。
+- **結果パネルへの誘導リンク追加**：概算シミュレーターの計算成功パネルは3種類の構造がある
+  （①career専用の人数×単価パネル、②SIM_FIXED_KEYS〈career以外〉の上限額のみ表示パネル、③通常の
+  経費×補助率パネル）。共通ヘルパー`simDetailLinkHTML(progKey)`を新設し、3箇所すべての結果パネル末尾
+  に「この制度のページで、質問に答えてさらに詳しく試算する → program.html?key=X#ptSim」リンクを
+  追加した。`window.KOBAN_SIM.programs[progKey]`の有無で判定し、sim_data.jsにエントリが無い制度
+  （残り1件）は`#ptSim`アンカーを付けず「制度の詳細ページを見る →」という一般的な文言にフォール
+  バックする（アンカー付きで飛ばすと program.html 側が「準備中」表示になるだけのため）。
+- **検証**：inline scriptを抽出しての`node --check`（構文エラーなし）、`build_page_data.py --check`
+  （note文言変更を反映するため再生成が必要と検知→再生成→再チェックで「最新」）、Playwrightで
+  career（①のパネル）／ai（③のパネル）／jinzai・hatarakikata（②のパネル）を`runSimulation()`直接
+  呼び出しで検証し、いずれも誘導リンクと`#ptSim`アンカーの有無が期待どおりであることを確認（9項目
+  PASS）。既存の「対象外」パネル（index.html:7089付近、募集終了等で試算対象外の制度向け）には
+  従来から同様の誘導リンクがあり、今回追加した正常計算時のリンクと合わせて、概算シミュレーターの
+  全結果パネルからprogram.htmlへ誘導できる状態になった。
+- **未対応（S6の残り）**：track（枠）選択時の誘導リンク挙動は未検証。S7（uicheck、handoff整理）は
+  未着手。
