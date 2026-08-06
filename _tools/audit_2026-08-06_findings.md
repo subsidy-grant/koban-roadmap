@@ -397,3 +397,20 @@
   career_shoyo の「支給申請日離職していないこと」「基本給減額禁止」、career_shogai の
   特定受給資格者6%ルール横展開は、条項番号の確認状況が異なるため今回は見送り（下記の
   優先順位3以降に残る）。
+- **2026-08-06（さらに次のコミット）**：優先順位3（中の指摘）を21制度中15制度に反映。
+  対象：kaizen・jinzai・hatarakikata・ai・jizoku・shoryokuka・monodukuri・
+  kanko_shoryokuka・akiya・ryouritsu全6コース・career_kyotsu/shoyo/tanjikan/shogai。
+  ほとんどが notes/notesMore へのテキスト追加。calc に手を入れたのは
+  monodukuri（グローバル枠なのにrateqで1/2等を選べる矛盾をblocksで止めた）と
+  career_kaitei/kyotsu/shoyo（支給申請日離職・基本給減額の失格条件を追加）のみ。
+  反映前に「条項番号未直接確認」だった3件（hatarakikataのkaiko起算点、
+  career_kaitei/kyotsuの離職要件、career_tanjikanの前身コース重複）は、
+  sharoushiサブエージェントに一次資料の裏取りを依頼してから反映した。
+  最大の収穫は hatarakikata の kaiko 起算点の誤り訂正：1回目のレビュー自体が
+  「解雇・賃金引下げ・所定労働時間短縮を同一の起算点（3か月前の遅い日から）」という
+  誤りを持ち込んでいたが、実際は②賃金引下げ・③所定労働時間短縮は適用日固定で
+  緩和が無く、④解雇等だけに3か月前の緩和がある。年度後半の申請で4〜7月の
+  賃金引下げを見落とす方向の誤りだったため、質問と関連するnote 2か所を訂正した。
+  shoryokukaの「従業員数とrateqの矛盾」は、小規模事業者の人数基準が業種で異なり
+  一次資料未確認のためblocksにはせず、helpで注意喚起する対応にとどめた。
+  低優先度の指摘（表記統一・出典URL補強）はまだ未着手。
