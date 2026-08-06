@@ -954,10 +954,15 @@ def check_no_duplicate_literals(sim_keys):
     # applySimNumbers() より前に置かれた var 宣言の中身だけを見る。
     # 中括弧を含まない形（var RATE_BASE = {};）を先に見ること。複数行用の正規表現を
     # 先に当てると、空の宣言のときに次の宣言まで飲み込んで誤検知する。
-    for name in ("CAP", "CAP_TEXT", "RATE_BASE", "PROGRAM_TRACKS"):
-        m = re.search(r"\n  var %s = \{([^{}]*)\};" % name, src)
+    # ADDED_CAP / ADDED_CAP_TEXT は地域限定97制度の追加時に使われている別名の置き場所
+    # （Object.keys(ADDED_CAP).forEach(k => CAP[k] = ADDED_CAP[k]) で実行時にマージされる）。
+    # 2026-08-06、神奈川27制度の対応中に発見：ここは CAP 本体とは別の変数名なので、
+    # このチェックに名前を足さないと素通りしてしまう（実行時の表示は正しくても、
+    # ソースコード上は二重管理のまま残ってしまう）。
+    for name in ("CAP", "CAP_TEXT", "RATE_BASE", "PROGRAM_TRACKS", "ADDED_CAP", "ADDED_CAP_TEXT"):
+        m = re.search(r"\n\s+var %s = \{([^{}]*)\};" % name, src)
         if not m:
-            m = re.search(r"\n  var %s = \{(.*?)\n  \};" % name, src, re.S)
+            m = re.search(r"\n\s+var %s = \{(.*?)\n\s+\};" % name, src, re.S)
         if not m:
             continue
         body = m.group(1)
