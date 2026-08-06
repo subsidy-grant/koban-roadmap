@@ -376,3 +376,24 @@
 4. **低の指摘**（表記の統一、出典URLの補強）
 
 **1と2だけでも相当な作業量。1スライス＝1〜2制度を目安に区切り、そのつど回帰スイートを通すこと。**
+
+---
+
+## 反映状況（追記）
+
+- **2026-08-06 コミット5dcf8cc**：優先順位1（計算結果が変わるもの）5件のうち4件を反映。
+  shoryokuka の経費内訳上限500万円／jizoku の小規模事業者要件と waku×rateq の blocks／
+  ai のインボイス枠tracks／ryouritsu_ikuji の期限の逆転（sim_data.js側と、監査時は
+  スコープ外だった index.html 側の同種バグの両方）。ryouritsu_daitai の月次成績要件は
+  再確認の結果、notesMore に既に正しく反映済みと判明したため対象外（誤指摘）。
+- **2026-08-06（本コミット）**：優先順位2（可否そのものが変わる失格条件）を反映。
+  career系6コースの併給調整（career/career_shogai=65歳超雇用推進助成金の無期雇用転換
+  コース等、career_kaitei/kyotsu/shoyo=同評価制度等雇用管理改善コース、
+  career_kaitei⇔career_tanjikanの相互排他）／career の新卒1年未満の独立した失格条件／
+  kaizen の他補助金重複受給／jinzai の事業主都合解雇による全社的失格／monodukuri の
+  16か月重複制限・新事業進出枠の創業1年未満除外。あわせて、`calc.blocks` が
+  expense_rate 型でしか効かない設計だったため（career・jinzaiはper_person・multi_part型）、
+  program.html の判定を型によらず先に見る作りへ拡張し、check_sim_data.py の点検も揃えた。
+  career_shoyo の「支給申請日離職していないこと」「基本給減額禁止」、career_shogai の
+  特定受給資格者6%ルール横展開は、条項番号の確認状況が異なるため今回は見送り（下記の
+  優先順位3以降に残る）。

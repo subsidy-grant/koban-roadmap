@@ -551,6 +551,19 @@ def check_program(key, d, program_keys, caps):
             if name not in placeholders:
                 err(key, "%s の {%s} は作られていない値。画面にそのまま出る" % (where, name))
 
+    # そもそも受けられない組み合わせ（calc.blocks）。2026-08-06に program.html 側を
+    # 型によらず先に見る作りへ直したので、ここも expense_rate だけでなく
+    # per_person・multi_part・checkbox_sum の早期returnからも呼ぶ。
+    def check_blocks():
+        for bi, b in enumerate(calc.get("blocks") or []):
+            if not b.get("when"):
+                err(key, "calc.blocks[%d] に when が無い（いつ止めるのかが決まらない）" % bi)
+            else:
+                walk_when(b["when"], need_q, "calc.blocks[%d].when" % bi)
+            if not b.get("message"):
+                err(key, "calc.blocks[%d] に message が無い。止めた理由が画面に出ない" % bi)
+            check_text(b.get("message"), "calc.blocks[%d].message" % bi)
+
     for q in questions:
         qid = q.get("id")
         check_text(q.get("help"), "質問 '%s' の help" % qid)
@@ -612,6 +625,7 @@ def check_program(key, d, program_keys, caps):
                             err(key, "加算 '%s' の manBy.values に '%s' が無い。"
                                      "この区分を選ぶと加算が消える" % (o.get("v"), opt.get("v")))
                 check_text(o.get("t"), "加算の選択肢 '%s' の文言" % o.get("v"))
+        check_blocks()
         check_top(key, d, calc, caps)
         return
 
@@ -713,6 +727,7 @@ def check_program(key, d, program_keys, caps):
                 if o.get("man") is None and not o.get("manBy"):
                     err(key, "加算の選択肢 '%s' に man も manBy も無い" % o.get("v"))
                 check_text(o.get("t"), "加算の選択肢 '%s' の文言" % o.get("v"))
+        check_blocks()
         check_top(key, d, calc, caps)
         return
 
@@ -775,6 +790,7 @@ def check_program(key, d, program_keys, caps):
         # 既定が空だと、開いた直後に0万円が出る
         if not (iq.get("def") or []):
             warn(key, "取組の質問 '%s' に def（最初から選んでおく取組）が無い" % calc.get("q"))
+        check_blocks()
         check_top(key, d, calc, caps)
         return
 
@@ -867,14 +883,7 @@ def check_program(key, d, program_keys, caps):
         warn(key, "status（受付中か終了か）が無い。締切済みの制度で金額だけ見せると誤解される")
 
     # --- そもそも受けられない組み合わせ（blocks）---
-    for bi, b in enumerate(calc.get("blocks") or []):
-        if not b.get("when"):
-            err(key, "calc.blocks[%d] に when が無い（いつ止めるのかが決まらない）" % bi)
-        else:
-            walk_when(b["when"], need_q, "calc.blocks[%d].when" % bi)
-        if not b.get("message"):
-            err(key, "calc.blocks[%d] に message が無い。止めた理由が画面に出ない" % bi)
-        check_text(b.get("message"), "calc.blocks[%d].message" % bi)
+    check_blocks()
 
     rate = calc.get("rate") or {}
     if rate.get("fixed") is None and not rate.get("thresholds") and not rate.get("optionsOf") \

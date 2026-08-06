@@ -1135,12 +1135,8 @@
     var c = simDef.calc;
     var expQ = simFindQ(c.expenseQ);
 
-    // そもそも受けられない組み合わせ（働き方改革推進支援助成金で成果目標を1つも
-    // 選べていない場合など）。金額の話に入る前に止める。
-    var blocks = c.blocks || [];
-    for (var bi = 0; bi < blocks.length; bi++) {
-      if (simWhenOk(blocks[bi].when)) return { blocked: true, message: blocks[bi].message };
-    }
+    // そもそも受けられない組み合わせ（calc.blocks）は simRenderResult 側で
+    // 型によらず先に見ているので、ここには来ない。
 
     // 対象経費。ほとんどの制度は1つの質問で聞く（expenseQ）。
     // 取組ごとに助成対象経費そのものの上限が決まっている制度（働き方改革推進支援
@@ -1412,10 +1408,19 @@
       return;
     }
     var res = null;
-    if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
-    if (simDef.calc && simDef.calc.type === 'per_person') res = simCalcPerPerson();
-    if (simDef.calc && simDef.calc.type === 'checkbox_sum') res = simCalcCheckboxSum();
-    if (simDef.calc && simDef.calc.type === 'multi_part') res = simCalcMultiPart();
+    // そもそも受けられない組み合わせ（calc.blocks）は、型によらずここで先に見る。
+    // 以前は expense_rate の中だけで見ていたため、per_person・multi_part の制度
+    // （キャリアアップ・人材開発支援助成金など）には失格条件を書けなかった。
+    var simBlocks = (simDef.calc && simDef.calc.blocks) || [];
+    for (var simBi = 0; simBi < simBlocks.length; simBi++) {
+      if (simWhenOk(simBlocks[simBi].when)) { res = { blocked: true, message: simBlocks[simBi].message }; break; }
+    }
+    if (!res) {
+      if (simDef.calc && simDef.calc.type === 'expense_rate') res = simCalcExpenseRate();
+      if (simDef.calc && simDef.calc.type === 'per_person') res = simCalcPerPerson();
+      if (simDef.calc && simDef.calc.type === 'checkbox_sum') res = simCalcCheckboxSum();
+      if (simDef.calc && simDef.calc.type === 'multi_part') res = simCalcMultiPart();
+    }
     // 定義だけ先に入っても壊れないよう、計算できない型は「準備中」に落とす。
     if (!res) { box.innerHTML = simFallbackHTML(simCurrentProgram || {}); return; }
 
