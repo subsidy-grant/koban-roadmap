@@ -2646,7 +2646,7 @@
       expense: "原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目（市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可）",
       wage: "業務改善コースでは必須ではない（賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある）",
       acceptance: "非公表",
-      note: "物価高騰などで直近の収益が悪化している事業者の立て直しを想定した制度。専門家（アドバイザー）による経営改善支援もあわせて受けられる。<strong>「中小企業収益力強化サポート事業」との併用不可（2026-08-07確認）</strong>。",
+      note: "物価高騰などで直近の収益が悪化している事業者の立て直しを想定した制度。専門家（アドバイザー）による経営改善支援もあわせて受けられる。<strong>本制度の交付決定を受けている場合、「中小企業収益力強化サポート事業」への申込はできない（2026-08-07確認）</strong>。",
       link: "https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/",
       linkLabel: "東京都中小企業振興公社 公式ページを見る",
       continuity: "東京都・東京都中小企業振興公社が年複数回の公募を継続実施中。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
@@ -2654,11 +2654,11 @@
     tokyo_shuekiryoku: {
       name: "中小企業収益力強化サポート事業（東京都中小企業振興公社）",
       prefecture: "tokyo",
-      scale: "物価高騰等の影響を受ける都内中小企業。専門家派遣を受けることが必須条件",
-      expense: "専門家からの提案に基づき策定した収益力強化計画の実行に必要な経費の一部",
-      wage: "特になし（賃金上昇は交付要件ではない）",
+      scale: "都内中小企業者等で、<strong>直近決算期の営業利益が前期比で減少している、または直近決算期に損失を計上している</strong>事業者が対象。業績が堅調な事業者は対象外",
+      expense: "（今回募集の専門家派遣は無料。派遣後に別枠で募集される助成金の対象経費は）専門家提案に基づく収益力強化計画の実行に必要な経費の一部",
+      wage: "助成金部分は必須ではない（賃金引上げ計画を掲げた場合は助成率が2/3から3/4〈小規模事業者は4/5〉に優遇。未達成の場合は2/3に戻る）",
       acceptance: "非公表",
-      note: "専門家派遣を受け、その提案に基づいた収益力強化計画を策定することが必須の制度。支援対象は第1回・第2回合算で500社。<strong>「経営力強化に向けた創意工夫チャレンジ促進事業」との併用不可</strong>。同一テーマで他事業の支援を受給中の場合は事前相談が必須。第1回：2026年5月27日〜8月31日、第2回：2026年10月頃予定（各回とも募集件数に達し次第終了）。運営はトランスコスモス株式会社が受託。",
+      note: "今回の募集は<strong>無料の専門家派遣</strong>（1社あたり最大6回、伴走支援で収益力強化計画を策定）で、500社が対象。計画策定後に申請できる「収益力強化サポート助成金」（上限300万円、助成率2/3〈賃上げ時3/4、小規模4/5〉）は別枠・別募集で、助成金のみの利用は不可。<strong>「経営力強化に向けた創意工夫チャレンジ促進事業」の交付決定を受けている場合は対象外</strong>。専門家派遣による支援は1事業者につき1度のみ。第1回：2026年5月27日〜8月31日、第2回：2026年10月頃予定（両回合算で500社に達し次第終了）。運営はトランスコスモス株式会社が受託。（出典：公式サイト募集要項PDF、2026-08-07確認）",
       link: "https://tokyo-shuekiryoku-kyoka.jp/",
       linkLabel: "中小企業収益力強化サポート事業 公式サイトを見る",
       continuity: "2026年度に第1回・第2回の2回公募を予定。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
@@ -2951,7 +2951,7 @@
     tokyo_sogyo: "創業初期の賃借料・広告費・器具備品購入費や人件費等",
     tokyo_digital: "デジタルツール（ソフトウェア・クラウド）本体費および導入関連費",
     tokyo_soui: "原材料・副資材費、機械装置・工具器具費等の業務改善経費（収益悪化事業者向け）",
-    tokyo_shuekiryoku: "専門家提案に基づく収益力強化計画の実行経費",
+    tokyo_shuekiryoku: "専門家派遣は無料。派遣後の助成金は収益力強化計画の実行経費が対象（別枠募集）",
     tokyo_minato_software: "業務効率化ソフトウェア導入費・専用接続機器費",
     tokyo_bunkyo_seisansei: "機械・装置、器具・備品、測定工具、建物附属設備等",
     tokyo_taito_keiei: "業務管理・人材管理・知的財産管理に関する経費",
@@ -7990,6 +7990,18 @@
           { name: '見積限定理由書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8mitumori_sor.docx', type: 'Word', size: '32KB' },
           { name: '小規模企業者に該当することの確認書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx', type: 'Word', size: '18KB' },
           { name: '環境負荷軽減計画書', url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8kannkyoufuka_plan.xlsx', type: 'Excel', size: '15KB' }
+        ] }
+      ]
+    },
+    tokyo_shuekiryoku: {
+      checked: '2026-08-07',
+      portal: { label: '中小企業収益力強化サポート事業 公式サイト', url: 'https://tokyo-shuekiryoku-kyoka.jp/' },
+      note: '今回の募集は無料の専門家派遣（申込フォームは公式サイト内に設置、2026年5月27日公開）。営業利益の減少または損失計上が要件のため、募集要項で対象かどうかを先にご確認ください。助成金（上限300万円）の様式は専門家派遣後に別途案内されるため、現時点では掲載されていません。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '事業案内（簡易版）', url: 'https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf', type: 'PDF', size: '648KB' },
+          { name: '事業案内（詳細版）', url: 'https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf', type: 'PDF', size: '2.6MB' },
+          { name: '専門家派遣募集要項', url: 'https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf', type: 'PDF', size: '1.2MB' }
         ] }
       ]
     },
