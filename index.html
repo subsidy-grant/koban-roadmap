@@ -2646,10 +2646,22 @@
       expense: "原材料・副資材費、機械装置・工具器具費、委託・外注費、産業財産権出願・導入費等の10項目（市場調査費・専門家指導費・販売促進費等はそれ単独では申請不可）",
       wage: "業務改善コースでは必須ではない（賃金引き上げを行う場合は別枠の「賃上げ優先コース」がある）",
       acceptance: "非公表",
-      note: "物価高騰などで直近の収益が悪化している事業者の立て直しを想定した制度。専門家（アドバイザー）による経営改善支援もあわせて受けられる。",
+      note: "物価高騰などで直近の収益が悪化している事業者の立て直しを想定した制度。専門家（アドバイザー）による経営改善支援もあわせて受けられる。<strong>「中小企業収益力強化サポート事業」との併用不可（2026-08-07確認）</strong>。",
       link: "https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/",
       linkLabel: "東京都中小企業振興公社 公式ページを見る",
       continuity: "東京都・東京都中小企業振興公社が年複数回の公募を継続実施中。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
+    },
+    tokyo_shuekiryoku: {
+      name: "中小企業収益力強化サポート事業（東京都中小企業振興公社）",
+      prefecture: "tokyo",
+      scale: "物価高騰等の影響を受ける都内中小企業。専門家派遣を受けることが必須条件",
+      expense: "専門家からの提案に基づき策定した収益力強化計画の実行に必要な経費の一部",
+      wage: "特になし（賃金上昇は交付要件ではない）",
+      acceptance: "非公表",
+      note: "専門家派遣を受け、その提案に基づいた収益力強化計画を策定することが必須の制度。支援対象は第1回・第2回合算で500社。<strong>「経営力強化に向けた創意工夫チャレンジ促進事業」との併用不可</strong>。同一テーマで他事業の支援を受給中の場合は事前相談が必須。第1回：2026年5月27日〜8月31日、第2回：2026年10月頃予定（各回とも募集件数に達し次第終了）。運営はトランスコスモス株式会社が受託。",
+      link: "https://tokyo-shuekiryoku-kyoka.jp/",
+      linkLabel: "中小企業収益力強化サポート事業 公式サイトを見る",
+      continuity: "2026年度に第1回・第2回の2回公募を予定。次年度以降の実施は予算措置次第（現時点で終了予定の発表はない）"
     },
     tokyo_minato_software: {
       name: "中小企業ソフトウェア導入費等支援事業補助金（港区）",
@@ -2939,6 +2951,7 @@
     tokyo_sogyo: "創業初期の賃借料・広告費・器具備品購入費や人件費等",
     tokyo_digital: "デジタルツール（ソフトウェア・クラウド）本体費および導入関連費",
     tokyo_soui: "原材料・副資材費、機械装置・工具器具費等の業務改善経費（収益悪化事業者向け）",
+    tokyo_shuekiryoku: "専門家提案に基づく収益力強化計画の実行経費",
     tokyo_minato_software: "業務効率化ソフトウェア導入費・専用接続機器費",
     tokyo_bunkyo_seisansei: "機械・装置、器具・備品、測定工具、建物附属設備等",
     tokyo_taito_keiei: "業務管理・人材管理・知的財産管理に関する経費",
@@ -5269,7 +5282,7 @@
   // 宣言はブロックより必ず前に置くこと（後ろだと実行時にまだ undefined で落ちる）。
   var PROGRAM_INDUSTRIES = {};
 
-  var PREFECTURE_PROGRAM_KEYS = { tokyo: ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui'] };
+  var PREFECTURE_PROGRAM_KEYS = { tokyo: ['tokyo_sogyo', 'tokyo_digital', 'tokyo_soui', 'tokyo_shuekiryoku'] };
   var PREFECTURE_LABEL = {
     tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
     chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県'
@@ -6889,8 +6902,8 @@
     if (PROGRAMS[progKey] && PROGRAMS[progKey].reg && PROGRAMS[progKey].reg.eligibility === 'warn') {
       return 'warn';
     }
-    if (progKey === 'tokyo_sogyo' || progKey === 'tokyo_soui') {
-      // 創業からの年数・直近の営業利益の増減は本サイトの入力項目にないため、機械判定せず「要確認」に統一
+    if (progKey === 'tokyo_sogyo' || progKey === 'tokyo_soui' || progKey === 'tokyo_shuekiryoku') {
+      // 創業からの年数・直近の営業利益の増減・専門家派遣の要否は本サイトの入力項目にないため、機械判定せず「要確認」に統一
       return 'warn';
     }
     if (PROGRAMS[progKey] && PROGRAMS[progKey].municipality) {
