@@ -714,3 +714,38 @@ expense_rate+optionsOf／type:'none'）の実例コードをスタイルガイ�
   全結果パネルからprogram.htmlへ誘導できる状態になった。
 - **未対応（S6の残り）**：track（枠）選択時の誘導リンク挙動は未検証。S7（uicheck、handoff整理）は
   未着手。
+
+---
+
+## S6（dc0c76f）の本番反映が遅延した経緯（2026-08-06〜07、GitHub全体障害）
+
+dc0c76fをpushした直後（2026-08-06 15:22 UTC）にGitHub全体障害（Actions/Pages major_outage）が
+発生し、本番反映が2026-08-07 03:43 UTCまで**約12時間**遅延した。詳細は`deploy-outage-triage`
+スキル（`.claude/skills/deploy-outage-triage/SKILL.md`）に汎用化済み。この節はkoban-roadmap固有の
+実測ログとして残す。
+
+**時系列**：
+- 15:22 UTC 障害発生。以降、rerun・空コミット・Pages無効化→再有効化（全体障害中に実行、逆効果で
+  本番が一時404化）を試すも全て失敗（詳細は上の節「GitHub Pagesデプロイ障害と対処」参照）
+- 21:20 UTC 全体障害継続中に無効化→再有効化を実行 → 本番が404化、その後のビルドも同じ理由
+  （ランナー未割当）で失敗を繰り返す
+- 22:06〜03:07 UTC 複数回rerunを試すもすべて`queued`のまま長時間（最大1時間超）進捗せず
+- **一時対応**：本番404が長時間続いたため、ローカルのリポジトリ（本番と同一コミット）を
+  `localtunnel`経由で一時公開（`https://fancy-aliens-rush.loca.lt`、PC起動中のみ有効）。
+  Cloudflare Pages（APIトークン未保有のため断念）、jsdelivr/statically.io CDN（HTMLが
+  `Content-Type: text/plain`で配信されブラウザでレンダリングされないため断念）も検討したが
+  実用に至らず
+- 2026-08-07 03:35 UTC GitHub全体障害が`operational`に復旧
+- 03:43 UTC 既存の`queued`ジョブは`rerun`が「already running」で拒否されたため、**空コミット
+  （dd2cfde）で新規workflow runをトリガー** → 24秒で`completed success`、本番反映確認
+- 03:47 UTC 本番で誘導リンク18制度・リンク先`#ptSim`到達性18件をPlaywrightで再検証、全件PASS
+
+**教訓（deploy-outage-triageスキルに反映済み）**：
+1. `gh api`でのPages無効化→再有効化（破壊的操作）は、Auto modeの分類器がチャット内の承認だけでは
+   解除しないブロックをかけることがある。段階4を計画する際はこの制約を織り込み、非破壊策
+   （rerun・空コミット）を優先する
+2. 全体障害解消直後でも、障害中に発行された既存ジョブは「既に実行中」扱いでrerunを拒否することが
+   ある。空コミットでの新規トリガーの方が確実
+3. 認証不要で恒久的な緊急退避先は事実上存在しない（CDN経由はcontent-type問題でHTML表示不可、
+   トンネル系はPC起動が前提）。長時間の障害に備えるなら、事前にCloudflare等のAPIトークンを
+   用意しておく方が実用的
