@@ -68,6 +68,11 @@ SKIP_PREFIXES = (
     "https://www.w3.org/",
     "http://schema.org/",
     "https://schema.org/",
+    # documents.html がWord/Excelの様式ファイルに直接書き込むためのOOXML名前空間定数
+    # （W_NS/S_NS/R_ATTR_NS）。実在のWebページではなくファイル形式の仕様上の識別子。
+    # 2026-08-10、週次実行で毎回「接続できない」誤検知になっていたのを見つけて追加
+    "http://schemas.openxmlformats.org/",
+    "https://schemas.openxmlformats.org/",
     # アクセス解析のビーコン。叩くと自分でページビューを1件作ってしまうので触らない
     "https://koban-roadmap.goatcounter.com/count",
 )
