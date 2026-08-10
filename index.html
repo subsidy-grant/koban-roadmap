@@ -2673,18 +2673,18 @@
     },
     tokutei_kyufu: {
       name: "特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）",
-      scale: "ハローワーク等の紹介により、35歳から59歳までの中高年層（就職氷河期世代を含む）で正規雇用の機会に恵まれずキャリア形成が不十分だった求職者を、正規雇用労働者として雇い入れる事業主。業種を問わない",
-      expense: "対象経費という形ではなく、対象者の雇用そのものに対する定額の助成（賃金の一部相当）",
+      scale: "ハローワーク等の紹介により、雇入れ日時点で35歳から60歳未満の、正規雇用の機会に恵まれずキャリア形成が不十分だったために正規雇用への就職が困難な求職者（就職氷河期世代を含む）を、正規雇用労働者として新たに雇い入れる事業主。業種を問わない",
+      expense: "対象経費という形ではなく、対象者の雇用そのものに対する定額の助成",
       wage: "特になし（賃金上昇は交付要件ではない）",
       acceptance: "非公表",
-      note: "2026年4月、旧「就職氷河期世代安定雇用実現コース」（2025年3月末廃止）の対象要件を35〜59歳に拡大して新設されたコース。支給額の詳細は要確認だが、旧コースの実績は中小企業で1年間60万円（6か月ごと30万円×2期）。訓練・賃金引上げを伴う場合は増額の可能性がある。ハローワーク等の紹介を経ない自己採用は対象外。",
-      link: "https://www.mhlw.go.jp/content/11600000/001471510.pdf",
-      linkLabel: "厚生労働省 公式ページ（制度概要PDF）を見る",
+      note: "2026年4月、旧「就職氷河期世代安定雇用実現コース」（2025年3月末廃止）の対象要件を拡大して新設されたコース。支給額は中小企業で1年間60万円（6か月ごと30万円×2期）、大企業は1年間50万円（6か月ごと25万円×2期）。ハローワーク等の紹介を経ない自己採用は対象外。",
+      link: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/chuukou.html",
+      linkLabel: "厚生労働省 公式ページを見る",
       continuity: "2026年4月に新設されたばかりのコース。前身の「就職氷河期世代安定雇用実現コース」からの継続的な位置づけで、今後も実施が見込まれる",
       reg: {
         universal: true,
         capMan: 60,
-        capText: '中小企業60万円/年目安（旧コース実績値、新コースの正確な額は要確認）',
+        capText: '中小企業60万円/年（6か月ごと30万円×2期、大企業は50万円/年）',
         expenseShort: '中高年層の正規雇用に対する定額の助成',
         simType: 'fixed',
         docKind: 'employment'
@@ -7745,6 +7745,54 @@
         { phase: '支給申請', items: [
           { name: '支給要件確認申立書', url: 'https://www.mhlw.go.jp/content/001688701.docx', type: 'Word', size: '55KB' },
           { name: 'トライアル雇用結果報告書兼支給申請書（共通様式第2号）', url: 'https://www.mhlw.go.jp/content/001688704.xlsx', type: 'Excel', size: '49KB' }
+        ] }
+      ]
+    },
+    koyou_65sai: {
+      checked: '2026-08-10',
+      portal: { label: '独立行政法人 高齢・障害・求職者雇用支援機構（JEED）65歳超継続雇用促進コース 様式ダウンロード', url: 'https://www.jeed.go.jp/elderly/subsidy/subsidy_keizoku_yousiki07.html' },
+      note: '65歳超継続雇用促進コースの様式です。定年引上げ・廃止・継続雇用制度導入の内容と対象被保険者数により支給額が異なるため、募集要項で該当する内容を先にご確認ください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '65歳超継続雇用促進コース 支給申請の手引き', url: 'https://www.jeed.go.jp/elderly/subsidy/q2k4vk000001h38d-att/f41obh0000005nna.pdf', type: 'PDF', size: '1.2MB' }
+        ] },
+        { phase: '支給申請', items: [
+          { name: '継続様式第2号（1）支給申請書', url: 'https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s1r.xlsx', type: 'Excel', size: '88KB' },
+          { name: '共通要領様式第1号 支給要件確認申立書', url: 'https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s3r.docx', type: 'Word', size: '51KB' },
+          { name: '記入例 65歳超継続雇用促進コース申請書類', url: 'https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/s8vmin00000026wm.pdf', type: 'PDF', size: '1.2MB' }
+        ] }
+      ]
+    },
+    tokutei_kyufu: {
+      checked: '2026-08-10',
+      portal: { label: '厚生労働省 公式ページ（中高年層安定雇用支援コース）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/chuukou.html' },
+      note: '中高年層安定雇用支援コースの様式です。ハローワーク等の紹介を経ずに独自に採用した労働者は対象外のため、募集要項で対象かどうかを先にご確認ください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: 'パンフレット（事業主向け）', url: 'https://www.mhlw.go.jp/content/11600000/001690059.pdf', type: 'PDF', size: '542KB' },
+          { name: '支給要領', url: 'https://www.mhlw.go.jp/content/11600000/001684363.pdf', type: 'PDF', size: '423KB' }
+        ] },
+        { phase: '支給申請', items: [
+          { name: '様式第3号 第1期共通申請書', url: 'https://www.mhlw.go.jp/content/11600000/001679117.xlsx', type: 'Excel', size: '72KB' },
+          { name: '様式第4号 第2〜6期支給申請書', url: 'https://www.mhlw.go.jp/content/11600000/001679130.xlsx', type: 'Excel', size: '54KB' }
+        ] }
+      ]
+    },
+    jinzai_kakuho: {
+      checked: '2026-08-10',
+      portal: { label: '厚生労働省 公式ページ（雇用管理制度・雇用環境整備助成コース）', url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000199292_00005.html' },
+      note: '雇用管理制度・雇用環境整備助成コースの様式です（令和8年4月8日以降提出分）。雇用管理制度等整備計画の認定を先に受ける必要があるため、募集要項で手続きの流れを先にご確認ください。',
+      groups: [
+        { phase: '申請の前に読む', items: [
+          { name: '人材確保等支援助成金のご案内（雇用管理制度・雇用環境整備助成コース）', url: 'https://www.mhlw.go.jp/content/11600000/001688568.pdf', type: 'PDF', size: '718KB' },
+          { name: 'チェックリスト（計画届関係）', url: 'https://www.mhlw.go.jp/content/11600000/001678209.xlsx', type: 'Excel', size: '26KB' }
+        ] },
+        { phase: '計画の認定申請', items: [
+          { name: '様式第a-1号 雇用管理制度等整備計画書', url: 'https://www.mhlw.go.jp/content/11600000/001688291.docx', type: 'Word', size: '56KB' },
+          { name: '様式第a-2号 事業所確認票', url: 'https://www.mhlw.go.jp/content/11600000/001469245.xlsx', type: 'Excel', size: '16KB' }
+        ] },
+        { phase: '支給申請', items: [
+          { name: '様式第a-6号 支給申請書', url: 'https://www.mhlw.go.jp/content/11600000/001688295.docx', type: 'Word', size: '61KB' }
         ] }
       ]
     },
