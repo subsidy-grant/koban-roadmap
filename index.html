@@ -1632,7 +1632,6 @@
       <div class="diag-result" id="diagResult"></div>
     </div>
 
-    <p class="section-sub">2026年7月13日時点で<span id="condIndustryName">美容業</span>が対象となりうる制度を網羅的に調査し、<strong>公募が終了した制度を除いた</strong>業種共通6制度＋業種特有の制度に整理しています。事業規模・雇用要件・対象経費・補助率に加え、<strong>賃金上昇（賃上げ）が必須要件かどうか</strong>・<strong>直近の採択率</strong>・<strong>受付期間と次回締切</strong>を制度ごとに示しています。</p>
     <p class="cat-legend">制度名は種別で色分けしています：
       <span class="pill hojo">補助金</span>
       <span class="pill josei">助成金</span>
@@ -10147,7 +10146,7 @@
     }
     if (note) {
       note.textContent = summarySort === 'due'
-        ? '掲載文から自動抽出した「今日以降のいちばん近い日付」で並べています。締切を示す語が近くにある日付を優先していますが、書き方によっては受付開始日を拾うことがあります。日付を判定できない制度は最後にまとめています。正確な締切は必ず公式サイトでご確認ください。'
+        ? ''
         : summarySort === 'cap'
           ? '通常枠の上限額で並べています。申請枠によって上限は変わります。金額を判定できない制度は最後にまとめています。'
           : summarySort === 'rate'
