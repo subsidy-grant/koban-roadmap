@@ -726,18 +726,236 @@
     gunma_nakanojo_keizoku: '非公表'
   };
 
+  // 事業規模・対象経費・賃金上昇要件・継続性は、締切・採択率と同様の理由で
+  // 機械的な切り詰めだと意味が壊れるため、125制度全件を人手で確認して要約を確定した
+  // 静的表（2026-08-13）。列挙型（読点区切り3つ以上の経費項目等）のみ一部を
+  // 正規表現の機械要約で作成し、残りは人手で意訳した。
+  // p.scale / p.expense / p.wage / p.continuity の生データが変わったら見直しが必要。
+  var SCALE_SUMMARY = {
+    jizoku: '従業員数が業種基準以下の小規模事業者（個人事業主も対象）',
+    kaizen: '地域別最低賃金に近い事業場が対象、中小・小規模事業者',
+    career_shoyo: '有期雇用労働者に賞与・退職金を新設した事業主',
+    career_kaitei: 'パート等の賃金規定を新設・改定した事業主',
+    career_kyotsu: '正社員とパート等の賃金規定を共通化した事業主',
+    career_tanjikan: '有期雇用者を社会保険加入させた事業主、常時30人以下で最高額',
+    career_shogai: '障害者を正社員化した事業主',
+    ryouritsu_ikuji: '中小企業（資本金5千万円以下等）で育休・短時間勤務制度あり',
+    ryouritsu_kaigo: '中小企業（資本金5千万円以下等）、行動計画の届出不要',
+    ryouritsu_juunan: '中小企業（資本金5千万円以下等）で育休・短時間勤務制度あり',
+    ryouritsu_funin: '中小企業（資本金5千万円以下等）、不妊治療制度を整備',
+    food_labor: '飲食店営業許可を受け、売上の70%以上が飲食店事業の中小企業',
+    kanko_shoryokuka: '旅館業法許可の宿泊事業者、地域連携の人手不足対策が要件',
+    akiya: '不動産事業者・NPO・自治体等、空き家対策事業の提案主体',
+    trial_koyou: '離職・転職を繰り返す求職者を試行雇用する事業主、業種不問',
+    koyou_65sai: '定年引上げ・廃止等の高年齢者雇用制度を整備する事業主',
+    tokutei_kyufu: '就職氷河期世代等を正規雇用する事業主、業種不問',
+    jinzai_kakuho: '雇用管理制度整備等で離職率低下に取り組む事業主',
+    tokyo_sogyo: '都内で創業予定または創業5年未満の中小企業者',
+    tokyo_soui: '都内中小企業等で営業利益が減少・赤字の事業者',
+    tokyo_shuekiryoku: '都内中小企業者等で営業利益が減少・赤字の事業者',
+    tokyo_taito_keiei: '台東区内で本拠を構え創業1年以上の中小企業（VO除く）',
+    tokyo_setagaya_keiei: '世田谷区内に事業所を有する中小事業者・個人事業主',
+    tokyo_suginami_digital: '杉並区内で1年以上営業する中小企業者等',
+    tokyo_arakawa_jizoku: '荒川区内で本社1年以上の商業・サービス業の中小企業者',
+    tokyo_itabashi_digital: '板橋区内で概ね1年以上継続する中小企業者',
+    tokyo_adachi_kaizen: '足立区の小規模事業者（従業員10〜30人以下）、区内1年以上',
+    tokyo_edogawa_dx: '江戸川区内に本店を有する中小企業者',
+    tokyo_hachioji_keizoku: '八王子市内に本社を有し市税滞納のない中小企業者',
+    tokyo_fuchu_hanro: '府中市内の小規模事業者、経営計画に基づく販路開拓等',
+    tokyo_hamura_kiban: '羽村市内の中小企業者（風俗営業等は除外）',
+    tokyo_nishitokyo_dx: '西東京市内の中小企業・個人事業主（風俗営業等除外）',
+    saitama_dx: '埼玉県内でDXツール活用による生産性向上に取り組む中小企業者',
+    kanagawa_digital: '神奈川県内の小規模事業者（従業員5〜20人以下）',
+    kanagawa_kawasaki_seicho: '川崎市内で1年以上事業を営む中小事業者等',
+    kanagawa_sagamihara_seisansei: '相模原市内で設備投資を行う中小企業者、生産性9%向上計画が必要',
+    chiba_chiba_ict: '千葉市内に事業所を置く中小企業者、創業済みが条件',
+    gunma_isesaki_shokibo: '伊勢崎市の小規模事業者（従業員5〜20人以下、業種により異なる）',
+    saitama_ageo_dx: '上尾市内で6か月以上営業する中小企業者、業種不問',
+    saitama_ageo_setsubi: '上尾市内の中小企業者、業種ごとに資本金・従業員数条件あり',
+    saitama_niiza_itdx: '新座市内の法人・個人事業主、経営相談利用が必須',
+    kanagawa_yamato_koten: '大和市内のサービス業・小売業の事業者（製造業等は対象外）',
+    chiba_tateyama_digital: '館山市内の個人・法人、対象業種を限定（建設・製造・宿泊等）',
+    chiba_minamiboso_digital: '南房総市内の個人・中小企業等、業種限定なし',
+    chiba_mobara_support: '茂原市内の中小企業者等、商工会議所が支援を認めた者',
+    kanagawa_ayase_shogyo: '綾瀬市内の小売業・飲食・生活関連サービス業（理美容業等）',
+    saitama_kazo_keieikakushin: '加須市内で開業5年以上、県の経営革新計画承認を得た者',
+    saitama_chichibu_reform: '秩父市内でリフォームを行う事業者、市税未納なし',
+    saitama_toda_dx: '戸田市内で1年以上継続する中小企業者、業種限定なし',
+    saitama_misato_ganbaro: '三郷市内の中小企業者、業種限定なし',
+    kanagawa_kamakura_digital: '鎌倉市内で同一業種1年以上継続の中小企業者（ほぼ全業種）',
+    tochigi_nikko_digital: '日光市内の法人・個人、創業12か月経過・市税完納が条件',
+    tochigi_shimotsuke_reform: '下野市内の指定95業種（小売・飲食・理美容業等）',
+    saitama_saitama_setsubi: 'さいたま市内で1年以上の中小企業者・中堅企業、業種限定なし',
+    kanagawa_atsugi_setsubi: '厚木市内で5年以上事業を営む中小企業者、業種限定なし',
+    kanagawa_yokosuka_senshinteki: '横須賀市の工業系地域で製造業を営む中小企業者',
+    gunma_ota_dx: '太田市内の建設・製造・運輸業の中小企業者、個人事業主除く',
+    kanagawa_isehara_setsubi: '伊勢原市内で1年以上製造業を営む中小企業者',
+    kanagawa_kamakura_ritchi: '鎌倉市内に新規整備する製造業・情報通信業等の事業者',
+    kanagawa_kamakura_kankyo: '鎌倉市内で製造業・情報通信業等を1年以上営む企業',
+    chiba_choshi_ritchi: '銚子市内で製造業・観光業等を新規立地または再投資する事業者',
+    saitama_iruma_shinko: '入間市内に工場・本社がない事業者、常時雇用10人以上',
+    kanagawa_zama_renewal: '座間市内の小売・飲食・生活関連サービス業、商工会会員',
+    kanagawa_yokohama_shoene: '横浜市内で12か月以上営業する中小企業者、業種限定なし',
+    kanagawa_yokohama_shingijutsu: '横浜市内で創業5年以上の中小企業、脱炭素宣言が必須',
+    kanagawa_sagamihara_shoene: '相模原市内の中小規模事業者、温暖化対策計画書提出が前提',
+    saitama_kawaguchi_ritchi: '川口市内で工場等を新設・拡張する製造業の事業者',
+    kanagawa_hiratsuka_ritchi: '平塚市内で製造業等を新築・増築する事業者、投資額要件あり',
+    saitama_sayama_ritchi: '狭山市内に新設・増設する製造業等、敷地面積要件あり',
+    saitama_tokorozawa_monozukuri: '所沢市内で1年以上継続する製造業・農業の中小企業者',
+    saitama_tokorozawa_toshigata: '所沢市内の製造業・情報通信業等、正社員6〜20人未満の企業',
+    chiba_sodegaura_shinko: '袖ケ浦市内で対象施設を新設・増設する事業者',
+    gunma_minakami_tenpo: 'みなかみ町内の卸小売・宿泊・生活関連サービス業、5年継続見込み',
+    kanagawa_yugawara_shukuhaku: '湯河原町の宿泊税特別徴収義務者（旅館・ホテル等）',
+    gunma_nakanojo_keizoku: '中之条町内で3年以上継続する小規模事業者'
+  };
+
+  var EXPENSE_SUMMARY = {
+    jizoku: '機械装置等費・広報費等',
+    tokyo_shuekiryoku: '専門家派遣は無料、助成金対象経費は計画実行費の一部',
+    hatarakikata: '労務管理担当者や労働者への研修・周知・啓発等',
+    food_labor: '設備・機器のリース費用等（購入・レンタルは対象外）',
+    kanko_shoryokuka: '自動チェックイン機・PMS（宿泊管理システム）等',
+    monodukuri: '機械装置・システム構築費・技術導入費等',
+    jigyou_shoukei_ma: '謝金・旅費等',
+    tokyo_soui: '原材料・副資材費・機械装置・工具器具費等',
+    tokyo_bunkyo_seisansei: '機械・装置・器具・備品等',
+    tokyo_nakano_keieiryoku: '販路開拓支援・多様性への対応支援等',
+    tokyo_kita_itiot: 'ソフトウェア費用・データ収集機器費用等',
+    tokyo_arakawa_jizoku: 'POSレジ・LED照明等の設備導入、販促活動費',
+    tokyo_itabashi_digital: 'ソフトウェア・システム導入費・委託料・外注費等',
+    tokyo_nerima_challenge: '商品開発費・器具・備品購入費等',
+    tokyo_adachi_kaizen: '機械設備購入・リース料・設置工事・修理・改造・維持費等',
+    tokyo_katsushika_digital: 'ソフトウェア購入費・クラウドサービス利用料（1年分）等',
+    tokyo_edogawa_dx: '機械装置費・委託費・外注費等',
+    tokyo_mitaka_sangyo: '機械・備品購入・店舗工事等',
+    tokyo_fuchu_hanro: '広報費（ウェブサイト作成・更新含む）・展示会等出展費等',
+    tokyo_nishitokyo_dx: '機械装置費・システム構築費等',
+    kanagawa_kawasaki_seicho: '設備等導入費・システム構築費等',
+    kanagawa_sagamihara_seisansei: '機械装置・測定工具・検査工具等',
+    chiba_matsudo_dx: 'ソフトウェア利用料・購入費・開発費・ウェブサイト制作費等',
+    saitama_koshigaya_setsubi: '機械器具費・システム導入費等',
+    kanagawa_atsugi_it: '機械購入費・システム開発費等',
+    saitama_ageo_dx: 'ソフトウェア導入費・システム構築費等',
+    saitama_ageo_setsubi: '設備購入費・工事費等',
+    kanagawa_hiratsuka_dx: 'システム設計・開発費・ソフトウェア購入費等',
+    kanagawa_yamato_koten: '商品開発費・システム導入費等',
+    chiba_kimitsu_seisansei: '設備投資費・機械装置の運搬設置費等',
+    kanagawa_ayase_shogyo: '店舗開業・改装費、商品開発費、販売促進費',
+    saitama_kazo_keieikakushin: '広告宣伝費・ソフトウェア使用料等',
+    saitama_higashimatsuyama_ganbaru: '機械装置等費・広報費等',
+    saitama_toda_dx: 'コンサルティング費用・サービス・製品開発費等',
+    tochigi_kanuma_digital: '機器設置・設定費・システム構築費等',
+    gunma_maebashi_setsubi: '資産購入費・設計費等',
+    kanagawa_atsugi_setsubi: '設備本体費・附属部品費等',
+    kanagawa_yokosuka_senshinteki: '原材料購入費・機械装置・工具の購入または借入れ等',
+    kanagawa_ayase_kyojinka: '製造現場強靭化・企業間連携強化等',
+    kanagawa_kamakura_kankyo: '環境保全施設・雨水活用施設・太陽光発電施設',
+    kanagawa_yokohama_shoene: '業務用空調設備・業務用給湯器等',
+    kanagawa_yokohama_monozukuri: 'ものづくり魅力発信・人材育成：講師謝金・旅費等',
+    gunma_minakami_tenpo: '内装工事・外装工事等',
+    ai: '予約・顧客管理ソフト等の購入費・利用料',
+    kaizen: '施術機器・什器・POSレジ等の導入費',
+    career_kaitei: '賃金表を3%以上引き上げれば定額支給',
+    career_kyotsu: '共通の等級・賃金表新設で定額支給',
+    career_tanjikan: 'パート等を社保加入させれば1人定額支給',
+    career_shogai: '障害者を正規雇用転換すれば1人定額支給',
+    ryouritsu_daitai: '定額の体制整備費＋代替手当の4分の3',
+    akiya: '空き家の改修・除却工事等',
+    trial_koyou: '定額助成（経費積み上げ不要）',
+    koyou_65sai: '定額助成（経費積み上げ不要）',
+    jinzai_kakuho: '雇用管理制度導入費・業務負担軽減機器等',
+    tokyo_sogyo: '広告費・器具備品購入費等の事業費',
+    tokyo_digital: 'デジタルツール本体費・初期設定費等',
+    tokyo_minato_software: '業務効率化ソフト導入費・接続機器費',
+    tokyo_taito_keiei: '業務・人材・知的財産管理の経費',
+    tokyo_sumida_digital: 'ソフト・クラウド・ハード購入費等',
+    tokyo_koto_ict: 'ソフト・IoT・キャッシュレス端末導入費',
+    tokyo_shinagawa_digital: '事務デジタル化のソフト・クラウド導入費',
+    tokyo_meguro_shoryokuka: '省力化製品本体購入費（券売機等）',
+    tokyo_setagaya_keiei: '販路拡大・生産性向上設備の導入費',
+    tokyo_suginami_digital: '新規デジタル化・システム入替の経費',
+    tokyo_toshima_keiei: '事業PR費・専門家活用費・人材育成費',
+    tokyo_hamura_kiban: 'DX推進・働く環境整備等の経費',
+    chiba_seicho4: '機械装置等の購入・改良、システム構築費',
+    saitama_dx: 'DXツール購入費等（経費の1/2まで）',
+    saitama_shoryokuka: '省力化製品購入費（経費の1/2まで）',
+    kanagawa_seisansei: '生産性向上設備導入費（単なる更新は対象外）',
+    tochigi_chinage: 'POSレジ等の設備投資・労働環境改善設備',
+    chiba_chiba_ict: 'クラウド利用料・ソフト購入費・構築費等',
+    saitama_saitama_dx: 'システム・ソフトウェア購入費等',
+    saitama_kawaguchi_dx: 'AI・非接触型商取引システムの導入費',
+    kanagawa_yokosuka_seisansei: '設備等の導入・運搬設置費（ソフト開発は対象外）',
+    kanagawa_yokosuka_ict: 'ICT導入経費（汎用パソコン等は対象外）',
+    gunma_isesaki_shokibo: '事業用設備購入費・IT化教育訓練経費',
+    saitama_niiza_itdx: 'HP・販売管理システム等の構築経費',
+    chiba_minamiboso_digital: '業務効率化システムか集客拡大施策を選択',
+    saitama_fujimi_challenge: '経営改善等7区分から選ぶ幅広い経費',
+    saitama_chichibu_reform: '住宅・店舗・事務所の修繕工事費',
+    kanagawa_kamakura_digital: 'ソフト利用料・POSレジ導入費等',
+    tochigi_nikko_lease: 'リース契約料の物件価格相当額',
+    tochigi_shimotsuke_reform: '店舗機能向上の改装・改修費',
+    gunma_midori_renewal: '店舗改装費・備品購入費（1品3万円以上）',
+    gunma_tsumagoi_uriage: '広告費・店舗改修費等、幅広く利用可',
+    kanagawa_hiratsuka_datsutanso: '省エネ設備の本体・設置工事費（30万円以上）',
+    saitama_saitama_setsubi: '省力化機械・システム購入費（上限30万円）',
+    gunma_ota_dx: '省力化機器・勤怠管理システム導入費',
+    kanagawa_isehara_setsubi: '機械及び装置（総額160万円以上）',
+    kanagawa_kamakura_ritchi: '内装・通信設備改修費または賃料補助',
+    chiba_choshi_ritchi: '固定資産税相当額または賃借料',
+    gunma_maebashi_dx: 'システム導入費・ハード購入費・使用料',
+    kanagawa_yokohama_led: 'LED照明への更新工事費',
+    kanagawa_yokohama_shingijutsu: '新技術開発の原材料費・機械装置費等',
+    kanagawa_sagamihara_shoene: '省エネ・再エネ設備の設計・工事費',
+    saitama_kawaguchi_ritchi: '固定資産税相当額・賃借料・新規雇用',
+    saitama_sayama_ritchi: '固定資産税相当額・新規雇用・環境保全費',
+    saitama_tokorozawa_monozukuri: '産業財産権出願費・設備改修費等',
+    kanagawa_yugawara_shukuhaku: 'レジ改修費・PC等ハード購入費等',
+    gunma_nakanojo_keizoku: '店舗改修費・備品購入費（20万円以上）'
+  };
+
+  var WAGE_SUMMARY = {
+    ai: '必須ではないが要件充足で補助率2/3に優遇',
+    ryouritsu_shusseiji: '賃金要件なし（最低賃金順守は当然必要）',
+    jinzai: '必須ではないが一部コースで単価上乗せあり',
+    food_labor: '賃上げ要件なし（省力化による時給向上は審査対象）',
+    tokyo_soui: '業務改善コースは必須ではない（賃上げ優先コースは別枠）',
+    tokyo_shuekiryoku: '必須ではないが賃上げ計画で助成率3/4に優遇',
+    tokyo_arakawa_jizoku: '特例適用時のみ必須（給与総額2%増＋最低賃金+30円）',
+    chiba_seicho4: '賃金要件なし（賃上げ意欲の高い事業者が対象の趣旨）',
+    chiba_kimitsu_seisansei: '任意（賃上げ1.5%以上等で補助率2/3に優遇）',
+    saitama_sayama_ritchi: '賃金要件でなく雇用促進助成金（1人20万円等）'
+  };
+
+  var CONTINUITY_SUMMARY = {
+    jizoku: '長年継続実施中。次年度以降も継続見込み',
+    career_shoyo: '3年度続く定着コース。年度途中の要件変更もありうる',
+    career_tanjikan: '令和8年度も継続中だが暫定措置。改廃を前提に早めの届出を推奨',
+    career_shogai: '継続実施中で暫定措置の明記なし。令和8年度に対象者要件を追加',
+    ryouritsu_daitai: '令和8年度に要件拡充。次年度以降の継続は当サイト未確認',
+    ryouritsu_funin: '令和7年度に新設。その後の大きな変更は当サイト未確認',
+    food_labor: '設備費支援は補正予算限り。令和8年度は未継続で再開時期も未定',
+    monodukuri: '2026年度に旧ものづくり補助金を統合し新設。次年度以降は未定',
+    jigyou_shoukei_ma: '15次まで継続実施中。次回公募時期は未告知だが継続見込み',
+    koyou_65sai: '継続実施中の制度。年度により要件・金額が変わる場合あり',
+    tokyo_suginami_digital: '都補助金活用スキームのため都事業の継続状況に連動'
+  };
+
   function buildGridHTML(p, key) {
     var schedulePeek = (key && SCHEDULE_SUMMARY[key]) || peekText(p.schedule);
     var acceptancePeek = (key && ACCEPTANCE_SUMMARY[key]) || esc(peekText(p.acceptance));
+    var scalePeek = (key && SCALE_SUMMARY[key]) || peekText(p.scale);
+    var expensePeek = (key && EXPENSE_SUMMARY[key]) || peekText(p.expense);
+    var wagePeek = (key && WAGE_SUMMARY[key]) || peekText(p.wage);
+    var continuityPeek = (key && CONTINUITY_SUMMARY[key]) || peekText(p.continuity);
     return (
-      pdItem('pd-item-wide', '事業規模・雇用要件', reqHL(p.scale), { peek: esc(peekText(p.scale)) }) +
-      pdItem('', '主な対象経費', p.expense, { peek: esc(peekText(p.expense)) }) +
+      pdItem('pd-item-wide', '事業規模・雇用要件', reqHL(p.scale), { peek: esc(scalePeek) }) +
+      pdItem('', '主な対象経費', p.expense, { peek: esc(expensePeek) }) +
       pdItem('pd-item-key pd-item-rate', '補助率', numStrong(p.rate), { vClass: 'tabular', peek: numStrong(p.rate) }) +
       pdItem('pd-item-key pd-item-amount', '上限額', numStrong(p.cap), { vClass: 'tabular', peek: numStrong(p.cap) }) +
-      pdItem('', '賃金上昇要件', reqHL(wageNumHL(p.wage)), { peek: esc(peekText(p.wage)) }) +
+      pdItem('', '賃金上昇要件', reqHL(wageNumHL(p.wage)), { peek: esc(wagePeek) }) +
       pdItem('', '採択率／支給傾向', p.acceptance, { vClass: 'tabular', peek: acceptancePeek }) +
       pdItem('pd-item-key pd-item-due', '受付期間・次回締切', numWeak(p.schedule), { peek: esc(schedulePeek) }) +
-      pdItem('', '制度の継続性', p.continuity, { peek: esc(peekText(p.continuity)) })
+      pdItem('', '制度の継続性', p.continuity, { peek: esc(continuityPeek) })
     );
   }
 
