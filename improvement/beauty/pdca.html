@@ -6,12 +6,13 @@
 <title>PDCA評価ダッシュボード | 美容業×AI 1000案</title>
 <style>
   :root{
-    --bg:#f7f5f2; --card:#ffffff; --ink:#26221e; --sub:#6f675e; --line:#e5dfd7;
-    --accent:#8a5a2b; --accent2:#3e6b4f; --gold:#8a6208; --red:#a4453c;
+    /* koban-roadmap本体（index.html）の配色「藍×橙×花青」に統一（2026-08-13） */
+    --bg:#eef1f3; --card:#ffffff; --ink:#191d22; --sub:#48536a; --line:#d6dae1;
+    --accent:#1e4d78; --accent2:#0e7490; --gold:#c2410c; --red:#c2410c;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:"Noto Sans JP","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
-  header{background:linear-gradient(135deg,#2c2620,#4a3a28);color:#f5efe6;padding:28px 24px}
+  header{background:linear-gradient(135deg,#191d22,#1e4d78);color:#eef1f3;padding:28px 24px}
   header h1{font-size:22px;font-weight:700}
   header p{font-size:13px;opacity:.85;margin-top:6px}
   .wrap{max-width:1200px;margin:0 auto;padding:20px}
@@ -22,17 +23,22 @@
   .stage .num{font-size:30px;font-weight:800}
   .stage .lbl{font-size:12px;color:var(--sub)}
   .stage .desc{font-size:11px;color:var(--sub);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
-  .s-p .ph{background:#4a6480}.s-d .ph{background:#3e6b4f}.s-c .ph{background:#8a6208}.s-a .ph{background:#a4453c}
+  .s-p .ph{background:#48536a}.s-d .ph{background:var(--accent)}.s-c .ph{background:var(--accent2)}.s-a .ph{background:var(--gold)}
   /* TOP10 */
   h2{font-size:17px;margin:26px 0 10px;border-left:5px solid var(--accent);padding-left:10px}
   .topgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-  .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
   .tcard .rank{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:99px;padding:2px 10px;display:inline-block}
-  .tcard h3{font-size:15px}
-  .tcard .why{font-size:12px;color:var(--sub);background:#faf7f2;border-radius:8px;padding:8px}
+  .tcard summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:2.6rem}
+  .tcard summary::-webkit-details-marker{display:none}
+  .tcard summary::before{content:"▸";color:var(--sub);font-size:13px;flex:0 0 auto;transition:transform .15s}
+  .tcard[open] summary::before{transform:rotate(90deg)}
+  .tcard-title{font-size:15px;font-weight:700}
+  .tcard-body{display:flex;flex-direction:column;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .tcard .why{font-size:12px;color:var(--sub);background:#e3edf5;border-radius:8px;padding:8px}
   .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid}
-  .b-sho{color:var(--accent2);border-color:var(--accent2);background:#eef5f0}
-  .b-gyo{color:#7a5a17;border-color:var(--gold);background:#fbf4e3}
+  .b-sho{color:var(--accent2);border-color:var(--accent2);background:#dcf1f5}
+  .b-gyo{color:#7a2c07;border-color:var(--gold);background:#f8e4d8}
   /* 5軸スコアは5角形レーダーチャートで表示する（横棒だと軸ごとの強弱が読み取りにくいため） */
   .scorewrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   .radarbox{flex:0 0 auto;width:210px;max-width:100%;margin:0 auto}
@@ -47,20 +53,20 @@
   .scorewrap .why{flex:1 1 190px;margin:0}
   .links{display:flex;gap:8px;font-size:12px;flex-wrap:wrap}
   .links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:#fff}
-  .links a:hover{background:#f3ede4}
+  .links a:hover{background:var(--accent-soft,#e3edf5)}
   /* フィルタ+表 */
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
   select,input[type=search]{font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
   input[type=search]{flex:1;min-width:200px}
   .count{font-size:12px;color:var(--sub)}
   table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:12.5px}
-  th{background:#efe9e0;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
-  th:hover{background:#e6ddd0}
+  th{background:#e3edf5;text-align:left;padding:8px 10px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{background:#b9cfe3}
   td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
-  tr:hover td{background:#faf7f2}
+  tr:hover td{background:#e3edf5}
   .stg{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
-  .stg-top{background:#a4453c;color:#fff}.stg-c{background:#8a6208;color:#fff}
-  .stg-p{background:#4a6480;color:#fff}.stg-0{background:#e5dfd7;color:#6f675e}
+  .stg-top{background:var(--gold);color:#fff}.stg-c{background:var(--accent2);color:#fff}
+  .stg-p{background:#48536a;color:#fff}.stg-0{background:var(--line);color:var(--sub)}
   .pager{display:flex;gap:8px;justify-content:center;margin:14px 0;align-items:center;font-size:13px}
   .pager button{font:inherit;padding:6px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
   .pager button:disabled{opacity:.4;cursor:default}
@@ -134,6 +140,9 @@
     <select id="fStage" aria-label="選定ステージで絞り込む"><option value="">全ステージ</option>
       <option>TOP10採択</option><option>C通過(30選)</option><option>P通過(100選)</option><option>初期プール</option></select>
     <select id="fScheme" aria-label="活用制度で絞り込む"><option value="">全制度</option><option value="省力化">省力化投資補助金</option><option value="業務改善">業務改善助成金</option></select>
+    <select id="fPageSize" aria-label="1ページの表示件数">
+      <option value="20">20件表示</option><option value="50" selected>50件表示</option><option value="100">100件表示</option>
+    </select>
     <span class="count" id="count"></span>
   </div>
   <div class="twrap">
@@ -218,17 +227,18 @@ document.getElementById("topgrid").innerHTML = TOP10.map(t => {
   const badge = t.scheme === "省力化"
     ? '<span class="badge b-sho">省力化投資補助金(一般型)</span>'
     : '<span class="badge b-gyo">業務改善助成金</span>';
-  return `<div class="tcard">
-    <div><span class="rank">No.${t.topRank}</span> ${badge}</div>
-    <h3>${t.title}</h3>
-    <div style="font-size:12px">${t.description}</div>
-    <div class="scorewrap">
-      <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
-      <div class="why"><b>選定理由:</b> ${r.why||""}</div>
+  return `<details class="tcard">
+    <summary><span class="rank">No.${t.topRank}</span> ${badge} <span class="tcard-title">${t.title}</span></summary>
+    <div class="tcard-body">
+      <div style="font-size:12px">${t.description}</div>
+      <div class="scorewrap">
+        <div class="radarbox">${radarChart(t.score)}<div class="tot">総合 <b>${t.total}</b>/25</div></div>
+        <div class="why"><b>選定理由:</b> ${r.why||""}</div>
+      </div>
+      <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月</div>
+      <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a><a href="manuals/manual-${String(t.topRank).padStart(2,"0")}.html">📖 仕様書</a></div>
     </div>
-    <div style="font-size:11px;color:var(--sub)">想定省力化: 約${t.savingHoursPerMonth}時間/月</div>
-    <div class="links"><a href="${r.proto}">▶ プロトタイプ</a><a href="${r.plan}">📄 事業計画書</a><a href="plan-${String(t.topRank).padStart(2,"0")}.xlsx" download>📊 Excel</a><a href="manuals/manual-${String(t.topRank).padStart(2,"0")}.html">📖 仕様書</a></div>
-  </div>`;
+  </details>`;
 }).join("");
 
 // フィルタ初期化
@@ -237,10 +247,15 @@ CATEGORIES.forEach(c => fCat.insertAdjacentHTML("beforeend", `<option>${c.name}<
 SEGMENTS.forEach(s => fSeg.insertAdjacentHTML("beforeend", `<option>${s.name}</option>`));
 
 let sortKey = "rank", sortAsc = true, page = 0;
-// 狭い画面では1行が高くなるため、1ページの件数を落とす
-const PAGE = window.matchMedia('(max-width:760px)').matches ? 25 : 50;
+const fPageSize = document.getElementById("fPageSize");
+// 狭い画面では1行が高くなるため、選んだ件数と25件の小さい方を使う
+function currentPageSize() {
+  const chosen = Number(fPageSize.value) || 50;
+  return window.matchMedia('(max-width:760px)').matches ? Math.min(chosen, 25) : chosen;
+}
 const els = ["q","fCat","fSeg","fStage","fScheme"].map(id => document.getElementById(id));
 els.forEach(el => el.addEventListener("input", () => { page = 0; render(); }));
+fPageSize.addEventListener("change", () => { page = 0; render(); });
 document.querySelectorAll("th").forEach(th => th.addEventListener("click", () => {
   const k = th.dataset.k;
   if (sortKey === k) sortAsc = !sortAsc; else { sortKey = k; sortAsc = k === "rank" || k === "title"; }
@@ -263,6 +278,7 @@ function render() {
     const c = typeof va === "number" ? va - vb : String(va).localeCompare(String(vb), "ja");
     return sortAsc ? c : -c;
   });
+  const PAGE = currentPageSize();
   const pages = Math.max(1, Math.ceil(rows.length / PAGE));
   page = Math.min(Math.max(0, page), pages - 1);
   document.getElementById("count").textContent = `${rows.length}件`;
