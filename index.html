@@ -1588,7 +1588,6 @@
          （2026-08-01）。2026-08-05に「業種」だけ再びページ冒頭のヒーローへ戻した
          （本人指示）。地域・従業員数の選択欄はここに残す。 -->
     <div class="diag-inline">
-      <p class="diag-inline-lead"><strong>地域・従業員数・資本金</strong>を選んでください（業種はページ上部で選択済み）。ここで選んだ内容が、このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
       <div class="diag-steps">
       <div class="diag-step">
         <div class="dhead"><span class="dnum" aria-hidden="true">1</span><span class="dttl">地域を選ぶ</span></div>
@@ -1629,7 +1628,6 @@
         </div>
       </div>
       </div>
-      <p class="t-note">上で選んだ地域・従業員数・資本金は、下の一覧に自社が対象かどうかのバッジを表示するために使います。従業員数は「概算シミュレーター」の人数欄とも連動しています。地域は現時点では<strong>東京都・神奈川県・埼玉県・千葉県・栃木県・群馬県</strong>に対応（他道府県は順次追加予定）。市区町村も選べます（対応6都県の全263市区町村）。<strong>市区町村の制度は東京都の53区市町村と主要8市を調査済みで、残りは当サイトでまだ調査できていません。一覧に追加行が出ない場合も「制度が無い」という意味ではありません。</strong></p>
       <div class="diag-result" id="diagResult"></div>
     </div>
 
@@ -10043,12 +10041,6 @@
     var keys = getUsableProgramKeys();
     var regionKeys = keys.filter(isRegionProgram);
 
-    var best = null;
-    keys.forEach(function (k) {
-      var c = capManYen(k);
-      if (typeof c === 'number' && (best === null || c > best.cap)) best = { key: k, cap: c };
-    });
-
     var due = null;
     keys.forEach(function (k) {
       var d = parseNextDeadline(PROGRAMS[k].schedule);
@@ -10063,39 +10055,23 @@
       }
     }
 
-    var regionSub;
-    if (!currentPrefecture) {
-      regionSub = '都道府県を選ぶと、その地域だけの制度も加わります。';
-    } else if (currentMunicipality && !isMunicipalityChecked(currentPrefecture, currentMunicipality)) {
-      regionSub = 'この市区町村はまだ調査できていません。「制度が無い」という意味ではありません。';
-    } else if (regionKeys.length === 0) {
-      regionSub = '調査した範囲では、この地域独自の制度は確認できませんでした。';
-    } else {
-      regionSub = 'この地域だけで使える制度です。下の一覧に緑の線で表示しています。';
-    }
-
-    var dueHTML, dueSub;
+    var dueHTML;
     if (due) {
       var left = daysUntil(due.date);
       dueHTML = '<span class="dr-date ' + (left <= 30 ? 'due-soon' : '') + '">' + fmtDate(due.date) + '</span>';
-      dueSub = PROGRAMS[due.key].name + '（あと' + left + '日）';
     } else {
       dueHTML = '—';
-      dueSub = '日付を自動判定できる締切がありません。各制度の受付期間をご確認ください。';
     }
 
     el.innerHTML =
       '<div class="dr-head">' + INDUSTRIES[currentIndustry].label + '／' + areaLabel + '／従業員' + currentEmployeeCount + '人 の場合</div>' +
       '<div class="dr-grid">' +
         '<div class="dr-cell"><div class="dr-k">使える可能性がある制度</div>' +
-          '<div class="dr-v tabular">' + keys.length + '<small> 件</small></div>' +
-          '<div class="dr-s">' + (best ? '最も上限額が大きいのは「' + PROGRAMS[best.key].name + '」（上限' + best.cap.toLocaleString() + '万円）です。' : '上限額を数値で比較できる制度がありません。') + '</div></div>' +
+          '<div class="dr-v tabular">' + keys.length + '<small> 件</small></div></div>' +
         '<div class="dr-cell"><div class="dr-k">うち、この地域だけの制度</div>' +
-          '<div class="dr-v tabular">' + regionKeys.length + '<small> 件</small></div>' +
-          '<div class="dr-s">' + regionSub + '</div></div>' +
+          '<div class="dr-v tabular">' + regionKeys.length + '<small> 件</small></div></div>' +
         '<div class="dr-cell"><div class="dr-k">いちばん近い締切</div>' +
-          '<div class="dr-v tabular">' + dueHTML + '</div>' +
-          '<div class="dr-s">' + dueSub + '</div></div>' +
+          '<div class="dr-v tabular">' + dueHTML + '</div></div>' +
       '</div>' +
       '<div class="diag-cta">' +
         // #conditions（自分自身が入っているセクション）へのリンクだと、タップ時に

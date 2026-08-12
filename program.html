@@ -115,10 +115,6 @@
     color: var(--accent); font-weight: 700; font-size: 1.3em;
   }
   .num-weak { font-weight: 600; }
-  .pd-note {
-    margin-top: 1.2rem; font-size: 0.87rem; color: var(--ink-soft);
-    background: var(--sage-wash); border-radius: 8px; padding: 0.9rem 1.05rem;
-  }
 
   /* 詳細な試算（2026-08-05追加）。制度ごとの質問と計算ルールは sim_data.js に持ち、
      このページは「質問を並べて、答えを計算式に流し込む」だけを担う（制度ごとの
@@ -354,7 +350,6 @@
     <h1 class="pt-name" id="ptName"><span class="pt-loading">読み込み中…</span></h1>
 
     <div class="pd-grid" id="ptGrid"></div>
-    <div class="pd-note" id="ptNote" style="display:none;"></div>
 
     <!-- 見出しのすぐ下は入力欄にする。趣旨の説明は質問の後ろ（#ptSimAbout）へ回した。
          読ませてから触らせるより、触らせてから読ませるほうが最後まで届く。 -->
@@ -380,12 +375,16 @@
 
     <!-- 旧トップページ「05 留意事項」（全制度共通5項目）を2026-08-13に移設。
          唯一の出所ではなくindex.html由来の静的複製のため、文言を変える場合は
-         両方の更新が必要（index.htmlの#notesセクションは削除済み）。 -->
+         両方の更新が必要（index.htmlの#notesセクションは削除済み）。
+         この制度固有の注意（旧#ptNote、p.note）は、見出し直下の単独表示をやめて
+         ここのリスト先頭に差し込む形に統合した（2026-08-13、本人指示）。
+         #ptNoteItem は render() が p.note の有無に応じて表示/非表示・中身を切り替える。 -->
     <section class="pd-notes">
-      <details class="pd-fold">
-        <summary><h2>留意事項</h2><span class="pd-fold-hint">申請前に確認しておきたい5つの注意点</span></summary>
+      <details class="pd-fold" id="ptNotesFold">
+        <summary><h2>留意事項</h2><span class="pd-fold-hint">申請前に確認しておきたい注意点</span></summary>
         <div class="pd-fold-body">
           <ul class="item-list">
+            <li id="ptNoteItem" style="display:none;"></li>
             <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
             <li>業務改善助成金・キャリアアップ助成金は賃金引き上げの実施が前提条件で、事前の計画届出が必要な場合があります</li>
             <li>補助金（デジタル化・AI導入、小規模事業者持続化、業務改善、省力化投資）は予算上限のある競争審査型のため、申請しても不採択となることがあります</li>
@@ -441,8 +440,11 @@
   };
 
   // 8項目を<details>/<summary>で1つずつ組み立てる。既定は閉じる（open属性を付けない）。
-  // 補助率・上限額（pd-item-key）は、閉じたままでも数値が見えるよう
-  // summary側にも同じ数値バッジ(peek)を出す（金額が一切分からない改悪を避けるため）。
+  // どの項目も、閉じたままスマホで見出しだけ並んだときに中身の見当が付かない
+  // という指摘を受け（2026-08-13）、summary側に短い1行プレビュー(peek)を出す。
+  // 補助率・上限額はもともと数値バッジをpeekにしていたが、残り5項目にも
+  // 値の冒頭を切り詰めたテキストを付けた（省略はCSSのellipsisで行うため、
+  // ここではHTMLタグを含まないプレーンテキストを渡す）。
   function pdItem(cls, k, vHTML, opts) {
     opts = opts || {};
     var peek = opts.peek ? '<span class="pd-peek">' + opts.peek + '</span>' : '';
@@ -451,17 +453,24 @@
       '<div class="v' + (opts.vClass ? ' ' + opts.vClass : '') + '">' + vHTML + '</div>' +
     '</details>';
   }
+  // peek用の短縮プレーンテキスト。CSS側で1行に切り詰める(ellipsis)ので、
+  // ここでは念のため長すぎる場合の保険として先頭40字程度に絞る。
+  function peekText(text) {
+    if (!text) return '';
+    var t = String(text).replace(/<[^>]+>/g, '');
+    return t.length > 40 ? t.slice(0, 40) + '…' : t;
+  }
 
   function buildGridHTML(p) {
     return (
-      pdItem('pd-item-wide', '事業規模・雇用要件', reqHL(p.scale)) +
-      pdItem('', '主な対象経費', p.expense) +
+      pdItem('pd-item-wide', '事業規模・雇用要件', reqHL(p.scale), { peek: esc(peekText(p.scale)) }) +
+      pdItem('', '主な対象経費', p.expense, { peek: esc(peekText(p.expense)) }) +
       pdItem('pd-item-key pd-item-rate', '補助率', numStrong(p.rate), { vClass: 'tabular', peek: numStrong(p.rate) }) +
       pdItem('pd-item-key pd-item-amount', '上限額', numStrong(p.cap), { vClass: 'tabular', peek: numStrong(p.cap) }) +
-      pdItem('', '賃金上昇要件', reqHL(wageNumHL(p.wage))) +
-      pdItem('', '採択率／支給傾向', p.acceptance, { vClass: 'tabular' }) +
-      pdItem('pd-item-key pd-item-due', '受付期間・次回締切', numWeak(p.schedule)) +
-      pdItem('', '制度の継続性', p.continuity)
+      pdItem('', '賃金上昇要件', reqHL(wageNumHL(p.wage)), { peek: esc(peekText(p.wage)) }) +
+      pdItem('', '採択率／支給傾向', p.acceptance, { vClass: 'tabular', peek: esc(peekText(p.acceptance)) }) +
+      pdItem('pd-item-key pd-item-due', '受付期間・次回締切', numWeak(p.schedule), { peek: esc(peekText(p.schedule)) }) +
+      pdItem('', '制度の継続性', p.continuity, { peek: esc(peekText(p.continuity)) })
     );
   }
 
@@ -1678,10 +1687,19 @@
     initSim(key, p);
     renderScheduleOverview(key);
 
-    var noteEl = document.getElementById('ptNote');
-    if (noteEl) {
-      if (p.note) { noteEl.style.display = 'block'; noteEl.innerHTML = reqHL(p.note); }
-      else { noteEl.style.display = 'none'; }
+    // 制度固有の注意（p.note）は、独立表示をやめて留意事項リストの先頭に差し込む
+    // （2026-08-13、本人指示）。無い制度では項目ごと非表示、ある制度では
+    // 留意事項セクション自体も既定で開いて見落とされないようにする。
+    var noteItemEl = document.getElementById('ptNoteItem');
+    var notesFoldEl = document.getElementById('ptNotesFold');
+    if (noteItemEl) {
+      if (p.note) {
+        noteItemEl.style.display = '';
+        noteItemEl.innerHTML = '<strong>' + esc(p.name) + '固有の注意：</strong>' + reqHL(p.note);
+        if (notesFoldEl) notesFoldEl.open = true;
+      } else {
+        noteItemEl.style.display = 'none';
+      }
     }
 
     var srcLink = document.getElementById('ptSrcLink');
