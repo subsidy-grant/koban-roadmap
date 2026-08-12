@@ -380,7 +380,7 @@
          ここのリスト先頭に差し込む形に統合した（2026-08-13、本人指示）。
          #ptNoteItem は render() が p.note の有無に応じて表示/非表示・中身を切り替える。 -->
     <section class="pd-notes">
-      <details class="pd-fold" id="ptNotesFold">
+      <details class="pd-fold">
         <summary><h2>留意事項</h2><span class="pd-fold-hint">申請前に確認しておきたい注意点</span></summary>
         <div class="pd-fold-body">
           <ul class="item-list">
@@ -453,12 +453,18 @@
       '<div class="v' + (opts.vClass ? ' ' + opts.vClass : '') + '">' + vHTML + '</div>' +
     '</details>';
   }
-  // peek用の短縮プレーンテキスト。CSS側で1行に切り詰める(ellipsis)ので、
-  // ここでは念のため長すぎる場合の保険として先頭40字程度に絞る。
+  // peek用の短縮プレーンテキスト。文の途中で切れると読みにくいため、
+  // まず最初の句点（。）までを1行分として使う。それでも1行に収まらない
+  // 長さなら次に読点（、）区切りで詰め、最後の保険として文字数で切る
+  // （2026-08-13、「文章の途中で区切らないで」の指摘を受けて句読点優先に変更）。
   function peekText(text) {
     if (!text) return '';
     var t = String(text).replace(/<[^>]+>/g, '');
-    return t.length > 40 ? t.slice(0, 40) + '…' : t;
+    var firstSentence = t.split('。')[0];
+    if (firstSentence.length <= 32) return firstSentence + (t.indexOf('。') !== -1 ? '。' : '');
+    var firstClause = t.split(/[、。]/)[0];
+    if (firstClause.length <= 32) return firstClause + '…';
+    return t.slice(0, 32) + '…';
   }
 
   function buildGridHTML(p) {
@@ -1688,15 +1694,13 @@
     renderScheduleOverview(key);
 
     // 制度固有の注意（p.note）は、独立表示をやめて留意事項リストの先頭に差し込む
-    // （2026-08-13、本人指示）。無い制度では項目ごと非表示、ある制度では
-    // 留意事項セクション自体も既定で開いて見落とされないようにする。
+    // （2026-08-13、本人指示）。留意事項セクション自体は他の開閉カードと同じく
+    // 既定で閉じる（2026-08-13、本人指示で自動展開をやめた）。
     var noteItemEl = document.getElementById('ptNoteItem');
-    var notesFoldEl = document.getElementById('ptNotesFold');
     if (noteItemEl) {
       if (p.note) {
         noteItemEl.style.display = '';
         noteItemEl.innerHTML = '<strong>' + esc(p.name) + '固有の注意：</strong>' + reqHL(p.note);
-        if (notesFoldEl) notesFoldEl.open = true;
       } else {
         noteItemEl.style.display = 'none';
       }

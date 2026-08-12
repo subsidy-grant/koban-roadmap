@@ -953,17 +953,6 @@
   .diag-result .dr-v small { font-size: 0.95rem; font-weight: 400; }
   /* 日付は「2026年8月25日」と長いので、件数と同じ級数だと欄内で2行に折れる */
   .diag-result .dr-v .dr-date { font-size: 1.45rem; }
-  .diag-result .dr-s { font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.3rem; line-height: 1.65; }
-  .diag-cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin: 0.9rem 1.3rem 0; }
-  .diag-cta a {
-    display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.9rem;
-    padding: 0.5rem 1.2rem; border-radius: 4px; text-decoration: none;
-    font-weight: 700; font-size: 0.98rem;
-    background: var(--accent); color: var(--on-accent); border: 2px solid var(--accent);
-  }
-  .diag-cta a.ghost { background: var(--paper-raised); color: var(--accent); }
-  .diag-cta a:hover { filter: brightness(1.08); }
-  .diag-note { font-size: 0.86rem; color: var(--ink-faint); margin: 0.9rem 1.3rem 0; padding-bottom: 1.2rem; }
 
   /* ==========================================================================
      現在地表示つきナビ・トップへ戻る・テーマ切替
@@ -10072,16 +10061,7 @@
           '<div class="dr-v tabular">' + regionKeys.length + '<small> 件</small></div></div>' +
         '<div class="dr-cell"><div class="dr-k">いちばん近い締切</div>' +
           '<div class="dr-v tabular">' + dueHTML + '</div></div>' +
-      '</div>' +
-      '<div class="diag-cta">' +
-        // #conditions（自分自身が入っているセクション）へのリンクだと、タップ時に
-        // そのセクションの先頭まで画面が戻ってしまう（節の開閉処理が、開いたあと
-        // ネイティブのアンカー送りで見出しへ戻す形になるため）。実際に一覧が
-        // 表示される #condList を指す（2026-08-05）。
-        '<a href="#condList">制度の一覧と条件を見る</a>' +
-        '<a class="ghost" href="#improvement-cta">改善計画の実例を見る</a>' +
-      '</div>' +
-      '<p class="diag-note">件数は、入力された従業員数で明らかに対象外となる制度を除いた数です。実際の可否は事業内容・経費区分・審査によって変わります。締切は掲載文から自動抽出した日付で、正確な期限は各制度の公式サイトでご確認ください。</p>';
+      '</div>';
   }
 
   // ---------- 2. 制度の締切・上限額サマリー ----------
