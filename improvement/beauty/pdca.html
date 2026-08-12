@@ -90,13 +90,20 @@
   a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
     outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
 
-  /* 狭い画面（2026-07-29 追加）
-     幅375pxでは1行が最大645pxまで折り返し、50行の表が32,000px超になっていた。
-     表には最低幅を与えて縦に潰れないようにし（横スクロールは .twrap 内に収まる）、
-     説明文は表からは省いて一覧性を優先する。1ページの件数もJS側で25件に落とす。 */
+  /* 狭い画面（2026-08-13改訂）
+     820px幅の表を.twrap内で横スクロールさせる旧方式は、タイトル列以外がほぼ
+     見えず「1画面に収まらない」という指摘につながった。760px以下では表自体を
+     隠し、1件=1枚の縦積みカード(.mlist)に切り替える。1ページの件数もJS側で
+     選択値と25件の小さい方に抑える（変更なし）。 */
+  .mlist{display:none}
   @media (max-width:760px){
-    .twrap table{min-width:820px}
-    .rdesc{display:none}
+    .twrap{display:none}
+    .mlist{display:flex;flex-direction:column;gap:8px}
+    .mrow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+    .mrow .mtop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--sub)}
+    .mrow .mtitle{font-size:14.5px;font-weight:700;margin:4px 0 6px}
+    .mrow .mmeta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--sub)}
+    .mrow .mmeta b{color:var(--ink)}
     .funnel{grid-template-columns:repeat(2,1fr)}
     .topgrid{grid-template-columns:1fr}
   }
@@ -155,6 +162,7 @@
     <tbody id="tbody"></tbody>
   </table>
   </div>
+  <div class="mlist" id="mlist"></div>
   <div class="pager">
     <button id="prev">前へ</button><span id="pinfo"></span><button id="next">次へ</button>
   </div>
@@ -285,7 +293,8 @@ function render() {
   document.getElementById("pinfo").textContent = `${page + 1} / ${pages}ページ`;
   document.getElementById("prev").disabled = page === 0;
   document.getElementById("next").disabled = page >= pages - 1;
-  document.getElementById("tbody").innerHTML = rows.slice(page * PAGE, (page + 1) * PAGE).map(i => `
+  const pageRows = rows.slice(page * PAGE, (page + 1) * PAGE);
+  document.getElementById("tbody").innerHTML = pageRows.map(i => `
     <tr><td>${i.rank}</td>
     <td><b>${i.title}</b><br><span class="rdesc">${i.description}</span></td>
     <td>${i.category}</td><td>${i.segment}</td>
@@ -293,6 +302,18 @@ function render() {
     <td><b>${i.total}</b>/25</td>
     <td><span class="stg ${stageClass(i.stage)}">${i.stage}</span></td>
     <td>${i.scheme === "省力化" ? "省力化(一般型)" : "業務改善"}</td></tr>`).join("");
+  // スマホ幅では表の代わりにこちらを表示（CSSで切り替え、データは常に両方生成）
+  document.getElementById("mlist").innerHTML = pageRows.map(i => `
+    <div class="mrow">
+      <div class="mtop"><span>No.${i.rank}</span><span class="stg ${stageClass(i.stage)}">${i.stage}</span></div>
+      <div class="mtitle">${i.title}</div>
+      <div class="mmeta">
+        <span>${i.category} / ${i.segment}</span>
+        <span>省力化 <b>${i.savingHoursPerMonth}</b>h/月</span>
+        <span>総合 <b>${i.total}</b>/25</span>
+        <span>${i.scheme === "省力化" ? "省力化(一般型)" : "業務改善"}</span>
+      </div>
+    </div>`).join("");
 }
 render();
 </script>
