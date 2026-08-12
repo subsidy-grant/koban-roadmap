@@ -253,6 +253,17 @@
      同じロジックで gantt_data.js を日付なしで要約し、schedule.html へ橋渡しする。
      window.KOBAN_GANTT.schemes[key] が無い制度ではセクションごと出さない。 */
   .pd-schedule { margin-top: 1.6rem; }
+  .pd-notes { margin-top: 1.6rem; }
+  .pd-notes h2 {
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
+    font-weight: 600; font-size: 1.05rem; margin: 0 0 0.6rem;
+  }
+  .pd-notes .item-list { margin: 0; padding: 0; list-style: none; }
+  .pd-notes .item-list li {
+    padding: 0.6rem 0; border-bottom: 1px dashed var(--line);
+    font-size: 0.9rem; line-height: 1.7; color: var(--ink-soft);
+  }
+  .pd-notes .item-list li:last-child { border-bottom: none; }
   /* 申請とスケジュールは既定を閉じる。先に試算を触ってもらうため、
      ここは「必要になったら開く」置き方にする（中身は開いたときに読める） */
   .pd-fold { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised); }
@@ -361,6 +372,24 @@
         <div class="pd-fold-body">
           <p class="section-sub">申請までの流れ（どんな段階を、どのくらいの期間でやるか）の目安です。日付はここでは要りません。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
           <div id="ptScheduleBody"></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 旧トップページ「05 留意事項」（全制度共通5項目）を2026-08-13に移設。
+         唯一の出所ではなくindex.html由来の静的複製のため、文言を変える場合は
+         両方の更新が必要（index.htmlの#notesセクションは削除済み）。 -->
+    <section class="pd-notes">
+      <details class="pd-fold">
+        <summary><h2>留意事項</h2><span class="pd-fold-hint">申請前に確認しておきたい5つの注意点</span></summary>
+        <div class="pd-fold-body">
+          <ul class="item-list">
+            <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
+            <li>業務改善助成金・キャリアアップ助成金は賃金引き上げの実施が前提条件で、事前の計画届出が必要な場合があります</li>
+            <li>補助金（デジタル化・AI導入、小規模事業者持続化、業務改善、省力化投資）は予算上限のある競争審査型のため、申請しても不採択となることがあります</li>
+            <li>公募スケジュールは年度内に複数回変更・追加されるため、申請前に必ず各制度の公式サイト・公募要領で最新情報をご確認ください</li>
+            <li>本資料の金額・条件は概算であり、実際の採択可否・交付額は事業計画の内容や審査結果によって変わります</li>
+          </ul>
         </div>
       </details>
     </section>
@@ -1343,8 +1372,7 @@
       '<div class="sim-headline">この制度の詳しい試算は準備中です</div>' +
       '<p class="sim-fb-row"><span class="sim-fb-k">補助率・助成率</span>' + (p.rate || '記載なし') + '</p>' +
       '<p class="sim-fb-row"><span class="sim-fb-k">上限額</span>' + (p.cap || '記載なし') + '</p>' +
-      '<div class="sim-note">おおまかな金額は<a href="index.html#simulator">トップページの概算シミュレーター</a>でも確認できます。' +
-      '正確な要件と金額は、下の公式サイトでご確認ください。</div>' +
+      '<div class="sim-note">正確な要件と金額は、下の公式サイトでご確認ください。</div>' +
     '</div>';
   }
   // 金額の試算になじまない制度（提案内容で額が決まるものなど）

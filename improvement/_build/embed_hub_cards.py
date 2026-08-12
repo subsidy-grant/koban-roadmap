@@ -131,7 +131,8 @@ def build_fragment():
         parts.append(f'<div class="{cls}" id="imp10-{ik}">')
         if ik in external:
             ext = external[ik]
-            parts.append(f'<p class="imp10-note">{esc(ext.get("sourceNote", ""))}</p>')
+            if ext.get("sourceNote"):
+                parts.append(f'<p class="imp10-note">{esc(ext["sourceNote"])}</p>')
             parts.append('<div class="imp10-cards">')
             for pl in ext["plans"]:
                 no = pl["no"]
