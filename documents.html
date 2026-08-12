@@ -23,41 +23,41 @@
      申請様式そのものが下線と枠でできているので、入力欄も同じ作りにして
      「いま帳票を書いている」感覚のまま操作できるようにしている。 */
   :root {
-    --paper: #f1f3f5;
+    --paper: #eef1f3;
     --paper-raised: #ffffff;
-    --ink: #14161a;
-    --ink-soft: #454b55;
-    --ink-faint: #565c66;
-    --accent: #00519e;
-    --accent-soft: #a8c6e4;
-    --accent-wash: #e7f0f8;
+    --ink: #191d22;
+    --ink-soft: #48536a;
+    --ink-faint: #6c7689;
+    --accent: #1e4d78;
+    --accent-soft: #b9cfe3;
+    --accent-wash: #e3edf5;
     --on-accent: #ffffff;
-    --sage: #1f6b47;
-    --sage-wash: #e2f0e8;
-    --rust: #b34700;
-    --rust-wash: #fdf0e6;
-    --line: #c9ced6;
-    --shadow: rgba(20, 22, 26, 0.10);
+    --sage: #0e7490;
+    --sage-wash: #dcf1f5;
+    --rust: #c2410c;
+    --rust-wash: #f8e4d8;
+    --line: #d6dae1;
+    --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141c; --paper-raised: #161b26; --ink: #e8ebf1; --ink-soft: #b7c0d1;
-      --ink-faint: #9aa6bd; --accent: #7fa4d9; --accent-soft: #24344f; --accent-wash: #1a2740;
-      --on-accent: #10141c; --sage: #7fbf9c; --sage-wash: #16261d; --rust: #f0955a;
-      --rust-wash: #2e1c17; --line: #262d3c; --shadow: rgba(0, 0, 0, 0.45);
+      --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+      --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #0f1319; --paper-raised: #171c24; --ink: #e9edf3; --ink-soft: #b3bcc9;
-    --ink-faint: #9aa4b2; --accent: #7cb2e8; --accent-soft: #22364d; --accent-wash: #16243a;
-    --on-accent: #0f1319; --sage: #79c39c; --sage-wash: #15271e; --rust: #f0955a;
-    --rust-wash: #2c1d12; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+    --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+    --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+    --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
   }
   :root[data-theme="light"] {
-    --paper: #f4f5f7; --paper-raised: #ffffff; --ink: #1b2333; --ink-soft: #48536a;
-    --ink-faint: #5a6478; --accent: #2b4c7e; --accent-soft: #c3d2e8; --accent-wash: #e7edf6;
-    --on-accent: #ffffff; --sage: #2f6b4f; --sage-wash: #dcefe2; --rust: #b0342a;
-    --rust-wash: #f7ded8; --line: #dde1e8; --shadow: rgba(27, 35, 51, 0.10);
+    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c;
+    --rust-wash: #f8e4d8; --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -290,15 +290,15 @@
   td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   tr.third th, tr.third td { background: var(--rust-wash); }
   tr.third td:first-child { font-weight: 700; }
-  .sub-h { font-size: 1rem; margin: 1.6rem 0 0.5rem; border-left: 4px solid var(--accent);
-    padding-left: 0.6rem; }
+  .sub-h { font-size: 1rem; margin: 1.6rem 0 0.5rem; padding-left: 0; border-left: none;
+    color: var(--accent); font-weight: 700; }
   /* 誰に要る書類かの印。色は既存の3色の役割どおり（緑=状態・青=案内・橙=注意） */
   .who { display: inline-block; font-size: 0.76rem; line-height: 1.5; border-radius: 4px;
     padding: 0.05rem 0.4rem; white-space: nowrap; border: 1px solid; }
   .who-sage { background: var(--sage-wash); color: var(--sage); border-color: var(--sage); }
   .who-accent { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
   .who-rust { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
-  .src-note { font-size: 0.84rem; color: var(--ink-faint); margin-top: 0.8rem; }
+  .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
 
   /* ---- 制度カード ---- */
   .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
@@ -315,8 +315,8 @@
   .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
     border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
   .prog > i { display: block; height: 100%; background: var(--sage); }
-  .phase-ttl { font-size: 0.86rem; color: var(--ink-soft); margin: 0.8rem 0 0.3rem;
-    border-left: 3px solid var(--accent); padding-left: 0.5rem; }
+  .phase-ttl { font-size: 0.86rem; color: var(--accent); font-weight: 700; margin: 0.8rem 0 0.3rem;
+    padding-left: 0; border-left: none; }
   ul.checks { list-style: none; margin: 0; padding: 0; }
   ul.checks li { border-bottom: 1px dashed var(--line); }
   ul.checks li:last-child { border-bottom: 0; }
@@ -353,7 +353,7 @@
   .ow-row input { width: 20px; height: 20px; margin-top: 0.2rem; flex: none; accent-color: var(--accent); }
   /* ---- 制度を選んで様式にチェックを入れる（02の手順1〜3） ---- */
   .step-ttl { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.5rem;
-    border-left: 4px solid var(--accent); padding-left: 0.6rem; }
+    padding-left: 0; border-left: none; color: var(--accent); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #afProgram { width: 100%; }
   .af-filter { margin-bottom: 0.7rem; }
@@ -433,12 +433,13 @@
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
   .warn strong { color: var(--rust); }
   /* 提出前の確認をお願いする注意書き。読み飛ばされないよう、
-     見出しの大きさ・色・左の太い線で、まわりの説明文と見分けられるようにする */
+     見出しは明朝化+サイズアップで、まわりの説明文と見分けられるようにする
+     （2026-08-13、side-stripeをやめてタイポグラフィで強調。design.md参照） */
   .must-check { background: var(--rust-wash); border: 1px solid var(--rust);
-    border-left: 6px solid var(--rust); border-radius: 10px;
-    padding: 0.85rem 1.05rem; margin: 0.9rem 0; }
-  .must-check b { display: block; color: var(--rust); font-size: 1.02rem;
-    line-height: 1.5; margin-bottom: 0.35rem; }
+    border-radius: 10px; padding: 0.85rem 1.05rem; margin: 0.9rem 0; }
+  .must-check b { display: block; color: var(--rust); font-weight: 700;
+    font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
+    font-size: 1.15rem; line-height: 1.5; margin-bottom: 0.35rem; }
   .must-check span { display: block; font-size: 0.88rem; color: var(--ink); line-height: 1.7; }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }

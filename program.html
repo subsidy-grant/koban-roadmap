@@ -10,25 +10,26 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* 配色・書体はトップページ（index.html）の「窓口の案内サイン」をそのまま使う。
-     このページは1ページ1制度の詳細（program.html?key=<制度キー>）。
-     手動の夜間モード切替は無く、OS設定への自動追従（prefers-color-scheme）のみ
+  /* 配色・書体はトップページ（index.html）の「藍×橙×花青」をそのまま使う
+     （2026-08-13、design.md参照）。このページは1ページ1制度の詳細
+     （program.html?key=<制度キー>）。手動の夜間モード切替は無く、
+     OS設定への自動追従（prefers-color-scheme）のみ
      （2026-08-05にindex.htmlのボタンを外したのに合わせている）。 */
   :root {
-    --paper: #f1f3f5; --paper-raised: #ffffff; --ink: #14161a; --ink-soft: #454b55;
-    --ink-faint: #565c66; --accent: #00519e; --accent-soft: #a8c6e4; --accent-wash: #e7f0f8;
-    --on-accent: #ffffff; --sage: #1f6b47; --sage-wash: #e2f0e8; --rust: #b34700;
-    --rust-wash: #fdf0e6; --cat-hojo: #00519e; --cat-hojo-wash: #e7f0f8;
-    --cat-josei: #6b5210; --cat-josei-wash: #faf3e2;
-    --line: #c9ced6; --shadow: rgba(20, 22, 26, 0.10);
+    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c;
+    --rust-wash: #f8e4d8; --cat-hojo: #1e4d78; --cat-hojo-wash: #e3edf5;
+    --cat-josei: #7a4a12; --cat-josei-wash: #f6ead6;
+    --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141c; --paper-raised: #161b26; --ink: #e8ebf1; --ink-soft: #b7c0d1;
-      --ink-faint: #9aa6bd; --accent: #7fa4d9; --accent-soft: #24344f; --accent-wash: #1a2740;
-      --sage: #7fbf9c; --sage-wash: #16261d; --rust: #e0897a; --rust-wash: #2e1c17;
-      --cat-hojo: #7fa4d9; --cat-hojo-wash: #1a2740; --cat-josei: #d9b463; --cat-josei-wash: #2b2415;
-      --line: #262d3c; --shadow: rgba(0, 0, 0, 0.45);
+      --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a; --rust-wash: #2c1c10;
+      --cat-hojo: #7fa8d9; --cat-hojo-wash: #1a2740; --cat-josei: #dba86a; --cat-josei-wash: #2a2011;
+      --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
   * { box-sizing: border-box; }
@@ -98,19 +99,20 @@
   .pd-item .pd-toggle::before { content: "＋ 開く"; }
   .pd-item[open] > summary .pd-toggle::before { content: "− 閉じる"; }
   .pd-item > .v { padding: 0 0.9rem 0.85rem; font-size: 0.95rem; line-height: 1.65; }
-  .pd-item > .v .sub { display: block; font-size: 0.8rem; color: var(--ink-faint); margin-top: 0.2rem; }
+  .pd-item > .v .sub { display: block; font-size: 0.8rem; font-style: italic; color: var(--ink-faint); margin-top: 0.2rem; }
   .pd-item-wide { grid-column: 1 / -1; }
-  .pd-item-key { border-left: 4px solid var(--hl); background: var(--hl-wash); }
+  /* side-stripeをやめてヘアライン枠+薄い背景色に統一（2026-08-13、design.md参照） */
+  .pd-item-key { border: 1px solid var(--hl); background: var(--hl-wash); }
   .pd-item-key .k { color: var(--hl); font-weight: 700; }
   .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-amount { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-due { --hl: var(--rust); --hl-wash: var(--rust-wash); }
   @media print { .pd-item .pd-toggle { display: none; } }
   .req-strong { color: var(--rust); font-weight: 700; }
+  /* 最重要数値は明朝化+太字+サイズアップで強調（2026-08-13、design.md参照） */
   .num-strong {
-    background: #ffffff; color: #1d3a63; font-weight: 700; font-style: italic;
-    font-size: 1.12em; padding: 0.05em 0.35em; border-radius: 4px;
-    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--accent); font-weight: 700; font-size: 1.3em;
   }
   .num-weak { font-weight: 600; }
   .pd-note {

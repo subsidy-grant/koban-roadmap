@@ -30,99 +30,100 @@
      様式デザインに合わないうえ和字は別書体にフォールバックしていたため差し替えた。 */
 
   :root {
-    /* 配色「窓口の案内サイン」（2026-07-31採用）
-       役所・駅の案内表示に使われるJIS安全色から採っている。
-         青 = 案内（補助率・上限額・章番号・リンク）
+    /* 配色「藍×橙×花青」（2026-08-13採用、design.md参照）
+       旧「窓口の案内サイン」は青系統に寄って見えるとの指摘を受け、3色の彩度・距離を
+       広げて視認性を上げた。役割は変えていない：
+         藍 = 案内（補助率・上限額・章番号・リンク）
          橙 = 注意（締切・残日数・要件の警告）
-         緑 = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
+         花青 = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
        この3つ以外の色は増やさない。増やすと「どれを見ればいいか」が消える。 */
-    --paper: #f1f3f5;
+    --paper: #eef1f3;
     --paper-raised: #ffffff;
-    --ink: #14161a;
-    --ink-soft: #454b55;
-    --ink-faint: #565c66;
-    --accent: #00519e;
-    --accent-soft: #a8c6e4;
-    --accent-wash: #e7f0f8;
-    --on-accent: #ffffff;      /* 青ベタの上に置く文字色 */
-    --sage: #1f6b47;
-    --sage-wash: #e2f0e8;
-    --rust: #b34700;
-    --rust-wash: #fdf0e6;
-    --cat-hojo: #00519e;
-    --cat-hojo-wash: #e7f0f8;
-    --cat-josei: #6b5210;
-    --cat-josei-wash: #faf3e2;
-    --line: #c9ced6;
-    --shadow: rgba(20, 22, 26, 0.10);
+    --ink: #191d22;
+    --ink-soft: #48536a;
+    --ink-faint: #6c7689;
+    --accent: #1e4d78;
+    --accent-soft: #b9cfe3;
+    --accent-wash: #e3edf5;
+    --on-accent: #ffffff;      /* 藍ベタの上に置く文字色 */
+    --sage: #0e7490;
+    --sage-wash: #dcf1f5;
+    --rust: #c2410c;
+    --rust-wash: #f8e4d8;
+    --cat-hojo: #1e4d78;
+    --cat-hojo-wash: #e3edf5;
+    --cat-josei: #7a4a12;
+    --cat-josei-wash: #f6ead6;
+    --line: #d6dae1;
+    --shadow: rgba(25, 29, 34, 0.10);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141c;
-      --paper-raised: #161b26;
-      --ink: #e8ebf1;
-      --ink-soft: #b7c0d1;
-      --ink-faint: #9aa6bd;
-      --accent: #7fa4d9;
+      --paper: #10141a;
+      --paper-raised: #161c24;
+      --ink: #e6e9ee;
+      --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5;
+      --accent: #7fa8d9;
       --accent-soft: #24344f;
       --accent-wash: #1a2740;
-      --sage: #7fbf9c;
-      --sage-wash: #16261d;
-      --rust: #e0897a;
-      --rust-wash: #2e1c17;
-      --cat-hojo: #7fa4d9;
+      --sage: #5fc3d9;
+      --sage-wash: #15262c;
+      --rust: #e88a5a;
+      --rust-wash: #2c1c10;
+      --cat-hojo: #7fa8d9;
       --cat-hojo-wash: #1a2740;
-      --cat-josei: #d9b463;
-      --cat-josei-wash: #2b2415;
-      --line: #262d3c;
+      --cat-josei: #dba86a;
+      --cat-josei-wash: #2a2011;
+      --line: #2a323d;
       --shadow: rgba(0, 0, 0, 0.45);
     }
   }
 
   :root[data-theme="dark"] {
-    /* 夜間モードも同じ3色の役割（青=案内／橙=注意／緑=状態）を保つ。
+    /* 夜間モードも同じ3色の役割（藍=案内／橙=注意／花青=状態）を保つ。
        暗い地では彩度をそのまま使うと沈むので、明度を上げた同系色に置き換える。 */
-    --paper: #0f1319;
-    --paper-raised: #171c24;
-    --ink: #e9edf3;
-    --ink-soft: #b3bcc9;
-    --ink-faint: #9aa4b2;
-    --accent: #7cb2e8;
-    --accent-soft: #22364d;
-    --accent-wash: #16243a;
-    --on-accent: #0f1319;      /* 夜間は青が明るいので、白ではなく地の色を載せる */
-    --sage: #79c39c;
-    --sage-wash: #15271e;
-    --rust: #f0955a;
-    --rust-wash: #2c1d12;
-    --cat-hojo: #7cb2e8;
-    --cat-hojo-wash: #16243a;
-    --cat-josei: #d8b45f;
-    --cat-josei-wash: #2a2416;
+    --paper: #10141a;
+    --paper-raised: #161c24;
+    --ink: #e6e9ee;
+    --ink-soft: #b6c0cf;
+    --ink-faint: #96a2b5;
+    --accent: #7fa8d9;
+    --accent-soft: #24344f;
+    --accent-wash: #1a2740;
+    --on-accent: #0d1218;      /* 夜間は藍が明るいので、白ではなく地の色を載せる */
+    --sage: #5fc3d9;
+    --sage-wash: #15262c;
+    --rust: #e88a5a;
+    --rust-wash: #2c1c10;
+    --cat-hojo: #7fa8d9;
+    --cat-hojo-wash: #1a2740;
+    --cat-josei: #dba86a;
+    --cat-josei-wash: #2a2011;
     --line: #2a323d;
     --shadow: rgba(0, 0, 0, 0.45);
   }
 
   :root[data-theme="light"] {
-    --paper: #f4f5f7;
+    --paper: #eef1f3;
     --paper-raised: #ffffff;
-    --ink: #1b2333;
+    --ink: #191d22;
     --ink-soft: #48536a;
-    --ink-faint: #5a6478;
-    --accent: #2b4c7e;
-    --accent-soft: #c3d2e8;
-    --accent-wash: #e7edf6;
-    --sage: #2f6b4f;
-    --sage-wash: #dcefe2;
-    --rust: #b0342a;
-    --rust-wash: #f7ded8;
-    --cat-hojo: #2b4c7e;
-    --cat-hojo-wash: #e7edf6;
-    --cat-josei: #7a5a17;
-    --cat-josei-wash: #fbf4e3;
-    --line: #dde1e8;
-    --shadow: rgba(27, 35, 51, 0.10);
+    --ink-faint: #6c7689;
+    --accent: #1e4d78;
+    --accent-soft: #b9cfe3;
+    --accent-wash: #e3edf5;
+    --sage: #0e7490;
+    --sage-wash: #dcf1f5;
+    --rust: #c2410c;
+    --rust-wash: #f8e4d8;
+    --cat-hojo: #1e4d78;
+    --cat-hojo-wash: #e3edf5;
+    --cat-josei: #7a4a12;
+    --cat-josei-wash: #f6ead6;
+    --line: #d6dae1;
+    --shadow: rgba(25, 29, 34, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -329,14 +330,14 @@
   .wage-flag.req { color: var(--rust); font-weight: 700; }
   .wage-flag.req .dot2 { background: var(--rust); }
   .wage-flag.opt .dot2 { background: var(--ink-faint); }
-  .wage-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-weight: 400; display: block; }
+  .wage-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-style: italic; font-weight: 400; display: block; }
 
   .sched-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.86rem; }
   .sched-flag .dot2 { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
   .sched-flag.open .dot2 { background: var(--sage); }
   .sched-flag.upcoming .dot2 { background: var(--accent); }
   .sched-flag.ongoing .dot2 { background: var(--ink-faint); }
-  .sched-flag .sub { color: var(--ink-faint); font-size: 0.78rem; display: block; }
+  .sched-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-style: italic; display: block; }
 
   /* ---------- Program picker (dropdown) ---------- */
   .picker { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px; padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.6rem; }
@@ -391,11 +392,13 @@
   .pd-item { border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.85rem; background: var(--paper); }
   .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 0.3rem; }
   .pd-item .v { font-size: 0.92rem; line-height: 1.6; }
-  .pd-item .v .sub { display: block; font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.15rem; }
+  .pd-item .v .sub { display: block; font-size: 0.78rem; font-style: italic; color: var(--ink-faint); margin-top: 0.15rem; }
   .pd-item-wide { grid-column: 1 / -1; }
-  /* 制度カード内で真っ先に見る3項目（補助率・上限額・締切）だけを色分けする。
-     色は既存トークンを流用するのでライト/ダーク両テーマに自動追従する。 */
-  .pd-item-key { border-left: 4px solid var(--hl); background: var(--hl-wash); }
+  /* 制度カード内で真っ先に見る3項目（補助率・上限額・締切）は、
+     side-stripe（太い左ボーダー）ではなくヘアライン枠+薄い背景色で重要度を示す
+     （2026-08-13、design.md「カード構造」）。色は既存トークンを流用するので
+     ライト/ダーク両テーマに自動追従する。 */
+  .pd-item-key { border: 1px solid var(--hl); background: var(--hl-wash); }
   .pd-item-key .k { color: var(--hl); font-weight: 700; }
   .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-amount { --hl: var(--accent); --hl-wash: var(--accent-wash); }
@@ -405,16 +408,13 @@
   .pd-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
   .pd-legend i { width: 0.7rem; height: 0.7rem; border-radius: 2px; display: inline-block; }
   .req-strong { color: var(--rust); font-weight: 700; }
+  /* 最重要の数値（補助率・上限額）は明朝化+太字+サイズアップで強調する
+     （2026-08-13、design.md「強調表現」）。斜体は使わない＝見出し相当の強調のため。 */
   .num-strong {
-    background: #ffffff;
-    color: #1d3a63;
+    font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--accent);
     font-weight: 700;
-    font-style: italic;
-    font-size: 1.12em;
-    padding: 0.05em 0.35em;
-    border-radius: 4px;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    font-size: 1.3em;
   }
   .num-weak { font-weight: 600; }
   .pd-note { margin-top: 1rem; font-size: 0.84rem; color: var(--ink-soft); background: var(--sage-wash); border-radius: 6px; padding: 0.7rem 0.9rem; }
@@ -1031,8 +1031,9 @@
   .timetable .tt-row { padding: 0.9rem 1rem; border-bottom: 1px solid var(--line); }
   .timetable .tt-row:last-child { border-bottom: none; }
   .timetable .tt-row:nth-child(even) { background: var(--paper); }
-  /* この地域だけの制度は、状態色の緑で左端に印を付ける */
-  .timetable .tt-row.is-region { border-left: 4px solid var(--sage); padding-left: calc(1rem - 4px); }
+  /* この地域だけの制度は、状態色（花青）の薄い背景で示す
+     （2026-08-13、side-stripeをやめて背景色に統一。design.md「カード構造」） */
+  .timetable .tt-row.is-region { background: var(--sage-wash); }
 
   .timetable .tt-lim { line-height: 1.3; }
   .timetable .tt-date {

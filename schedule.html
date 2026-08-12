@@ -11,32 +11,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* 配色・基礎はトップページと同じ（窓口の案内サイン3色） */
+  /* 配色・基礎はトップページと同じ（藍×橙×花青、2026-08-13、design.md参照） */
   :root {
-    --paper: #f1f3f5; --paper-raised: #ffffff; --ink: #14161a; --ink-soft: #454b55;
-    --ink-faint: #565c66; --accent: #00519e; --accent-soft: #a8c6e4; --accent-wash: #e7f0f8;
-    --on-accent: #ffffff; --sage: #1f6b47; --sage-wash: #e2f0e8; --rust: #b34700;
-    --rust-wash: #fdf0e6; --line: #c9ced6; --shadow: rgba(20, 22, 26, 0.10);
+    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c;
+    --rust-wash: #f8e4d8; --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141c; --paper-raised: #161b26; --ink: #e8ebf1; --ink-soft: #b7c0d1;
-      --ink-faint: #9aa6bd; --accent: #7fa4d9; --accent-soft: #24344f; --accent-wash: #1a2740;
-      --on-accent: #10141c; --sage: #7fbf9c; --sage-wash: #16261d; --rust: #f0955a;
-      --rust-wash: #2e1c17; --line: #262d3c; --shadow: rgba(0, 0, 0, 0.45);
+      --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+      --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #0f1319; --paper-raised: #171c24; --ink: #e9edf3; --ink-soft: #b3bcc9;
-    --ink-faint: #9aa4b2; --accent: #7cb2e8; --accent-soft: #22364d; --accent-wash: #16243a;
-    --on-accent: #0f1319; --sage: #79c39c; --sage-wash: #15271e; --rust: #f0955a;
-    --rust-wash: #2c1d12; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+    --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+    --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+    --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
   }
   :root[data-theme="light"] {
-    --paper: #f4f5f7; --paper-raised: #ffffff; --ink: #1b2333; --ink-soft: #48536a;
-    --ink-faint: #5a6478; --accent: #2b4c7e; --accent-soft: #c3d2e8; --accent-wash: #e7edf6;
-    --on-accent: #ffffff; --sage: #2f6b4f; --sage-wash: #dcefe2; --rust: #b0342a;
-    --rust-wash: #f7ded8; --line: #dde1e8; --shadow: rgba(27, 35, 51, 0.10);
+    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c;
+    --rust-wash: #f8e4d8; --line: #d6dae1; --shadow: rgba(27, 35, 51, 0.10);
   }
   * { box-sizing: border-box; }
   body {
@@ -64,7 +64,7 @@
     min-height: 44px; background: var(--paper-raised); color: var(--ink);
     border: 1px solid var(--line); border-radius: 6px; }
   .step-ttl { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.5rem;
-    border-left: 4px solid var(--accent); padding-left: 0.6rem; }
+    padding-left: 0; border-left: none; color: var(--accent); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
     border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
@@ -73,7 +73,7 @@
     padding: 0.8rem 1rem; font-size: 0.9rem; margin: 0 0 1rem; }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
-  .src-note { font-size: 0.84rem; color: var(--ink-faint); margin-top: 0.8rem; }
+  .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
 
   /* ---- 07 手順とスケジュール（ガント） ----
      左に「やること」、右に帯。帯は日付の目盛りに合わせて置く。
