@@ -411,7 +411,11 @@
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
     min-height: 44px; cursor: pointer; }
+  .gt-badge { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 700;
+    border: 1px solid var(--line); border-radius: 999px; padding: 0.1rem 0.55rem; white-space: nowrap; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
+  .gt-b-na { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
+  .af-na-link { font-size: 0.82rem; white-space: nowrap; }
   /* 選んだ制度の書類についての前置き（docs.note / docs.portal / docs.checked）。
      「受付は終了しています」「取組を始める前に計画書の提出が必要です」のように、
      様式を落とす前に読んでほしい内容が入るので、手順2の上に置く。 */
@@ -491,19 +495,11 @@
   </div>
 
   <h1>申請書類の準備</h1>
-  <p class="lede">同じ会社情報を何枚も書き写す手間と、「取り寄せが間に合わない」を減らすためのページです。会社情報は1回だけ入力すれば、以降はこのページから写して使えます。</p>
-
-  <div class="privacy">
-    <strong>入力した内容は、お使いの端末（ブラウザ）の中だけに保存されます。</strong>
-    このサイトにはデータを預かるサーバーがないため、入力内容が外に送られることはありません。
-    その代わり、別の端末やブラウザには引き継がれません。共用パソコンでお使いの場合は、このサイトを離れる前に、お使いのブラウザの閲覧履歴・Cookie削除機能でこのサイトのデータを消せます。
-    <br><span style="font-size:0.88rem;color:var(--ink-soft);">郵便番号から住所を出すときも、外部の検索サービスは使いません。住所の一覧は当サイトに置いてあり、郵便番号の上3桁ぶんのファイル（約7KB）だけを読み込みます。</span>
-  </div>
 
   <nav class="toc">
     <ol>
-      <li><a href="#company">会社情報を1回だけ書く</a>（各書類に写して使う）</li>
-      <li><a href="#autofill">制度を選んで、様式に会社情報を入れる</a>（Word・Excel）</li>
+      <li><a href="#company">会社情報入力</a>（各書類に写して使う）</li>
+      <li><a href="#autofill">制度選択・書類入力</a>（Word・Excel）</li>
       <li><a href="#common">取り寄せが必要な共通書類</a></li>
       <li><a href="#checklist">提出書類のチェックリスト</a>（進み具合が残ります）</li>
     </ol>
@@ -511,7 +507,7 @@
 
   <!-- 01 会社情報 -->
   <section id="company">
-    <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報を1回だけ書く</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報入力</h2></div>
     <p class="section-sub">補助金の様式は、どの制度でもほぼ同じ項目（所在地・代表者・電話番号など）を繰り返し書かせます。ここに1回入力しておけば、下の02で様式を選ぶだけで各項目を自動で入れられます。<strong>郵便番号を7桁入れると、住所が自動で入ります。</strong></p>
 
     <div id="companyForm"></div>
@@ -521,8 +517,7 @@
 
   <!-- 02 様式への自動入力 -->
   <section id="autofill">
-    <div class="section-head"><span class="section-no jp-serif">02</span><h2>制度を選んで、様式に会社情報を入れる</h2></div>
-    <p class="section-sub">制度を選び、記入したい様式にチェックを入れると、上の01で入力した会社情報を「所在地」「代表者氏名」「電話番号」などのラベルの隣の空欄に入れて、記入済みのファイルとしてお返しします。<strong>ファイルはお使いの端末（ブラウザ）の中だけで開いて書き込みます。どこにも送られません。</strong></p>
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>制度選択・書類入力</h2></div>
 
     <div class="picker">
       <p class="step-ttl">手順1　制度を選ぶ</p>
@@ -567,19 +562,6 @@
       </div>
     </details>
 
-    <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);">
-      <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
-      当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
-      <ul style="margin:0;padding-left:1.2rem;">
-        <li><strong>ダウンロードなしでそのまま記入できる様式には「そのまま記入できます」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
-        <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
-        <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
-        <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
-        <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
-        <li>古い形式（.doc / .xls）はブラウザでは開けないため対象外です。WordやExcelで開いて「.docx / .xlsx」形式で保存し直すと使えます。</li>
-        <li><strong>どの端末・どのブラウザでも、入る内容と入る場所は同じです</strong>（パソコン・スマートフォン・タブレットで実際に流して確かめています）。ただし<strong>見え方は、開くアプリによって変わることがあります</strong>。当サイトが紙の形まで確かめているのはWindowsのWord・Excelです。Mac版や無料のオフィスソフト、スマートフォンのアプリで開くと、行の折り返しがずれることがあります。<strong>印刷して提出する前に、実際に印刷する環境で一度開いてご確認ください。</strong></li>
-      </ul>
-    </div>
   </section>
 
   <!-- 03 共通書類 -->
@@ -635,6 +617,20 @@
       制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。
     </p>
   </section>
+
+  <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);margin-top:3rem;">
+    <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
+    当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
+    <ul style="margin:0;padding-left:1.2rem;">
+      <li><strong>ダウンロードなしでそのまま記入できる様式には「そのまま記入できます」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
+      <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
+      <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
+      <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
+      <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
+      <li>古い形式（.doc / .xls）はブラウザでは開けないため対象外です。WordやExcelで開いて「.docx / .xlsx」形式で保存し直すと使えます。</li>
+      <li><strong>どの端末・どのブラウザでも、入る内容と入る場所は同じです</strong>（パソコン・スマートフォン・タブレットで実際に流して確かめています）。ただし<strong>見え方は、開くアプリによって変わることがあります</strong>。当サイトが紙の形まで確かめているのはWindowsのWord・Excelです。Mac版や無料のオフィスソフト、スマートフォンのアプリで開くと、行の折り返しがずれることがあります。<strong>印刷して提出する前に、実際に印刷する環境で一度開いてご確認ください。</strong></li>
+    </ul>
+  </div>
 
 </main>
 
@@ -5057,19 +5053,11 @@
   // のように、様式を落とす前に読んでほしい内容がここに入っている。
   function afSrcHTML(key) {
     var d = D.docs[key] || {};
-    if (!d.note && !d.portal) return '';
+    if (!d.note) return '';
     // note は index.html で当サイトが書いている文で、<strong> を含むものがある。
     // esc() を通すとタグが文字のまま出る（program.html で同じ間違いをしていた）ので、
     // 制度の注意書き（index.html の reqHL(p.note)）と同じくHTMLとして入れる。
-    return '<div class="af-src">' +
-      '<p class="af-src-ttl">この制度の書類について</p>' +
-      (d.note ? '<p class="af-src-note">' + d.note + '</p>' : '') +
-      '<p class="af-src-foot">' +
-      (d.portal ? '<a href="' + esc(d.portal.url) + '" target="_blank" rel="noopener noreferrer">' +
-        esc(d.portal.label) + ' ↗</a>' : '') +
-      (d.checked ? '<span class="af-src-day">当サイトが' + esc(afDay(d.checked)) +
-        'に確認した内容です</span>' : '') +
-      '</p></div>';
+    return '<div class="af-src"><p class="af-src-note">' + d.note + '</p></div>';
   }
   function renderAfForms() {
     var box = document.getElementById('afForms');
@@ -5079,38 +5067,50 @@
     if (!key) { box.innerHTML = ''; return; }
     var items = formItems(key);
     var fill = items.filter(function (it) { return it.fillable; });
-    var other = items.filter(function (it) { return !it.fillable; });
     var nW = fill.filter(function (it) { return it.type === 'Word'; }).length;
     var nX = fill.filter(function (it) { return it.type === 'Excel'; }).length;
+    // フェーズ（提出の時期）ごとに、自動入力できる書類・できない書類を同じ一覧・同じ行の作りで出す。
+    // 抜け漏れなく全件を見せるのが目的なので、items（fill+other）を出現順のまま並べる
     var phases = [];
-    fill.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
+    items.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
     var idx = 0;
     var html = '<div class="af-forms">' + afSrcHTML(key) +
-      '<p class="step-ttl">手順2　記入する様式にチェックを入れる</p>' +
-      '<p class="dz-sub" style="margin:0 0 0.5rem;">自動入力できるのはWordとExcelの様式です。' +
-      'それ以外の書類は、この下に別でまとめています。</p>';
+      '<p class="step-ttl">手順2　この制度に必要な書類（' + items.length + '件）</p>' +
+      '<p class="dz-sub" style="margin:0 0 0.5rem;">自動入力できる書類にはチェックが入っています。' +
+      'それ以外の書類（PDF・古い形式など）は自動入力の対象外で、公式サイトから取得してください。</p>';
     // ファイルの形式で絞り込む。選んでいない形式は記入もダウンロードもしない
     if (fill.length) {
       html += '<div class="af-tools" id="afFmtRow">' +
-        '<button type="button" data-fmt="all">すべて（' + fill.length + '件）</button>' +
+        '<button type="button" data-fmt="all">すべて（' + items.length + '件）</button>' +
         '<button type="button" data-fmt="Word"' + (nW ? '' : ' disabled') + '>Wordだけ（' + nW + '件）</button>' +
         '<button type="button" data-fmt="Excel"' + (nX ? '' : ' disabled') + '>Excelだけ（' + nX + '件）</button>' +
         '</div>';
     } else {
-      html += '<p class="af-na-why">この制度には、自動入力できるWord・Excelの様式がありません。</p>';
+      html += '<p class="af-na-why">この制度には、自動入力できるWord・Excelの様式がありません。すべて対象外の書類です。</p>';
     }
     phases.forEach(function (ph) {
       html += '<p class="phase-ttl">' + esc(ph) + '</p><ul class="checks">';
-      fill.filter(function (it) { return it.phase === ph; }).forEach(function (it) {
-        var id = 'afItem' + (idx++);
-        it.id = id;
-        html += '<li data-fmt="' + esc(it.type) + '"><label for="' + id + '">' +
-          '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
-          'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
-          '<span class="fn">' + esc(it.name) +
-          (mirrorOf(it.url) ? '<span class="gt-badge gt-b-ok">そのまま記入できます</span>' : '') +
-          '</span>' +
-          '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
+      items.filter(function (it) { return it.phase === ph; }).forEach(function (it) {
+        if (it.fillable) {
+          var id = 'afItem' + (idx++);
+          it.id = id;
+          html += '<li data-fmt="' + esc(it.type) + '"><label for="' + id + '">' +
+            '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
+            'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
+            '<span class="fn">' + esc(it.name) +
+            '<span class="gt-badge gt-b-ok">' + (mirrorOf(it.url) ? 'そのまま記入できます' : '自動入力できます') + '</span>' +
+            '</span>' +
+            '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
+        } else {
+          // 対象外の書類もチェックボックスと同じ行の高さ・並びで出す（形式だけ変える）。
+          // .af-item を付けないので、afChecked() 等のチェック対象からは自動的に外れる
+          html += '<li class="na" data-fmt="' + esc(it.type) + '"><span class="af-check-row">' +
+            '<span class="fn">' + esc(it.name) +
+            '<span class="gt-badge gt-b-na">自動入力の対象外</span>' +
+            '</span>' +
+            '<a class="af-na-link" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '　開く ↗</a></span></li>';
+        }
       });
       html += '</ul>';
     });
@@ -5134,22 +5134,6 @@
       '<button type="button" class="btn ghost" id="afDl">' +
       'チェックした様式の原本を公式サイトから入手（記入はしません）</button>' +
       '<div id="afDlList"></div></div>';
-    // 自動入力はできないが、この制度で出す必要がある書類
-    if (other.length) {
-      html += '<div class="af-other">' +
-        '<p class="step-ttl">自動入力の対象外ですが、この制度で必要な書類（' + other.length + '件）</p>' +
-        '<p class="dz-sub" style="margin:0 0 0.5rem;">PDFや古い形式（.doc / .xls）のため、このページでは記入できません。' +
-        '公式サイトから取得して、印刷して手書きするか、お使いのソフトでご記入ください。</p>' +
-        '<ul class="af-other-list">' +
-        other.map(function (it) {
-          // 詳細カードをやめたぶん、公式サイトへの導線は各行に置く
-          return '<li><span class="ft">' + esc(it.type) + '</span>' +
-            '<span class="fn">' + esc(it.name) +
-            '<span class="af-na-why">（' + esc(it.phase) + '）</span></span>' +
-            '<a href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">開く ↗</a></li>';
-        }).join('') + '</ul>' +
-        '</div>';
-    }
     html += '</div>';
     box.innerHTML = html;
     var fmtRow = box.querySelector('#afFmtRow');
