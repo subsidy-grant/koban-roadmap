@@ -92,12 +92,22 @@
   .pd-item[open] > summary { padding-bottom: 0.4rem; }
   .pd-item > summary:hover .k, .pd-item > summary:focus-visible .k { text-decoration: underline; }
   .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); }
+  /* 色付きカード(補助率・上限額・締切)はラベルも本文相当まで拡大して目立たせる
+     （2026-08-14、「色の違いが視認しづらい」指摘のため） */
+  .pd-item-key .k { font-size: 0.88rem; }
   /* peekは「ちらっと見せる」用の要約。旧実装はmax-width:11rem+ellipsisで
      機械的に再度切り詰めていたが、静的要約表（SCHEDULE_SUMMARY等）側で既に
      句読点優先の短い要約に人手調整済みのため、二重に切ると文の途中で千切れて
      意味不明になっていた（2026-08-13、本人指摘）。折り返しに任せて全文out。 */
   .pd-item .pd-peek {
     font-size: 0.95rem; display: inline-block; max-width: 100%;
+  }
+  /* 締切日は「重要な数字」なので上限額・補助率と同格に強調する。
+     本文(.v)側は長文説明のため強調対象にせず、要約(.pd-peek)側だけ
+     rust色+明朝+拡大する（2026-08-14、design.md「締切・残日数」仕様） */
+  .pd-item-due .pd-peek {
+    font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--rust); font-weight: 700; font-size: 1.1em;
   }
   .pd-item .pd-toggle {
     flex: none; margin-left: auto; font-size: 0.76rem; font-weight: 700; color: var(--accent); white-space: nowrap;
