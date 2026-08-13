@@ -30,11 +30,11 @@
 ### ライトモード（既定）
 
 ```css
---paper:        #eef1f3;
+--paper:        #c5cdd6;  /* 2026-08-13改訂: #eef1f3から暗化（背景面同士の濃淡不足を解消） */
 --paper-raised: #ffffff;
 --ink:          #191d22;
 --ink-soft:     #48536a;
---ink-faint:    #6c7689;
+--ink-faint:    #525c70;  /* 2026-08-13改訂: #6c7689から暗化（paper暗化に伴い注記文字が4.5:1を割ったため） */
 --accent:       #1e4d78;  /* 藍 = 案内 */
 --accent-soft:  #b9cfe3;
 --accent-wash:  #e3edf5;
@@ -47,7 +47,7 @@
 --cat-hojo-wash:  #e3edf5;
 --cat-josei:      #7a4a12;  /* 助成金タグ = 橙寄りの茶（rustとは別トーンで区別） */
 --cat-josei-wash: #f6ead6;
---line:  #d6dae1;
+--line:  #a3adba;  /* 2026-08-13改訂: #d6dae1から濃化 */
 --shadow: rgba(25, 29, 34, 0.10);
 ```
 
@@ -55,7 +55,7 @@
 
 ```css
 --paper:        #10141a;
---paper-raised: #161c24;
+--paper-raised: #273346;  /* 2026-08-13改訂: #161c24から明化（暗地でのカード浮き上がりを強化） */
 --ink:          #e6e9ee;
 --ink-soft:     #b6c0cf;
 --ink-faint:    #96a2b5;
@@ -71,7 +71,7 @@
 --cat-hojo-wash:  #1a2740;
 --cat-josei:      #dba86a;
 --cat-josei-wash: #2a2011;
---line:  #2a323d;
+--line:  #3a4454;  /* 2026-08-13改訂: #2a323dから濃化 */
 --shadow: rgba(0, 0, 0, 0.45);
 ```
 
@@ -80,23 +80,40 @@
 ライトモードの値と同じ値を使う（criteria.html / documents.html / schedule.html の
 `:root[data-theme="light"]` ブロックに複製する）。
 
-### コントラスト実測（2026-08-13、WCAG 2.1相当の輝度比計算で検証）
+### コントラスト実測（2026-08-13、WCAG 2.1相当の輝度比計算で検証。同日、背景面同士の実測を追加）
+
+文字色 vs 背景色（本文基準4.5:1）：
 
 | 組み合わせ | 比率 |
 |---|---|
-| paper vs ink（ライト） | 14.93:1 |
-| paper vs ink-soft（ライト） | 6.80:1 |
+| paper vs ink（ライト） | 10.54:1 |
+| paper vs ink-soft（ライト） | 4.81:1 |
 | paper-raised vs accent 藍（ライト） | 8.79:1 |
 | paper-raised vs cat-josei 橙茶（ライト） | 7.46:1 |
 | paper-raised vs sage 花青（ライト） | 5.36:1 |
 | paper-raised vs rust 橙（ライト） | 5.18:1 |
 | paper vs ink（ダーク） | 15.18:1 |
-| paper-raised vs accent 藍（ダーク） | 6.94:1 |
-| paper-raised vs cat-josei 橙茶（ダーク） | 8.01:1 |
-| paper-raised vs sage 花青（ダーク） | 8.40:1 |
-| paper-raised vs rust 橙（ダーク） | 6.70:1 |
+| paper-raised vs accent 藍（ダーク） | 5.16:1 |
+| paper-raised vs cat-josei 橙茶（ダーク） | 5.96:1 |
+| paper-raised vs sage 花青（ダーク） | 6.25:1 |
+| paper-raised vs rust 橙（ダーク） | 4.98:1 |
 
-全組み合わせが本文基準4.5:1を上回る（実際の計算値、hallmark color.mdの基準に整合）。
+全組み合わせが本文基準4.5:1を上回る。
+
+**背景面同士のコントラスト（2026-08-13追加。スマホ実機で「濃淡が無い」という指摘を受け、
+文字色のコントラストだけでは背景面の見分けやすさを保証しないと判明したため）**：
+
+| 組み合わせ | 旧比率 | 新比率 |
+|---|---|---|
+| paper vs paper-raised（ライト） | 1.13:1 | 1.61:1 |
+| paper vs line（ライト） | 1.24:1 | 1.41:1 |
+| paper-raised vs line（ライト） | 1.40:1 | 2.27:1 |
+| paper vs paper-raised（ダーク） | 1.08:1 | 1.45:1 |
+| paper vs line（ダーク） | 1.43:1 | 1.88:1 |
+
+背景面同士は文字を載せないため4.5:1の基準は適用されないが、旧配色は1.0〜1.4:1で
+「ほぼ同じ明るさ」に見えていた。新配色でも劇的な差ではないため、`.pd-item`等の主要カードには
+`box-shadow`を追加し、明度差と陰影の両輪で境界を強める（次項）。
 
 ## 書体
 
@@ -151,6 +168,27 @@
 .pd-item-due .k { color: var(--rust); font-weight: 700; }
 .pd-item-due .v { font-family: var(--font-display); font-weight: 700; color: var(--rust); }
 ```
+
+## カードの陰影（2026-08-13追加、本人指摘対応）
+
+スマホ実機で「配色の濃淡が無い」という指摘があり、背景面同士（ページ地・カード・
+アクセントウォッシュ）のコントラスト比を実測したところ1.05〜1.4:1しかなく、
+ほぼ同じ明るさだった（前掲の実測表）。`--paper` / `--paper-raised` / `--line`の
+明度差を広げたが、それだけでは劇的な変化にならないため、白背景の主要カード
+（`.pd-item`, `.card`相当、ヘアライン枠を持つ全要素）に`box-shadow`を追加し、
+明度差と陰影の両輪で境界を強める。
+
+```css
+.pd-item,
+.pd-item-key,
+.pd-item-due,
+.card {
+  box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+}
+```
+
+`--shadow`は既存トークン（ライト`rgba(25,29,34,0.10)`、ダーク`rgba(0,0,0,0.45)`）を
+そのまま使う。新しい影専用トークンは増やさない。
 
 ## 適用範囲
 

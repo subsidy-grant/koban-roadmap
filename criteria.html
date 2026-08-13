@@ -10,30 +10,30 @@
      （2026-08-13、design.md参照）。旧版はNoto Sans JP単体だったが、他ページと
      揃えてBIZ UD書体を追加した。 */
   :root {
-    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
-    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --paper: #c5cdd6; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #525c70; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c; --rust-wash: #f8e4d8;
-    --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
+    --line: #a3adba; --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --paper: #10141a; --paper-raised: #273346; --ink: #e6e9ee; --ink-soft: #b6c0cf;
       --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
       --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a; --rust-wash: #2c1c10;
-      --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+      --line: #3a4454; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --paper: #10141a; --paper-raised: #273346; --ink: #e6e9ee; --ink-soft: #b6c0cf;
     --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
     --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a; --rust-wash: #2c1c10;
-    --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+    --line: #3a4454; --shadow: rgba(0, 0, 0, 0.45);
   }
   :root[data-theme="light"] {
-    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
-    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --paper: #c5cdd6; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #525c70; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c; --rust-wash: #f8e4d8;
-    --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
+    --line: #a3adba; --shadow: rgba(25, 29, 34, 0.10);
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
@@ -59,14 +59,14 @@
   .disclaimer strong { color: var(--ink); }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
   .stat { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1rem 1.1rem; box-shadow: 0 1px 2px var(--shadow); }
+    padding: 1rem 1.1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .stat .n { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
     font-size: 1.5rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
   .stat .t { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.2rem; }
   .box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1.1rem 1.3rem; margin-top: 1rem; box-shadow: 0 1px 2px var(--shadow); }
+    padding: 1.1rem 1.3rem; margin-top: 1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .twrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-raised);
-    margin-top: 0.9rem; box-shadow: 0 1px 2px var(--shadow); }
+    margin-top: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 680px; }
   th { text-align: left; font-size: 0.7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em;
     padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--accent-wash); }
@@ -79,12 +79,12 @@
   .pill.unclear { background: var(--accent-wash); color: var(--accent); }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
   .card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1rem 1.2rem; box-shadow: 0 1px 2px var(--shadow); }
+    padding: 1rem 1.2rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .card .ttl { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.4rem; color: var(--accent); }
   .card p { font-size: 0.85rem; color: var(--ink-soft); margin: 0; }
   .funnel { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
   .funnel .step { flex: 1; min-width: 150px; background: var(--paper-raised); border: 1px solid var(--line);
-    border-radius: 10px; padding: 0.9rem 1rem; text-align: center; box-shadow: 0 1px 2px var(--shadow); }
+    border-radius: 10px; padding: 0.9rem 1rem; text-align: center; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .funnel .step .n { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
     font-size: 1.3rem; font-weight: 700; color: var(--accent); }
   .funnel .step .t { font-size: 0.76rem; color: var(--ink-soft); margin-top: 0.2rem; }

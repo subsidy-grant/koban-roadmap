@@ -37,11 +37,11 @@
          橙 = 注意（締切・残日数・要件の警告）
          花青 = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
        この3つ以外の色は増やさない。増やすと「どれを見ればいいか」が消える。 */
-    --paper: #eef1f3;
+    --paper: #c5cdd6;
     --paper-raised: #ffffff;
     --ink: #191d22;
     --ink-soft: #48536a;
-    --ink-faint: #6c7689;
+    --ink-faint: #525c70;
     --accent: #1e4d78;
     --accent-soft: #b9cfe3;
     --accent-wash: #e3edf5;
@@ -54,14 +54,14 @@
     --cat-hojo-wash: #e3edf5;
     --cat-josei: #7a4a12;
     --cat-josei-wash: #f6ead6;
-    --line: #d6dae1;
+    --line: #a3adba;
     --shadow: rgba(25, 29, 34, 0.10);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
       --paper: #10141a;
-      --paper-raised: #161c24;
+      --paper-raised: #273346;
       --ink: #e6e9ee;
       --ink-soft: #b6c0cf;
       --ink-faint: #96a2b5;
@@ -76,7 +76,7 @@
       --cat-hojo-wash: #1a2740;
       --cat-josei: #dba86a;
       --cat-josei-wash: #2a2011;
-      --line: #2a323d;
+      --line: #3a4454;
       --shadow: rgba(0, 0, 0, 0.45);
     }
   }
@@ -85,7 +85,7 @@
     /* 夜間モードも同じ3色の役割（藍=案内／橙=注意／花青=状態）を保つ。
        暗い地では彩度をそのまま使うと沈むので、明度を上げた同系色に置き換える。 */
     --paper: #10141a;
-    --paper-raised: #161c24;
+    --paper-raised: #273346;
     --ink: #e6e9ee;
     --ink-soft: #b6c0cf;
     --ink-faint: #96a2b5;
@@ -101,16 +101,16 @@
     --cat-hojo-wash: #1a2740;
     --cat-josei: #dba86a;
     --cat-josei-wash: #2a2011;
-    --line: #2a323d;
+    --line: #3a4454;
     --shadow: rgba(0, 0, 0, 0.45);
   }
 
   :root[data-theme="light"] {
-    --paper: #eef1f3;
+    --paper: #c5cdd6;
     --paper-raised: #ffffff;
     --ink: #191d22;
     --ink-soft: #48536a;
-    --ink-faint: #6c7689;
+    --ink-faint: #525c70;
     --accent: #1e4d78;
     --accent-soft: #b9cfe3;
     --accent-wash: #e3edf5;
@@ -122,7 +122,7 @@
     --cat-hojo-wash: #e3edf5;
     --cat-josei: #7a4a12;
     --cat-josei-wash: #f6ead6;
-    --line: #d6dae1;
+    --line: #a3adba;
     --shadow: rgba(25, 29, 34, 0.10);
   }
 
@@ -340,7 +340,12 @@
   .sched-flag .sub { color: var(--ink-faint); font-size: 0.78rem; font-style: italic; display: block; }
 
   /* ---------- Program picker (dropdown) ---------- */
-  .picker { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px; padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.6rem; }
+  /* 2026-08-13：背景面同士の明度差が小さく境界がぼやける指摘を受け、影を追加（design.md参照） */
+  .picker {
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.6rem;
+    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+  }
   .picker label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-faint); display: block; margin-bottom: 0.55rem; }
   .picker select {
     width: 100%;
@@ -389,7 +394,11 @@
   .program-detail { margin-top: 0; padding-top: 1.1rem; }
   .pd-name { font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", serif; font-weight: 600; font-size: 1.15rem; }
   .pd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.9rem 0.9rem; margin-top: 1rem; }
-  .pd-item { border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.85rem; background: var(--paper); }
+  /* 2026-08-13：背景色が地色と同じ(--paper)のため、影のみで境界を作る（design.md参照） */
+  .pd-item {
+    border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.85rem; background: var(--paper-raised);
+    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+  }
   .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 0.3rem; }
   .pd-item .v { font-size: 0.92rem; line-height: 1.6; }
   .pd-item .v .sub { display: block; font-size: 0.78rem; font-style: italic; color: var(--ink-faint); margin-top: 0.15rem; }

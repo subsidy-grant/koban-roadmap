@@ -23,11 +23,11 @@
      申請様式そのものが下線と枠でできているので、入力欄も同じ作りにして
      「いま帳票を書いている」感覚のまま操作できるようにしている。 */
   :root {
-    --paper: #eef1f3;
+    --paper: #c5cdd6;
     --paper-raised: #ffffff;
     --ink: #191d22;
     --ink-soft: #48536a;
-    --ink-faint: #6c7689;
+    --ink-faint: #525c70;
     --accent: #1e4d78;
     --accent-soft: #b9cfe3;
     --accent-wash: #e3edf5;
@@ -36,28 +36,28 @@
     --sage-wash: #dcf1f5;
     --rust: #c2410c;
     --rust-wash: #f8e4d8;
-    --line: #d6dae1;
+    --line: #a3adba;
     --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --paper: #10141a; --paper-raised: #273346; --ink: #e6e9ee; --ink-soft: #b6c0cf;
       --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
       --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
-      --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+      --rust-wash: #2c1c10; --line: #3a4454; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #10141a; --paper-raised: #161c24; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --paper: #10141a; --paper-raised: #273346; --ink: #e6e9ee; --ink-soft: #b6c0cf;
     --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
     --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
-    --rust-wash: #2c1c10; --line: #2a323d; --shadow: rgba(0, 0, 0, 0.45);
+    --rust-wash: #2c1c10; --line: #3a4454; --shadow: rgba(0, 0, 0, 0.45);
   }
   :root[data-theme="light"] {
-    --paper: #eef1f3; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
-    --ink-faint: #6c7689; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --paper: #c5cdd6; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #48536a;
+    --ink-faint: #525c70; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --on-accent: #ffffff; --sage: #0e7490; --sage-wash: #dcf1f5; --rust: #c2410c;
-    --rust-wash: #f8e4d8; --line: #d6dae1; --shadow: rgba(25, 29, 34, 0.10);
+    --rust-wash: #f8e4d8; --line: #a3adba; --shadow: rgba(25, 29, 34, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -302,7 +302,7 @@
 
   /* ---- 制度カード ---- */
   .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 2px var(--shadow); }
+    padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .pcard h3 { font-size: 1rem; margin: 0 0 0.4rem; line-height: 1.6; }
   .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
   .deadline { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px;
