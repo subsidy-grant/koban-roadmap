@@ -1,5 +1,198 @@
 # 引き継ぎ
 
+## 2026-08-13（第9セッション：confidence medium/unknown 11件の再調査確定、積み残し6項目の棚卸し）
+
+### 1. 現在の目標
+
+第8セッション末尾で持ち越された「confidence medium 8件・unknown 3件」（一次情報に完全到達できず判定を確定できなかった制度）の扱いについて、本人から「追加調査を進める」の回答を得て着手した。その後、本人から「他に残ってる作業、保留している作業はない？」と問われたのを機に、HANDOFF.mdに記載されていた過去の積み残し項目（優先度1〜6）を洗い出し、それぞれ一次情報を取り直して現状を確認・優先度付けし、着手可能なものは解消した。
+
+### 2. 変更点（本セッションで実施・コミット・push済み）
+
+**コミット `fcb1c7a`**（push済み、origin/mainと同期確認済み）：
+- 11件（confidence medium 8件＋unknown 3件）をWorkflow並列調査。前回未到達だったPDF・条例本体に、別経路（curl直接DL＋Read toolでのネイティブPDF解析、pypdf/pdfplumber直接抽出、例規集条文検索）で到達し、10件がconfidence highに格上げされた
+- うち3件で名実不一致を確定し `program.html` の `PROGRAM_TYPE_OVERRIDE`（453行目付近）に追加：
+  ```js
+  tochigi_nikko_lease: 'josei', kanagawa_yokohama_led: 'hojo', saitama_iruma_shinko: 'hojo'
+  ```
+  - 日光市中小企業等生産設備導入事業費補助金（リース補助金）：名称「補助金」だが要綱（第1〜8条）に審査・早期終了・返還規定なし＝実質josei
+  - 横浜市LED化支援助成金：名称「助成金」だが交付要綱27ページに早期終了・事前着手禁止・厳格な返還/違約金規定あり＝実質hojo
+  - 入間市商工業振興助成金：名称「助成金」だが条例・規則に不交付決定・予算上限・返還規定あり＝実質hojo
+- 残る1件（gunma_takasaki_lease）は要綱PDF本体が公式サイトに掲載されておらず、今回も条文到達に至らずconfidence medium止まり（判定はjosei＝現状分類と同方向のため実害なし）
+
+**コミット `dd4d9b6`**（push済み）：
+- 積み残し「優先度4：地域雇用開発助成金（chiiki_koyou_kaihatsu）の創業×中小企業上乗せ併用可否」を確定
+- 支給要領原文では確定できなかったが、厚労省「地域雇用開発助成金支給申請の手引き」（令和8年4月1日現在版）3ページ脚注※1に「創業の場合はこれ（中小企業上乗せ規定）にかかわらず括弧内額を支給」と明記されているのをsharoushiエージェントが発見。**併用されない**（創業側の括弧内額のみ適用）ことが確定
+- `index.html`（2677行目付近）のnote内「未確認・管轄労働局への個別確認が必要」という記述を確定内容に書き換え、`page_data.js`を`_tools/build_page_data.py`で再生成
+
+**コミット `b00fb31`**（push済み）：
+- 積み残し「配色改修で他ページへの展開余地」を確認・対応
+- 実ブラウザで調べた結果、対象4箇所のうち`.sim-panel.advice`（645行目付近）と`.diag`（886行目付近）は、過去のセッション（02概算シミュレーター廃止・診断UI移設）で既に対応DOM要素が撤去されておりCSSだけが残るデッドコードだったと判明。削除した
+- 残る`.diag-result`・`.timetable`は、実見の結果どちらも「枠線で境界を示す」意図的な意匠（帳票風・テーブル風）で、box-shadow不在による視認性の実害が見られなかったため、追加を見送り現状維持とした
+
+**優先度1・2（成長加速化補助金3次公募・省エネ補助金次期公募）**：確認したところ、本セッション開始前の別コミット`11f8ab7`（2026-08-13 13:04:47）で既に一次情報確認・反映・push済みだったと判明。HANDOFF.mdの記述が古く、実際には解消済みだった（作業不要、事実確認のみ）
+
+**優先度3（未確認コース支給額調査）**：HANDOFF.mdに列挙されていた「障害者トライアル雇用助成金」等はそもそもサイトのPROGRAMSデータに存在せず記事化されていないと判明。実在した唯一の対象`jinzai_kakuho`（人材確保等支援助成金）も既に2026-08-13付けで金額確認済みだった（作業不要、事実確認のみ）
+
+**優先度5（都道府県レベルの横展開・大阪/愛知/福岡等）**：本人から「ちょっとまって」「しばらく保留」の指示があり、着手せず。現状、東京・神奈川・埼玉・千葉・栃木・群馬の6都県のみでキーが1件も存在しないことのみ確認済み
+
+### 3. 検証済みの証拠
+
+**2026-08-13 セッション中に取得**：
+- 11件の再調査結果は各エージェントが出典URL・確認日時（2026-08-13）付きでWorkflow journal.jsonlに記録済み（run ID: wf_bf42c2da-7ec）
+- 3件の反映後、`http://localhost:8802`でPlaywright実ブラウザ検証。`#ptPill`のclass属性が期待通り（josei/hojo/hojo）、コンソールエラー0件
+- 地域雇用開発助成金の反映後、`http://localhost:8803/program.html?key=chiiki_koyou_kaihatsu&industry=beauty`でPlaywright検証。`#ptNoteItem`に確定内容が反映され「未確認」の旧記述が残っていないこと、出典明記があることを確認。コンソールエラー0件
+- デッドCSS削除の前段階として、`http://localhost:8804`でPlaywright実見。`.sim-panel.advice`を生成する`generateAdviceHTML()`の呼び出し元（`runSimulation()`内、7145行目`if (!simProgramEl) return;`）が早期リターンで到達不能なこと、`class="diag"`がHTML内に1件も存在しないことをGrepで確認
+- デッドCSS削除後、`http://localhost:8805`でライト/ダーク×デスクトップ/モバイルの4パターンをPlaywright検証。コンソールエラー0件、レイアウト崩れなし、`document.querySelector('.diag')`と`document.querySelector('.sim-panel.advice')`が両方nullであることを確認
+- 各コミット前に `python3 _tools/check_sim_data.py` で「誤り0件・注意0件・ALL OK」（試算を定義した制度121件／サイト全体128件）を都度確認
+- 各コミット後 `git fetch origin main` を実行し、`git log HEAD..origin/main`・`git log origin/main..HEAD`とも空であることを確認（push成功・同期済み、最終確認は2026-08-13セッション終了時点、HEADは`b00fb31`）
+- ローカルサーバー（ポート8802〜8805）は検証後すべて`taskkill`で停止済み
+
+### 4. 一次情報の取り直しコマンド
+
+```bash
+cd /d/Claudecode/koban-roadmap
+git status
+git fetch origin main && git log HEAD..origin/main --oneline  # 空なら同期済み
+git log origin/main..HEAD --oneline                            # 空ならpush不要
+python3 _tools/check_sim_data.py                                # sim_data.jsの機械チェック
+grep -n "PROGRAM_TYPE_OVERRIDE" -A 20 program.html              # 確定済み全件（累計23件）を確認
+grep -n "chiiki_koyou_kaihatsu" -A 1 index.html | grep note      # 地域雇用開発助成金の確定記述を確認
+netstat -ano | grep LISTENING | grep "88[0-9][0-9] "             # ローカルサーバー残存確認
+```
+
+### 5. 未着手・持ち越し事項
+
+**gunma_takasaki_lease**（confidence medium）：高崎市中小企業等機械設備導入支援助成金。要綱PDF本体が公式サイト・例規集いずれにも見当たらず、今回も一次情報の条文には到達できなかった。判定はjosei（現状分類と一致）だが確度は中程度のまま。次に確定させる手段は担当課（高崎市商工振興課）への電話確認以外に見当たらない
+
+**都道府県レベルの横展開（大阪・愛知・福岡等）**：本人から「しばらく保留」の明示的な指示があり、規模見積もりも提示していない。次回このタスクに触れる際は、まず本人に再開の意思を確認すること
+
+**前々回・前回セッションから持ち越され、本セッションでも未着手のもの**：
+- 「国の新設制度の網羅調査」（経産省・厚労省以外の省庁を含む完全網羅は未検証）
+- 未確認コース支給額調査のうち、サイトに未掲載の制度そのものを新規に追加すべきかどうかの検討（今回は「掲載していないので調査不要」と判断したのみで、掲載すべきかどうかの検討はしていない）
+
+### 6. 不確実な点・リスク
+
+- **HANDOFF.mdの記述鮮度に関する教訓**：本セッション冒頭、優先度1・2（成長加速化補助金・省エネ補助金）を「未着手の積み残し」として扱おうとしたが、実際には本セッション開始前の別コミットで既に解消済みだった。HANDOFF.mdは書かれた時点のスナップショットであり、書かれてから実際に参照するまでの間に状況が変わることがある。今後も同様の「持ち越し」を扱う際は、着手前に必ずgit logと該当ファイルの現物を確認すること（本セッション自体がこの教訓を体現している）
+- **`.diag-result`・`.timetable`へのbox-shadow追加は「見送り」という判断であり「不要と証明された」わけではない**：視認性の実害は実見で確認できなかったが、これは主観的な印象評価であり、コントラスト比のような数値的な裏付けを取ったものではない。今後デザイン全体を見直すタイミングがあれば再検討の余地はある
+- **`generateAdviceHTML()`関数とその呼び出し（7109〜7141行目、7273・7354行目）はJS側は削除していない**：CSS（`.sim-panel.advice`）は削除したが、JS関数自体とそこで生成される`class="sim-panel advice"`という文字列は残っている。関数はデッドコード（`runSimulation()`の早期リターンにより到達不能）だが、削除するとスコープが広がるため今回は見送った。次回この関数に触れる機会があれば、CSS削除に合わせてJS側も削除するか検討してよい
+
+### 7. 触ってはいけない領域
+
+前回・前々回から変更なし。第6セッション「7. 触ってはいけない領域」を参照（`page_data.js`は自動生成（ただし`_tools/build_page_data.py`経由での再生成は今回実施済み・問題なし）、`forms/`はbot自動生成、`PROGRAM_TYPE_OVERRIDE`はprogram.html側にのみ存在しindex.html側には実装なし、等）。
+
+### 8. 最後の判断・関門
+
+- confidence medium/unknown 11件の追加調査可否を本人に確認し、「追加調査を進める」を選択
+- 11件のうちhigh confidence化した3件の反映範囲を本人に確認しようとしたが、選択肢が実質1つ（他は無害）だったためAskUserQuestionが機械的に却下され、その1案をそのまま採用する旨を本人に伝えて続行
+- 3件の反映・実ブラウザ検証後、コミット・push可否を本人に確認し、「コミット・pushする」を選択、実行・push成功を確認
+- 「他に残ってる作業、保留している作業はない？」という本人の問いを受け、積み残し6項目を洗い出し優先度付け（成長加速化補助金・省エネ補助金の掲載継続性確認を最優先、支給額調査を次点、横展開・配色は保留寄り）を提案し、「提案通り（1→2→3の順）」で承認を得た
+- 優先度1・2が既に解消済みと判明した時点で本人に報告し、優先度4（地域雇用開発助成金）以降も続けて一次情報を確認するか確認、「続けて確認する」を選択
+- 地域雇用開発助成金の確定内容の反映可否を本人に確認し、「書き換える」を選択
+- 都道府県横展開（大阪・愛知・福岡）については、本人から「ちょっとまって」「しばらく保留」の指示があり、明示的に見送った
+- 配色展開の対応方針（実害なしの2箇所は現状維持／デッドコードのみ削除）を本人に確認し、「この2箇所は現状維持」を選択
+- 地域雇用開発助成金・配色展開それぞれのコミット・push可否を本人に確認し、いずれも「コミット・pushする」を選択、実行・push成功を確認
+
+---
+
+## 2026-08-13（第8セッション：制度種別の全数監査・自治体独自79件を実施、8件確定・push済み）
+
+### 1. 現在の目標
+
+前回セッション（第7セッション）末尾で本人に問いかけ中だった「残り117件の全数監査、続けるか」に対し、本セッション冒頭で本人から「分割して実施」の回答を得た。実際に対象を数え直したところ108件（前回引き継ぎの「117件」という記述は不正確だった）で、うち国の全国共通制度29件（career系・ryouritsu系等の厚労省助成金、jizoku/kaizen/shoryokuka等の中小企業庁補助金）を制度趣旨から明白として除外し、自治体独自79件（千葉7・群馬9・栃木6・神奈川24・埼玉17・東京16）を実質的な監査対象として並列Workflowで検証した。
+
+### 2. 変更点（本セッションで実施・コミット・push済み）
+
+**コミット `0a15098`**（push済み、origin/mainと同期確認済み）：
+
+- `program.html` の `PROGRAM_TYPE_OVERRIDE`（438行目付近）に8件を追加：
+
+```js
+// 2026-08-13 全数監査 第3弾（自治体独自79件、うちhigh confidenceのみ）で判明した名実不一致8件
+tochigi_nikko_digital: 'josei', kanagawa_isehara_setsubi: 'josei',
+kanagawa_hiratsuka_ritchi: 'josei', kanagawa_sagamihara_seisansei: 'josei',
+tokyo_toshima_keiei: 'josei', tokyo_meguro_shoryokuka: 'josei',
+kanagawa_yokohama_shoene: 'hojo', kanagawa_yokohama_monozukuri: 'hojo'
+```
+
+- 名称は「補助金」だが実質は助成金（審査による採否がなく、書類の要件充足確認のみで先着順・予算消化型）と判明したもの6件：日光市中小事業者等デジタル情報発信事業費補助金、伊勢原市中小企業設備投資支援事業補助金、平塚市企業立地促進補助金、相模原市中小企業生産性向上支援補助金、豊島区中小企業支援事業補助金・経営安定コース、めぐろ中小企業省力化投資補助金
+- 名称は「助成金」だが実質は補助金（審査による不採択がある、または交付決定前着手が明確に禁止）と判明したもの2件：横浜市省エネルギー化支援助成金、横浜市ものづくり魅力向上助成金
+
+### 3. 検証方法と規模
+
+- 79件を都県別6グループ（千葉7/群馬9/栃木6/神奈川24/埼玉17/東京16）に分割し、Workflowを4本並列投入（chiba+gunma+tochigi統合22件・kanagawa24件・saitama17件・tokyo16件）
+- 初回投入時、Workflowスクリプトの`args`受け渡し方法に不備があり2本が`undefined is not an object (evaluating 'items.map')`で即時failedした。原因は`args`パラメータ経由でデータを渡す実装が機能しなかったこと。データをスクリプト本文に直接埋め込む形に書き直して再投入し、成功させた
+- 4バッチ合計79件のうち、レート制限（`API Error: Server is temporarily limiting requests`）で2件（tochigi_kanuma_digital, saitama_fujimi_challenge）が個別失敗。これらは追加のWorkflowで再実行し、両方ともmatch（名実一致）と判定された
+- 総トークン消費は概算で400万強（各バッチ76万〜158万）、総ツール呼び出し数480回程度
+
+### 4. 検証済みの証拠
+
+**2026-08-13 セッション中に取得**：
+- 79件全件について、各エージェントがWebFetch・WebSearch・PDF読解による一次情報確認を実施、結果は出典URL・確認日時（2026-08-13）付きでjournal.jsonlに記録済み（各Workflow run のtranscript dirに保存）
+- 79件の判定結果をPythonスクリプトで集計し、名称と判定(verdict)が食い違う16件（confidence high 8件、medium 8件）を機械的に抽出。抽出ロジックは正規表現でjournal.jsonlから最後のJSON回答ブロックを取り出す方式（`audit_79_results.json`に一時保存、コミット前に削除済み）
+- confidence highの8件についてのみ本人に反映範囲を確認し（「high confidenceの8件のみ反映」を選択）、program.htmlに追記
+- 8件の反映後、`http://localhost:8801`でローカルサーバーを起動しPlaywrightで実ブラウザ検証。8件全ての`#ptPill`のclass属性・テキストが期待通り（josei 6件、hojo 2件）であることを確認、コンソールエラー0件
+- `python3 _tools/check_sim_data.py` で「誤り0件・注意0件・ALL OK」（試算を定義した制度121件／サイト全体128件、変更前と同じ数値で影響なしを確認）
+- コミット後 `git fetch origin main` を実行し、`git log HEAD..origin/main`・`git log origin/main..HEAD`とも空であることを確認（push成功・同期済み、2026-08-13セッション終了時点）
+- ローカルサーバー（ポート8801、PID 28012）は検証後に`taskkill`で停止済み、`netstat`で残存プロセスがないことを確認
+
+### 5. 一次情報の取り直しコマンド
+
+```bash
+cd /d/Claudecode/koban-roadmap
+git status
+git fetch origin main && git log HEAD..origin/main --oneline  # 空なら同期済み
+git log origin/main..HEAD --oneline                            # 空ならpush不要
+python3 _tools/check_sim_data.py                                # sim_data.jsの機械チェック
+grep -n "PROGRAM_TYPE_OVERRIDE" -A 20 program.html              # 確定済み全件（累計20件弱）を確認
+netstat -ano | grep LISTENING | grep "88[0-9][0-9] "             # ローカルサーバー残存確認
+```
+
+### 6. 未着手・持ち越し事項
+
+**confidence medium 8件**（一次情報に到達したが確度が中程度、program.htmlは未変更・現状は文字列マッチのまま）：
+
+| キー | 名称の種別 | 判定 | 理由 |
+|---|---|---|---|
+| tochigi_nikko_lease | hojo | josei | 交付要綱に審査・早期終了・返還規定いずれも明記なし。上位規則(日光市補助金等交付規則)への委任部分は未確認 |
+| chiba_minamiboso_digital | hojo | josei | 交付要綱全文で「審査会」「採点」等の競争的選考の記述が一切ないことを確認したが、審査の完全否定までは確認できず |
+| kanagawa_atsugi_it | hojo | josei | 交付決定前に設備引渡し・事業実施を行い事後審査する制度設計。審査基準・不採択事由の明記なし |
+| kanagawa_yokohama_led | josei | hojo | 要綱本体テキストの完全確認ができず、委任状PDF内の誓約事項条文からの推定を含む |
+| saitama_kawaguchi_dx | hojo | josei | 国の補助金交付確定後の実績への上乗せ型。返還規定は要領内に明記なし（交付要綱に別途ある可能性、未確認） |
+| saitama_iruma_shinko | josei | hojo | 交付決定前着手の可否が両情報源（公式ページ・市共通規則）とも未確認 |
+| saitama_toda_dx | hojo | josei | 不正受給時の返還規定が当該ページ上では未確認（要綱PDF未到達） |
+| tokyo_bunkyo_seisansei | hojo | josei | 不正受給時の返還規定が要綱本体(PDF未特定)には明記なし |
+
+**unknown 3件**（判定不能のまま、program.html未変更）：
+
+| キー | 名称の種別 | 理由 |
+|---|---|---|
+| gunma_takasaki_lease | josei | 交付要綱PDF等の一次情報(要綱本体)に到達できず、機械的計算式(対象経費×2.1%×日数)のみ確認 |
+| kanagawa_yugawara_shukuhaku | hojo | 交付決定前着手不可のみ確認、審査・早期終了・返還規定は交付要綱・様式一覧いずれにも到達できず |
+| tokyo_arakawa_jizoku | hojo | 詳細PDFがサイズ超過(10MB超)でテキスト抽出不能、交付決定前着手禁止のみ確認 |
+
+この11件（medium8＋unknown3）は、次回さらに一次情報へ到達する手段（電話確認、規則本体の追跡等）を検討して確定させる余地がある。ただし前回セッションの本人指示「軽量スキル運用」（必要な工程だけに絞る）に照らすと、優先度は前回セッションから持ち越されている「要目視確認7件」（第6セッション参照）と同等以下と考えられる。
+
+**前回・前々回から持ち越され、本セッションでも未着手のもの**：第6セッション「5. 未着手の範囲」・第7セッション「6. 未着手・持ち越し事項」に記載の「要目視確認7件」（tokyo_toshima_keiei（※本セッションでconfidence highとして確定済み、要目視確認リストから除外可）、tokyo_arakawa_jizoku（本セッションでも未確定）、kanagawa_yokosuka_ict、saitama_higashimatsuyama_ganbaru、saitama_kazo_keieikakushin、gunma_takasaki_lease（本セッションでも未確定）、kanagawa_yokohama_led（本セッションではconfidence medium扱いとなり判定はhojo→jozeiではなくjosei→hojoの逆方向で再浮上）は、本セッションの監査範囲（自治体独自79件）と一部重複していたため、次回整理し直す必要がある。「国の新設制度の網羅調査」「都道府県レベルの横展開」等その他の持ち越しは今回も未着手。
+
+### 7. 不確実な点・リスク
+
+- **前回引き継ぎの「117件」という数字が不正確だった**：実際に機械的に数え直すと108件だった。今後同種の引き継ぎを書く際は、件数は必ずその場でスクリプト再実行して確認すること（本セッション自体がこの教訓を体現している）
+- **Workflowの`args`パラメータ経由のデータ受け渡しが機能しなかった**：原因不明のまま、データをスクリプト本文に直接埋め込む方式に回避して解決した。他のWorkflow運用でも同様の問題が起きうるため、`args`を使う場合は小さいテストで先に動作確認するのが安全
+- **`saitama_iruma_shinko`は前回セッションと逆方向の不一致**：名称「助成金」だが実質「補助金」寄り（josei→hojo）。今回はconfidence mediumのため未反映だが、確定させる場合は判定基準の一貫性（前回確定済み11+9件との整合性）を再確認すること
+- **`kanagawa_yokohama_led`は前回引き継ぎの「要目視確認7件」に含まれていた制度**で、本セッションでも改めて一次情報確認を試みたがconfidence mediumに留まった。判定方向はjosei→hojo（助成金の名称だが実質補助金）で前回引き継ぎの記載と同じ方向性
+
+### 8. 触ってはいけない領域
+
+前回・前々回から変更なし。第6セッション「7. 触ってはいけない領域」を参照（`page_data.js`は自動生成、`forms/`はbot自動生成、`PROGRAM_TYPE_OVERRIDE`はprogram.html側にのみ存在しindex.html側には実装なし、等）。
+
+### 9. 最後の判断・関門
+
+- 「残り117件」の実施タイミングについて、本セッション冒頭で本人に確認し「分割して実施」を選択（1件ずつではなく都県別バッチに分割）
+- 79件のうち16件の不一致候補が出た時点で、program.htmlへの反映範囲（high confidenceのみか、high+medium全16件か）を本人に確認し、「high confidenceの8件のみ反映」を選択
+- 8件の反映・実ブラウザ検証後、コミット・push実行の可否を本人に確認し、「コミット・pushする」を選択、実行・push成功を確認済み
+
+---
+
 ## 2026-08-13（第7セッション：制度種別ピルの全数監査・残り117件）
 
 ### 1. 現在の目標
