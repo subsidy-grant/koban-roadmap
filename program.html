@@ -91,11 +91,12 @@
   .pd-item[open] > summary { padding-bottom: 0.4rem; }
   .pd-item > summary:hover .k, .pd-item > summary:focus-visible .k { text-decoration: underline; }
   .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); }
-  /* peekは「ちらっと見せる」用なので、rate/capの実データが長文（コース別の条件文など）
-     でも要約全文を出さないよう、常に短く切る（省略は視覚のみ、値自体は開けば全文出る）。 */
+  /* peekは「ちらっと見せる」用の要約。旧実装はmax-width:11rem+ellipsisで
+     機械的に再度切り詰めていたが、静的要約表（SCHEDULE_SUMMARY等）側で既に
+     句読点優先の短い要約に人手調整済みのため、二重に切ると文の途中で千切れて
+     意味不明になっていた（2026-08-13、本人指摘）。折り返しに任せて全文out。 */
   .pd-item .pd-peek {
-    font-size: 0.95rem; display: inline-block; max-width: 11rem;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom;
+    font-size: 0.95rem; display: inline-block; max-width: 100%;
   }
   .pd-item .pd-toggle {
     flex: none; margin-left: auto; font-size: 0.76rem; font-weight: 700; color: var(--accent); white-space: nowrap;

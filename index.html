@@ -54,6 +54,7 @@
     --cat-hojo-wash: #e3edf5;
     --cat-josei: #6d4110;
     --cat-josei-wash: #f6ead6;
+    --cat-other-wash: #e2e5ea;
     --line: #4f5b6d;
     --shadow: rgba(25, 29, 34, 0.10);
   }
@@ -76,6 +77,7 @@
       --cat-hojo-wash: #1a2740;
       --cat-josei: #dba86a;
       --cat-josei-wash: #2a2011;
+      --cat-other-wash: #2a3444;
       --line: #8290ac;
       --shadow: rgba(0, 0, 0, 0.45);
     }
@@ -101,6 +103,7 @@
     --cat-hojo-wash: #1a2740;
     --cat-josei: #dba86a;
     --cat-josei-wash: #2a2011;
+    --cat-other-wash: #2a3444;
     --line: #8290ac;
     --shadow: rgba(0, 0, 0, 0.45);
   }
@@ -122,6 +125,7 @@
     --cat-hojo-wash: #e3edf5;
     --cat-josei: #6d4110;
     --cat-josei-wash: #f6ead6;
+    --cat-other-wash: #e2e5ea;
     --line: #4f5b6d;
     --shadow: rgba(25, 29, 34, 0.10);
   }
@@ -302,7 +306,7 @@
      自治体制度にも自動で効く。 */
   .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
   .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
-  .pill.other { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); font-weight: 500; }
+  .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid transparent; font-weight: 500; }
   .pill.alt { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); font-weight: 500; }
   /* 都道府県・市区町村カードの見出しピルは制度名をそのまま入れるので長い。
      .pill の nowrap のままだと狭い画面で「（タイプA：…）」が切れて読めなくなるため、

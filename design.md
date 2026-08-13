@@ -47,6 +47,7 @@
 --cat-hojo-wash:  #e3edf5;
 --cat-josei:      #6d4110;  /* 2026-08-13(2)改訂: #7a4a12から暗化。paper上4.09:1→4.77:1 */
 --cat-josei-wash: #f6ead6;
+--cat-other-wash: #e2e5ea;  /* 2026-08-13(3)新設: .pill.other用の無彩色wash。透明背景+点線枠だけでは目立たないという指摘のため */
 --line:  #4f5b6d;  /* 2026-08-13(2)改訂: #a3adbaから大幅濃化（点線がpaperと同系色で見えない指摘） */
 --shadow: rgba(25, 29, 34, 0.10);
 ```
@@ -71,6 +72,7 @@
 --cat-hojo-wash:  #1a2740;
 --cat-josei:      #dba86a;
 --cat-josei-wash: #2a2011;
+--cat-other-wash: #2a3444;  /* 2026-08-13(3)新設: .pill.other用の無彩色wash */
 --line:  #8290ac;  /* 2026-08-13(2)改訂: #3a4454から大幅明化（暗地の点線は明るくする方が視認性が上がる） */
 --shadow: rgba(0, 0, 0, 0.45);
 ```
@@ -79,6 +81,15 @@
 
 ライトモードの値と同じ値を使う（criteria.html / documents.html / schedule.html の
 `:root[data-theme="light"]` ブロックに複製する）。
+
+### `.pill.other`の背景（2026-08-13(3)追加、本人指摘対応）
+
+「名称から種別を判別できない制度」ピル（`.pill.other`）は透明背景+点線枠のみで、
+塗りつぶし背景を持つ`.pill.hojo`/`.pill.josei`と並ぶと相対的に目立たず「見づらい」
+という指摘を受けた。実データ確認（PROGRAMS 57件中6件、約10.5%が該当。空き家対策
+モデル事業や東京都・台東区・江東区・北区の独自制度など）で機能自体は使われている
+と確認したうえで、削除ではなく視覚的統一を選択：無彩色の`--cat-other-wash`を新設し、
+`hojo`/`josei`と同じ「塗りつぶし+枠なし」構造に統一した。
 
 ### コントラスト実測（2026-08-13、WCAG 2.1相当の輝度比計算で検証。同日中に2回改訂）
 
@@ -219,6 +230,16 @@ HSL明度を-12ptして彩度を保持したまま暗化し解消した（色相
 - `forms/`配下のバイナリファイルは`github-actions[bot]`の自動生成、手動編集・削除禁止
 - `improvement/_build/`配下のHTML自動生成部分（`IMPROVEMENT_HUB_EMBED:START`〜`END`）は
   `embed_hub_cards.py`経由でのみ変更する
+
+## `.pd-peek`のCSS二重切り詰めを解消（2026-08-13(3)、本人指摘対応）
+
+`.pd-peek`のCSSに`max-width: 11rem; text-overflow: ellipsis; white-space: nowrap;`が
+残っており、`peekText()`やSCALE_SUMMARY等の静的要約表で既に句読点優先の短い文字列に
+人手調整していても、さらにCSS側で機械的に切り詰めて「…」が付いていた（例：
+「売上高10億〜100億円未満」が「売上高10億〜100億円…」と表示され、開いた先の全文と
+文言が繋がらず意味不明になる）。`summary`が`flex-wrap: wrap`のレイアウトであることを
+確認したうえで、`max-width: 100%`のみに変更し、nowrap/ellipsisを廃止して自然折り返しに
+任せる形にした（program.html内`.pd-peek`）。
 
 ## 開閉式カードの1行見出し（program.html）— 締切・採択率（2026-08-13、本人指示）
 
