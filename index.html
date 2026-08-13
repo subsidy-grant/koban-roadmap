@@ -405,7 +405,8 @@
      （2026-08-13、design.md「カード構造」）。色は既存トークンを流用するので
      ライト/ダーク両テーマに自動追従する。 */
   .pd-item-key { border: 1px solid var(--hl); background: var(--hl-wash); }
-  .pd-item-key .k { color: var(--hl); font-weight: 700; }
+  /* ラベルも本文相当まで拡大して目立たせる（2026-08-14、program.htmlと同仕様） */
+  .pd-item-key .k { color: var(--hl); font-weight: 700; font-size: 0.88rem; }
   .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-amount { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-due { --hl: var(--rust); --hl-wash: var(--rust-wash); }
@@ -826,7 +827,7 @@
   .stat .k, .stat .d { font-size: 0.88rem; }
   .pill { font-size: 0.82rem; }
   .pd-legend, .rank-links-label { font-size: 0.86rem; }
-  .pd-item .k, .picker label, .threshold-box > .k,
+  .pd-item:not(.pd-item-key) .k, .picker label, .threshold-box > .k,
   .effect-box h4, .equip-box h4, .cost-box h4, .cond-faq-title { font-size: 0.82rem; }
   .pd-item .v { font-size: 1rem; }
   .pd-item .v .sub, .stack .sub, .tier-list .sub,
