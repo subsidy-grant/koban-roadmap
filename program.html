@@ -437,7 +437,9 @@
   // 優先し、該当が無い制度だけ名称の文字列マッチにフォールバックする。
   var PROGRAM_TYPE_OVERRIDE = {
     akiya: 'hojo', tokyo_koto_ict: 'hojo', tokyo_kita_itiot: 'hojo',
-    tokyo_soui: 'josei', tokyo_shuekiryoku: 'josei', tokyo_taito_keiei: 'josei'
+    tokyo_soui: 'josei', tokyo_shuekiryoku: 'josei', tokyo_taito_keiei: 'josei',
+    chiba_chiba_ict: 'hojo', kanagawa_ebina_shinko: 'hojo', kanagawa_yamato_koten: 'hojo',
+    chiba_sodegaura_shinko: 'josei', saitama_sayama_ritchi: 'josei'
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
