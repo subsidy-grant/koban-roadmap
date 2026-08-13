@@ -301,9 +301,10 @@
     white-space: nowrap;
     font-weight: 600;
   }
-  /* 制度名は「補助金か助成金か」で色分けする。制度ごとの任意色ではなくカテゴリ色。
-     判定は表示している制度名そのものから行う（pillClass()）ので、動的に差し込む
-     自治体制度にも自動で効く。 */
+  /* 制度は「補助金か助成金か」で色分けする。制度ごとの任意色ではなくカテゴリ色。
+     判定ロジック（PROGRAM_TYPE_OVERRIDE + pillClass()、専門家監修の実質判定）は
+     program.htmlの制度詳細ページ側にある（このページの旧・凡例と一覧は実体が
+     無いデッドコードだったため2026-08-13(4)に削除、design.md参照）。 */
   .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
   .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
   .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid transparent; font-weight: 500; }
@@ -316,14 +317,6 @@
     border-radius: 10px;
     padding: 0.2rem 0.6rem;
   }
-  /* 藍と金の対は2型・1型色覚シミュレーションでも距離を約8割保持するため、
-     制度名そのものが「◯◯補助金／◯◯助成金」と読める点と併せて色分けのみで足りる
-     （文字を前置きすると名称と重複して読みにくくなる）。 */
-  .cat-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; margin-top: 0.6rem;
-    font-size: 0.74rem; color: var(--ink-faint); align-items: center; }
-  /* 凡例のピルも12px(0.75rem)を下回らせない。ここだけ0.68rem=11pxだった */
-  .cat-legend .pill { font-size: 0.79rem; }
-
   .tier-list { list-style: none; margin: 0; padding: 0; font-size: 0.85rem; }
   .tier-list li { display: flex; justify-content: space-between; gap: 0.8rem; padding: 0.2rem 0; }
   .tier-list li span:first-child { color: var(--ink-faint); }
@@ -834,7 +827,7 @@
   .section-sub { font-size: 1rem; }
   .stat .k, .stat .d { font-size: 0.88rem; }
   .pill { font-size: 0.82rem; }
-  .cat-legend, .pd-legend, .rank-links-label { font-size: 0.86rem; }
+  .pd-legend, .rank-links-label { font-size: 0.86rem; }
   .pd-item .k, .picker label, .threshold-box > .k,
   .effect-box h4, .equip-box h4, .cost-box h4, .cond-faq-title { font-size: 0.82rem; }
   .pd-item .v { font-size: 1rem; }
@@ -1633,11 +1626,6 @@
       <div class="diag-result" id="diagResult"></div>
     </div>
 
-    <p class="cat-legend">制度名は種別で色分けしています：
-      <span class="pill hojo">補助金</span>
-      <span class="pill josei">助成金</span>
-      <span class="pill other">名称から種別を判別できない制度</span>
-    </p>
     <p class="pd-legend">下の一覧では、まず見るべき3項目を色分けしています。<strong>青はいくら戻るか、橙はいつまでか</strong>です：
       <span><i style="background:var(--accent)"></i>補助率</span>
       <span><i style="background:var(--accent)"></i>上限額</span>
@@ -6575,18 +6563,6 @@
     return unit.split('/')[1] || '概算';
   }
 
-  // 制度名の表記から「補助金／助成金／その他」を判定する。
-  // PROGRAMS のキーではなく画面に出ている文字列で判定するので、色と読める名称が必ず一致し、
-  // 動的に差し込む自治体制度も追加コードなしで色分けされる。
-  // 名称に「補助」「助成」のどちらも含まない制度（空き家対策モデル事業など）は
-  // 憶測で振り分けず 'other' にする。
-  function pillClass(text) {
-    var t = String(text || '');
-    if (t.indexOf('助成') !== -1) return 'josei';
-    if (t.indexOf('補助') !== -1) return 'hojo';
-    return 'other';
-  }
-
   function renderRankingHTML(industryKey) {
     var ind = INDUSTRIES[industryKey];
     var planMap = (typeof IMPROVEMENT_PLANS !== 'undefined' && IMPROVEMENT_PLANS[industryKey]) || {};
@@ -6600,7 +6576,7 @@
         return '<div class="line"><span>' + line[0] + '</span><span class="tabular">' + line[1] + '</span></div>';
       }).join('');
       var pillHTML = cat.programs.map(function (p) {
-        return '<span class="pill ' + pillClass(p.label) + '">' + p.label + '</span>';
+        return '<span class="pill">' + p.label + '</span>';
       }).join('');
       var effectHTML = cat.effectBullets.map(function (b) { return '<li>' + b + '</li>'; }).join('');
       var plan = planMap[String(idx + 1)];

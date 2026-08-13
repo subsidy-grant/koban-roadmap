@@ -20,7 +20,7 @@
     --ink-faint: #3d4658; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --on-accent: #ffffff; --sage: #094758; --sage-wash: #dcf1f5; --rust: #882e08;
     --rust-wash: #f8e4d8; --cat-hojo: #1e4d78; --cat-hojo-wash: #e3edf5;
-    --cat-josei: #6d4110; --cat-josei-wash: #f6ead6;
+    --cat-josei: #6d4110; --cat-josei-wash: #f6ead6; --cat-other-wash: #e2e5ea;
     --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
   }
   @media (prefers-color-scheme: dark) {
@@ -29,6 +29,7 @@
       --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
       --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a; --rust-wash: #2c1c10;
       --cat-hojo: #7fa8d9; --cat-hojo-wash: #1a2740; --cat-josei: #dba86a; --cat-josei-wash: #2a2011;
+      --cat-other-wash: #2a3444;
       --line: #8290ac; --shadow: rgba(0, 0, 0, 0.45);
     }
   }
@@ -56,7 +57,7 @@
   }
   .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
   .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
-  .pill.other { background: transparent; color: var(--ink-soft); border: 1px dashed var(--line); font-weight: 500; }
+  .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid transparent; font-weight: 500; }
 
   h1.pt-name {
     font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho",serif;
@@ -431,7 +432,15 @@
   }
   function numStrong(text) { return text ? '<strong class="num-strong">' + text + '</strong>' : text; }
   function numWeak(text) { return text ? '<span class="num-weak">' + text + '</span>' : text; }
-  function pillClass(text) {
+  // index.htmlのPROGRAM_TYPE_OVERRIDEと同じ判定（design.md参照）。
+  // 名称の用語と実質運用が一致しない制度があるため、まずキー単位の実質判定を
+  // 優先し、該当が無い制度だけ名称の文字列マッチにフォールバックする。
+  var PROGRAM_TYPE_OVERRIDE = {
+    akiya: 'hojo', tokyo_koto_ict: 'hojo', tokyo_kita_itiot: 'hojo',
+    tokyo_soui: 'josei', tokyo_shuekiryoku: 'josei', tokyo_taito_keiei: 'josei'
+  };
+  function pillClass(text, key) {
+    if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
     var t = String(text || '');
     if (t.indexOf('助成') !== -1) return 'josei';
     if (t.indexOf('補助') !== -1) return 'hojo';
@@ -2738,7 +2747,7 @@
     document.title = p.name + '｜補助金活用 業務改善ロードマップ';
 
     var pill = document.getElementById('ptPill');
-    if (pill) { pill.className = 'pill ' + pillClass(p.name); pill.textContent = p.name; }
+    if (pill) { pill.className = 'pill ' + pillClass(p.name, key); pill.textContent = p.name; }
 
     var areaTag = document.getElementById('ptAreaTag');
     if (areaTag) {
