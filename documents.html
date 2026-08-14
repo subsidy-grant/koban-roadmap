@@ -3904,16 +3904,18 @@
     return nm ? nm + (m ? '.' + m[1] : '') : rawName;
   }
 
-  function processFillFile(file, asName) {
+  function processFillFile(file, asName, fixedVals) {
     return file.arrayBuffer().then(function (buf) {
-      return processFillBytes(asName || file.name, new Uint8Array(buf));
+      return processFillBytes(asName || file.name, new Uint8Array(buf), fixedVals);
     }, function () {
       return { error: 'このファイルを読み込めませんでした。もう一度お試しください。' };
     });
   }
   // ファイル名と中身（バイト列）から記入する。
   // 手元のファイルを置いた場合も、公式サイトから取り寄せた場合もここに来る。
-  function processFillBytes(fileName, u8) {
+  // fixedVals を渡すと、その値を会社の切替に関わらずそのまま使う
+  // （一括取り寄せの途中で会社が切り替わっても、実行開始時点の1社分だけを使うため）
+  function processFillBytes(fileName, u8, fixedVals) {
     var file = { name: fileName };
     var lower = file.name.toLowerCase();
     var kind = /\.docx$/.test(lower) ? 'docx'
@@ -3923,7 +3925,7 @@
     if (kind === 'old') return Promise.resolve({ error: '古い形式（.doc / .xls）はブラウザでは開けません。WordやExcelでこのファイルを開き、「名前を付けて保存」で .docx / .xlsx 形式にしてから、もう一度お試しください。' });
     if (kind === 'pdf') return Promise.resolve({ error: 'PDFには対応していません。当サイトで確認したPDFの様式は、いずれも入力欄の無い読み取り用でした。記入用のWord・Excel版が無いか、配布ページをご確認ください。' });
     if (kind === 'other') return Promise.resolve({ error: '対応しているのはWord（.docx）とExcel（.xlsx）です。' });
-    var vals = buildFillValues();
+    var vals = fixedVals || buildFillValues();
     if (!Object.keys(vals).length) {
       return Promise.resolve({ error: '先に「会社情報を編集する」から会社情報をご入力ください。まだ何も保存されていません。' });
     }
@@ -4133,17 +4135,22 @@
   function handleFillFiles(fileList) {
     var files = Array.prototype.slice.call(fileList || []);
     if (!files.length) return;
+    // 複数ファイルを続けて処理する間に会社が切り替わっても、
+    // この一括処理は開始時点の1社分だけで揃える
+    var fixedVals = buildFillValues();
+    setCompanyPickerDisabled(true);
     var chain = Promise.resolve();
     files.forEach(function (f) {
       chain = chain.then(function () {
         // 置かれたファイルが配布元の名前のままなら、様式の名前に直して保存できるようにする
         var shown = displayFileName(f.name);
-        return processFillFile(f, shown).then(function (res) {
+        return processFillFile(f, shown, fixedVals).then(function (res) {
           if (shown !== f.name) res.rawName = f.name;
           renderFillResult(shown, res);
         });
       });
     });
+    chain.then(function () { setCompanyPickerDisabled(false); });
   }
 
   function initAutofill() {
@@ -4355,12 +4362,23 @@
     html += '</div>';
     return html;
   }
+  // 一括取り寄せ・一括記入の実行中は、会社の切替チップを押せなくする
+  // （実行中に切り替わると、1回の結果に2社のデータが混ざるため）
+  var afCompanyPickerLocked = false;
+  function setCompanyPickerDisabled(disabled) {
+    afCompanyPickerLocked = disabled;
+    document.querySelectorAll('.company-picker .cp-chip').forEach(function (btn) {
+      btn.disabled = disabled;
+    });
+  }
   // 会社選択チップ・編集リンクにイベントを付ける（renderAfFormsの再描画のたびに呼ぶ）
   function initCompanyPicker(box) {
     var picker = box.querySelector('.company-picker');
     if (!picker) return;
     picker.querySelectorAll('.cp-chip').forEach(function (btn) {
+      btn.disabled = afCompanyPickerLocked;
       btn.addEventListener('click', function () {
+        if (afCompanyPickerLocked) return;
         var id = btn.getAttribute('data-id');
         if (id === window.KOBAN_COMPANY.currentId()) return;
         window.KOBAN_COMPANY.setCurrentId(id);
@@ -4626,12 +4644,15 @@
       if (status) status.textContent = '様式が選ばれていません。チェックを入れてからもう一度押してください。';
       return;
     }
-    if (!Object.keys(buildFillValues()).length) {
+    // 実行中に会社が切り替わっても、この一括処理は開始時点の1社分だけで揃える
+    var fixedVals = buildFillValues();
+    if (!Object.keys(fixedVals).length) {
       if (status) status.textContent = '先に「会社情報を編集する」から会社情報をご入力ください。まだ何も保存されていません。';
       return;
     }
     afRunning = true;
     clearFillResults();
+    setCompanyPickerDisabled(true);
     if (runBtn) {
       runBtn.disabled = true;
       var rs = runBtn.querySelector('.sub');
@@ -4644,11 +4665,13 @@
     var chain = Promise.resolve();
     items.forEach(function (it) {
       chain = chain.then(function () {
-        if (status) status.textContent = '（' + (done + 1) + '/' + items.length + '）' + it.name + ' を取り寄せています…';
+        // 会社切替でrenderAfForms()がDOMを作り直すことがあるため、都度取り直す
+        var st = document.getElementById('afStatus');
+        if (st) st.textContent = '（' + (done + 1) + '/' + items.length + '）' + it.name + ' を取り寄せています…';
         return fetchForm(it.url).then(function (got1) {
           var raw = fileNameFromUrl(it.url, it.name + '.docx');
           var fname = displayFileName(raw, it.name);
-          return processFillBytes(fname, got1.bytes).then(function (res) {
+          return processFillBytes(fname, got1.bytes, fixedVals).then(function (res) {
             res.origin = { via: got1.via, rec: got1.rec, url: it.url };
             res.rawName = raw;
             renderFillResult(fname, res);
@@ -4662,9 +4685,11 @@
     });
     chain.then(function () {
       afRunning = false;
+      setCompanyPickerDisabled(false);
       if (runBtn) { runBtn.disabled = false; updateRunBtn(); }
-      if (status) {
-        status.textContent = '終わりました。取り寄せて記入できたのは ' + got + '件、' +
+      var st = document.getElementById('afStatus');
+      if (st) {
+        st.textContent = '終わりました。取り寄せて記入できたのは ' + got + '件、' +
           (missed ? '取り寄せできなかったのが ' + missed + '件です。下の案内にしたがって、公式サイトから落としたファイルを置いてください。' : '取り寄せできなかったものはありません。');
       }
       // 結果は手順のボタンのすぐ下に出る。ここで結果の先頭へ飛ばすと
