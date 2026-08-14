@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>申請の進み具合｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="複数の補助金・助成金に申請するとき、それぞれの取り寄せ書類の進み具合をまとめて管理するページ。申請ごとにチェックリストを分けて残せます。登録不要・処理はお使いの端末の中だけ。">
+<link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/applications.html">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="補助金活用 業務改善ロードマップ">
+<meta property="og:title" content="申請の進み具合｜複数申請をまとめて管理">
+<meta property="og:description" content="申請ごとに取り寄せ書類のチェックリストを分けて残せます。">
+<meta property="og:url" content="https://subsidy-grant.github.io/koban-roadmap/applications.html">
+<meta property="og:locale" content="ja_JP">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体はサイト共通のデザインシステム（design.md）に合わせる。documents.htmlと同じ値 */
+  :root {
+    --paper: #b7c1cd;
+    --paper-raised: #ffffff;
+    --ink: #191d22;
+    --ink-soft: #3d475c;
+    --ink-faint: #3d4658;
+    --accent: #1e4d78;
+    --accent-soft: #b9cfe3;
+    --accent-wash: #e3edf5;
+    --on-accent: #ffffff;
+    --sage: #094758;
+    --sage-wash: #dcf1f5;
+    --rust: #882e08;
+    --rust-wash: #f8e4d8;
+    --line: #4f5b6d;
+    --shadow: rgba(25, 29, 34, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0a0d12; --paper-raised: #2c384b; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+      --rust-wash: #2c1c10; --line: #8290ac; --shadow: rgba(0, 0, 0, 0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0a0d12; --paper-raised: #2c384b; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+    --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+    --rust-wash: #2c1c10; --line: #8290ac; --shadow: rgba(0, 0, 0, 0.45);
+  }
+  :root[data-theme="light"] {
+    --paper: #b7c1cd; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #3d475c;
+    --ink-faint: #3d4658; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #094758; --sage-wash: #dcf1f5; --rust: #882e08;
+    --rust-wash: #f8e4d8; --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Hiragino Sans","Meiryo",sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
+  main { max-width: 780px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
+  a { color: var(--accent); }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap; margin-bottom: 1.4rem; }
+  .back { font-size: 0.92rem; }
+  .theme-btn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+    border-radius: 6px; padding: 0.45rem 0.8rem; font: inherit; font-size: 0.85rem;
+    cursor: pointer; min-height: 44px; }
+  h1 { font-size: 1.5rem; margin: 0 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 1.4rem; max-width: 62ch; }
+
+  .btn { border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
+    border-radius: 8px; padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
+    cursor: pointer; min-height: 44px; }
+  .btn.ghost { background: var(--paper-raised); color: var(--accent); }
+  .btn.danger { background: var(--paper-raised); color: var(--rust); border-color: var(--rust); }
+  .btn:hover { filter: brightness(1.08); }
+  .btn[disabled], .btn[disabled]:hover { background: var(--paper); color: var(--ink-faint);
+    border-color: var(--line); cursor: not-allowed; filter: none; }
+
+  .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+  .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
+  .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
+    border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+  .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
+    padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
+  .warn strong { color: var(--rust); }
+
+  /* ---- 申請一覧 ---- */
+  .app-list { list-style: none; margin: 0 0 1.2rem; padding: 0; }
+  .app-item { display: flex; align-items: center; gap: 0.7rem; background: var(--paper-raised);
+    border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 0.6rem; }
+  .app-item.is-current { border-color: var(--accent); border-width: 2px; }
+  .app-item-main { flex: 1 1 auto; min-width: 0; background: none; border: 0; padding: 0;
+    text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
+  .app-item-name { font-weight: 700; font-size: 1rem; display: block; }
+  .app-item-meta { font-size: 0.82rem; color: var(--ink-soft); display: block; margin-top: 0.15rem; }
+  .app-item-prog { flex: none; text-align: right; font-size: 0.85rem; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; min-width: 3.6rem; }
+  .app-item-del { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
+    border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
+  .app-item-del:hover { border-color: var(--rust); color: var(--rust); }
+
+  /* ---- 新規作成フォーム ---- */
+  .new-app { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; margin-bottom: 1.6rem; }
+  .new-app-field { flex: 1 1 14rem; }
+  .new-app-field label { display: block; font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0.25rem; }
+  .new-app-field input, .new-app-field select { width: 100%; font: inherit; font-size: 0.95rem;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); color: var(--ink); min-height: 44px; }
+
+  /* ---- チェックリスト（documents.htmlの04と同じ見た目） ---- */
+  .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
+  .prog > i { display: block; height: 100%; background: var(--sage); }
+  .phase-ttl { font-size: 0.86rem; color: var(--accent); font-weight: 700; margin: 0.8rem 0 0.3rem; }
+  ul.checks { list-style: none; margin: 0; padding: 0; }
+  ul.checks li { border-bottom: 1px dashed var(--line); }
+  ul.checks li:last-child { border-bottom: 0; }
+  ul.checks label { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.2rem;
+    cursor: pointer; min-height: 44px; }
+  ul.checks input[type="checkbox"] { width: 22px; height: 22px; margin-top: 0.25rem; flex: none;
+    accent-color: var(--sage); }
+  ul.checks .fn { flex: 1; font-size: 0.92rem; }
+  ul.checks li.done .fn { color: var(--ink-faint); text-decoration: line-through; }
+  .ft { font-size: 0.72rem; border: 1px solid var(--line); border-radius: 4px;
+    padding: 0.05rem 0.35rem; color: var(--ink-soft); flex: none; margin-top: 0.35rem; }
+  .who { display: inline-block; font-size: 0.76rem; line-height: 1.5; border-radius: 4px;
+    padding: 0.05rem 0.4rem; white-space: nowrap; border: 1px solid; }
+  .who-sage { background: var(--sage-wash); color: var(--sage); border-color: var(--sage); }
+  .who-accent { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
+  .who-rust { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
+  .pick-jump { font-size: 0.85rem; }
+  .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
+</style>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <p class="back"><a href="documents.html">← 申請書類の準備 に戻る</a></p>
+    <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">画面を暗くする</button>
+  </div>
+
+  <h1>申請の進み具合</h1>
+  <p class="lede">複数の制度に申請するときは、ここで申請ごとに分けて取り寄せ書類のチェックを残せます。この端末に保存され、次に開いたときは続きから進められます。</p>
+
+  <div class="new-app">
+    <div class="new-app-field">
+      <label for="newAppName">申請の名前（自分で分かればOK）</label>
+      <input type="text" id="newAppName" placeholder="例：持続化補助金・2026年秋" autocomplete="off">
+    </div>
+    <div class="new-app-field">
+      <label for="newAppProgram">制度（あとから変更可）</label>
+      <select id="newAppProgram"><option value="">制度を選ぶ（あとで選んでもOK）</option></select>
+    </div>
+    <button type="button" class="btn" id="newAppBtn">申請を追加</button>
+  </div>
+
+  <div id="appList"></div>
+
+  <section id="appDetail" style="display:none;">
+    <div class="pcard">
+      <h3 id="appDetailName"></h3>
+      <p class="meta" id="appDetailMeta"></p>
+      <label for="appDetailProgram" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">制度</label>
+      <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius:8px;background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
+        <option value="">制度を選ぶと、必要な書類だけに絞られます</option>
+      </select>
+      <p class="meta" id="appDetailDone"></p>
+      <div class="prog"><i id="appDetailBar" style="width:0%;"></i></div>
+      <div id="appDetailChecks"></div>
+    </div>
+    <p style="margin-top:1rem;font-size:0.9rem;color:var(--ink-soft);">
+      制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。様式そのものは<a href="documents.html">申請書類の準備ページ</a>で選んで記入します。
+    </p>
+    <p class="src-note" id="appDetailSource"></p>
+  </section>
+</main>
+
+<script src="page_data.js"></script>
+<script src="common_docs.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var D = window.KOBAN_DATA || { programs: {}, docs: {} };
+  var CD = window.KOBAN_COMMON_DOCS;
+  var COMMON_DOCS = CD.COMMON_DOCS;
+  var docApplies = CD.docApplies;
+
+  var K_APPS = 'koban_applications';
+
+  function load(key, fallback) {
+    try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : fallback; }
+    catch (e) { return fallback; }
+  }
+  function save(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { return false; }
+  }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function whoBadge(who) {
+    var cls = CD.whoBadgeClass(who);
+    return '<span class="who who-' + cls + '">' + esc(who) + '</span>';
+  }
+
+  // ---------- 画面の明暗（他ページと同じキーを使う） ----------
+  window.toggleTheme = function () {
+    var cur = document.documentElement.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    syncThemeBtn();
+  };
+  function syncThemeBtn() {
+    var btn = document.getElementById('themeBtn');
+    if (!btn) return;
+    var cur = document.documentElement.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    btn.textContent = cur === 'dark' ? '画面を明るくする' : '画面を暗くする';
+  }
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  })();
+
+  // ---------- 申請の一覧・作成・削除 ----------
+  // 1件 = { id, name, programKey, createdAt(ISO文字列), done:{docId:1,...} }
+  // createdAt は Date.now() を使わず、作成順が分かればよいので連番カウンタにする
+  var apps = load(K_APPS, []);
+  var seq = load('koban_applications_seq', 0);
+  var currentId = null;
+
+  function nextId() {
+    seq++; save('koban_applications_seq', seq);
+    return 'app' + seq;
+  }
+  function findApp(id) { return apps.filter(function (a) { return a.id === id; })[0] || null; }
+  function saveApps() { save(K_APPS, apps); }
+
+  function fillProgramSelect(sel) {
+    var keys = Object.keys(D.programs || {}).sort(function (a, b) {
+      return ((D.programs[a] || {}).name || '').localeCompare(((D.programs[b] || {}).name || ''), 'ja');
+    });
+    keys.forEach(function (k) {
+      var opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = (D.programs[k] || {}).name || k;
+      sel.appendChild(opt);
+    });
+  }
+
+  function progressOf(app) {
+    var items = COMMON_DOCS.filter(function (c) { return docApplies(c, app.programKey); });
+    var done = items.filter(function (c) { return app.done && app.done[c.id]; }).length;
+    return { done: done, total: items.length };
+  }
+
+  function renderAppList() {
+    var box = document.getElementById('appList');
+    if (!apps.length) {
+      box.innerHTML = '<p class="empty">まだ申請がありません。上のフォームから追加してください。</p>';
+      return;
+    }
+    var html = '<ul class="app-list">' + apps.map(function (a) {
+      var p = progressOf(a);
+      var progName = a.programKey ? ((D.programs[a.programKey] || {}).name || a.programKey) : '制度未選択';
+      return '<li class="app-item' + (a.id === currentId ? ' is-current' : '') + '">' +
+        '<button type="button" class="app-item-main" data-id="' + esc(a.id) + '">' +
+        '<span class="app-item-name">' + esc(a.name) + '</span>' +
+        '<span class="app-item-meta">' + esc(progName) + '</span>' +
+        '</button>' +
+        '<span class="app-item-prog">' + p.done + ' / ' + p.total + '</span>' +
+        '<button type="button" class="app-item-del" data-id="' + esc(a.id) + '" aria-label="この申請を削除">✕</button>' +
+        '</li>';
+    }).join('') + '</ul>';
+    box.innerHTML = html;
+    box.querySelectorAll('.app-item-main').forEach(function (b) {
+      b.addEventListener('click', function () { selectApp(b.getAttribute('data-id')); });
+    });
+    box.querySelectorAll('.app-item-del').forEach(function (b) {
+      b.addEventListener('click', function () { deleteApp(b.getAttribute('data-id')); });
+    });
+  }
+
+  function selectApp(id) {
+    currentId = id;
+    renderAppList();
+    renderDetail();
+    var detail = document.getElementById('appDetail');
+    if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function deleteApp(id) {
+    var a = findApp(id);
+    if (!a) return;
+    if (!window.confirm('「' + a.name + '」を削除します。チェックした進み具合も消えます。よろしいですか？')) return;
+    apps = apps.filter(function (x) { return x.id !== id; });
+    saveApps();
+    if (currentId === id) {
+      currentId = null;
+      document.getElementById('appDetail').style.display = 'none';
+    }
+    renderAppList();
+  }
+
+  function toggleDone(appId, docId, on) {
+    var a = findApp(appId);
+    if (!a) return;
+    if (!a.done) a.done = {};
+    if (on) a.done[docId] = 1; else delete a.done[docId];
+    saveApps();
+    renderAppList();
+    renderDetail();
+  }
+
+  function renderDetail() {
+    var section = document.getElementById('appDetail');
+    var a = findApp(currentId);
+    if (!a) { section.style.display = 'none'; return; }
+    section.style.display = '';
+    document.getElementById('appDetailName').textContent = a.name;
+    var sel = document.getElementById('appDetailProgram');
+    sel.value = a.programKey || '';
+
+    var key = a.programKey || '';
+    var items = COMMON_DOCS.filter(function (c) { return docApplies(c, key); });
+    var progName = key ? ((D.programs[key] || {}).name || key) : '';
+    document.getElementById('appDetailMeta').textContent = key
+      ? progName + 'に必要な書類だけを表示しています。'
+      : '制度を選ぶと、必要な書類だけに絞られます。今はすべての書類を表示しています。';
+
+    var doneList = document.getElementById('appDetailDone');
+    var barEl = document.getElementById('appDetailBar');
+    var checksEl = document.getElementById('appDetailChecks');
+    if (!items.length) {
+      doneList.textContent = '';
+      barEl.style.width = '0%';
+      checksEl.innerHTML = '<p class="empty">この制度で取り寄せが必要な共通書類はありません。</p>';
+      document.getElementById('appDetailSource').textContent = '';
+      return;
+    }
+    var done = items.filter(function (c) { return a.done && a.done[c.id]; }).length;
+    var pct = Math.round(done * 100 / items.length);
+    doneList.textContent = done + ' / ' + items.length + ' 件そろいました。';
+    barEl.style.width = pct + '%';
+
+    var groups = [['apply', '申請のときに出す'], ['report', '事業が終わったあとに出す']];
+    checksEl.innerHTML = groups.map(function (g) {
+      var list = items.filter(function (c) { return c.when === g[0]; });
+      if (!list.length) return '';
+      return '<p class="phase-ttl">' + g[1] + '</p><ul class="checks">' +
+        list.map(function (c) {
+          var on = !!(a.done && a.done[c.id]);
+          var cbId = 'appChk_' + a.id + '_' + c.id;
+          return '<li class="' + (on ? 'done' : '') + '"><label for="' + cbId + '">' +
+            '<input type="checkbox" id="' + cbId + '"' + (on ? ' checked' : '') + '>' +
+            '<span class="ft">' + (c.third ? '要依頼' : '自分で') + '</span>' +
+            '<span class="fn">' + whoBadge(c.who) + ' ' + esc(c.doc) +
+            '<span style="display:block;color:var(--ink-faint);font-size:0.82rem;">' +
+            esc(c.where) + '／' + (c.days === 1 ? '当日' : '〜' + c.days + '日') +
+            '　' + esc(c.note) + '</span></span></label></li>';
+        }).join('') + '</ul>';
+    }).join('');
+    checksEl.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+      cb.addEventListener('change', function () {
+        var docId = cb.id.replace('appChk_' + a.id + '_', '');
+        toggleDone(a.id, docId, cb.checked);
+      });
+    });
+    document.getElementById('appDetailSource').textContent = CD.COMMON_DOCS_SOURCE;
+  }
+
+  // ---------- 起動 ----------
+  fillProgramSelect(document.getElementById('newAppProgram'));
+  fillProgramSelect(document.getElementById('appDetailProgram'));
+
+  document.getElementById('newAppBtn').addEventListener('click', function () {
+    var nameEl = document.getElementById('newAppName');
+    var progEl = document.getElementById('newAppProgram');
+    var name = nameEl.value.trim();
+    var programKey = progEl.value;
+    if (!name) {
+      name = programKey ? ((D.programs[programKey] || {}).name || programKey) : '名前未設定の申請';
+    }
+    var a = { id: nextId(), name: name, programKey: programKey, createdAt: seq, done: {} };
+    apps.push(a);
+    saveApps();
+    nameEl.value = '';
+    progEl.value = '';
+    renderAppList();
+    selectApp(a.id);
+  });
+
+  document.getElementById('appDetailProgram').addEventListener('change', function () {
+    var a = findApp(currentId);
+    if (!a) return;
+    a.programKey = this.value;
+    saveApps();
+    renderAppList();
+    renderDetail();
+  });
+
+  // documents.html から ?p=制度キー で来たとき、その制度の申請が既にあれば選ぶ、
+  // 無ければ新規作成の制度欄に候補として入れておく（自動では作らない＝勝手に増えない）
+  (function fromQuery() {
+    var m = /[?&]p=([^&]+)/.exec(location.search);
+    if (!m) return;
+    var key = decodeURIComponent(m[1]);
+    if (!D.programs[key]) return;
+    var existing = apps.filter(function (a) { return a.programKey === key; });
+    if (existing.length === 1) { selectApp(existing[0].id); return; }
+    var sel = document.getElementById('newAppProgram');
+    if (sel.querySelector('option[value="' + key.replace(/"/g, '') + '"]')) sel.value = key;
+  })();
+
+  renderAppList();
+  syncThemeBtn();
+})();
+</script>
+</body>
+</html>
