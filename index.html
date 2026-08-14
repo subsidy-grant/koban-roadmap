@@ -804,10 +804,22 @@
 
   footer {
     border-top: 1px solid var(--line);
-    padding: 2rem 1.5rem 3rem;
+    padding: 1.2rem 1.5rem 2rem;
   }
   footer .inner { max-width: 880px; margin: 0 auto; color: var(--ink-faint); font-size: 0.82rem; }
   footer .inner p { max-width: none; }
+
+  /* ---- 開閉ブロック（<details>）。footerの免責事項を既定で畳んでおく ---- */
+  footer .fold { border: 1px solid var(--line); border-radius: var(--radius-md, 10px);
+    padding: 0.2rem 1rem 1rem; }
+  footer .fold > summary { list-style: none; cursor: pointer; padding: 0.7rem 0;
+    font-weight: 700; font-size: 0.86rem; color: var(--ink-soft); display: flex;
+    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
+  footer .fold > summary::-webkit-details-marker { display: none; }
+  footer .fold > summary::before { content: '▸'; color: var(--accent); flex: none; }
+  footer .fold[open] > summary::before { content: '▾'; }
+  footer .fold > summary:hover { background: var(--accent-wash); }
+  footer .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   ::selection { background: var(--accent-soft); }
 
@@ -1385,7 +1397,7 @@
 
 <div class="hero-industry">
   <div class="hero-industry-inner">
-    <p class="hero-industry-lead">まずは<strong>業種</strong>を選んでください。このページの制度一覧・解説・概算シミュレーターにそのまま反映されます。</p>
+    <p class="hero-industry-lead"><strong>業種</strong>を選んでください。</p>
     <label for="industrySelectTop" class="sr-only">お店・会社の業種</label>
     <select id="industrySelectTop" onchange="switchIndustry(this.value)">
       <option value="beauty">美容業（美容室・サロン等）</option>
@@ -2055,9 +2067,12 @@
 
 <footer>
   <div class="inner">
-    <p>掲載の制度概要・金額・公募スケジュールは2026年7月28日時点で公開されている情報に基づく試算であり、将来の公募内容や採択を保証するものではありません。公募が終了した制度は随時掲載から除外しています。実際の申請にあたっては、必ず各制度の公式サイト・公募要領で最新の要件・受付期間をご確認ください。</p>
-    <p style="margin-top:0.6rem;">本サイトでは、利用状況の把握のためCookieを使用しないアクセス解析（GoatCounter）を利用しています。氏名・連絡先など個人を特定する情報は収集しません。</p>
-    <p style="margin-top:0.6rem;">本サイトは公的機関ではなく、公開されている公募要領・制度概要を業種別に読みやすく整理した個人運営の情報サイトです。掲載内容は申請の可否・採択を保証するものではありません。制度そのものへのご質問は、各制度の公式サイトに記載された問い合わせ窓口へお願いします。</p>
+    <details class="fold">
+      <summary>ご利用にあたって（免責事項・運営について）</summary>
+      <p>掲載の制度概要・金額・公募スケジュールは2026年7月28日時点で公開されている情報に基づく試算であり、将来の公募内容や採択を保証するものではありません。公募が終了した制度は随時掲載から除外しています。実際の申請にあたっては、必ず各制度の公式サイト・公募要領で最新の要件・受付期間をご確認ください。</p>
+      <p style="margin-top:0.6rem;">本サイトでは、利用状況の把握のためCookieを使用しないアクセス解析（GoatCounter）を利用しています。氏名・連絡先など個人を特定する情報は収集しません。</p>
+      <p style="margin-top:0.6rem;">本サイトは公的機関ではなく、公開されている公募要領・制度概要を業種別に読みやすく整理した個人運営の情報サイトです。掲載内容は申請の可否・採択を保証するものではありません。制度そのものへのご質問は、各制度の公式サイトに記載された問い合わせ窓口へお願いします。</p>
+    </details>
   </div>
 </footer>
 

@@ -149,14 +149,24 @@
   .cs-status-pct { font-size: 0.92rem; font-weight: 700; color: var(--accent); flex: none; }
   .empty { color: var(--ink-soft); font-size: 0.93rem; }
 
+  /* ---- 開閉ブロック（<details>）。documents.htmlと同じ意匠 ---- */
+  .fold { border: 1px solid var(--line); border-radius: var(--radius-md);
+    background: var(--paper-raised); padding: 0.2rem 1rem 1rem; margin: 1rem 0; }
+  .fold > summary { list-style: none; cursor: pointer; padding: 0.85rem 0;
+    font-weight: 700; font-size: 0.95rem; color: var(--ink); display: flex;
+    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
+  .fold > summary::-webkit-details-marker { display: none; }
+  .fold > summary::before { content: '▸'; color: var(--accent); flex: none; }
+  .fold[open] > summary::before { content: '▾'; }
+  .fold > summary:hover { background: var(--accent-wash); }
+  .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
 </style>
 </head>
 <body>
 <main>
   <h1>会社情報</h1>
-  <p class="lede">会社を選ぶと、その会社のプロフィール編集・現在の申請状況・メモにアクセスできます。ここで入力した会社情報は<a href="documents.html">書類準備ページ</a>の様式に自動で入ります。
-  複数の会社をお持ちの場合（例：法人と個人事業主を分けて経営している等）は、会社ごとに分けて登録できます。
-  入力した内容はこの端末の中だけに保存され、外部には送信されません。</p>
+  <p class="lede">会社を選ぶと、プロフィール編集・現在の申請状況・メモにアクセスできます。入力内容は<a href="documents.html">書類準備</a>の様式に自動で入ります。</p>
 
   <section id="company">
     <div class="section-head"><span class="section-no jp-serif">会社</span><h2>登録済みの会社</h2></div>
@@ -194,22 +204,24 @@
   </section>
 
   <section id="companyBackup">
-    <div class="section-head"><span class="section-no jp-serif">保存</span><h2>会社情報の書き出し・読み込み</h2></div>
-    <p class="lede">この端末に保存されている全ての会社情報をファイルに書き出せます。別の端末に移すときや、うっかり消してしまったときのバックアップに使えます。</p>
-    <div class="cs-actions">
-      <button type="button" class="cs-action-card" id="csExportBtn">
-        <span class="cs-action-icon" aria-hidden="true">⬇️</span>
-        <span class="cs-action-body"><span class="cs-action-lead">書き出す</span>
-        <span class="cs-action-sub">全ての会社情報をファイルに保存します</span></span>
-      </button>
-      <button type="button" class="cs-action-card" id="csImportBtn">
-        <span class="cs-action-icon" aria-hidden="true">⬆️</span>
-        <span class="cs-action-body"><span class="cs-action-lead">読み込む</span>
-        <span class="cs-action-sub">書き出したファイルから会社情報を戻します</span></span>
-      </button>
-      <input type="file" id="csImportFile" accept=".json" style="display:none;">
-    </div>
-    <p class="cs-hint" id="csBackupMsg"></p>
+    <details class="fold">
+      <summary>会社情報の書き出し・読み込み</summary>
+      <p class="lede" style="margin-top:0.8rem;">この端末に保存されている全ての会社情報をファイルに書き出せます。別の端末に移すときや、うっかり消してしまったときのバックアップに使えます。</p>
+      <div class="cs-actions">
+        <button type="button" class="cs-action-card" id="csExportBtn">
+          <span class="cs-action-icon" aria-hidden="true">⬇️</span>
+          <span class="cs-action-body"><span class="cs-action-lead">書き出す</span>
+          <span class="cs-action-sub">全ての会社情報をファイルに保存します</span></span>
+        </button>
+        <button type="button" class="cs-action-card" id="csImportBtn">
+          <span class="cs-action-icon" aria-hidden="true">⬆️</span>
+          <span class="cs-action-body"><span class="cs-action-lead">読み込む</span>
+          <span class="cs-action-sub">書き出したファイルから会社情報を戻します</span></span>
+        </button>
+        <input type="file" id="csImportFile" accept=".json" style="display:none;">
+      </div>
+      <p class="cs-hint" id="csBackupMsg"></p>
+    </details>
   </section>
 </main>
 
