@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e4d78">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
 <title>申請書類の準備｜補助金活用 業務改善ロードマップ</title>
 <meta name="description" content="補助金・助成金の申請書類を準備するページ。会社情報を1回入力すれば、ダウンロードした様式（Word・Excel）への自動入力もできます。取り寄せが必要な共通書類の確認、締切からの逆算、提出書類のチェックリストも1か所で。登録不要・処理はお使いの端末の中だけ。">
 <link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/documents.html">
@@ -5789,6 +5794,13 @@
   // 描画がすべて終わってから節を畳む（中身を動かすので順番が大事）
   initSectionAccordion();
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
 </script>
 </body>
 </html>

@@ -1,5 +1,10 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e4d78">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
 <title>採択基準・返還基準 調査ノート | 補助金活用 業務改善ロードマップ</title>
 <meta name="description" content="各種補助金・助成金の採択基準（審査項目・加点項目）と返還基準（交付取消・不正受給パターン）を公式資料から整理した調査ノート。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -220,4 +225,11 @@
 
 <p class="note">本ページの内容は公式資料・報道時点の情報に基づく調査ノートであり、随時制度改定が行われます。実際の申請にあたっては、各制度の最新の公募要領・交付規程を必ず確認してください。</p>
 
-</main></body></html>
+</main><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+</body></html>

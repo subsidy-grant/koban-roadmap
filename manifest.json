@@ -1,0 +1,16 @@
+{
+  "name": "補助金活用 業務改善ロードマップ",
+  "short_name": "補助金ロードマップ",
+  "description": "美容業・飲食業など6業種向けの補助金・助成金診断と申請書類作成支援",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#b7c1cd",
+  "theme_color": "#1e4d78",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

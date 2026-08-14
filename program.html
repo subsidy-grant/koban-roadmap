@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e4d78">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
 <title>制度の詳細｜補助金活用 業務改善ロードマップ</title>
 <meta name="description" content="補助金・助成金1制度ぶんの詳細（事業規模・対象経費・補助率・上限額・賃金上昇要件・採択率・受付期間・継続性）を1ページで確認できます。">
 <link rel="robots" content="noindex, follow">
@@ -2832,6 +2837,13 @@
 
   render();
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
 </script>
 </body>
 </html>
