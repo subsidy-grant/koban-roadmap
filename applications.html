@@ -104,14 +104,17 @@
   /* ---- 申請一覧 ---- */
   .app-list { list-style: none; margin: 0 0 1.2rem; padding: 0; }
   .app-item { display: flex; align-items: center; gap: 0.7rem; background: var(--paper-raised);
-    border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 0.6rem; }
+    border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem;
+    margin-bottom: 0.7rem; box-shadow: var(--shadow-btn); }
   .app-item.is-current { border-color: var(--accent); border-width: 2px; }
   .app-item-main { flex: 1 1 auto; min-width: 0; background: none; border: 0; padding: 0;
     text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
   .app-item-name { font-weight: 700; font-size: 1rem; display: block; }
   .app-item-meta { font-size: 0.82rem; color: var(--ink-soft); display: block; margin-top: 0.15rem; }
   .app-item-prog { flex: none; text-align: right; font-size: 0.85rem; color: var(--ink-soft);
-    font-variant-numeric: tabular-nums; min-width: 3.6rem; }
+    font-variant-numeric: tabular-nums; min-width: 4.6rem; line-height: 1.4; }
+  .app-item-prog .n { font-weight: 700; color: var(--accent); }
+  .app-item-prog .lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
   .app-item-del { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
     border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
   .app-item-del:hover { border-color: var(--rust); color: var(--rust); }
@@ -188,7 +191,6 @@
     <div class="pcard">
       <h3 id="appDetailName"></h3>
       <p class="meta" id="appDetailMeta"></p>
-      <p id="appDetailScheduleLink" style="margin:0 0 0.8rem;"></p>
       <label for="appDetailProgram" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">制度</label>
       <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius: var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
         <option value="">制度を選ぶと、必要な書類だけに絞られます</option>
@@ -281,7 +283,8 @@
         '<span class="app-item-name">' + esc(a.name) + '</span>' +
         '<span class="app-item-meta">' + esc(progName) + '</span>' +
         '</button>' +
-        '<span class="app-item-prog">' + p.done + ' / ' + p.total + '</span>' +
+        '<span class="app-item-prog"><span class="n">' + p.done + ' / ' + p.total + '</span>' +
+        '<span class="lbl">取り寄せ書類</span></span>' +
         '<button type="button" class="app-item-del" data-id="' + esc(a.id) + '" aria-label="この申請を削除">✕</button>' +
         '</li>';
     }).join('') + '</ul>';
@@ -340,13 +343,6 @@
     document.getElementById('appDetailMeta').textContent = key
       ? progName + 'に必要な書類だけを表示しています。'
       : '制度を選ぶと、必要な書類だけに絞られます。今はすべての書類を表示しています。';
-    var schedLink = document.getElementById('appDetailScheduleLink');
-    if (schedLink) {
-      schedLink.innerHTML = key
-        ? '<a href="schedule.html?scheme=' + encodeURIComponent(key) + '" class="btn-link">スケジュールで確認する ↗</a>'
-        : '';
-    }
-
     var doneList = document.getElementById('appDetailDone');
     var barEl = document.getElementById('appDetailBar');
     var checksEl = document.getElementById('appDetailChecks');

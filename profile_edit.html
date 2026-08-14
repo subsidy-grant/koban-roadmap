@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e4d78">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
+<title>プロフィール編集｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="補助金・助成金の申請書類に繰り返し出てくる会社情報を1回入力しておくページ。入力した内容は書類準備ページの様式に自動で入ります。登録不要・処理はお使いの端末の中だけ。">
+<link rel="canonical" href="https://subsidy-grant.github.io/koban-roadmap/profile_edit.html">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="補助金活用 業務改善ロードマップ">
+<meta property="og:title" content="プロフィール編集｜会社情報の入力">
+<meta property="og:description" content="会社情報を1回入力すれば、書類準備ページの様式に自動で入ります。">
+<meta property="og:url" content="https://subsidy-grant.github.io/koban-roadmap/profile_edit.html">
+<meta property="og:locale" content="ja_JP">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体・トークンは他ページと共通（design.md参照）。 */
+  :root {
+    --paper: #b7c1cd;
+    --paper-raised: #ffffff;
+    --ink: #191d22;
+    --ink-soft: #3d475c;
+    --ink-faint: #3d4658;
+    --accent: #1e4d78;
+    --accent-soft: #b9cfe3;
+    --accent-wash: #e3edf5;
+    --on-accent: #ffffff;
+    --sage: #094758;
+    --sage-wash: #dcf1f5;
+    --rust: #882e08;
+    --rust-wash: #f8e4d8;
+    --line: #4f5b6d;
+    --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0a0d12; --paper-raised: #2c384b; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+      --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+      --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+      --rust-wash: #2c1c10; --line: #8290ac; --shadow: rgba(0, 0, 0, 0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0a0d12; --paper-raised: #2c384b; --ink: #e6e9ee; --ink-soft: #b6c0cf;
+    --ink-faint: #96a2b5; --accent: #7fa8d9; --accent-soft: #24344f; --accent-wash: #1a2740;
+    --on-accent: #0d1218; --sage: #5fc3d9; --sage-wash: #15262c; --rust: #e88a5a;
+    --rust-wash: #2c1c10; --line: #8290ac; --shadow: rgba(0, 0, 0, 0.45);
+  }
+  :root[data-theme="light"] {
+    --paper: #b7c1cd; --paper-raised: #ffffff; --ink: #191d22; --ink-soft: #3d475c;
+    --ink-faint: #3d4658; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
+    --on-accent: #ffffff; --sage: #094758; --sage-wash: #dcf1f5; --rust: #882e08;
+    --rust-wash: #f8e4d8; --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Hiragino Sans","Meiryo",sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
+  main { max-width: 940px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
+  a { color: var(--accent); }
+
+  h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
+  .back-link { display: inline-block; font-size: 0.88rem; margin-bottom: 0.8rem; }
+  .editing-note { background: var(--accent-wash); border: 1px solid var(--accent-soft);
+    border-radius: var(--radius-md); padding: 0.7rem 1rem; font-size: 0.9rem; color: var(--ink);
+    margin-bottom: 1.2rem; }
+  .editing-note strong { color: var(--accent); }
+
+  section { margin-top: 2rem; scroll-margin-top: 1rem; }
+  .saved-note { font-size: 0.86rem; color: var(--sage); margin: 0.7rem 0 0; min-height: 1.5em; }
+
+  .btn {
+    border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
+    border-radius: var(--radius-md); padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
+    cursor: pointer; min-height: 44px; box-shadow: var(--shadow-btn);
+  }
+  .btn.ghost { background: var(--paper-raised); color: var(--accent); }
+  .btn:hover { filter: brightness(1.08); }
+  .btn[disabled], .btn[disabled]:hover {
+    background: var(--paper); color: var(--ink-faint); border-color: var(--line);
+    cursor: not-allowed; filter: none;
+  }
+
+  /* ---- 記入欄（documents.htmlと同じ「申請様式の記入欄」の見た目） ---- */
+  .form-grid { display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden; background: var(--paper-raised); }
+  .frow { display: grid; grid-template-columns: 12.5rem 1fr auto; align-items: stretch;
+    border-bottom: 1px solid var(--line); }
+  .frow:last-child { border-bottom: 0; }
+  .frow > label { background: var(--accent-wash); color: var(--ink); font-size: 0.88rem;
+    padding: 0.7rem 0.8rem; display: flex; align-items: center; gap: 0.3rem;
+    border-right: 1px solid var(--line); }
+  .fkind { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 400;
+    color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.05rem 0.55rem; white-space: nowrap; vertical-align: middle; }
+  .frow input, .frow textarea {
+    border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 0.98rem;
+    padding: 0.7rem 0.8rem; width: 100%; min-height: 46px; resize: vertical;
+  }
+  .frow input:focus, .frow textarea:focus { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .frow input::placeholder, .frow textarea::placeholder { color: var(--ink-faint); opacity: 0.75; }
+  .fhint { grid-column: 2 / 4; font-size: 0.82rem; color: var(--ink-faint);
+    padding: 0 0.8rem 0.6rem; margin: -0.3rem 0 0; }
+  .fhint.ng { color: var(--rust); }
+  .fhint.ok { color: var(--sage); }
+  @media (max-width: 620px) {
+    .frow { grid-template-columns: 1fr auto; }
+    .frow > label { grid-column: 1 / 3; border-right: 0; border-bottom: 1px solid var(--line); }
+    .fhint { grid-column: 1 / 3; }
+  }
+
+  /* ---- 質問形式（ウィザード）／まとめて確認・修正 ---- */
+  .wz-topbar { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .wz-progress { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; }
+  .wz-modebtn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
+    font: inherit; font-size: 0.85rem; border-radius: var(--radius-md); padding: 0.5rem 0.9rem;
+    min-height: 44px; cursor: pointer; }
+  .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
+  .wz-progress-track { height: 6px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 999px; overflow: hidden; margin: 0 0 1rem; }
+  .wz-progress-fill { display: block; height: 100%; width: 0; background: var(--accent);
+    transition: width 0.2s ease; }
+  #companyForm.mode-review .wz-progress-track,
+  #companyForm.mode-review .wz-progress,
+  #companyForm.mode-review .wz-nav { display: none; }
+
+  .wz-review-toggle { display: none; }
+  #companyForm.mode-review .wz-review-toggle { display: block; margin-bottom: 0.8rem; }
+  #companyForm.mode-review #wzSteps.wz-collapsed { display: none; }
+
+  #companyForm.mode-wizard .wz-steps { border: 0; border-radius: 0; overflow: visible; background: transparent; }
+  #companyForm.mode-wizard .wz-steps .fstep { display: none; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current {
+    display: block; background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.3rem 1.2rem; box-shadow: 0 1px 3px var(--shadow);
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow { display: block; border: 0; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow + .frow { margin-top: 1.1rem;
+    padding-top: 1.1rem; border-top: 1px dashed var(--line); }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow > label {
+    display: block; background: transparent; border: 0; padding: 0 0 0.6rem;
+    font-size: 1.12rem; font-weight: 700; color: var(--ink);
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow input,
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow textarea {
+    border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0.85rem 0.9rem;
+    font-size: 1.12rem; background: var(--paper); min-height: 52px;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint { grid-column: auto; margin: 0.6rem 0 0; padding: 0; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ok {
+    background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage);
+    border-radius: var(--radius-md); padding: 0.6rem 0.8rem; font-weight: 700;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ng {
+    background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust);
+    border-radius: var(--radius-md); padding: 0.6rem 0.8rem;
+  }
+
+  .ent-choice { display: none; gap: 0.7rem; margin-top: 0.3rem; flex-wrap: wrap; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .ent-choice { display: flex; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current select#f_entity { position: absolute;
+    width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ent-btn { flex: 1 1 9rem; min-height: 64px; font: inherit; font-size: 1.02rem; font-weight: 700;
+    border: 2px solid var(--line); border-radius: 10px; background: var(--paper-raised);
+    color: var(--ink); cursor: pointer; }
+  .ent-btn:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .ent-btn.is-sel { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); }
+
+  .slider-wrap { display: none; margin-top: 0.7rem; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .slider-wrap { display: block; }
+  .slider-wrap input[type="range"] { width: 100%; height: 2.6rem; accent-color: var(--accent); }
+  .slider-label { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+  .emp-select-wrap, .manyen-wrap, .industry-wrap {
+    display: none; margin-top: 0.7rem; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .emp-select-wrap,
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .manyen-wrap,
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .industry-wrap { display: flex; }
+  .picker-sublabel { font-size: 0.82rem; color: var(--ink-soft); }
+  .emp-select-wrap select, .manyen-wrap input, .industry-wrap select {
+    font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
+    min-height: 44px; max-width: 100%;
+  }
+  .manyen-wrap input[type="number"] { width: 8rem; }
+
+  .founded-wrap { display: none; margin-top: 0.7rem; }
+  #companyForm.mode-wizard .wz-steps .fstep.is-current .founded-wrap { display: block; }
+  .founded-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .founded-row select, .founded-row input[type="number"] {
+    font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
+    min-height: 44px; max-width: 100%;
+  }
+  .founded-row input[type="number"] { width: 7rem; }
+  @media (max-width: 620px) {
+    .industry-wrap select { flex: 1 1 100%; }
+  }
+
+  .wz-steps .fstep .frow:last-child { border-bottom: 1px solid var(--line); }
+  .wz-steps .fstep:last-child .frow:last-child { border-bottom: 0; }
+
+  .wz-nav { display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+  .wz-navhint { flex: 1 1 auto; text-align: center; margin: 0; font-size: 0.82rem;
+    color: var(--ink-faint); min-width: 9rem; }
+
+  /* アプリ風のタップフィードバック（他ページと共通） */
+  button, .btn, .theme-btn, .cs-add, .cs-chip button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .theme-btn:active, .cs-add:active, .cs-chip button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .theme-btn, .cs-add, .cs-chip button { transition: none; }
+  }
+
+</style>
+</head>
+<body>
+<main>
+  <a href="profile.html" class="back-link">← 会社情報 に戻る</a>
+  <h1>プロフィール編集</h1>
+  <p class="lede">ここで入力した会社情報は、<a href="documents.html">書類準備ページ</a>の様式に自動で入ります。入力した内容はこの端末の中だけに保存され、外部には送信されません。</p>
+
+  <p class="editing-note" id="editingNote"></p>
+
+  <div id="companyForm"></div>
+
+  <p class="saved-note" id="savedNote"></p>
+</main>
+
+<script src="page_data.js"></script>
+<script src="company_data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  var FIELDS = window.KOBAN_COMPANY.FIELDS;
+  var company = window.KOBAN_COMPANY.getCurrent() || { id: null };
+
+  var note = document.getElementById('editingNote');
+  if (note) {
+    note.innerHTML = '編集中の会社：<strong>' + esc(company.label || '（名称未設定）') + '</strong>' +
+      '<a href="profile.html" style="margin-left:0.8rem;font-size:0.85rem;">別の会社に切り替える</a>';
+  }
+
+  function saveCompany() {
+    var ok = false;
+    try { window.KOBAN_COMPANY.save(company); ok = true; } catch (e) { ok = false; }
+    showSaved(ok);
+    return ok;
+  }
+  var savedTimer = null;
+
+  // FIELDSのid・件数・意味はいっさい変えない（自動転記エンジンがこのidをキーに使うため）。
+  // ここで作るのは「同じFIELDSを、どのグループ（質問1画面）に出すか」の並び替えだけ。
+  var FIELDS_BY_ID = {};
+  FIELDS.forEach(function (f) { FIELDS_BY_ID[f.id] = f; });
+
+  // 郵便番号→住所は既存のlookupZip()がf_addrへ直接書き込むので、
+  // 「郵便番号」と「所在地」は同じ質問画面にまとめて出す（zipのすぐ次がaddrなので並びは変わらない）。
+  // 業種（大分類→中分類の2段階選択）も同じ理由で、industryとindustryCodeを1つの質問にまとめる。
+  var MERGE_NEXT = { zip: 'addr', industry: 'industryCode' };
+  var MERGED_AWAY = { addr: 1, industryCode: 1 };
+  var STEP_GROUPS = [];
+  FIELDS.forEach(function (f) {
+    if (MERGED_AWAY[f.id]) return;
+    var ids = [f.id];
+    if (MERGE_NEXT[f.id]) ids.push(MERGE_NEXT[f.id]);
+    STEP_GROUPS.push(ids);
+  });
+
+  // 事業形態は元のselect（値の器）はそのまま残し、その上に大きな2択ボタンを重ねる
+  var ENTITY_CHOICES = ['法人', '個人事業主'];
+
+  // 従業員数・資本金はテキスト欄（元のFIELDS定義のまま）に加えて、
+  // 大まかに選べるスライダーを添える。スライダーが書き込む先も同じテキスト欄なので、
+  // 自動転記エンジンから見える値の形式（company.employees / company.capital の文字列）は変わらない。
+  function yenLabel(y) {
+    y = +y || 0;
+    if (y === 0) return '0円';
+    if (y % 100000000 === 0) return (y / 100000000) + '億円';
+    if (y % 10000 === 0) return (y / 10000).toLocaleString('ja-JP') + '万円';
+    return y.toLocaleString('ja-JP') + '円';
+  }
+  var SLIDER_CFG = {
+    employees: {
+      presets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30, 40, 50, 70, 100, 150, 200, 300, 500, 1000],
+      toValue: function (p) { return String(p); },
+      toLabel: function (p) { return p + '人'; }
+    },
+    capital: {
+      presets: [0, 100000, 300000, 500000, 1000000, 2000000, 3000000, 5000000,
+                10000000, 20000000, 30000000, 50000000, 100000000, 300000000],
+      toValue: function (p) { return String(p); },
+      toLabel: yenLabel
+    }
+  };
+  function nearestPresetIndex(presets, raw) {
+    var n = parseInt(String(raw || '').replace(/[^0-9]/g, ''), 10);
+    if (isNaN(n)) return 0;
+    var bestI = 0, bestD = Infinity;
+    presets.forEach(function (p, i) {
+      var d = Math.abs(p - n);
+      if (d < bestD) { bestD = d; bestI = i; }
+    });
+    return bestI;
+  }
+
+  // ---------- 業種の質問を「大分類→中分類」の2段階選択にするための表 ----------
+  // 出典：ハローワークインターネットサービス「産業分類コード一覧（中分類）」
+  // https://www.hellowork.mhlw.go.jp/info/industry_list02.html
+  var INDUSTRY_MID = {
+    '01': '農業', '02': '林業', '03': '漁業(水産養殖業を除く)', '04': '水産養殖業', '05': '鉱業、採石業、砂利採取業',
+    '06': '総合工事業', '07': '職別工事業(設備工事業を除く)', '08': '設備工事業', '09': '食料品製造業',
+    '10': '飲料·たばこ·飼料製造業', '11': '繊維工業', '12': '木材·木製品製造業(家具を除く)', '13': '家具·装備品製造業',
+    '14': 'パルプ·紙·紙加工品製造業', '15': '印刷·同関連業', '16': '化学工業', '17': '石油製品·石炭製品製造業',
+    '18': 'プラスチック製品製造業(別掲を除く)', '19': 'ゴム製品製造業', '20': 'なめし革·同製品·毛皮製造業', '21': '窯業·土石製品製造業',
+    '22': '鉄鋼業', '23': '非鉄金属製造業', '24': '金属製品製造業', '25': 'はん用機械器具製造業', '26': '生産用機械器具製造業',
+    '27': '業務用機械器具製造業', '28': '電子部品·デバイス·電子回路製造業', '29': '電気機械器具製造業', '30': '情報通信機械器具製造業',
+    '31': '輸送用機械器具製造業', '32': 'その他の製造業', '33': '電気業', '34': 'ガス業', '35': '熱供給業', '36': '水道業',
+    '37': '通信業', '38': '放送業', '39': '情報サービス業', '40': 'インターネット附随サービス業', '41': '映像·音声·文字情報制作業',
+    '42': '鉄道業', '43': '道路旅客運送業', '44': '道路貨物運送業', '45': '水運業', '46': '航空運輪業', '47': '倉庫業',
+    '48': '運輪に附帯するサービス業', '49': '郵便業(信書便事業を含む)', '50': '各種商品卸売業', '51': '繊維·衣服等卸売業',
+    '52': '飲食料品卸売業', '53': '建築材料、鉱物·金属材料等卸売業', '54': '機械器具卸売業', '55': 'その他の卸売業',
+    '56': '各種商品小売業', '57': '織物·衣服·身の回り品小売業', '58': '飲食料品小売業', '59': '機械器具小売業', '60': 'その他の小売業',
+    '61': '無店舖小売業', '62': '銀行業', '63': '協同組織金融業', '64': '貸金業、クレジットカード業等非預金信用機関',
+    '65': '金融商品取引業、商品先物取引業', '66': '補助的金融業等', '67': '保険業(保険媒介代理業、保険サービス業を含む)', '68': '不動産取引業',
+    '69': '不動産賃貸業·管理業', '70': '物品賃貸業', '71': '学術·開発研究機関', '72': '専門サービス業(他に分類されないもの)',
+    '73': '広告業', '74': '技術サービス業(他に分類されないもの)', '75': '宿泊業', '76': '飲食店', '77': '持ち帰り·配達飲食サービス業',
+    '78': '洗濯·理容·美容·浴場業', '79': 'その他の生活関連サービス業', '80': '娛楽業', '81': '学校教育',
+    '82': 'その他の教育、学習支援業', '83': '医療業', '84': '保健衛生', '85': '社会保険·社会福祉·介護事業', '86': '郵便局',
+    '87': '協同組合(他に分類されないもの)', '88': '廃棄物処理業', '89': '自動車整備業', '90': '機械等修理業(別掲を除く)',
+    '91': '職業紹介·労働者派造業', '92': 'その他の事業サービス業', '93': '政治·経済·文化団体', '94': '宗教',
+    '95': 'その他のサービス業', '96': '外国公務', '97': '国家公務', '98': '地方公務', '99': '分類不能の産業'
+  };
+  function industryCodeRange(a, b) {
+    var out = [];
+    for (var i = a; i <= b; i++) out.push(i < 10 ? '0' + i : String(i));
+    return out;
+  }
+  var INDUSTRY_MAJOR = [
+    { k: 'A', t: '農業，林業', codes: industryCodeRange(1, 2) },
+    { k: 'B', t: '漁業', codes: industryCodeRange(3, 4) },
+    { k: 'C', t: '鉱業，採石業，砂利採取業', codes: industryCodeRange(5, 5) },
+    { k: 'D', t: '建設業', codes: industryCodeRange(6, 8) },
+    { k: 'E', t: '製造業', codes: industryCodeRange(9, 32) },
+    { k: 'F', t: '電気・ガス・熱供給・水道業', codes: industryCodeRange(33, 36) },
+    { k: 'G', t: '情報通信業', codes: industryCodeRange(37, 41) },
+    { k: 'H', t: '運輸業，郵便業', codes: industryCodeRange(42, 49) },
+    { k: 'I', t: '卸売業，小売業', codes: industryCodeRange(50, 61) },
+    { k: 'J', t: '金融業，保険業', codes: industryCodeRange(62, 67) },
+    { k: 'K', t: '不動産業，物品賃貸業', codes: industryCodeRange(68, 70) },
+    { k: 'L', t: '学術研究，専門・技術サービス業', codes: industryCodeRange(71, 74) },
+    { k: 'M', t: '宿泊業，飲食サービス業', codes: industryCodeRange(75, 77) },
+    { k: 'N', t: '生活関連サービス業，娯楽業', codes: industryCodeRange(78, 80) },
+    { k: 'O', t: '教育，学習支援業', codes: industryCodeRange(81, 82) },
+    { k: 'P', t: '医療，福祉', codes: industryCodeRange(83, 85) },
+    { k: 'Q', t: '複合サービス事業', codes: industryCodeRange(86, 87) },
+    { k: 'R', t: 'サービス業（他に分類されないもの）', codes: industryCodeRange(88, 96) },
+    { k: 'S', t: '公務（他に分類されるものを除く）', codes: industryCodeRange(97, 98) },
+    { k: 'T', t: '分類不能の産業', codes: industryCodeRange(99, 99) }
+  ];
+  function industryMajorOf(code) {
+    var hit = '';
+    INDUSTRY_MAJOR.forEach(function (m) { if (m.codes.indexOf(code) >= 0) hit = m.k; });
+    return hit;
+  }
+  // 中分類のプルダウンを、選ばれた大分類の中身だけに絞って作り直す
+  function industryFillMid(midSel, majorKey, selectCode) {
+    var maj = null;
+    INDUSTRY_MAJOR.forEach(function (m) { if (m.k === majorKey) maj = m; });
+    if (!maj) {
+      midSel.innerHTML = '<option value="">（先に大分類を選んでください）</option>';
+      midSel.disabled = true;
+      return;
+    }
+    midSel.disabled = false;
+    midSel.innerHTML = '<option value="">（中分類を選ぶ）</option>' +
+      maj.codes.map(function (code) {
+        return '<option value="' + code + '"' + (code === selectCode ? ' selected' : '') + '>' +
+          esc(code + '　' + (INDUSTRY_MID[code] || '')) + '</option>';
+      }).join('');
+  }
+
+  // 1項目ぶんの行を作る。中身（input/textarea/select、法人番号・郵便番号のヒント欄）は
+  // documents.htmlのrenderCompany()とまったく同じ。質問形式でだけ使う追加パーツ
+  // （2択ボタン・スライダー）を末尾に足すだけで、どちらのモードでも同じidの要素を1個ずつ使い回す。
+  function fieldRowHtml(f) {
+    var v = esc(company[f.id] || '');
+    var input;
+    if (f.opts) {
+      input = '<select id="f_' + f.id + '">' +
+        f.opts.map(function (o) {
+          return '<option value="' + esc(o.v) + '"' + (company[f.id] === o.v ? ' selected' : '') +
+            '>' + esc(o.t) + '</option>';
+        }).join('') + '</select>';
+    } else if (f.big) {
+      input = '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>';
+    } else {
+      input = '<input id="f_' + f.id + '" type="text"' +
+        (f.mode ? ' inputmode="' + f.mode + '"' : '') +
+        ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
+    }
+    var isChoice = !!(f.opts || f.inputStyle === 'choice');
+    var kindTag = '<span class="fkind">' + (isChoice ? '選択式' : '記述回答') + '</span>';
+    var extra = '';
+    if (f.id === 'entity') {
+      extra += '<div class="ent-choice" role="group" aria-label="事業形態を選ぶ">' +
+        ENTITY_CHOICES.map(function (c) {
+          return '<button type="button" class="ent-btn" data-v="' + esc(c) + '">' + esc(c) + '</button>';
+        }).join('') + '</div>';
+    }
+    if (SLIDER_CFG[f.id]) {
+      extra += '<div class="slider-wrap">' +
+        '<input type="range" id="sl_' + f.id + '" min="0" max="' + (SLIDER_CFG[f.id].presets.length - 1) + '" step="1">' +
+        '<p class="slider-label" id="sllabel_' + f.id + '"></p>' +
+        '</div>';
+    }
+    if (f.id === 'employees') {
+      extra += '<div class="emp-select-wrap">' +
+        '<label class="picker-sublabel" for="emp_sel">プルダウンで選ぶ</label>' +
+        '<select id="emp_sel"></select>' +
+        '</div>';
+    }
+    if (f.id === 'capital') {
+      extra += '<div class="manyen-wrap">' +
+        '<label class="picker-sublabel" for="cap_man">万円単位で入力</label>' +
+        '<input type="number" id="cap_man" inputmode="numeric" min="0" step="1" placeholder="例）300">' +
+        '<span class="picker-sublabel">万円</span>' +
+        '</div>';
+    }
+    if (f.id === 'founded') {
+      extra += '<div class="founded-wrap">' +
+        '<div class="founded-row">' +
+          '<select id="fd_kind" aria-label="和暦・西暦">' +
+            '<option value="wareki">和暦</option><option value="seireki">西暦</option>' +
+          '</select>' +
+          '<select id="fd_gengo" aria-label="元号">' +
+            '<option value="令和">令和</option><option value="平成">平成</option>' +
+            '<option value="昭和">昭和</option><option value="大正">大正</option>' +
+            '<option value="明治">明治</option>' +
+          '</select>' +
+          '<select id="fd_ywareki" aria-label="和暦の年"></select>' +
+          '<input type="number" id="fd_yseireki" inputmode="numeric" aria-label="西暦の年" placeholder="例）2018" style="display:none;">' +
+          '<select id="fd_month" aria-label="月"></select>' +
+          '<select id="fd_day" aria-label="日"></select>' +
+        '</div>' +
+        '<p class="slider-label">選ぶと上の欄に自動で入ります。</p>' +
+        '</div>';
+    }
+    if (f.id === 'industry') {
+      extra += '<div class="industry-wrap">' +
+        '<label class="picker-sublabel" for="ind_major">大分類</label>' +
+        '<select id="ind_major" aria-label="業種の大分類"></select>' +
+        '<label class="picker-sublabel" for="ind_mid">中分類</label>' +
+        '<select id="ind_mid" aria-label="業種の中分類"><option value="">（先に大分類を選んでください）</option></select>' +
+        '</div>';
+    }
+    return '<div class="frow">' +
+      '<label for="f_' + f.id + '">' + esc(f.label) + kindTag + '</label>' +
+      input +
+      (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
+      (f.id === 'zip' ? '<p class="fhint" id="hint_zip"></p>' : '') +
+      (f.id === 'hokenNo' ? '<p class="fhint">雇用保険適用事業所設置届の控え、雇用保険適用事業所台帳、またはハローワークが発行した通知書に記載されています。分からない場合は事業所を管轄するハローワークにご確認ください。</p>' : '') +
+      extra +
+      '</div>';
+  }
+
+  var wzMode = 'wizard';
+  var wzIdx = 0;
+  var wzAdvTimer = null;
+
+  function renderCompany() {
+    var el = document.getElementById('companyForm');
+    el.className = '';
+
+    var stepsHtml = STEP_GROUPS.map(function (ids, gi) {
+      var inner = ids.map(function (id) { return fieldRowHtml(FIELDS_BY_ID[id]); }).join('');
+      return '<div class="fstep" data-group="' + gi + '">' + inner + '</div>';
+    }).join('');
+
+    el.innerHTML =
+      '<div class="wz-topbar">' +
+        '<p class="wz-progress" id="wzProgress" aria-live="polite"></p>' +
+        '<button type="button" class="wz-modebtn" id="wzModeBtn"></button>' +
+      '</div>' +
+      '<div class="wz-progress-track"><span class="wz-progress-fill" id="wzProgressFill"></span></div>' +
+      '<div class="wz-review-toggle">' +
+        '<button type="button" class="btn ghost" id="wzReviewOpenBtn" aria-expanded="false" aria-controls="wzSteps">入力した会社情報を開いて確認・修正する</button>' +
+      '</div>' +
+      '<div class="wz-steps form-grid" id="wzSteps">' + stepsHtml + '</div>' +
+      '<div class="wz-nav" id="wzNav">' +
+        '<button type="button" class="btn ghost" id="wzBackBtn">← 戻る</button>' +
+        '<p class="wz-navhint">空欄のまま次へ進めても構いません</p>' +
+        '<button type="button" class="btn" id="wzNextBtn">次へ →</button>' +
+      '</div>';
+
+    // ---- 結線（写す・保存・法人番号のチェック・郵便番号→住所） ----
+    FIELDS.forEach(function (f) {
+      var node = document.getElementById('f_' + f.id);
+      node.addEventListener(f.opts ? 'change' : 'input', function () {
+        company[f.id] = node.value;
+        saveCompany();
+        if (f.id === 'houjin') checkHoujin();
+        if (f.id === 'zip') lookupZip(node.value);
+        if (f.id === 'entity') syncEntityButtons();
+        if (SLIDER_CFG[f.id]) syncSlider(f.id);
+      });
+      // 自由記述の欄はEnterキーで次の質問へ（テキストエリアは改行を優先するので対象外）
+      if (!f.opts && !f.big) {
+        node.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter' || wzMode !== 'wizard') return;
+          e.preventDefault();
+          wzGoNext();
+        });
+      }
+    });
+
+    // ---- ここから質問形式だけの結線 ----
+    el.querySelectorAll('.ent-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var node = document.getElementById('f_entity');
+        node.value = btn.getAttribute('data-v');
+        node.dispatchEvent(new Event('change', { bubbles: true }));
+        wzAutoAdvanceSoon();
+      });
+    });
+
+    Object.keys(SLIDER_CFG).forEach(function (id) {
+      var sl = document.getElementById('sl_' + id);
+      if (!sl) return;
+      sl.addEventListener('input', function () {
+        var cfg = SLIDER_CFG[id];
+        var p = cfg.presets[+sl.value] || 0;
+        var target = document.getElementById('f_' + id);
+        target.value = cfg.toValue(p);
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      sl.addEventListener('change', function () { wzAutoAdvanceSoon(); });
+    });
+
+    // 従業員数：スライダーと同じ刻みのプルダウン（併存。どちらもf_employeesに書く）
+    (function wireEmpSelect() {
+      var empSel = document.getElementById('emp_sel');
+      if (!empSel) return;
+      var cfg = SLIDER_CFG.employees;
+      empSel.innerHTML = '<option value="">（プルダウンで選ぶ）</option>' +
+        cfg.presets.map(function (p) {
+          return '<option value="' + esc(cfg.toValue(p)) + '">' + esc(cfg.toLabel(p)) + '</option>';
+        }).join('');
+      empSel.addEventListener('change', function () {
+        if (!empSel.value) return;
+        var target = document.getElementById('f_employees');
+        target.value = empSel.value;
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+        wzAutoAdvanceSoon();
+      });
+      syncEmpSelect();
+    })();
+
+    // 資本金：万円単位で入力する欄（併存。ここに入れた数×10000をf_capitalに書く）
+    (function wireCapMan() {
+      var capMan = document.getElementById('cap_man');
+      if (!capMan) return;
+      capMan.addEventListener('input', function () {
+        var n = parseInt(capMan.value, 10);
+        if (capMan.value.trim() === '' || isNaN(n)) return;
+        var target = document.getElementById('f_capital');
+        target.value = String(n * 10000);
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      capMan.addEventListener('change', function () { wzAutoAdvanceSoon(); });
+      syncCapMan();
+    })();
+
+    // 設立年月日・開業日：和暦／西暦を選んで組み立てる（値の器はf_foundedのまま）
+    (function wireFounded() {
+      var kindSel = document.getElementById('fd_kind');
+      if (!kindSel) return;
+      var gengoSel = document.getElementById('fd_gengo');
+      var ywSel = document.getElementById('fd_ywareki');
+      var ysInput = document.getElementById('fd_yseireki');
+      var mSel = document.getElementById('fd_month');
+      var dSel = document.getElementById('fd_day');
+
+      var yOpts = '<option value="">年</option>';
+      for (var y = 1; y <= 64; y++) yOpts += '<option value="' + y + '">' + y + '</option>';
+      ywSel.innerHTML = yOpts;
+      var mOpts = '<option value="">月</option>';
+      for (var m = 1; m <= 12; m++) mOpts += '<option value="' + m + '">' + m + '</option>';
+      mSel.innerHTML = mOpts;
+      var dOpts = '<option value="">日</option>';
+      for (var d = 1; d <= 31; d++) dOpts += '<option value="' + d + '">' + d + '</option>';
+      dSel.innerHTML = dOpts;
+
+      function syncKindVisibility() {
+        var isWareki = kindSel.value !== 'seireki';
+        gengoSel.style.display = isWareki ? '' : 'none';
+        ywSel.style.display = isWareki ? '' : 'none';
+        ysInput.style.display = isWareki ? 'none' : '';
+      }
+      function applyFounded(advance) {
+        var mv = mSel.value, dv = dSel.value, text;
+        if (!mv || !dv) return;
+        if (kindSel.value === 'seireki') {
+          if (!ysInput.value) return;
+          text = ysInput.value + '年' + mv + '月' + dv + '日';
+        } else {
+          if (!ywSel.value) return;
+          text = gengoSel.value + ywSel.value + '年' + mv + '月' + dv + '日';
+        }
+        var node = document.getElementById('f_founded');
+        node.value = text;
+        node.dispatchEvent(new Event('input', { bubbles: true }));
+        if (advance) wzAutoAdvanceSoon();
+      }
+      kindSel.addEventListener('change', function () { syncKindVisibility(); applyFounded(true); });
+      [gengoSel, ywSel, mSel, dSel].forEach(function (n) {
+        n.addEventListener('change', function () { applyFounded(true); });
+      });
+      ysInput.addEventListener('input', function () { applyFounded(false); });
+      ysInput.addEventListener('change', function () { applyFounded(true); });
+      syncKindVisibility();
+    })();
+
+    // 業種：大分類→中分類の2段階選択（選ぶとf_industryとf_industryCodeの両方に書く）
+    (function wireIndustryPickers() {
+      var majorSel = document.getElementById('ind_major');
+      var midSel = document.getElementById('ind_mid');
+      if (!majorSel || !midSel) return;
+      majorSel.innerHTML = '<option value="">（大分類を選ぶ）</option>' +
+        INDUSTRY_MAJOR.map(function (mj) {
+          return '<option value="' + mj.k + '">' + esc(mj.k + '　' + mj.t) + '</option>';
+        }).join('');
+      majorSel.addEventListener('change', function () {
+        industryFillMid(midSel, majorSel.value, '');
+      });
+      midSel.addEventListener('change', function () {
+        var code = midSel.value;
+        if (!code) return;
+        var codeNode = document.getElementById('f_industryCode');
+        var nameNode = document.getElementById('f_industry');
+        codeNode.value = code;
+        codeNode.dispatchEvent(new Event('input', { bubbles: true }));
+        nameNode.value = INDUSTRY_MID[code] || '';
+        nameNode.dispatchEvent(new Event('input', { bubbles: true }));
+        wzAutoAdvanceSoon();
+      });
+      syncIndustryPickers();
+    })();
+
+    var reviewOpenBtn = document.getElementById('wzReviewOpenBtn');
+    if (reviewOpenBtn) {
+      reviewOpenBtn.addEventListener('click', function () {
+        var steps = document.getElementById('wzSteps');
+        var willOpen = steps.classList.contains('wz-collapsed');
+        steps.classList.toggle('wz-collapsed', !willOpen);
+        reviewOpenBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        reviewOpenBtn.textContent = willOpen ? '入力した会社情報を閉じる' : '入力した会社情報を開いて確認・修正する';
+      });
+    }
+
+    document.getElementById('wzBackBtn').addEventListener('click', function () {
+      clearTimeout(wzAdvTimer);
+      wzShowStep(wzIdx - 1);
+    });
+    document.getElementById('wzNextBtn').addEventListener('click', wzGoNext);
+    document.getElementById('wzModeBtn').addEventListener('click', function () {
+      if (wzMode === 'wizard') {
+        wzSetMode('review');
+      } else {
+        wzIdx = wzFirstIncompleteIdx();
+        wzSetMode('wizard');
+      }
+    });
+
+    syncEntityButtons();
+    Object.keys(SLIDER_CFG).forEach(syncSlider);
+    syncEmpSelect();
+    syncCapMan();
+    syncIndustryPickers();
+
+    // 既定は常に質問形式（ウィザード）。保存済みデータがあるときは、
+    // 「まとめて確認」へ自動で飛ばさず、最初の未回答質問から始める
+    var hasData = FIELDS.some(function (f) { return (company[f.id] || '').toString().trim(); });
+    wzIdx = hasData ? wzFirstIncompleteIdx() : 0;
+    wzSetMode('wizard');
+    checkHoujin();
+  }
+
+  function wzGoNext() {
+    clearTimeout(wzAdvTimer);
+    if (wzIdx >= STEP_GROUPS.length - 1) { wzSetMode('review'); return; }
+    wzShowStep(wzIdx + 1);
+  }
+  function wzAutoAdvanceSoon() {
+    if (wzMode !== 'wizard') return;
+    clearTimeout(wzAdvTimer);
+    wzAdvTimer = setTimeout(wzGoNext, 380);
+  }
+  function wzShowStep(idx) {
+    wzIdx = Math.max(0, Math.min(idx, STEP_GROUPS.length - 1));
+    var steps = document.querySelectorAll('#wzSteps .fstep');
+    steps.forEach(function (s, i) { s.classList.toggle('is-current', i === wzIdx); });
+    var prog = document.getElementById('wzProgress');
+    if (prog) prog.textContent = '質問 ' + (wzIdx + 1) + ' / ' + STEP_GROUPS.length;
+    var fill = document.getElementById('wzProgressFill');
+    if (fill) fill.style.width = Math.round(((wzIdx + 1) / STEP_GROUPS.length) * 100) + '%';
+    var back = document.getElementById('wzBackBtn');
+    if (back) back.disabled = (wzIdx === 0);
+    var next = document.getElementById('wzNextBtn');
+    if (next) next.textContent = (wzIdx === STEP_GROUPS.length - 1) ? '確認画面へ進む' : '次へ →';
+    syncEntityButtons();
+    Object.keys(SLIDER_CFG).forEach(syncSlider);
+    syncEmpSelect();
+    syncCapMan();
+    syncIndustryPickers();
+    var cur = document.querySelector('#wzSteps .fstep.is-current');
+    if (cur) {
+      var focusable = cur.querySelector('input, textarea, .ent-btn');
+      if (focusable) {
+        try { focusable.focus({ preventScroll: true }); } catch (e1) { try { focusable.focus(); } catch (e2) {} }
+      }
+    }
+  }
+  function wzSetMode(mode) {
+    wzMode = mode;
+    var el = document.getElementById('companyForm');
+    if (!el) return;
+    el.classList.toggle('mode-wizard', mode === 'wizard');
+    el.classList.toggle('mode-review', mode === 'review');
+    var btn = document.getElementById('wzModeBtn');
+    if (btn) btn.textContent = mode === 'wizard' ? 'まとめて確認・修正する' : '質問形式で1つずつ答える';
+    if (mode === 'wizard') wzShowStep(wzIdx);
+    if (mode === 'review') {
+      // まとめて確認・修正の一覧は、開くたびに既定で閉じた状態に戻す
+      var steps = document.getElementById('wzSteps');
+      if (steps) steps.classList.add('wz-collapsed');
+      var openBtn = document.getElementById('wzReviewOpenBtn');
+      if (openBtn) {
+        openBtn.setAttribute('aria-expanded', 'false');
+        openBtn.textContent = '入力した会社情報を開いて確認・修正する';
+      }
+    }
+  }
+  function wzFirstIncompleteIdx() {
+    for (var i = 0; i < STEP_GROUPS.length; i++) {
+      var filled = STEP_GROUPS[i].some(function (id) { return (company[id] || '').toString().trim(); });
+      if (!filled) return i;
+    }
+    return 0;
+  }
+  function syncEntityButtons() {
+    document.querySelectorAll('.ent-btn').forEach(function (btn) {
+      btn.classList.toggle('is-sel', btn.getAttribute('data-v') === (company.entity || ''));
+    });
+  }
+  function syncSlider(id) {
+    var cfg = SLIDER_CFG[id];
+    var sl = document.getElementById('sl_' + id);
+    if (!cfg || !sl) return;
+    var idx = nearestPresetIndex(cfg.presets, company[id]);
+    sl.value = idx;
+    var label = document.getElementById('sllabel_' + id);
+    if (!label) return;
+    var v = (company[id] || '').toString().trim();
+    label.textContent = v
+      ? 'いまの入力：' + v + '（近いのは ' + cfg.toLabel(cfg.presets[idx]) + '）'
+      : 'スライダーでおおまかに選べます（' + cfg.toLabel(cfg.presets[idx]) + '〜）';
+  }
+  // 従業員数のプルダウンを、いまのf_employeesの値に合わせておく
+  // （プリセットに無い値なら「プルダウンで選ぶ」のまま＝未選択にする）
+  function syncEmpSelect() {
+    var empSel = document.getElementById('emp_sel');
+    if (!empSel) return;
+    var cur = (company.employees || '').toString().trim();
+    var cfg = SLIDER_CFG.employees;
+    var hit = cfg.presets.some(function (p) { return cfg.toValue(p) === cur; });
+    empSel.value = hit ? cur : '';
+  }
+  // 資本金の万円入力欄を、いまのf_capitalの値に合わせておく
+  // （万円で割り切れない金額のときは空欄のままにする＝上書きしない）
+  function syncCapMan() {
+    var capMan = document.getElementById('cap_man');
+    if (!capMan) return;
+    var yen = parseInt((company.capital || '').toString().replace(/[^0-9]/g, ''), 10);
+    capMan.value = (!isNaN(yen) && yen > 0 && yen % 10000 === 0) ? String(yen / 10000) : '';
+  }
+  // 業種の大分類／中分類プルダウンを、いまのcompany.industryCodeに合わせておく
+  function syncIndustryPickers() {
+    var majorSel = document.getElementById('ind_major');
+    var midSel = document.getElementById('ind_mid');
+    if (!majorSel || !midSel) return;
+    var savedCode = (company.industryCode || '').toString().trim();
+    var savedMajor = industryMajorOf(savedCode);
+    majorSel.value = savedMajor;
+    industryFillMid(midSel, savedMajor, savedCode);
+  }
+
+  var savedTimer = null;
+  function showSaved(ok) {
+    var n = document.getElementById('savedNote');
+    if (!n) return;
+    n.textContent = ok ? 'この端末に保存しました。' :
+      '保存できませんでした（ブラウザの設定で保存が禁止されている可能性があります）。';
+    n.style.color = ok ? 'var(--sage)' : 'var(--rust)';
+    clearTimeout(savedTimer);
+    savedTimer = setTimeout(function () { n.textContent = ''; }, 2500);
+  }
+
+  // ---------- 03 法人番号の検査用数字 ----------
+  // 国税庁の定義：法人番号13桁は「検査用数字1桁 ＋ 基礎番号12桁」。
+  //   検査用数字 = 9 − (Σ(n=1..12) Pn × Qn) mod 9
+  //   Pn = 基礎番号の下からn桁目の数字、Qn = nが奇数なら1・偶数なら2
+  function houjinCheckDigit(base12) {
+    var sum = 0;
+    for (var n = 1; n <= 12; n++) {
+      var p = parseInt(base12.charAt(12 - n), 10);
+      sum += p * (n % 2 === 1 ? 1 : 2);
+    }
+    return 9 - (sum % 9);
+  }
+  // 法人番号13桁の検査用数字を検算し、欄の下にその場で出す。
+  function checkHoujin() {
+    var raw = (company.houjin || '').replace(/[^0-9]/g, '');
+    var hint = document.getElementById('hint_houjin');
+    if (!hint) return;
+    if (!raw) { hint.textContent = ''; hint.className = 'fhint'; return; }
+    if (raw.length !== 13) {
+      hint.textContent = 'いまは' + raw.length + '桁です。法人番号は13桁です。';
+      hint.className = 'fhint ng';
+      return;
+    }
+    var ok = houjinCheckDigit(raw.slice(1)) === parseInt(raw.charAt(0), 10);
+    hint.textContent = ok
+      ? '13桁・検査用数字とも合っています。'
+      : '13桁ですが、検査用数字が合いません。どこかの数字が違っている可能性があります。';
+    hint.className = 'fhint ' + (ok ? 'ok' : 'ng');
+  }
+
+  // ---------- 郵便番号から住所を入れる ----------
+  // 住所の一覧は当サイトの zipdata/ に置いてある（日本郵便のデータから作った）。
+  // 外部の検索APIを使わないのは「入力した内容は端末の中だけ」という約束を守るため。
+  // 落ちてくるのは上3桁ぶんの1ファイル（平均7KB）だけ。
+  var zipCache = {};
+  var zipSeq = 0;
+
+  function setZipHint(msg, cls) {
+    var el = document.getElementById('hint_zip');
+    if (el) { el.textContent = msg; el.className = 'fhint' + (cls ? ' ' + cls : ''); }
+  }
+
+  function lookupZip(raw) {
+    // 全角数字とハイフンを直してから7桁を取り出す
+    var z = String(raw || '')
+      .replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+      .replace(/[^0-9]/g, '');
+    if (z.length < 7) { setZipHint(z ? 'あと' + (7 - z.length) + '桁です。' : ''); return; }
+    z = z.slice(0, 7);
+    var seq = ++zipSeq;
+    var pre = z.slice(0, 3);
+
+    var apply = function (table) {
+      if (seq !== zipSeq) return;           // 入力が進んでいたら古い結果は捨てる
+      var hit = table && table[z];
+      if (!hit) { setZipHint('この郵便番号は見つかりませんでした。住所は直接ご入力ください。', 'ng'); return; }
+      var addr = hit[0] + hit[1] + hit[2];
+      var node = document.getElementById('f_addr');
+      if (!node.value.trim()) {
+        node.value = addr;
+        company.addr = addr;
+        saveCompany();
+        setZipHint(addr + ' を入れました。続けて番地・建物名をご入力ください。', 'ok');
+        node.focus();
+        node.setSelectionRange(addr.length, addr.length);
+      } else {
+        // すでに書いてある住所を黙って消さない。置き換えるかは本人に決めてもらう
+        setZipHint('この郵便番号は「' + addr + '」です。', '');
+        var el = document.getElementById('hint_zip');
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn ghost';
+        btn.style.cssText = 'font-size:0.8rem;padding:0.25rem 0.7rem;margin-left:0.5rem;min-height:32px;';
+        btn.textContent = 'この住所に置き換える';
+        btn.onclick = function () {
+          node.value = addr;
+          company.addr = addr;
+          saveCompany();
+          setZipHint(addr + ' に置き換えました。続けて番地・建物名をご入力ください。', 'ok');
+          node.focus();
+          node.setSelectionRange(addr.length, addr.length);
+        };
+        el.appendChild(btn);
+      }
+    };
+
+    if (zipCache[pre]) { apply(zipCache[pre]); return; }
+    setZipHint('住所を調べています…');
+    fetch('zipdata/' + pre + '.json', { cache: 'force-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { zipCache[pre] = j || {}; apply(zipCache[pre]); })
+      .catch(function () {
+        if (seq === zipSeq) setZipHint('住所の一覧を読み込めませんでした。住所は直接ご入力ください。', 'ng');
+      });
+  }
+
+
+  renderCompany();
+})();
+</script>
+<script src="app_tabbar.js"></script>
+</body>
+</html>

@@ -216,10 +216,10 @@
   .dz-sub { margin: 0 0 0.9rem; color: var(--ink-soft); font-size: 0.88rem; }
   .af-legend { margin: 1rem 0 0; padding-top: 0.8rem; border-top: 1px dashed var(--line);
     color: var(--ink-faint); font-size: 0.82rem; }
-  .af-register-link { display: block; margin: 1rem 0 0; padding: 0.7rem 1rem; text-align: center;
+  .af-register-link { display: block; width: 100%; margin: 1rem 0 0; padding: 0.7rem 1rem; text-align: center;
     border: 1px solid var(--accent); border-radius: var(--radius-md); background: var(--accent-wash);
-    color: var(--accent); font-weight: 700; font-size: 0.92rem; text-decoration: none; min-height: 44px;
-    box-sizing: border-box; }
+    color: var(--accent); font: inherit; font-weight: 700; font-size: 0.92rem; text-decoration: none; min-height: 44px;
+    box-sizing: border-box; cursor: pointer; }
   .af-register-link:active { transform: scale(0.98); }
   .ow-row { display: flex; align-items: flex-start; gap: 0.55rem; margin: 0.8rem 0 0;
     font-size: 0.9rem; cursor: pointer; }
@@ -4421,8 +4421,8 @@
       '<span class="sub">先に手順3を押してください</span></button>' +
       '</div>' +
       '<p class="af-status" id="afStatus"></p>' +
-      '<a href="applications.html?p=' + encodeURIComponent(key) + '" class="btn-link af-register-link">' +
-      '申請進捗・スケジュールに登録する ↗</a>' +
+      '<button type="button" class="btn-link af-register-link" id="afRegisterBtn" data-key="' + esc(key) + '">' +
+      '申請進捗に登録する ↗</button>' +
       '<p class="af-legend">自動入力できる書類にはチェックが入っています。' +
       'それ以外の書類（PDF・古い形式など）は自動入力の対象外で、公式サイトから取得してください。</p>';
     html += '</div>';
@@ -4441,7 +4441,33 @@
     box.querySelector('#afNone').addEventListener('click', function () { setAllAf(false); });
     box.querySelector('#afRun').addEventListener('click', runAfFill);
     box.querySelector('#afDlFilled').addEventListener('click', downloadFilledForms);
+    var registerBtn = box.querySelector('#afRegisterBtn');
+    if (registerBtn) registerBtn.addEventListener('click', function () {
+      registerToApplications(registerBtn.getAttribute('data-key'));
+    });
     updateFilledDlBtn();
+  }
+  // 「申請進捗に登録する」：この制度の申請が無ければ自動で1件作り、
+  // あればそれを開く。documents.htmlからは押すだけで済むようにする
+  // （applications.html側で改めて「申請を追加」を押させると二度手間になるため）
+  function registerToApplications(key) {
+    if (!key) return;
+    var K_APPS = 'koban_applications';
+    var apps = [];
+    try { var r = localStorage.getItem(K_APPS); apps = r ? JSON.parse(r) : []; } catch (e) { apps = []; }
+    var existing = apps.filter(function (a) { return a.programKey === key; });
+    if (existing.length === 1) {
+      location.href = 'applications.html?p=' + encodeURIComponent(key);
+      return;
+    }
+    var seq = 0;
+    try { var s = localStorage.getItem('koban_applications_seq'); seq = s ? JSON.parse(s) : 0; } catch (e) { seq = 0; }
+    seq++;
+    try { localStorage.setItem('koban_applications_seq', JSON.stringify(seq)); } catch (e) {}
+    var name = (D.programs[key] || {}).name || key;
+    apps.push({ id: 'app' + seq, name: name, programKey: key, createdAt: seq, done: {} });
+    try { localStorage.setItem(K_APPS, JSON.stringify(apps)); } catch (e) {}
+    location.href = 'applications.html?p=' + encodeURIComponent(key);
   }
   // 手順3のボタンに、いま何件が対象かを出す。
   // 「選んだ様式」だけでは何件なのか分からず、押す前に結果が読めない

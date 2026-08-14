@@ -1,20 +1,19 @@
 // PWAオフラインキャッシュ。制度データ(page_data.js等)は更新頻度が高いため
 // network-first（オンライン時は常に最新を取り、失敗時だけキャッシュを返す）。
 // それ以外の静的資産はcache-first。
-var CACHE_NAME = 'koban-roadmap-v3';
+var CACHE_NAME = 'koban-roadmap-v5';
 var CORE_ASSETS = [
   './',
   './index.html',
   './program.html',
   './documents.html',
   './applications.html',
-  './schedule.html',
   './criteria.html',
   './profile.html',
+  './profile_edit.html',
+  './profile_status.html',
   './common_docs.js',
   './company_data.js',
-  './gantt_data.js',
-  './gantt_ui.js',
   './page_data.js',
   './sim_data.js',
   './app_tabbar.js',

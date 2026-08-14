@@ -7,8 +7,7 @@
     { href: 'index.html', match: /^(|index\.html)$/, icon: '🔍', label: '探す' },
     { href: 'documents.html', match: /^documents\.html$/, icon: '📄', label: '書類準備' },
     { href: 'applications.html', match: /^applications\.html$/, icon: '✅', label: '申請進捗' },
-    { href: 'schedule.html', match: /^schedule\.html$/, icon: '📅', label: 'スケジュール' },
-    { href: 'profile.html', match: /^profile\.html$/, icon: '🏢', label: '会社情報' }
+    { href: 'profile.html', match: /^profile(_edit|_status)?\.html$/, icon: '🏢', label: '会社情報' }
   ];
 
   var style = document.createElement('style');
