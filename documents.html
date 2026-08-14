@@ -114,150 +114,6 @@
   .section-head h2 { font-size: 1.15rem; margin: 0; }
   .section-sub { color: var(--ink-soft); font-size: 0.93rem; margin: 0 0 1rem; max-width: 66ch; }
 
-  /* ---- 記入欄（このページのシグネチャ） ----
-     ラベルを左の薄い青地に置き、入力欄は下線。役所の申請様式の記入欄と同じ形。 */
-  .form-grid { display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--line);
-    border-radius: 10px; overflow: hidden; background: var(--paper-raised); }
-  .frow { display: grid; grid-template-columns: 12.5rem 1fr auto; align-items: stretch;
-    border-bottom: 1px solid var(--line); }
-  .frow:last-child { border-bottom: 0; }
-  .frow > label { background: var(--accent-wash); color: var(--ink); font-size: 0.88rem;
-    padding: 0.7rem 0.8rem; display: flex; align-items: center; gap: 0.3rem;
-    border-right: 1px solid var(--line); }
-  /* 質問ごとに「記述回答」か「選択式」かを示す小さな印。
-     まとめて確認モードのlabelはflex（gapで間隔）、質問形式のlabelはblock（marginで間隔）
-     と表示のしかたが変わるため、両方で効くようmargin-leftも付けている */
-  .fkind { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 400;
-    color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px;
-    padding: 0.05rem 0.55rem; white-space: nowrap; vertical-align: middle; }
-  .frow input, .frow textarea {
-    border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 0.98rem;
-    padding: 0.7rem 0.8rem; width: 100%; min-height: 46px; resize: vertical;
-  }
-  .frow input:focus, .frow textarea:focus { outline: 3px solid var(--accent); outline-offset: -3px; }
-  .frow input::placeholder, .frow textarea::placeholder { color: var(--ink-faint); opacity: 0.75; }
-  .fhint { grid-column: 2 / 4; font-size: 0.82rem; color: var(--ink-faint);
-    padding: 0 0.8rem 0.6rem; margin: -0.3rem 0 0; }
-  .fhint.ng { color: var(--rust); }
-  .fhint.ok { color: var(--sage); }
-  @media (max-width: 620px) {
-    .frow { grid-template-columns: 1fr auto; }
-    .frow > label { grid-column: 1 / 3; border-right: 0; border-bottom: 1px solid var(--line); }
-    .fhint { grid-column: 1 / 3; }
-  }
-
-  /* ---- 会社情報：質問形式（ウィザード） ----
-     #companyForm は「質問形式」と「まとめて確認・修正」の2モードを持つ。
-     どちらのモードでも同じ .frow（同じ id の input/textarea/select）を使い回す。
-     モードの見た目の違いはCSSだけで作り、JSはクラスの付け替えとフォーカス移動だけを行う
-     （フィールドをDOMから作り直すと、郵便番号→住所の非同期取得が完了する前に
-     次の質問へ進んだ場合に書き込み先が消えてしまうため）。 */
-  .wz-topbar { display: flex; align-items: center; justify-content: space-between;
-    gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-  .wz-progress { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink-soft);
-    font-variant-numeric: tabular-nums; }
-  .wz-modebtn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
-    font: inherit; font-size: 0.85rem; border-radius: var(--radius-md); padding: 0.5rem 0.9rem;
-    min-height: 44px; cursor: pointer; }
-  .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
-  .wz-progress-track { height: 6px; background: var(--paper); border: 1px solid var(--line);
-    border-radius: 999px; overflow: hidden; margin: 0 0 1rem; }
-  .wz-progress-fill { display: block; height: 100%; width: 0; background: var(--accent);
-    transition: width 0.2s ease; }
-  #companyForm.mode-review .wz-progress-track,
-  #companyForm.mode-review .wz-progress,
-  #companyForm.mode-review .wz-nav { display: none; }
-
-  /* まとめて確認・修正モードの入力済み一覧は、既定で閉じておく（開閉は#wzReviewOpenBtn） */
-  .wz-review-toggle { display: none; }
-  #companyForm.mode-review .wz-review-toggle { display: block; margin-bottom: 0.8rem; }
-  #companyForm.mode-review #wzSteps.wz-collapsed { display: none; }
-
-  /* 質問形式のときは、いま出ている .fstep 以外を隠す */
-  #companyForm.mode-wizard .wz-steps { border: 0; border-radius: 0; overflow: visible; background: transparent; }
-  #companyForm.mode-wizard .wz-steps .fstep { display: none; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current {
-    display: block; background: var(--paper-raised); border: 1px solid var(--line);
-    border-radius: 12px; padding: 1.3rem 1.2rem; box-shadow: 0 1px 3px var(--shadow);
-  }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow { display: block; border: 0; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow + .frow { margin-top: 1.1rem;
-    padding-top: 1.1rem; border-top: 1px dashed var(--line); }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow > label {
-    display: block; background: transparent; border: 0; padding: 0 0 0.6rem;
-    font-size: 1.12rem; font-weight: 700; color: var(--ink);
-  }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow input,
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .frow textarea {
-    border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0.85rem 0.9rem;
-    font-size: 1.12rem; background: var(--paper); min-height: 52px;
-  }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint { grid-column: auto; margin: 0.6rem 0 0; padding: 0; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ok {
-    background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage);
-    border-radius: var(--radius-md); padding: 0.6rem 0.8rem; font-weight: 700;
-  }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ng {
-    background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust);
-    border-radius: var(--radius-md); padding: 0.6rem 0.8rem;
-  }
-
-  /* 事業形態：大きなタップ2択（下の select は質問形式のときだけ隠す。値の器はselectのまま） */
-  .ent-choice { display: none; gap: 0.7rem; margin-top: 0.3rem; flex-wrap: wrap; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .ent-choice { display: flex; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current select#f_entity { position: absolute;
-    width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .ent-btn { flex: 1 1 9rem; min-height: 64px; font: inherit; font-size: 1.02rem; font-weight: 700;
-    border: 2px solid var(--line); border-radius: 10px; background: var(--paper-raised);
-    color: var(--ink); cursor: pointer; }
-  .ent-btn:hover { border-color: var(--accent); background: var(--accent-wash); }
-  .ent-btn.is-sel { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); }
-
-  /* 従業員数・資本金：大まかに選ぶスライダー（下の数値欄はそのまま残す） */
-  .slider-wrap { display: none; margin-top: 0.7rem; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .slider-wrap { display: block; }
-  .slider-wrap input[type="range"] { width: 100%; height: 2.6rem; accent-color: var(--accent); }
-  .slider-label { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
-
-  /* 質問形式だけで出す追加の選択UI（従業員数プルダウン・資本金の万円入力・
-     設立年月日の和暦/西暦・業種の大分類/中分類）。どれも値の器（元の#f_<id>）は
-     そのまま残し、選ぶとそこへ書き込む。下のテキスト欄・スライダーとは併用できる */
-  .emp-select-wrap, .manyen-wrap, .industry-wrap {
-    display: none; margin-top: 0.7rem; align-items: center; gap: 0.5rem; flex-wrap: wrap;
-  }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .emp-select-wrap,
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .manyen-wrap,
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .industry-wrap { display: flex; }
-  .picker-sublabel { font-size: 0.82rem; color: var(--ink-soft); }
-  .emp-select-wrap select, .manyen-wrap input, .industry-wrap select {
-    font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
-    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
-    min-height: 44px; max-width: 100%;
-  }
-  .manyen-wrap input[type="number"] { width: 8rem; }
-
-  .founded-wrap { display: none; margin-top: 0.7rem; }
-  #companyForm.mode-wizard .wz-steps .fstep.is-current .founded-wrap { display: block; }
-  .founded-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-  .founded-row select, .founded-row input[type="number"] {
-    font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
-    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
-    min-height: 44px; max-width: 100%;
-  }
-  .founded-row input[type="number"] { width: 7rem; }
-  @media (max-width: 620px) {
-    .industry-wrap select { flex: 1 1 100%; }
-  }
-
-  /* まとめて確認・修正モードでは、質問のまとまり（.fstep）を挟んでも
-     元の表と同じ罫線に見えるよう、境界線をここで引き直す */
-  .wz-steps .fstep .frow:last-child { border-bottom: 1px solid var(--line); }
-  .wz-steps .fstep:last-child .frow:last-child { border-bottom: 0; }
-
-  .wz-nav { display: flex; align-items: center; justify-content: space-between;
-    gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
-  .wz-navhint { flex: 1 1 auto; text-align: center; margin: 0; font-size: 0.82rem;
-    color: var(--ink-faint); min-width: 9rem; }
 
   .btn {
     border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
@@ -351,6 +207,20 @@
     padding: 0.25rem 0.4rem 0.25rem 0.8rem; }
   .chip button { border: 0; background: transparent; color: var(--ink-soft); font: inherit;
     cursor: pointer; font-size: 1rem; line-height: 1; padding: 0.35rem 0.45rem; min-height: 32px; }
+
+  /* ---- 手順3の直前に置く、会社情報の状態表示・切替（profile.htmlへ01を移した後の橋渡し） ---- */
+  .company-picker { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: var(--radius-md); padding: 0.9rem 1rem; margin: 1rem 0; }
+  .company-picker.is-warn { border-color: var(--rust); background: var(--rust-wash); }
+  .cp-warn { margin: 0 0 0.7rem; font-size: 0.92rem; color: var(--rust); }
+  .cp-current { margin: 0 0 0.6rem; font-size: 0.92rem; color: var(--ink-soft); }
+  .cp-current strong { color: var(--ink); }
+  .cp-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 0.7rem; }
+  .cp-chip { font: inherit; font-size: 0.86rem; border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.4rem 0.9rem; min-height: 40px; background: var(--paper); color: var(--ink-soft); cursor: pointer; }
+  .cp-chip:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .cp-chip.is-current { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); font-weight: 700; }
+  .cp-edit { font-size: 0.86rem; padding: 0.5rem 0.9rem; }
 
   /* ---- 様式へのドロップ（02） ----
      破線の枠＝「ここに書類を出す窓口のトレー」。色は既存の青のまま増やさない。 */
@@ -528,20 +398,9 @@
 
   <nav class="toc">
     <ol>
-      <li><a href="#company">会社情報入力</a>（各書類に写して使う）</li>
       <li><a href="#autofill">制度選択・書類入力</a>（様式・取り寄せ証明書とも）</li>
-      <li><a href="#checklist">申請書類の準備状況</a>（申請ごとに別ページで管理）</li>
     </ol>
   </nav>
-
-  <!-- 01 会社情報 -->
-  <section id="company">
-    <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報入力</h2></div>
-
-    <div id="companyForm"></div>
-
-    <p class="saved-note" id="savedNote"></p>
-  </section>
 
   <!-- 02 様式への自動入力 -->
   <section id="autofill">
@@ -636,18 +495,6 @@
 
   </section>
 
-  <!-- 03 進捗状況（別ページで複数申請ぶんまとめて管理） -->
-  <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>申請書類の準備状況</h2></div>
-    <p class="section-sub">上で挙げた<strong>様式・取り寄せが必要な証明書</strong>が、いくつそろったかを追う場所です。複数の制度に申請する場合も、申請ごとに進み具合を分けて残せます。</p>
-    <p class="pcard" style="margin:0;">
-      <a class="btn btn-step" id="checklistLink" href="applications.html" style="display:inline-flex;">
-        <span class="lead">申請の進み具合を管理する →</span>
-        <span class="sub">別ページで、申請ごとにチェックを付けられます</span>
-      </a>
-    </p>
-  </section>
-
   <p id="afSrcBottom"></p>
 
   <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);margin-top:3rem;">
@@ -668,6 +515,7 @@
 
 <script src="page_data.js"></script>
 <script src="common_docs.js"></script>
+<script src="company_data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -676,7 +524,6 @@
 
   // localStorage のキーは 'koban_' で名前空間化する。
   // 同じオリジン（subsidy-grant.github.io）に姉妹サイトが同居しているため。
-  var K_COMPANY = 'koban_company';
   var K_FAV     = 'koban_savedPrograms';   // トップページの☆と共通
 
   function load(key, fallback) {
@@ -715,596 +562,11 @@
     if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
   })();
 
-  // ---------- 01 会社情報 ----------
-  // 補助金の様式に繰り返し出てくる項目。ここに無いものは各様式で個別に書く。
-  var FIELDS = [
-    // 様式には「法人」と「個人事業主」で書く欄が分かれているものがある。
-    // 名前や法人番号から推し量ることもできるが、法人番号の入れ忘れなどで
-    // 取り違えると別の欄を埋めてしまうので、ここで決めてもらう
-    { id: 'entity',    label: '事業形態', opts: [
-      { v: '', t: '（選んでください）' }, { v: '法人', t: '法人' }, { v: '個人事業主', t: '個人事業主' }
-    ] },
-    { id: 'name',      label: '事業者名（商号・屋号）', ph: '例）株式会社○○／○○美容室' },
-    { id: 'kana',      label: '事業者名（法人名）フリガナ', ph: '例）カブシキガイシャマルマル' },
-    { id: 'houjin',    label: '法人番号（13桁）',       ph: '個人事業主の方は空欄で構いません', mode: 'numeric' },
-    { id: 'hokenNo',   label: '雇用保険適用事業所番号',  ph: '例）1301-123456-7' },
-    { id: 'officeName', label: '事業所の名称（適用事業所名）', ph: '法人名と同じなら空欄で構いません（例）株式会社○○　△△店' },
-    { id: 'zip',       label: '郵便番号',               ph: '例）1500001', mode: 'numeric' },
-    { id: 'addr',      label: '所在地',                 ph: '例）東京都渋谷区神宮前1-2-3 ○○ビル4階', big: true },
-    // 東京都の助成金には「都内登記所在地（本店が都外の場合のみ）」の欄がある。
-    // 本店＝登記上の住所という会社が多いので、違うときだけ書いてもらう。
-    // 質問の順序は「郵便番号→住所」という上のzip/addrと同じ流れにそろえるため、
-    // regZip→regAddrの順（配列の並びだけで、値の器のidや自動転記は変わらない）
-    { id: 'regZip',    label: '登記上の所在地の郵便番号', ph: '登記上の所在地を書いたときだけ（例）1000005', mode: 'numeric' },
-    { id: 'regAddr',   label: '登記上の所在地',         ph: '上の所在地と同じなら空欄で構いません（登記簿の住所が違うときだけ）', big: true },
-    { id: 'title',     label: '代表者の役職',           ph: '例）代表取締役／代表' },
-    { id: 'rep',       label: '代表者氏名',             ph: '例）山田 太郎' },
-    { id: 'repKana',   label: '代表者フリガナ',         ph: '例）ヤマダ タロウ' },
-    { id: 'tel',       label: '電話番号',               ph: '例）0312345678', mode: 'tel' },
-    { id: 'fax',       label: 'FAX番号',                ph: '無ければ空欄で構いません', mode: 'tel' },
-    { id: 'mail',      label: 'メールアドレス',         ph: '例）info@example.jp', mode: 'email' },
-    { id: 'founded',   label: '設立年月日・開業日',     ph: '例）平成30年4月1日', inputStyle: 'choice' },
-    { id: 'capital',   label: '資本金',                 ph: '例）3,000,000円（個人事業主は空欄）' },
-    { id: 'employees', label: '従業員数',               ph: '例）8人（常時使用する従業員）', mode: 'numeric', inputStyle: 'choice' },
-    { id: 'industry',  label: '業種',                   ph: '例）美容業', inputStyle: 'choice' },
-    // 様式には業種を「分類番号」で書かせるものがある。美容業は中分類78
-    { id: 'industryCode', label: '日本標準産業分類の番号', ph: '中分類の2桁（例）78（洗濯・理容・美容・浴場業）', mode: 'numeric' },
-    { id: 'business',  label: '事業内容',               ph: '例）美容室の運営。カット・カラー・トリートメント等', big: true },
-    { id: 'staff',     label: '担当者氏名',             ph: '代表者と同じなら空欄で構いません' },
-    { id: 'staffTel',  label: '担当者の連絡先',         ph: '例）090-1234-5678', mode: 'tel' }
-  ];
-
-  var company = load(K_COMPANY, {});
-
-  // ---------- 会社情報フォーム：質問形式（ウィザード）まわりの下ごしらえ ----------
-  // FIELDSのid・件数・意味はいっさい変えない（自動転記エンジンがこのidをキーに使うため）。
-  // ここで作るのは「同じFIELDSを、どのグループ（質問1画面）に出すか」の並び替えだけ。
-  var FIELDS_BY_ID = {};
-  FIELDS.forEach(function (f) { FIELDS_BY_ID[f.id] = f; });
-
-  // 郵便番号→住所は既存のlookupZip()がf_addrへ直接書き込むので、
-  // 「郵便番号」と「所在地」は同じ質問画面にまとめて出す（zipのすぐ次がaddrなので並びは変わらない）。
-  // 業種（大分類→中分類の2段階選択）も同じ理由で、industryとindustryCodeを1つの質問にまとめる。
-  var MERGE_NEXT = { zip: 'addr', industry: 'industryCode' };
-  var MERGED_AWAY = { addr: 1, industryCode: 1 };
-  var STEP_GROUPS = [];
-  FIELDS.forEach(function (f) {
-    if (MERGED_AWAY[f.id]) return;
-    var ids = [f.id];
-    if (MERGE_NEXT[f.id]) ids.push(MERGE_NEXT[f.id]);
-    STEP_GROUPS.push(ids);
-  });
-
-  // 事業形態は元のselect（値の器）はそのまま残し、その上に大きな2択ボタンを重ねる
-  var ENTITY_CHOICES = ['法人', '個人事業主'];
-
-  // 従業員数・資本金はテキスト欄（元のFIELDS定義のまま）に加えて、
-  // 大まかに選べるスライダーを添える。スライダーが書き込む先も同じテキスト欄なので、
-  // 自動転記エンジンから見える値の形式（company.employees / company.capital の文字列）は変わらない。
-  function yenLabel(y) {
-    y = +y || 0;
-    if (y === 0) return '0円';
-    if (y % 100000000 === 0) return (y / 100000000) + '億円';
-    if (y % 10000 === 0) return (y / 10000).toLocaleString('ja-JP') + '万円';
-    return y.toLocaleString('ja-JP') + '円';
-  }
-  var SLIDER_CFG = {
-    employees: {
-      presets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30, 40, 50, 70, 100, 150, 200, 300, 500, 1000],
-      toValue: function (p) { return String(p); },
-      toLabel: function (p) { return p + '人'; }
-    },
-    capital: {
-      presets: [0, 100000, 300000, 500000, 1000000, 2000000, 3000000, 5000000,
-                10000000, 20000000, 30000000, 50000000, 100000000, 300000000],
-      toValue: function (p) { return String(p); },
-      toLabel: yenLabel
-    }
-  };
-  function nearestPresetIndex(presets, raw) {
-    var n = parseInt(String(raw || '').replace(/[^0-9]/g, ''), 10);
-    if (isNaN(n)) return 0;
-    var bestI = 0, bestD = Infinity;
-    presets.forEach(function (p, i) {
-      var d = Math.abs(p - n);
-      if (d < bestD) { bestD = d; bestI = i; }
-    });
-    return bestI;
-  }
-
-  // 1項目ぶんの行を作る。中身（input/textarea/select、写すボタン、法人番号・郵便番号のヒント欄）は
-  // 元のrenderCompany()とまったく同じ。質問形式でだけ使う追加パーツ（2択ボタン・スライダー）を
-  // 末尾に足すだけで、どちらのモードでも同じidの要素を1個ずつ使い回す。
-  function fieldRowHtml(f) {
-    var v = esc(company[f.id] || '');
-    var input;
-    if (f.opts) {
-      input = '<select id="f_' + f.id + '">' +
-        f.opts.map(function (o) {
-          return '<option value="' + esc(o.v) + '"' + (company[f.id] === o.v ? ' selected' : '') +
-            '>' + esc(o.t) + '</option>';
-        }).join('') + '</select>';
-    } else if (f.big) {
-      input = '<textarea id="f_' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '">' + v + '</textarea>';
-    } else {
-      input = '<input id="f_' + f.id + '" type="text"' +
-        (f.mode ? ' inputmode="' + f.mode + '"' : '') +
-        ' placeholder="' + esc(f.ph) + '" value="' + v + '">';
-    }
-    // 記述回答か選択式かを見出しの横に小さく出す。
-    // 判定はselect（f.opts）か、選択式UIを追加したfield（f.inputStyle）のどちらか
-    var isChoice = !!(f.opts || f.inputStyle === 'choice');
-    var kindTag = '<span class="fkind">' + (isChoice ? '選択式' : '記述回答') + '</span>';
-    var extra = '';
-    if (f.id === 'entity') {
-      extra += '<div class="ent-choice" role="group" aria-label="事業形態を選ぶ">' +
-        ENTITY_CHOICES.map(function (c) {
-          return '<button type="button" class="ent-btn" data-v="' + esc(c) + '">' + esc(c) + '</button>';
-        }).join('') + '</div>';
-    }
-    if (SLIDER_CFG[f.id]) {
-      extra += '<div class="slider-wrap">' +
-        '<input type="range" id="sl_' + f.id + '" min="0" max="' + (SLIDER_CFG[f.id].presets.length - 1) + '" step="1">' +
-        '<p class="slider-label" id="sllabel_' + f.id + '"></p>' +
-        '</div>';
-    }
-    if (f.id === 'employees') {
-      extra += '<div class="emp-select-wrap">' +
-        '<label class="picker-sublabel" for="emp_sel">プルダウンで選ぶ</label>' +
-        '<select id="emp_sel"></select>' +
-        '</div>';
-    }
-    if (f.id === 'capital') {
-      extra += '<div class="manyen-wrap">' +
-        '<label class="picker-sublabel" for="cap_man">万円単位で入力</label>' +
-        '<input type="number" id="cap_man" inputmode="numeric" min="0" step="1" placeholder="例）300">' +
-        '<span class="picker-sublabel">万円</span>' +
-        '</div>';
-    }
-    if (f.id === 'founded') {
-      extra += '<div class="founded-wrap">' +
-        '<div class="founded-row">' +
-          '<select id="fd_kind" aria-label="和暦・西暦">' +
-            '<option value="wareki">和暦</option><option value="seireki">西暦</option>' +
-          '</select>' +
-          '<select id="fd_gengo" aria-label="元号">' +
-            '<option value="令和">令和</option><option value="平成">平成</option>' +
-            '<option value="昭和">昭和</option><option value="大正">大正</option>' +
-            '<option value="明治">明治</option>' +
-          '</select>' +
-          '<select id="fd_ywareki" aria-label="和暦の年"></select>' +
-          '<input type="number" id="fd_yseireki" inputmode="numeric" aria-label="西暦の年" placeholder="例）2018" style="display:none;">' +
-          '<select id="fd_month" aria-label="月"></select>' +
-          '<select id="fd_day" aria-label="日"></select>' +
-        '</div>' +
-        '<p class="slider-label">選ぶと上の欄に自動で入ります。</p>' +
-        '</div>';
-    }
-    if (f.id === 'industry') {
-      extra += '<div class="industry-wrap">' +
-        '<label class="picker-sublabel" for="ind_major">大分類</label>' +
-        '<select id="ind_major" aria-label="業種の大分類"></select>' +
-        '<label class="picker-sublabel" for="ind_mid">中分類</label>' +
-        '<select id="ind_mid" aria-label="業種の中分類"><option value="">（先に大分類を選んでください）</option></select>' +
-        '</div>';
-    }
-    return '<div class="frow">' +
-      '<label for="f_' + f.id + '">' + esc(f.label) + kindTag + '</label>' +
-      input +
-      (f.id === 'houjin' ? '<p class="fhint" id="hint_houjin"></p>' : '') +
-      (f.id === 'zip' ? '<p class="fhint" id="hint_zip"></p>' : '') +
-      (f.id === 'hokenNo' ? '<p class="fhint">雇用保険適用事業所設置届の控え、雇用保険適用事業所台帳、またはハローワークが発行した通知書に記載されています。分からない場合は事業所を管轄するハローワークにご確認ください。</p>' : '') +
-      extra +
-      '</div>';
-  }
-
-  var wzMode = 'wizard';
-  var wzIdx = 0;
-  var wzAdvTimer = null;
-
-  function renderCompany() {
-    var el = document.getElementById('companyForm');
-    el.className = '';
-
-    var stepsHtml = STEP_GROUPS.map(function (ids, gi) {
-      var inner = ids.map(function (id) { return fieldRowHtml(FIELDS_BY_ID[id]); }).join('');
-      return '<div class="fstep" data-group="' + gi + '">' + inner + '</div>';
-    }).join('');
-
-    el.innerHTML =
-      '<div class="wz-topbar">' +
-        '<p class="wz-progress" id="wzProgress" aria-live="polite"></p>' +
-        '<button type="button" class="wz-modebtn" id="wzModeBtn"></button>' +
-      '</div>' +
-      '<div class="wz-progress-track"><span class="wz-progress-fill" id="wzProgressFill"></span></div>' +
-      '<div class="wz-review-toggle">' +
-        '<button type="button" class="btn ghost" id="wzReviewOpenBtn" aria-expanded="false" aria-controls="wzSteps">入力した会社情報を開いて確認・修正する</button>' +
-      '</div>' +
-      '<div class="wz-steps form-grid" id="wzSteps">' + stepsHtml + '</div>' +
-      '<div class="wz-nav" id="wzNav">' +
-        '<button type="button" class="btn ghost" id="wzBackBtn">← 戻る</button>' +
-        '<p class="wz-navhint">空欄のまま次へ進めても構いません</p>' +
-        '<button type="button" class="btn" id="wzNextBtn">次へ →</button>' +
-      '</div>';
-
-    // ---- 既存の結線（写す・保存・法人番号のチェック・郵便番号→住所）はそのまま ----
-    FIELDS.forEach(function (f) {
-      var node = document.getElementById('f_' + f.id);
-      node.addEventListener(f.opts ? 'change' : 'input', function () {
-        company[f.id] = node.value;
-        var ok = save(K_COMPANY, company);
-        showSaved(ok);
-        if (f.id === 'houjin') checkHoujin();
-        if (f.id === 'zip') lookupZip(node.value);
-        if (f.id === 'entity') syncEntityButtons();
-        if (SLIDER_CFG[f.id]) syncSlider(f.id);
-      });
-      // 自由記述の欄はEnterキーで次の質問へ（テキストエリアは改行を優先するので対象外）
-      if (!f.opts && !f.big) {
-        node.addEventListener('keydown', function (e) {
-          if (e.key !== 'Enter' || wzMode !== 'wizard') return;
-          e.preventDefault();
-          wzGoNext();
-        });
-      }
-    });
-
-    // ---- ここから質問形式だけの結線 ----
-    el.querySelectorAll('.ent-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var node = document.getElementById('f_entity');
-        node.value = btn.getAttribute('data-v');
-        node.dispatchEvent(new Event('change', { bubbles: true }));
-        wzAutoAdvanceSoon();
-      });
-    });
-
-    Object.keys(SLIDER_CFG).forEach(function (id) {
-      var sl = document.getElementById('sl_' + id);
-      if (!sl) return;
-      sl.addEventListener('input', function () {
-        var cfg = SLIDER_CFG[id];
-        var p = cfg.presets[+sl.value] || 0;
-        var target = document.getElementById('f_' + id);
-        target.value = cfg.toValue(p);
-        target.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-      sl.addEventListener('change', function () { wzAutoAdvanceSoon(); });
-    });
-
-    // 従業員数：スライダーと同じ刻みのプルダウン（併存。どちらもf_employeesに書く）
-    (function wireEmpSelect() {
-      var empSel = document.getElementById('emp_sel');
-      if (!empSel) return;
-      var cfg = SLIDER_CFG.employees;
-      empSel.innerHTML = '<option value="">（プルダウンで選ぶ）</option>' +
-        cfg.presets.map(function (p) {
-          return '<option value="' + esc(cfg.toValue(p)) + '">' + esc(cfg.toLabel(p)) + '</option>';
-        }).join('');
-      empSel.addEventListener('change', function () {
-        if (!empSel.value) return;
-        var target = document.getElementById('f_employees');
-        target.value = empSel.value;
-        target.dispatchEvent(new Event('input', { bubbles: true }));
-        wzAutoAdvanceSoon();
-      });
-      syncEmpSelect();
-    })();
-
-    // 資本金：万円単位で入力する欄（併存。ここに入れた数×10000をf_capitalに書く）
-    (function wireCapMan() {
-      var capMan = document.getElementById('cap_man');
-      if (!capMan) return;
-      capMan.addEventListener('input', function () {
-        var n = parseInt(capMan.value, 10);
-        if (capMan.value.trim() === '' || isNaN(n)) return;
-        var target = document.getElementById('f_capital');
-        target.value = String(n * 10000);
-        target.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-      capMan.addEventListener('change', function () { wzAutoAdvanceSoon(); });
-      syncCapMan();
-    })();
-
-    // 設立年月日・開業日：和暦／西暦を選んで組み立てる（値の器はf_foundedのまま）
-    (function wireFounded() {
-      var kindSel = document.getElementById('fd_kind');
-      if (!kindSel) return;
-      var gengoSel = document.getElementById('fd_gengo');
-      var ywSel = document.getElementById('fd_ywareki');
-      var ysInput = document.getElementById('fd_yseireki');
-      var mSel = document.getElementById('fd_month');
-      var dSel = document.getElementById('fd_day');
-
-      var yOpts = '<option value="">年</option>';
-      for (var y = 1; y <= 64; y++) yOpts += '<option value="' + y + '">' + y + '</option>';
-      ywSel.innerHTML = yOpts;
-      var mOpts = '<option value="">月</option>';
-      for (var m = 1; m <= 12; m++) mOpts += '<option value="' + m + '">' + m + '</option>';
-      mSel.innerHTML = mOpts;
-      var dOpts = '<option value="">日</option>';
-      for (var d = 1; d <= 31; d++) dOpts += '<option value="' + d + '">' + d + '</option>';
-      dSel.innerHTML = dOpts;
-
-      function syncKindVisibility() {
-        var isWareki = kindSel.value !== 'seireki';
-        gengoSel.style.display = isWareki ? '' : 'none';
-        ywSel.style.display = isWareki ? '' : 'none';
-        ysInput.style.display = isWareki ? 'none' : '';
-      }
-      function applyFounded(advance) {
-        var mv = mSel.value, dv = dSel.value, text;
-        if (!mv || !dv) return;
-        if (kindSel.value === 'seireki') {
-          if (!ysInput.value) return;
-          text = ysInput.value + '年' + mv + '月' + dv + '日';
-        } else {
-          if (!ywSel.value) return;
-          text = gengoSel.value + ywSel.value + '年' + mv + '月' + dv + '日';
-        }
-        var node = document.getElementById('f_founded');
-        node.value = text;
-        node.dispatchEvent(new Event('input', { bubbles: true }));
-        if (advance) wzAutoAdvanceSoon();
-      }
-      kindSel.addEventListener('change', function () { syncKindVisibility(); applyFounded(true); });
-      [gengoSel, ywSel, mSel, dSel].forEach(function (n) {
-        n.addEventListener('change', function () { applyFounded(true); });
-      });
-      ysInput.addEventListener('input', function () { applyFounded(false); });
-      ysInput.addEventListener('change', function () { applyFounded(true); });
-      syncKindVisibility();
-    })();
-
-    // 業種：大分類→中分類の2段階選択（選ぶとf_industryとf_industryCodeの両方に書く）
-    (function wireIndustryPickers() {
-      var majorSel = document.getElementById('ind_major');
-      var midSel = document.getElementById('ind_mid');
-      if (!majorSel || !midSel) return;
-      majorSel.innerHTML = '<option value="">（大分類を選ぶ）</option>' +
-        INDUSTRY_MAJOR.map(function (mj) {
-          return '<option value="' + mj.k + '">' + esc(mj.k + '　' + mj.t) + '</option>';
-        }).join('');
-      majorSel.addEventListener('change', function () {
-        industryFillMid(midSel, majorSel.value, '');
-      });
-      midSel.addEventListener('change', function () {
-        var code = midSel.value;
-        if (!code) return;
-        var codeNode = document.getElementById('f_industryCode');
-        var nameNode = document.getElementById('f_industry');
-        codeNode.value = code;
-        codeNode.dispatchEvent(new Event('input', { bubbles: true }));
-        nameNode.value = INDUSTRY_MID[code] || '';
-        nameNode.dispatchEvent(new Event('input', { bubbles: true }));
-        wzAutoAdvanceSoon();
-      });
-      syncIndustryPickers();
-    })();
-
-    var reviewOpenBtn = document.getElementById('wzReviewOpenBtn');
-    if (reviewOpenBtn) {
-      reviewOpenBtn.addEventListener('click', function () {
-        var steps = document.getElementById('wzSteps');
-        var willOpen = steps.classList.contains('wz-collapsed');
-        steps.classList.toggle('wz-collapsed', !willOpen);
-        reviewOpenBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        reviewOpenBtn.textContent = willOpen ? '入力した会社情報を閉じる' : '入力した会社情報を開いて確認・修正する';
-      });
-    }
-
-    document.getElementById('wzBackBtn').addEventListener('click', function () {
-      clearTimeout(wzAdvTimer);
-      wzShowStep(wzIdx - 1);
-    });
-    document.getElementById('wzNextBtn').addEventListener('click', wzGoNext);
-    document.getElementById('wzModeBtn').addEventListener('click', function () {
-      if (wzMode === 'wizard') {
-        wzSetMode('review');
-      } else {
-        wzIdx = wzFirstIncompleteIdx();
-        wzSetMode('wizard');
-      }
-    });
-
-    syncEntityButtons();
-    Object.keys(SLIDER_CFG).forEach(syncSlider);
-    syncEmpSelect();
-    syncCapMan();
-    syncIndustryPickers();
-
-    // 既定は常に質問形式（ウィザード）。保存済みデータがあるときは、
-    // 「まとめて確認」へ自動で飛ばさず、最初の未回答質問から始める
-    var hasData = FIELDS.some(function (f) { return (company[f.id] || '').toString().trim(); });
-    wzIdx = hasData ? wzFirstIncompleteIdx() : 0;
-    wzSetMode('wizard');
-  }
-
-  function wzGoNext() {
-    clearTimeout(wzAdvTimer);
-    if (wzIdx >= STEP_GROUPS.length - 1) { wzSetMode('review'); return; }
-    wzShowStep(wzIdx + 1);
-  }
-  function wzAutoAdvanceSoon() {
-    if (wzMode !== 'wizard') return;
-    clearTimeout(wzAdvTimer);
-    wzAdvTimer = setTimeout(wzGoNext, 380);
-  }
-  function wzShowStep(idx) {
-    wzIdx = Math.max(0, Math.min(idx, STEP_GROUPS.length - 1));
-    var steps = document.querySelectorAll('#wzSteps .fstep');
-    steps.forEach(function (s, i) { s.classList.toggle('is-current', i === wzIdx); });
-    var prog = document.getElementById('wzProgress');
-    if (prog) prog.textContent = '質問 ' + (wzIdx + 1) + ' / ' + STEP_GROUPS.length;
-    var fill = document.getElementById('wzProgressFill');
-    if (fill) fill.style.width = Math.round(((wzIdx + 1) / STEP_GROUPS.length) * 100) + '%';
-    var back = document.getElementById('wzBackBtn');
-    if (back) back.disabled = (wzIdx === 0);
-    var next = document.getElementById('wzNextBtn');
-    if (next) next.textContent = (wzIdx === STEP_GROUPS.length - 1) ? '確認画面へ進む' : '次へ →';
-    syncEntityButtons();
-    Object.keys(SLIDER_CFG).forEach(syncSlider);
-    syncEmpSelect();
-    syncCapMan();
-    syncIndustryPickers();
-    var cur = document.querySelector('#wzSteps .fstep.is-current');
-    if (cur) {
-      var focusable = cur.querySelector('input, textarea, .ent-btn');
-      if (focusable) {
-        try { focusable.focus({ preventScroll: true }); } catch (e1) { try { focusable.focus(); } catch (e2) {} }
-      }
-    }
-  }
-  function wzSetMode(mode) {
-    wzMode = mode;
-    var el = document.getElementById('companyForm');
-    if (!el) return;
-    el.classList.toggle('mode-wizard', mode === 'wizard');
-    el.classList.toggle('mode-review', mode === 'review');
-    var btn = document.getElementById('wzModeBtn');
-    if (btn) btn.textContent = mode === 'wizard' ? 'まとめて確認・修正する' : '質問形式で1つずつ答える';
-    if (mode === 'wizard') wzShowStep(wzIdx);
-    if (mode === 'review') {
-      // まとめて確認・修正の一覧は、開くたびに既定で閉じた状態に戻す
-      var steps = document.getElementById('wzSteps');
-      if (steps) steps.classList.add('wz-collapsed');
-      var openBtn = document.getElementById('wzReviewOpenBtn');
-      if (openBtn) {
-        openBtn.setAttribute('aria-expanded', 'false');
-        openBtn.textContent = '入力した会社情報を開いて確認・修正する';
-      }
-    }
-  }
-  function wzFirstIncompleteIdx() {
-    for (var i = 0; i < STEP_GROUPS.length; i++) {
-      var filled = STEP_GROUPS[i].some(function (id) { return (company[id] || '').toString().trim(); });
-      if (!filled) return i;
-    }
-    return 0;
-  }
-  function syncEntityButtons() {
-    document.querySelectorAll('.ent-btn').forEach(function (btn) {
-      btn.classList.toggle('is-sel', btn.getAttribute('data-v') === (company.entity || ''));
-    });
-  }
-  function syncSlider(id) {
-    var cfg = SLIDER_CFG[id];
-    var sl = document.getElementById('sl_' + id);
-    if (!cfg || !sl) return;
-    var idx = nearestPresetIndex(cfg.presets, company[id]);
-    sl.value = idx;
-    var label = document.getElementById('sllabel_' + id);
-    if (!label) return;
-    var v = (company[id] || '').toString().trim();
-    label.textContent = v
-      ? 'いまの入力：' + v + '（近いのは ' + cfg.toLabel(cfg.presets[idx]) + '）'
-      : 'スライダーでおおまかに選べます（' + cfg.toLabel(cfg.presets[idx]) + '〜）';
-  }
-  // 従業員数のプルダウンを、いまのf_employeesの値に合わせておく
-  // （プリセットに無い値なら「プルダウンで選ぶ」のまま＝未選択にする）
-  function syncEmpSelect() {
-    var empSel = document.getElementById('emp_sel');
-    if (!empSel) return;
-    var cur = (company.employees || '').toString().trim();
-    var cfg = SLIDER_CFG.employees;
-    var hit = cfg.presets.some(function (p) { return cfg.toValue(p) === cur; });
-    empSel.value = hit ? cur : '';
-  }
-  // 資本金の万円入力欄を、いまのf_capitalの値に合わせておく
-  // （万円で割り切れない金額のときは空欄のままにする＝上書きしない）
-  function syncCapMan() {
-    var capMan = document.getElementById('cap_man');
-    if (!capMan) return;
-    var yen = parseInt((company.capital || '').toString().replace(/[^0-9]/g, ''), 10);
-    capMan.value = (!isNaN(yen) && yen > 0 && yen % 10000 === 0) ? String(yen / 10000) : '';
-  }
-  // 業種の大分類／中分類プルダウンを、いまのcompany.industryCodeに合わせておく
-  function syncIndustryPickers() {
-    var majorSel = document.getElementById('ind_major');
-    var midSel = document.getElementById('ind_mid');
-    if (!majorSel || !midSel) return;
-    var savedCode = (company.industryCode || '').toString().trim();
-    var savedMajor = industryMajorOf(savedCode);
-    majorSel.value = savedMajor;
-    industryFillMid(midSel, savedMajor, savedCode);
-  }
-
-  var savedTimer = null;
-  function showSaved(ok) {
-    var n = document.getElementById('savedNote');
-    n.textContent = ok ? 'この端末に保存しました。' :
-      '保存できませんでした（ブラウザの設定で保存が禁止されている可能性があります）。';
-    n.style.color = ok ? 'var(--sage)' : 'var(--rust)';
-    clearTimeout(savedTimer);
-    savedTimer = setTimeout(function () { n.textContent = ''; }, 2500);
-  }
-
-  // ---------- 郵便番号から住所を入れる ----------
-  // 住所の一覧は当サイトの zipdata/ に置いてある（日本郵便のデータから作った）。
-  // 外部の検索APIを使わないのは、このページに「入力した内容は端末の中だけ」と
-  // 書いてあるため。郵便番号を外に投げるとその約束が崩れる。
-  // 落ちてくるのは上3桁ぶんの1ファイル（平均7KB）だけ。
-  var zipCache = {};
-  var zipSeq = 0;
-
-  function setZipHint(msg, cls) {
-    var el = document.getElementById('hint_zip');
-    if (el) { el.textContent = msg; el.className = 'fhint' + (cls ? ' ' + cls : ''); }
-  }
-
-  function lookupZip(raw) {
-    // 全角数字とハイフンを直してから7桁を取り出す
-    var z = String(raw || '')
-      .replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
-      .replace(/[^0-9]/g, '');
-    if (z.length < 7) { setZipHint(z ? 'あと' + (7 - z.length) + '桁です。' : ''); return; }
-    z = z.slice(0, 7);
-    var seq = ++zipSeq;
-    var pre = z.slice(0, 3);
-
-    var apply = function (table) {
-      if (seq !== zipSeq) return;           // 入力が進んでいたら古い結果は捨てる
-      var hit = table && table[z];
-      if (!hit) { setZipHint('この郵便番号は見つかりませんでした。住所は直接ご入力ください。', 'ng'); return; }
-      var addr = hit[0] + hit[1] + hit[2];
-      var node = document.getElementById('f_addr');
-      if (!node.value.trim()) {
-        node.value = addr;
-        company.addr = addr;
-        save(K_COMPANY, company);
-        setZipHint(addr + ' を入れました。続けて番地・建物名をご入力ください。', 'ok');
-        node.focus();
-        node.setSelectionRange(addr.length, addr.length);
-      } else {
-        // すでに書いてある住所を黙って消さない。置き換えるかは本人に決めてもらう
-        setZipHint('この郵便番号は「' + addr + '」です。', '');
-        var el = document.getElementById('hint_zip');
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn ghost';
-        btn.style.cssText = 'font-size:0.8rem;padding:0.25rem 0.7rem;margin-left:0.5rem;min-height:32px;';
-        btn.textContent = 'この住所に置き換える';
-        btn.onclick = function () {
-          node.value = addr;
-          company.addr = addr;
-          save(K_COMPANY, company);
-          setZipHint(addr + ' に置き換えました。続けて番地・建物名をご入力ください。', 'ok');
-          node.focus();
-          node.setSelectionRange(addr.length, addr.length);
-        };
-        el.appendChild(btn);
-      }
-    };
-
-    if (zipCache[pre]) { apply(zipCache[pre]); return; }
-    setZipHint('住所を調べています…');
-    fetch('zipdata/' + pre + '.json', { cache: 'force-cache' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { zipCache[pre] = j || {}; apply(zipCache[pre]); })
-      .catch(function () {
-        if (seq === zipSeq) setZipHint('住所の一覧を読み込めませんでした。住所は直接ご入力ください。', 'ng');
-      });
-  }
+  // ---------- 会社情報（company_data.js／profile.htmlと共有） ----------
+  // 01（会社情報の入力・保存）はprofile.htmlへ移した。ここでは読むだけで、
+  // 保存・複数会社の管理はすべて window.KOBAN_COMPANY 経由（company_data.js）に統一する。
+  var FIELDS = window.KOBAN_COMPANY.FIELDS;
+  var company = window.KOBAN_COMPANY.getCurrent() || {};
 
   // ---------- 02 ダウンロードした様式への自動入力 ----------
   // 外部ライブラリ・CDNは使わない。.docx/.xlsx はZIPなので、ブラウザ標準の
@@ -4691,7 +3953,7 @@
     if (kind === 'other') return Promise.resolve({ error: '対応しているのはWord（.docx）とExcel（.xlsx）です。' });
     var vals = buildFillValues();
     if (!Object.keys(vals).length) {
-      return Promise.resolve({ error: '先に上の「01 会社情報を1回だけ書く」をご入力ください。まだ何も保存されていません。' });
+      return Promise.resolve({ error: '先に「会社情報を編集する」から会社情報をご入力ください。まだ何も保存されていません。' });
     }
     // すでに記入がある欄も上書きする。上書きしたことと元の内容は結果の一覧に必ず出し、
     // プレビューでも色を分けて示す（数式のセルだけは触らない）。
@@ -5091,6 +4353,53 @@
     // 制度の注意書き（index.html の reqHL(p.note)）と同じくHTMLとして入れる。
     return '<div class="af-src"><p class="af-src-note">' + d.note + '</p></div>';
   }
+  // 会社情報が、様式に流し込むのに最低限足りているか。
+  // entity（法人／個人事業主）とname（事業者名）は書き分け・転記の判定そのものに使うため必須とする
+  function companyReady() {
+    return !!(company && String(company.entity || '').trim() && String(company.name || '').trim());
+  }
+  // 手順3ボタンの直前に置く、会社情報の状態表示・切替UI。
+  // 会社が2社以上あれば切替チップを、無い・情報不足なら案内を出す
+  function companyPickerHtml() {
+    var list = window.KOBAN_COMPANY.list();
+    var curId = window.KOBAN_COMPANY.currentId();
+    var ready = companyReady();
+    var html = '<div class="company-picker' + (ready ? '' : ' is-warn') + '">';
+    if (!list.length || !ready) {
+      html += '<p class="cp-warn"><strong>会社情報を先に入力してください。</strong>' +
+        '事業形態・事業者名などが未入力だと、手順3で様式に何も入りません。</p>' +
+        '<a class="btn" href="profile.html">会社情報を入力する ↗</a>';
+    } else {
+      html += '<p class="cp-current">会社情報：<strong>' + esc(company.label || '（名称未設定）') + '</strong></p>';
+      if (list.length > 1) {
+        html += '<div class="cp-chips">' + list.map(function (c) {
+          var isCur = c.id === curId;
+          return '<button type="button" class="cp-chip' + (isCur ? ' is-current' : '') +
+            '" data-id="' + esc(c.id) + '"' + (isCur ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' +
+            esc(c.label || '（名称未設定）') + '</button>';
+        }).join('') + '</div>';
+      }
+      html += '<a class="btn ghost cp-edit" href="profile.html">会社情報を編集する</a>';
+    }
+    html += '</div>';
+    return html;
+  }
+  // 会社選択チップ・編集リンクにイベントを付ける（renderAfFormsの再描画のたびに呼ぶ）
+  function initCompanyPicker(box) {
+    var picker = box.querySelector('.company-picker');
+    if (!picker) return;
+    picker.querySelectorAll('.cp-chip').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        if (id === window.KOBAN_COMPANY.currentId()) return;
+        window.KOBAN_COMPANY.setCurrentId(id);
+        company = window.KOBAN_COMPANY.getCurrent() || {};
+        // 会社が変わると転記結果・取り寄せ証明書の必須判定も変わるため、両方を描き直す
+        renderAfForms();
+        renderCommon();
+      });
+    });
+  }
   function renderAfForms() {
     var box = document.getElementById('afForms');
     var sel = document.getElementById('afProgram');
@@ -5152,6 +4461,7 @@
     html += '<div class="af-tools">' +
       '<button type="button" id="afAll">すべて選ぶ</button>' +
       '<button type="button" id="afNone">すべて外す</button></div>' +
+      companyPickerHtml() +
       // 手順のボタンは、いま押すべきものだけを塗りにする。
       // 押すとどうなるかを1行添える（初見の人が結果を予測できないため）
       '<div class="af-steps">' +
@@ -5177,6 +4487,7 @@
     if (fmtRow) fmtRow.querySelectorAll('button').forEach(function (b) {
       b.addEventListener('click', function () { setAfFmt(b.getAttribute('data-fmt')); });
     });
+    initCompanyPicker(box);
     applyAfFmt();
     updateRunBtn();
     box.addEventListener('change', function (e) {
@@ -5196,6 +4507,13 @@
     if (!run) return;
     var n = afChecked().length;
     var lead = run.querySelector('.lead'), sub = run.querySelector('.sub');
+    // 会社情報が未入力・不足のときは、そもそも自動入力できないことをボタン自体で示す
+    if (!companyReady()) {
+      if (lead) lead.textContent = '手順3　先に会社情報を入力してください';
+      if (sub) sub.textContent = '上の「会社情報を入力する」から入れると、ここが押せるようになります';
+      run.disabled = true;
+      return;
+    }
     if (lead) lead.textContent = n ? '手順3　' + n + '件に会社情報を入れる' : '手順3　会社情報を入れる';
     run.disabled = !n;
     // 配布元が他サイトからの取得を許していない様式は、このページからは取り寄せられない。
@@ -5383,7 +4701,7 @@
       return;
     }
     if (!Object.keys(buildFillValues()).length) {
-      if (status) status.textContent = '先に上の「01 会社情報を1回だけ書く」をご入力ください。まだ何も保存されていません。';
+      if (status) status.textContent = '先に「会社情報を編集する」から会社情報をご入力ください。まだ何も保存されていません。';
       return;
     }
     afRunning = true;
@@ -5441,45 +4759,11 @@
     });
   }
 
-  // ---------- 03 法人番号の検査用数字 ----------
-  // 国税庁の定義：法人番号13桁は「検査用数字1桁 ＋ 基礎番号12桁」。
-  //   検査用数字 = 9 − (Σ(n=1..12) Pn × Qn) mod 9
-  //   Pn = 基礎番号の下からn桁目の数字、Qn = nが奇数なら1・偶数なら2
-  // 国税庁自身の法人番号 7000012050002 で計算が合うことを確認している。
-  function houjinCheckDigit(base12) {
-    var sum = 0;
-    for (var n = 1; n <= 12; n++) {
-      var p = parseInt(base12.charAt(12 - n), 10);
-      sum += p * (n % 2 === 1 ? 1 : 2);
-    }
-    return 9 - (sum % 9);
-  }
-  // 法人番号13桁の検査用数字を検算し、01の欄の下にその場で出す。
-  // （専用の節は置かない。書き写しの誤りは入力欄のそばで気づけるほうが早い）
-  function checkHoujin() {
-    var raw = (company.houjin || '').replace(/[^0-9]/g, '');
-    var hint = document.getElementById('hint_houjin');
-    if (!hint) return;
-    if (!raw) { hint.textContent = ''; hint.className = 'fhint'; return; }
-    if (raw.length !== 13) {
-      hint.textContent = 'いまは' + raw.length + '桁です。法人番号は13桁です。';
-      hint.className = 'fhint ng';
-      return;
-    }
-    var ok = houjinCheckDigit(raw.slice(1)) === parseInt(raw.charAt(0), 10);
-    hint.textContent = ok
-      ? '13桁・検査用数字とも合っています。'
-      : '13桁ですが、検査用数字が合いません。どこかの数字が違っている可能性があります。';
-    hint.className = 'fhint ' + (ok ? 'ok' : 'ng');
-  }
-
-
   // ---------- 節の開閉（トップページと同じ操作感） ----------
   // 上から順に読む作りではないので、見出しだけを並べて
   // 必要なところを開いてもらう。組み替えに失敗したら目印を外して
   // 従来どおり全部見える状態に戻す（黙って空白のページにしない）。
   var SEC_HINT = {
-    company: '所在地・代表者・電話番号などを1回だけ入力します',
     autofill: '制度を選ぶと、様式に会社情報を入れて返します',
     common: '登記事項証明書など取り寄せに日数がかかる書類と、締切からの逆算',
     checklist: '別ページで、申請ごとに進み具合を管理できます'
@@ -5756,18 +5040,7 @@
   function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 
 
-  // ---------- 04 取り寄せ書類の進み具合 ----------
-  // 進捗チェック自体はapplications.htmlに一本化した。ここでは、いま02で選んでいる
-  // 制度キーをリンクに引き継ぐだけ（未選択なら制度を選ばずに開く）
-  function updateChecklistLink() {
-    var a = document.getElementById('checklistLink');
-    if (!a) return;
-    var key = docsSelectedKey();
-    a.href = key ? ('applications.html?p=' + encodeURIComponent(key)) : 'applications.html';
-  }
-
   // ---------- 起動 ----------
-  renderCompany();
   initAutofill();
   loadMirror().then(function () { renderAfForms(); });
   renderAfPrograms();
@@ -5791,7 +5064,6 @@
       renderAfForms();
       // 取り寄せ証明書もこの選択に連動する
       renderCommon();
-      updateChecklistLink();
     });
     // index.html の各制度カードから「この制度の書類を準備する」で来たときは、
     // その制度を選んだ状態で開く（選び直させない）
@@ -5804,9 +5076,7 @@
       }
     }
   })();
-  checkHoujin();
   renderCommon();
-  updateChecklistLink();
   syncThemeBtn();
   // 締切日を入れ直したら、取り寄せ証明書の「いつまでに頼むか」を出し直す
   document.getElementById('deadlineInput').addEventListener('change', renderCommon);
