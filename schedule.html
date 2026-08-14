@@ -56,13 +56,7 @@
   .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
   main { max-width: 940px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
   a { color: var(--accent); }
-  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    flex-wrap: wrap; margin-bottom: 1.4rem; }
-  .back { font-size: 0.92rem; }
-  .theme-btn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
-    border-radius: 6px; padding: 0.45rem 0.8rem; font: inherit; font-size: 0.85rem;
-    cursor: pointer; min-height: 44px; }
-  h1 { font-size: 1.5rem; margin: 0 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
   .privacy { margin: 1.2rem 0 0; padding: 0.9rem 1.1rem; border-radius: 10px;
     background: var(--sage-wash); border: 1px solid var(--sage); font-size: 0.92rem; }
@@ -252,11 +246,6 @@
 </head>
 <body>
 <main>
-  <div class="topbar">
-    <p class="back"><a href="./#gantt">← 補助金活用 業務改善ロードマップ に戻る</a></p>
-    <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">画面を暗くする</button>
-  </div>
-
   <h1>申請スケジュールを日付で確認</h1>
   <p class="lede">制度と基準になる日付を入れると、申請までにやることを1つずつに分けて、<strong>いつ着手すればよいかを帯で表示</strong>します。終わった作業にチェックを付けると、進み具合がこの端末に残ります。<strong>これは要件を満たした場合に支給・交付されるもので、申請すれば必ず受け取れるものではありません。</strong></p>
   <p class="privacy"><strong>入れた日付とチェックは、お使いの端末（ブラウザ）の中だけに保存されます。</strong>どこにも送られません。</p>
@@ -272,34 +261,10 @@
   </section>
 </main>
 
-<script>
-  // 画面の明暗（トップページと同じキーを使う）
-  window.toggleTheme = function () {
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    syncThemeBtn();
-  };
-  function syncThemeBtn() {
-    var btn = document.getElementById('themeBtn');
-    if (!btn) return;
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    btn.textContent = cur === 'dark' ? '画面を明るくする' : '画面を暗くする';
-  }
-  (function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
-  })();
-</script>
 <script src="gantt_data.js"></script>
 <script src="gantt_ui.js"></script>
 <script>
   initGantt();
-  syncThemeBtn();
   // トップページの概要から「この制度の詳細を見る」で飛んできたときは、
   // その制度を選んだ状態で開く（もう一度選ばせない）
   (function () {

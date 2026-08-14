@@ -75,13 +75,7 @@
   main { max-width: 780px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
   a { color: var(--accent); }
 
-  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    flex-wrap: wrap; margin-bottom: 1.4rem; }
-  .back { font-size: 0.92rem; }
-  .theme-btn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
-    border-radius: 6px; padding: 0.45rem 0.8rem; font: inherit; font-size: 0.85rem;
-    cursor: pointer; min-height: 44px; }
-  h1 { font-size: 1.5rem; margin: 0 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 1.4rem; max-width: 62ch; }
 
   .btn { border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
@@ -96,6 +90,11 @@
   .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
+  .btn-link { display: inline-block; padding: 0.5rem 0.9rem; border: 1px solid var(--accent);
+    border-radius: var(--radius-md); background: var(--accent-wash); color: var(--accent);
+    font-weight: 700; font-size: 0.86rem; text-decoration: none; min-height: 44px;
+    box-sizing: border-box; line-height: 1.6; }
+  .btn-link:active { transform: scale(0.98); }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
@@ -168,11 +167,6 @@
 </head>
 <body>
 <main>
-  <div class="topbar">
-    <p class="back"><a href="documents.html">← 申請書類の準備 に戻る</a></p>
-    <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">画面を暗くする</button>
-  </div>
-
   <h1>申請の進み具合</h1>
   <p class="lede">複数の制度に申請するときは、ここで申請ごとに分けて取り寄せ書類のチェックを残せます。この端末に保存され、次に開いたときは続きから進められます。</p>
 
@@ -194,6 +188,7 @@
     <div class="pcard">
       <h3 id="appDetailName"></h3>
       <p class="meta" id="appDetailMeta"></p>
+      <p id="appDetailScheduleLink" style="margin:0 0 0.8rem;"></p>
       <label for="appDetailProgram" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">制度</label>
       <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius: var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
         <option value="">制度を選ぶと、必要な書類だけに絞られます</option>
@@ -239,28 +234,6 @@
     var cls = CD.whoBadgeClass(who);
     return '<span class="who who-' + cls + '">' + esc(who) + '</span>';
   }
-
-  // ---------- 画面の明暗（他ページと同じキーを使う） ----------
-  window.toggleTheme = function () {
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    syncThemeBtn();
-  };
-  function syncThemeBtn() {
-    var btn = document.getElementById('themeBtn');
-    if (!btn) return;
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    btn.textContent = cur === 'dark' ? '画面を明るくする' : '画面を暗くする';
-  }
-  (function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
-  })();
 
   // ---------- 申請の一覧・作成・削除 ----------
   // 1件 = { id, name, programKey, createdAt(ISO文字列), done:{docId:1,...} }
@@ -367,6 +340,12 @@
     document.getElementById('appDetailMeta').textContent = key
       ? progName + 'に必要な書類だけを表示しています。'
       : '制度を選ぶと、必要な書類だけに絞られます。今はすべての書類を表示しています。';
+    var schedLink = document.getElementById('appDetailScheduleLink');
+    if (schedLink) {
+      schedLink.innerHTML = key
+        ? '<a href="schedule.html?scheme=' + encodeURIComponent(key) + '" class="btn-link">スケジュールで確認する ↗</a>'
+        : '';
+    }
 
     var doneList = document.getElementById('appDetailDone');
     var barEl = document.getElementById('appDetailBar');
@@ -453,7 +432,6 @@
   })();
 
   renderAppList();
-  syncThemeBtn();
 })();
 </script>
 <script>

@@ -80,17 +80,7 @@
   a { color: var(--accent); }
 
   /* ---- ページ頭 ---- */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    flex-wrap: wrap; margin-bottom: 1.4rem;
-  }
-  .back { font-size: 0.92rem; }
-  .theme-btn {
-    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
-    border-radius: 6px; padding: 0.45rem 0.8rem; font: inherit; font-size: 0.85rem;
-    cursor: pointer; min-height: 44px;
-  }
-  h1 { font-size: 1.5rem; margin: 0 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
 
   .privacy {
@@ -226,6 +216,11 @@
   .dz-sub { margin: 0 0 0.9rem; color: var(--ink-soft); font-size: 0.88rem; }
   .af-legend { margin: 1rem 0 0; padding-top: 0.8rem; border-top: 1px dashed var(--line);
     color: var(--ink-faint); font-size: 0.82rem; }
+  .af-register-link { display: block; margin: 1rem 0 0; padding: 0.7rem 1rem; text-align: center;
+    border: 1px solid var(--accent); border-radius: var(--radius-md); background: var(--accent-wash);
+    color: var(--accent); font-weight: 700; font-size: 0.92rem; text-decoration: none; min-height: 44px;
+    box-sizing: border-box; }
+  .af-register-link:active { transform: scale(0.98); }
   .ow-row { display: flex; align-items: flex-start; gap: 0.55rem; margin: 0.8rem 0 0;
     font-size: 0.9rem; cursor: pointer; }
   .ow-row input { width: 20px; height: 20px; margin-top: 0.2rem; flex: none; accent-color: var(--accent); }
@@ -289,8 +284,9 @@
   .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
     min-height: 44px; cursor: pointer; }
-  .gt-badge { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 700;
-    border: 1px solid var(--line); border-radius: 999px; padding: 0.1rem 0.55rem; white-space: nowrap; }
+  .gt-badge { display: block; width: fit-content; max-width: 100%; margin: 0.25rem 0 0;
+    font-size: 0.72rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.15rem 0.55rem; white-space: normal; line-height: 1.35; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
   .gt-b-na { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
   .gt-b-warn { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
@@ -358,11 +354,6 @@
 </head>
 <body>
 <main>
-  <div class="topbar">
-    <p class="back"><a href="./">← 補助金活用 業務改善ロードマップ に戻る</a></p>
-    <button type="button" class="theme-btn" id="themeBtn" onclick="toggleTheme()">画面を暗くする</button>
-  </div>
-
   <h1>申請書類の準備</h1>
 
   <!-- 様式への自動入力 -->
@@ -417,16 +408,6 @@
     <div id="commonBox">
       <p class="step-ttl" style="margin-top:1.6rem;">手順5　取り寄せが必要な証明書もそろえる</p>
       <p class="section-sub" id="commonPicked"></p>
-
-      <p class="section-sub"><span class="who who-sage">全員</span> はほぼどの制度でも要る必須の書類、<span class="who who-accent">法人</span> <span class="who who-accent">個人事業主</span> はご自身の事業形態なら必須の書類、<span class="who who-rust">該当者のみ</span> は条件に当てはまる場合だけ要る書類です。</p>
-
-      <!-- 締切日を入れると、下の表の「いつまでに頼むか」が埋まる。
-           もとは04として別の節に同じ表をもう一度出していた（2026-08-03に統合） -->
-      <div class="pcard" id="dueBox">
-        <label for="deadlineInput" style="display:block;font-size:0.92rem;font-weight:700;margin-bottom:0.4rem;">提出の締切日を入れると、いつまでに頼めばよいかが出ます</label>
-        <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
-        <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;">締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
-      </div>
 
       <h3 class="sub-h">申請のとき</h3>
       <div class="tbl-wrap" id="commonApply"></div>
@@ -511,28 +492,6 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
-
-  // ---------- 画面の明暗（トップページと同じキーを使う） ----------
-  window.toggleTheme = function () {
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    var next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    syncThemeBtn();
-  };
-  function syncThemeBtn() {
-    var btn = document.getElementById('themeBtn');
-    if (!btn) return;
-    var cur = document.documentElement.getAttribute('data-theme');
-    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    btn.textContent = cur === 'dark' ? '画面を明るくする' : '画面を暗くする';
-  }
-  (function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
-  })();
 
   // ---------- 会社情報（company_data.js／profile.htmlと共有） ----------
   // 01（会社情報の入力・保存）はprofile.htmlへ移した。ここでは読むだけで、
@@ -4431,7 +4390,7 @@
             '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
             'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
             '<span class="fn">' + esc(it.name) +
-            '<span class="gt-badge ' + (mirrorOf(it.url) ? 'gt-b-ok">自動入力可' : 'gt-b-warn">取り寄せて記入を試みます（サイトによっては失敗することがあります）') + '</span>' +
+            '<span class="gt-badge ' + (mirrorOf(it.url) ? 'gt-b-ok">自動入力可' : 'gt-b-warn">取り寄せて記入を試みます（失敗することがあります）') + '</span>' +
             '</span>' +
             '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
         } else {
@@ -4458,10 +4417,12 @@
       '<span class="lead">手順3　会社情報を入れる</span>' +
       '<span class="sub">押すと、この下に記入結果が出ます</span></button>' +
       '<button type="button" class="btn btn-step" id="afDlFilled" disabled>' +
-      '<span class="lead">手順4　記入済みを保存する</span>' +
+      '<span class="lead">手順4　まとめてダウンロード</span>' +
       '<span class="sub">先に手順3を押してください</span></button>' +
       '</div>' +
       '<p class="af-status" id="afStatus"></p>' +
+      '<a href="applications.html?p=' + encodeURIComponent(key) + '" class="btn-link af-register-link">' +
+      '申請進捗・スケジュールに登録する ↗</a>' +
       '<p class="af-legend">自動入力できる書類にはチェックが入っています。' +
       'それ以外の書類（PDF・古い形式など）は自動入力の対象外で、公式サイトから取得してください。</p>';
     html += '</div>';
@@ -4557,7 +4518,7 @@
     var failed = document.querySelectorAll('#frFail .fr-list > li').length;
     var lead = btn.querySelector('.lead'), sub = btn.querySelector('.sub');
     btn.disabled = !n;
-    if (lead) lead.textContent = n ? '手順4　記入済み' + n + '件を保存する' : '手順4　記入済みを保存する';
+    if (lead) lead.textContent = n ? '手順4　' + n + '件をまとめてダウンロード' : '手順4　まとめてダウンロード';
     // 記入できたものが1件も無いときに「先に手順3を押してください」と出すと、
     // 押しても何も起きない人に嘘をつくことになる。起きたことをそのまま書く
     if (sub) sub.textContent = n
@@ -4750,29 +4711,9 @@
     var sel = document.getElementById('afProgram');
     return (sel && sel.value) || '';
   }
-  // 締切日が入っていれば、その日から日数を引いて「いつまでに頼むか」を出す
-  function dueDate() {
-    var el = document.getElementById('deadlineInput');
-    var v = el && el.value;
-    if (!v) return null;
-    var a = v.split('-');
-    return new Date(+a[0], +a[1] - 1, +a[2]);
-  }
-  function byWhenCell(c, due) {
-    if (!due) return '<td class="num">—</td>';
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var by = new Date(due.getTime() - c.days * 86400000);
-    var left = Math.round((by - today) / 86400000);
-    return '<td class="num">' + fmt(by) + '<br>' + (by < today
-      ? '<span class="deadline near">もう過ぎています</span>'
-      : '<span class="deadline ok">あと' + left + '日</span>') + '</td>';
-  }
   function commonRows(when) {
     var key = docsSelectedKey();
-    // 「いつまでに頼むか」は申請の締切からの逆算なので、実績報告の表には出さない
-    var due = when === 'apply' ? dueDate() : null;
     return COMMON_DOCS.filter(function (c) { return c.when === when && docApplies(c, key); })
-      .sort(function (a, b) { return due ? b.days - a.days : 0; })
       .map(function (c) {
       var days = c.days === 1 ? '当日' : ('〜' + c.days + '日');
       return '<tr class="' + (c.third ? 'third' : '') + '">' +
@@ -4780,15 +4721,12 @@
         '<td>' + whoBadge(c.who) + ' ' + esc(c.doc) + '</td>' +
         '<td>' + esc(c.where) + '</td>' +
         '<td class="num">' + days + '</td>' +
-        (when === 'apply' ? byWhenCell(c, due) : '') +
         '<td>' + esc(c.note) + '</td>' +
         '</tr>';
     }).join('');
   }
 
   function renderCommon() {
-    var headA = '<thead><tr><th>用意する</th><th>書類</th><th>どこで</th>' +
-               '<th>かかる日数の目安</th><th>いつまでに頼むか</th><th>注意</th></tr></thead>';
     var head = '<thead><tr><th>用意する</th><th>書類</th><th>どこで</th>' +
                '<th>かかる日数の目安</th><th>注意</th></tr></thead>';
     var key = docsSelectedKey();
@@ -4809,7 +4747,7 @@
     }
     var rowsA = commonRows('apply');
     document.getElementById('commonApply').innerHTML = rowsA
-      ? '<table>' + headA + '<tbody>' + rowsA + '</tbody></table>'
+      ? '<table>' + head + '<tbody>' + rowsA + '</tbody></table>'
       : '<p class="empty">この制度の申請時に、取り寄せが要る共通書類はありません。</p>';
     var rowsR = commonRows('report');
     var repBox = document.getElementById('commonReport');
@@ -4822,17 +4760,6 @@
       repBox.innerHTML = rowsR
         ? '<table>' + head + '<tbody>' + rowsR + '</tbody></table>'
         : '<p class="empty">この制度で、事業後に取り寄せが要る共通書類はありません。</p>';
-    }
-    var dp = document.getElementById('deadlinePick');
-    if (dp) {
-      var due0 = dueDate();
-      var today0 = new Date(); today0.setHours(0, 0, 0, 0);
-      dp.innerHTML = !due0
-        ? '締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。'
-        : (due0 < today0
-            ? '<strong>入れた締切日は過ぎています。</strong>次回の公募回の締切でお試しください。'
-            : '締切まであと<strong>' + Math.round((due0 - today0) / 86400000) + '日</strong>です（' + fmt(due0) + '）。'
-              + '橙色の行は他の人に出してもらう書類で、相手の都合で遅れます。数日の余裕を見て依頼してください。');
     }
     var src = document.getElementById('commonSource');
     if (src) src.textContent = COMMON_DOCS_SOURCE;
@@ -4887,9 +4814,6 @@
     }
   })();
   renderCommon();
-  syncThemeBtn();
-  // 締切日を入れ直したら、取り寄せ証明書の「いつまでに頼むか」を出し直す
-  document.getElementById('deadlineInput').addEventListener('change', renderCommon);
 })();
 </script>
 <script>

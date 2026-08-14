@@ -51,8 +51,6 @@
   .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
   main { max-width: 880px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
   a { color: var(--accent); }
-  .topbar { margin-bottom: 1.2rem; }
-  .back { font-size: 0.92rem; margin: 0; }
 
   .area-tag {
     display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
@@ -376,10 +374,6 @@
 </head>
 <body>
 <main>
-  <div class="topbar">
-    <p class="back"><a href="index.html">← 補助金活用 業務改善ロードマップ に戻る</a></p>
-  </div>
-
   <div id="notFound" role="alert">
     指定された制度が見つかりませんでした。URLの <code>?key=</code> の値をご確認いただくか、
     <a href="index.html#condList">制度の一覧</a>から選び直してください。
@@ -439,7 +433,6 @@
     <div class="pt-actions">
       <a class="pt-btn primary" id="ptSrcLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">公式サイトを見る ↗</a>
       <a class="pt-btn ghost" id="ptDocsLink" href="documents.html">この制度の申請書類・様式を見る →</a>
-      <a class="pt-btn ghost" id="ptBackLink" href="index.html#condList">← 制度の一覧に戻る</a>
     </div>
   </article>
 
@@ -2846,13 +2839,6 @@
 
     var docsLink = document.getElementById('ptDocsLink');
     if (docsLink) docsLink.setAttribute('href', 'documents.html?p=' + encodeURIComponent(key));
-
-    // industry を受け取っていれば一覧への戻りリンクにも引き継ぐ（診断結果の続きに戻れるように）
-    var industry = params.get('industry');
-    var backLink = document.getElementById('ptBackLink');
-    if (backLink && industry) {
-      backLink.setAttribute('href', 'index.html?industry=' + encodeURIComponent(industry) + '#condList');
-    }
   }
 
   render();

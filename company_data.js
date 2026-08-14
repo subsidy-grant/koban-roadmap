@@ -117,6 +117,13 @@
     if (currentId() === id) setCurrentId(list.length ? list[0].id : null);
     return list;
   }
+  // 書き出したファイルからの読み込みなど、一覧をまるごと置き換えるとき用
+  function replaceAll(list) {
+    save(K_COMPANIES, list);
+    var stillValid = list.some(function (c) { return c.id === currentId(); });
+    if (!stillValid) setCurrentId(list.length ? list[0].id : null);
+    return list;
+  }
 
   global.KOBAN_COMPANY = {
     FIELDS: FIELDS,
@@ -127,6 +134,7 @@
     getCurrent: getCurrentCompany,
     save: saveCompany,
     add: addCompany,
-    remove: removeCompany
+    remove: removeCompany,
+    replaceAll: replaceAll
   };
 })(window);
