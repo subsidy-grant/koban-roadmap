@@ -391,16 +391,6 @@
 
     <div id="afForms"></div>
 
-    <details class="fold must-check-fold">
-      <summary>必ずデータの内容を確認してから提出してください</summary>
-      <div class="fold-body must-check">
-        <span>自動で入るのは、会社情報ページ（下部メニューの「会社情報」）で入力した内容だけです。どの欄に入れたか・入れられなかったかは下に必ず表示しますので、
-        保存したファイルを開いて、①入った内容が合っているか　②残りの欄（日付・金額・対象者など）
-        ③○や☑であらかじめ選ばれている項目が実態と合っているか　を確かめてください。
-        様式のつくりによっては欄を取り違えることがあり、また配布元の時点で選択肢が選ばれている様式もあります。</span>
-      </div>
-    </details>
-
     <div id="fillResults"></div>
 
     <details class="pcard" id="afManualBox">
@@ -456,11 +446,22 @@
       </div>
     </details>
 
+    <!-- 2026-08-15、「必ずデータの内容を確認〜」を手順5の下へ移動（本人指示） -->
+    <details class="fold must-check-fold">
+      <summary>必ずデータの内容を確認してから提出してください</summary>
+      <div class="fold-body must-check">
+        <span>自動で入るのは、会社情報ページ（下部メニューの「会社情報」）で入力した内容だけです。どの欄に入れたか・入れられなかったかは下に必ず表示しますので、
+        保存したファイルを開いて、①入った内容が合っているか　②残りの欄（日付・金額・対象者など）
+        ③○や☑であらかじめ選ばれている項目が実態と合っているか　を確かめてください。
+        様式のつくりによっては欄を取り違えることがあり、また配布元の時点で選択肢が選ばれている様式もあります。</span>
+      </div>
+    </details>
+
   </section>
 
   <p id="afSrcBottom"></p>
 
-  <details class="fold" style="margin-top:3rem;">
+  <details class="fold">
     <summary>対応している様式について</summary>
     <div class="fold-body">
       <p style="margin:0 0 0.5rem;">当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
