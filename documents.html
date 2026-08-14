@@ -348,6 +348,8 @@
   .dropzone.hover { border-color: var(--accent); background: var(--accent-wash); }
   .dz-main { margin: 0 0 0.2rem; font-weight: 700; }
   .dz-sub { margin: 0 0 0.9rem; color: var(--ink-soft); font-size: 0.88rem; }
+  .af-legend { margin: 1rem 0 0; padding-top: 0.8rem; border-top: 1px dashed var(--line);
+    color: var(--ink-faint); font-size: 0.82rem; }
   .ow-row { display: flex; align-items: flex-start; gap: 0.55rem; margin: 0.8rem 0 0;
     font-size: 0.9rem; cursor: pointer; }
   .ow-row input { width: 20px; height: 20px; margin-top: 0.2rem; flex: none; accent-color: var(--accent); }
@@ -508,7 +510,6 @@
   <!-- 01 会社情報 -->
   <section id="company">
     <div class="section-head"><span class="section-no jp-serif">01</span><h2>会社情報入力</h2></div>
-    <p class="section-sub">補助金の様式は、どの制度でもほぼ同じ項目（所在地・代表者・電話番号など）を繰り返し書かせます。ここに1回入力しておけば、下の02で様式を選ぶだけで各項目を自動で入れられます。<strong>郵便番号を7桁入れると、住所が自動で入ります。</strong></p>
 
     <div id="companyForm"></div>
 
@@ -610,7 +611,7 @@
 
   <!-- 04 進捗状況（別ページで複数申請ぶんまとめて管理） -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>取り寄せ書類の進み具合</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>申請書類の準備状況</h2></div>
     <p class="section-sub">03に出した<strong>取り寄せが必要な書類</strong>が、いくつそろったかを追う場所です。複数の制度に申請する場合も、申請ごとに進み具合を分けて残せます。</p>
     <p class="pcard" style="margin:0;">
       <a class="btn btn-step" id="checklistLink" href="applications.html" style="display:inline-flex;">
@@ -620,11 +621,13 @@
     </p>
   </section>
 
+  <p id="afSrcBottom"></p>
+
   <div class="pcard" style="font-size:0.88rem;color:var(--ink-soft);margin-top:3rem;">
     <p style="margin:0 0 0.5rem;"><strong style="color:var(--ink);">対応している様式について。</strong>
     当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
     <ul style="margin:0;padding-left:1.2rem;">
-      <li><strong>ダウンロードなしでそのまま記入できる様式には「そのまま記入できます」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
+      <li><strong>ダウンロードなしでそのまま記入できる様式には「自動入力可」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
       <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
       <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
       <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
@@ -5016,7 +5019,7 @@
     var note = document.getElementById('afProgNote');
     if (note) {
       note.textContent = keys.length
-        ? ('書類を調べた' + all.length + '制度のうち ' + keys.length + '件を表示しています。制度を選ぶと、その制度の書類が下に出ます。')
+        ? ''
         : ('この条件に合う制度がありませんでした（書類を調べた制度は全部で' + all.length + '件です）。絞り込みを変えてみてください。');
     }
   }
@@ -5076,11 +5079,14 @@
     var phases = [];
     items.forEach(function (it) { if (phases.indexOf(it.phase) === -1) phases.push(it.phase); });
     var idx = 0;
-    var html = '<div class="af-forms">' + afSrcHTML(key) +
-      '<p class="step-ttl">手順2　この制度に必要な書類（' + items.length + '件）</p>' +
-      '<p class="dz-sub" style="margin:0 0 0.5rem;">自動入力できる書類にはチェックが入っています。' +
-      'それ以外の書類（PDF・古い形式など）は自動入力の対象外で、公式サイトから取得してください。</p>';
-    // ファイルの形式で絞り込む。選んでいない形式は記入もダウンロードもしない
+    // 制度についての注意事項（受付終了・事前提出必要など）はページ末尾にまとめて出す。
+    // ここ（手順2の冒頭）には出さない
+    var bottom = document.getElementById('afSrcBottom');
+    if (bottom) bottom.innerHTML = afSrcHTML(key);
+    var html = '<div class="af-forms">' +
+      '<p class="step-ttl">手順2　この制度に必要な書類（' + items.length + '件）</p>';
+    // ファイルの形式で絞り込む。選んでいない形式は記入もダウンロードもしない。
+    // 説明文はカード下部（af-side の近く）にまとめて出すため、ここではボタンだけ
     if (fill.length) {
       html += '<div class="af-tools" id="afFmtRow">' +
         '<button type="button" data-fmt="all">すべて（' + items.length + '件）</button>' +
@@ -5100,7 +5106,7 @@
             '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
             'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
             '<span class="fn">' + esc(it.name) +
-            '<span class="gt-badge gt-b-ok">' + (mirrorOf(it.url) ? 'そのまま記入できます' : '自動入力できます') + '</span>' +
+            '<span class="gt-badge gt-b-ok">' + (mirrorOf(it.url) ? '自動入力可' : '自動入力できます') + '</span>' +
             '</span>' +
             '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
         } else {
@@ -5135,7 +5141,9 @@
       '<p>記入せず、白紙の様式そのものが欲しいときはこちら。</p>' +
       '<button type="button" class="btn ghost" id="afDl">' +
       'チェックした様式の原本を公式サイトから入手（記入はしません）</button>' +
-      '<div id="afDlList"></div></div>';
+      '<div id="afDlList"></div></div>' +
+      '<p class="af-legend">自動入力できる書類にはチェックが入っています。' +
+      'それ以外の書類（PDF・古い形式など）は自動入力の対象外で、公式サイトから取得してください。</p>';
     html += '</div>';
     box.innerHTML = html;
     var fmtRow = box.querySelector('#afFmtRow');
