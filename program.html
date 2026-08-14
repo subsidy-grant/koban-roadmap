@@ -323,6 +323,15 @@
   .pt-btn.primary:hover, .pt-btn.primary:focus-visible { opacity: 0.88; }
   .pt-btn.ghost { border: 1px solid var(--accent); color: var(--accent); }
   .pt-btn.ghost:hover, .pt-btn.ghost:focus-visible { background: var(--accent-wash); }
+  button.pt-btn.ghost { appearance: none; background: var(--paper-raised); border: 1px solid var(--accent);
+    font: inherit; cursor: pointer; box-shadow: var(--shadow-btn); }
+
+  /* ---------- 印刷（この制度の詳細を、開いた状態で出す） ---------- */
+  @media print {
+    body > *:not(#programArticle) { display: none !important; }
+    #programArticle { padding: 0; }
+    .pt-actions, .pd-item .pd-toggle, .pd-fold > summary::after { display: none !important; }
+  }
 
   #notFound {
     display: none; background: var(--rust-wash); border: 1px solid var(--rust);
@@ -399,6 +408,7 @@
     <div class="pt-actions">
       <a class="pt-btn primary" id="ptSrcLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">公式サイトを見る ↗</a>
       <a class="pt-btn ghost" id="ptDocsLink" href="documents.html">この制度の申請書類・様式を見る →</a>
+      <button type="button" class="pt-btn ghost" id="ptPrintBtn">印刷 / PDF保存</button>
     </div>
   </article>
 
@@ -2736,6 +2746,25 @@
     var docsLink = document.getElementById('ptDocsLink');
     if (docsLink) docsLink.setAttribute('href', 'documents.html?p=' + encodeURIComponent(key));
   }
+
+  // ---------- 印刷（8項目・留意事項の<details>を、閉じていても開いた状態で出す） ----------
+  // window.print()は印刷ダイアログを閉じるまで戻らないブラウザとすぐ戻るブラウザがあるため、
+  // afterprintで確実に元の開閉状態へ戻す。
+  function printProgram() {
+    var article = document.getElementById('programArticle');
+    if (!article) { window.print(); return; }
+    var details = Array.prototype.slice.call(article.querySelectorAll('details'));
+    var wasOpen = details.map(function (d) { return d.hasAttribute('open'); });
+    function restore() {
+      details.forEach(function (d, i) { if (!wasOpen[i]) d.removeAttribute('open'); });
+      window.removeEventListener('afterprint', restore);
+    }
+    details.forEach(function (d) { d.setAttribute('open', ''); });
+    window.addEventListener('afterprint', restore);
+    window.print();
+  }
+  var printBtn = document.getElementById('ptPrintBtn');
+  if (printBtn) printBtn.addEventListener('click', printProgram);
 
   render();
 })();

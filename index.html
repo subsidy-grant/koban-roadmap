@@ -168,7 +168,7 @@
   .hero {
     background: var(--paper);
     color: var(--ink);
-    padding: 2.6rem 1.5rem 1.1rem;
+    padding: 1.4rem 1.5rem 0.9rem;
     border-bottom: none;
   }
   .hero-inner {
@@ -206,7 +206,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(1.9rem, 4.4vw, 3rem);
+    font-size: clamp(1.4rem, 3.4vw, 2.2rem);
     font-weight: 600;
     margin-top: 0.9rem;
     letter-spacing: 0.01em;
@@ -252,29 +252,9 @@
   .stat .v small { font-size: 1rem; font-weight: 500; color: var(--accent-soft); }
   .stat .d { font-size: 0.82rem; color: #98a394; margin-top: 0.2rem; }
 
-  /* ---------- Nav ---------- */
-  nav.toc {
-    position: sticky; top: 0; z-index: 10;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
-  }
-  nav.toc .toc-scroll { overflow-x: auto; white-space: nowrap; }
-  nav.toc .row { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; display: flex; gap: 1.6rem; }
-  nav.toc a {
-    display: inline-block;
-    padding: 0.85rem 0;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-  }
-  nav.toc a:hover, nav.toc a:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
-
   /* ---------- Main ---------- */
-  main { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-  /* scroll-margin-top は固定ナビ（実測 PC61px / スマホ58px）より大きく取る。
-     3.2rem=51px では見出しの上端がナビに隠れていた。 */
-  section { margin-bottom: 3.6rem; scroll-margin-top: 4.75rem; }
+  main { max-width: 880px; margin: 0 auto; padding: 1.6rem 1.5rem 5rem; }
+  section { margin-bottom: 3.6rem; scroll-margin-top: 1rem; }
 
   .section-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.4rem; }
   .section-no { font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", serif; color: var(--accent); font-size: 1.05rem; font-weight: 600; }
@@ -282,16 +262,6 @@
   .section-sub { color: var(--ink-faint); font-size: 0.95rem; margin: 0.5rem 0 1.6rem; max-width: 62ch; }
 
   p { max-width: 68ch; }
-
-  /* ---------- Scroll-fade hint (nav tabs on narrow screens) ---------- */
-  .scroll-fade {
-    position: absolute; top: 0; right: 0; bottom: 0; width: 2.4rem;
-    background: linear-gradient(to right, transparent, var(--paper-raised));
-    pointer-events: none; opacity: 0; transition: opacity 0.15s ease;
-    border-radius: 0 6px 6px 0;
-  }
-  .scroll-fade.is-visible { opacity: 1; }
-  .toc-fade { background: linear-gradient(to right, transparent, var(--paper)); border-radius: 0; }
 
   a.equip-link {
     display: inline-flex; align-items: center; gap: 0.35rem;
@@ -654,48 +624,6 @@
   /* ---------- 制度活用のヒント ---------- */
   .advice-disclaimer { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px dashed var(--line); }
 
-  /* ---------- 気になる制度 ----------
-     もとは☆だけの丸ボタンだった。何が起きるボタンか分からないという指摘を受け、
-     文字を添えた横長のボタンに変えた（2026-08-01）。押した後の状態も文字で分かる。 */
-  .fav-star {
-    appearance: none; -webkit-appearance: none; border: 1px solid var(--accent-soft); background: var(--accent-wash);
-    color: var(--accent); border-radius: 100px; flex-shrink: 0;
-    font: inherit; font-size: 0.82rem; line-height: 1; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 0.3rem;
-    padding: 0 0.85rem; min-height: 2.4rem; white-space: nowrap;
-    margin-left: auto;
-  }
-  .fav-star:hover, .fav-star:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
-  .fav-star.active { background: var(--accent-wash); border-color: var(--accent); color: var(--accent); }
-  .fav-panel { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
-  .fav-panel-inner {
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
-    padding: 0.9rem 1.1rem; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem;
-  }
-  .fav-panel-label { font-size: 0.78rem; color: var(--ink-faint); font-weight: 600; flex-shrink: 0; }
-  .fav-empty-hint { font-size: 0.84rem; color: var(--ink-faint); }
-  .fav-chip {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: var(--accent-wash); color: var(--ink); border-radius: 100px;
-    padding: 0.25rem 0.5rem 0.25rem 0.75rem; font-size: 0.82rem;
-  }
-  .fav-chip button {
-    appearance: none; border: none; background: none; color: var(--ink-faint); cursor: pointer;
-    font-size: 0.85rem; line-height: 1; padding: 0.1rem;
-  }
-  .fav-chip button:hover { color: var(--rust); }
-  .print-orientation {
-    display: flex; align-items: center; gap: 0.8rem; margin-left: auto;
-    font-size: 0.82rem; color: var(--ink-soft);
-  }
-  .print-orientation label { display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; min-height: 2.75rem; }
-  .print-orientation input[type="radio"] { accent-color: var(--accent); cursor: pointer; }
-  .fav-print-btn {
-    appearance: none; border: 1px solid var(--accent); background: var(--paper); color: var(--accent);
-    border-radius: 6px; padding: 0.4rem 0.8rem; font-size: 0.82rem; cursor: pointer; margin-left: auto;
-  }
-  .fav-print-btn:hover { background: var(--accent-wash); }
-
   /* ---------- カード内FAQ ---------- */
   .cond-faq { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--line); }
   .cond-faq-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); font-weight: 600; margin-bottom: 0.6rem; }
@@ -712,20 +640,6 @@
   .cond-faq summary::after { content: '▾'; margin-left: auto; color: var(--ink-faint); transition: transform 0.2s ease; }
   .cond-faq details[open] summary::after { transform: rotate(180deg); }
   .cond-faq .faq-a { padding: 0 0.9rem 0.9rem; font-size: 0.85rem; line-height: 1.75; color: var(--ink-soft); }
-
-  /* ---------- 印刷（お気に入りのみ） ---------- */
-  #printArea { display: none; }
-  @media print {
-    /* visibility:hiddenだと非表示要素も レイアウト上の高さを保持してしまい、
-       印刷範囲が実際の内容よりはるかに長くなる（空白ページが大量に出る）ため、
-       display:noneで#printArea以外のbody直下の要素を完全に高さごと除去する */
-    body > *:not(#printArea) { display: none !important; }
-    #printArea { display: block; width: 100%; padding: 0; background: #fff; color: #000; }
-  }
-  .print-card { border: 1px solid #999; border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: 1rem; break-inside: avoid; }
-  .print-card h3 { margin: 0 0 0.6rem; }
-  .print-card .pd-grid { display: block; }
-  .print-card .pd-item { margin-bottom: 0.5rem; }
 
   /* ---------- Ranking cards ---------- */
   .rank-list { display: flex; flex-direction: column; gap: 0.9rem; }
@@ -856,21 +770,12 @@
   .tier-list, .item-list li, .effect-box ul, .equip-box ul, .cost-box,
   .cond-faq summary, .cond-faq .faq-a, .sim-note, .rank-meta .why { font-size: 0.95rem; }
   a.src-link, .t-note, .track-desc, .sim-calc, .effect-box .src,
-  .advice-disclaimer, footer .inner, .fav-empty-hint, .fav-chip,
-  .print-orientation, .fav-print-btn { font-size: 0.9rem; }
-  .fav-panel-label, .slider-row label, .rank-cost .lbl { font-size: 0.88rem; }
-  nav.toc a { font-size: 0.95rem; }
+  .advice-disclaimer, footer .inner { font-size: 0.9rem; }
+  .slider-row label, .rank-cost .lbl { font-size: 0.88rem; }
   .picker select, #simTrackContainer select, .prefecture-row select { font-size: 1rem; }
 
   /* --- 当たり判定 44px 以上 --------------------------------------------- */
-  .fav-star { min-height: 2.75rem; font-size: 0.9rem; }
   a.src-link, a.equip-link { min-height: 2.6rem; padding-top: 0.3rem; padding-bottom: 0.3rem; }
-  nav.toc a { padding-left: 0.2rem; padding-right: 0.2rem; }
-  .print-orientation label { min-height: 2.6rem; padding: 0 0.3rem; }
-  .print-orientation input[type="radio"] { width: 1.25rem; height: 1.25rem; }
-  /* 2.6rem=41.6px では指のタップ目安44pxに届かない */
-  .fav-print-btn { min-height: 2.75rem; padding: 0.5rem 1.1rem; }
-  .fav-chip button { min-width: 2rem; min-height: 2rem; }
   .cat-check { min-height: 2.75rem; }
   .cat-check input { width: 1.25rem; height: 1.25rem; }
   /* つまみは指で掴める大きさに、軌道は狙いやすい太さに広げる */
@@ -980,16 +885,8 @@
   .diag-result .dr-v .dr-date { font-size: 1.45rem; }
 
   /* ==========================================================================
-     現在地表示つきナビ・トップへ戻る・テーマ切替
+     トップへ戻る・テーマ切替
      ========================================================================== */
-  nav.toc a.is-current { color: var(--accent); font-weight: 700; border-bottom-color: var(--accent); }
-  /* 目次にも本文と同じ番号を出す。番号があると「いま何番目にいるか」が分かる */
-  nav.toc .toc-no {
-    font-family: "BIZ UDPMincho", "BIZ UDMincho", "Yu Mincho", serif;
-    color: var(--ink-faint); margin-right: 0.4rem; font-size: 0.92em;
-  }
-  nav.toc a.is-current .toc-no { color: var(--accent); }
-
   #toTop {
     position: fixed; right: 1rem; bottom: calc(1rem + var(--app-tabbar-h, 56px)); z-index: 30;
     width: 3.2rem; height: 3.2rem; border-radius: 50%;
@@ -1070,7 +967,6 @@
     font-size: 1rem; font-weight: 700; line-height: 1.55;
     display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem;
   }
-  .timetable .tt-nm .fav-star { min-height: 1.9rem; padding: 0 0.65rem; font-size: 0.76rem; margin-left: 0; }
   .timetable .tt-nm .elig-badge { font-size: 0.72rem; padding: 0.15rem 0.55rem; }
   .timetable .tt-region {
     display: block; font-size: 0.8rem; font-weight: 400; color: var(--sage); margin-top: 0.15rem;
@@ -1091,10 +987,10 @@
 
   .timetable .tt-go {
     display: flex; align-items: center; justify-content: center;
-    min-height: 2.75rem; padding: 0.4rem 0.6rem;
+    min-height: 3rem; padding: 0.5rem 0.8rem;
     border: 1px solid var(--accent); border-radius: 4px;
     color: var(--accent); background: var(--paper-raised);
-    font-size: 0.86rem; font-weight: 700; text-decoration: none; white-space: nowrap;
+    font-size: 0.92rem; font-weight: 700; text-decoration: none; white-space: nowrap;
   }
   .timetable .tt-go:hover, .timetable .tt-go:focus-visible { background: var(--accent-wash); }
 
@@ -1306,18 +1202,6 @@
     .docs-files a { gap: 0.5rem; }
     .docs-files .fn { min-width: 100%; order: 3; }
   }
-  /* 印刷（チェックリスト） */
-  @media print {
-    #printArea .pmeta { font-size: 10pt; color: #444; margin: 0.2rem 0 0.6rem; }
-    #printArea .pwarn {
-      font-size: 10pt; line-height: 1.7; margin: 0.4rem 0 1rem;
-      border: 1.5px solid #000; padding: 0.5rem 0.7rem;
-    }
-    #printArea .pchk { list-style: none; margin: 0.3rem 0 0.9rem; }
-    #printArea .pchk li { padding: 0.25rem 0; border-bottom: 1px dotted #bbb; font-size: 10.5pt; }
-    #printArea .purl { display: block; font-size: 8.5pt; color: #555; word-break: break-all; }
-  }
-
   /* ==========================================================================
      セクションのアコーディオン（2026-07-30 追加）
      1ページに全部並べると縦に非常に長く、どこに何があるか掴みにくい。
@@ -1375,9 +1259,6 @@
     .has-accordion .sec-body { padding-top: 1.2rem; }
   }
 </style>
-<style id="printOrientationStyle">
-  @page { size: portrait; margin: 1.5cm; }
-</style>
 <script>
   // セクションを畳んだ状態で描き始めるための目印。<head> で付けるのは、
   // 本文が一度開いた状態で描画されてから畳まれる「ちらつき」を防ぐため。
@@ -1409,20 +1290,6 @@
     </select>
   </div>
 </div>
-
-<nav class="toc" aria-label="ページ内の目次">
-  <div class="toc-scroll">
-    <div class="row">
-      <a href="#conditions"><span class="toc-no">01</span>制度を探す</a>
-      <a href="#improvement-cta"><span class="toc-no">02</span>改善計画10選</a>
-      <a href="#criteria-cta"><span class="toc-no">03</span>採択・返還基準</a>
-      <a href="#favPanel">気になる制度</a>
-    </div>
-  </div>
-  <div class="scroll-fade toc-fade" aria-hidden="true"></div>
-</nav>
-
-<div id="printArea"></div>
 
 <main>
 
@@ -1557,17 +1424,17 @@
 
   /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
      押せるボタン・カードに、押した瞬間の沈み込みを追加する */
-  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn,
   .sort-btns button {
     transition: transform 0.08s ease, filter 0.08s ease;
   }
   button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
-  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+  .theme-btn:active, .sort-btns button:active {
     transform: scale(0.97);
     filter: brightness(0.95);
   }
   @media (prefers-reduced-motion: reduce) {
-    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn,
     .sort-btns button { transition: none; }
   }
 </style>
@@ -2047,23 +1914,6 @@
        静的複製している（唯一の出所ではなく、変更時は両方の更新が必要）。 -->
 
 </main>
-
-<!-- 気になる制度。以前はページ冒頭（目次の直下）に置いていたが、2026-08-05に
-     ページ下部へ移動した（本人指示）。制度カードを見終えたあとにまとめて
-     振り返る使い方に合わせている。id・class は変えていないので、目次の
-     「気になる制度」リンク（#favPanel）はそのまま効く。 -->
-<div class="fav-panel" id="favPanel">
-  <div class="fav-panel-inner">
-    <span class="fav-panel-label">気になる制度</span>
-    <span class="fav-empty-hint" id="favEmptyHint">まだ登録がありません。制度カードの「気になる」ボタンを押すと、ここに集まります。あとで比べたり、まとめて印刷したりできます。</span>
-    <div id="favChips" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
-    <div class="print-orientation" role="radiogroup" aria-label="印刷の向き">
-      <label><input type="radio" name="printOrientation" value="portrait" checked>縦</label>
-      <label><input type="radio" name="printOrientation" value="landscape">横</label>
-    </div>
-    <button type="button" class="fav-print-btn" id="favPrintBtn" onclick="printFavorites()" disabled>印刷 / PDF保存</button>
-  </div>
-</div>
 
 <footer>
   <div class="inner">
@@ -7099,7 +6949,7 @@
         var amountMan = headCount * perMan;
         headlineHtml =
           '<div class="sim-panel ok">' +
-            '<div class="sim-headline">◎ 概算受給額<button type="button" class="fav-star" data-key="career" onclick="toggleFavorite(\'career\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
+            '<div class="sim-headline">◎ 概算受給額</div>' +
             '<div class="sim-big tabular">' + fmtMan(amountMan) + '</div>' +
             '<div class="sim-calc tabular">対象人数 ' + currentEmployeeCount + '人（本制度は年20人まで対象）× ' + fmtMan(perMan) + '／人 = ' + fmtMan(amountMan) + '</div>' +
             '<div class="sim-note"><ul><li>本試算は概算であり、実際の支給可否・金額は要件充足状況により変動します。1人あたりの額は「有期雇用から正社員へ・重点支援対象者・中小企業」の場合の最大です。加算（転換制度の新設20万円など）は人数ではなく1事業所あたり1回です。</li>' + simDetailLinkHTML('career') + '</ul></div>' +
@@ -7108,7 +6958,7 @@
         var capDisplay = CAP_TEXT[progKey] || prog.cap;
         headlineHtml =
           '<div class="sim-panel ok">' +
-            '<div class="sim-headline">制度の上限額の目安<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
+            '<div class="sim-headline">制度の上限額の目安</div>' +
             '<div class="sim-big" style="font-size:1.5rem;">' + capDisplay + '</div>' +
             '<div class="sim-note"><ul><li>この制度は対象人数に応じた単価計算ではないため、制度全体の上限額を目安として表示しています。</li>' + simDetailLinkHTML(progKey) + '</ul></div>' +
           '</div>';
@@ -7142,7 +6992,6 @@
       }
       var adviceOkList = hasTrainingCat ? [trainingCatKey] : [];
       out.innerHTML = headlineHtml + html1 + generateAdviceHTML(progKey, prog, adviceOkList, othersCareer, categoriesMap, categoryOkPrograms);
-      updateFavoriteStars();
       return;
     }
 
@@ -7167,7 +7016,7 @@
       var trackLabelText = track ? '（' + track.label + '）' : '';
 
       html += '<div class="sim-panel ok">' +
-        '<div class="sim-headline">◎ 概算受給額' + trackLabelText + '<button type="button" class="fav-star" data-key="' + progKey + '" onclick="toggleFavorite(\'' + progKey + '\')" aria-label="「気になる制度」に入れる">☆ 気になる</button></div>' +
+        '<div class="sim-headline">◎ 概算受給額' + trackLabelText + '</div>' +
         '<div class="sim-big tabular">' + fmtMan(totalCapped) + '</div>' +
         '<div class="sim-calc">選択した従業員規模：' + tierLabel + '（制度上限額 ' + capText + '）</div>' +
         '<div class="sim-note"><ul>';
@@ -7224,7 +7073,6 @@
 
     html += generateAdviceHTML(progKey, prog, okList, ngList, categoriesMap, categoryOkPrograms);
     out.innerHTML = html;
-    updateFavoriteStars();
   }
 
   function initCondCardToggles(root) {
@@ -7252,125 +7100,6 @@
     });
   }
 
-  // ---------- お気に入り保存（localStorage） ----------
-  // キーは 'koban_' で名前空間化している。GitHub Pagesの同一オリジン（subsidy-grant.github.io）上に
-  // joseikin-navi等の姉妹サイトが同居しており、localStorageはパスではなくオリジン単位で共有されるため、
-  // 素の 'savedPrograms' キーのままだと他サイトのお気に入りと混ざってしまう
-  var FAV_STORAGE_KEY = 'koban_savedPrograms';
-  function getFavorites() {
-    try {
-      var raw = localStorage.getItem(FAV_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch (e) { return []; }
-  }
-
-  function saveFavoritesList(arr) {
-    try { localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(arr)); } catch (e) {}
-  }
-
-  function toggleFavorite(key) {
-    var favs = getFavorites();
-    var pos = favs.indexOf(key);
-    if (pos === -1) favs.push(key); else favs.splice(pos, 1);
-    saveFavoritesList(favs);
-    updateFavoriteStars();
-    renderFavPanel();
-  }
-
-  function updateFavoriteStars() {
-    var favs = getFavorites();
-    document.querySelectorAll('.fav-star').forEach(function (btn) {
-      var key = btn.getAttribute('data-key');
-      var active = favs.indexOf(key) !== -1;
-      btn.classList.toggle('active', active);
-      btn.textContent = active ? '★ 気になる（登録済み）' : '☆ 気になる';
-      btn.setAttribute('aria-label',
-        active ? '「気になる制度」から外す' : '「気になる制度」に入れる');
-      btn.setAttribute('title',
-        active ? 'もう一度押すと外れます' : 'あとで比べたり、まとめて印刷したりできます');
-    });
-  }
-
-  function initFavoriteStars() {
-    // .cond-card/.cond-compact は旧・一覧カードのクラス。2026-08-05にトップページの
-    // 制度一覧を #programSummary（比較表）へ一本化した際にカード自体は無くなったが、
-    // このスキャン自体は他ページ・将来のカードUIでも安全に使えるよう残してある
-    // （該当要素が無ければ何もしないだけ）。比較表側の★は renderProgramSummary() が
-    // 行ごとに直接ボタンを描画し、updateFavoriteStars() で状態を同期している。
-    document.querySelectorAll('.cond-card[data-key], .cond-compact[data-key]').forEach(function (card) {
-      var key = card.getAttribute('data-key');
-      var head = card.querySelector('.cond-head');
-      if (!head || head.querySelector('.fav-star')) return;
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'fav-star';
-      btn.setAttribute('data-key', key);
-      btn.textContent = '☆ 気になる';
-      btn.onclick = function (e) { e.stopPropagation(); toggleFavorite(key); };
-      head.appendChild(btn);
-    });
-    updateFavoriteStars();
-  }
-
-  function renderFavPanel() {
-    var chipsEl = document.getElementById('favChips');
-    var hintEl = document.getElementById('favEmptyHint');
-    var printBtn = document.getElementById('favPrintBtn');
-    if (!chipsEl) return;
-    var favs = getFavorites();
-    if (hintEl) hintEl.style.display = favs.length > 0 ? 'none' : '';
-    if (printBtn) printBtn.disabled = favs.length === 0;
-    chipsEl.innerHTML = favs.map(function (key) {
-      var p = PROGRAMS[key];
-      var name = p ? p.name : key;
-      return '<span class="fav-chip">' + name + '<button type="button" onclick="toggleFavorite(\'' + key + '\')" aria-label="削除">✕</button></span>';
-    }).join('');
-  }
-
-  // ---------- 印刷／PDF保存（お気に入りのみ） ----------
-  function printFavorites() {
-    var favs = getFavorites();
-    if (favs.length === 0) return;
-    var area = document.getElementById('printArea');
-    var html = '<h2>保存した制度一覧</h2>';
-    favs.forEach(function (key) {
-      var p = PROGRAMS[key];
-      if (!p) return;
-      html += '<div class="print-card">' +
-        '<h3>' + p.name + '</h3>' +
-        '<div class="pd-grid">' +
-          '<div class="pd-item"><div class="k">事業規模・雇用要件</div><div class="v">' + p.scale + '</div></div>' +
-          '<div class="pd-item"><div class="k">主な対象経費</div><div class="v">' + p.expense + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-rate"><div class="k">補助率</div><div class="v">' + p.rate + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-amount"><div class="k">上限額</div><div class="v">' + p.cap + '</div></div>' +
-          '<div class="pd-item"><div class="k">賃金上昇要件</div><div class="v">' + p.wage + '</div></div>' +
-          '<div class="pd-item pd-item-key pd-item-due"><div class="k">受付期間・次回締切</div><div class="v">' + p.schedule + '</div></div>' +
-          '<div class="pd-item"><div class="k">制度の継続性</div><div class="v">' + p.continuity + '</div></div>' +
-          '<div class="pd-item"><div class="k">公式サイト</div><div class="v">' + p.link + '</div></div>' +
-        '</div>' +
-      '</div>';
-    });
-    area.innerHTML = html;
-
-    var orientationInput = document.querySelector('input[name="printOrientation"]:checked');
-    var orientation = orientationInput ? orientationInput.value : 'portrait';
-    var styleEl = document.getElementById('printOrientationStyle');
-    if (styleEl) styleEl.textContent = '@page { size: ' + orientation + '; margin: 1.5cm; }';
-
-    window.print();
-  }
-
-  function setupScrollFade(scrollEl, fadeEl) {
-    if (!scrollEl || !fadeEl) return;
-    function update() {
-      var remaining = scrollEl.scrollWidth - scrollEl.clientWidth - scrollEl.scrollLeft;
-      fadeEl.classList.toggle('is-visible', remaining > 2);
-    }
-    scrollEl.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    if (window.ResizeObserver) { new ResizeObserver(update).observe(scrollEl); }
-    update();
-  }
 
   // ==========================================================================
   // 公開版で追加した機能（2026-07-29）
@@ -10054,7 +9783,6 @@
         '<div class="tt-nm">' + p.name +
           (isRegionProgram(r.key) ? '<span class="tt-region">この地域だけの制度</span>' : '') +
           '<span class="elig-badge" id="eligBadge-' + r.key + '"></span>' +
-          '<button type="button" class="fav-star" data-key="' + r.key + '" onclick="event.stopPropagation(); toggleFavorite(\'' + r.key + '\')">☆ 気になる</button>' +
         '</div>' +
         '<div class="tt-rate"><span class="tt-k">補助率</span><span class="tt-v">' + rateShort(r.key) + '</span>' +
           (rateHasMore(r.key) ? '<span class="tt-more">枠・条件で変動</span>' : '') + '</div>' +
@@ -10065,8 +9793,7 @@
     table.innerHTML =
       '<div class="tt-hdr" aria-hidden="true"><span>次の期日／残り</span><span>制度名</span>' +
         '<span>補助率</span><span>上限額</span><span></span></div>' + body;
-    // 行を丸ごと作り直すたびに ★気になる・✓対象バッジも消えるため、ここで描き直す
-    updateFavoriteStars();
+    // 行を丸ごと作り直すたびに ✓対象バッジも消えるため、ここで描き直す
     updateEligibilityBadges();
   }
 
@@ -10134,38 +9861,6 @@
     window.addEventListener('scroll', update, { passive: true });
     update();
   }
-  function initScrollSpy() {
-    var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a[href^="#"]'));
-    if (!links.length || !window.IntersectionObserver) return;
-    var map = {};
-    links.forEach(function (a) {
-      var el = document.getElementById(a.getAttribute('href').slice(1));
-      if (el) map[el.id] = a;
-    });
-    var visible = {};
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
-      var currentId = null;
-      Object.keys(map).forEach(function (id) {
-        if (visible[id] && currentId === null) currentId = id;
-      });
-      links.forEach(function (a) { a.classList.remove('is-current'); });
-      if (currentId && map[currentId]) {
-        map[currentId].classList.add('is-current');
-        // 目次自体が横スクロールするので、現在地が画面外なら見える位置へ寄せる
-        var scroller = document.querySelector('nav.toc .toc-scroll');
-        if (scroller) {
-          var a = map[currentId];
-          if (a.offsetLeft < scroller.scrollLeft ||
-              a.offsetLeft + a.offsetWidth > scroller.scrollLeft + scroller.clientWidth) {
-            scroller.scrollLeft = Math.max(0, a.offsetLeft - 16);
-          }
-        }
-      }
-    }, { rootMargin: '-25% 0px -60% 0px' });
-    Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
-  }
-
   // ---------- セクションのアコーディオン ----------
   // 1ページに全部並べると縦に長すぎるため、既定は見出しだけを見せ、押した分
   // だけ開く。HTMLを書き換えず読み込み時に組み替えているのは、03セクションの
@@ -10367,8 +10062,6 @@
 
   initCondCardToggles();
   initProgramCourses();
-  initFavoriteStars();
-  renderFavPanel();
   renderMunicipalitySelect();
   switchIndustry('beauty');
 
@@ -10377,9 +10070,6 @@
   restoringState = false;
   refreshPublicViews();
   initToTop();
-  initScrollSpy();
-
-  setupScrollFade(document.querySelector('nav.toc .toc-scroll'), document.querySelector('nav.toc .toc-fade'));
 </script>
 
 

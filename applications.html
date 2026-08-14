@@ -126,6 +126,23 @@
   .new-app-field input, .new-app-field select { width: 100%; font: inherit; font-size: 0.95rem;
     padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius-md);
     background: var(--paper-raised); color: var(--ink); min-height: 44px; }
+  .new-app-search { position: relative; }
+  .search-suggest { list-style: none; margin: 0.3rem 0 0; padding: 0.3rem; position: absolute;
+    top: 100%; left: 0; right: 0; z-index: 5; max-height: 15rem; overflow-y: auto;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px var(--shadow); }
+  .search-suggest li { border-radius: var(--radius-sm); }
+  .search-suggest button { display: block; width: 100%; text-align: left; font: inherit; font-size: 0.92rem;
+    background: none; border: none; color: var(--ink); padding: 0.5rem 0.6rem; cursor: pointer;
+    min-height: 44px; border-radius: var(--radius-sm); }
+  .search-suggest button:hover, .search-suggest button.is-active { background: var(--accent-wash); color: var(--accent); }
+  .new-app-search .picked { display: none; align-items: center; justify-content: space-between; gap: 0.5rem;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--accent); border-radius: var(--radius-md);
+    background: var(--accent-wash); color: var(--accent); font-weight: 700; font-size: 0.92rem; min-height: 44px; }
+  .new-app-search.has-picked .picked { display: flex; }
+  .new-app-search.has-picked #newAppProgramSearch { display: none; }
+  .picked button { background: none; border: none; color: inherit; font: inherit; cursor: pointer;
+    min-height: 32px; padding: 0.2rem 0.4rem; }
 
   /* ---- チェックリスト（documents.htmlの04と同じ見た目） ---- */
   .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
@@ -171,18 +188,19 @@
 <body>
 <main>
   <h1>申請の進み具合</h1>
-  <p class="lede">複数の制度に申請するときは、ここで申請ごとに分けて取り寄せ書類のチェックを残せます。この端末に保存され、次に開いたときは続きから進められます。</p>
 
   <div class="new-app">
-    <div class="new-app-field">
-      <label for="newAppName">申請の名前（自分で分かればOK）</label>
-      <input type="text" id="newAppName" placeholder="例：持続化補助金・2026年秋" autocomplete="off">
+    <div class="new-app-field new-app-search" id="newAppSearchWrap">
+      <label for="newAppProgramSearch">制度を検索して追加</label>
+      <input type="search" id="newAppProgramSearch" placeholder="制度名で検索（例：持続化、キャリアアップ）" autocomplete="off">
+      <ul id="newAppProgramList" class="search-suggest" hidden></ul>
+      <div class="picked" id="newAppPicked">
+        <span id="newAppPickedName"></span>
+        <button type="button" id="newAppPickedClear" aria-label="選び直す">✕</button>
+      </div>
+      <select id="newAppProgram" style="display:none;"><option value="">制度を選ぶ</option></select>
     </div>
-    <div class="new-app-field">
-      <label for="newAppProgram">制度（あとから変更可）</label>
-      <select id="newAppProgram"><option value="">制度を選ぶ（あとで選んでもOK）</option></select>
-    </div>
-    <button type="button" class="btn" id="newAppBtn">申請を追加</button>
+    <button type="button" class="btn" id="newAppBtn" disabled>申請を追加</button>
   </div>
 
   <div id="appList"></div>
@@ -277,11 +295,9 @@
     }
     var html = '<ul class="app-list">' + apps.map(function (a) {
       var p = progressOf(a);
-      var progName = a.programKey ? ((D.programs[a.programKey] || {}).name || a.programKey) : '制度未選択';
       return '<li class="app-item' + (a.id === currentId ? ' is-current' : '') + '">' +
         '<button type="button" class="app-item-main" data-id="' + esc(a.id) + '">' +
         '<span class="app-item-name">' + esc(a.name) + '</span>' +
-        '<span class="app-item-meta">' + esc(progName) + '</span>' +
         '</button>' +
         '<span class="app-item-prog"><span class="n">' + p.done + ' / ' + p.total + '</span>' +
         '<span class="lbl">取り寄せ書類</span></span>' +
@@ -388,19 +404,74 @@
   fillProgramSelect(document.getElementById('newAppProgram'));
   fillProgramSelect(document.getElementById('appDetailProgram'));
 
-  document.getElementById('newAppBtn').addEventListener('click', function () {
-    var nameEl = document.getElementById('newAppName');
+  // ---------- 新規作成：制度を検索して選ぶ ----------
+  // 「申請の名前」欄は廃止し、選んだ制度名をそのまま申請名として使う
+  // （2026-08-15、名前欄と制度名の重複表示の解消を兼ねる、本人指示）。
+  (function initProgramSearch() {
+    var searchEl = document.getElementById('newAppProgramSearch');
+    var listEl = document.getElementById('newAppProgramList');
     var progEl = document.getElementById('newAppProgram');
-    var name = nameEl.value.trim();
-    var programKey = progEl.value;
-    if (!name) {
-      name = programKey ? ((D.programs[programKey] || {}).name || programKey) : '名前未設定の申請';
+    var wrapEl = document.getElementById('newAppSearchWrap');
+    var pickedNameEl = document.getElementById('newAppPickedName');
+    var clearBtn = document.getElementById('newAppPickedClear');
+    var addBtn = document.getElementById('newAppBtn');
+    var keys = Object.keys(D.programs || {}).sort(function (a, b) {
+      return ((D.programs[a] || {}).name || '').localeCompare(((D.programs[b] || {}).name || ''), 'ja');
+    });
+
+    function pick(key) {
+      progEl.value = key;
+      pickedNameEl.textContent = (D.programs[key] || {}).name || key;
+      wrapEl.classList.add('has-picked');
+      listEl.hidden = true;
+      addBtn.disabled = false;
     }
+    function clearPick() {
+      progEl.value = '';
+      wrapEl.classList.remove('has-picked');
+      searchEl.value = '';
+      addBtn.disabled = true;
+      searchEl.focus();
+    }
+    function renderSuggest() {
+      var q = searchEl.value.trim();
+      if (!q) { listEl.hidden = true; listEl.innerHTML = ''; return; }
+      var hits = keys.filter(function (k) {
+        return ((D.programs[k] || {}).name || '').indexOf(q) !== -1;
+      }).slice(0, 20);
+      if (!hits.length) {
+        listEl.innerHTML = '<li style="padding:0.5rem 0.6rem;color:var(--ink-faint);font-size:0.88rem;">見つかりませんでした</li>';
+        listEl.hidden = false;
+        return;
+      }
+      listEl.innerHTML = hits.map(function (k) {
+        return '<li><button type="button" data-key="' + k + '">' + esc((D.programs[k] || {}).name || k) + '</button></li>';
+      }).join('');
+      listEl.hidden = false;
+      listEl.querySelectorAll('button').forEach(function (b) {
+        b.addEventListener('click', function () { pick(b.getAttribute('data-key')); });
+      });
+    }
+    searchEl.addEventListener('input', renderSuggest);
+    searchEl.addEventListener('focus', renderSuggest);
+    document.addEventListener('click', function (e) {
+      if (!wrapEl.contains(e.target)) listEl.hidden = true;
+    });
+    clearBtn.addEventListener('click', clearPick);
+  })();
+
+  document.getElementById('newAppBtn').addEventListener('click', function () {
+    var progEl = document.getElementById('newAppProgram');
+    var programKey = progEl.value;
+    if (!programKey) return;
+    var name = (D.programs[programKey] || {}).name || programKey;
     var a = { id: nextId(), name: name, programKey: programKey, createdAt: seq, done: {} };
     apps.push(a);
     saveApps();
-    nameEl.value = '';
+    document.getElementById('newAppProgramSearch').value = '';
+    document.getElementById('newAppSearchWrap').classList.remove('has-picked');
     progEl.value = '';
+    document.getElementById('newAppBtn').disabled = true;
     renderAppList();
     selectApp(a.id);
   });
@@ -409,6 +480,8 @@
     var a = findApp(currentId);
     if (!a) return;
     a.programKey = this.value;
+    // 一覧の名前は常に制度名と一致させる（2026-08-15、名前欄の廃止に伴い）
+    a.name = this.value ? ((D.programs[this.value] || {}).name || this.value) : '制度未選択';
     saveApps();
     renderAppList();
     renderDetail();
@@ -424,7 +497,12 @@
     var existing = apps.filter(function (a) { return a.programKey === key; });
     if (existing.length === 1) { selectApp(existing[0].id); return; }
     var sel = document.getElementById('newAppProgram');
-    if (sel.querySelector('option[value="' + key.replace(/"/g, '') + '"]')) sel.value = key;
+    if (sel.querySelector('option[value="' + key.replace(/"/g, '') + '"]')) {
+      sel.value = key;
+      document.getElementById('newAppPickedName').textContent = (D.programs[key] || {}).name || key;
+      document.getElementById('newAppSearchWrap').classList.add('has-picked');
+      document.getElementById('newAppBtn').disabled = false;
+    }
   })();
 
   renderAppList();

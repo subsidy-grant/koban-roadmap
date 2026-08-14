@@ -131,15 +131,24 @@
   .af-steps .btn { flex: 1 1 15rem; }
   .saved-note { font-size: 0.86rem; color: var(--sage); margin: 0.7rem 0 0; min-height: 1.5em; }
 
-  /* ---- 表 ---- */
-  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.9rem;
-    background: var(--paper-raised); }
-  th, td { border: 1px solid var(--line); padding: 0.6rem 0.7rem; text-align: left; vertical-align: top; }
-  th { background: var(--accent-wash); font-weight: 700; white-space: nowrap; }
-  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
-  tr.third th, tr.third td { background: var(--rust-wash); }
-  tr.third td:first-child { font-weight: 700; }
+  /* ---- 取り寄せ証明書のカード（旧・横スクロール表から変更、2026-08-15） ----
+     375px幅で5列の<table>が横スクロールを要していたため、書類1件=1カードの
+     縦積みに変更。third（他の人に頼む書類）は表の橙色行と同じ意味を保つ。 */
+  .tbl-wrap { display: flex; flex-direction: column; gap: 0.7rem; }
+  .common-doc-card { border: 1px solid var(--line); border-radius: var(--radius-md, 10px);
+    background: var(--paper-raised); padding: 0.8rem 0.9rem; }
+  .common-doc-card.third { background: var(--rust-wash); border-color: var(--rust); }
+  .cd-head { font-weight: 700; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap;
+    align-items: center; gap: 0.4rem; }
+  .cd-doc { font-size: 0.95rem; }
+  .cd-row { display: flex; gap: 0.6rem; padding: 0.3rem 0; border-top: 1px dashed var(--line); }
+  .cd-row:first-of-type { border-top: none; }
+  .cd-k { flex: 0 0 8.5rem; font-size: 0.82rem; color: var(--ink-soft); }
+  .cd-v { flex: 1 1 auto; font-size: 0.9rem; }
+  @media (max-width: 420px) {
+    .cd-row { flex-direction: column; gap: 0.1rem; }
+    .cd-k { flex: none; }
+  }
   .sub-h { font-size: 1rem; margin: 1.6rem 0 0.5rem; padding-left: 0; border-left: none;
     color: var(--accent); font-weight: 700; }
   /* 誰に要る書類かの印。色は既存の3色の役割どおり（緑=状態・青=案内・橙=注意） */
@@ -404,9 +413,11 @@
       </div>
     </details>
 
-    <!-- 取り寄せ証明書（旧03、02に統合。02で選んだ制度に合わせて絞り込む） -->
-    <div id="commonBox">
-      <p class="step-ttl" style="margin-top:1.6rem;">手順5　取り寄せが必要な証明書もそろえる</p>
+    <!-- 取り寄せ証明書（旧03、02に統合。02で選んだ制度に合わせて絞り込む）
+         2026-08-15、手順5全体を<details>化して既定で閉じる（本人指示）。 -->
+    <details class="fold" id="commonBox">
+      <summary>手順5　取り寄せが必要な証明書もそろえる</summary>
+      <div class="fold-body">
       <p class="section-sub" id="commonPicked"></p>
 
       <h3 class="sub-h">申請のとき</h3>
@@ -442,7 +453,8 @@
           <p class="src-note" id="commonSource"></p>
         </div>
       </details>
-    </div>
+      </div>
+    </details>
 
   </section>
 
@@ -4737,24 +4749,24 @@
     var sel = document.getElementById('afProgram');
     return (sel && sel.value) || '';
   }
+  // 2026-08-15、5列の<table>が375px幅で横スクロールを要していたため、
+  // 縦積みのカード型に変更（本人指示）。列名はカード内のラベル(.cd-k)として残す。
   function commonRows(when) {
     var key = docsSelectedKey();
     return COMMON_DOCS.filter(function (c) { return c.when === when && docApplies(c, key); })
       .map(function (c) {
       var days = c.days === 1 ? '当日' : ('〜' + c.days + '日');
-      return '<tr class="' + (c.third ? 'third' : '') + '">' +
-        '<td class="num">' + (c.third ? '他の人に頼む' : '自分で') + '</td>' +
-        '<td>' + whoBadge(c.who) + ' ' + esc(c.doc) + '</td>' +
-        '<td>' + esc(c.where) + '</td>' +
-        '<td class="num">' + days + '</td>' +
-        '<td>' + esc(c.note) + '</td>' +
-        '</tr>';
+      return '<div class="common-doc-card' + (c.third ? ' third' : '') + '">' +
+        '<div class="cd-head">' + whoBadge(c.who) + ' <span class="cd-doc">' + esc(c.doc) + '</span></div>' +
+        '<div class="cd-row"><span class="cd-k">用意する</span><span class="cd-v">' + (c.third ? '他の人に頼む' : '自分で') + '</span></div>' +
+        '<div class="cd-row"><span class="cd-k">どこで</span><span class="cd-v">' + esc(c.where) + '</span></div>' +
+        '<div class="cd-row"><span class="cd-k">かかる日数の目安</span><span class="cd-v">' + days + '</span></div>' +
+        (c.note ? '<div class="cd-row"><span class="cd-k">注意</span><span class="cd-v">' + esc(c.note) + '</span></div>' : '') +
+        '</div>';
     }).join('');
   }
 
   function renderCommon() {
-    var head = '<thead><tr><th>用意する</th><th>書類</th><th>どこで</th>' +
-               '<th>かかる日数の目安</th><th>注意</th></tr></thead>';
     var key = docsSelectedKey();
     var pick = document.getElementById('commonPicked');
     if (pick) {
@@ -4773,8 +4785,7 @@
     }
     var rowsA = commonRows('apply');
     document.getElementById('commonApply').innerHTML = rowsA
-      ? '<table>' + head + '<tbody>' + rowsA + '</tbody></table>'
-      : '<p class="empty">この制度の申請時に、取り寄せが要る共通書類はありません。</p>';
+      || '<p class="empty">この制度の申請時に、取り寄せが要る共通書類はありません。</p>';
     var rowsR = commonRows('report');
     var repBox = document.getElementById('commonReport');
     if (key && progDocType(key) === 'koyou') {
@@ -4784,8 +4795,7 @@
         '取組を実施したあと、期限内に支給申請を1回行う流れです。</p>';
     } else {
       repBox.innerHTML = rowsR
-        ? '<table>' + head + '<tbody>' + rowsR + '</tbody></table>'
-        : '<p class="empty">この制度で、事業後に取り寄せが要る共通書類はありません。</p>';
+        || '<p class="empty">この制度で、事業後に取り寄せが要る共通書類はありません。</p>';
     }
     var src = document.getElementById('commonSource');
     if (src) src.textContent = COMMON_DOCS_SOURCE;
