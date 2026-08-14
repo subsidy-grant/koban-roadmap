@@ -27,6 +27,10 @@
     --rust-wash: #f8e4d8; --cat-hojo: #1e4d78; --cat-hojo-wash: #e3edf5;
     --cat-josei: #6d4110; --cat-josei-wash: #f6ead6; --cat-other-wash: #e2e5ea;
     --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -177,7 +181,7 @@
   .sim-next-btn {
     font: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer;
     color: var(--on-accent); background: var(--accent); border: 1px solid var(--accent);
-    border-radius: 8px; padding: 0.6rem 1.3rem; min-height: 2.75rem;
+    border-radius: var(--radius-md); padding: 0.6rem 1.3rem; min-height: 2.75rem;
   }
   .sim-next-btn:hover { filter: brightness(1.08); }
   .sim-next-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
@@ -210,14 +214,14 @@
   .sim-check input { width: 1.4rem; height: 1.4rem; margin-top: 0.15rem; flex: none; accent-color: var(--accent); }
   .sim-check .req-strong { color: var(--rust); font-weight: 700; }
   .sim-result { margin-top: 1.2rem; }
-  .sim-panel { border-radius: 8px; padding: 1.2rem 1.3rem; }
+  .sim-panel { border-radius: var(--radius-md); padding: 1.2rem 1.3rem; }
   .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
   .sim-panel.info { background: var(--accent-wash); border: 1px solid var(--accent); }
   .sim-panel.alert { background: var(--rust-wash); border: 1px solid var(--rust); }
   .sim-panel.alert .sim-headline { color: var(--rust); }
   /* 受付が終わっている・まだ始まっていない制度は、金額より先に上に出す */
   .sim-status {
-    border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.8rem;
+    border-radius: var(--radius-md); padding: 0.7rem 1rem; margin-bottom: 0.8rem;
     font-size: 0.88rem; font-weight: 700; line-height: 1.7;
   }
   .sim-status.alert { background: var(--rust-wash); border: 1px solid var(--rust); color: var(--rust); }
@@ -318,7 +322,7 @@
   .ov-warn { font-size: 0.84rem; color: var(--rust); margin: 0.25rem 0 0; line-height: 1.7; }
   .ov-cta { margin: 1rem 0 0; }
   .ov-cta a.btn-link { display: inline-block; background: var(--accent); color: var(--on-accent);
-    border-radius: 8px; padding: 0.7rem 1.2rem; text-decoration: none; font-weight: 700;
+    border-radius: var(--radius-md); padding: 0.7rem 1.2rem; text-decoration: none; font-weight: 700;
     font-size: 0.95rem; min-height: 44px; }
   .ov-cta a.btn-link:hover { filter: brightness(1.08); }
   .ov-cta .sub { font-size: 0.84rem; color: var(--ink-soft); margin: 0.4rem 0 0; }
@@ -339,10 +343,10 @@
   }
   .pt-btn {
     display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem;
-    padding: 0.5rem 1.1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 700;
+    padding: 0.5rem 1.1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 700;
     text-decoration: none;
   }
-  .pt-btn.primary { background: var(--accent); color: var(--on-accent); }
+  .pt-btn.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-btn); }
   .pt-btn.primary:hover, .pt-btn.primary:focus-visible { opacity: 0.88; }
   .pt-btn.ghost { border: 1px solid var(--accent); color: var(--accent); }
   .pt-btn.ghost:hover, .pt-btn.ghost:focus-visible { background: var(--accent-wash); }
@@ -352,6 +356,22 @@
     border-radius: 10px; padding: 1.1rem 1.2rem; font-size: 0.95rem;
   }
   .privacy-note { margin-top: 2.2rem; font-size: 0.82rem; color: var(--ink-faint); }
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
+  }
 </style>
 </head>
 <body>

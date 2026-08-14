@@ -62,6 +62,10 @@
     --cat-other-wash: #e2e5ea;
     --line: #4f5b6d;
     --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -344,7 +348,7 @@
   /* ---------- Program picker (dropdown) ---------- */
   /* 2026-08-13：背景面同士の明度差が小さく境界がぼやける指摘を受け、影を追加（design.md参照） */
   .picker {
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
     padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.6rem;
     box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
   }
@@ -436,7 +440,7 @@
   .cond-card {
     background: var(--paper-raised);
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 1.3rem 1.4rem;
     box-shadow: 0 1px 2px var(--shadow);
   }
@@ -457,7 +461,7 @@
     margin-bottom: -1.3rem;
     padding-bottom: 1.3rem;
     border-bottom-color: transparent;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
   .cond-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .cond-head::after {
@@ -475,12 +479,12 @@
   .course-pick {
     display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
     margin: 0.9rem 0 0.9rem; padding: 0.65rem 0.8rem;
-    background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-md);
   }
   .course-pick > .cp-label { font-size: 0.82rem; font-weight: 700; color: var(--ink-soft); }
   .course-pick select {
     flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.95rem;
-    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius-md);
     background: var(--paper-raised); color: var(--ink); min-height: 2.9rem;
   }
   .course-pick select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -508,7 +512,7 @@
   .threshold-box {
     background: var(--accent-wash);
     border: 1px solid var(--accent);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 1rem 1.2rem;
     margin-bottom: 1.4rem;
   }
@@ -627,7 +631,7 @@
   }
   .cat-example-note[hidden] { display: none; }
   .sim-result { margin-top: 1.3rem; }
-  .sim-panel { border-radius: 8px; padding: 1.2rem 1.3rem; }
+  .sim-panel { border-radius: var(--radius-md); padding: 1.2rem 1.3rem; }
   .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
   .sim-panel.alert { background: var(--rust-wash); border: 1px solid var(--rust); }
   .sim-panel.info { background: var(--accent-wash); border: 1px solid var(--accent); }
@@ -665,7 +669,7 @@
   .fav-star.active { background: var(--accent-wash); border-color: var(--accent); color: var(--accent); }
   .fav-panel { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
   .fav-panel-inner {
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
     padding: 0.9rem 1.1rem; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem;
   }
   .fav-panel-label { font-size: 0.78rem; color: var(--ink-faint); font-weight: 600; flex-shrink: 0; }
@@ -729,7 +733,7 @@
   details.rank-card {
     background: var(--paper-raised);
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 2px var(--shadow);
   }
   details.rank-card > summary {
@@ -994,7 +998,7 @@
   .sort-row {
     display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem;
     margin-bottom: 1rem; padding: 0.8rem 1rem;
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
   }
   .sort-row .sort-label { font-size: 0.9rem; font-weight: 700; color: var(--ink-soft); }
   .sort-row .sort-btns { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -1132,7 +1136,7 @@
   .ov-warn { font-size: 0.84rem; color: var(--rust); margin: 0.25rem 0 0; line-height: 1.7; }
   .ov-cta { margin: 1rem 0 0; }
   .ov-cta a.btn-link { display: inline-block; background: var(--accent); color: var(--on-accent);
-    border-radius: 8px; padding: 0.7rem 1.2rem; text-decoration: none; font-weight: 700;
+    border-radius: var(--radius-md); padding: 0.7rem 1.2rem; text-decoration: none; font-weight: 700;
     font-size: 0.95rem; min-height: 44px; }
   .ov-cta a.btn-link:hover { filter: brightness(1.08); }
   .ov-cta .sub { font-size: 0.84rem; color: var(--ink-soft); margin: 0.4rem 0 0; }
@@ -1382,7 +1386,7 @@
   /* 様式のほかに必要な書類。ダウンロードリンクの一覧と見た目を分けて、
      「このカードの上半分だけそろえれば足りる」と読まれないようにする */
   .docs-extra { margin-top: 1rem; padding: 0.8rem 0.95rem; background: var(--paper);
-    border: 1px solid var(--line); border-radius: 8px; }
+    border: 1px solid var(--line); border-radius: var(--radius-md); }
   .docs-extra .docs-phase { margin-top: 0; }
   .docs-extra ul { margin: 0.5rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
   .docs-extra li { margin: 0.25rem 0; }
@@ -1435,7 +1439,7 @@
   .cond-compact {
     background: var(--paper-raised);
     border: 1px solid var(--line);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 1.1rem 1.3rem 1.3rem;
     box-shadow: 0 1px 2px var(--shadow);
   }
@@ -1673,7 +1677,7 @@
   #improvement-cta .imp10-panel.active { display:block; }
   #improvement-cta .imp10-note { font-size:0.82rem; color:var(--ink-soft); margin:0 0 0.8rem; }
   #improvement-cta .imp10-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:0.8rem; }
-  #improvement-cta .imp10-card { background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
+  #improvement-cta .imp10-card { background:var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius-md);
     padding:0.9rem 1.1rem; display:flex; flex-direction:column; gap:0.35rem; box-shadow:0 1px 2px var(--shadow); }
   #improvement-cta .imp10-card .thumb { height:110px; border-radius:6px; overflow:hidden; margin-bottom:0.2rem; }
   #improvement-cta .imp10-card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -1683,7 +1687,7 @@
   #improvement-cta .imp10-card .ttl { font-weight:600; font-size:0.92rem; line-height:1.5; }
   #improvement-cta .imp10-card .meta { font-size:0.75rem; color:var(--ink-faint); }
   #improvement-cta .imp10-card .links { margin-top:auto; padding-top:0.55rem; display:flex; gap:0.9rem; font-size:0.8rem; }
-  #improvement-cta .imp10-pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:8px;
+  #improvement-cta .imp10-pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius: var(--radius-md);
     padding:1.6rem; text-align:center; color:var(--ink-faint); font-size:0.88rem; }
 
   /* 可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針） */
@@ -1703,9 +1707,25 @@
       display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
       width:100%; min-height:2.9rem; margin-top:0.8rem; padding:0.5rem 1rem;
       font:inherit; font-size:0.95rem; font-weight:700; cursor:pointer;
-      border:1px solid var(--accent); border-radius:8px;
+      border:1px solid var(--accent); border-radius: var(--radius-md);
       background:var(--paper-raised); color:var(--accent);
     }
+  }
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
   }
 </style>
 

@@ -22,6 +22,10 @@
     --ink-faint: #3d4658; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --on-accent: #ffffff; --sage: #094758; --sage-wash: #dcf1f5; --rust: #882e08;
     --rust-wash: #f8e4d8; --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -228,6 +232,22 @@
   }
   /* このページはガント専用で固定ナビが無いため、月の目盛りは画面の最上部に貼り付ける */
   .gt-head { top: 0; }
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
+  }
 </style>
 </head>
 <body>

@@ -39,6 +39,10 @@
     --rust-wash: #f8e4d8;
     --line: #4f5b6d;
     --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -81,8 +85,8 @@
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 1.4rem; max-width: 62ch; }
 
   .btn { border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
-    border-radius: 8px; padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
-    cursor: pointer; min-height: 44px; }
+    border-radius: var(--radius-md); padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
+    cursor: pointer; min-height: 44px; box-shadow: var(--shadow-btn); }
   .btn.ghost { background: var(--paper-raised); color: var(--accent); }
   .btn.danger { background: var(--paper-raised); color: var(--rust); border-color: var(--rust); }
   .btn:hover { filter: brightness(1.08); }
@@ -118,7 +122,7 @@
   .new-app-field { flex: 1 1 14rem; }
   .new-app-field label { display: block; font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0.25rem; }
   .new-app-field input, .new-app-field select { width: 100%; font: inherit; font-size: 0.95rem;
-    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius-md);
     background: var(--paper-raised); color: var(--ink); min-height: 44px; }
 
   /* ---- チェックリスト（documents.htmlの04と同じ見た目） ---- */
@@ -144,6 +148,22 @@
   .who-rust { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
   .pick-jump { font-size: 0.85rem; }
   .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -175,7 +195,7 @@
       <h3 id="appDetailName"></h3>
       <p class="meta" id="appDetailMeta"></p>
       <label for="appDetailProgram" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">制度</label>
-      <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius:8px;background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
+      <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius: var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
         <option value="">制度を選ぶと、必要な書類だけに絞られます</option>
       </select>
       <p class="meta" id="appDetailDone"></p>

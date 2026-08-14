@@ -43,6 +43,10 @@
     --rust-wash: #f8e4d8;
     --line: #4f5b6d;
     --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -153,7 +157,7 @@
   .wz-progress { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--ink-soft);
     font-variant-numeric: tabular-nums; }
   .wz-modebtn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
-    font: inherit; font-size: 0.85rem; border-radius: 8px; padding: 0.5rem 0.9rem;
+    font: inherit; font-size: 0.85rem; border-radius: var(--radius-md); padding: 0.5rem 0.9rem;
     min-height: 44px; cursor: pointer; }
   .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
   .wz-progress-track { height: 6px; background: var(--paper); border: 1px solid var(--line);
@@ -185,17 +189,17 @@
   }
   #companyForm.mode-wizard .wz-steps .fstep.is-current .frow input,
   #companyForm.mode-wizard .wz-steps .fstep.is-current .frow textarea {
-    border: 1px solid var(--line); border-radius: 8px; padding: 0.85rem 0.9rem;
+    border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0.85rem 0.9rem;
     font-size: 1.12rem; background: var(--paper); min-height: 52px;
   }
   #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint { grid-column: auto; margin: 0.6rem 0 0; padding: 0; }
   #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ok {
     background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage);
-    border-radius: 8px; padding: 0.6rem 0.8rem; font-weight: 700;
+    border-radius: var(--radius-md); padding: 0.6rem 0.8rem; font-weight: 700;
   }
   #companyForm.mode-wizard .wz-steps .fstep.is-current .fhint.ng {
     background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust);
-    border-radius: 8px; padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-md); padding: 0.6rem 0.8rem;
   }
 
   /* 事業形態：大きなタップ2択（下の select は質問形式のときだけ隠す。値の器はselectのまま） */
@@ -227,7 +231,7 @@
   .picker-sublabel { font-size: 0.82rem; color: var(--ink-soft); }
   .emp-select-wrap select, .manyen-wrap input, .industry-wrap select {
     font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
-    border-radius: 8px; background: var(--paper-raised); color: var(--ink);
+    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
     min-height: 44px; max-width: 100%;
   }
   .manyen-wrap input[type="number"] { width: 8rem; }
@@ -237,7 +241,7 @@
   .founded-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   .founded-row select, .founded-row input[type="number"] {
     font: inherit; font-size: 0.98rem; padding: 0.5rem 0.6rem; border: 1px solid var(--line);
-    border-radius: 8px; background: var(--paper-raised); color: var(--ink);
+    border-radius: var(--radius-md); background: var(--paper-raised); color: var(--ink);
     min-height: 44px; max-width: 100%;
   }
   .founded-row input[type="number"] { width: 7rem; }
@@ -257,8 +261,8 @@
 
   .btn {
     border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
-    border-radius: 8px; padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
-    cursor: pointer; min-height: 44px;
+    border-radius: var(--radius-md); padding: 0.6rem 1.1rem; font: inherit; font-size: 0.92rem;
+    cursor: pointer; min-height: 44px; box-shadow: var(--shadow-btn);
   }
   .btn.ghost { background: var(--paper-raised); color: var(--accent); }
   .btn:hover { filter: brightness(1.08); }
@@ -430,7 +434,7 @@
      「受付は終了しています」「取組を始める前に計画書の提出が必要です」のように、
      様式を落とす前に読んでほしい内容が入るので、手順2の上に置く。 */
   .af-src { border: 1px solid var(--accent-soft); background: var(--accent-wash);
-    border-radius: 8px; padding: 0.7rem 0.9rem; margin: 0 0 0.9rem; }
+    border-radius: var(--radius-md); padding: 0.7rem 0.9rem; margin: 0 0 0.9rem; }
   .af-src-ttl { font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.3rem; }
   .af-src-note { font-size: 0.88rem; color: var(--ink); line-height: 1.75; margin: 0; }
   .af-src-foot { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; align-items: baseline;
@@ -494,6 +498,22 @@
     .sec-util, .sec-chevron { display: none; } }
 
 
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
+  }
 </style>
 </head>
 <script>document.documentElement.classList.add('has-accordion');</script>

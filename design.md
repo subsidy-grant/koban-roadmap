@@ -296,6 +296,68 @@ HSL明度を-12ptして彩度を保持したまま暗化し解消した（色相
 - `improvement/_build/`配下のHTML自動生成部分（`IMPROVEMENT_HUB_EMBED:START`〜`END`）は
   `embed_hub_cards.py`経由でのみ変更する
 
+## アプリ風の見た目強化（2026-08-15、本人指示「サイト全体をアプリ風のデザインにしたい」）
+
+PWA化（ホーム画面追加・オフライン対応）に続き、見た目もネイティブアプリに近づける。
+色相・書体・強調表現のルール（案B）は変えず、**角丸・影・タップ操作のフィードバック**の
+3点だけを強化する。
+
+### 角丸トークンを新設し、既存のバラバラな値を統一する
+
+現状、`border-radius`が4px/6px/8px/10pxとページ内で個別指定されており統一感がない。
+共通トークンを新設し、役割ごとに使い分ける：
+
+```css
+--radius-sm: 6px;   /* 小さいバッジ・入力欄 */
+--radius-md: 10px;  /* ボタン・カード（従来の6-8pxから拡大） */
+--radius-lg: 16px;  /* 大きいカード・パネル・モーダル相当 */
+```
+
+数値を上げすぎるとhallmarkの「丸みすぎたUI」アンチパターンに寄るため、既存の
+角丸トーン（6-8px）を大きく外れない範囲（+2-8px程度）にとどめる。フルラウンド
+（`border-radius: 100px`、ピル・バッジ用）は現状維持で変更しない。
+
+### カードの影を強化する
+
+既存の`box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow)`（.pd-item等）は
+維持しつつ、主要ボタン（`.btn`, `.btn-step`）にも同じ思想で影を追加し、ページ地面
+から「浮いている」質感を作る：
+
+```css
+--shadow-btn: 0 2px 4px var(--shadow);
+```
+
+### タップ時のフィードバック（`:active`）を全ボタンに追加する
+
+現状、押せるボタン・タップ可能なカードに`:active`状態の指定が1件もなく、押した
+瞬間の反応が無い（ネイティブアプリでは必ずある「沈み込み」の視覚フィードバック）。
+全`.btn`系・タップ可能な要素に以下を追加する：
+
+```css
+.btn, .btn-step, a.btn-link, button {
+  transition: transform 0.08s ease, filter 0.08s ease;
+}
+.btn:active, .btn-step:active, a.btn-link:active {
+  transform: scale(0.97);
+  filter: brightness(0.95);
+}
+```
+
+`prefers-reduced-motion: reduce`環境では`transition`を無効化する（既存のアニメーション
+方針があれば合わせる。無ければ本項で新設）：
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn-step, a.btn-link, button { transition: none; }
+}
+```
+
+### 適用範囲
+
+段1（本項）は色・書体・強調表現ルールを変更しない、角丸・影・tapフィードバックの
+視覚調整のみ。下部タブバー（段2）は別項で扱う。ページ遷移アニメーションは
+本人の指示により対象外（静的サイトのままページ単位で遷移する）。
+
 ## `.pd-peek`のCSS二重切り詰めを解消（2026-08-13(3)、本人指摘対応）
 
 `.pd-peek`のCSSに`max-width: 11rem; text-overflow: ellipsis; white-space: nowrap;`が

@@ -19,6 +19,10 @@
     --ink-faint: #3d4658; --accent: #1e4d78; --accent-soft: #b9cfe3; --accent-wash: #e3edf5;
     --sage: #094758; --sage-wash: #dcf1f5; --rust: #882e08; --rust-wash: #f8e4d8;
     --line: #4f5b6d; --shadow: rgba(25, 29, 34, 0.10);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-btn: 0 2px 4px var(--shadow);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -59,7 +63,7 @@
   .sub { color: var(--ink-soft); font-size: 0.92rem; font-style: italic; max-width: 68ch; }
   .back { font-size: 0.85rem; margin-bottom: 1.2rem; }
   a { color: var(--accent); }
-  .disclaimer { background: var(--accent-wash); border: 1px solid var(--accent-soft); border-radius: 8px;
+  .disclaimer { background: var(--accent-wash); border: 1px solid var(--accent-soft); border-radius: var(--radius-md);
     padding: 1rem 1.2rem; font-size: 0.86rem; color: var(--ink-soft); margin-top: 1.4rem; }
   .disclaimer strong { color: var(--ink); }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
@@ -70,7 +74,7 @@
   .stat .t { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.2rem; }
   .box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.1rem 1.3rem; margin-top: 1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
-  .twrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-raised);
+  .twrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-raised);
     margin-top: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 680px; }
   th { text-align: left; font-size: 0.7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em;
@@ -108,6 +112,22 @@
   }
   a:focus-visible, button:focus-visible, summary:focus-visible {
     outline:3px solid currentColor; outline-offset:2px; border-radius:3px;
+  }
+
+  /* アプリ風のタップフィードバック（2026-08-15、design.md参照）。
+     押せるボタン・カードに、押した瞬間の沈み込みを追加する */
+  button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+  .sort-btns button {
+    transition: transform 0.08s ease, filter 0.08s ease;
+  }
+  button:active, .btn:active, .btn-step:active, a.btn-link:active, .pt-btn:active,
+  .theme-btn:active, .fav-print-btn:active, .sort-btns button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
+    .sort-btns button { transition: none; }
   }
 </style></head><body><main>
 
