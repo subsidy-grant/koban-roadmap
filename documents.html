@@ -298,6 +298,9 @@
   .who-sage { background: var(--sage-wash); color: var(--sage); border-color: var(--sage); }
   .who-accent { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
   .who-rust { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
+  .must-mark { display: inline-block; font-size: 0.72rem; font-weight: 700; margin-left: 0.35rem;
+    color: var(--rust); }
+  .must-mark.cond { color: var(--ink-faint); font-weight: 400; }
   .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
 
   /* ---- 制度カード ---- */
@@ -501,9 +504,8 @@
   <nav class="toc">
     <ol>
       <li><a href="#company">会社情報入力</a>（各書類に写して使う）</li>
-      <li><a href="#autofill">制度選択・書類入力</a>（Word・Excel）</li>
-      <li><a href="#common">取り寄せが必要な共通書類</a></li>
-      <li><a href="#checklist">取り寄せ書類の進み具合</a>（申請ごとに別ページで管理）</li>
+      <li><a href="#autofill">制度選択・書類入力</a>（様式・取り寄せ証明書とも）</li>
+      <li><a href="#checklist">申請書類の準備状況</a>（申請ごとに別ページで管理）</li>
     </ol>
   </nav>
 
@@ -563,56 +565,56 @@
       </div>
     </details>
 
+    <!-- 取り寄せ証明書（旧03、02に統合。02で選んだ制度に合わせて絞り込む） -->
+    <div id="commonBox">
+      <p class="step-ttl" style="margin-top:1.6rem;">手順5　取り寄せが必要な証明書もそろえる</p>
+      <p class="section-sub">様式のダウンロードだけでは申請できません。<strong>上で制度を選ぶと、その制度の類型に必要な証明書だけに絞って表示します。</strong><strong>橙色の行は、自分では発行できず他の人に出してもらう書類</strong>で、ここが間に合わずに締切に届かない原因になります。複数の制度に出す場合、同じ書類を必要な部数だけまとめて取り寄せると1回で済みます。</p>
+      <p class="section-sub" id="commonPicked"></p>
+
+      <p class="section-sub"><span class="who who-sage">全員</span> はほぼどの制度でも要る必須の書類、<span class="who who-accent">法人</span> <span class="who who-accent">個人事業主</span> はご自身の事業形態なら必須の書類、<span class="who who-rust">該当者のみ</span> は条件に当てはまる場合だけ要る書類です。</p>
+
+      <!-- 2026-08-01の社労士監修レビューで、雇用関係助成金は「順番」で落ちる制度なのに
+           そのことがページのどこにも書かれていない、と指摘を受けて追加した。
+           2026-08-03から、関係する類型を選んだとき（または未選択のとき）だけ出す。 -->
+      <div class="warn" id="commonKoyouWarn">
+        <p style="margin:0 0 0.5rem;"><strong>働く人に関わる助成金（キャリアアップ助成金・人材開発支援助成金・業務改善助成金）は、出す順番を間違えると受け取れなくなります。</strong></p>
+        <ul style="margin:0;padding-left:1.2rem;">
+          <li><strong>キャリアアップ助成金</strong>…正社員にする日の<strong>前の日まで</strong>にキャリアアップ計画書を出して、受理されていること</li>
+          <li><strong>人材開発支援助成金</strong>…訓練を始める日の<strong>6か月前から1か月前までの間</strong>に計画届を出すこと。来月から始める研修には間に合いません</li>
+          <li><strong>業務改善助成金</strong>…<strong>交付決定の前に発注・購入したものは対象外</strong>です。理由を問わず認められません</li>
+        </ul>
+        <p style="margin:0.6rem 0 0;"><strong>賃金台帳・出勤簿は、ふだん使っている原本かそのコピーを出してください。</strong>申請用に作り直したものだと分かった場合は支給されません。一度出した書類は、あとから差し替えたり直したりできません。</p>
+      </div>
+
+      <!-- 締切日を入れると、下の表の「いつまでに頼むか」が埋まる。
+           もとは04として別の節に同じ表をもう一度出していた（2026-08-03に統合） -->
+      <div class="pcard" id="dueBox">
+        <label for="deadlineInput" style="display:block;font-size:0.92rem;font-weight:700;margin-bottom:0.4rem;">提出の締切日を入れると、いつまでに頼めばよいかが出ます</label>
+        <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
+        <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;">締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
+      </div>
+
+      <h3 class="sub-h">申請のとき</h3>
+      <div class="tbl-wrap" id="commonApply"></div>
+
+      <h3 class="sub-h">事業が終わったあと（実績報告）</h3>
+      <p class="section-sub" style="margin-top:0.3rem;">申請のときだけでなく、<strong>事業が終わったあとにも提出が要ります。ここを出さないと補助金は受け取れません。</strong></p>
+      <div class="tbl-wrap" id="commonReport"></div>
+
+      <div class="warn">
+        <strong>日数はあくまで目安です。</strong>公的な公表値ではなく、窓口の混み具合・請求方法（窓口／郵送／オンライン）・時期によって変わります。
+        必要な書類と部数は制度ごとに違うので、<strong>必ず各制度の「公募要領」の提出書類一覧でご確認ください。</strong>
+        証明書には「発行後3か月以内」などの期限が付くことが多く、早く取りすぎても使えません。
+      </div>
+      <p class="src-note" id="commonSource"></p>
+    </div>
+
   </section>
 
-  <!-- 03 共通書類 -->
-  <section id="common">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>取り寄せが必要な共通書類</h2></div>
-    <p class="section-sub">様式のダウンロードだけでは申請できません。<strong>上の02で制度を選ぶと、その制度の類型に必要な書類だけに絞って表示します。</strong><strong>橙色の行は、自分では発行できず他の人に出してもらう書類</strong>で、ここが間に合わずに締切に届かない原因になります。複数の制度に出す場合、同じ書類を必要な部数だけまとめて取り寄せると1回で済みます。</p>
-    <p class="section-sub" id="commonPicked"></p>
-
-    <p class="section-sub"><span class="who who-sage">全員</span> はほぼどの制度でも要るもの、<span class="who who-accent">法人</span> <span class="who who-accent">個人事業主</span> はどちらかに要るもの、<span class="who who-rust">該当者のみ</span> は条件に当てはまる場合だけ要るものです。</p>
-
-    <!-- 2026-08-01の社労士監修レビューで、雇用関係助成金は「順番」で落ちる制度なのに
-         そのことがページのどこにも書かれていない、と指摘を受けて追加した。
-         2026-08-03から、関係する類型を選んだとき（または未選択のとき）だけ出す。 -->
-    <div class="warn" id="commonKoyouWarn">
-      <p style="margin:0 0 0.5rem;"><strong>働く人に関わる助成金（キャリアアップ助成金・人材開発支援助成金・業務改善助成金）は、出す順番を間違えると受け取れなくなります。</strong></p>
-      <ul style="margin:0;padding-left:1.2rem;">
-        <li><strong>キャリアアップ助成金</strong>…正社員にする日の<strong>前の日まで</strong>にキャリアアップ計画書を出して、受理されていること</li>
-        <li><strong>人材開発支援助成金</strong>…訓練を始める日の<strong>6か月前から1か月前までの間</strong>に計画届を出すこと。来月から始める研修には間に合いません</li>
-        <li><strong>業務改善助成金</strong>…<strong>交付決定の前に発注・購入したものは対象外</strong>です。理由を問わず認められません</li>
-      </ul>
-      <p style="margin:0.6rem 0 0;"><strong>賃金台帳・出勤簿は、ふだん使っている原本かそのコピーを出してください。</strong>申請用に作り直したものだと分かった場合は支給されません。一度出した書類は、あとから差し替えたり直したりできません。</p>
-    </div>
-
-    <!-- 締切日を入れると、下の表の「いつまでに頼むか」が埋まる。
-         もとは04として別の節に同じ表をもう一度出していた（2026-08-03に統合） -->
-    <div class="pcard" id="dueBox">
-      <label for="deadlineInput" style="display:block;font-size:0.92rem;font-weight:700;margin-bottom:0.4rem;">提出の締切日を入れると、いつまでに頼めばよいかが出ます</label>
-      <input type="date" id="deadlineInput" style="font:inherit;font-size:1rem;padding:0.55rem;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--paper-raised);color:var(--ink);">
-      <p class="meta" id="deadlinePick" style="margin:0.7rem 0 0;">締切日は各制度の公式ページでご確認ください。他の人に出してもらう書類は、締切直前に頼んでも間に合いません。</p>
-    </div>
-
-    <h3 class="sub-h">申請のとき</h3>
-    <div class="tbl-wrap" id="commonApply"></div>
-
-    <h3 class="sub-h">事業が終わったあと（実績報告）</h3>
-    <p class="section-sub" style="margin-top:0.3rem;">申請のときだけでなく、<strong>事業が終わったあとにも提出が要ります。ここを出さないと補助金は受け取れません。</strong></p>
-    <div class="tbl-wrap" id="commonReport"></div>
-
-    <div class="warn">
-      <strong>日数はあくまで目安です。</strong>公的な公表値ではなく、窓口の混み具合・請求方法（窓口／郵送／オンライン）・時期によって変わります。
-      必要な書類と部数は制度ごとに違うので、<strong>必ず各制度の「公募要領」の提出書類一覧でご確認ください。</strong>
-      証明書には「発行後3か月以内」などの期限が付くことが多く、早く取りすぎても使えません。
-    </div>
-    <p class="src-note" id="commonSource"></p>
-  </section>
-
-  <!-- 04 進捗状況（別ページで複数申請ぶんまとめて管理） -->
+  <!-- 03 進捗状況（別ページで複数申請ぶんまとめて管理） -->
   <section id="checklist">
-    <div class="section-head"><span class="section-no jp-serif">04</span><h2>申請書類の準備状況</h2></div>
-    <p class="section-sub">03に出した<strong>取り寄せが必要な書類</strong>が、いくつそろったかを追う場所です。複数の制度に申請する場合も、申請ごとに進み具合を分けて残せます。</p>
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>申請書類の準備状況</h2></div>
+    <p class="section-sub">上で挙げた<strong>様式・取り寄せが必要な証明書</strong>が、いくつそろったかを追う場所です。複数の制度に申請する場合も、申請ごとに進み具合を分けて残せます。</p>
     <p class="pcard" style="margin:0;">
       <a class="btn btn-step" id="checklistLink" href="applications.html" style="display:inline-flex;">
         <span class="lead">申請の進み具合を管理する →</span>
@@ -5615,12 +5617,16 @@
   var progDocType = window.KOBAN_COMMON_DOCS.progDocType;
   var docApplies = window.KOBAN_COMMON_DOCS.docApplies;
 
+  // who欄をそのまま必須判定に使う。「全員」または01で入力済みの事業形態（法人／個人事業主）と
+  // 一致すれば必須、「該当者のみ」は条件付き、事業形態が未入力または不一致なら判定を保留する
   function whoBadge(who) {
     var cls = window.KOBAN_COMMON_DOCS.whoBadgeClass(who);
-    return '<span class="who who-' + cls + '">' + esc(who) + '</span>';
+    var must = who === '全員' || (company.entity && who === company.entity);
+    var mark = must ? '<span class="must-mark">必須</span>' : (who === '該当者のみ' ? '<span class="must-mark cond">条件付き</span>' : '');
+    return '<span class="who who-' + cls + '">' + esc(who) + '</span>' + mark;
   }
 
-  // いま02で選ばれている制度。03〜06の絞り込みはこれに従う
+  // いま02で選ばれている制度。取り寄せ証明書の絞り込みはこれに従う
   function docsSelectedKey() {
     var sel = document.getElementById('afProgram');
     return (sel && sel.value) || '';
@@ -5676,10 +5682,10 @@
           (t === 'koyou'
             ? '雇用関係助成金では、登記事項証明書や納税証明書は原則不要です（労働局が自ら確認します）。'
             : '') +
-          '<a href="#autofill" class="pick-jump">別の制度に切り替える（02へ）</a>';
+          '<a href="#afProgram" class="pick-jump">別の制度に切り替える（上の手順1へ）</a>';
       } else {
-        pick.innerHTML = '全制度ぶんを表示しています。<strong>制度を選ぶと、その制度に必要な書類だけに絞られます。</strong>' +
-          '<a href="#autofill" class="pick-jump">制度を選ぶ（02へ）</a>';
+        pick.innerHTML = '全制度ぶんを表示しています。<strong>制度を選ぶと、その制度に必要な証明書だけに絞られます。</strong>' +
+          '<a href="#afProgram" class="pick-jump">制度を選ぶ（上の手順1へ）</a>';
       }
     }
     var rowsA = commonRows('apply');
@@ -5758,8 +5764,7 @@
     if (!sel) return;
     sel.addEventListener('change', function () {
       renderAfForms();
-      // 03〜04はこの選択に連動する
-      renderCommon();
+      // 取り寄せ証明書もこの選択に連動する
       renderCommon();
       updateChecklistLink();
     });
@@ -5778,7 +5783,7 @@
   renderCommon();
   updateChecklistLink();
   syncThemeBtn();
-  // 締切日を入れ直したら、03の「いつまでに頼むか」を出し直す
+  // 締切日を入れ直したら、取り寄せ証明書の「いつまでに頼むか」を出し直す
   document.getElementById('deadlineInput').addEventListener('change', renderCommon);
 
   // 描画がすべて終わってから節を畳む（中身を動かすので順番が大事）
