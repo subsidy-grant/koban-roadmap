@@ -379,6 +379,32 @@
     button, .btn, .btn-step, a.btn-link, .pt-btn, .theme-btn, .fav-print-btn,
     .sort-btns button { transition: none; }
   }
+
+  /* スマホでは初期表示（カードを閉じた状態）を1画面に収める。
+     2026-08-16、本人の「スマホで各ページが上下にスクロールする」指示による。
+     このページは上部（main padding-top 40px + h1 margin-bottom 32px）に
+     72pxの余白があり、そこが最も削減余地が大きかった。 */
+  @media (max-width: 720px) {
+    main { padding-top: 0.9rem; padding-bottom: 0.6rem; }
+    h1 { font-size: 1.25rem; margin-bottom: 0.7rem; }
+    .fold { margin: 0.55rem 0; }
+    .fold > summary { padding: 0.6rem 0.9rem; min-height: 0; }
+    .picker { margin-bottom: 0.6rem; padding: 0.8rem 0.9rem; }
+  }
+  /* iPhone SE等の縦が短い端末（667px）向け。720px幅の指定だけでは
+     タブバー(79px)を引いた可視領域588pxに収まりきらないため、さらに詰める。 */
+  @media (max-height: 700px) {
+    main { padding-top: 0.7rem; }
+    h1 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .fold { margin: 0.35rem 0; }
+    .fold > summary { padding: 0.45rem 0.9rem; font-size: 0.88rem; }
+    /* 末尾の「対応している様式について」が29pxだけ溢れていたため、
+       手順1のカードと開閉ブロックをもう少し詰める（2026-08-16実測）。 */
+    .picker { padding: 0.6rem 0.8rem; margin-bottom: 0.45rem; }
+    .picker .step-ttl { margin-bottom: 0.4rem; font-size: 0.95rem; }
+    .af-filter label { font-size: 0.8rem; }
+    .af-tools button { padding: 0.35rem 0.6rem; font-size: 0.82rem; }
+  }
 </style>
 </head>
 <body>
