@@ -76,11 +76,11 @@
     -webkit-font-smoothing: antialiased;
   }
   .jp-serif { font-family: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN",serif; }
-  main { max-width: 940px; margin: 0 auto; padding: 1.6rem 1.1rem 5rem; }
+  main { max-width: 940px; margin: 0 auto; padding: 2.5rem 1.1rem 1.5rem; }
   a { color: var(--accent); }
 
   /* ---- ページ頭 ---- */
-  h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
+  h1 { font-size: 1.5rem; margin: 0 0 2rem; line-height: 1.4; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
 
   .privacy {
@@ -97,7 +97,7 @@
   .toc li { margin: 0.25rem 0; font-size: 0.95rem; }
 
   /* ---- 章 ---- */
-  section { margin-top: 3rem; scroll-margin-top: 1rem; }
+  section { margin-top: 0.5rem; scroll-margin-top: 1rem; }
   .section-head { display: flex; align-items: baseline; gap: 0.7rem; border-bottom: 2px solid var(--accent);
     padding-bottom: 0.45rem; margin-bottom: 0.9rem; }
   .section-no { font-size: 1.5rem; color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -373,15 +373,15 @@
       <div class="af-filter">
         <label for="afFilterText">制度名で絞り込む</label>
         <input type="search" id="afFilterText" placeholder="例：持続化、キャリアアップ、川口" autocomplete="off">
-        <div class="af-filter-row">
-          <label for="afFilterArea">地域</label>
-          <select id="afFilterArea"><option value="">すべての地域</option></select>
-        </div>
         <div class="af-tools" id="afKindRow">
           <button type="button" data-kind="all" class="active">すべて</button>
           <button type="button" data-kind="national">国の制度</button>
           <button type="button" data-kind="pref">都道府県</button>
           <button type="button" data-kind="city">市区町村</button>
+        </div>
+        <div class="af-filter-row" id="afFilterAreaRow" style="display:none;">
+          <label for="afFilterArea">都道府県で絞り込む</label>
+          <select id="afFilterArea"><option value="">すべての都道府県</option></select>
         </div>
       </div>
       <label class="sr-only" for="afProgram">制度</label>
@@ -4250,7 +4250,7 @@
         if (pf && prefs.indexOf(pf) === -1) prefs.push(pf);
       });
       prefs.sort();
-      area.innerHTML = '<option value="">すべての地域</option>' + prefs.map(function (pf) {
+      area.innerHTML = '<option value="">すべての都道府県</option>' + prefs.map(function (pf) {
         return '<option value="' + esc(pf) + '">' + esc(PREF_LABEL[pf] || pf) + '</option>';
       }).join('');
       area.setAttribute('data-built', '1');
@@ -4266,6 +4266,7 @@
   function initAfFilter() {
     var t = document.getElementById('afFilterText');
     var a = document.getElementById('afFilterArea');
+    var areaRow = document.getElementById('afFilterAreaRow');
     var row = document.getElementById('afKindRow');
     if (t) t.addEventListener('input', function () {
       afFilter.text = t.value.trim(); renderAfPrograms();
@@ -4278,8 +4279,10 @@
         afFilter.kind = b.getAttribute('data-kind');
         row.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
         b.classList.add('active');
-        // 国の制度に絞ったときは地域の絞り込みを外す（両立しないため）
-        if (afFilter.kind === 'national' && a) { a.value = ''; afFilter.area = ''; }
+        // 「都道府県」を選んだときだけ、都道府県名で絞り込むプルダウンを出す
+        // （2026-08-15、地域プルダウンと種別ボタンの見た目の重複を解消、本人指示）
+        if (areaRow) areaRow.style.display = afFilter.kind === 'pref' ? '' : 'none';
+        if (afFilter.kind !== 'pref' && a) { a.value = ''; afFilter.area = ''; }
         renderAfPrograms();
       });
     });
