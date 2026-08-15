@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
-"""index.html から、書類作成ページ（documents.html）が使うデータを書き出す。
+"""index.html + program_docs_data.js から、書類作成ページ（documents.html）が
+使うデータを書き出す。
 
 なぜ生成するのか：
-  制度データ（PROGRAMS）と様式データ（PROGRAM_DOCS）は index.html の中にある。
-  documents.html にコピーすると出所が2つになり、必ず片方が古くなる。
-  そこで index.html を唯一の出所とし、ここから page_data.js を機械的に作る。
+  制度データ（PROGRAMS）は index.html の中に、様式データ（PROGRAM_DOCS）は
+  program_docs_data.js の中にある。documents.html にコピーすると出所が
+  2つ以上になり、必ずどれかが古くなる。そこでこの2ファイルを唯一の出所とし、
+  ここから page_data.js を機械的に作る。
+
+  PROGRAM_DOCSは2026-08-15にindex.htmlから分離した（表示に一切使わない
+  約240KBを通常訪問者のダウンロードから外すため）。分離後もビルドの都合上
+  必要なので、index.html読み込み後にscriptタグとして追加注入する。
 
 なぜ正規表現ではなく実ブラウザなのか：
   PROGRAMS は `var PROGRAMS = {...}` のあとに `var ADDED = {...}` が実行時に
@@ -15,7 +21,8 @@
     python3 _tools/build_page_data.py          # 生成して page_data.js を書く
     python3 _tools/build_page_data.py --check  # 差分があるかだけ見る（書かない）
 
-index.html の制度データや様式を触ったら、これを流し直すこと。
+index.html の制度データ、または program_docs_data.js の様式データを
+触ったら、これを流し直すこと。
 """
 import io
 import json
@@ -25,6 +32,7 @@ import argparse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "index.html")
+DOCS_SRC = os.path.join(ROOT, "program_docs_data.js")
 OUT = os.path.join(ROOT, "page_data.js")
 
 # documents.html と program.html（1ページ1制度の詳細ページ、2026-08-05新設）が
@@ -38,7 +46,7 @@ PROGRAM_FIELDS = [
 ]
 
 EXTRACT = """() => {
-  if (typeof PROGRAMS === 'undefined' || typeof PROGRAM_DOCS === 'undefined') return null;
+  if (typeof PROGRAMS === 'undefined' || typeof window.KOBAN_PROGRAM_DOCS === 'undefined') return null;
   const fields = %s;
   const programs = {};
   Object.keys(PROGRAMS).forEach(k => {
@@ -46,7 +54,7 @@ EXTRACT = """() => {
     fields.forEach(f => { if (src[f]) dst[f] = src[f]; });
     programs[k] = dst;
   });
-  return { programs: programs, docs: PROGRAM_DOCS };
+  return { programs: programs, docs: window.KOBAN_PROGRAM_DOCS };
 }"""
 
 
@@ -64,6 +72,9 @@ def extract():
         pg = b.new_page()
         pg.on("pageerror", lambda e: errors.append(str(e)))
         pg.goto(url, wait_until="load")
+        # PROGRAM_DOCSはindex.html本体から分離済み（2026-08-15）。
+        # ビルド時だけ追加で注入し、window.KOBAN_PROGRAM_DOCSとして読む。
+        pg.add_script_tag(path=DOCS_SRC)
         pg.wait_for_timeout(1200)
         data = pg.evaluate(EXTRACT % json.dumps(PROGRAM_FIELDS))
         b.close()
@@ -73,14 +84,14 @@ def extract():
                          "\n  ".join(errors))
     if not data:
         raise SystemExit("PROGRAMS / PROGRAM_DOCS が読めなかった。"
-                         "index.html の構造が変わっていないか確認すること。")
+                         "index.html / program_docs_data.js の構造が変わっていないか確認すること。")
     return data
 
 
 def render(data):
     head = (
         "// 自動生成。手で編集しない。\n"
-        "//   出所      : index.html の PROGRAMS / PROGRAM_DOCS（実行後の値）\n"
+        "//   出所      : index.html の PROGRAMS（実行後の値） / program_docs_data.js の PROGRAM_DOCS\n"
         "//   作り直す  : python3 _tools/build_page_data.py\n"
         "//   使うページ: documents.html（申請書類の準備）\n"
         "//   制度 %d 件 / 様式を載せている制度 %d 件\n"

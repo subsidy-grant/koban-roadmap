@@ -1,5 +1,5 @@
 // 自動生成。手で編集しない。
-//   出所      : index.html の PROGRAMS / PROGRAM_DOCS（実行後の値）
+//   出所      : index.html の PROGRAMS（実行後の値） / program_docs_data.js の PROGRAM_DOCS
 //   作り直す  : python3 _tools/build_page_data.py
 //   使うページ: documents.html（申請書類の準備）
 //   制度 128 件 / 様式を載せている制度 114 件
