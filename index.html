@@ -765,13 +765,15 @@
     font-weight: 700; font-size: 0.86rem; color: var(--ink-soft); display: flex;
     align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
   footer .fold > summary::-webkit-details-marker { display: none; }
-  footer .fold > summary::before {
-    content: '▸'; flex: none; width: 22px; height: 22px; border-radius: 50%;
+  /* アイコンは右端（::after + margin-left:auto）に統一する
+     （同日中に左側::beforeから変更、他ページの開閉アイコンと位置を揃えるため）。 */
+  footer .fold > summary::after {
+    content: '▸'; flex: none; margin-left: auto; margin-right: 1rem; width: 22px; height: 22px; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  footer .fold[open] > summary::before {
+  footer .fold[open] > summary::after {
     content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
   }
   footer .fold > summary:hover { background: var(--accent-wash); }

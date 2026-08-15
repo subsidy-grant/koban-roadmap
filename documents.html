@@ -342,14 +342,16 @@
   /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
      閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。
      .af-summary（#afManualBoxの<summary>）は.foldクラスを持たない独自の見た目のため、
-     ここに含めないと標準のブラウザ三角マーカーのままになってしまう（2026-08-16に発覚・修正）。 */
-  .fold > summary::before, .af-summary::before {
-    content: '▸'; flex: none; width: 22px; height: 22px; border-radius: 50%;
+     ここに含めないと標準のブラウザ三角マーカーのままになってしまう（2026-08-16に発覚・修正）。
+     アイコンは右端（::after + margin-left:auto）に統一する。index.html/program.htmlの
+     開閉アイコンが右側なのに.foldだけ左側(::before)だった不一致を同日中に修正。 */
+  .fold > summary::after, .af-summary::after {
+    content: '▸'; flex: none; margin-left: auto; width: 22px; height: 22px; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  .fold[open] > summary::before, details[open] > .af-summary::before {
+  .fold[open] > summary::after, details[open] > .af-summary::after {
     content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
   }
   .fold > summary:hover { background: var(--accent-wash); }

@@ -162,14 +162,15 @@
     align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
   .fold > summary::-webkit-details-marker { display: none; }
   /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
-     閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。 */
-  .fold > summary::before {
-    content: '▸'; flex: none; width: 22px; height: 22px; border-radius: 50%;
+     閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。
+     アイコンは右端（::after + margin-left:auto）に統一する（同日中に左側::beforeから変更）。 */
+  .fold > summary::after {
+    content: '▸'; flex: none; margin-left: auto; margin-right: 1rem; width: 22px; height: 22px; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  .fold[open] > summary::before {
+  .fold[open] > summary::after {
     content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
   }
   .fold > summary:hover { background: var(--accent-wash); }
