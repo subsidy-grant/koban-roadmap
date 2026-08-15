@@ -765,8 +765,15 @@
     font-weight: 700; font-size: 0.86rem; color: var(--ink-soft); display: flex;
     align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
   footer .fold > summary::-webkit-details-marker { display: none; }
-  footer .fold > summary::before { content: '▸'; color: var(--accent); flex: none; }
-  footer .fold[open] > summary::before { content: '▾'; }
+  footer .fold > summary::before {
+    content: '▸'; flex: none; width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
+    font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  footer .fold[open] > summary::before {
+    content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
+  }
   footer .fold > summary:hover { background: var(--accent-wash); }
   footer .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
@@ -1282,11 +1289,20 @@
        （0.87rem=13.9px だった。中高年の利用を想定） */
     font-size: 0.92rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
   }
+  /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
+     閉=グレー系の地味な背景／開=アクセント色の塗り、で「今どちらの状態か」を
+     矢印だけに頼らず一目で伝える。2026-08-16、本人が10案から案4を選定。 */
   .sec-chevron {
-    flex: none; color: var(--accent); font-size: 1.15rem; line-height: 1.6;
-    transition: transform 0.18s ease;
+    flex: none; width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
+    transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  main > section.is-open .sec-chevron { transform: rotate(180deg); }
+  .sec-chevron svg { width: 16px; height: 16px; }
+  main > section.is-open .sec-chevron {
+    transform: rotate(180deg);
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
   main > section.is-open > .section-head .sec-toggle {
     border-color: var(--accent); background: var(--accent-wash);
   }
@@ -7591,7 +7607,7 @@
         var chev = document.createElement('span');
         chev.className = 'sec-chevron';
         chev.setAttribute('aria-hidden', 'true');
-        chev.textContent = '▾';
+        chev.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 
         btn.appendChild(noSpan);
         btn.appendChild(ttl);
