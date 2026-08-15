@@ -28,7 +28,7 @@
      （中高年・非IT層を含む事業者）に合わせて2026-07-31に採用した。
      Google Fontsは日本語をunicode-rangeで分割配信するため、実際に使う文字ぶんだけが落ちてくる。
      Noto Sans JPは、BIZ UDが落ちてこなかった場合の受け皿として残している。 -->
-<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+Rounded+1c:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   :root {
@@ -147,11 +147,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* 2026-08-16: サイト全体をゴシック（Noto Sans JP）に統一。
-     以前は様式番号・見出し・金額に明朝（BIZ UDPMincho系）を使い分けていたが、
-     よりポップな印象にするため.jp-serifも含め本文と同じゴシックに揃える。 */
+  /* 2026-08-16: 以前は様式番号・見出し・金額に明朝（BIZ UDPMincho系）を使っていたが、
+     ゴシック化を経て、さらにポップな印象を出すため.jp-serif（見出し・様式番号・
+     金額表示用）はM PLUS Rounded 1cに変更。本文は引き続きNoto Sans JPのまま。 */
   .jp-serif {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   }
 
   h1, h2, h3 { text-wrap: balance; margin: 0; }
@@ -278,7 +278,7 @@
     color: #aab3a3;
   }
   .stat .v {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-weight: 600;
     font-size: 1.7rem;
     margin-top: 0.35rem;
@@ -292,7 +292,7 @@
   section { margin-bottom: 3.6rem; scroll-margin-top: 1rem; }
 
   .section-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.4rem; }
-  .section-no { font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: var(--accent); font-size: 1.05rem; font-weight: 600; }
+  .section-no { font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: var(--accent); font-size: 1.05rem; font-weight: 600; }
   section h2 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); font-weight: 600; }
   .section-sub { color: var(--ink-faint); font-size: 0.95rem; margin: 0.5rem 0 1.6rem; max-width: 62ch; }
 
@@ -403,7 +403,7 @@
   .picker.is-open .picker-toggle { margin-bottom: 0; border-radius: 0; }
   .picker:not(.is-open) .program-detail { display: none; }
   .program-detail { margin-top: 0; padding-top: 1.1rem; }
-  .pd-name { font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.15rem; }
+  .pd-name { font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.15rem; }
   .pd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.9rem 0.9rem; margin-top: 1rem; }
   /* 2026-08-13：背景色が地色と同じ(--paper)のため、影のみで境界を作る（design.md参照） */
   .pd-item {
@@ -432,7 +432,7 @@
   /* 最重要の数値（補助率・上限額）は明朝化+太字+サイズアップで強調する
      （2026-08-13、design.md「強調表現」）。斜体は使わない＝見出し相当の強調のため。 */
   .num-strong {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     color: var(--accent);
     font-weight: 700;
     font-size: 1.3em;
@@ -541,7 +541,7 @@
     font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.6rem;
   }
   .slider-row .slider-out {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.15rem; color: var(--accent); white-space: nowrap;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.15rem; color: var(--accent); white-space: nowrap;
   }
   /* スライダーと並べる数値欄。見た目は3問診断の人数欄に合わせる */
   .slider-row .slider-num { display: flex; align-items: center; align-self: center; gap: 0.45rem; white-space: nowrap; }
@@ -640,10 +640,10 @@
   .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
   .sim-panel.alert { background: var(--rust-wash); border: 1px solid var(--rust); }
   .sim-panel.info { background: var(--accent-wash); border: 1px solid var(--accent); }
-  .sim-headline { font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; }
+  .sim-headline { font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; }
   .sim-panel.alert .sim-headline { color: var(--rust); }
   .sim-panel.info .sim-headline { color: var(--accent); }
-  .sim-big { font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 2.4rem; margin: 0.6rem 0 0.2rem; }
+  .sim-big { font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 2.4rem; margin: 0.6rem 0 0.2rem; }
   .sim-calc { font-size: 0.85rem; color: var(--ink-soft); tabular-nums: yes; }
   .sim-note { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--line); font-size: 0.86rem; }
   .sim-note ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
@@ -697,7 +697,7 @@
   details.rank-card > summary::marker { content: ""; }
 
   .rank-num {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-weight: 600;
     font-size: 1.5rem;
     color: var(--accent);
@@ -708,7 +708,7 @@
   .rank-meta .name { font-weight: 600; font-size: 1.03rem; }
   .rank-meta .why { color: var(--ink-faint); font-size: 0.86rem; margin-top: 0.15rem; }
   .rank-cost { text-align: right; flex-shrink: 0; }
-  .rank-cost .amt { font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.05rem; }
+  .rank-cost .amt { font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; font-weight: 600; font-size: 1.05rem; }
   .rank-cost .lbl { font-size: 0.68rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
   .chevron { color: var(--ink-faint); font-size: 0.8rem; transition: transform 0.15s ease; flex-shrink: 0; }
   details[open] .chevron { transform: rotate(90deg); }
@@ -732,7 +732,7 @@
     position: absolute;
     left: 0;
     top: 0.42rem;
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-size: 0.76rem;
     color: var(--ink-faint);
     width: 1.4rem;
@@ -914,7 +914,7 @@
   .diag-result .dr-k { font-size: 0.88rem; color: var(--ink-soft); }
   /* 数字は明朝。記入済みの欄に見える */
   .diag-result .dr-v {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-weight: 700; font-size: 2.1rem; margin-top: 0.1rem; line-height: 1.25;
   }
   .diag-result .dr-v small { font-size: 0.95rem; font-weight: 400; }
@@ -990,7 +990,7 @@
   }
   .timetable .tt-days {
     display: block;
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-size: 1.7rem; font-weight: 700; color: var(--rust); line-height: 1.2;
   }
   .timetable .tt-days small { font-size: 0.85rem; color: var(--ink-faint); font-weight: 400; }
@@ -1013,7 +1013,7 @@
   .timetable .tt-k { display: block; font-size: 0.78rem; color: var(--ink-soft); }
   .timetable .tt-v {
     display: block;
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-size: 1.35rem; font-weight: 700; color: var(--accent); line-height: 1.25;
     font-variant-numeric: tabular-nums;
   }
@@ -1123,7 +1123,7 @@
   .docs-ttl:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
   .docs-meta { display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
   .docs-count {
-    font-family: "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "M PLUS Rounded 1c", "Noto Sans JP", "BIZ UDPGothic", "BIZ UDGothic", "Yu Gothic Medium", "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
     font-size: 1rem; font-weight: 700; color: var(--accent); white-space: nowrap;
   }
   .docs-note { font-size: 0.88rem; color: var(--ink-soft); margin: 0.7rem 0 0; max-width: none; }
