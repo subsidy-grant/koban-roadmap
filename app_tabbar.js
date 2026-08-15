@@ -12,16 +12,16 @@
 
   var style = document.createElement('style');
   style.textContent =
-    ':root { --app-tabbar-h: 68px; }' +
+    ':root { --app-tabbar-h: 78px; }' +
     '.app-tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 500;' +
     '  display: flex; background: var(--paper-raised); border-top: 1px solid var(--line);' +
     '  box-shadow: 0 -2px 6px var(--shadow);' +
     '  padding-bottom: env(safe-area-inset-bottom, 0); }' +
     '.app-tab { flex: 1 1 0; display: flex; flex-direction: column; align-items: center;' +
-    '  justify-content: center; gap: 0.2rem; padding: 0.5rem 0.2rem; min-height: var(--app-tabbar-h);' +
-    '  text-decoration: none; color: var(--ink-faint); font-size: 0.72rem; line-height: 1.3;' +
+    '  justify-content: center; gap: 0.25rem; padding: 0.6rem 0.2rem; min-height: var(--app-tabbar-h);' +
+    '  text-decoration: none; color: var(--ink-faint); font-size: 0.82rem; line-height: 1.3;' +
     '  transition: color 0.08s ease, transform 0.08s ease; }' +
-    '.app-tab .icon { font-size: 1.6rem; line-height: 1; }' +
+    '.app-tab .icon { font-size: 1.85rem; line-height: 1; }' +
     '.app-tab.is-current { color: var(--accent); font-weight: 700; }' +
     '.app-tab:active { transform: scale(0.93); }' +
     '@media (prefers-reduced-motion: reduce) { .app-tab { transition: none; } }' +

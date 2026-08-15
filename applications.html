@@ -90,6 +90,11 @@
   .pcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1rem 1.1rem; margin-bottom: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
+  .pcard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.6rem; }
+  .pcard-head h3 { margin: 0; }
+  .pcard-close { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
+    border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
+  .pcard-close:hover { border-color: var(--rust); color: var(--rust); }
   .btn-link { display: inline-block; padding: 0.5rem 0.9rem; border: 1px solid var(--accent);
     border-radius: var(--radius-md); background: var(--accent-wash); color: var(--accent);
     font-weight: 700; font-size: 0.86rem; text-decoration: none; min-height: 44px;
@@ -207,7 +212,10 @@
 
   <section id="appDetail" style="display:none;">
     <div class="pcard">
-      <h3 id="appDetailName"></h3>
+      <div class="pcard-head">
+        <h3 id="appDetailName"></h3>
+        <button type="button" class="pcard-close" id="appDetailCloseBtn" aria-label="閉じる">✕</button>
+      </div>
       <p class="meta" id="appDetailMeta"></p>
       <label for="appDetailProgram" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">制度</label>
       <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius: var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
@@ -321,6 +329,12 @@
     if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function closeDetail() {
+    currentId = null;
+    document.getElementById('appDetail').style.display = 'none';
+    renderAppList();
+  }
+
   function deleteApp(id) {
     var a = findApp(id);
     if (!a) return;
@@ -403,6 +417,7 @@
   // ---------- 起動 ----------
   fillProgramSelect(document.getElementById('newAppProgram'));
   fillProgramSelect(document.getElementById('appDetailProgram'));
+  document.getElementById('appDetailCloseBtn').addEventListener('click', closeDetail);
 
   // ---------- 新規作成：制度を検索して選ぶ ----------
   // 「申請の名前」欄は廃止し、選んだ制度名をそのまま申請名として使う

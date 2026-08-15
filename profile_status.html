@@ -77,18 +77,21 @@
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
   .back-link { display: inline-block; font-size: 0.88rem; margin-bottom: 0.8rem; }
 
-  .cs-panel { border: 1px solid var(--line); background: var(--paper-raised);
-    border-radius: var(--radius-lg); padding: 1.1rem 1.2rem; margin-top: 1.2rem; }
-  .cs-status-row { display: flex; justify-content: space-between; align-items: center;
-    gap: 0.6rem; padding: 0.7rem 0; border-bottom: 1px dashed var(--line); }
-  .cs-status-row:last-child { border-bottom: 0; }
-  .cs-status-name { font-weight: 700; font-size: 0.94rem; }
-  .cs-status-meta { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.15rem; }
-  .cs-status-pct-wrap { flex: none; text-align: right; }
-  .cs-status-pct { font-size: 0.92rem; font-weight: 700; color: var(--accent); }
-  .cs-status-pct-lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
   .cs-hint { margin: 0.8rem 0 0; font-size: 0.82rem; color: var(--ink-faint); }
   .empty { color: var(--ink-soft); font-size: 0.93rem; }
+
+  /* ---- 申請一覧（applications.htmlの.app-listと同じ見た目に統一、2026-08-15） ---- */
+  .app-list { list-style: none; margin: 0; padding: 0; }
+  .app-item { display: flex; align-items: center; gap: 0.7rem; background: var(--paper-raised);
+    border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem;
+    margin-bottom: 0.7rem; box-shadow: var(--shadow-btn); }
+  .app-item-main { flex: 1 1 auto; min-width: 0; background: none; border: 0; padding: 0;
+    text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
+  .app-item-name { font-weight: 700; font-size: 1rem; display: block; }
+  .app-item-prog { flex: none; text-align: right; font-size: 0.85rem; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; min-width: 4.6rem; line-height: 1.4; }
+  .app-item-prog .n { font-weight: 700; color: var(--accent); }
+  .app-item-prog .lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
 
   /* アプリ風のタップフィードバック（他ページと共通） */
   button, .btn, a.btn-link {
@@ -107,9 +110,10 @@
 <main>
   <a href="profile.html" class="back-link">← 会社情報 に戻る</a>
   <h1>現在の申請状況</h1>
-  <p class="lede">登録した申請ごとに、取り寄せ証明書のうちチェックが付いた件数の割合を表示します。<strong>この割合は取り寄せ証明書だけの進み具合で、様式の記入状況やお持ちの様式全体の進捗を表すものではありません。</strong>申請ごとの一覧は<a href="applications.html">申請進捗ページ</a>にあります。</p>
 
-  <div id="companyStatus" class="cs-panel"></div>
+  <div id="companyStatus"></div>
+
+  <p class="lede" style="margin-top:1.2rem;">表示している件数は、取り寄せ証明書のうちチェックが付いた件数です。<strong>様式の記入状況やお持ちの様式全体の進捗を表すものではありません。</strong>申請ごとの一覧は<a href="applications.html">申請進捗ページ</a>にあります。</p>
 </main>
 
 <script src="page_data.js"></script>
@@ -130,6 +134,14 @@
     catch (e) { return []; }
   }
 
+  // 表示はapplications.htmlの一覧（.app-list/.app-item）と統一する（2026-08-15、本人指示）。
+  // 名前は常に制度名と一致する仕様のため（applications.html参照）、1行表示のみでよい。
+  function progressOf(a, CD) {
+    if (!CD || !a.programKey) return { done: 0, total: 0 };
+    var items = CD.COMMON_DOCS.filter(function (c) { return CD.docApplies(c, a.programKey); });
+    var done = items.filter(function (c) { return a.done && a.done[c.id]; }).length;
+    return { done: done, total: items.length };
+  }
   function renderStatus() {
     var box = document.getElementById('companyStatus');
     if (!box) return;
@@ -139,24 +151,15 @@
       return;
     }
     var CD = window.KOBAN_COMMON_DOCS;
-    var D = window.KOBAN_DATA || { programs: {} };
-    box.innerHTML = apps.map(function (a) {
-      var progName = a.programKey ? ((D.programs[a.programKey] || {}).name || a.programKey) : '制度未選択';
-      var pctHtml = '';
-      if (CD && a.programKey) {
-        var items = CD.COMMON_DOCS.filter(function (c) { return CD.docApplies(c, a.programKey); });
-        if (items.length) {
-          var done = items.filter(function (c) { return a.done && a.done[c.id]; }).length;
-          var pct = Math.round(done * 100 / items.length);
-          pctHtml = '<span class="cs-status-pct-wrap"><span class="cs-status-pct">' + pct + '%</span>' +
-            '<span class="cs-status-pct-lbl">取り寄せ書類 ' + done + '/' + items.length + '件</span></span>';
-        }
-      }
-      return '<div class="cs-status-row"><span>' +
-        '<span class="cs-status-name">' + esc(a.name) + '</span>' +
-        '<span class="cs-status-meta">' + esc(progName) + '</span></span>' +
-        pctHtml + '</div>';
-    }).join('') + '<p class="cs-hint"><a href="applications.html">申請進捗ページで詳しく見る・編集する ↗</a></p>';
+    box.innerHTML = '<ul class="app-list">' + apps.map(function (a) {
+      var p = progressOf(a, CD);
+      return '<li class="app-item">' +
+        '<span class="app-item-main"><span class="app-item-name">' + esc(a.name) + '</span></span>' +
+        '<span class="app-item-prog"><span class="n">' + p.done + ' / ' + p.total + '</span>' +
+        '<span class="lbl">取り寄せ書類</span></span>' +
+        '</li>';
+    }).join('') + '</ul>' +
+      '<p class="cs-hint"><a href="applications.html">申請進捗ページで詳しく見る・編集する ↗</a></p>';
   }
 
   renderStatus();
