@@ -313,7 +313,9 @@
   .af-src-foot a { min-height: 44px; display: inline-flex; align-items: center; }
   .af-src-day { color: var(--ink-faint); }
   .af-status { font-size: 0.88rem; color: var(--ink-soft); margin: 0.6rem 0 0; min-height: 1.5em; }
-  .af-summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; }
+  .af-summary { cursor: pointer; font-weight: 700; font-size: 0.92rem;
+    list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .af-summary::-webkit-details-marker { display: none; }
 
 
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
@@ -338,14 +340,16 @@
     align-items: center; gap: 0.5rem; min-height: 44px; }
   .fold > summary::-webkit-details-marker { display: none; }
   /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
-     閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。 */
-  .fold > summary::before {
+     閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。
+     .af-summary（#afManualBoxの<summary>）は.foldクラスを持たない独自の見た目のため、
+     ここに含めないと標準のブラウザ三角マーカーのままになってしまう（2026-08-16に発覚・修正）。 */
+  .fold > summary::before, .af-summary::before {
     content: '▸'; flex: none; width: 22px; height: 22px; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  .fold[open] > summary::before {
+  .fold[open] > summary::before, details[open] > .af-summary::before {
     content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
   }
   .fold > summary:hover { background: var(--accent-wash); }
@@ -392,6 +396,10 @@
         <div class="af-filter-row" id="afFilterAreaRow" style="display:none;">
           <label for="afFilterArea">都道府県で絞り込む</label>
           <select id="afFilterArea"><option value="">すべての都道府県</option></select>
+        </div>
+        <div class="af-filter-row" id="afFilterMuniRow" style="display:none;">
+          <label for="afFilterMuni">市区町村で絞り込む</label>
+          <select id="afFilterMuni"><option value="">すべての市区町村</option></select>
         </div>
       </div>
       <label class="sr-only" for="afProgram">制度</label>
@@ -4190,7 +4198,41 @@
   }
   var PREF_LABEL = { tokyo: '東京都', kanagawa: '神奈川県', saitama: '埼玉県',
     chiba: '千葉県', tochigi: '栃木県', gunma: '群馬県' };
-  var afFilter = { text: '', area: '', kind: 'all' };
+  // 市区町村の制度（p.municipality）の絞り込みプルダウン用ラベル（2026-08-16追加）。
+  // 都道府県ごとにネストしているのは、"ota"（群馬県太田市）のようにローマ字keyが
+  // 別都県の市区町村と衝突しうるため。実データはpage_data.jsのmunicipalityフィールドのみで
+  // 日本語名を持たないので、このマップで変換する。
+  var MUNI_LABEL = {
+    tokyo: {
+      adachi: '足立区', arakawa: '荒川区', bunkyo: '文京区', edogawa: '江戸川区', fuchu: '府中市',
+      hachioji: '八王子市', hamura: '羽村市', itabashi: '板橋区', katsushika: '葛飾区', kita: '北区',
+      koto: '江東区', meguro: '目黒区', minato: '港区', mitaka: '三鷹市', nakano: '中野区',
+      nerima: '練馬区', nishitokyo: '西東京市', setagaya: '世田谷区', shinagawa: '品川区',
+      suginami: '杉並区', sumida: '墨田区', taito: '台東区', toshima: '豊島区'
+    },
+    kanagawa: {
+      atsugi: '厚木市', ayase: '綾瀬市', ebina: '海老名市', hiratsuka: '平塚市', isehara: '伊勢原市',
+      kamakura: '鎌倉市', kawasaki: '川崎市', sagamihara: '相模原市', yamato: '大和市',
+      yokohama: '横浜市', yokosuka: '横須賀市', yugawara: '湯河原町', zama: '座間市'
+    },
+    saitama: {
+      ageo: '上尾市', chichibu: '秩父市', fujimi: '富士見市', higashimatsuyama: '東松山市',
+      iruma: '入間市', kawaguchi: '川口市', kazo: '加須市', koshigaya: '越谷市', misato: '三郷市',
+      niiza: '新座市', saitama: 'さいたま市', sayama: '狭山市', toda: '戸田市', tokorozawa: '所沢市'
+    },
+    chiba: {
+      chiba: '千葉市', choshi: '銚子市', kimitsu: '君津市', matsudo: '松戸市',
+      minamiboso: '南房総市', mobara: '茂原市', sodegaura: '袖ケ浦市', tateyama: '館山市'
+    },
+    tochigi: {
+      ashikaga: '足利市', kanuma: '鹿沼市', nikko: '日光市', shimotsuke: '下野市'
+    },
+    gunma: {
+      isesaki: '伊勢崎市', maebashi: '前橋市', midori: 'みどり市', minakami: 'みなかみ町',
+      nakanojo: '中之条町', ota: '太田市', takasaki: '高崎市', tsumagoi: '嬬恋村'
+    }
+  };
+  var afFilter = { text: '', area: '', muni: '', kind: 'all' };
   // 制度を選ぶプルダウンに出す制度。
   // 以前は「記入できるWord・Excelの様式が1つでもある制度」だけに絞っていた。
   // そのため、様式がPDFやZIPでしか配られていない制度（2026-08-06時点で18制度・
@@ -4226,6 +4268,7 @@
       var p = D.programs[k];
       if (afFilter.kind !== 'all' && afKindOf(k) !== afFilter.kind) return false;
       if (afFilter.area && p.prefecture !== afFilter.area) return false;
+      if (afFilter.muni && p.municipality !== afFilter.muni) return false;
       if (afFilter.text && p.name.indexOf(afFilter.text) === -1) return false;
       return true;
     });
@@ -4270,6 +4313,33 @@
       area.setAttribute('data-built', '1');
     }
 
+    // 市区町村の選択肢も同様に、様式がある制度に実際に出てくる市区町村だけ出す。
+    // 都道府県ごとにoptgroupでまとめ、市区町村名の五十音順に並べる。
+    var muniSel = document.getElementById('afFilterMuni');
+    if (muniSel && !muniSel.getAttribute('data-built')) {
+      var munisByPref = {};
+      all.forEach(function (k) {
+        var p = D.programs[k];
+        if (!p.municipality) return;
+        var pf = p.prefecture;
+        munisByPref[pf] = munisByPref[pf] || [];
+        if (munisByPref[pf].indexOf(p.municipality) === -1) munisByPref[pf].push(p.municipality);
+      });
+      var prefOrder = Object.keys(munisByPref).sort();
+      var html = '<option value="">すべての市区町村</option>';
+      prefOrder.forEach(function (pf) {
+        var labelMap = MUNI_LABEL[pf] || {};
+        var munis = munisByPref[pf].slice().sort(function (a, b) {
+          return (labelMap[a] || a).localeCompare(labelMap[b] || b, 'ja');
+        });
+        html += '<optgroup label="' + esc(PREF_LABEL[pf] || pf) + '">' + munis.map(function (mu) {
+          return '<option value="' + esc(mu) + '">' + esc(labelMap[mu] || mu) + '</option>';
+        }).join('') + '</optgroup>';
+      });
+      muniSel.innerHTML = html;
+      muniSel.setAttribute('data-built', '1');
+    }
+
     var note = document.getElementById('afProgNote');
     if (note) {
       note.textContent = keys.length
@@ -4281,6 +4351,8 @@
     var t = document.getElementById('afFilterText');
     var a = document.getElementById('afFilterArea');
     var areaRow = document.getElementById('afFilterAreaRow');
+    var mu = document.getElementById('afFilterMuni');
+    var muniRow = document.getElementById('afFilterMuniRow');
     var row = document.getElementById('afKindRow');
     if (t) t.addEventListener('input', function () {
       afFilter.text = t.value.trim(); renderAfPrograms();
@@ -4288,15 +4360,21 @@
     if (a) a.addEventListener('change', function () {
       afFilter.area = a.value; renderAfPrograms();
     });
+    if (mu) mu.addEventListener('change', function () {
+      afFilter.muni = mu.value; renderAfPrograms();
+    });
     if (row) row.querySelectorAll('button').forEach(function (b) {
       b.addEventListener('click', function () {
         afFilter.kind = b.getAttribute('data-kind');
         row.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
         b.classList.add('active');
-        // 「都道府県」を選んだときだけ、都道府県名で絞り込むプルダウンを出す
-        // （2026-08-15、地域プルダウンと種別ボタンの見た目の重複を解消、本人指示）
+        // 「都道府県」「市区町村」を選んだときだけ、それぞれの絞り込みプルダウンを出す
+        // （2026-08-15、地域プルダウンと種別ボタンの見た目の重複を解消、本人指示。
+        //  2026-08-16、市区町村ボタンにも同様のプルダウンを追加）
         if (areaRow) areaRow.style.display = afFilter.kind === 'pref' ? '' : 'none';
         if (afFilter.kind !== 'pref' && a) { a.value = ''; afFilter.area = ''; }
+        if (muniRow) muniRow.style.display = afFilter.kind === 'city' ? '' : 'none';
+        if (afFilter.kind !== 'city' && mu) { mu.value = ''; afFilter.muni = ''; }
         renderAfPrograms();
       });
     });
