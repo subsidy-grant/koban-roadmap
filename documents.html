@@ -293,9 +293,10 @@
   .af-tools button { flex: 1 1 0; min-width: 0; border: 1px solid var(--line); background: var(--paper); color: var(--accent);
     font: inherit; font-size: 0.78rem; border-radius: 6px; padding: 0.3rem 0.3rem;
     min-height: 44px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .gt-badge { display: block; width: fit-content; max-width: 100%; margin: 0.25rem 0 0;
+  .gt-badge { display: inline-flex; align-items: center; gap: 0.3rem; width: fit-content; max-width: 100%; margin: 0.25rem 0 0;
     font-size: 0.72rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px;
-    padding: 0.15rem 0.55rem; white-space: normal; line-height: 1.35; }
+    padding: 0.15rem 0.6rem 0.15rem 0.4rem; white-space: normal; line-height: 1.35; }
+  .gt-badge svg { flex: none; width: 15px; height: 15px; }
   .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
   .gt-b-na { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
   .gt-b-warn { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
@@ -505,6 +506,10 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
+  // 書類バッジのアイコン（案2：丸ぽちゃ線画、ストローク太め）
+  var GT_ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.6 2.6L16.3 9"/></svg>';
+  var GT_ICON_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 15.5H3z" stroke-linejoin="round"/><line x1="12" y1="10" x2="12" y2="14.5"/><circle cx="12" cy="17.3" r="0.15" fill="currentColor"/></svg>';
+  var GT_ICON_NA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>';
 
   // ---------- 会社情報（company_data.js／profile.htmlと共有） ----------
   // 01（会社情報の入力・保存）はprofile.htmlへ移した。ここでは読むだけで、
@@ -4406,7 +4411,7 @@
             '<input type="checkbox" id="' + id + '" class="af-item" checked ' +
             'data-url="' + esc(it.url) + '" data-name="' + esc(it.name) + '">' +
             '<span class="fn">' + esc(it.name) +
-            '<span class="gt-badge ' + (mirrorOf(it.url) ? 'gt-b-ok">自動入力可' : 'gt-b-warn">取り寄せて記入を試みます（失敗することがあります）') + '</span>' +
+            '<span class="gt-badge ' + (mirrorOf(it.url) ? ('gt-b-ok">' + GT_ICON_OK + '自動入力可') : ('gt-b-warn">' + GT_ICON_WARN + '取り寄せて記入を試みます（失敗することがあります）')) + '</span>' +
             '</span>' +
             '<span class="ft">' + esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '</span></label></li>';
         } else {
@@ -4414,7 +4419,7 @@
           // .af-item を付けないので、afChecked() 等のチェック対象からは自動的に外れる
           html += '<li class="na" data-fmt="' + esc(it.type) + '"><span class="af-check-row">' +
             '<span class="fn">' + esc(it.name) +
-            '<span class="gt-badge gt-b-na">自動入力の対象外</span>' +
+            '<span class="gt-badge gt-b-na">' + GT_ICON_NA + '自動入力の対象外</span>' +
             '</span>' +
             '<a class="af-na-link" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' +
             esc(it.type) + (it.size ? ' ' + esc(it.size) : '') + '　開く ↗</a></span></li>';
