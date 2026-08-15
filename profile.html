@@ -277,7 +277,7 @@
       var isCur = c.id === curId;
       return '<span class="cs-chip' + (isCur ? ' is-current' : '') + '" data-id="' + esc(c.id) + '">' +
         '<button type="button" class="cs-select"' + (isCur ? ' aria-current="true"' : '') + '>' +
-          esc(c.label || '（名称未設定）') + '</button>' +
+          esc(window.KOBAN_COMPANY.displayLabel(c)) + '</button>' +
         (isSingle ? '' : '<button type="button" class="cs-remove">削除</button>') +
       '</span>';
     }).join('') + '<button type="button" class="cs-add" id="csAddBtn">＋ 会社を追加</button>';
@@ -304,7 +304,7 @@
         removeBtn.addEventListener('click', function () {
           var target = window.KOBAN_COMPANY.get(id);
           if (!target) return;
-          var ok = confirm('「' + (target.label || '（名称未設定）') + '」を削除します。入力した会社情報も削除されます。よろしいですか？');
+          var ok = confirm('「' + window.KOBAN_COMPANY.displayLabel(target) + '」を削除します。入力した会社情報も削除されます。よろしいですか？');
           if (!ok) return;
           window.KOBAN_COMPANY.remove(id);
           company = window.KOBAN_COMPANY.getCurrent() || { id: null };

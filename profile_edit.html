@@ -267,16 +267,21 @@
   var FIELDS = window.KOBAN_COMPANY.FIELDS;
   var company = window.KOBAN_COMPANY.getCurrent() || { id: null };
 
-  var note = document.getElementById('editingNote');
-  if (note) {
-    note.innerHTML = '編集中の会社：<strong>' + esc(company.label || '（名称未設定）') + '</strong>' +
+  // 事業者名（商号・屋号）を入力すると、以後はそれを表示名として使う
+  // （2026-08-15、「会社1」のまま変わらないという本人指摘への対応）。
+  function renderEditingNote() {
+    var note = document.getElementById('editingNote');
+    if (!note) return;
+    note.innerHTML = '編集中の会社：<strong>' + esc(window.KOBAN_COMPANY.displayLabel(company)) + '</strong>' +
       '<a href="profile.html" style="margin-left:0.8rem;font-size:0.85rem;">別の会社に切り替える</a>';
   }
+  renderEditingNote();
 
   function saveCompany() {
     var ok = false;
     try { window.KOBAN_COMPANY.save(company); ok = true; } catch (e) { ok = false; }
     showSaved(ok);
+    renderEditingNote();
     return ok;
   }
   var savedTimer = null;

@@ -94,6 +94,13 @@
     var id = currentId();
     return id ? getCompany(id) : null;
   }
+  // 表示名：事業者名（商号・屋号）を入力済みならそれを優先する。
+  // label（「会社1」など）は追加時の仮名で、本人がリネームする手段が無いため、
+  // 入力済みの事業者名が実質の表示名になる（2026-08-15、本人指摘で追加）。
+  function displayLabel(company) {
+    if (!company) return '（名称未設定）';
+    return (company.name && company.name.trim()) || company.label || '（名称未設定）';
+  }
   function saveCompany(company) {
     var list = listCompanies();
     var idx = list.findIndex(function (c) { return c.id === company.id; });
@@ -135,6 +142,7 @@
     save: saveCompany,
     add: addCompany,
     remove: removeCompany,
-    replaceAll: replaceAll
+    replaceAll: replaceAll,
+    displayLabel: displayLabel
   };
 })(window);

@@ -4321,13 +4321,13 @@
         '事業形態・事業者名などが未入力だと、手順3で様式に何も入りません。</p>' +
         '<a class="btn" href="profile.html">会社情報を入力する ↗</a>';
     } else {
-      html += '<p class="cp-current">会社情報：<strong>' + esc(company.label || '（名称未設定）') + '</strong></p>';
+      html += '<p class="cp-current">会社情報：<strong>' + esc(window.KOBAN_COMPANY.displayLabel(company)) + '</strong></p>';
       if (list.length > 1) {
         html += '<div class="cp-chips">' + list.map(function (c) {
           var isCur = c.id === curId;
           return '<button type="button" class="cp-chip' + (isCur ? ' is-current' : '') +
             '" data-id="' + esc(c.id) + '"' + (isCur ? ' aria-pressed="true"' : ' aria-pressed="false"') + '>' +
-            esc(c.label || '（名称未設定）') + '</button>';
+            esc(window.KOBAN_COMPANY.displayLabel(c)) + '</button>';
         }).join('') + '</div>';
       }
     }
