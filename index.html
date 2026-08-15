@@ -166,12 +166,36 @@
      対象の明示→双罫線）に置き換えた。地は本文と同じ紙の色にして、
      色数を増やさずに罫線だけで格を出す。 */
   .hero {
+    position: relative;
     background: var(--paper);
     color: var(--ink);
     padding: 2.5rem 1.5rem 0.9rem;
     border-bottom: none;
+    overflow: hidden;
+  }
+  /* ヒーロー右側の実写イメージ。斜めクリップで右だけに見せ場を作り、
+     左側は地の色（--paper）のまま残してタイトル・双罫線を確実に読ませる（見本案7）。
+     業種を切り替えると renderIndustryChrome() が INDUSTRY_HERO_PHOTO の対応URLに
+     background-image を差し替える。写真素材はすべてUnsplash（Unsplash License、
+     商用可・帰属表示不要）。既定（初期表示・美容業）は Guilherme Petri 氏の写真。 */
+  .hero-photo {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 46%; min-width: 260px;
+    background-image: url('https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?fm=jpg&q=70&w=1200&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
+    transition: opacity 0.15s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-photo { transition: none; } }
+  .hero-photo::after {
+    content: ""; position: absolute; inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  @media (max-width: 720px) {
+    .hero-photo { display: none; }
   }
   .hero-inner {
+    position: relative; z-index: 1;
     max-width: 880px;
     margin: 0 auto;
     /* 双罫線＝様式の罫。ここが表紙と本文の境目 */
@@ -1273,6 +1297,7 @@
 <a class="skip-link" href="#conditions">本文（補助金・助成金の制度を探す）へ移動</a>
 
 <header class="hero">
+  <div class="hero-photo" id="heroPhoto" aria-hidden="true"></div>
   <div class="hero-inner">
     <h1>補助金・助成金活用<br>業務改善ロードマップ</h1>
   </div>
@@ -3192,6 +3217,17 @@
     });
   }
 
+
+  // ヒーロー右側の実写背景（案7）。業種ごとに差し替える。すべてUnsplash（Unsplash License、
+  // 商用可・帰属表示不要）。2026-08-16選定、昼間・自然光の明るいトーンで統一。
+  var INDUSTRY_HERO_PHOTO = {
+    beauty: 'https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?fm=jpg&q=70&w=1200&auto=format&fit=crop',
+    food: 'https://images.unsplash.com/photo-1753057471379-29e65b6d7d62?fm=jpg&q=70&w=1200&auto=format&fit=crop',
+    lodging: 'https://images.unsplash.com/photo-1758448500688-3ababa93fd67?fm=jpg&q=70&w=1200&auto=format&fit=crop',
+    manufacturing: 'https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?fm=jpg&q=70&w=1200&auto=format&fit=crop',
+    realestate: 'https://images.unsplash.com/photo-1741880893442-66f56ad8f3a4?fm=jpg&q=70&w=1200&auto=format&fit=crop',
+    education: 'https://images.unsplash.com/photo-1754033210534-07871295dd2c?fm=jpg&q=70&w=1200&auto=format&fit=crop'
+  };
 
   var INDUSTRIES = {
     beauty: {
@@ -6638,6 +6674,10 @@
 
   function renderIndustryChrome(industryKey) {
     var ind = INDUSTRIES[industryKey];
+    var heroPhotoEl = document.getElementById('heroPhoto');
+    if (heroPhotoEl && INDUSTRY_HERO_PHOTO[industryKey]) {
+      heroPhotoEl.style.backgroundImage = "url('" + INDUSTRY_HERO_PHOTO[industryKey] + "')";
+    }
     document.querySelectorAll('.ind-label').forEach(function (el) { el.textContent = ind.label; });
     var premiseEl = document.getElementById('premiseIndustryName');
     if (premiseEl) premiseEl.textContent = ind.premiseIndustryName;
