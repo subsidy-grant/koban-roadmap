@@ -161,18 +161,23 @@
     font-weight: 700; font-size: 0.95rem; color: var(--ink); display: flex;
     align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem; padding-left: 1rem; }
   .fold > summary::-webkit-details-marker { display: none; }
-  /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
-     閉=グレー系の地味な丸／開=アクセント色の塗り丸。2026-08-16、本人が案4を選定。
-     アイコンは右端（::after + margin-left:auto）に統一する（同日中に左側::beforeから変更）。 */
-  .fold > summary::after {
-    content: '▸'; flex: none; margin-left: auto; margin-right: 1rem; width: 22px; height: 22px; border-radius: 50%;
+  /* 開閉アイコン（見本案4、index.htmlの.sec-chevronと完全同一の実装）：
+     2026-08-16、本人が案4を選定。以前はcontent:'▸'の文字＋丸背景で作っていたが、
+     .sec-chevronはSVGアイコン＋角丸四角の別実装で見た目が揃っていなかった
+     （本人指摘、同日中に修正）。JSでinitFoldChevrons()がsummary内に
+     <span class="fold-chevron">を注入しSVGを差し込む方式に作り直した。 */
+  .fold-chevron {
+    flex: none; margin-left: auto; margin-right: 1rem; width: 30px; height: 30px; border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
-    font-size: 0.75rem; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  .fold[open] > summary::after {
-    content: '▾'; background: var(--accent); border-color: var(--accent); color: #fff;
+  .fold-chevron svg { width: 16px; height: 16px; }
+  details[open] > summary .fold-chevron {
+    transform: rotate(180deg);
+    background: var(--accent); border-color: var(--accent); color: #fff;
   }
+  @media (prefers-reduced-motion: reduce) { .fold-chevron { transition: none; } }
   .fold > summary:hover { background: var(--accent-wash); }
   .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
@@ -415,9 +420,23 @@
     reader.readAsText(file);
   });
 
+  // 開閉アイコン（見本案4、index.htmlの.sec-chevronと同じSVG実装）を
+  // .foldのdetailsに注入する（2026-08-16、documents.htmlと同じ仕組み）。
+  function initFoldChevrons() {
+    document.querySelectorAll('.fold > summary').forEach(function (s) {
+      if (s.querySelector('.fold-chevron')) return;
+      var chev = document.createElement('span');
+      chev.className = 'fold-chevron';
+      chev.setAttribute('aria-hidden', 'true');
+      chev.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+      s.appendChild(chev);
+    });
+  }
+
   // ---------- 起動 ----------
   renderSwitcher();
   refreshMemoSub();
+  initFoldChevrons();
 })();
 </script>
 <script>
