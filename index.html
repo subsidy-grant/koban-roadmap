@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e4d78">
+<meta name="theme-color" content="#0057c2">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
@@ -35,33 +35,33 @@
      様式デザインに合わないうえ和字は別書体にフォールバックしていたため差し替えた。 */
 
   :root {
-    /* 配色「藍×橙×花青」（2026-08-13採用、design.md参照）
-       旧「窓口の案内サイン」は青系統に寄って見えるとの指摘を受け、3色の彩度・距離を
-       広げて視認性を上げた。役割は変えていない：
-         藍 = 案内（補助率・上限額・章番号・リンク）
-         橙 = 注意（締切・残日数・要件の警告）
-         花青 = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
+    /* 配色「コバルト×オレンジ×ミント」（2026-08-15採用、配色見本案8）
+       旧「藍×橙×花青」は落ち着きすぎて見えるとの指摘を受け、かわいくポップな
+       明るい配色に変更した。役割は変えていない：
+         コバルト = 案内（補助率・上限額・章番号・リンク）
+         オレンジ = 注意（締切・残日数・要件の警告）
+         ミント   = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
        この3つ以外の色は増やさない。増やすと「どれを見ればいいか」が消える。 */
-    --paper: #b7c1cd;
+    --paper: #eaf1fb;
     --paper-raised: #ffffff;
-    --ink: #191d22;
-    --ink-soft: #3d475c;
-    --ink-faint: #3d4658;
-    --accent: #1e4d78;
-    --accent-soft: #b9cfe3;
-    --accent-wash: #e3edf5;
-    --on-accent: #ffffff;      /* 藍ベタの上に置く文字色 */
-    --sage: #094758;
-    --sage-wash: #dcf1f5;
-    --rust: #882e08;
-    --rust-wash: #f8e4d8;
-    --cat-hojo: #1e4d78;
-    --cat-hojo-wash: #e3edf5;
-    --cat-josei: #6d4110;
-    --cat-josei-wash: #f6ead6;
-    --cat-other-wash: #e2e5ea;
-    --line: #4f5b6d;
-    --shadow: rgba(25, 29, 34, 0.10);
+    --ink: #0c2036;
+    --ink-soft: #3a5170;
+    --ink-faint: #4d6a8a;
+    --accent: #0057c2;
+    --accent-soft: #bcd7f7;
+    --accent-wash: #e2edfb;
+    --on-accent: #ffffff;      /* コバルトベタの上に置く文字色 */
+    --sage: #0d8a6e;
+    --sage-wash: #dcf5ee;
+    --rust: #d84315;
+    --rust-wash: #fde3d6;
+    --cat-hojo: #0057c2;
+    --cat-hojo-wash: #e2edfb;
+    --cat-josei: #b25400;
+    --cat-josei-wash: #fdead2;
+    --cat-other-wash: #e6ecf5;
+    --line: #a9c2e0;
+    --shadow: rgba(12, 32, 54, 0.12);
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
@@ -70,73 +70,73 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #0a0d12;
-      --paper-raised: #2c384b;
-      --ink: #e6e9ee;
-      --ink-soft: #b6c0cf;
-      --ink-faint: #96a2b5;
-      --accent: #7fa8d9;
-      --accent-soft: #24344f;
-      --accent-wash: #1a2740;
-      --sage: #5fc3d9;
-      --sage-wash: #15262c;
-      --rust: #e88a5a;
-      --rust-wash: #2c1c10;
-      --cat-hojo: #7fa8d9;
-      --cat-hojo-wash: #1a2740;
-      --cat-josei: #dba86a;
-      --cat-josei-wash: #2a2011;
-      --cat-other-wash: #2a3444;
-      --line: #8290ac;
-      --shadow: rgba(0, 0, 0, 0.45);
+      --paper: #081422;
+      --paper-raised: #16283d;
+      --ink: #eaf1fb;
+      --ink-soft: #b7cbe4;
+      --ink-faint: #93abc9;
+      --accent: #5b9df5;
+      --accent-soft: #1c3454;
+      --accent-wash: #142640;
+      --sage: #3fd6ac;
+      --sage-wash: #0f2b24;
+      --rust: #ff8a5c;
+      --rust-wash: #33200f;
+      --cat-hojo: #5b9df5;
+      --cat-hojo-wash: #142640;
+      --cat-josei: #e5a850;
+      --cat-josei-wash: #2c2110;
+      --cat-other-wash: #1c2a3c;
+      --line: #385578;
+      --shadow: rgba(0, 0, 0, 0.5);
     }
   }
 
   :root[data-theme="dark"] {
-    /* 夜間モードも同じ3色の役割（藍=案内／橙=注意／花青=状態）を保つ。
+    /* 夜間モードも同じ3色の役割（コバルト=案内／オレンジ=注意／ミント=状態）を保つ。
        暗い地では彩度をそのまま使うと沈むので、明度を上げた同系色に置き換える。 */
-    --paper: #0a0d12;
-    --paper-raised: #2c384b;
-    --ink: #e6e9ee;
-    --ink-soft: #b6c0cf;
-    --ink-faint: #96a2b5;
-    --accent: #7fa8d9;
-    --accent-soft: #24344f;
-    --accent-wash: #1a2740;
-    --on-accent: #0d1218;      /* 夜間は藍が明るいので、白ではなく地の色を載せる */
-    --sage: #5fc3d9;
-    --sage-wash: #15262c;
-    --rust: #e88a5a;
-    --rust-wash: #2c1c10;
-    --cat-hojo: #7fa8d9;
-    --cat-hojo-wash: #1a2740;
-    --cat-josei: #dba86a;
-    --cat-josei-wash: #2a2011;
-    --cat-other-wash: #2a3444;
-    --line: #8290ac;
-    --shadow: rgba(0, 0, 0, 0.45);
+    --paper: #081422;
+    --paper-raised: #16283d;
+    --ink: #eaf1fb;
+    --ink-soft: #b7cbe4;
+    --ink-faint: #93abc9;
+    --accent: #5b9df5;
+    --accent-soft: #1c3454;
+    --accent-wash: #142640;
+    --on-accent: #08121e;      /* 夜間はコバルトが明るいので、白ではなく地の色を載せる */
+    --sage: #3fd6ac;
+    --sage-wash: #0f2b24;
+    --rust: #ff8a5c;
+    --rust-wash: #33200f;
+    --cat-hojo: #5b9df5;
+    --cat-hojo-wash: #142640;
+    --cat-josei: #e5a850;
+    --cat-josei-wash: #2c2110;
+    --cat-other-wash: #1c2a3c;
+    --line: #385578;
+    --shadow: rgba(0, 0, 0, 0.5);
   }
 
   :root[data-theme="light"] {
-    --paper: #b7c1cd;
+    --paper: #eaf1fb;
     --paper-raised: #ffffff;
-    --ink: #191d22;
-    --ink-soft: #3d475c;
-    --ink-faint: #3d4658;
-    --accent: #1e4d78;
-    --accent-soft: #b9cfe3;
-    --accent-wash: #e3edf5;
-    --sage: #094758;
-    --sage-wash: #dcf1f5;
-    --rust: #882e08;
-    --rust-wash: #f8e4d8;
-    --cat-hojo: #1e4d78;
-    --cat-hojo-wash: #e3edf5;
-    --cat-josei: #6d4110;
-    --cat-josei-wash: #f6ead6;
-    --cat-other-wash: #e2e5ea;
-    --line: #4f5b6d;
-    --shadow: rgba(25, 29, 34, 0.10);
+    --ink: #0c2036;
+    --ink-soft: #3a5170;
+    --ink-faint: #4d6a8a;
+    --accent: #0057c2;
+    --accent-soft: #bcd7f7;
+    --accent-wash: #e2edfb;
+    --sage: #0d8a6e;
+    --sage-wash: #dcf5ee;
+    --rust: #d84315;
+    --rust-wash: #fde3d6;
+    --cat-hojo: #0057c2;
+    --cat-hojo-wash: #e2edfb;
+    --cat-josei: #b25400;
+    --cat-josei-wash: #fdead2;
+    --cat-other-wash: #e6ecf5;
+    --line: #a9c2e0;
+    --shadow: rgba(12, 32, 54, 0.12);
   }
 
   * { box-sizing: border-box; }
