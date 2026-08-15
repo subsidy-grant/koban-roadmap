@@ -289,10 +289,10 @@
   .af-forms li.na .fn { color: var(--ink-faint); }
   .af-na-why { font-size: 0.8rem; color: var(--ink-faint); }
   .af-check-row { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.2rem; min-height: 44px; }
-  .af-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.3rem; }
-  .af-tools button { border: 1px solid var(--line); background: var(--paper); color: var(--accent);
-    font: inherit; font-size: 0.82rem; border-radius: 6px; padding: 0.3rem 0.9rem;
-    min-height: 44px; cursor: pointer; }
+  .af-tools { display: flex; flex-wrap: nowrap; gap: 0.35rem; align-items: center; margin-top: 0.3rem; }
+  .af-tools button { flex: 1 1 0; min-width: 0; border: 1px solid var(--line); background: var(--paper); color: var(--accent);
+    font: inherit; font-size: 0.78rem; border-radius: 6px; padding: 0.3rem 0.3rem;
+    min-height: 44px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gt-badge { display: block; width: fit-content; max-width: 100%; margin: 0.25rem 0 0;
     font-size: 0.72rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px;
     padding: 0.15rem 0.55rem; white-space: normal; line-height: 1.35; }
@@ -394,7 +394,7 @@
     <div id="fillResults"></div>
 
     <details class="pcard" id="afManualBox">
-      <summary class="af-summary">様式のファイルを直接置く（手元にある様式・自動で取得できなかった様式）</summary>
+      <summary class="af-summary">様式ファイルを入れると自動で記入します</summary>
       <div class="dropzone" id="dropZone" role="button" tabindex="0" aria-label="様式のファイルを選んで自動入力する" style="margin-top:0.8rem;">
         <p class="dz-main">ここに様式のファイルを置いてください</p>
         <p class="dz-sub">複数まとめてでも構いません（.docx / .xlsx）</p>
@@ -467,7 +467,7 @@
       <p style="margin:0 0 0.5rem;">当サイトが調べた<span id="afDocsTotal">—</span>件の書類のうち、Word（.docx）とExcel（.xlsx）の<span id="afFillTotal">—</span>件がこの自動入力の対象です。</p>
       <ul style="margin:0;padding-left:1.2rem;">
         <li><strong>ダウンロードなしでそのまま記入できる様式には「自動入力可」と印を付けています。</strong>厚生労働省と農林水産省は、出典を示せば様式を複製してよいと利用規約で認めているため（2026年8月2日に規約を確認）、当サイトに控えを置いて同じサイト内から読み込んでいます。控えは毎日取り直し、配布元が差し替えたら自動で入れ替わります。取得日時は結果に必ず表示します。</li>
-        <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式のファイルを直接置く」に入れてください。</li>
+        <li><strong>印の無い様式は、いったんダウンロードしていただく必要があります。</strong>2026年8月2日に配布元65か所へこのページから取得を試したところ、取り寄せできたのは9か所だけでした。残りは他サイトからの取得を許可しない設定（CORS）です。控えを置く方法も、中小機構・東京都中小企業振興公社をはじめ多くの配布元が利用規約で「事前の承諾なく複製・転載できない」と定めているため取れません。お手数ですが、公式ページのボタンから落として「様式ファイルを入れると自動で記入します」に入れてください。</li>
         <li>「代理人」「社会保険労務士」「提出代行者」など、<strong>依頼先を書く欄には入れません</strong>。そこは自社ではなく、手続きを頼んだ事務所の情報を書く欄だからです。見出しが離れている様式では見分けられないことがあるので、保存後に必ずご確認ください。</li>
         <li>郵便番号「〒100−0001」や電話番号のように、<strong>ハイフンを挟んで欄が分かれている様式は、分けて入れます</strong>。欄の数が合わないときは、1つの欄にまとめて入れます。</li>
         <li>PDFの様式は対象外です。当サイトで開いて確認したPDF様式は、いずれも入力欄の無い読み取り用でした。</li>
@@ -4005,7 +4005,7 @@
       var note = fail.querySelector('.fr-note'), foot = fail.querySelector('.fr-foot');
       if (note) note.textContent = cors
         ? '配布元が他サイトからの取得を許可していないため、このページからは取り寄せできませんでした。'
-          + '下のボタンで様式を落として、「様式のファイルを直接置く」に入れてください。'
+          + '下のボタンで様式を落として、「様式ファイルを入れると自動で記入します」に入れてください。'
         : 'この様式には、会社情報を入れられる欄が見つかりませんでした。'
           + '下のボタンで落として、お手数ですが直接ご記入ください。';
       if (foot) foot.hidden = !cors;

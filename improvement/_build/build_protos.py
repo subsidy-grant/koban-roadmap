@@ -367,7 +367,7 @@ def build_proto_html(pl, ik):
 <body>
 <header>
   <span><span class="badge">PROTOTYPE No.{pl["no"]:02d}</span><span class="arch">{esc(ARCH_LABEL.get(arch, ""))}</span>　{esc(INDUSTRY_LABEL[ik])}／{esc(pl["category"]["name"])}</span>
-  <span><a href="plan-{pl["no"]:02d}.html">📄 事業計画書を見る</a>　<a href="../index.html">← 10選トップ</a></span>
+  <span><a href="plan-{pl["no"]:02d}.html">📄 事業計画書を見る</a>　<a href="../../index.html">← 探す に戻る</a></span>
 </header>
 <main>
   <h1>{esc(p["screenTitle"])}</h1>
