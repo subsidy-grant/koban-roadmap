@@ -7,17 +7,20 @@
   // .app-tab / .app-tab.is-current の color 指定に追従させる。
   var ICON_SEARCH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><circle cx="10.5" cy="10.5" r="3.3"/><line x1="12.8" y1="12.8" x2="16" y2="16" stroke-linecap="round"/></svg>';
   var ICON_DOCS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><line x1="7.5" y1="9.5" x2="16.5" y2="9.5" stroke-linecap="round"/><line x1="7.5" y1="13" x2="16.5" y2="13" stroke-linecap="round"/><line x1="7.5" y1="16.5" x2="13" y2="16.5" stroke-linecap="round"/></svg>';
-  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M8 12.3l2.5 2.5 5-5.3" stroke-linecap="round"/></svg>';
   var ICON_BUILDING = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M7.5 16V9.5l4.5-2 4.5 2V16" stroke-linecap="round"/></svg>';
   // 電球＝改善のアイデア。他の4つと同じ角丸スクエア＋太めアウトラインのトーンに揃える（2026-08-16）
   var ICON_BULB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M12 7.2c-2.2 0-3.8 1.7-3.8 3.7 0 1.3.6 2.2 1.5 3 .4.4.6.9.6 1.4v.4h3.4v-.4c0-.5.2-1 .6-1.4.9-.8 1.5-1.7 1.5-3 0-2-1.6-3.7-3.8-3.7z" stroke-linecap="round"/><line x1="10.5" y1="17.7" x2="13.5" y2="17.7" stroke-linecap="round"/></svg>';
+  // 吹き出し＝専門家への相談。既存4アイコンと同じ角丸スクエア＋太めアウトラインのトーン（2026-08-17）
+  var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M7 9.5h10M7 13h6.5" stroke-linecap="round"/><path d="M8.2 16.3H8l-1.6 2v-2.3A2.3 2.3 0 0 1 8.5 13.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  // 「改善計画」は右から2番目（会社情報の左隣）に置く。本人指示、2026-08-16。
+  // 「改善計画」は本人指示（2026-08-16）で会社情報の左隣に固定。
+  // 「申請進捗」は2026-08-17に固定タブから外した（profile_status.html/documents.htmlから
+  // 個別に遷移できるため、5枠目を「相談」に譲った）。「相談」は右から2番目（本人指示、2026-08-17）。
   var TABS = [
     { href: 'index.html', match: /^(|index\.html)$/, icon: ICON_SEARCH, label: '探す' },
     { href: 'documents.html', match: /^documents\.html$/, icon: ICON_DOCS, label: '書類準備' },
-    { href: 'applications.html', match: /^applications\.html$/, icon: ICON_CHECK, label: '申請進捗' },
     { href: 'improvement.html', match: /^improvement\.html$/, icon: ICON_BULB, label: '改善計画' },
+    { href: 'consult.html', match: /^consult\.html$/, icon: ICON_CHAT, label: '相談' },
     { href: 'profile.html', match: /^profile(_edit|_status)?\.html$/, icon: ICON_BUILDING, label: '会社情報' }
   ];
 

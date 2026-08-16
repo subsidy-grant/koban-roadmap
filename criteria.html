@@ -294,7 +294,8 @@
   <div class="caution-ttl">賃上げ加点は「取れなければ不利になるだけ」ではありません</div>
   <p style="margin:0">賃上げ加点を受けて採択されたのに目標が未達だった場合、未達が報告されてから<strong>18か月間、中小企業庁が所管する他の補助金でも「大幅な減点」を受けます</strong>。対象はIT導入・デジタル化AI導入・持続化・事業承継M&amp;A・成長加速化・事業再構築・省力化投資・Go-Tech事業など（令和8年4月時点）で、ほぼ全ての主要制度に及びます。</p>
   <p style="margin:0.5rem 0 0">さらに賃上げは、加点とは別に<strong>基本要件</strong>にもなっています。こちらが未達だと<strong>補助金の返還義務</strong>が生じます（返還額は交付された補助金額が上限）。加点を狙って背伸びした水準を表明すると、不採択より重い結果になりえます。実現できる水準で計画してください。</p>
-  <p style="margin:0.5rem 0 0;font-size:0.82rem">賃金水準の具体的な設計は、就業規則・賃金規程の改定や毎年10月の地域別最低賃金の改定と関わるため、社会保険労務士にご相談ください。</p>
+  <p style="margin:0.5rem 0 0;font-size:0.82rem">賃金水準の具体的な設計は、就業規則・賃金規程の改定や毎年10月の地域別最低賃金の改定と関わるため、<a href="#" id="criteriaConsultLink">社会保険労務士にご相談ください</a>。</p>
+  <div id="consultPanel" style="display:none;"></div>
 </div>
 <p class="sub">ものづくり補助金（第23次時点）では加点項目が15個公表されており、申請できるのは最大6項目まででした。後継の新事業進出・ものづくり商業サービス補助金では17項目に増え、申請数の上限は公募要領に規定がありません。事務局のデータポータルに加点個数別の採択率グラフがありますが、<strong>公表は第16次締切分で更新が止まっており</strong>（2026年8月17日時点）、採択率が35.1%まで下がった終盤の回や、制度設計の異なる後継制度に当てはめることはできません。また単純な集計であり、加点を増やせば採択率が上がるという因果関係を示すものではない点にも注意が必要です。加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
 
@@ -437,7 +438,27 @@
 
 <p class="note">本ページの内容は公式資料・報道時点の情報に基づく調査ノートであり、随時制度改定が行われます。実際の申請にあたっては、各制度の最新の公募要領・交付規程を必ず確認してください。</p>
 
-</main><script>
+</main><script src="experts_data.js"></script>
+<script src="consult.js"></script>
+<script>
+(function () {
+  'use strict';
+  var link = document.getElementById('criteriaConsultLink');
+  var panel = document.getElementById('consultPanel');
+  if (link && panel) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isOpen = panel.style.display !== 'none';
+      if (isOpen) { panel.style.display = 'none'; return; }
+      if (window.KOBAN_CONSULT) {
+        window.KOBAN_CONSULT.mount(panel, {
+          kind: 'josei',
+          topic: '賃金引き上げ・就業規則について'
+        });
+      }
+    });
+  }
+})();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('sw.js').catch(function () {});

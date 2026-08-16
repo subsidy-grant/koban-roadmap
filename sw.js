@@ -10,7 +10,7 @@
 //   page_data.js・sim_data.js（制度の金額・締切など鮮度が重要）
 //     → network-first。速いオンライン時は最新を待つが、
 //       1.5秒でネットワークが返ってこなければキャッシュ優先で表示を進める。
-var CACHE_NAME = 'koban-roadmap-v8';
+var CACHE_NAME = 'koban-roadmap-v11';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -22,10 +22,13 @@ var CORE_ASSETS = [
   './profile.html',
   './profile_edit.html',
   './profile_status.html',
+  './consult.html',
   './common_docs.js',
   './company_data.js',
   './page_data.js',
   './sim_data.js',
+  './experts_data.js',
+  './consult.js',
   './app_tabbar.js',
   './manifest.json',
   './icons/icon-192.png',
@@ -34,7 +37,7 @@ var CORE_ASSETS = [
   './icons/apple-touch-icon.png'
 ];
 // 鮮度優先（network-first + タイムアウトでキャッシュへ切替）で扱うファイル名
-var FRESH_FIRST = ['page_data.js', 'sim_data.js'];
+var FRESH_FIRST = ['page_data.js', 'sim_data.js', 'experts_data.js'];
 var NETWORK_TIMEOUT_MS = 1500;
 
 self.addEventListener('install', function (e) {

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0057c2">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
+<title>専門家に相談｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="提携専門家（社会保険労務士・中小企業診断士等）に、LINEやメールで直接ご相談いただけます。">
+<link rel="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+Rounded+1c:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体はサイト共通のデザインシステム（design.md）に合わせる。program.htmlと同じ値。 */
+  :root {
+    --paper: #eaf1fb; --paper-raised: #ffffff; --ink: #0c2036; --ink-soft: #3a5170;
+    --ink-faint: #4d6a8a; --accent: #0057c2; --accent-soft: #bcd7f7; --accent-wash: #e2edfb;
+    --on-accent: #ffffff; --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315;
+    --rust-wash: #fde3d6; --line: #a9c2e0; --shadow: rgba(12, 32, 54, 0.12);
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --shadow-btn: 0 2px 4px var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #081422; --paper-raised: #16283d; --ink: #eaf1fb; --ink-soft: #b7cbe4;
+      --ink-faint: #93abc9; --accent: #5b9df5; --accent-soft: #1c3454; --accent-wash: #142640;
+      --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f;
+      --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Hiragino Sans","Meiryo",sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jp-serif { font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 2.2rem 1.1rem 1.5rem; }
+  a { color: var(--accent); }
+  h1 { font-size: 1.35rem; margin: 0 0 0.4rem; }
+  .lede { color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 1.6rem; }
+  .back { font-size: 0.85rem; margin-bottom: 1rem; }
+
+  .kind-choice { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.7rem; margin-bottom: 1.4rem; }
+  .kind-btn { appearance: none; text-align: left; cursor: pointer; font: inherit;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
+    padding: 1rem 1.1rem; min-height: 3.2rem; color: var(--ink); box-shadow: var(--shadow-btn); }
+  .kind-btn:hover, .kind-btn:focus-visible { border-color: var(--accent); background: var(--accent-wash); }
+  .kind-btn.is-selected { border-color: var(--accent); background: var(--accent-wash); }
+  .kind-btn .kb-ttl { font-weight: 700; font-size: 0.95rem; }
+  .kind-btn .kb-sub { font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.2rem; }
+
+  #consultPanel { display: none; }
+
+  @media print { body { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <p class="back"><a href="index.html">← トップに戻る</a></p>
+  <h1>専門家に相談する</h1>
+  <p class="lede">提携専門家（社会保険労務士・中小企業診断士等）に、LINEやメールで直接ご相談いただけます。まず相談したい内容の種類を選んでください。</p>
+
+  <div class="kind-choice" id="kindChoice" role="group" aria-label="相談したい制度の種類">
+    <button type="button" class="kind-btn" data-kind="josei">
+      <div class="kb-ttl">助成金について（雇用・労務）</div>
+      <div class="kb-sub">キャリアアップ助成金・業務改善助成金など</div>
+    </button>
+    <button type="button" class="kind-btn" data-kind="hojo">
+      <div class="kb-ttl">補助金について（設備投資・事業計画）</div>
+      <div class="kb-sub">小規模事業者持続化補助金・省力化投資補助金など</div>
+    </button>
+    <button type="button" class="kind-btn" data-kind="other">
+      <div class="kb-ttl">まだよくわからない</div>
+      <div class="kb-sub">両方の専門家を表示します</div>
+    </button>
+  </div>
+
+  <div id="consultPanel"></div>
+</main>
+
+<script src="experts_data.js"></script>
+<script src="consult.js"></script>
+<script>
+(function () {
+  'use strict';
+  var panel = document.getElementById('consultPanel');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.kind-btn'));
+  var TOPIC_BY_KIND = {
+    josei: '助成金の活用について',
+    hojo: '補助金の活用について',
+    other: '補助金・助成金の活用について'
+  };
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      buttons.forEach(function (b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      var kind = btn.getAttribute('data-kind');
+      if (window.KOBAN_CONSULT) {
+        window.KOBAN_CONSULT.mount(panel, {
+          kind: kind,
+          topic: TOPIC_BY_KIND[kind] || ''
+        });
+      }
+    });
+  });
+})();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+<script src="app_tabbar.js"></script>
+</body>
+</html>

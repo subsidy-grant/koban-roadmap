@@ -349,7 +349,7 @@
   @media print {
     body > *:not(#programArticle) { display: none !important; }
     #programArticle { padding: 0; }
-    .pt-actions, .pd-item .pd-toggle, .pd-fold > summary::after { display: none !important; }
+    .pt-actions, #consultPanel, .pd-item .pd-toggle, .pd-fold > summary::after { display: none !important; }
   }
 
   #notFound {
@@ -427,8 +427,10 @@
     <div class="pt-actions">
       <a class="pt-btn primary" id="ptSrcLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">公式サイトを見る ↗</a>
       <a class="pt-btn ghost" id="ptDocsLink" href="documents.html">この制度の申請書類・様式を見る →</a>
+      <button type="button" class="pt-btn ghost" id="ptConsultBtn">専門家に相談する</button>
       <button type="button" class="pt-btn ghost" id="ptPrintBtn">印刷 / PDF保存</button>
     </div>
+    <div id="consultPanel" style="display:none;"></div>
   </article>
 
   <p class="privacy-note">入力した内容は、お使いの端末（ブラウザ）の中だけで処理されます。「詳細な試算」に入れた時給・人数・金額もこの端末の中だけで計算し、保存も送信もしません（ページを離れると消えます）。このページ自体は URL の <code>?key=</code> を読むだけで、送信するデータはありません。</p>
@@ -436,6 +438,8 @@
 
 <script src="page_data.js"></script>
 <script src="sim_data.js"></script>
+<script src="experts_data.js"></script>
+<script src="consult.js"></script>
 <script>
 (function () {
   'use strict';
@@ -2764,6 +2768,31 @@
 
     var docsLink = document.getElementById('ptDocsLink');
     if (docsLink) docsLink.setAttribute('href', 'documents.html?p=' + encodeURIComponent(key));
+
+    currentProgramKey = key;
+    currentProgram = p;
+  }
+
+  // ---------- 専門家に相談する ----------
+  var currentProgramKey = '';
+  var currentProgram = null;
+  var consultBtn = document.getElementById('ptConsultBtn');
+  var consultPanel = document.getElementById('consultPanel');
+  if (consultBtn && consultPanel) {
+    consultBtn.addEventListener('click', function () {
+      var isOpen = consultPanel.style.display !== 'none';
+      if (isOpen) {
+        consultPanel.style.display = 'none';
+        return;
+      }
+      if (window.KOBAN_CONSULT && currentProgram) {
+        window.KOBAN_CONSULT.mount(consultPanel, {
+          programKey: currentProgramKey,
+          programName: currentProgram.name,
+          kind: pillClass(currentProgram.name, currentProgramKey)
+        });
+      }
+    });
   }
 
   // ---------- 印刷（8項目・留意事項の<details>を、閉じていても開いた状態で出す） ----------
