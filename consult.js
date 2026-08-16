@@ -222,6 +222,7 @@
     var mail = val(company, 'mail');
     var addr = val(company, 'addr');
     var industry = val(company, 'industry');
+    var business = val(company, 'business');
     var employees = val(company, 'employees');
 
     // 所在地は「事業の概要」ではなく連絡先側に置く（本人指示 2026-08-17）。
@@ -235,6 +236,20 @@
 
     var bizLines = [];
     if (industry) bizLines.push('業種：' + industry);
+    // 事業内容は会社情報の入力欄が複数行（big）なので、改行を含みうる。
+    // 素通しすると2行目以降が行頭に来て次の項目（従業員数）と紛らわしいため、
+    // 複数行のときは見出しを独立させ、各行に全角スペースを付けてぶら下げる。
+    if (business) {
+      var bizText = business.replace(/\r\n?/g, '\n');
+      if (bizText.indexOf('\n') === -1) {
+        bizLines.push('事業内容：' + bizText);
+      } else {
+        bizLines.push('事業内容：');
+        bizText.split('\n').forEach(function (l) {
+          bizLines.push(l.trim() ? '　' + l.trim() : '');
+        });
+      }
+    }
     // 会社情報の従業員数は数字だけで保存されていることがある（入力欄が numeric のため）。
     // 数字だけなら「人」を付けて読める文にする。
     if (employees) {
