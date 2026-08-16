@@ -10,7 +10,7 @@
 //   page_data.js・sim_data.js（制度の金額・締切など鮮度が重要）
 //     → network-first。速いオンライン時は最新を待つが、
 //       1.5秒でネットワークが返ってこなければキャッシュ優先で表示を進める。
-var CACHE_NAME = 'koban-roadmap-v12';
+var CACHE_NAME = 'koban-roadmap-v13';
 var CORE_ASSETS = [
   './',
   './index.html',

@@ -23,17 +23,28 @@
     '  background: var(--paper-raised); padding: 1rem 1.1rem; }' +
     '.consult-lead { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 0.7rem; }' +
     '.consult-privacy { font-size: 0.78rem; color: var(--ink-faint); margin: 0 0 0.9rem; }' +
-    /* ---- アンケート ---- */
+    /* ---- アンケート（1問ずつ順に出す） ---- */
+    '.consult-step { font-size: 0.76rem; color: var(--ink-faint); letter-spacing: 0.04em;' +
+    '  margin-bottom: 0.5rem; }' +
     '.consult-q { margin-bottom: 1.2rem; }' +
-    '.consult-q-ttl { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.5rem; }' +
+    '.consult-q-ttl { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }' +
     '.consult-q-note { font-size: 0.76rem; color: var(--ink-faint); font-weight: 400; }' +
     '.consult-opts { display: grid; gap: 0.45rem; }' +
     '.consult-opt { display: flex; align-items: center; gap: 0.6rem; cursor: pointer;' +
     '  min-height: 2.75rem; padding: 0.4rem 0.7rem; border: 1px solid var(--line);' +
     '  border-radius: var(--radius-sm); background: var(--paper); font-size: 0.85rem; }' +
     '.consult-opt:hover { border-color: var(--accent); background: var(--accent-wash); }' +
-    '.consult-opt input { width: 1.1rem; height: 1.1rem; flex: none; accent-color: var(--accent); }' +
+    '.consult-opt input { width: 1.15rem; height: 1.15rem; flex: none; accent-color: var(--accent); }' +
     '.consult-opt.is-checked { border-color: var(--accent); background: var(--accent-wash); }' +
+    /* 回答済みの問いは、答えだけを小さく畳んで上に残す（何を答えたか見失わないため） */
+    '.consult-answered { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem;' +
+    '  padding: 0.5rem 0.7rem; margin-bottom: 0.5rem; border-radius: var(--radius-sm);' +
+    '  background: var(--paper); border: 1px solid var(--line); font-size: 0.8rem; }' +
+    '.consult-answered-q { color: var(--ink-faint); }' +
+    '.consult-answered-a { font-weight: 700; color: var(--ink); }' +
+    '.consult-answered-edit { appearance: none; background: none; border: none; font: inherit;' +
+    '  font-size: 0.78rem; color: var(--accent); text-decoration: underline; cursor: pointer;' +
+    '  margin-left: auto; min-height: 2.75rem; padding: 0 0.3rem; }' +
     '.consult-submit { appearance: none; font: inherit; font-size: 0.88rem; cursor: pointer;' +
     '  min-height: 2.75rem; padding: 0 1.3rem; border-radius: var(--radius-sm); border: none;' +
     '  background: var(--accent); color: var(--on-accent, #fff); box-shadow: var(--shadow-btn); }' +
@@ -77,6 +88,7 @@
     '  border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--accent); color: var(--accent);' +
     '  background: var(--paper-raised); }' +
     '.consult-btn:hover, .consult-btn:focus-visible { background: var(--accent-wash); }' +
+    '.consult-tel-hours { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.35rem; }' +
     '.consult-stopped { font-size: 0.8rem; color: var(--ink-faint); }' +
     '.consult-disclaimer { margin-top: 0.9rem; font-size: 0.76rem; color: var(--ink-faint); }' +
     '@media print { .consult-panel { display: none !important; } }';
@@ -86,6 +98,13 @@
     sharoushi: '社会保険労務士', shindanshi: '中小企業診断士',
     gyoseishoshi: '行政書士', zeirishi: '税理士'
   };
+
+  var CONTACT_LABEL = { line: 'LINE', email: 'メール', tel: '電話' };
+  var CONTACT_OPTIONS = [
+    { id: 'line', label: 'LINE' },
+    { id: 'email', label: 'メール' },
+    { id: 'tel', label: '電話' }
+  ];
 
   // アンケートの選択肢。experts_data.js 側で上書きできるようにしておき、
   // 読み込まれていない場合でもパネルが壊れないよう既定値を持つ。
@@ -109,8 +128,10 @@
     return null;
   }
 
+  // answers.topics / answers.contacts は配列、answers.stage は単一の文字列。
   function buildTemplateText(opts, answers) {
     answers = answers || {};
+    var topicIds = answers.topics || [];
     var lines = ['はじめまして。「補助金活用 業務改善ロードマップ」を見てご連絡しました。'];
     if (opts.programName) {
       lines.push('検討中の制度：' + opts.programName);
@@ -119,35 +140,49 @@
           'program.html?key=' + encodeURIComponent(opts.programKey));
       }
     }
-    var topic = answers.topic ? findTopic(answers.topic) : null;
-    if (topic && topic.id !== 'other') {
-      lines.push('相談したいこと：' + topic.label);
+    var labels = topicIds.map(function (id) {
+      var t = findTopic(id);
+      return t ? t.label : '';
+    }).filter(function (s) { return s && s.indexOf('その他') !== 0; });
+    if (labels.length) {
+      lines.push('相談したいこと：');
+      labels.forEach(function (l) { lines.push('・' + l); });
     } else {
       lines.push('相談したいこと：' + (opts.topic || '（ここにご記入ください）'));
     }
     var stage = answers.stage ? findStage(answers.stage) : null;
     if (stage) lines.push('いまの状況：' + stage.label);
+    var contacts = answers.contacts || [];
+    if (contacts.length) {
+      lines.push('希望の連絡方法：' + contacts.map(function (c) {
+        return CONTACT_LABEL[c] || c;
+      }).join('・'));
+    }
     lines.push('');
     lines.push('（補足があればこちらにご記入ください）');
     return lines.join('\n');
   }
 
   // 相談テーマと制度種別の両方で専門家を絞る。
+  // topicIds は複数選択。1つでも対応できるテーマがあれば表示する（OR判定）。
   // topics を持つ専門家はその配列で判定し、持たない専門家は資格で判定する。
-  function cardMatches(expert, kind, topicId) {
+  function cardMatches(expert, kind, topicIds) {
     if (kind && kind !== 'other') {
       if ((expert.kinds || []).indexOf(kind) === -1) return false;
     }
-    if (!topicId || topicId === 'other') return true;
-    if (expert.topics && expert.topics.length) {
-      return expert.topics.indexOf(topicId) !== -1;
-    }
-    var topic = findTopic(topicId);
-    if (!topic || !topic.qualifications || !topic.qualifications.length) return true;
-    return topic.qualifications.indexOf(expert.qualification) !== -1;
+    var ids = (topicIds || []).filter(function (id) { return id && id !== 'other'; });
+    if (!ids.length) return true;
+    return ids.some(function (topicId) {
+      if (expert.topics && expert.topics.length) {
+        return expert.topics.indexOf(topicId) !== -1;
+      }
+      var topic = findTopic(topicId);
+      if (!topic || !topic.qualifications || !topic.qualifications.length) return true;
+      return topic.qualifications.indexOf(expert.qualification) !== -1;
+    });
   }
 
-  function renderCard(expert, templateText, preferContact) {
+  function renderCard(expert, templateText, preferContacts) {
     var wrap = document.createElement('div');
     wrap.className = 'consult-card';
 
@@ -206,11 +241,37 @@
       b.textContent = 'メールで相談する';
       return b;
     }
+    function makeTelBtn() {
+      if (!expert.tel) return null;
+      var b = document.createElement('a');
+      b.className = 'consult-btn';
+      // 電話番号のハイフン等はダイヤル時に無視されるが、href では取り除いておく
+      b.href = 'tel:' + String(expert.tel).replace(/[^0-9+]/g, '');
+      b.textContent = '電話する（' + expert.tel + '）';
+      return b;
+    }
 
-    // 希望した連絡手段を先に並べる（もう一方も消さずに残す）
-    var order = (preferContact === 'email') ? [makeMailBtn(), makeLineBtn()] : [makeLineBtn(), makeMailBtn()];
-    order.forEach(function (b) { if (b) actions.appendChild(b); });
+    // 希望した連絡手段を先に並べる（希望しなかった手段も消さずに後ろに残す）
+    var makers = { line: makeLineBtn, email: makeMailBtn, tel: makeTelBtn };
+    var order = [];
+    (preferContacts || []).forEach(function (c) {
+      if (makers[c] && order.indexOf(c) === -1) order.push(c);
+    });
+    ['line', 'email', 'tel'].forEach(function (c) {
+      if (order.indexOf(c) === -1) order.push(c);
+    });
+    order.forEach(function (c) {
+      var b = makers[c]();
+      if (b) actions.appendChild(b);
+    });
     wrap.appendChild(actions);
+
+    if (expert.tel && expert.tel_hours) {
+      var hours = document.createElement('div');
+      hours.className = 'consult-tel-hours';
+      hours.textContent = '電話受付：' + expert.tel_hours;
+      wrap.appendChild(hours);
+    }
     return wrap;
   }
 
@@ -239,92 +300,180 @@
     return copyBtn;
   }
 
-  // ---------- アンケート画面 ----------
-  function renderSurvey(panel, opts, onDone) {
+  // ---------- アンケート画面（1問ずつ順に出す） ----------
+  // 質問の定義。multi:true は複数選択（チェックボックス）、false は単一選択（ラジオ）。
+  function getQuestions() {
+    var qs = [{
+      key: 'topics', multi: true, required: true,
+      title: '何について相談したいですか？',
+      note: '（あてはまるものをすべて選べます）',
+      options: getTopics()
+    }];
+    var stages = getStages();
+    if (stages.length) {
+      qs.push({
+        key: 'stage', multi: false, required: false,
+        title: 'いまどの段階ですか？', note: '（任意）', options: stages
+      });
+    }
+    qs.push({
+      key: 'contacts', multi: true, required: false,
+      title: '連絡はどの方法がよいですか？',
+      note: '（複数選べます・任意）',
+      options: CONTACT_OPTIONS
+    });
+    return qs;
+  }
+
+  function labelsOf(question, value) {
+    var ids = question.multi ? (value || []) : (value ? [value] : []);
+    return ids.map(function (id) {
+      for (var i = 0; i < question.options.length; i++) {
+        if (question.options[i].id === id) return question.options[i].label;
+      }
+      return id;
+    });
+  }
+
+  // answers は { topics: [], stage: '', contacts: [] }。
+  // step は「いま何問目を表示しているか」。0始まり。
+  function renderSurvey(panel, opts, state, onDone, onStateChange) {
+    var questions = getQuestions();
+    var answers = state.answers;
+    var step = Math.min(state.step, questions.length - 1);
+
     var lead = document.createElement('p');
     lead.className = 'consult-lead';
     lead.textContent = 'どんなことを相談したいか教えてください。合う専門家と、相談メッセージのひな形をご用意します。';
     panel.appendChild(lead);
 
-    var answers = { topic: '', stage: '', contact: '' };
+    // 回答済みの問いは、答えだけを畳んで上に残す（あとから押して直せる）
+    questions.slice(0, step).forEach(function (q, i) {
+      var row = document.createElement('div');
+      row.className = 'consult-answered';
+      var qLabel = document.createElement('span');
+      qLabel.className = 'consult-answered-q';
+      qLabel.textContent = 'Q' + (i + 1);
+      row.appendChild(qLabel);
+      var aLabel = document.createElement('span');
+      aLabel.className = 'consult-answered-a';
+      var labels = labelsOf(q, answers[q.key]);
+      aLabel.textContent = labels.length ? labels.join('・') : '（選択なし）';
+      row.appendChild(aLabel);
+      var edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'consult-answered-edit';
+      edit.textContent = '変更';
+      edit.addEventListener('click', function () { onStateChange({ step: i, answers: answers }); });
+      row.appendChild(edit);
+      panel.appendChild(row);
+    });
 
-    function makeQuestion(titleText, noteText, name, options, onChange) {
-      var q = document.createElement('div');
-      q.className = 'consult-q';
-      var ttl = document.createElement('div');
-      ttl.className = 'consult-q-ttl';
-      ttl.textContent = titleText;
-      if (noteText) {
-        var note = document.createElement('span');
-        note.className = 'consult-q-note';
-        note.textContent = '　' + noteText;
-        ttl.appendChild(note);
+    var current = questions[step];
+
+    var stepInfo = document.createElement('div');
+    stepInfo.className = 'consult-step';
+    stepInfo.textContent = '質問 ' + (step + 1) + ' / ' + questions.length;
+    panel.appendChild(stepInfo);
+
+    var q = document.createElement('div');
+    q.className = 'consult-q';
+    var ttl = document.createElement('div');
+    ttl.className = 'consult-q-ttl';
+    ttl.textContent = current.title;
+    if (current.note) {
+      var note = document.createElement('span');
+      note.className = 'consult-q-note';
+      note.textContent = '　' + current.note;
+      ttl.appendChild(note);
+    }
+    q.appendChild(ttl);
+
+    var nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'consult-submit';
+    var isLast = step === questions.length - 1;
+    nextBtn.textContent = isLast ? '相談先を見る' : '次へ';
+
+    function currentSelection() {
+      return current.multi ? (answers[current.key] || []) : (answers[current.key] || '');
+    }
+    function refreshNextState() {
+      if (!current.required) { nextBtn.disabled = false; return; }
+      var v = currentSelection();
+      nextBtn.disabled = current.multi ? !v.length : !v;
+    }
+
+    var wrap = document.createElement('div');
+    wrap.className = 'consult-opts';
+    current.options.forEach(function (o) {
+      var label = document.createElement('label');
+      label.className = 'consult-opt';
+      var input = document.createElement('input');
+      input.type = current.multi ? 'checkbox' : 'radio';
+      input.name = 'consult_' + current.key;
+      input.value = o.id;
+      // 前の回答に戻ってきたときは選択状態を復元する
+      if (current.multi) {
+        if ((answers[current.key] || []).indexOf(o.id) !== -1) {
+          input.checked = true;
+          label.classList.add('is-checked');
+        }
+      } else if (answers[current.key] === o.id) {
+        input.checked = true;
+        label.classList.add('is-checked');
       }
-      q.appendChild(ttl);
-      var wrap = document.createElement('div');
-      wrap.className = 'consult-opts';
-      options.forEach(function (o) {
-        var label = document.createElement('label');
-        label.className = 'consult-opt';
-        var input = document.createElement('input');
-        input.type = 'radio';
-        input.name = name;
-        input.value = o.id;
-        input.addEventListener('change', function () {
+      input.addEventListener('change', function () {
+        if (current.multi) {
+          var list = (answers[current.key] || []).slice();
+          var idx = list.indexOf(o.id);
+          if (input.checked && idx === -1) list.push(o.id);
+          if (!input.checked && idx !== -1) list.splice(idx, 1);
+          answers[current.key] = list;
+          label.classList.toggle('is-checked', input.checked);
+        } else {
           Array.prototype.forEach.call(wrap.querySelectorAll('.consult-opt'), function (el) {
             el.classList.remove('is-checked');
           });
           label.classList.add('is-checked');
-          onChange(o.id);
-        });
-        label.appendChild(input);
-        var span = document.createElement('span');
-        span.textContent = o.label;
-        label.appendChild(span);
-        wrap.appendChild(label);
+          answers[current.key] = o.id;
+        }
+        refreshNextState();
       });
-      q.appendChild(wrap);
-      return q;
-    }
+      label.appendChild(input);
+      var span = document.createElement('span');
+      span.textContent = o.label;
+      label.appendChild(span);
+      wrap.appendChild(label);
+    });
+    q.appendChild(wrap);
+    panel.appendChild(q);
 
-    var submitBtn = document.createElement('button');
-    submitBtn.type = 'button';
-    submitBtn.className = 'consult-submit';
-    submitBtn.textContent = '相談先を見る';
-    submitBtn.disabled = true;
+    var row2 = document.createElement('div');
+    row2.className = 'consult-actions-row';
+    nextBtn.addEventListener('click', function () {
+      if (isLast) { onDone(answers); return; }
+      onStateChange({ step: step + 1, answers: answers });
+    });
+    row2.appendChild(nextBtn);
 
-    panel.appendChild(makeQuestion(
-      'Q1　何について相談したいですか？', '（必須）', 'consultTopic', getTopics(),
-      function (v) { answers.topic = v; submitBtn.disabled = false; }
-    ));
-
-    var stages = getStages();
-    if (stages.length) {
-      panel.appendChild(makeQuestion(
-        'Q2　いまどの段階ですか？', '（任意）', 'consultStage', stages,
-        function (v) { answers.stage = v; }
-      ));
-    }
-
-    panel.appendChild(makeQuestion(
-      'Q3　連絡はどちらがよいですか？', '（任意）', 'consultContact',
-      [{ id: 'line', label: 'LINE' }, { id: 'email', label: 'メール' }],
-      function (v) { answers.contact = v; }
-    ));
-
-    var row = document.createElement('div');
-    row.className = 'consult-actions-row';
-    submitBtn.addEventListener('click', function () { onDone(answers); });
-    row.appendChild(submitBtn);
-
+    // 任意の問いは飛ばせる。必須のQ1でも、アンケート自体を飛ばす道は残す。
     var skipBtn = document.createElement('button');
     skipBtn.type = 'button';
     skipBtn.className = 'consult-skip';
-    skipBtn.textContent = 'アンケートを飛ばす';
-    skipBtn.addEventListener('click', function () { onDone({ topic: '', stage: '', contact: '' }); });
-    row.appendChild(skipBtn);
+    skipBtn.textContent = current.required ? 'アンケートを飛ばす' : (isLast ? '答えずに相談先を見る' : 'この質問を飛ばす');
+    skipBtn.addEventListener('click', function () {
+      if (current.required) {
+        onDone({ topics: [], stage: '', contacts: [] });
+        return;
+      }
+      if (isLast) { onDone(answers); return; }
+      onStateChange({ step: step + 1, answers: answers });
+    });
+    row2.appendChild(skipBtn);
 
-    panel.appendChild(row);
+    panel.appendChild(row2);
+    refreshNextState();
   }
 
   // ---------- 結果画面 ----------
@@ -342,12 +491,19 @@
 
     var privacy = document.createElement('p');
     privacy.className = 'consult-privacy';
-    privacy.textContent = 'ボタンはLINE・メールのアプリを開くだけです。このサイトから相談内容が送信されることはありません。';
+    privacy.textContent = 'ボタンはLINE・メール・電話のアプリを開くだけです。このサイトから相談内容が送信されることはありません。';
     panel.appendChild(privacy);
 
-    // (3) 相談前に用意するものの案内
-    var topic = answers.topic ? findTopic(answers.topic) : null;
-    if (topic && topic.prepare && topic.prepare.length) {
+    // (3) 相談前に用意するものの案内。複数テーマを選べるので、重複を除いてまとめる。
+    var prepareItems = [];
+    (answers.topics || []).forEach(function (id) {
+      var t = findTopic(id);
+      if (!t || !t.prepare) return;
+      t.prepare.forEach(function (item) {
+        if (prepareItems.indexOf(item) === -1) prepareItems.push(item);
+      });
+    });
+    if (prepareItems.length) {
       var prep = document.createElement('div');
       prep.className = 'consult-prepare';
       var prepTtl = document.createElement('div');
@@ -355,7 +511,7 @@
       prepTtl.textContent = '相談前に手元にあるとスムーズなもの';
       prep.appendChild(prepTtl);
       var ul = document.createElement('ul');
-      topic.prepare.forEach(function (item) {
+      prepareItems.forEach(function (item) {
         var li = document.createElement('li');
         li.textContent = item;
         ul.appendChild(li);
@@ -387,14 +543,14 @@
       preparing.textContent = '提携専門家は現在準備中です。上のひな形をコピーして、顧問の専門家や知り合いの窓口にご相談ください。';
       panel.appendChild(preparing);
     } else {
-      var matched = pool.filter(function (e) { return cardMatches(e, opts.kind, answers.topic); });
+      var matched = pool.filter(function (e) { return cardMatches(e, opts.kind, answers.topics); });
       // 相談テーマに合う人がいないときは、テーマの条件だけ外して制度種別（kind）の
       // 一致は維持したまま広げる。助成金の相談なのに補助金専門の人まで出す、
       // というズレを起こさないため。それでもゼロなら最後に全件を出す。
       var toShow = matched;
       var widened = false;
       if (!toShow.length) {
-        toShow = pool.filter(function (e) { return cardMatches(e, opts.kind, ''); });
+        toShow = pool.filter(function (e) { return cardMatches(e, opts.kind, []); });
         widened = toShow.length > 0;
       }
       if (!toShow.length) {
@@ -410,7 +566,7 @@
       var cards = document.createElement('div');
       cards.className = 'consult-cards';
       toShow.forEach(function (expert) {
-        cards.appendChild(renderCard(expert, templateText, answers.contact));
+        cards.appendChild(renderCard(expert, templateText, answers.contacts));
       });
       panel.appendChild(cards);
     }
@@ -423,13 +579,18 @@
 
   function mount(container, opts) {
     opts = opts || {};
+    // アンケートの進行状態。step は何問目を表示中か、answers は選択内容。
+    // 「変更」で前の問いに戻っても選択が消えないよう、mount 単位で持ち回す。
+    var surveyState = { step: 0, answers: { topics: [], stage: '', contacts: [] } };
 
     function draw(stage, answers) {
       var panel = document.createElement('div');
       panel.className = 'consult-panel';
       panel.id = 'consultPanel';
       if (stage === 'survey') {
-        renderSurvey(panel, opts, function (a) { draw('result', a); });
+        renderSurvey(panel, opts, surveyState,
+          function (a) { draw('result', a); },
+          function (next) { surveyState = next; draw('survey'); });
       } else {
         renderResult(panel, opts, answers || {}, function () { draw('survey'); });
       }

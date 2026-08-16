@@ -86,6 +86,8 @@ window.KOBAN_EXPERTS = {
     //   tags: ['雇用関係助成金', '就業規則'],
     //   line_oa_id: '',             // 例 '@xxxxx'。空ならLINEボタンを出さない
     //   email: '',                  // 空ならメールボタンを出さない
+    //   tel: '',                    // 例 '03-0000-0000'。空なら電話ボタンを出さない
+    //   tel_hours: '',              // 任意。例 '平日9:00〜18:00'。電話ボタンの補足に出る
     //   accepting: true,            // false で「現在受付を停止しています」表示
     //   note: '初回相談30分無料'     // 任意
     // }
@@ -104,6 +106,8 @@ window.KOBAN_EXPERTS = {
       tags: ['雇用関係助成金', '就業規則', '賃金設計'],
       line_oa_id: '@demo',
       email: 'demo@example.com',
+      tel: '03-0000-0000',
+      tel_hours: '平日9:00〜18:00（例）',
       accepting: true,
       note: 'これはレイアウト確認用の表示です'
     },
