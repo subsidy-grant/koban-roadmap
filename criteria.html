@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0057c2">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -73,11 +73,49 @@
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
   .stat { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1rem 1.1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+  /* 数字が何を指すのか、数字より先に分かるようにラベルを上に置く
+     （2026-08-17、本人指摘「なんの数字かパッと見てわからない」への対応）。
+     以前は 数字→説明文 の順で、説明文を読むまで何の数字か分からなかった。 */
+  .stat .k { font-size: 0.72rem; font-weight: 700; color: var(--ink-faint);
+    letter-spacing: 0.04em; margin-bottom: 0.25rem; }
   .stat .n { font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
-    font-size: 1.5rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+    font-size: 1.5rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums;
+    line-height: 1.3; }
   .stat .t { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.2rem; }
   .box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.1rem 1.3rem; margin-top: 1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+
+  /* 目次（2026-08-17、本人指示）。長いページなので冒頭に置き、
+     各見出しへアンカーで飛べるようにする。スマホでは1列。 */
+  .toc { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: var(--radius-md); padding: 1.1rem 1.3rem; margin-top: 1.4rem;
+    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+  .toc-ttl { font-size: 0.78rem; font-weight: 700; color: var(--ink-faint);
+    letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+  /* 項目が6つなので2列（3列だと1列2項目になり視線が横に流れて読みにくい）。
+     auto-fit + minmax(240px) だと幅876pxのPCで3列になってしまうため、
+     2列を明示して幅の狭い端末だけ1列へ落とす。 */
+  .toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 1.4rem; }
+  @media (max-width: 560px) { .toc ol { grid-template-columns: 1fr; } }
+  .toc li { counter-increment: toc; }
+  .toc > ol > li > a { font-weight: 700; }
+  .toc a { display: flex; align-items: baseline; gap: 0.5rem;
+    padding: 0.5rem 0.2rem; text-decoration: none; color: var(--ink);
+    border-bottom: 1px solid transparent; }
+  .toc a:hover, .toc a:focus-visible { color: var(--accent); border-bottom-color: var(--accent-soft); }
+  .toc > ol > li > a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: "M PLUS Rounded 1c","Noto Sans JP",sans-serif;
+    font-size: 0.8rem; font-weight: 700; color: var(--accent);
+    font-variant-numeric: tabular-nums; flex: none; }
+  /* 第2階層（h3への直リンク）は字下げして小さく */
+  .toc ol ol { display: block; margin: 0 0 0 1.5rem; }
+  .toc ol ol a { font-size: 0.84rem; font-weight: 400; color: var(--ink-soft);
+    padding: 0.35rem 0.2rem; }
+  .toc ol ol a::before { content: "└"; color: var(--ink-faint); flex: none; font-size: 0.75rem; }
+  /* アンカーで飛んだとき、見出しが上端に張り付かないよう余白を確保 */
+  h2[id], h3[id] { scroll-margin-top: 1rem; }
   .twrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-raised);
     margin-top: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
   table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 680px; }
@@ -185,19 +223,37 @@
 <h1>採択基準・返還基準 調査ノート</h1>
 <p class="sub">各補助金・助成金の公式な公募要領・交付規程・審査基準を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を整理しました。個社の年商・決算まで含む実例を大量収集する調査ではなく、公式文書ベースで再現性のある基準を抽出しています。</p>
 
+<nav class="toc" aria-labelledby="tocTitle">
+  <div class="toc-ttl" id="tocTitle">このページの内容</div>
+  <ol>
+    <li><a href="#numbers">数字で見る採択と返還</a></li>
+    <li><a href="#framework">採択基準：競争審査型のフレームワーク</a></li>
+    <li><a href="#programs">制度別サマリー（採択率つき）</a></li>
+    <li><a href="#refund">返還基準：発生パターンの整理</a>
+      <ol><li><a href="#refund-actual">実際に指摘された件数・金額</a></li></ol>
+    </li>
+    <li><a href="#factors">追加で考慮すべき判断要素</a></li>
+    <li><a href="#sources">参照した主な出典</a></li>
+  </ol>
+</nav>
+
 <!-- 「このページの性質について」は2026-08-16にページ下部（出典一覧の後ろ）へ移動した
      （本人指示）。冒頭で断り書きを読ませるより、先に中身を見せる並びにする。 -->
 
 <!-- 2026-08-16、指標を「ページの構造の説明」から「利用者が判断に使える実データ」へ
-     差し替えた。採択率はすべて公式の採択結果発表から取得（同日確認）。 -->
+     差し替えた。採択率はすべて公式の採択結果発表から取得。
+     2026-08-17、数字だけでは何を指すか分からないという指摘を受け、各数字の上に
+     見出し（.k）を追加し、区画全体にも h2 を付けた。 -->
+<h2 id="numbers">数字で見る採択と返還</h2>
+<p class="sub">下の4つは、このページで扱っている制度の実績値です。採択率は各制度の公式な採択結果発表から、返還は会計検査院報告・厚生労働省の公表資料から取得しました（2026年8月17日確認）。</p>
 <div class="stat-grid">
-  <div class="stat"><div class="n">17.1〜61.5%</div><div class="t">競争審査型8制度の直近回の採択率の幅。制度によって3.6倍の開きがある</div></div>
-  <div class="stat"><div class="n">61.5%</div><div class="t">最も通りやすい：省力化投資補助金（一般型）第5回・1,251/2,035件</div></div>
-  <div class="stat"><div class="n">17.1%</div><div class="t">最も狭き門：東京都 創業助成事業 令和7年度第2回・108/632件</div></div>
-  <div class="stat"><div class="n">191事業所</div><div class="t">人材開発支援助成金の不正受給認定（約20億円）。訓練会社主導のスキームで30労働局が一斉認定</div></div>
+  <div class="stat"><div class="k">採択率の幅</div><div class="n">17.1〜61.5%</div><div class="t">競争審査型8制度の直近回。制度によって3.6倍の開きがある</div></div>
+  <div class="stat"><div class="k">最も通りやすい制度</div><div class="n">61.5%</div><div class="t">省力化投資補助金（一般型）第5回・1,251/2,035件</div></div>
+  <div class="stat"><div class="k">最も狭き門</div><div class="n">17.1%</div><div class="t">東京都 創業助成事業 令和7年度第2回・108/632件</div></div>
+  <div class="stat"><div class="k">最大の不正受給事案</div><div class="n">191事業所</div><div class="t">人材開発支援助成金・約20億円。訓練会社主導のスキームで30労働局が一斉認定</div></div>
 </div>
 
-<h2>採択基準：競争審査型のフレームワーク</h2>
+<h2 id="framework">採択基準：競争審査型のフレームワーク</h2>
 <p class="sub">小規模事業者持続化補助金・中小企業省力化投資補助金（一般型）・新事業進出／ものづくり補助金など、審査員による点数評価がある制度はほぼ共通してこの4区分で評価されています。</p>
 <div class="twrap"><table class="stackable">
 <thead><tr><th>区分</th><th>評価される内容</th></tr></thead>
@@ -218,7 +274,7 @@
 </div>
 <p class="sub">ものづくり補助金では加点項目が15個公表されており（申請できるのは最大6項目まで）、事務局のデータポータルに加点個数別の採択率グラフが掲載されています。<strong>ただし公表は第16次締切分で更新が止まっており</strong>（2026年8月17日時点で第17次以降のデータは掲載なし）、採択率が35.1%まで下がった直近回にそのまま当てはめることはできません。また単純な集計であり、加点を増やせば採択率が上がるという因果関係を示すものではない点に注意が必要です。加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
 
-<h2>制度別サマリー</h2>
+<h2 id="programs">制度別サマリー</h2>
 <p class="sub">採択率は各制度の公式な採択結果発表（2026年8月16日確認）に基づく直近回の実績です。事務局が採択率そのものを公表している制度はその値を、採択件数と申請件数だけが公表されている制度は当方で算出した値に「†」を付けています。採択結果が公表されていない制度は、推定値を置かずその旨を記載しています。</p>
 <div class="twrap"><table class="stackable">
 <thead><tr><th>制度</th><th>審査方式・採択率</th><th>主な評価軸・加点</th><th>出典</th></tr></thead>
@@ -241,7 +297,7 @@
 </tbody>
 </table></div>
 
-<h2>返還基準：発生パターンの整理</h2>
+<h2 id="refund">返還基準：発生パターンの整理</h2>
 <div class="twrap"><table class="stackable">
 <thead><tr><th>パターン</th><th>主な該当制度</th><th>内容</th></tr></thead>
 <tbody>
@@ -253,7 +309,7 @@
 </tbody>
 </table></div>
 
-<h3>実際に指摘された件数・金額</h3>
+<h3 id="refund-actual">実際に指摘された件数・金額</h3>
 <p class="sub">会計検査院の決算検査報告および厚生労働省の公表資料から、実際に返還を求められた事例の規模を抜き出しました（2026年8月17日確認）。いずれも抽出調査で判明した分であり、不正の全体像ではありません。</p>
 <div class="twrap"><table class="stackable">
 <thead><tr><th>制度</th><th>件数・金額</th><th>年度・内容</th><th>出典</th></tr></thead>
@@ -269,7 +325,7 @@
 </table></div>
 <p class="note">※ 会計検査院の報告には、事業者の返還を求める「不当事項」のほかに、制度の運用改善を求める「意見表示・処置要求」があります。後者で示される金額は改善の対象となった事業費の規模（背景金額）であって、不正受給額ではありません。上表は不当事項に絞って掲載しています。また、ものづくり補助金・小規模事業者持続化補助金は中小企業基盤整備機構の章に記載されています。</p>
 
-<h2>追加で考慮すべき判断要素</h2>
+<h2 id="factors">追加で考慮すべき判断要素</h2>
 <p class="sub">現在の採点シミュレーターやFAQには反映していない、実務上重要と考えられる要素です。</p>
 
 <h3>採択されやすさに関わる要素</h3>
@@ -292,7 +348,7 @@
   <div class="card"><div class="ttl">金額・件数の規模</div><p>刑事事件化するか行政処分止まりかの分水嶺になりやすい</p></div>
 </div>
 
-<h2>参照した主な出典</h2>
+<h2 id="sources">参照した主な出典</h2>
 <h3>採択結果（2026年8月16日確認）</h3>
 <ul class="src-list">
 <li><a href="https://mirasapo-plus.go.jp/infomation/15578/" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金＜一般型・通常枠＞第19回 採択結果（ミラサポplus）</a></li>
