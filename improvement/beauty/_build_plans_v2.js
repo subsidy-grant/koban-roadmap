@@ -859,6 +859,7 @@ function shell(d, s, pages) {
   .toolbar button,.toolbar a{font:inherit;font-weight:700;background:${C.gold};color:#fff;border:none;
     border-radius:8px;padding:8px 16px;cursor:pointer;text-decoration:none}
   .toolbar a.xls{background:#1d6f42}
+  .toolbar a.plain{background:transparent;color:#f6f1e8;padding:8px 4px}
   /* 折り返しを許さないと、スマホでボタン2つが横に並んだまま画面幅を数px超え、
      iOSが全体をわずかに縮小表示してしまう（飲食業版と同じ指定に揃えた） */
   .toolbar .btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -1093,6 +1094,7 @@ function shell(d, s, pages) {
   <div class="toolbar">
     <span>📄 事業計画書 No.${d.no}（美容業）— ${s.badge} / A4×10ページ</span>
     <div class="btns">
+      <a class="plain" href="../../index.html">← 探す に戻る</a>
       <a class="xls" href="plan-${String(d.no).padStart(2, "0")}.xlsx" download>📊 Excel版（編集用）</a>
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>
