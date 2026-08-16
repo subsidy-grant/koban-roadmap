@@ -224,14 +224,16 @@
     var industry = val(company, 'industry');
     var employees = val(company, 'employees');
 
+    // 所在地は「事業の概要」ではなく連絡先側に置く（本人指示 2026-08-17）。
+    // 宛先や訪問先として使う情報なので、連絡手段とまとまっているほうが読みやすい。
     var contactLines = [];
     if (name) contactLines.push('事業者名：' + name);
+    if (addr) contactLines.push('所在地：' + addr);
     if (person) contactLines.push('ご担当：' + person);
     if (tel) contactLines.push('電話：' + tel);
     if (mail) contactLines.push('メール：' + mail);
 
     var bizLines = [];
-    if (addr) bizLines.push('所在地：' + addr);
     if (industry) bizLines.push('業種：' + industry);
     // 会社情報の従業員数は数字だけで保存されていることがある（入力欄が numeric のため）。
     // 数字だけなら「人」を付けて読める文にする。
@@ -306,6 +308,7 @@
       block.contact.forEach(function (l) { lines.push(l); });
     } else {
       lines.push('事業者名：');
+      lines.push('所在地：');
       lines.push('ご担当：');
       lines.push('電話：');
       lines.push('メール：');
