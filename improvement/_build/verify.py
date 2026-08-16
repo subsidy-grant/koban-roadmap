@@ -16,6 +16,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMPROVEMENT = os.path.abspath(os.path.join(HERE, ".."))
+ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 CHROME = None
 for c in [r"C:\Program Files\Google\Chrome\Application\chrome.exe",
@@ -167,13 +168,17 @@ def main():
                 print(f"[proto] {ik}/{f}: OK")
 
     # 4. link check (hub + generated pages)
-    hub = os.path.join(IMPROVEMENT, "index.html")
+    # 2026-08-16: hub は improvement/index.html からルート直下の improvement.html に
+    # 移動した（下部タブバーのサブディレクトリ非対応のため）。リンクの基準ディレクトリも
+    # IMPROVEMENT ではなく ROOT になる（生成側 build_hub.py が "improvement/..." という
+    # ルート基準の相対パスでリンクを組み立てるようになったため）。
+    hub = os.path.join(ROOT, "improvement.html")
     with open(hub, encoding="utf-8") as f:
         hub_html = f.read()
     for href in re.findall(r'href="([^"#]+)"', hub_html):
         if href.startswith("http"):
             continue
-        target = os.path.normpath(os.path.join(IMPROVEMENT, href.split("?")[0]))
+        target = os.path.normpath(os.path.join(ROOT, href.split("?")[0]))
         if not os.path.exists(target):
             failures.append(f"hub link broken: {href}")
     print(f"[links] hub checked")
