@@ -181,13 +181,19 @@
      どの製品にも貼れる見た目だったため、申請様式の書き出し（様式番号→表題→
      対象の明示→双罫線）に置き換えた。地は本文と同じ紙の色にして、
      色数を増やさずに罫線だけで格を出す。 */
+  /* 2026-08-16、トップページの「02 業種別・改善計画」を削除して縦に余白ができたため、
+     ヒーローの高さ・写真・見出しを一段大きくした（本人指示）。 */
   .hero {
     position: relative;
     background: var(--paper);
     color: var(--ink);
-    padding: 2.5rem 1.5rem 0.9rem;
+    padding: 3.4rem 1.5rem 1.4rem;
+    min-height: 260px;
     border-bottom: none;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   /* ヒーロー右側の実写イメージ。斜めクリップで右だけに見せ場を作り、
      左側は地の色（--paper）のまま残してタイトル・双罫線を確実に読ませる（見本案7）。
@@ -196,7 +202,7 @@
      商用可・帰属表示不要）。既定（初期表示・美容業）は Guilherme Petri 氏の写真。 */
   .hero-photo {
     position: absolute; top: 0; right: 0; bottom: 0;
-    width: 46%; min-width: 260px;
+    width: 52%; min-width: 300px;
     background-image: url('https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?fm=jpg&q=70&w=1200&auto=format&fit=crop');
     background-size: cover; background-position: center;
     clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
@@ -246,7 +252,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+    font-size: clamp(1.6rem, 4.2vw, 2.75rem);
     font-weight: 600;
     margin-top: 0.9rem;
     letter-spacing: 0.01em;
@@ -1302,8 +1308,8 @@
   .sec-toggle {
     appearance: none; -webkit-appearance: none;
     width: 100%; font: inherit; text-align: left; cursor: pointer;
-    display: flex; align-items: flex-start; gap: 0.85rem;
-    min-height: 3.5rem; padding: 0.9rem 1.1rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    min-height: 4.4rem; padding: 1.25rem 1.35rem;
     border: 1px solid var(--accent-soft); border-radius: 10px;
     border-left: 5px solid var(--accent);
     background: var(--paper-raised); color: var(--ink);
@@ -1318,26 +1324,26 @@
   .sec-toggle .section-no {
     flex: none; line-height: 1; min-width: 0;
     display: inline-flex; align-items: center; justify-content: center;
-    width: 2.3rem; height: 2.3rem; border-radius: 999px;
+    width: 2.7rem; height: 2.7rem; border-radius: 999px;
     background: var(--accent); color: var(--on-accent);
-    font-size: 0.98rem; font-weight: 700;
+    font-size: 1.1rem; font-weight: 700;
   }
   .sec-ttl {
     flex: 1 1 auto; min-width: 0;
-    font-size: clamp(1.08rem, 2.2vw, 1.3rem); font-weight: 600; line-height: 1.5;
+    font-size: clamp(1.2rem, 2.6vw, 1.5rem); font-weight: 600; line-height: 1.5;
   }
   /* 見出しだけだと中身が想像できないので、1行だけ手がかりを添える */
   .sec-hint {
     display: block; margin-top: 0.25rem;
     /* この1行を読んでどこを開くか決めるので、14px を下回らせない
        （0.87rem=13.9px だった。中高年の利用を想定） */
-    font-size: 0.92rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
+    font-size: 1rem; font-weight: 400; line-height: 1.7; color: var(--ink-faint);
   }
   /* 開閉アイコン（見本案4）：矢印の向きに加えて背景色も変える。
      閉=グレー系の地味な背景／開=アクセント色の塗り、で「今どちらの状態か」を
      矢印だけに頼らず一目で伝える。2026-08-16、本人が10案から案4を選定。 */
   .sec-chevron {
-    flex: none; width: 30px; height: 30px; border-radius: 8px;
+    flex: none; width: 34px; height: 34px; border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
@@ -1371,18 +1377,22 @@
      上部に横長の写真帯を敷き、タイトルはその下に置くレイアウトに切り替える。
      あわせて初期表示（カードを閉じた状態）が iPhone の表示領域に収まるよう詰める。 */
   @media (max-width: 720px) {
-    .hero { padding-top: 0; padding-bottom: 0.4rem; padding-left: 1.1rem; padding-right: 1.1rem; }
+    /* 2026-08-16に「02 業種別・改善計画」を削除して1セクション分の縦が空いたので、
+       写真帯と見出しをこの幅でも一段大きくした（本人指示）。ただし iPhone SE 相当の
+       短い画面では下の max-height:700px 側で従来寸法へ戻している。 */
+    .hero { padding-top: 0; padding-bottom: 0.6rem; padding-left: 1.1rem; padding-right: 1.1rem;
+      min-height: 0; display: block; }
     .hero-photo {
       position: relative;
       display: block;
       width: auto; min-width: 0;
-      height: 76px;
-      margin: 0 -1.1rem 0.5rem;
+      height: 120px;
+      margin: 0 -1.1rem 0.6rem;
       clip-path: none;
     }
     .hero-photo::after { background: rgba(255, 255, 255, 0.06); }
-    .hero-inner { padding-bottom: 0.5rem; }
-    .hero h1 { margin-top: 0.2rem; font-size: 1.25rem; line-height: 1.35; }
+    .hero-inner { padding-bottom: 0.6rem; }
+    .hero h1 { margin-top: 0.3rem; font-size: 1.5rem; line-height: 1.35; }
     .hero-industry-inner { padding: 0.6rem 1.1rem; gap: 0.4rem 1.1rem; }
     .hero-industry-lead { font-size: 0.9rem; }
     .hero-industry select { min-height: 2.6rem; }
@@ -1403,14 +1413,19 @@
      （2026-08-16、詰めすぎの揺り戻し）。 */
   @media (max-height: 700px) {
     .hero-photo { height: 68px; margin-bottom: 0.4rem; }
-    .hero { padding-top: 0; }
-    .hero h1 { font-size: 1.15rem; }
+    .hero { padding-top: 0; padding-bottom: 0.4rem; min-height: 0; display: block; }
+    .hero-inner { padding-bottom: 0.5rem; }
+    .hero h1 { font-size: 1.15rem; margin-top: 0.2rem; }
     .hero-industry-inner { padding: 0.5rem 1.1rem; }
     main, .has-accordion main { padding-top: 0.7rem; }
     .has-accordion main > section { margin-bottom: 0.5rem; }
-    .sec-toggle { min-height: 0; padding: 0.6rem 0.9rem; }
+    /* 上の 720px 側でカードを大きくしているので、縦が短い端末では
+       従来寸法へ戻す（1画面に収める制約を優先。2026-08-16） */
+    .sec-toggle { min-height: 0; padding: 0.6rem 0.9rem; gap: 0.6rem; }
+    .sec-toggle .section-no { width: 2.1rem; height: 2.1rem; font-size: 0.92rem; }
     .sec-ttl { font-size: 1rem; }
     .sec-hint { font-size: 0.85rem; margin-top: 0.15rem; }
+    .sec-chevron { width: 28px; height: 28px; }
   }
 </style>
 <script>
@@ -1532,25 +1547,18 @@
        撤去したが、シミュレーターのJS関数（runSimulation等）はnullガードを追加した上で
        残している（他の関数から常時呼ばれるため、関数ごと消すと壊れる）。 -->
 
-  <section id="improvement-cta">
-    <div class="section-head"><span class="section-no jp-serif">02</span><h2>業種別・改善計画 厳選10選</h2></div>
-    <!-- 以前はこの区画にembed_hub_cards.pyが業種別カード一覧(約520行)を直接埋め込んでいたが、
-         2026-08-16にimprovement.htmlという独立ページへ分離し、下部タブバーからも
-         直接開けるようにした（本人指示）。ここはページへの案内だけを残す。
-         embed_hub_cards.pyは廃止済み（実行しても書き込み先が見つからず異常終了する）。 -->
-    <p class="section-sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選し、事業計画書とプロトタイプ付きで公開しています。</p>
-    <p style="margin-top:0.8rem;">
-      <a class="src-link" href="improvement.html">業種別・改善計画 厳選10選を見る ↗</a>　
-      <a class="src-link" id="pdcaBoardLink" href="improvement/beauty/pdca.html">全1000案のPDCAファネル・一覧を見る（美容業版）↗</a>
-    </p>
-  </section>
-
+  <!-- 旧「02 業種別・改善計画 厳選10選」は2026-08-16に削除（本人指示）。
+       独立ページ improvement.html があり、下部タブバーの「改善計画」からも直接開けるため、
+       トップページの案内は重複していた。PDCAファネル(#pdcaBoardLink)への導線もここに
+       あったが、同じく improvement.html 側から辿れる。
+       このセクションを消したことで applyIndustry() 内の boardEl 分岐（6300行台）は
+       常に null になるが、nullガード済みなので安全にスキップされる。 -->
 
   <!-- 04・05（旧・申請書類そろえる／申請の手順とスケジュールの概要）は2026-08-05に削除。
        申請書類は documents.html に、手順とスケジュールの概要は program.html の
        「申請とスケジュール」に一本化した（同じ一覧を複数ページで持つと片方だけ古くなるため）。 -->
   <section id="criteria-cta">
-    <div class="section-head"><span class="section-no jp-serif">03</span><h2>採択基準・返還基準 調査ノート</h2></div>
+    <div class="section-head"><span class="section-no jp-serif">02</span><h2>採択基準・返還基準 調査ノート</h2></div>
     <p class="section-sub">各制度の公式な公募要領・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
     <p style="margin-top:0.8rem;"><a class="src-link" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
   </section>

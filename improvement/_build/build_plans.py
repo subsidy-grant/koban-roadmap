@@ -545,7 +545,7 @@ def build_plan_html(pl, scheme, industry_label, has_xlsx=False):
     xls_link = (f'<a class="xls" href="plan-{pl["no"]:02d}.xlsx" download>📊 Excel版（編集用）</a>' if has_xlsx else "")
     toolbar = (f'<div class="toolbar"><span>📄 事業計画書 PLAN {pl["no"]:02d}（{esc(industry_label)}）'
                f'— {esc(sub["label"])} / A4×10ページ</span>'
-               f'<span class="btns"><a class="plain" href="../../index.html">← 探す に戻る</a>{xls_link}'
+               f'<span class="btns"><a class="plain" href="../../improvement.html">← 戻る</a>{xls_link}'
                '<button onclick="window.print()">🖨 印刷 / PDF保存</button></span></div>')
     return ('<!DOCTYPE html>\n<html lang="ja"><head><meta charset="UTF-8">'
             '<meta name="viewport" content="width=device-width, initial-scale=1.0">'

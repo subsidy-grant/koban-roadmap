@@ -1105,7 +1105,7 @@ function shell(d, s, pages) {
   <div class="toolbar">
     <span>📄 事業計画書 No.${d.no}（美容業）— ${s.badge} / A4×10ページ</span>
     <div class="btns">
-      <a class="plain" href="../../index.html">← 探す に戻る</a>
+      <a class="plain" href="../../improvement.html">← 戻る</a>
       <a class="xls" href="plan-${String(d.no).padStart(2, "0")}.xlsx" download>📊 Excel版（編集用）</a>
       <button onclick="window.print()">🖨 印刷 / PDF保存</button>
     </div>

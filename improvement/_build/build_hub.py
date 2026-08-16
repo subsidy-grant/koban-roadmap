@@ -106,9 +106,12 @@ CSS = """
      縦に2本並べ、行全体を押せるようにする。青＝事業計画書、緑＝プロトタイプで役割を色分け。 */
   .card .links { margin-top:auto; padding-top:0.6rem; display:flex; flex-direction:column;
     gap:0.6rem; font-size:0.82rem; }
+  /* 枠線は役割色に合わせる（2026-08-16、本人指示でボタンらしく縁取り）。
+     淡色の地だけだとカード地に溶けて押せる要素に見えないため、1.5px の実線で囲う。 */
   .card .links a { gap:0.6rem; width:100%; padding:0.5rem 0.7rem; border-radius:var(--radius-sm);
-    background:var(--accent-wash); color:var(--ink); align-items:center; text-decoration:none; }
-  .card .links a.proto { background:var(--sage-wash); }
+    background:var(--accent-wash); color:var(--ink); align-items:center; text-decoration:none;
+    border:1.5px solid var(--accent); }
+  .card .links a.proto { background:var(--sage-wash); border-color:#0b7a61; }
   .card .links a:hover { text-decoration:none; filter:brightness(0.97); }
   .card .links .ic { flex:none; width:34px; height:34px; border-radius:8px;
     display:inline-flex; align-items:center; justify-content:center;
@@ -119,8 +122,10 @@ CSS = """
   .card .links a.proto .ic { background:#0b7a61; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .card .links a.proto .ic { background:var(--sage); }
+    :root:not([data-theme="light"]) .card .links a.proto { border-color:var(--sage); }
   }
   :root[data-theme="dark"] .card .links a.proto .ic { background:var(--sage); }
+  :root[data-theme="dark"] .card .links a.proto { border-color:var(--sage); }
   .card .links svg { width:19px; height:19px; }
   .pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:var(--radius-md);
     padding:2rem; text-align:center; color:var(--ink-faint); font-size:0.9rem; }

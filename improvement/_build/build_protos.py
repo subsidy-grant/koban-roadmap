@@ -367,7 +367,7 @@ def build_proto_html(pl, ik):
 <body>
 <header>
   <span><span class="badge">PROTOTYPE No.{pl["no"]:02d}</span><span class="arch">{esc(ARCH_LABEL.get(arch, ""))}</span>　{esc(INDUSTRY_LABEL[ik])}／{esc(pl["category"]["name"])}</span>
-  <span><a href="plan-{pl["no"]:02d}.html">📄 事業計画書を見る</a>　<a href="../../index.html">← 探す に戻る</a></span>
+  <span><a href="plan-{pl["no"]:02d}.html">📄 事業計画書を見る</a>　<a href="../../improvement.html">← 戻る</a></span>
 </header>
 <main>
   <h1>{esc(p["screenTitle"])}</h1>
@@ -404,13 +404,21 @@ def main():
     for ik in industries:
         with open(os.path.join(DATA, "plans", ik + ".json"), encoding="utf-8") as f:
             plans = json.load(f)
+        # proto 定義を持つプランだけを対象にする。2026-08-16時点でプロトタイプがあるのは
+        # beauty と food のみで、他4業種の JSON には proto キーが無い。以前は引数なしで
+        # 実行すると education の1本目を書いた直後に KeyError で落ち、
+        # 「途中まで書かれた中途半端なファイルが1つ残る」という壊れ方をしていた。
+        targets = [pl for pl in plans if pl.get("proto")]
+        if not targets:
+            print(f"SKIP: {ik} -> proto 定義なし")
+            continue
         outdir = os.path.join(IMPROVEMENT, ik)
         os.makedirs(outdir, exist_ok=True)
-        for pl in plans:
+        for pl in targets:
             out = os.path.join(outdir, f"proto-{pl['no']:02d}-{pl['slug']}.html")
             with open(out, "w", encoding="utf-8") as f:
                 f.write(build_proto_html(pl, ik))
-        print(f"OK: {ik} -> {len(plans)} prototypes")
+        print(f"OK: {ik} -> {len(targets)} prototypes")
 
 
 if __name__ == "__main__":
