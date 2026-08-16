@@ -107,20 +107,26 @@
      会社が1社だけのとき（既定・移行直後を含む）は「切り替える」体験が要らないので、
      チップは1個だけ淡く出し、追加・名前変更だけを目立たせる。
      2社以上になったらチップ切替がはじめて意味を持つので、選択中のチップを強調する。 */
-  .company-switcher { background: var(--paper-raised); border: 1px solid var(--line);
+  /* 「今どの会社を編集しているか」の文脈枠。地を淡いコバルトにして、
+     この下の操作が全部この会社に効くことを面の色で示す（2026-08-16）。 */
+  .company-switcher { background: var(--accent-wash); border: 1px solid var(--accent-soft);
     border-radius: var(--radius-lg); padding: 1rem 1.1rem; margin-bottom: 1.4rem; }
-  .cs-ttl { font-size: 0.86rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 0.6rem; }
+  .cs-ttl { font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.6rem; }
   .cs-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   .cs-chip { display: inline-flex; align-items: center; gap: 0.4rem;
-    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
     border-radius: 999px; padding: 0.4rem 0.5rem 0.4rem 0.9rem; font-size: 0.9rem; }
-  .cs-chip.is-current { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); font-weight: 700; }
+  /* 選択中は塗りつぶす。パネルの地が淡いコバルトになったので、
+     淡色どうしだと選択中がどれか分からなくなるため（2026-08-16）。 */
+  .cs-chip.is-current { border-color: var(--accent); background: var(--accent);
+    color: var(--on-accent); font-weight: 700; }
   .cs-chip button.cs-select { border: 0; background: transparent; color: inherit; font: inherit;
     font-size: 0.9rem; font-weight: inherit; cursor: pointer; padding: 0.15rem 0; min-height: 32px; }
   .cs-chip.is-current button.cs-select { cursor: default; }
   .cs-chip .cs-rename, .cs-chip .cs-remove { border: 0; background: transparent; color: var(--ink-faint);
     font: inherit; font-size: 0.78rem; cursor: pointer; padding: 0.2rem 0.4rem; min-height: 32px; text-decoration: underline; }
-  .cs-chip.is-current .cs-rename, .cs-chip.is-current .cs-remove { color: var(--accent); }
+  /* 選択中チップはコバルトのベタ塗りになったので、上に載る文字は白側に倒す（2026-08-16） */
+  .cs-chip.is-current .cs-rename, .cs-chip.is-current .cs-remove { color: var(--on-accent); }
   .cs-add { border: 1px dashed var(--accent-soft); background: transparent; color: var(--accent);
     font: inherit; font-size: 0.88rem; font-weight: 700; border-radius: 999px; padding: 0.45rem 1rem;
     cursor: pointer; min-height: 44px; }
@@ -133,7 +139,14 @@
   .cs-action-card { flex: 1 1 15rem; display: flex; align-items: center; gap: 0.8rem;
     text-align: left; border: 1px solid var(--line); background: var(--paper-raised);
     border-radius: var(--radius-lg); padding: 1rem 1.1rem; font: inherit; color: var(--ink);
-    cursor: pointer; min-height: 44px; box-shadow: var(--shadow-btn); }
+    cursor: pointer; min-height: 44px; box-shadow: var(--shadow-btn);
+    border-top: 4px solid var(--line); }
+  /* カード上辺の帯を、中のアイコンの役割色と揃える（2026-08-16）。
+     3枚とも白いカードで並んでいると、アイコンの色だけが浮いて機能の差が伝わらなかった。 */
+  .cs-action-card:has(.ci-accent) { border-top-color: var(--accent); }
+  .cs-action-card:has(.ci-sage) { border-top-color: var(--sage); }
+  .cs-action-card:has(.ci-rust) { border-top-color: var(--rust); }
+  .cs-action-card:hover { background: var(--accent-wash); }
   .cs-action-card.is-open { border-color: var(--accent); background: var(--accent-wash); }
   .cs-action-icon { display: flex; align-items: center; justify-content: center; flex: none;
     width: 2.6rem; height: 2.6rem; border-radius: 50%; }
@@ -151,7 +164,9 @@
   .cs-status-row:last-child { border-bottom: 0; }
   .cs-status-name { font-weight: 700; font-size: 0.94rem; }
   .cs-status-meta { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.15rem; }
-  .cs-status-pct { font-size: 0.92rem; font-weight: 700; color: var(--accent); flex: none; }
+  .cs-status-pct { font-size: 0.92rem; font-weight: 700; color: var(--accent); flex: none;
+    background: var(--accent-wash); border: 1px solid var(--accent-soft);
+    border-radius: 999px; padding: 0.15rem 0.55rem; }
   .empty { color: var(--ink-soft); font-size: 0.93rem; }
 
   /* ---- 開閉ブロック（<details>）。documents.htmlと同じ意匠 ---- */

@@ -187,7 +187,10 @@
   ul.checks input[type="checkbox"] { width: 22px; height: 22px; margin-top: 0.25rem; flex: none;
     accent-color: var(--sage); }
   ul.checks .fn { flex: 1; font-size: 0.92rem; }
-  ul.checks li.done .fn { color: var(--ink-faint); text-decoration: line-through; }
+  /* 済んだ行は左端のミントの帯で示す（applications.htmlと同じ規則、2026-08-16） */
+  ul.checks li.done { border-left: 4px solid var(--sage); border-radius: var(--radius-sm); }
+  ul.checks li.done label { padding-left: 0.5rem; }
+  ul.checks li.done .fn { color: var(--ink-soft); text-decoration: line-through; }
   .ft { font-size: 0.72rem; border: 1px solid var(--line); border-radius: 4px;
     padding: 0.05rem 0.35rem; color: var(--ink-soft); flex: none; margin-top: 0.35rem; }
 
@@ -234,8 +237,13 @@
     font-size: 0.9rem; cursor: pointer; }
   .ow-row input { width: 20px; height: 20px; margin-top: 0.2rem; flex: none; accent-color: var(--accent); }
   /* ---- 制度を選んで様式にチェックを入れる（02の手順1〜3） ---- */
-  .step-ttl { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.5rem;
-    padding-left: 0; border-left: none; color: var(--accent); }
+  /* 手順の見出し。以前は文字色だけのアクセントで、白いカードの中に埋もれていた。
+     2026-08-16、面（背景）にも色を置いて手順の切れ目を示すようにした。 */
+  .step-ttl { font-weight: 700; font-size: 0.92rem; margin: 0 0 0.6rem;
+    background: var(--accent-wash); color: var(--accent);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0.35rem 0.6rem; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #afProgram { width: 100%; }
   .af-filter { margin-bottom: 0.7rem; }
@@ -256,7 +264,13 @@
   .fr-block { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised);
     padding: 0.8rem 1rem; margin-bottom: 0.8rem; }
   .fr-block[hidden] { display: none; }
-  .fr-ttl { margin: 0 0 0.3rem; font-weight: 600; font-size: 1rem; }
+  /* 「記入できた」と「入れられなかった」が同じ見た目だと、どちらの一覧を見ているか
+     分からなかった（2026-08-16）。手を動かす必要がある方＝橙、済んだ方＝ミント。 */
+  #frFail { background: var(--rust-wash); border-color: var(--rust); border-left: 5px solid var(--rust); }
+  #frDone { background: var(--sage-wash); border-color: var(--sage); border-left: 5px solid var(--sage); }
+  #frFail > .fr-ttl { color: var(--rust); }
+  #frDone > .fr-ttl { color: var(--sage); }
+  .fr-ttl { margin: 0 0 0.3rem; font-weight: 700; font-size: 1rem; }
   .fr-note { margin: 0 0 0.5rem; font-size: 0.88rem; color: var(--ink-soft); }
   .fr-foot { margin: 0.7rem 0 0; }
   ul.fr-list { list-style: none; margin: 0; padding: 0; }

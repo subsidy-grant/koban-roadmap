@@ -111,7 +111,14 @@
   .app-item { display: flex; align-items: center; gap: 0.7rem; background: var(--paper-raised);
     border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem;
     margin-bottom: 0.7rem; box-shadow: var(--shadow-btn); }
-  .app-item.is-current { border-color: var(--accent); border-width: 2px; }
+  /* 進み具合を左の帯の色で示す（2026-08-16）。一覧をざっと見たときに
+     「どれが終わっていて、どれが手つかずか」を数字を読まずに掴めるようにする。 */
+  .app-item { border-left: 5px solid var(--line); }
+  .app-item.is-todo { border-left-color: var(--line); }
+  .app-item.is-doing { border-left-color: var(--accent); background: var(--accent-wash); }
+  .app-item.is-done { border-left-color: var(--sage); background: var(--sage-wash); }
+  .app-item.is-current { border-color: var(--accent); border-width: 2px; border-left-width: 5px; }
+  .app-item.is-current.is-done { border-color: var(--sage); }
   .app-item-main { flex: 1 1 auto; min-width: 0; background: none; border: 0; padding: 0;
     text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
   .app-item-name { font-weight: 700; font-size: 1rem; display: block; }
@@ -119,6 +126,8 @@
   .app-item-prog { flex: none; text-align: right; font-size: 0.85rem; color: var(--ink-soft);
     font-variant-numeric: tabular-nums; min-width: 4.6rem; line-height: 1.4; }
   .app-item-prog .n { font-weight: 700; color: var(--accent); }
+  .app-item.is-todo .app-item-prog .n { color: var(--ink-faint); }
+  .app-item.is-done .app-item-prog .n { color: var(--sage); }
   .app-item-prog .lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
   .app-item-del { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
     border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
@@ -150,10 +159,15 @@
     min-height: 32px; padding: 0.2rem 0.4rem; }
 
   /* ---- チェックリスト（documents.htmlの04と同じ見た目） ---- */
-  .prog { height: 8px; background: var(--paper); border: 1px solid var(--line);
+  /* 進捗バーは伸びたことが分かるよう、地をミントの薄色にして高さも出す（2026-08-16） */
+  .prog { height: 12px; background: var(--sage-wash); border: 1px solid var(--sage);
     border-radius: 999px; overflow: hidden; margin: 0.4rem 0 0.7rem; }
   .prog > i { display: block; height: 100%; background: var(--sage); }
-  .phase-ttl { font-size: 0.86rem; color: var(--accent); font-weight: 700; margin: 0.8rem 0 0.3rem; }
+  /* フェーズ見出しは帯にして、どこからどこまでが1つの段階かを面で示す */
+  .phase-ttl { font-size: 0.86rem; color: var(--accent); font-weight: 700;
+    margin: 1rem 0 0.3rem; background: var(--accent-wash);
+    border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0.35rem 0.6rem; }
   ul.checks { list-style: none; margin: 0; padding: 0; }
   ul.checks li { border-bottom: 1px dashed var(--line); }
   ul.checks li:last-child { border-bottom: 0; }
@@ -162,7 +176,12 @@
   ul.checks input[type="checkbox"] { width: 22px; height: 22px; margin-top: 0.25rem; flex: none;
     accent-color: var(--sage); }
   ul.checks .fn { flex: 1; font-size: 0.92rem; }
-  ul.checks li.done .fn { color: var(--ink-faint); text-decoration: line-through; }
+  /* 済んだ行は左端の細いバーで示す（2026-08-16）。当初は行全体をミントで塗ったが、
+     25件全部済むと画面がほぼ緑一色になって重かったため、面ではなく線に変えた。 */
+  ul.checks li.done { border-left: 4px solid var(--sage); border-radius: var(--radius-sm); }
+  ul.checks li.done label { padding-left: 0.5rem; }
+  /* 取り消し線が重なると潰れるので、ink-faintではなくink-softまで濃さを戻す */
+  ul.checks li.done .fn { color: var(--ink-soft); text-decoration: line-through; }
   .ft { font-size: 0.72rem; border: 1px solid var(--line); border-radius: 4px;
     padding: 0.05rem 0.35rem; color: var(--ink-soft); flex: none; margin-top: 0.35rem; }
   .who { display: inline-block; font-size: 0.76rem; line-height: 1.5; border-radius: 4px;
@@ -309,7 +328,12 @@
     }
     var html = '<ul class="app-list">' + apps.map(function (a) {
       var p = progressOf(a);
-      return '<li class="app-item' + (a.id === currentId ? ' is-current' : '') + '">' +
+      // 進み具合を色でも示す（2026-08-16）。数字だけだと一覧をざっと見たときに
+      // 「どれが終わっていてどれが手つかずか」が読み取れなかった。
+      //   手つかず＝灰／進行中＝コバルト／完了＝ミント
+      var stateCls = (p.total > 0 && p.done >= p.total) ? ' is-done'
+                   : (p.done > 0 ? ' is-doing' : ' is-todo');
+      return '<li class="app-item' + stateCls + (a.id === currentId ? ' is-current' : '') + '">' +
         '<button type="button" class="app-item-main" data-id="' + esc(a.id) + '">' +
         '<span class="app-item-name">' + esc(a.name) + '</span>' +
         '</button>' +

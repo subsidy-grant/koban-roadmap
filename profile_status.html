@@ -92,6 +92,12 @@
     font-variant-numeric: tabular-nums; min-width: 4.6rem; line-height: 1.4; }
   .app-item-prog .n { font-weight: 700; color: var(--accent); }
   .app-item-prog .lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
+  /* 進み具合を左の帯の色で示す（applications.htmlと同じ規則、2026-08-16） */
+  .app-item { border-left: 5px solid var(--line); }
+  .app-item.is-doing { border-left-color: var(--accent); background: var(--accent-wash); }
+  .app-item.is-done { border-left-color: var(--sage); background: var(--sage-wash); }
+  .app-item.is-todo .app-item-prog .n { color: var(--ink-faint); }
+  .app-item.is-done .app-item-prog .n { color: var(--sage); }
 
   /* アプリ風のタップフィードバック（他ページと共通） */
   button, .btn, a.btn-link {
@@ -153,7 +159,10 @@
     var CD = window.KOBAN_COMMON_DOCS;
     box.innerHTML = '<ul class="app-list">' + apps.map(function (a) {
       var p = progressOf(a, CD);
-      return '<li class="app-item">' +
+      // applications.htmlの一覧と同じく、進み具合を色でも示す（2026-08-16）
+      var stateCls = (p.total > 0 && p.done >= p.total) ? ' is-done'
+                   : (p.done > 0 ? ' is-doing' : ' is-todo');
+      return '<li class="app-item' + stateCls + '">' +
         '<span class="app-item-main"><span class="app-item-name">' + esc(a.name) + '</span></span>' +
         '<span class="app-item-prog"><span class="n">' + p.done + ' / ' + p.total + '</span>' +
         '<span class="lbl">取り寄せ書類</span></span>' +

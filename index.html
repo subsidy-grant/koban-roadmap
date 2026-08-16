@@ -52,6 +52,11 @@
     --sage-wash: #dcf5ee;
     --rust: #d84315;
     --rust-wash: #fde3d6;
+    /* wash地の上に文字を載せるとき用の濃い版。--sage/--rustをそのまま載せると
+       同系色どうしで3.7:1前後まで落ちWCAG AAを割るため（2026-08-16実測）。
+       夜間は地が暗いので、逆に明るい--sage/--rustをそのまま使う。 */
+    --sage-ink: #096b54;
+    --rust-ink: #ad3210;
     --cat-hojo: #0057c2;
     --cat-hojo-wash: #e2edfb;
     --cat-josei: #b25400;
@@ -79,6 +84,9 @@
       --sage-wash: #0f2b24;
       --rust: #ff8a5c;
       --rust-wash: #33200f;
+      /* 夜間は地が暗いので、明るい側の色をそのまま文字に使う（実測で6.6:1以上） */
+      --sage-ink: #3fd6ac;
+      --rust-ink: #ff8a5c;
       --cat-hojo: #5b9df5;
       --cat-hojo-wash: #142640;
       --cat-josei: #e5a850;
@@ -105,6 +113,9 @@
     --sage-wash: #0f2b24;
     --rust: #ff8a5c;
     --rust-wash: #33200f;
+    /* 夜間は地が暗いので、明るい側の色をそのまま文字に使う（実測で6.6:1以上） */
+    --sage-ink: #3fd6ac;
+    --rust-ink: #ff8a5c;
     --cat-hojo: #5b9df5;
     --cat-hojo-wash: #142640;
     --cat-josei: #e5a850;
@@ -127,6 +138,11 @@
     --sage-wash: #dcf5ee;
     --rust: #d84315;
     --rust-wash: #fde3d6;
+    /* wash地の上に文字を載せるとき用の濃い版。--sage/--rustをそのまま載せると
+       同系色どうしで3.7:1前後まで落ちWCAG AAを割るため（2026-08-16実測）。
+       夜間は地が暗いので、逆に明るい--sage/--rustをそのまま使う。 */
+    --sage-ink: #096b54;
+    --rust-ink: #ad3210;
     --cat-hojo: #0057c2;
     --cat-hojo-wash: #e2edfb;
     --cat-josei: #b25400;
@@ -998,9 +1014,25 @@
   .timetable .tt-days small { font-size: 0.85rem; color: var(--ink-faint); font-weight: 400; }
   .timetable .tt-lim.is-soon .tt-days { text-decoration: underline; text-underline-offset: 0.2em; }
   .timetable .tt-days-none { font-size: 0.82rem; color: var(--ink-faint); line-height: 1.5; }
-  /* 通年・受付終了・受付前。日付ではないので橙は使わず、状態として静かに出す */
-  .timetable .tt-state { font-size: 1rem; font-weight: 700; color: var(--ink-soft); line-height: 1.35; }
-  .timetable .tt-state small { display: block; font-size: 0.78rem; font-weight: 400; color: var(--ink-faint); }
+  /* 通年・受付終了・受付前。以前は「日付ではないので橙は使わず静かに出す」方針で
+     全部灰色にしていたが、それだと「今すぐ出せる制度（通年）」が「もう出せない制度
+     （受付終了）」と同じ見た目になり埋もれていた。2026-08-16、本人の
+     「色を使って内容や機能が視覚的にわかるように」の指示を受けて状態別に着色。 */
+  .timetable .tt-state {
+    display: inline-block; font-size: 0.95rem; font-weight: 700; line-height: 1.3;
+    padding: 0.25rem 0.6rem; border-radius: 999px;
+    background: var(--paper); color: var(--ink-soft); border: 1px solid var(--line);
+  }
+  .timetable .tt-state small { display: block; font-size: 0.72rem; font-weight: 400; opacity: 0.85; }
+  /* 今すぐ出せる＝ミント。同系色を重ねると薄い地の上で文字が沈むため、
+     この2状態だけ文字を濃い側に落としてコントラストを確保する（2026-08-16実測、
+     --sage/--rustのままだと3.7:1前後でWCAG AA 4.5:1に届かなかった）。 */
+  .timetable .tt-state.is-open { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage); }
+  /* 次に出せる見込み＝コバルト（案内） */
+  .timetable .tt-state.is-next { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
+  /* もう出せない・まだ出せない＝橙（注意） */
+  .timetable .tt-state.is-closed,
+  .timetable .tt-state.is-before { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust); }
 
   .timetable .tt-nm {
     font-size: 1rem; font-weight: 700; line-height: 1.55;
@@ -1261,18 +1293,31 @@
 
   .section-head.is-toggle { display: block; margin: 0; }
   .sec-h2 { margin: 0; }
+  /* 閉じている状態でも「押せる見出しである」ことを色で示す。
+     以前は白地＋灰枠で、7枚が縦に並ぶとページ全体がモノトーンに見えていた
+     （2026-08-16、本人指摘「色が全然使われていない」を受けて着色）。 */
   .sec-toggle {
     appearance: none; -webkit-appearance: none;
     width: 100%; font: inherit; text-align: left; cursor: pointer;
     display: flex; align-items: flex-start; gap: 0.85rem;
     min-height: 3.5rem; padding: 0.9rem 1.1rem;
-    border: 1px solid var(--line); border-radius: 10px;
-    background: var(--paper-raised); color: var(--ink);
+    border: 1px solid var(--accent-soft); border-radius: 10px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-wash); color: var(--ink);
   }
-  .sec-toggle:hover { border-color: var(--accent); background: var(--accent-wash); }
+  .sec-toggle:hover { border-color: var(--accent); border-left-color: var(--accent);
+    background: var(--accent-soft); }
   .sec-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* 章番号の欄。2026-07-31に工程順の01〜07へ連番化した（それ以前は03.5があった） */
-  .sec-toggle .section-no { flex: none; line-height: 1.7; min-width: 2.7rem; }
+  /* 章番号はベタ塗りのチップにして、押せる見出しの視覚的な起点にする
+     （2026-08-16。文字だけだと青wash地の中で埋もれていた）。 */
+  .sec-toggle .section-no {
+    flex: none; line-height: 1; min-width: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.3rem; height: 2.3rem; border-radius: 999px;
+    background: var(--accent); color: var(--on-accent);
+    font-size: 0.98rem; font-weight: 700;
+  }
   .sec-ttl {
     flex: 1 1 auto; min-width: 0;
     font-size: clamp(1.08rem, 2.2vw, 1.3rem); font-weight: 600; line-height: 1.5;
@@ -1298,8 +1343,11 @@
     transform: rotate(180deg);
     background: var(--accent); border-color: var(--accent); color: #fff;
   }
+  /* 開いた状態は本文を読ませたいので、逆に地を白へ落ち着かせる。
+     閉＝色の面／開＝白い面、で「今どれを開いているか」が面の色で分かる。 */
   main > section.is-open > .section-head .sec-toggle {
-    border-color: var(--accent); background: var(--accent-wash);
+    border-color: var(--accent); border-left-color: var(--accent);
+    background: var(--paper-raised);
   }
   @media (prefers-reduced-motion: reduce) { .sec-chevron { transition: none; } }
   @media (max-width: 560px) {
@@ -7439,13 +7487,16 @@
         // あれば「次回予定あり」を優先する。
         var hasNextRoughDate = /受付終了|終了しました/.test(sch)
           && /\d{1,2}\s*月\s*(?:頃|中旬|下旬|上旬)/.test(sch);
-        var st = /通年|随時/.test(sch) ? '通年<small>随時受付</small>'
-               : hasNextRoughDate ? '次回予定<small>あり</small>'
-               : /受付終了|終了しました/.test(sch) ? '受付終了'
-               : /受付前|開始予定|公募予定/.test(sch) ? '受付前'
-               : null;
+        // 状態ごとに色を変えるためのクラスも一緒に決める（2026-08-16）。
+        // 今すぐ出せる（通年）＝ミント、閉じている（受付終了・受付前）＝橙、
+        // 次回予定あり＝コバルト。灰色一色だと「出せる制度」が埋もれるため。
+        var st = null, stCls = '';
+        if (/通年|随時/.test(sch)) { st = '通年<small>随時受付</small>'; stCls = ' is-open'; }
+        else if (hasNextRoughDate) { st = '次回予定<small>あり</small>'; stCls = ' is-next'; }
+        else if (/受付終了|終了しました/.test(sch)) { st = '受付終了'; stCls = ' is-closed'; }
+        else if (/受付前|開始予定|公募予定/.test(sch)) { st = '受付前'; stCls = ' is-before'; }
         limCell = st
-          ? '<div class="tt-lim tt-lim-state"><span class="tt-state">' + st + '</span></div>'
+          ? '<div class="tt-lim tt-lim-state"><span class="tt-state' + stCls + '">' + st + '</span></div>'
           : '<div class="tt-lim tt-lim-none"><span class="tt-days-none">期日を<br>判定できません</span></div>';
       }
       var capCell = typeof r.cap === 'number'

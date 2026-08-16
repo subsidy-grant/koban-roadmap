@@ -25,12 +25,20 @@
     '  box-shadow: 0 -2px 6px var(--shadow);' +
     '  padding-bottom: env(safe-area-inset-bottom, 0); }' +
     '.app-tab { flex: 1 1 0; display: flex; flex-direction: column; align-items: center;' +
-    '  justify-content: center; gap: 0.25rem; padding: 0.6rem 0.2rem; min-height: var(--app-tabbar-h);' +
-    '  text-decoration: none; color: var(--ink-faint); font-size: 0.82rem; line-height: 1.3;' +
-    '  transition: color 0.08s ease, transform 0.08s ease; }' +
-    '.app-tab .icon { display: flex; line-height: 1; }' +
-    '.app-tab .icon svg { width: 30px; height: 30px; }' +
+    '  justify-content: center; gap: 0.22rem; padding: 0.5rem 0.2rem 0.45rem; min-height: var(--app-tabbar-h);' +
+    '  text-decoration: none; color: var(--ink-faint); font-size: 0.8rem; line-height: 1.3;' +
+    '  position: relative;' +
+    '  transition: color 0.12s ease, transform 0.08s ease; }' +
+    /* アイコンは丸い器に入れる。非選択は淡い地、選択はベタ塗り＋白抜きにして、
+       「色のついた丸がどこにあるか」だけで現在地が分かるようにする（2026-08-16）。 */
+    '.app-tab .icon { display: flex; align-items: center; justify-content: center;' +
+    '  width: 50px; height: 34px; border-radius: 999px; line-height: 1;' +
+    '  background: transparent;' +
+    '  transition: background-color 0.12s ease, color 0.12s ease; }' +
+    '.app-tab .icon svg { width: 26px; height: 26px; }' +
     '.app-tab.is-current { color: var(--accent); font-weight: 700; }' +
+    '.app-tab.is-current .icon { background: var(--accent); color: var(--on-accent, #fff); }' +
+    '.app-tab:not(.is-current):hover .icon { background: var(--accent-wash); }' +
     '.app-tab:active { transform: scale(0.93); }' +
     '@media (prefers-reduced-motion: reduce) { .app-tab { transition: none; } }' +
     'body.has-app-tabbar { padding-bottom: calc(var(--app-tabbar-h) + env(safe-area-inset-bottom, 0)); }' +
