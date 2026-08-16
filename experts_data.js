@@ -17,6 +17,58 @@
 // - 実在しない人物・事務所名を仮のデータとして書かない
 // - 想定採択率・成功率などを note に書かない（景品表示法）
 // - 「書類の作成・提出を代行します」という書き方をしない（行政書士法・社会保険労務士法）
+//
+// 【topics について】
+// 相談前アンケートQ1（何について相談したいか）の選択肢。各専門家の topics 配列に
+// ここの id を入れると、その相談テーマを選んだ利用者にその専門家が表示される。
+// topics 未設定の専門家は kinds（hojo/josei）だけで従来どおり判定される。
+window.KOBAN_CONSULT_TOPICS = [
+  {
+    id: 'which',
+    label: '自社で使える制度を知りたい',
+    // この相談テーマに向く資格。experts の topics 指定が無い場合のフォールバック判定に使う
+    qualifications: ['shindanshi', 'sharoushi'],
+    prepare: ['直近の決算書（または確定申告書）', '従業員数がわかるもの', 'やりたい取り組みのメモ']
+  },
+  {
+    id: 'plan',
+    label: '採択される事業計画の作り方',
+    qualifications: ['shindanshi'],
+    prepare: ['導入したい設備・サービスの見積書', '直近2期分の決算書', '現在の課題を書き出したメモ']
+  },
+  {
+    id: 'docs',
+    label: '申請書類の書き方・進め方',
+    qualifications: ['shindanshi', 'gyoseishoshi'],
+    prepare: ['申請予定の制度の公募要領', '書きかけの申請書類', '締切日がわかるもの']
+  },
+  {
+    id: 'wage',
+    label: '賃金・就業規則のこと',
+    qualifications: ['sharoushi'],
+    prepare: ['現在の就業規則・賃金規程', '賃金台帳（直近数か月分）', '雇用契約書のひな形']
+  },
+  {
+    id: 'after',
+    label: '採択後の手続き・実績報告',
+    qualifications: ['shindanshi', 'sharoushi'],
+    prepare: ['交付決定通知書', '補助事業に使った経費の領収書・契約書', '実績報告の様式']
+  },
+  {
+    id: 'other',
+    label: 'その他・まだ整理できていない',
+    qualifications: [],
+    prepare: ['相談したいことのメモ（箇条書きで可）']
+  }
+];
+
+// 相談前アンケートQ2（検討段階）の選択肢
+window.KOBAN_CONSULT_STAGES = [
+  { id: 'research', label: 'まず情報を集めている' },
+  { id: 'preparing', label: '申請に向けて準備している' },
+  { id: 'deadline', label: '締切が近く急いでいる' },
+  { id: 'applied', label: '申請済み・採択後の相談' }
+];
 window.KOBAN_EXPERTS = {
   updated: '2026-08-17',
   status: 'preparing', // 'preparing'（提携準備中）| 'open'（受付中）
@@ -28,6 +80,8 @@ window.KOBAN_EXPERTS = {
     //   title: '社会保険労務士',
     //   qualification: 'sharoushi', // sharoushi | shindanshi | gyoseishoshi | zeirishi
     //   kinds: ['josei'],           // 対応する制度種別: 'josei'(雇用系助成金) / 'hojo'(補助金)
+    //   topics: ['wage', 'which'],  // 対応できる相談テーマ（KOBAN_CONSULT_TOPICS の id）。
+    //                               // 省略すると資格から自動判定される
     //   areas: ['東京都', '神奈川県'], // 空配列=全国対応。表示のみで絞り込みには使わない
     //   tags: ['雇用関係助成金', '就業規則'],
     //   line_oa_id: '',             // 例 '@xxxxx'。空ならLINEボタンを出さない
@@ -45,6 +99,7 @@ window.KOBAN_EXPERTS = {
       title: '社会保険労務士',
       qualification: 'sharoushi',
       kinds: ['josei'],
+      topics: ['wage', 'which', 'after'],
       areas: ['全国対応（例）'],
       tags: ['雇用関係助成金', '就業規則', '賃金設計'],
       line_oa_id: '@demo',
@@ -58,6 +113,7 @@ window.KOBAN_EXPERTS = {
       title: '中小企業診断士',
       qualification: 'shindanshi',
       kinds: ['hojo'],
+      topics: ['plan', 'docs', 'which', 'after'],
       areas: ['全国対応（例）'],
       tags: ['補助金申請支援', '事業計画'],
       line_oa_id: '',

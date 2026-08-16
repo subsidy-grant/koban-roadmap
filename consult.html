@@ -44,18 +44,6 @@
   .lede { color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 1.6rem; }
   .back { font-size: 0.85rem; margin-bottom: 1rem; }
 
-  .kind-choice { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.7rem; margin-bottom: 1.4rem; }
-  .kind-btn { appearance: none; text-align: left; cursor: pointer; font: inherit;
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
-    padding: 1rem 1.1rem; min-height: 3.2rem; color: var(--ink); box-shadow: var(--shadow-btn); }
-  .kind-btn:hover, .kind-btn:focus-visible { border-color: var(--accent); background: var(--accent-wash); }
-  .kind-btn.is-selected { border-color: var(--accent); background: var(--accent-wash); }
-  .kind-btn .kb-ttl { font-weight: 700; font-size: 0.95rem; }
-  .kind-btn .kb-sub { font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.2rem; }
-
-  #consultPanel { display: none; }
-
   @media print { body { display: none; } }
 </style>
 </head>
@@ -63,22 +51,7 @@
 <main>
   <p class="back"><a href="index.html">← トップに戻る</a></p>
   <h1>専門家に相談する</h1>
-  <p class="lede">提携専門家（社会保険労務士・中小企業診断士等）に、LINEやメールで直接ご相談いただけます。まず相談したい内容の種類を選んでください。</p>
-
-  <div class="kind-choice" id="kindChoice" role="group" aria-label="相談したい制度の種類">
-    <button type="button" class="kind-btn" data-kind="josei">
-      <div class="kb-ttl">助成金について（雇用・労務）</div>
-      <div class="kb-sub">キャリアアップ助成金・業務改善助成金など</div>
-    </button>
-    <button type="button" class="kind-btn" data-kind="hojo">
-      <div class="kb-ttl">補助金について（設備投資・事業計画）</div>
-      <div class="kb-sub">小規模事業者持続化補助金・省力化投資補助金など</div>
-    </button>
-    <button type="button" class="kind-btn" data-kind="other">
-      <div class="kb-ttl">まだよくわからない</div>
-      <div class="kb-sub">両方の専門家を表示します</div>
-    </button>
-  </div>
+  <p class="lede">提携専門家（社会保険労務士・中小企業診断士等）に、LINEやメールで直接ご相談いただけます。かんたんな質問にお答えいただくと、合う専門家と相談メッセージのひな形をご用意します。</p>
 
   <div id="consultPanel"></div>
 </main>
@@ -88,26 +61,12 @@
 <script>
 (function () {
   'use strict';
+  // このページは特定の制度に紐づかない相談入口なので、制度種別（kind）は絞らず
+  // アンケートのQ1（相談テーマ）だけで専門家を選ぶ。
   var panel = document.getElementById('consultPanel');
-  var buttons = Array.prototype.slice.call(document.querySelectorAll('.kind-btn'));
-  var TOPIC_BY_KIND = {
-    josei: '助成金の活用について',
-    hojo: '補助金の活用について',
-    other: '補助金・助成金の活用について'
-  };
-  buttons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      buttons.forEach(function (b) { b.classList.remove('is-selected'); });
-      btn.classList.add('is-selected');
-      var kind = btn.getAttribute('data-kind');
-      if (window.KOBAN_CONSULT) {
-        window.KOBAN_CONSULT.mount(panel, {
-          kind: kind,
-          topic: TOPIC_BY_KIND[kind] || ''
-        });
-      }
-    });
-  });
+  if (window.KOBAN_CONSULT && panel) {
+    window.KOBAN_CONSULT.mount(panel, { kind: 'other' });
+  }
 })();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
