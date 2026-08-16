@@ -454,7 +454,7 @@ function buildPlan(d) {
   const P1 = `
     <div class="hero">
       <div class="hero-main">
-        <span class="hero-badge">${s.badge} 申請</span>
+        <span class="hero-badge">${d.scheme === "自己資金" ? s.badge : `${s.badge} 申請`}</span>
         <h1>${d.title}</h1>
         <p class="hero-sub">${d.sub}</p>
       </div>
@@ -664,18 +664,20 @@ function buildPlan(d) {
           <tr><th>項目</th><th class="num">金額</th></tr>
           ${d.invItems.map(([a, b]) => `<tr><td>${a}</td><td class="num">${b}万円</td></tr>`).join("")}
           <tr class="sum"><td>投資総額</td><td class="num">${d.inv}万円</td></tr>
-          <tr><td>補助金(${s.rate.split("(")[0]})</td><td class="num sc">▲${s.subAmt}万円</td></tr>
+          ${s.subAmt > 0 ? `<tr><td>補助金(${s.rate.split("(")[0]})</td><td class="num sc">▲${s.subAmt}万円</td></tr>` : ""}
           <tr class="sum"><td>自己負担額</td><td class="num">${s.self}万円</td></tr>
         </table>
       </div>
       <div class="half">
         <h3>資金調達</h3>
         <table class="data">
-          <tr><td>補助金</td><td class="num">${s.subAmt}万円</td></tr>
+          ${s.subAmt > 0 ? `<tr><td>補助金</td><td class="num">${s.subAmt}万円</td></tr>` : ""}
           <tr><td>自己資金</td><td class="num">${Math.round(s.self * 0.5)}万円</td></tr>
           <tr><td>金融機関借入</td><td class="num">${s.self - Math.round(s.self * 0.5)}万円</td></tr>
         </table>
-        <div class="callout small">補助金は精算払いのため、つなぎ資金を金融機関借入で確保。返済は本事業の収益改善キャッシュフロー(年${d.netY}万円)で賄う計画とし、資金繰りの安全性を確保する。</div>
+        <div class="callout small">${s.subAmt > 0
+          ? `補助金は精算払いのため、つなぎ資金を金融機関借入で確保。返済は本事業の収益改善キャッシュフロー(年${d.netY}万円)で賄う計画とし、資金繰りの安全性を確保する。`
+          : `補助金を活用しないため交付決定を待たず着手できる。自己資金と金融機関借入で初期投資を賄い、返済は本事業の収益改善キャッシュフロー(年${d.netY}万円)で賄う計画とする。`}</div>
       </div>
     </div>
     <div class="figbox">${cfChart(d.cf, C.blue)}</div>
@@ -784,25 +786,34 @@ function buildPlan(d) {
     <div class="callout">本事業は単なる業務効率化にとどまらず、<b>省力化で創出した経営資源を高付加価値活動へ再配分する経営変革</b>である。人手不足という構造的制約を乗り越え、年商${BIZ.salesYen}万円規模の小規模事業者が持続的に成長するための投資であり、地域経済の担い手としての基盤強化に資する。</div>`;
 
   // ===== P10 要件チェック =====
+  const isSelfFund = d.scheme === "自己資金";
   const P10 = `
-    <h3>補助要件チェックリスト</h3>
+    <h3>${isSelfFund ? "実施要件チェックリスト" : "補助要件チェックリスト"}</h3>
     <table class="data wide check">
       <tr><th>要件</th><th>本計画の対応</th><th>判定</th></tr>
-      <tr><td>${s.badge}の対象事業者</td><td>中小企業・小規模事業者(美容業)に該当</td><td class="ok">✔</td></tr>
+      ${isSelfFund
+        ? `<tr><td>事業主体の適格性</td><td>中小企業・小規模事業者(美容業)に該当</td><td class="ok">✔</td></tr>`
+        : `<tr><td>${s.badge}の対象事業者</td><td>中小企業・小規模事業者(美容業)に該当</td><td class="ok">✔</td></tr>`}
       <tr><td>省力化・生産性向上効果</td><td>月${d.saveH}時間削減・KPI改善を定量提示</td><td class="ok">✔</td></tr>
-      <tr><td>${isKaizen ? "事業場内最低賃金の引上げ" : "賃上げ計画(特例活用時)"}</td><td>+${wageUp}円の引上げを計画(${nf(d.wage_before)}円→${nf(d.wage_after1)}円)</td><td class="ok">✔</td></tr>
-      <tr><td>交付決定後の発注</td><td>スケジュールを交付決定起点で設計</td><td class="ok">✔</td></tr>
+      <tr><td>${isKaizen ? "事業場内最低賃金の引上げ" : isSelfFund ? "賃上げ計画(任意目標)" : "賃上げ計画(特例活用時)"}</td><td>+${wageUp}円の引上げを計画(${nf(d.wage_before)}円→${nf(d.wage_after1)}円)</td><td class="ok">✔</td></tr>
+      ${isSelfFund
+        ? `<tr><td>着手時期</td><td>交付決定待ちが不要なため、意思決定後ただちに着手可能</td><td class="ok">✔</td></tr>`
+        : `<tr><td>交付決定後の発注</td><td>スケジュールを交付決定起点で設計</td><td class="ok">✔</td></tr>`}
       <tr><td>事業計画の実現可能性</td><td>実機プロトタイプ・専門家連携で裏付け</td><td class="ok">✔</td></tr>
       <tr><td>投資回収の妥当性</td><td>約${d.roi}年で回収、累積CF計画を提示</td><td class="ok">✔</td></tr>
     </table>
     <div class="split">
       <div class="half-2">
-        <h3>他制度への転用メモ</h3>
+        <h3>${isSelfFund ? "補助金活用の可能性メモ" : "他制度への転用メモ"}</h3>
         <div class="callout">
           <b>本計画のメイン: ${s.badge}</b><br>
-          ${d.scheme === "省力化"
-            ? `本事業は省力化(生産性向上)効果が明確なため<b>省力化投資補助金(一般型)</b>を主軸とした。賃上げを主目的に据え直せば<b>業務改善助成金</b>への転用も可能。その場合は最低賃金の引上げ額(コース区分)を軸に、対象経費を生産性向上に資する設備投資へ組み替える。`
-            : `本事業は賃上げと業務改善の親和性が高いため<b>業務改善助成金</b>を主軸とした。投資規模を拡大し省力化効果を前面に出せば<b>省力化投資補助金(一般型)</b>への転用も可能。その場合は補助上限が大きく、小規模事業者なら補助率2/3。`}
+          ${{
+            "省力化": `本事業は省力化(生産性向上)効果が明確なため<b>省力化投資補助金(一般型)</b>を主軸とした。賃上げを主目的に据え直せば<b>業務改善助成金</b>への転用も可能。その場合は最低賃金の引上げ額(コース区分)を軸に、対象経費を生産性向上に資する設備投資へ組み替える。`,
+            "業務改善": `本事業は賃上げと業務改善の親和性が高いため<b>業務改善助成金</b>を主軸とした。投資規模を拡大し省力化効果を前面に出せば<b>省力化投資補助金(一般型)</b>への転用も可能。その場合は補助上限が大きく、小規模事業者なら補助率2/3。`,
+            "AI導入": `本事業は複数のITツール導入プロセスにまたがるため<b>デジタル化・AI導入補助金2026</b>を主軸とした。150万円以上の申請区分では4プロセス以上の要件があるため、単機能の導入にとどめる場合は投資規模を150万円未満に抑えるか、他制度への転用を検討する。`,
+            "持続化": `本事業は新規顧客獲得・販路開拓の性格が強いため<b>小規模事業者持続化補助金</b>を主軸とした。上限50万円のため投資規模が大きい場合は自己負担が増える。販路開拓の要素を薄め業務効率化を主目的に据え直せば、より上限の大きい他制度への転用も検討余地がある。`,
+            "自己資金": `本事業は投資規模・実施内容のいずれの面からも既存の補助金制度に無理なく当てはまらないと判断し、<b>補助金に依らず自己資金・借入で実施する</b>案とした。補助金の交付決定を待たずに着手できる利点があり、投資回収年数も短いため、無理な制度当てはめによる審査リスクを避ける方が合理的である。`,
+          }[d.scheme]}
         </div>
       </div>
       <div class="half-1">${photo("desk.jpg", "実申請時は専門家の確認を経て提出する")}</div>
@@ -821,7 +832,7 @@ function buildPlan(d) {
       <tr><td>賃金引上げ計画書・労働条件通知書</td><td>顧問社会保険労務士</td><td class="ok">✔</td></tr>
       <tr><td>試作システム(プロトタイプ)による実現性の確認</td><td>ITベンダー</td><td class="ok">✔</td></tr>
     </table>
-    <p class="note">参照した最新公募情報(2026年時点): 省力化投資補助金(一般型)第6・7回公募 / 業務改善助成金 令和8年度</p>`;
+    <p class="note">参照した最新公募情報(2026年時点): 省力化投資補助金(一般型)第6・7回公募 / デジタル化・AI導入補助金2026(通常枠) / 小規模事業者持続化補助金(第20回) / 業務改善助成金 令和8年度</p>`;
 
   const pages = [
     page(1, total, SECT[0], P1), page(2, total, SECT[1], P2), page(3, total, SECT[2], P3),
