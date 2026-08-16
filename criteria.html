@@ -85,11 +85,23 @@
     padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--accent-wash); }
   td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
-  td.tag { white-space: nowrap; }
+  /* 審査方式バッジ自体は折り返さないが、下に添えた採択率の内訳（.rd）は
+     折り返させたいので、nowrap はバッジだけに掛ける（2026-08-16） */
+  td.tag { white-space: normal; }
+  td.tag .pill { white-space: nowrap; }
   .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; border-radius: 100px; padding: 0.15rem 0.65rem; }
   .pill.competitive { background: var(--rust-wash); color: var(--rust); }
   .pill.requirement { background: var(--sage-wash); color: var(--sage); }
   .pill.unclear { background: var(--accent-wash); color: var(--accent); }
+  /* 採択率（2026-08-16に一次情報から追加）。審査方式バッジの下に添える。
+     公式が採択率そのものを公表している値と、件数から当方が割り算した値を
+     見分けられるようにする（後者は † を付ける）。 */
+  .rate { display: block; margin-top: 0.3rem; font-size: 0.78rem; font-weight: 700;
+    color: var(--ink); font-variant-numeric: tabular-nums; }
+  .rate .rn { font-size: 0.95rem; }
+  .rate .rd { display: block; font-size: 0.68rem; font-weight: 400; color: var(--ink-faint);
+    margin-top: 0.1rem; letter-spacing: 0; }
+  .rate.none { color: var(--ink-faint); font-weight: 400; font-size: 0.72rem; }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
   .card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1rem 1.2rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
@@ -176,11 +188,13 @@
 <!-- 「このページの性質について」は2026-08-16にページ下部（出典一覧の後ろ）へ移動した
      （本人指示）。冒頭で断り書きを読ませるより、先に中身を見せる並びにする。 -->
 
+<!-- 2026-08-16、指標を「ページの構造の説明」から「利用者が判断に使える実データ」へ
+     差し替えた。採択率はすべて公式の採択結果発表から取得（同日確認）。 -->
 <div class="stat-grid">
-  <div class="stat"><div class="n">4区分</div><div class="t">競争審査型の評価軸（適格性・技術面・計画面・政策面）</div></div>
-  <div class="stat"><div class="n">15項目</div><div class="t">ものづくり補助金の加点項目数（4個以上で採択率上昇の傾向）</div></div>
+  <div class="stat"><div class="n">17.1〜61.5%</div><div class="t">競争審査型8制度の直近回の採択率の幅。制度によって3.6倍の開きがある</div></div>
+  <div class="stat"><div class="n">61.5%</div><div class="t">最も通りやすい：省力化投資補助金（一般型）第5回・1,251/2,035件</div></div>
+  <div class="stat"><div class="n">17.1%</div><div class="t">最も狭き門：東京都 創業助成事業 令和7年度第2回・108/632件</div></div>
   <div class="stat"><div class="n">5パターン</div><div class="t">返還・交付取消が発生する典型パターン</div></div>
-  <div class="stat"><div class="n">20件超</div><div class="t">参照した公式・報道ソースの件数</div></div>
 </div>
 
 <h2>採択基準：競争審査型のフレームワーク</h2>
@@ -205,22 +219,25 @@
 <p class="sub">ものづくり補助金では加点項目が15個公表されており、<strong>4個以上を獲得すると採択率が大きく上がる傾向</strong>が指摘されています。ただし加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
 
 <h2>制度別サマリー</h2>
+<p class="sub">採択率は各制度の公式な採択結果発表（2026年8月16日確認）に基づく直近回の実績です。事務局が採択率そのものを公表している制度はその値を、採択件数と申請件数だけが公表されている制度は当方で算出した値に「†」を付けています。採択結果が公表されていない制度は、推定値を置かずその旨を記載しています。</p>
 <div class="twrap"><table class="stackable">
-<thead><tr><th>制度</th><th>審査方式</th><th>主な評価軸・加点</th><th>出典</th></tr></thead>
+<thead><tr><th>制度</th><th>審査方式・採択率</th><th>主な評価軸・加点</th><th>出典</th></tr></thead>
 <tbody>
-<tr><td data-label="制度">小規模事業者持続化補助金</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">経営計画の定量的目標設定、赤字賃上げ加点・健康経営優良法人加点等（加点は最大2つまで選択可）</td><td data-label="出典"><a href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">中小企業庁 公募要領 ↗</a></td></tr>
-<tr><td data-label="制度">中小企業省力化投資補助金＜一般型＞</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">省力化指数、投資回収期間、賃上げ目標の水準と実現可能性、賃上げ加点・えるぼし/くるみん認定等</td><td data-label="出典"><a href="https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf" target="_blank" rel="noopener noreferrer">公募要領（一般型）↗</a></td></tr>
-<tr><td data-label="制度">新事業進出・ものづくり補助金</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">事業化点・技術点・政策点。加点項目15個（経営革新計画、DX認定、パートナーシップ構築宣言等）</td><td data-label="出典"><a href="https://www.sme-support.co.jp/column/p1352/" target="_blank" rel="noopener noreferrer">加点項目一覧の解説 ↗</a></td></tr>
-<tr><td data-label="制度">業務改善助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">事業場内最低賃金50円以上引上げ等の数値要件クリアが前提。競争選抜ではない</td><td data-label="出典"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページ ↗</a></td></tr>
-<tr><td data-label="制度">キャリアアップ助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">正社員転換後の賃金3%以上引上げ等、要件を満たせば原則支給</td><td data-label="出典"><a href="https://hojyokin-portal.jp/columns/career-up_summary" target="_blank" rel="noopener noreferrer">全コース解説 ↗</a></td></tr>
-<tr><td data-label="制度">人材開発支援助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">10時間以上の訓練実施等の要件クリア。事業展開等リスキリング支援コースは中小企業助成率75%</td><td data-label="出典"><a href="https://www.gov-online.go.jp/article/202302/entry-9899.html" target="_blank" rel="noopener noreferrer">政府広報オンライン ↗</a></td></tr>
-<tr><td data-label="制度">デジタル化・AI導入補助金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">中小企業者基準内であれば規模を問わず対象。効果の定量的な説明力が採択事例で目立つ</td><td data-label="出典"><a href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）↗</a></td></tr>
-<tr><td data-label="制度">飲食業労働生産性向上支援補助金</td><td class="tag" data-label="審査方式"><span class="pill unclear">審査詳細非公表</span></td><td data-label="主な評価軸・加点">調理・接客・店舗管理いずれかでの人手不足解消の根拠が重要と推測される</td><td data-label="出典"><a href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページ ↗</a></td></tr>
-<tr><td data-label="制度">観光地・観光産業省力化投資補助事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">DMO・自治体等との地域連携が必須要件。配点は非公表</td><td data-label="出典"><a href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイト ↗</a></td></tr>
-<tr><td data-label="制度">空き家対策モデル事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型（提案公募）</span></td><td data-label="主な評価軸・加点">先進性、他地域への波及可能性。令和8年度は36件採択</td><td data-label="出典"><a href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページ ↗</a></td></tr>
-<tr><td data-label="制度">【東京都】創業助成事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">経費項目ごとの積算根拠、市場調査に基づく事業計画の具体性が重要と推測される</td><td data-label="出典"><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション ↗</a></td></tr>
-<tr><td data-label="制度">【東京都】中小企業デジタル導入促進補助事業</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">対象経費の範囲内での予算先着的な運用と推測される</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
-<tr><td data-label="制度">【東京都】創意工夫チャレンジ促進事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">直近決算の業績悪化要件＋事業計画の業績改善への説得力</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
+<tr><td data-label="制度">小規模事業者持続化補助金＜一般型・通常枠＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">47.2%</span>†<span class="rd">第19回・7,819/16,576件</span></span></td><td data-label="主な評価軸・加点">経営計画の定量的目標設定、赤字賃上げ加点・健康経営優良法人加点等（加点は最大2つまで選択可）</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/15578/" target="_blank" rel="noopener noreferrer">第19回 採択結果 ↗</a></td></tr>
+<tr><td data-label="制度">小規模事業者持続化補助金＜創業型＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">41.2%</span>†<span class="rd">第3回・791/1,919件</span></span></td><td data-label="主な評価軸・加点">創業期の事業計画。通常枠より採択率が低い傾向</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/31612/" target="_blank" rel="noopener noreferrer">第3回 採択結果 ↗</a></td></tr>
+<tr><td data-label="制度">中小企業省力化投資補助金＜一般型＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">61.5%</span><span class="rd">第5回・1,251/2,035件（事務局公表）</span></span></td><td data-label="主な評価軸・加点">省力化指数、投資回収期間、賃上げ目標の水準と実現可能性、賃上げ加点・えるぼし/くるみん認定等。生活関連サービス業（理容・美容業等）は採択の1.0%</td><td data-label="出典"><a href="https://shoryokuka.smrj.go.jp/ippan/grant_adoption/" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
+<tr><td data-label="制度">ものづくり補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">35.1%</span>†<span class="rd">第23次・448/1,275件</span></span></td><td data-label="主な評価軸・加点">事業化点・技術点・政策点。加点項目15個（経営革新計画、DX認定、パートナーシップ構築宣言等）。参考：22次37.5%、21次34.1%</td><td data-label="出典"><a href="https://portal.monodukuri-hojo.jp/saitaku.html" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
+<tr><td data-label="制度">中小企業新事業進出補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">34.9%</span><span class="rd">第3回・423/1,212件（事務局公表）</span></span></td><td data-label="主な評価軸・加点">新市場・高付加価値事業への進出計画。参考：第2回35.4%、第1回37.2%と回を追って微減</td><td data-label="出典"><a href="https://shinjigyou-shinshutsu.smrj.go.jp/results" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
+<tr><td data-label="制度">デジタル化・AI導入補助金2026<br><span style="font-size:0.72rem;color:var(--ink-faint)">（旧・IT導入補助金）</span></td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">51.5%</span>†<span class="rd">2次・2,936/5,699件</span></span></td><td data-label="主な評価軸・加点">事前登録されたITツールが対象。効果の定量的な説明力が採択事例で目立つ。枠別：通常枠819/1,879、インボイス対応類型2,096/3,790</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/33237/" target="_blank" rel="noopener noreferrer">2次締切 採択結果 ↗</a></td></tr>
+<tr><td data-label="制度">空き家対策モデル事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型（提案公募）</span><span class="rate"><span class="rn">30.8%</span>†<span class="rd">令和8年度・36/117件</span></span></td><td data-label="主な評価軸・加点">先進性、他地域への波及可能性。テーマ別に採択枠が分かれる</td><td data-label="出典"><a href="https://www.mlit.go.jp/report/press/house03_hh_000275.html" target="_blank" rel="noopener noreferrer">国土交通省 報道発表 ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】創業助成事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">17.1%</span>†<span class="rd">令和7年度第2回・108/632件</span></span></td><td data-label="主な評価軸・加点">経費項目ごとの積算根拠、市場調査に基づく事業計画の具体性。書類審査＋面接審査の2段階で、申請から交付決定まで約5か月。参考：同年度第1回15.7%</td><td data-label="出典"><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション ↗</a></td></tr>
+<tr><td data-label="制度">観光地・観光産業省力化投資補助事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate none">応募件数が非公表のため算出不可</span></td><td data-label="主な評価軸・加点">DMO・自治体等との地域連携が必須要件。配点は非公表。公表されている特定先311施設は「公表に承諾いただけた先のみ」で実数の下限</td><td data-label="出典"><a href="https://www.mlit.go.jp/kankocho/kobo06_00082.html" target="_blank" rel="noopener noreferrer">観光庁 公表ページ ↗</a></td></tr>
+<tr><td data-label="制度">飲食業労働生産性向上支援補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill unclear">審査詳細非公表</span><span class="rate none">採択結果が非公表</span></td><td data-label="主な評価軸・加点">調理・接客・店舗管理いずれかでの人手不足解消の根拠が重要と推測される</td><td data-label="出典"><a href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページ ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】創意工夫チャレンジ促進事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate none">令和8年度の新規事業のため実績なし</span></td><td data-label="主な評価軸・加点">直近決算の業績悪化要件＋事業計画の業績改善への説得力。都が示す想定採択件数（業務改善700社・賃上げ重点500社・新市場100社）は目標社数であり採択率ではない</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
+<tr><td data-label="制度">業務改善助成金</td><td class="tag" data-label="審査方式・採択率"><span class="pill requirement">要件充足型</span><span class="rate none">採択率の概念になじまない</span></td><td data-label="主な評価軸・加点">事業場内最低賃金50円以上引上げ等の数値要件クリアが前提。<strong>ただし名称は助成金でも適正化法上の補助金で、「予算の範囲内で交付するため申請期間内に募集を終了する場合がある」と明記されている</strong></td><td data-label="出典"><a href="https://www.mhlw.go.jp/content/11200000/001693416.pdf" target="_blank" rel="noopener noreferrer">令和8年度のご案内(PDF) ↗</a></td></tr>
+<tr><td data-label="制度">キャリアアップ助成金</td><td class="tag" data-label="審査方式・採択率"><span class="pill requirement">要件充足型</span><span class="rate none">採択率の概念になじまない</span></td><td data-label="主な評価軸・加点">正社員転換後の賃金3%以上引上げ等、要件を満たせば原則支給。申請者間の優劣比較の規定は無い。各コース実施日の前日までのキャリアアップ計画提出が実質的な関門</td><td data-label="出典"><a href="https://www.mhlw.go.jp/content/11600000/001688318.pdf" target="_blank" rel="noopener noreferrer">雇用関係助成金 共通要領(PDF) ↗</a></td></tr>
+<tr><td data-label="制度">人材開発支援助成金</td><td class="tag" data-label="審査方式・採択率"><span class="pill requirement">要件充足型</span><span class="rate none">採択率の概念になじまない</span></td><td data-label="主な評価軸・加点">10時間以上の訓練実施等の要件クリア。事業展開等リスキリング支援コースは中小企業助成率75%。訓練開始前の計画届提出が必須</td><td data-label="出典"><a href="https://www.gov-online.go.jp/article/202302/entry-9899.html" target="_blank" rel="noopener noreferrer">政府広報オンライン ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】中小企業デジタル導入促進補助事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill requirement">要件充足型</span><span class="rate none">採択結果が非公表</span></td><td data-label="主な評価軸・加点">対象経費の範囲内での予算先着的な運用と推測される</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
 </tbody>
 </table></div>
 
@@ -260,6 +277,20 @@
 </div>
 
 <h2>参照した主な出典</h2>
+<h3>採択結果（2026年8月16日確認）</h3>
+<ul class="src-list">
+<li><a href="https://mirasapo-plus.go.jp/infomation/15578/" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金＜一般型・通常枠＞第19回 採択結果（ミラサポplus）</a></li>
+<li><a href="https://mirasapo-plus.go.jp/infomation/31612/" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金＜創業型＞第3回 採択結果（ミラサポplus）</a></li>
+<li><a href="https://shoryokuka.smrj.go.jp/ippan/grant_adoption/" target="_blank" rel="noopener noreferrer">中小企業省力化投資補助金＜一般型＞採択結果（事務局）</a></li>
+<li><a href="https://portal.monodukuri-hojo.jp/saitaku.html" target="_blank" rel="noopener noreferrer">ものづくり補助金 採択結果一覧（事務局）</a></li>
+<li><a href="https://shinjigyou-shinshutsu.smrj.go.jp/results" target="_blank" rel="noopener noreferrer">中小企業新事業進出補助金 採択結果（事務局）</a></li>
+<li><a href="https://mirasapo-plus.go.jp/infomation/33237/" target="_blank" rel="noopener noreferrer">デジタル化・AI導入補助金2026 2次締切 採択結果（ミラサポplus）</a></li>
+<li><a href="https://www.mlit.go.jp/report/press/house03_hh_000275.html" target="_blank" rel="noopener noreferrer">令和8年度 空き家対策モデル事業 採択結果（国土交通省）</a></li>
+<li><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">東京都 創業助成事業 採択結果（TOKYO創業ステーション）</a></li>
+<li><a href="https://www.mlit.go.jp/kankocho/kobo06_00082.html" target="_blank" rel="noopener noreferrer">観光地・観光産業省力化投資補助事業 特定結果（観光庁）</a></li>
+</ul>
+
+<h3>公募要領・制度資料</h3>
 <ul class="src-list">
 <li><a href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金 第20回公募要領（中小企業庁）</a></li>
 <li><a href="https://official.jizokukanb.com/ichiran" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金 採択者一覧</a></li>
