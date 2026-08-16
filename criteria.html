@@ -17,7 +17,7 @@
   :root {
     --paper: #eaf1fb; --paper-raised: #ffffff; --ink: #0c2036; --ink-soft: #3a5170;
     --ink-faint: #4d6a8a; --accent: #0057c2; --accent-soft: #bcd7f7; --accent-wash: #e2edfb;
-    --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315; --rust-wash: #fde3d6;
+    --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315; --rust-wash: #fde3d6; --rust-ink: #ad3210; --sage-ink: #096b54;
     --on-accent: #ffffff;
     --line: #a9c2e0; --shadow: rgba(12, 32, 54, 0.12);
     --radius-sm: 6px;
@@ -29,7 +29,7 @@
     :root {
       --paper: #081422; --paper-raised: #16283d; --ink: #eaf1fb; --ink-soft: #b7cbe4;
       --ink-faint: #93abc9; --accent: #5b9df5; --accent-soft: #1c3454; --accent-wash: #142640;
-      --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f;
+      --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f; --rust-ink: #ff8a5c; --sage-ink: #3fd6ac;
       --on-accent: #08121e;
       --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
     }
@@ -37,14 +37,14 @@
   :root[data-theme="dark"] {
     --paper: #081422; --paper-raised: #16283d; --ink: #eaf1fb; --ink-soft: #b7cbe4;
     --ink-faint: #93abc9; --accent: #5b9df5; --accent-soft: #1c3454; --accent-wash: #142640;
-    --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f;
+    --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f; --rust-ink: #ff8a5c; --sage-ink: #3fd6ac;
     --on-accent: #08121e;
     --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
   }
   :root[data-theme="light"] {
     --paper: #eaf1fb; --paper-raised: #ffffff; --ink: #0c2036; --ink-soft: #3a5170;
     --ink-faint: #4d6a8a; --accent: #0057c2; --accent-soft: #bcd7f7; --accent-wash: #e2edfb;
-    --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315; --rust-wash: #fde3d6;
+    --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315; --rust-wash: #fde3d6; --rust-ink: #ad3210; --sage-ink: #096b54;
     --on-accent: #ffffff;
     --line: #a9c2e0; --shadow: rgba(12, 32, 54, 0.12);
   }
@@ -70,6 +70,16 @@
   .disclaimer { background: var(--accent-wash); border: 1px solid var(--accent-soft); border-radius: var(--radius-md);
     padding: 1rem 1.2rem; font-size: 0.86rem; color: var(--ink-soft); margin-top: 1.4rem; }
   .disclaimer strong { color: var(--ink); }
+  /* 落とし穴の注意喚起（2026-08-17）。読者が知らずに踏むと実害が出る論点に使う。
+     地は白のまま、左辺の帯と見出しの色で注意色を出す（--rust-wash は他の要素と
+     紛らわしいので面では塗らない）。 */
+  .caution { background: var(--paper-raised); border: 1px solid var(--line);
+    border-left: 5px solid var(--rust); border-radius: var(--radius-md);
+    padding: 1rem 1.2rem; font-size: 0.88rem; color: var(--ink-soft); margin-top: 1.2rem;
+    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+  .caution-ttl { font-weight: 700; color: var(--rust-ink, var(--rust)); margin-bottom: 0.4rem;
+    font-size: 0.92rem; }
+  .caution strong { color: var(--ink); }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
   .stat { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1rem 1.1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
@@ -128,9 +138,16 @@
   td.tag { white-space: normal; }
   td.tag .pill { white-space: nowrap; }
   .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; border-radius: 100px; padding: 0.15rem 0.65rem; }
-  .pill.competitive { background: var(--rust-wash); color: var(--rust); }
-  .pill.requirement { background: var(--sage-wash); color: var(--sage); }
+  /* 文字色は --rust / --sage をそのまま使うと、同系のwash地の上でライトが
+     3.62:1・3.76:1 しか出ずWCAG AAを割っていた（2026-08-17の実測で判明）。
+     wash地に載せる用の濃い側トークン（--rust-ink / --sage-ink）に差し替える。
+     ダークは元々6.68:1・8.21:1あり、これらのトークンはダークでは同値なので影響なし。 */
+  .pill.competitive { background: var(--rust-wash); color: var(--rust-ink); }
+  .pill.requirement { background: var(--sage-wash); color: var(--sage-ink); }
   .pill.unclear { background: var(--accent-wash); color: var(--accent); }
+  /* 公募が終了した制度（2026-08-17）。読者が「今から申請できる」と誤解しないよう、
+     採択率などの実績は残しつつ終了であることを最初に見せる。 */
+  .pill.closed { background: var(--line); color: var(--ink); }
   /* 採択率（2026-08-16に一次情報から追加）。審査方式バッジの下に添える。
      公式が採択率そのものを公表している値と、件数から当方が割り算した値を
      見分けられるようにする（後者は † を付ける）。 */
@@ -272,7 +289,14 @@
   <div class="card"><div class="ttl">事業継続・承継系</div><p>事業継続力強化計画の認定、事業承継・M&A実施実績</p></div>
   <div class="card"><div class="ttl">政策プログラム登録系</div><p>新規輸出1万者支援プログラム、成長加速マッチングサービス等への登録</p></div>
 </div>
-<p class="sub">ものづくり補助金では加点項目が15個公表されており（申請できるのは最大6項目まで）、事務局のデータポータルに加点個数別の採択率グラフが掲載されています。<strong>ただし公表は第16次締切分で更新が止まっており</strong>（2026年8月17日時点で第17次以降のデータは掲載なし）、採択率が35.1%まで下がった直近回にそのまま当てはめることはできません。また単純な集計であり、加点を増やせば採択率が上がるという因果関係を示すものではない点に注意が必要です。加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
+
+<div class="caution">
+  <div class="caution-ttl">賃上げ加点は「取れなければ不利になるだけ」ではありません</div>
+  <p style="margin:0">賃上げ加点を受けて採択されたのに目標が未達だった場合、未達が報告されてから<strong>18か月間、中小企業庁が所管する他の補助金でも「大幅な減点」を受けます</strong>。対象はIT導入・デジタル化AI導入・持続化・事業承継M&amp;A・成長加速化・事業再構築・省力化投資・Go-Tech事業など（令和8年4月時点）で、ほぼ全ての主要制度に及びます。</p>
+  <p style="margin:0.5rem 0 0">さらに賃上げは、加点とは別に<strong>基本要件</strong>にもなっています。こちらが未達だと<strong>補助金の返還義務</strong>が生じます（返還額は交付された補助金額が上限）。加点を狙って背伸びした水準を表明すると、不採択より重い結果になりえます。実現できる水準で計画してください。</p>
+  <p style="margin:0.5rem 0 0;font-size:0.82rem">賃金水準の具体的な設計は、就業規則・賃金規程の改定や毎年10月の地域別最低賃金の改定と関わるため、社会保険労務士にご相談ください。</p>
+</div>
+<p class="sub">ものづくり補助金（第23次時点）では加点項目が15個公表されており、申請できるのは最大6項目まででした。後継の新事業進出・ものづくり商業サービス補助金では17項目に増え、申請数の上限は公募要領に規定がありません。事務局のデータポータルに加点個数別の採択率グラフがありますが、<strong>公表は第16次締切分で更新が止まっており</strong>（2026年8月17日時点）、採択率が35.1%まで下がった終盤の回や、制度設計の異なる後継制度に当てはめることはできません。また単純な集計であり、加点を増やせば採択率が上がるという因果関係を示すものではない点にも注意が必要です。加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
 
 <h2 id="programs">制度別サマリー</h2>
 <p class="sub">採択率は各制度の公式な採択結果発表（2026年8月16日確認）に基づく直近回の実績です。事務局が採択率そのものを公表している制度はその値を、採択件数と申請件数だけが公表されている制度は当方で算出した値に「†」を付けています。採択結果が公表されていない制度は、推定値を置かずその旨を記載しています。</p>
@@ -282,8 +306,9 @@
 <tr><td data-label="制度">小規模事業者持続化補助金＜一般型・通常枠＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">47.2%</span>†<span class="rd">第19回・7,819/16,576件</span></span></td><td data-label="主な評価軸・加点">経営計画の定量的目標設定、赤字賃上げ加点・健康経営優良法人加点等（加点は最大2つまで選択可）</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/15578/" target="_blank" rel="noopener noreferrer">第19回 採択結果 ↗</a></td></tr>
 <tr><td data-label="制度">小規模事業者持続化補助金＜創業型＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">41.2%</span>†<span class="rd">第3回・791/1,919件</span></span></td><td data-label="主な評価軸・加点">創業期の事業計画。通常枠より採択率が低い傾向</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/31612/" target="_blank" rel="noopener noreferrer">第3回 採択結果 ↗</a></td></tr>
 <tr><td data-label="制度">中小企業省力化投資補助金＜一般型＞</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">61.5%</span><span class="rd">第5回・1,251/2,035件（事務局公表）</span></span></td><td data-label="主な評価軸・加点">省力化指数、投資回収期間、賃上げ目標の水準と実現可能性、賃上げ加点・えるぼし/くるみん認定等。生活関連サービス業（理容・美容業等）は採択の1.0%</td><td data-label="出典"><a href="https://shoryokuka.smrj.go.jp/ippan/grant_adoption/" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
-<tr><td data-label="制度">ものづくり補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">35.1%</span>†<span class="rd">第23次・448/1,275件</span></span></td><td data-label="主な評価軸・加点">事業化点・技術点・政策点。加点項目15個（経営革新計画、DX認定、パートナーシップ構築宣言等）。参考：22次37.5%、21次34.1%</td><td data-label="出典"><a href="https://portal.monodukuri-hojo.jp/saitaku.html" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
-<tr><td data-label="制度">中小企業新事業進出補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">34.9%</span><span class="rd">第3回・423/1,212件（事務局公表）</span></span></td><td data-label="主な評価軸・加点">新市場・高付加価値事業への進出計画。参考：第2回35.4%、第1回37.2%と回を追って微減</td><td data-label="出典"><a href="https://shinjigyou-shinshutsu.smrj.go.jp/results" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
+<tr><td data-label="制度">ものづくり補助金<br><span style="font-size:0.72rem;color:var(--ink-faint)">（ものづくり・商業・サービス生産性向上促進補助金）</span></td><td class="tag" data-label="審査方式・採択率"><span class="pill closed">第23次で公募終了</span><span class="rate"><span class="rn">35.1%</span>†<span class="rd">第23次・448/1,275件</span></span></td><td data-label="主な評価軸・加点"><strong>この制度に新規申請はできません。</strong>第23次（申請締切2026年5月8日／採択発表8月7日）を最後に新規公募がなく、後継の「新事業進出・ものづくり商業サービス補助金」の公募要領でも過去の制度として「1〜23次締切」と範囲を閉じて記載されています。採択率は実績データとして残しています。審査は事業化点・技術点・政策点、加点項目15個（申請は最大6項目まで）。参考：22次37.5%、21次34.1%</td><td data-label="出典"><a href="https://portal.monodukuri-hojo.jp/saitaku.html" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
+<tr><td data-label="制度">新事業進出・ものづくり商業サービス補助金<br><span style="font-size:0.72rem;color:var(--ink-faint)">（上記2制度の後継。ただし別制度）</span></td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate none">第1回は採択発表前（2026年12月〜2027年1月予定）</span></td><td data-label="主な評価軸・加点">ものづくり補助金と新事業進出補助金を統合した新制度で、公式サイトは「<strong>とは異なる補助金です</strong>」と明記。枠は①革新的新製品・サービス枠 ②新事業進出枠 ③グローバル枠。<strong>①は「既存の製品・サービスの生産等のプロセスについて改善・向上を図る事業は補助対象外」「単に機械装置・システム等を導入するにとどまり、新製品・新サービスの開発を伴わないものは該当しません」と明記されており、設備を入れて生産性を上げる従来型の使い方はできません。</strong>加点は17項目（申請数の上限は公募要領に規定なし）。第1回締切は2026年10月30日18:00（公募要領1.2版の記載。公式サイトのスケジュール欄には9月30日と出ている箇所があるため、要領の日付で確認すること）</td><td data-label="出典"><a href="https://shinjigyou-monodukuri.smrj.go.jp/" target="_blank" rel="noopener noreferrer">公式サイト（中小機構）↗</a></td></tr>
+<tr><td data-label="制度">中小企業新事業進出補助金</td><td class="tag" data-label="審査方式・採択率"><span class="pill closed">第3回で公募終了</span><span class="rate"><span class="rn">34.9%</span><span class="rd">第3回・423/1,212件（事務局公表）</span></span></td><td data-label="主な評価軸・加点"><strong>この制度に新規申請はできません。</strong>公式サイトに「公募は終了いたしました」と明示され、上記の「新事業進出・ものづくり商業サービス補助金」へ移行しています。採択率は実績データとして残しています。評価軸は新市場・高付加価値事業への進出計画。参考：第2回35.4%、第1回37.2%と回を追って微減</td><td data-label="出典"><a href="https://shinjigyou-shinshutsu.smrj.go.jp/results" target="_blank" rel="noopener noreferrer">採択結果（事務局）↗</a></td></tr>
 <tr><td data-label="制度">デジタル化・AI導入補助金2026<br><span style="font-size:0.72rem;color:var(--ink-faint)">（旧・IT導入補助金）</span></td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">51.5%</span>†<span class="rd">2次・2,936/5,699件</span></span></td><td data-label="主な評価軸・加点">事前登録されたITツールが対象。効果の定量的な説明力が採択事例で目立つ。枠別：通常枠819/1,879、インボイス対応類型2,096/3,790</td><td data-label="出典"><a href="https://mirasapo-plus.go.jp/infomation/33237/" target="_blank" rel="noopener noreferrer">2次締切 採択結果 ↗</a></td></tr>
 <tr><td data-label="制度">空き家対策モデル事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型（提案公募）</span><span class="rate"><span class="rn">30.8%</span>†<span class="rd">令和8年度・36/117件</span></span></td><td data-label="主な評価軸・加点">先進性、他地域への波及可能性。テーマ別に採択枠が分かれる</td><td data-label="出典"><a href="https://www.mlit.go.jp/report/press/house03_hh_000275.html" target="_blank" rel="noopener noreferrer">国土交通省 報道発表 ↗</a></td></tr>
 <tr><td data-label="制度">【東京都】創業助成事業</td><td class="tag" data-label="審査方式・採択率"><span class="pill competitive">競争審査型</span><span class="rate"><span class="rn">17.1%</span>†<span class="rd">令和7年度第2回・108/632件</span></span></td><td data-label="主な評価軸・加点">経費項目ごとの積算根拠、市場調査に基づく事業計画の具体性。書類審査＋面接審査の2段階で、申請から交付決定まで約5か月。参考：同年度第1回15.7%</td><td data-label="出典"><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション ↗</a></td></tr>
@@ -323,6 +348,12 @@
 <tr><td data-label="制度">小規模事業者持続化補助金</td><td data-label="件数・金額"><span style="color:var(--ink-faint)">該当なし</span></td><td data-label="年度・内容">令和5年度・令和6年度の決算検査報告では、この制度に関する不当事項の指摘は無い（同じ中小企業基盤整備機構の章を通覧して確認）。「調べられなかった」ではなく「指摘が無い」という意味</td><td data-label="出典"><a href="https://report.jbaudit.go.jp/" target="_blank" rel="noopener noreferrer">会計検査院 決算検査報告 ↗</a></td></tr>
 </tbody>
 </table></div>
+<div class="caution">
+  <div class="caution-ttl">補助金は原則として課税対象です</div>
+  <p style="margin:0">返還を求められなくても、受け取った補助金には税金がかかります。法人税法・所得税法上、補助金は益金（総収入金額）に算入されるためです。固定資産の取得に充てた分は<strong>圧縮記帳</strong>により課税を繰り延べられますが、ものづくり補助金の事務局は「技術導入費、専門家経費等の<strong>『経費を補填するための補助金』については…圧縮記帳等の適用は認められません</strong>」と明示しています。設備以外に充てた分はそのまま課税されるということです。</p>
+  <p style="margin:0.5rem 0 0;font-size:0.82rem">圧縮記帳の適用には申告書への記載・明細書の添付といった要件があり、処理を誤ると否認されます。具体的な経理処理は税理士にご確認ください。<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2202.htm" target="_blank" rel="noopener noreferrer">国税庁 タックスアンサー No.2202 ↗</a></p>
+</div>
+
 <p class="note">※ 会計検査院の報告には、事業者の返還を求める「不当事項」のほかに、制度の運用改善を求める「意見表示・処置要求」があります。後者で示される金額は改善の対象となった事業費の規模（背景金額）であって、不正受給額ではありません。上表は不当事項に絞って掲載しています。また、ものづくり補助金・小規模事業者持続化補助金は中小企業基盤整備機構の章に記載されています。</p>
 
 <h2 id="factors">追加で考慮すべき判断要素</h2>
@@ -378,6 +409,10 @@
 <li><a href="https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/260326_040-1-1.pdf" target="_blank" rel="noopener noreferrer">飲食業労働生産性向上推進事業 公募要領（農林水産省）</a></li>
 <li><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf" target="_blank" rel="noopener noreferrer">東京都 中小企業デジタル導入促進補助事業 令和8年度募集要項</a></li>
 <li><a href="https://portal.monodukuri-hojo.jp/dataportal.html" target="_blank" rel="noopener noreferrer">ものづくり補助金 データポータル（加点個数別採択率・第16次まで）</a></li>
+<li><a href="https://shinjigyou-monodukuri.smrj.go.jp/" target="_blank" rel="noopener noreferrer">新事業進出・ものづくり商業サービス補助金 公式サイト（中小機構）</a></li>
+<li><a href="https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf" target="_blank" rel="noopener noreferrer">同 第1回公募要領 1.2版（令和8年8月・加点17項目／減点項目／対象外事業者）</a></li>
+<li><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2202.htm" target="_blank" rel="noopener noreferrer">国庫補助金等を受け取ったとき（国税庁 タックスアンサー No.2202）</a></li>
+<li><a href="https://www.nta.go.jp/law/tsutatsu/kihon/hojin/10/10_02.htm" target="_blank" rel="noopener noreferrer">法人税基本通達 第10章第2節 国庫補助金等で取得した資産の圧縮記帳（国税庁）</a></li>
 <li><a href="https://official.jizokukanb.com/ichiran" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金 採択者一覧</a></li>
 <li><a href="https://so-labo.co.jp/hojyokin/jizokuka/basic/736/" target="_blank" rel="noopener noreferrer">小規模事業者持続化補助金 不正受給と処分内容の解説</a></li>
 <li><a href="https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf" target="_blank" rel="noopener noreferrer">中小企業省力化投資補助金＜一般型＞第5回公募要領</a></li>
