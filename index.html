@@ -766,15 +766,17 @@
   /* ---- 開閉ブロック（<details>）。footerの免責事項を既定で畳んでおく ---- */
   footer .fold { border: 1px solid var(--line); border-radius: var(--radius-md, 10px);
     padding: 0.2rem 1rem 1rem; }
-  footer .fold > summary { list-style: none; cursor: pointer; padding: 0.7rem 0;
+  /* 負のマージンをやめ、見出しをカードの内側に素直に収める
+     （profile.htmlの.foldと同じ修正。本人指摘、2026-08-16） */
+  footer .fold > summary { list-style: none; cursor: pointer;
     font-weight: 700; font-size: 0.86rem; color: var(--ink-soft); display: flex;
-    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem;
-    padding-left: 1rem; padding-right: 1rem; }
+    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0;
+    padding: 0.7rem 0.2rem; border-radius: var(--radius-sm); }
   footer .fold > summary::-webkit-details-marker { display: none; }
   /* 開閉アイコンは.sec-chevronと完全同一のSVG実装に統一する（2026-08-16、本人指摘で修正）。
      JSでsummary末尾に<span class="fold-chevron">を注入する。 */
   footer .fold-chevron {
-    flex: none; margin-left: auto; margin-right: 1rem; width: 30px; height: 30px; border-radius: 8px;
+    flex: none; margin-left: auto; margin-right: 0; width: 30px; height: 30px; border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
@@ -1294,19 +1296,21 @@
   .section-head.is-toggle { display: block; margin: 0; }
   .sec-h2 { margin: 0; }
   /* 閉じている状態でも「押せる見出しである」ことを色で示す。
-     以前は白地＋灰枠で、7枚が縦に並ぶとページ全体がモノトーンに見えていた
-     （2026-08-16、本人指摘「色が全然使われていない」を受けて着色）。 */
+     一度は地を--accent-washにしたが、ページ背景の--paper(#eaf1fb)と
+     --accent-wash(#e2edfb)はRGB差が8/4/0しかなく、カードが背景に溶けて見えた
+     （本人指摘、2026-08-16）。地は白に戻し、左の帯と影で浮かせる。 */
   .sec-toggle {
     appearance: none; -webkit-appearance: none;
     width: 100%; font: inherit; text-align: left; cursor: pointer;
     display: flex; align-items: flex-start; gap: 0.85rem;
     min-height: 3.5rem; padding: 0.9rem 1.1rem;
     border: 1px solid var(--accent-soft); border-radius: 10px;
-    border-left: 4px solid var(--accent);
-    background: var(--accent-wash); color: var(--ink);
+    border-left: 5px solid var(--accent);
+    background: var(--paper-raised); color: var(--ink);
+    box-shadow: var(--shadow-btn);
   }
   .sec-toggle:hover { border-color: var(--accent); border-left-color: var(--accent);
-    background: var(--accent-soft); }
+    background: var(--accent-wash); }
   .sec-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* 章番号の欄。2026-07-31に工程順の01〜07へ連番化した（それ以前は03.5があった） */
   /* 章番号はベタ塗りのチップにして、押せる見出しの視覚的な起点にする
@@ -1343,11 +1347,11 @@
     transform: rotate(180deg);
     background: var(--accent); border-color: var(--accent); color: #fff;
   }
-  /* 開いた状態は本文を読ませたいので、逆に地を白へ落ち着かせる。
-     閉＝色の面／開＝白い面、で「今どれを開いているか」が面の色で分かる。 */
+  /* 開いた状態は枠をコバルトで締めて、下の本文と一続きに見せる
+     （閉＝白地に細い枠／開＝白地に濃い枠＋角を下だけ角ばらせる）。 */
   main > section.is-open > .section-head .sec-toggle {
     border-color: var(--accent); border-left-color: var(--accent);
-    background: var(--paper-raised);
+    background: var(--accent-wash);
   }
   @media (prefers-reduced-motion: reduce) { .sec-chevron { transition: none; } }
   @media (max-width: 560px) {

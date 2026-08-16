@@ -107,14 +107,18 @@
      会社が1社だけのとき（既定・移行直後を含む）は「切り替える」体験が要らないので、
      チップは1個だけ淡く出し、追加・名前変更だけを目立たせる。
      2社以上になったらチップ切替がはじめて意味を持つので、選択中のチップを強調する。 */
-  /* 「今どの会社を編集しているか」の文脈枠。地を淡いコバルトにして、
-     この下の操作が全部この会社に効くことを面の色で示す（2026-08-16）。 */
-  .company-switcher { background: var(--accent-wash); border: 1px solid var(--accent-soft);
-    border-radius: var(--radius-lg); padding: 1rem 1.1rem; margin-bottom: 1.4rem; }
+  /* 「今どの会社を編集しているか」の文脈枠。
+     当初は地を--accent-washにしたが、ページ背景の--paper(#eaf1fb)と
+     --accent-wash(#e2edfb)はRGB差が8/4/0しかなく背景と同化して見えた
+     （本人指摘、2026-08-16）。地は白に戻し、上辺の帯と枠で色を示す。 */
+  .company-switcher { background: var(--paper-raised); border: 1px solid var(--accent-soft);
+    border-top: 4px solid var(--accent);
+    border-radius: var(--radius-lg); padding: 1rem 1.1rem; margin-bottom: 1.4rem;
+    box-shadow: var(--shadow-btn); }
   .cs-ttl { font-size: 0.86rem; font-weight: 700; color: var(--accent); margin: 0 0 0.6rem; }
   .cs-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   .cs-chip { display: inline-flex; align-items: center; gap: 0.4rem;
-    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
     border-radius: 999px; padding: 0.4rem 0.5rem 0.4rem 0.9rem; font-size: 0.9rem; }
   /* 選択中は塗りつぶす。パネルの地が淡いコバルトになったので、
      淡色どうしだと選択中がどれか分からなくなるため（2026-08-16）。 */
@@ -172,10 +176,14 @@
   /* ---- 開閉ブロック（<details>）。documents.htmlと同じ意匠 ---- */
   .fold { border: 1px solid var(--line); border-radius: var(--radius-md);
     background: var(--paper-raised); padding: 0.2rem 1rem 1rem; margin: 1rem 0; }
-  .fold > summary { list-style: none; cursor: pointer; padding: 0.85rem 0;
+  /* 以前は margin: 0 -1rem でカードのpaddingを打ち消し、hover時の帯を
+     カード幅いっぱいに広げていた。その結果、見出しの文字だけが他のカードより
+     左に張り出して見えたため、負のマージンをやめて素直に内側に収める
+     （本人指摘、2026-08-16）。 */
+  .fold > summary { list-style: none; cursor: pointer;
     font-weight: 700; font-size: 0.95rem; color: var(--ink); display: flex;
-    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0 -1rem;
-    padding-left: 1rem; padding-right: 1rem; }
+    align-items: center; gap: 0.5rem; min-height: 44px; margin: 0;
+    padding: 0.85rem 0.2rem; border-radius: var(--radius-sm); }
   .fold > summary::-webkit-details-marker { display: none; }
   /* 開閉アイコン（見本案4、index.htmlの.sec-chevronと完全同一の実装）：
      2026-08-16、本人が案4を選定。以前はcontent:'▸'の文字＋丸背景で作っていたが、
@@ -183,7 +191,7 @@
      （本人指摘、同日中に修正）。JSでinitFoldChevrons()がsummary内に
      <span class="fold-chevron">を注入しSVGを差し込む方式に作り直した。 */
   .fold-chevron {
-    flex: none; margin-left: auto; margin-right: 1rem; width: 30px; height: 30px; border-radius: 8px;
+    flex: none; margin-left: auto; margin-right: 0; width: 30px; height: 30px; border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
