@@ -1,6 +1,258 @@
 # 引き継ぎ
 
-## 次の安全なアクション（最新・2026-08-16第16セッション、モバイル改善4件・すべてpush済み。iPhone SE 2ページに既知の未解消分あり）
+## 次の安全なアクション（最新・2026-08-16 第17セッション、配色強化＋改善計画ページ独立化。すべてpush・デプロイ済み。⑤⑦が持ち越し）
+
+**次の安全なアクションは、本人にアイコン見本10案（下記URL）から採用案の番号を聞き、improvement.htmlのカード内リンクに適用すること。**
+
+見本URL: https://claude.ai/code/artifact/791e7325-7c93-4cd8-81f8-834a3d185ebc
+（2026-08-16 15時台に公開。本人はまだ番号を選んでいない）
+
+適用先は `improvement/_build/build_hub.py` の2箇所（external用=beauty、plans用=他5業種）にある
+`<div class="links">` の生成部分。**improvement.html を直接編集しないこと**（build_hub.py の生成物で、
+次回の再生成で消える）。
+
+### 再開者が仮定してはいけないこと
+
+- **「業種別・改善計画10選のカードは絵文字アイコンで表示されている」と仮定しないこと。** 2026-08-16の
+  コミット`2e234b1`で写真表示バグを修正済み。**現在は60枚すべて実写真**（6業種×10件、
+  `improvement/{業種}/img10/plan-NN.jpg`）。本セッションで本人から「アイコンではなく写真を入れて」と
+  指示があったが、現物を確認したところ既に写真表示になっていたため、本人確認のうえ作業不要と判断した
+  経緯がある。同じ指摘が再度来たら、まず現物（本番URL）を見ること
+- **「improvement/index.html が改善計画ページの実体」と仮定しないこと。** 2026-08-16に
+  **ルート直下の `improvement.html` へ移動**した。`improvement/index.html` は新URLへの転送ページに
+  置き換え済み。生成元 `build_hub.py` の出力先も変更済み
+- **「embed_hub_cards.py を実行すればindex.htmlに改善計画カードが埋まる」と仮定しないこと。** 廃止済み。
+  index.html側のマーカーを撤去したため、実行すると`SystemExit`で異常終了する（意図した安全弁）
+- **「index.htmlの業種選択はページ内だけで完結している」と仮定しないこと。** 2026-08-16に
+  localStorage（キー`koban_industry`）連動を追加した。improvement.htmlと双方向で同期する
+- **「下部タブバーは4タブ」と仮定しないこと。** 5タブになった。並びは
+  探す／書類準備／申請進捗／**改善計画**／会社情報（改善計画は右から2番目、本人指示）
+- **「サイトの配色は淡くて色がほとんど使われていない」と仮定しないこと。** 2026-08-16に
+  着色を大幅に増やした（実測でapplications 0→7要素、profile 0→12、documents 2→32、index 0→16）
+
+### この配色作業で判明した重要な知見（次に配色をいじる人へ）
+
+**ページ背景`--paper`(#eaf1fb)とカード地`--accent-wash`(#e2edfb)はRGB差が8/4/0しかなく、ほぼ同色。**
+カードの地に`--accent-wash`を使うと「色を付けたのに背景に溶ける」現象が起きる（本人から2回指摘された）。
+色を面で示したいときは、**地は白(`--paper-raised`)のまま、上辺/左辺の帯（4〜5px）と影で示す**こと。
+
+また、`--sage`/`--rust`を同系のwash地の上に文字色として載せると、実測で3.6〜3.8:1しか出ず
+WCAG AA(4.5:1)を割る。この用途向けに`--sage-ink`/`--rust-ink`をindex.htmlの4系統すべてに追加済み
+（ライトは濃い側、ダークは明るい側の値）。
+
+---
+
+## 2026-08-16（第17セッション）
+
+### 1. 現在の目標
+
+本セッションは本人からの指示が4回に分かれて連続した：
+1. profile.htmlの「会社情報の書き出し・読み込み」の見出しがカード枠ギリギリ→内側に寄せる
+2. 「以前配色を変更したはずだが色が全然変わっていない」→原因調査と、サイト全体への配色適用
+3. スクリーンショット2枚で「カードの色が背景と同系色」「見出しがまだ左寄り」の再指摘→修正
+4. 「業種別・改善計画10選を別ページにして固定タブに追加」→見積もり提示→実装
+5. 前工程で発見した既存バグ（写真が表示されない）の修正指示→修正
+6. 改善計画ページの追加修正7項目→スライスと見積もり提示→S1〜S4実装＋S5見本提示
+
+### 2. 変更点（すべてコミット・push・デプロイ確認済み）
+
+**コミット `2456160`**（profile.html, index.html）：
+- `.fold > summary`に`padding-right: 1rem`を追加。負のマージン(`margin: 0 -1rem`)を
+  `padding-left`だけで戻していたため右側の余白が実質ゼロだった
+
+**コミット `0f8262a`**（app_tabbar.js, applications.html, criteria.html, documents.html, index.html, profile.html, profile_status.html）：
+- **配色トークンは定義済みだったが使う場所がほとんど無かった**という真因への対応。役割（コバルト=案内／
+  オレンジ=注意／ミント=状態）は変えず、使用箇所を大幅に増やした
+- タブバー：選択中タブのアイコンをコバルトのベタ塗り＋白抜きに
+- index.html：セクション見出しの開閉状態を面の色で表現、章番号をチップ化、
+  受付状態（通年/次回予定/受付終了/受付前）を状態別の色バッジに
+- applications.html / profile_status.html：申請一覧に進捗連動の左帯（未着手=灰／進行中=コバルト／完了=ミント）
+- applications.html：フェーズ見出しを帯に、進捗バーを12px・ミント地に、済んだ行を左帯で表示
+- profile.html：会社切替パネル、選択中チップのベタ塗り、アクションカード上辺の役割色
+- documents.html：記入の成功/失敗が同じ見た目だったのを橙/ミントで分離、手順見出しを帯に
+- `--sage-ink`/`--rust-ink`を新設（wash地の上に載せる文字用、コントラスト確保）
+- criteria.htmlに欠けていた`--on-accent`を4系統すべてに補った
+
+**コミット `d7d3947`**（profile.html, index.html）：
+- 本人のスクリーンショット指摘への対応。`.company-switcher`と`.sec-toggle`の地を
+  `--accent-wash`から白に戻し、上辺/左辺の帯＋影で色を示す方式に変更（背景とのRGB差 8/4/0 → 21/14/4）
+- `.fold > summary`の負のマージンを撤去し、見出しを素直にカード内側へ（カード内側から17.0px、
+  他カード17.6pxと差0.6px）。index.htmlのフッターにも同じ修正を適用
+
+**コミット `b99ef0b`**（app_tabbar.js, improvement.html[新規], index.html, sw.js, improvement/_build/{build_hub,embed_hub_cards,verify}.py, improvement/index.html）：
+- 「業種別・改善計画 厳選10選」をルート直下の`improvement.html`として独立ページ化
+- 配置の判断：`app_tabbar.js`は`location.pathname`のファイル名だけを見る実装のため、
+  サブディレクトリに置くと「探す」タブが自分自身を指して誤点灯する。ルート直下にした
+- `build_hub.py`の出力先自体を変更（手作業コピーだと次回の再生成で分岐するため）。
+  カード内リンクもルート基準（`improvement/{業種}/...`）に組み替え
+- `embed_hub_cards.py`は廃止（index.html側のマーカー撤去により実行すると異常終了）
+- `verify.py`のリンクチェック対象・基準ディレクトリも新配置に追従
+- 配色を旧茶系(`--accent:#845818`)から本体のコバルト系に統一、フォント・PWA meta・タブバーも本体標準に
+- 業種連動：localStorage(`koban_industry`)＋URLパラメータ(`?industry=`)。URL優先、無ければ前回の選択
+- タブバーに5個目「改善計画」を追加
+- index.htmlの02区画（520行の埋め込みカード）をリンク2本の案内に置換
+- sw.jsのCORE_ASSETSに追加、キャッシュv7→v8
+
+**コミット `2e234b1`**（improvement.html, improvement/_build/build_hub.py）：
+- 写真が一度も表示されないバグを修正。原因は`build_hub.py`が旧`embed_hub_cards.py`と2箇所食い違っていたこと
+  - external(beauty、10件)：`icon`を先にチェックしており、`image`が設定されていても使われなかった
+  - plans(他5業種、50件)：**image分岐自体が存在しなかった**
+- `width="640" height="360"`も付与（レイアウトシフト防止）
+
+**コミット `e4e849d`**（app_tabbar.js, improvement.html, improvement/_build/build_hub.py）：
+- 本人指示7項目のうち軽微なUI変更4件（S1〜S4）
+  - 「← ロードマップ本体へ」削除
+  - タイトル直下の長い説明文をページ最下部へ移動（`.lede-foot`）
+  - タブバーの「改善計画」を2番目→右から2番目へ
+  - 業種選択を6個の横並びボタン→プルダウン(`select#indSelect`)に。index.htmlの`.hero-industry`と同じ見た目
+
+### 3. 検証済みの証拠
+
+すべてPlaywright(headless Chromium, `service_workers="block"`)による実ブラウザ検証（サブエージェント経由）。
+**2026-08-16のセッション中に取得。**
+
+- **配色の実測（変更前）**：本番URLを直接計測し、applications/profileは着色背景**0個**、
+  documentsは2個、画面が「淡青＋白＋濃紺のほぼモノトーン」であることを確認。
+  `--sage-wash`は5ページどこにも1度も出現していなかった。**この計測が「配色が変わっていない」という
+  本人の指摘の真因特定につながった**
+- **配色の実測（変更後）**：applications 0→7、profile 0→12、documents 2→32、index 0→16に増加
+- **コントラスト**：全状態でWCAG AA達成を数値で確認。`.tt-state`はライトで
+  is-open 5.66 / is-next 5.65 / is-closed 5.29、ダークで 8.21 / 5.49 / 6.68。
+  修正前はis-open 3.76、is-closed 3.62でAAを割っていた
+- **カードの背景分離**：`.company-switcher`と`.sec-toggle`の背景がbody背景とRGB差
+  21/14/4（ライト）、14/20/27（ダーク）あることを実測。border-top/leftの帯も実測で確認
+- **見出しの位置**：「会社情報の書き出し・読み込み」がカード内側から17.0px、
+  他カードの17.6pxと差0.6pxで揃っていることを座標で実測
+- **improvement.html新設**：A〜E全項目（回帰／タブバー／業種連動／カードリンク／旧URL転送）で問題なし。
+  業種連動は双方向（index→improvement、improvement→index）とURL優先の3パターンすべて実測確認
+- **写真表示バグ修正後**：6業種×2ビューポート×2テーマで、全60枚が`naturalWidth=640, naturalHeight=360`、
+  HTTP 200、絵文字フォールバック0件を実測
+- **S1〜S4**：5ページ×2ビューポート×2テーマでコンソールエラー0件・横スクロールなし。
+  タブ並びが`[探す, 書類準備, 申請進捗, 改善計画, 会社情報]`であること、
+  説明文の位置がカード末尾<`.lede-foot`<免責文言の順（390pxでy=3659<3699<3940）であることを実測
+- 各コミット前に`python3 _tools/check_sim_data.py`を実行し「誤り0件・注意0件・ALL OK」（制度121件）を確認
+- **2026-08-16 16:02時点で一次情報を再取得**：`git status`で作業ツリークリーン、
+  `git log HEAD..origin/main`・`git log origin/main..HEAD`とも空（同期済み、HEADは`e4e849d`）、
+  `gh run list`で`e4e849d`のデプロイが`success`（2026-08-16T06:36:38Z完了）
+- **同時刻に本番URLを直接curlで確認**：タブ並びが5タブで「改善計画」が4番目、
+  improvement.htmlの戻るリンク0件・プルダウン1件・img 60枚を確認
+- ローカルサーバー（ポート8901〜8906）は各検証後に`taskkill`で停止し、
+  `netstat`で残存なしを確認済み（最終確認も16時台に実施、残存0）
+
+### 4. 一次情報の取り直しコマンド
+
+```bash
+cd /d/Claudecode/koban-roadmap
+git status
+git fetch origin main && git log HEAD..origin/main --oneline  # 空なら同期済み
+git log origin/main..HEAD --oneline                            # 空ならpush不要
+gh run list --limit 3 --json databaseId,status,conclusion,createdAt,headSha  # デプロイ確認
+python3 _tools/check_sim_data.py                                # sim_data.jsの機械チェック
+
+# 本セッションの変更点の現況確認
+grep -n "label: '" app_tabbar.js                                 # タブ並び（5タブのはず）
+grep -c "<img" improvement.html                                  # 写真の枚数（60のはず）
+grep -n "id=\"indSelect\"" improvement.html                      # 業種プルダウン（1件のはず）
+grep -n "sage-ink\|rust-ink" index.html                          # 配色トークン（4系統+使用2箇所）
+grep -n "koban_industry" index.html improvement.html             # 業種連動
+
+# 改善計画ページを再生成する（improvement.htmlを直接編集しないこと）
+python3 improvement/_build/build_hub.py
+
+# 美容業の対象制度を数える（⑦の調査対象）
+python3 -c "
+import json,sys
+sys.stdout.reconfigure(encoding='utf-8')
+D='improvement/_build/data'
+ext=json.load(open(D+'/external/beauty.json',encoding='utf-8'))
+print('beauty:', sorted({p['schemeKey'] for p in ext['plans']}))
+for ik in ['food','lodging','manufacturing','realestate','education']:
+    d=json.load(open(f'{D}/plans/{ik}.json',encoding='utf-8'))
+    print(ik+':', sorted({p['subsidy']['key'] for p in d}))
+"
+```
+
+### 5. 未着手の範囲
+
+本人指示7項目のうち、**2項目が持ち越し**。
+
+**⑤ アイコン見本の選定と適用（見本提示まで完了、選定待ち）**
+- 見本10案は作成・公開済み（URL上記）。本人はまだ番号を選んでいない
+- 案の方向性：案2(線画)/3(丸ベタ塗り)/4(角丸淡色)/5(塗りピル)/6(枠ピル)/7(グラデ丸)/8(横長行)/9(説明つき)/10(絵文字＋丸地)
+- 適用先は`build_hub.py`の2箇所（external用とplans用）の`<div class="links">`生成部分
+- 見積もり30〜45分
+
+**⑦ 美容業の対象制度調査（未着手）**
+- 一次情報で確認済みの事実（2026-08-16）：**美容業のみ2制度**（`kaizen`=業務改善助成金、
+  `shoryokuka`=省力化投資補助金）。他5業種は4〜5制度
+  - food: ai, food_labor, jizoku, kaizen, shoryokuka
+  - lodging: ai, jizoku, kaizen, kanko_shoryokuka, shoryokuka
+  - manufacturing: ai, jizoku, kaizen, monodukuri, shoryokuka
+  - realestate: ai, jinzai, kaizen, shoryokuka
+  - education: ai, jinzai, jizoku, kaizen, shoryokuka
+- 他業種が使っている`ai`（デジタル化・AI導入補助金）・`jizoku`（小規模事業者持続化補助金）は
+  美容業でも使える可能性が高く、調査の主対象になる見込み（**これは未検証の推測**）
+- `shindanshi`（中小企業診断士）・`sharoushi`（社労士）スキルで一次情報にあたる想定
+- 見積もり2〜4時間
+- **注意**：制度を追加する場合、データ側（`improvement/_build/data/external/beauty.json`）の
+  `schemeKey`を変えるのか、プラン自体を追加するのかは未検討
+
+**その他、本セッションで触れていないもの**：
+- 第16セッションから持ち越しのiPhone SE（375×667）でdocuments.html +12px・profile.html +32px溢れる件
+  （本人が「ここで止める」と判断済みの既知事項）
+- index.html・applications.htmlのスマホ表示で画面下部に大きめの余白が残る件（同上）
+- 制度データそのものに関する積み残し（gunma_takasaki_lease、都道府県横展開、国の新設制度網羅調査等）
+
+### 6. 不確実な点・リスク
+
+- **`.cs-rename`と`.cs-status-pct`はデッドセレクタ**：profile.htmlのCSSに定義があるが、
+  対応するDOM要素を生成するコードが無い（`.cs-rename`はJS側の`querySelector`も残っているが、
+  生成側が第14セッションで削除済み）。本セッションで発見したが、スコープ外として触っていない
+- **`build_hub.py`の`LINK_PREFIX`は「生成物がルート直下にある」前提**：将来この生成物を
+  別の階層に移す場合、`LINK_PREFIX`と`verify.py`の基準ディレクトリを両方直す必要がある
+- **`improvement/index.html`（転送ページ）は手書き**：`build_hub.py`はもうこのファイルを書かないので
+  上書きされる心配はないが、逆に言えば「生成物ではない手書きファイルが1つある」状態。
+  将来`improvement/`配下を整理する際に、これが生成物だと誤認して消さないこと
+- **配色の「やりすぎ/足りない」は主観評価**：検証エージェントは「うるさすぎる箇所は無い」と評価したが、
+  本人がスマホ実機で見てどう感じるかは未確認。特に`documents.html`は着色要素が32個と最も多い
+- **アイコン見本のURLはClaude Artifactsのもの**：本人のアカウントに紐づく。
+  次セッションで参照する際、URLが有効かは確認が必要
+- **`--sage-ink`/`--rust-ink`はindex.htmlにしか定義していない**：現状の使用箇所が
+  index.htmlの`.tt-state`のみのため。他ページで同じ「wash地に同系色の文字」を使う場合は
+  そのページにもトークンを追加する必要がある
+
+### 7. 触ってはいけない領域
+
+第6セッション「7. 触ってはいけない領域」に加えて、**本セッションで新たに追加**：
+
+- **`improvement.html`を直接編集しないこと**。`improvement/_build/build_hub.py`の生成物で、
+  再生成すると手編集が消える。変更は必ず`build_hub.py`側に入れて`python3 improvement/_build/build_hub.py`を実行する
+- **`improvement/index.html`は転送ページ**（手書き）。改善計画ページの実体ではない
+- **`improvement/_build/embed_hub_cards.py`は廃止済み**。実行しないこと（異常終了する設計だが、
+  もし将来index.htmlに「改善計画」の埋め込みを復活させたくなった場合は、このスクリプトを直すのではなく
+  現在の独立ページ方式を維持したまま検討すること）
+- `index.html`のモバイル用CSSは`<style>`ブロック末尾に足すこと（途中に足すと同詳細度の後勝ちで無効化される。
+  第16セッションで実際に踏んだ罠）
+
+### 8. 最後の判断・関門
+
+- 「配色が変わっていない」の原因について、最初「サーバーは更新済みなのでブラウザキャッシュ」と回答したが、
+  本人の「シークレットでも変わらない」で棄却。**実測し直して「トークンは定義済みだが使う場所が無い」が
+  真因と判明した**。この誤りは本人に明示的に謝罪・訂正済み
+- 配色の強度を「しっかり色を使う」、役割を「現行3役割を強化」で本人が選択
+- 改善計画ページの配置を「ルートにimprovement.htmlを新設」、index.html側を「削除」で本人が選択
+- 途中で`improvement/index.html`が自動生成物と判明したため、方式を「build_hub.pyの出力先を変える」で
+  本人が選択（当初の見積もりを訂正して提示し直した）
+- 業種連動の方式を「localStorage＋URL両方」で本人が選択
+- タブのラベルを「改善計画」、タブ位置を「右から2番目」で本人が指定
+- ④「アイコンではなく写真を入れて」は、現物確認の結果すでに写真表示だったため、
+  本人に確認して「写真が出ていないと思っていた」との回答を得てスキップと確定
+- 本セッションの区切りを「S1〜S4＋S5見本提示まで」で本人が選択
+- **本人確認待ちの事項：アイコン見本10案のうちどれを採用するか（次の安全なアクション）**
+
+---
+
+## 次の安全なアクション（2026-08-16第16セッション時点の記録、モバイル改善4件・すべてpush済み。iPhone SE 2ページに既知の未解消分あり）
 
 **次の安全なアクションは、本人からの次の指示を待つこと。** ただし以下2点は明示的に「これ以上は詰めない」と本人判断で確定した既知の未解消事項であり、次回このページに触れる際に「まだ直っていない」と誤解しないよう申し送る。
 
