@@ -72,14 +72,59 @@
     '  border-radius: var(--radius-sm); padding: 0.5rem 0.7rem; margin-bottom: 0.45rem; }' +
     '.consult-profile-note.is-empty { background: var(--accent-wash); }' +
     '.consult-profile-note a { color: var(--accent); }' +
-    '.consult-tmpl { width: 100%; box-sizing: border-box; resize: vertical; min-height: 7.5em;' +
-    '  font: inherit; font-size: 0.82rem; line-height: 1.6; color: var(--ink);' +
+    /* メッセージ本文は既定では折り返し表示の「読み物」。全文が一目で見えるよう
+       高さを制限せず、編集ボタンを押したときだけ textarea に切り替える。 */
+    '.consult-tmpl-view { white-space: pre-wrap; word-break: break-word;' +
+    '  font-size: 0.82rem; line-height: 1.7; color: var(--ink);' +
     '  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm);' +
-    '  padding: 0.6rem 0.7rem; }' +
-    '.consult-copy-btn { margin-top: 0.5rem; appearance: none; font: inherit; font-size: 0.82rem;' +
+    '  padding: 0.7rem 0.8rem; }' +
+    '.consult-tmpl { width: 100%; box-sizing: border-box; resize: vertical;' +
+    '  font: inherit; font-size: 0.82rem; line-height: 1.7; color: var(--ink);' +
+    '  background: var(--paper-raised); border: 1px solid var(--accent); border-radius: var(--radius-sm);' +
+    '  padding: 0.7rem 0.8rem; }' +
+    '.consult-tmpl-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }' +
+    '.consult-copy-btn { appearance: none; font: inherit; font-size: 0.82rem;' +
     '  cursor: pointer; min-height: 2.75rem; padding: 0 1rem; border-radius: var(--radius-sm);' +
     '  border: 1px solid var(--accent); color: var(--accent); background: var(--paper-raised); }' +
     '.consult-copy-btn:hover, .consult-copy-btn:focus-visible { background: var(--accent-wash); }' +
+    /* ---- 送信（宛先を選ぶ→確認する→送る） ---- */
+    '.consult-send { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 1rem; }' +
+    '.consult-send-ttl { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.2rem; }' +
+    '.consult-send-sub { font-size: 0.78rem; color: var(--ink-faint); margin: 0 0 0.7rem; }' +
+    '.consult-send-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }' +
+    '.consult-send-btn { appearance: none; font: inherit; font-size: 0.9rem; font-weight: 700;' +
+    '  cursor: pointer; min-height: 3rem; padding: 0 1.4rem; border-radius: var(--radius-sm);' +
+    '  border: none; background: var(--accent); color: var(--on-accent, #fff);' +
+    '  box-shadow: var(--shadow-btn); }' +
+    '.consult-send-btn:hover, .consult-send-btn:focus-visible { opacity: 0.88; }' +
+    /* 送信機能ができるまでは、押せるが「まだ本物ではない」と分かる見た目にする。
+       塗りつぶしのままだと本当に送れると誤解されるため、破線の枠で仮であることを示す。 */
+    '.consult-send-btn.is-dummy { background: var(--paper-raised); color: var(--accent);' +
+    '  border: 2px dashed var(--accent); box-shadow: none; }' +
+    '.consult-send-btn.is-dummy:hover, .consult-send-btn.is-dummy:focus-visible {' +
+    '  background: var(--accent-wash); opacity: 1; }' +
+    '.consult-pick { margin-top: 0.8rem; border: 1px solid var(--accent); border-radius: var(--radius-sm);' +
+    '  background: var(--accent-wash); padding: 0.85rem 0.9rem; }' +
+    '.consult-pick-ttl { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.55rem; }' +
+    '.consult-pick-list { display: grid; gap: 0.45rem; }' +
+    '.consult-pick-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer;' +
+    '  min-height: 2.75rem; padding: 0.45rem 0.7rem; border: 1px solid var(--line);' +
+    '  border-radius: var(--radius-sm); background: var(--paper-raised); font-size: 0.85rem; }' +
+    '.consult-pick-item:hover { border-color: var(--accent); }' +
+    '.consult-pick-item input { width: 1.15rem; height: 1.15rem; flex: none; accent-color: var(--accent); }' +
+    '.consult-pick-item.is-checked { border-color: var(--accent); background: var(--accent-wash); }' +
+    '.consult-pick-none { font-size: 0.82rem; color: var(--ink-soft); }' +
+    '.consult-confirm { margin-top: 0.8rem; border: 1px solid var(--accent); border-radius: var(--radius-sm);' +
+    '  background: var(--paper-raised); padding: 0.9rem; box-shadow: var(--shadow-btn); }' +
+    '.consult-confirm-ttl { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.4rem; }' +
+    '.consult-confirm-to { font-size: 0.85rem; background: var(--accent-wash);' +
+    '  border-radius: var(--radius-sm); padding: 0.55rem 0.7rem; margin-bottom: 0.7rem; }' +
+    '.consult-sent { margin-top: 0.8rem; background: var(--sage-wash); border-radius: var(--radius-sm);' +
+    '  padding: 0.9rem; font-size: 0.85rem; }' +
+    '.consult-sent-ttl { font-weight: 700; margin-bottom: 0.3rem; }' +
+    '.consult-dummy { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;' +
+    '  color: var(--rust); background: var(--rust-wash); border-radius: 100px;' +
+    '  padding: 0.1rem 0.55rem; margin-left: 0.4rem; vertical-align: middle; }' +
     '.consult-preparing { background: var(--accent-wash); border-radius: var(--radius-sm);' +
     '  padding: 0.8rem 0.9rem; font-size: 0.85rem; color: var(--ink-soft); }' +
     '.consult-cards { display: grid; gap: 0.7rem; }' +
@@ -275,8 +320,7 @@
 
     var title = document.createElement('div');
     title.className = 'consult-card-title';
-    title.textContent = (QUALIFICATION_LABEL[expert.qualification] || expert.title || '専門家') +
-      (expert.name ? '　' + expert.name : '');
+    title.textContent = expertLabel(expert);
     wrap.appendChild(title);
 
     var tags = [];
@@ -307,14 +351,23 @@
     var actions = document.createElement('div');
     actions.className = 'consult-card-actions';
 
+    // templateText は関数でも文字列でも受ける。本文が編集されうるので、
+    // クリック直前に読み直せるよう関数で渡すのが基本。
+    function currentText() {
+      return (typeof templateText === 'function') ? templateText() : templateText;
+    }
     function makeLineBtn() {
       if (!expert.line_oa_id) return null;
       var b = document.createElement('a');
       b.className = 'consult-btn';
       b.target = '_blank';
       b.rel = 'noopener noreferrer';
-      b.href = 'https://line.me/R/oaMessage/' + encodeURIComponent(expert.line_oa_id) +
-        '/?' + encodeURIComponent(templateText);
+      b.href = '#';
+      b.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        window.open('https://line.me/R/oaMessage/' + encodeURIComponent(expert.line_oa_id) +
+          '/?' + encodeURIComponent(currentText()), '_blank', 'noopener');
+      });
       b.textContent = 'LINEで相談する';
       return b;
     }
@@ -322,9 +375,13 @@
       if (!expert.email) return null;
       var b = document.createElement('a');
       b.className = 'consult-btn';
-      b.href = 'mailto:' + encodeURIComponent(expert.email) +
-        '?subject=' + encodeURIComponent('補助金活用ロードマップを見てのご相談') +
-        '&body=' + encodeURIComponent(templateText);
+      b.href = '#';
+      b.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        location.href = 'mailto:' + encodeURIComponent(expert.email) +
+          '?subject=' + encodeURIComponent('補助金活用ロードマップを見てのご相談') +
+          '&body=' + encodeURIComponent(currentText());
+      });
       b.textContent = 'メールで相談する';
       return b;
     }
@@ -362,26 +419,37 @@
     return wrap;
   }
 
-  function buildCopyButton(tmplBox) {
+  // getText は本文を返す関数。編集されうるので、押した時点の中身を読む。
+  function buildCopyButton(getText) {
     var copyBtn = document.createElement('button');
     copyBtn.type = 'button';
     copyBtn.className = 'consult-copy-btn';
-    copyBtn.textContent = 'ひな形をコピー';
+    copyBtn.textContent = '本文をコピー';
     copyBtn.addEventListener('click', function () {
-      var text = tmplBox.value;
+      var text = getText();
       var done = function () {
         var orig = copyBtn.textContent;
         copyBtn.textContent = '✔ コピーしました';
         setTimeout(function () { copyBtn.textContent = orig; }, 1500);
       };
+      var fallback = function () {
+        // クリップボードが使えない環境向けに、選択してコピーできる形で見せる
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        if (ok) { done(); }
+        else { alert('コピーできませんでした。本文を長押し（または範囲選択）してコピーしてください。'); }
+      };
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done).catch(function () {
-          tmplBox.select();
-          alert('コピーに失敗しました。テキストを選択済みにしましたので、手動でコピーしてください。');
-        });
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
       } else {
-        tmplBox.select();
-        alert('お使いの環境では自動コピーができません。テキストを選択済みにしましたので、手動でコピーしてください。');
+        fallback();
       }
     });
     return copyBtn;
@@ -563,6 +631,193 @@
     refreshNextState();
   }
 
+  // ---------- 送信セクション（LINEで送信 / メールで送信） ----------
+  // 送信そのものはまだ作っていない（送信基盤は未導入）。押すと送信先を選び、
+  // 確認したうえで「送信しました」までを見せるダミー。実装時はここの
+  // doSend() を差し替えるだけでよいようにしてある。
+  function buildSendSection(experts, getMessage) {
+    var wrap = document.createElement('div');
+    wrap.className = 'consult-send';
+
+    var ttl = document.createElement('div');
+    ttl.className = 'consult-send-ttl';
+    ttl.textContent = 'この内容を送る';
+    var dummy = document.createElement('span');
+    dummy.className = 'consult-dummy';
+    dummy.textContent = '準備中';
+    ttl.appendChild(dummy);
+    wrap.appendChild(ttl);
+
+    var sub = document.createElement('p');
+    sub.className = 'consult-send-sub';
+    sub.textContent = '送信機能は現在準備中です。押すと動きだけ確認できます（実際には送信されません）。';
+    wrap.appendChild(sub);
+
+    var btns = document.createElement('div');
+    btns.className = 'consult-send-btns';
+    wrap.appendChild(btns);
+
+    // 選択・確認・完了を出し入れする場所
+    var stage = document.createElement('div');
+    wrap.appendChild(stage);
+
+    function clearStage() { stage.innerHTML = ''; }
+
+    // 送信先が実際にその手段を持っているかで絞る
+    function candidates(via) {
+      return (experts || []).filter(function (e) {
+        if (e.accepting === false) return false;
+        return via === 'line' ? !!e.line_oa_id : !!e.email;
+      });
+    }
+
+    function doSend(via, expert) {
+      clearStage();
+      var done = document.createElement('div');
+      done.className = 'consult-sent';
+      var dttl = document.createElement('div');
+      dttl.className = 'consult-sent-ttl';
+      dttl.textContent = '送信しました（画面上の動作確認のみ）';
+      done.appendChild(dttl);
+      var dmsg = document.createElement('div');
+      dmsg.textContent = '送信先：' + expertLabel(expert) + '（' + CONTACT_LABEL[via] + '）' +
+        ' ／ 実際にはまだ送信されません。送信機能が使えるようになるまでは、' +
+        '下の一覧にある「' + (via === 'line' ? 'LINEで相談する' : 'メールで相談する') +
+        '」からアプリを開いてお送りください。';
+      done.appendChild(dmsg);
+      var again = document.createElement('button');
+      again.type = 'button';
+      again.className = 'consult-copy-btn';
+      again.style.marginTop = '0.6rem';
+      again.textContent = '送信先を選び直す';
+      again.addEventListener('click', function () { pick(via); });
+      done.appendChild(again);
+      stage.appendChild(done);
+      done.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function confirm(via, expert) {
+      clearStage();
+      var box = document.createElement('div');
+      box.className = 'consult-confirm';
+      var cttl = document.createElement('div');
+      cttl.className = 'consult-confirm-ttl';
+      cttl.textContent = 'こちらに送りますか？';
+      box.appendChild(cttl);
+
+      var to = document.createElement('div');
+      to.className = 'consult-confirm-to';
+      to.textContent = expertLabel(expert) + '　（' + CONTACT_LABEL[via] + 'で送信）';
+      box.appendChild(to);
+
+      var row = document.createElement('div');
+      row.className = 'consult-send-btns';
+      var ok = document.createElement('button');
+      ok.type = 'button';
+      ok.className = 'consult-send-btn is-dummy';
+      ok.textContent = 'この宛先に送る';
+      ok.addEventListener('click', function () { doSend(via, expert); });
+      row.appendChild(ok);
+
+      var cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.className = 'consult-copy-btn';
+      cancel.textContent = 'やめる';
+      cancel.addEventListener('click', function () { pick(via); });
+      row.appendChild(cancel);
+      box.appendChild(row);
+
+      stage.appendChild(box);
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function pick(via) {
+      clearStage();
+      var list = candidates(via);
+      var box = document.createElement('div');
+      box.className = 'consult-pick';
+      var pttl = document.createElement('div');
+      pttl.className = 'consult-pick-ttl';
+      pttl.textContent = 'どちらに送りますか？（' + CONTACT_LABEL[via] + '）';
+      box.appendChild(pttl);
+
+      if (!list.length) {
+        var none = document.createElement('div');
+        none.className = 'consult-pick-none';
+        none.textContent = CONTACT_LABEL[via] + 'で受け付けている専門家がまだ登録されていません。' +
+          '提携が決まりしだいご利用いただけます。';
+        box.appendChild(none);
+        stage.appendChild(box);
+        return;
+      }
+
+      var listEl = document.createElement('div');
+      listEl.className = 'consult-pick-list';
+      var chosen = null;
+      var nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'consult-send-btn';
+      nextBtn.textContent = '確認する';
+      nextBtn.disabled = true;
+
+      list.forEach(function (expert, i) {
+        var label = document.createElement('label');
+        label.className = 'consult-pick-item';
+        var input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'consultSendTo_' + via;
+        input.value = expert.id || String(i);
+        input.addEventListener('change', function () {
+          Array.prototype.forEach.call(listEl.querySelectorAll('.consult-pick-item'), function (el) {
+            el.classList.remove('is-checked');
+          });
+          label.classList.add('is-checked');
+          chosen = expert;
+          nextBtn.disabled = false;
+        });
+        label.appendChild(input);
+        var span = document.createElement('span');
+        span.textContent = expertLabel(expert);
+        label.appendChild(span);
+        listEl.appendChild(label);
+      });
+      box.appendChild(listEl);
+
+      // 候補が1人しかいないなら最初から選んでおく（余計な操作を増やさない）
+      if (list.length === 1) {
+        var only = listEl.querySelector('input');
+        if (only) { only.checked = true; only.dispatchEvent(new Event('change')); }
+      }
+
+      var row = document.createElement('div');
+      row.className = 'consult-send-btns';
+      row.style.marginTop = '0.7rem';
+      nextBtn.addEventListener('click', function () { if (chosen) confirm(via, chosen); });
+      row.appendChild(nextBtn);
+      box.appendChild(row);
+
+      stage.appendChild(box);
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    ['line', 'email'].forEach(function (via) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'consult-send-btn is-dummy';
+      b.textContent = CONTACT_LABEL[via] + 'で送信';
+      b.addEventListener('click', function () { pick(via); });
+      btns.appendChild(b);
+    });
+
+    return wrap;
+  }
+
+  function expertLabel(expert) {
+    if (!expert) return '';
+    return (QUALIFICATION_LABEL[expert.qualification] || expert.title || '専門家') +
+      (expert.name ? '　' + expert.name : '');
+  }
+
   // ---------- 結果画面 ----------
   function renderResult(panel, opts, answers, onBack) {
     var data = window.KOBAN_EXPERTS || { status: 'preparing', experts: [], demo: [] };
@@ -578,34 +833,9 @@
 
     var privacy = document.createElement('p');
     privacy.className = 'consult-privacy';
-    privacy.textContent = 'ボタンはLINE・メール・電話のアプリを開くだけです。このサイトから相談内容が送信されることはありません。';
+    privacy.textContent = '下の一覧にあるボタンは、LINE・メール・電話のアプリを開くだけです。'
+      + 'このサイトから相談内容が送信されることはありません。';
     panel.appendChild(privacy);
-
-    // (3) 相談前に用意するものの案内。複数テーマを選べるので、重複を除いてまとめる。
-    var prepareItems = [];
-    (answers.topics || []).forEach(function (id) {
-      var t = findTopic(id);
-      if (!t || !t.prepare) return;
-      t.prepare.forEach(function (item) {
-        if (prepareItems.indexOf(item) === -1) prepareItems.push(item);
-      });
-    });
-    if (prepareItems.length) {
-      var prep = document.createElement('div');
-      prep.className = 'consult-prepare';
-      var prepTtl = document.createElement('div');
-      prepTtl.className = 'consult-prepare-ttl';
-      prepTtl.textContent = '相談前に手元にあるとスムーズなもの';
-      prep.appendChild(prepTtl);
-      var ul = document.createElement('ul');
-      prepareItems.forEach(function (item) {
-        var li = document.createElement('li');
-        li.textContent = item;
-        ul.appendChild(li);
-      });
-      prep.appendChild(ul);
-      panel.appendChild(prep);
-    }
 
     // (1) ひな形文の具体化。会社情報が登録されていれば連絡先が自動で入る。
     var templateText = buildTemplateText(opts, answers);
@@ -639,38 +869,94 @@
     tmplWrap.className = 'consult-tmpl-wrap';
     var tmplLabel = document.createElement('div');
     tmplLabel.className = 'consult-tmpl-label';
-    tmplLabel.textContent = '相談メッセージのひな形';
+    tmplLabel.textContent = '相談メッセージ';
     tmplWrap.appendChild(tmplLabel);
     tmplWrap.appendChild(profileNote);
-    var tmplBox = document.createElement('textarea');
-    tmplBox.className = 'consult-tmpl';
-    tmplBox.readOnly = true;
-    tmplBox.value = templateText;
-    tmplWrap.appendChild(tmplBox);
-    tmplWrap.appendChild(buildCopyButton(tmplBox));
+
+    // 本文は既定では全文がそのまま見える固定表示。「編集する」で textarea に
+    // 切り替える。送信ボタンは常に最新の本文（messageText）を読む。
+    var messageText = templateText;
+    var view = document.createElement('div');
+    view.className = 'consult-tmpl-view';
+    view.textContent = messageText;
+    tmplWrap.appendChild(view);
+
+    var editBox = document.createElement('textarea');
+    editBox.className = 'consult-tmpl';
+    editBox.value = messageText;
+    editBox.style.display = 'none';
+    // 中身がすべて見える高さに自動で伸ばす（スクロールで隠れないようにする）
+    function fitHeight() {
+      editBox.style.height = 'auto';
+      editBox.style.height = (editBox.scrollHeight + 4) + 'px';
+    }
+    editBox.addEventListener('input', function () {
+      messageText = editBox.value;
+      fitHeight();
+    });
+    tmplWrap.appendChild(editBox);
+
+    var tmplBtns = document.createElement('div');
+    tmplBtns.className = 'consult-tmpl-btns';
+    var editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'consult-copy-btn';
+    editBtn.textContent = '内容を編集する';
+    var editing = false;
+    editBtn.addEventListener('click', function () {
+      editing = !editing;
+      if (editing) {
+        editBox.value = messageText;
+        editBox.style.display = '';
+        view.style.display = 'none';
+        fitHeight();
+        editBtn.textContent = '編集を終わる';
+        editBox.focus();
+      } else {
+        messageText = editBox.value;
+        view.textContent = messageText;
+        editBox.style.display = 'none';
+        view.style.display = '';
+        editBtn.textContent = '内容を編集する';
+      }
+    });
+    tmplBtns.appendChild(editBtn);
+    tmplBtns.appendChild(buildCopyButton(function () { return messageText; }));
+    tmplWrap.appendChild(tmplBtns);
     panel.appendChild(tmplWrap);
 
-    // (2) 専門家の絞り込み
-    if (!pool.length) {
-      var preparing = document.createElement('div');
-      preparing.className = 'consult-preparing';
-      preparing.textContent = '提携専門家は現在準備中です。上のひな形をコピーして、顧問の専門家や知り合いの窓口にご相談ください。';
-      panel.appendChild(preparing);
-    } else {
+    // 送信ボタンなどから常に最新の本文を読むための入口
+    function getMessage() {
+      return editing ? editBox.value : messageText;
+    }
+
+    // (2) 送信先になりうる専門家を先に確定させる（送信UIと一覧の両方で使う）
+    var toShow = [];
+    var widened = false;
+    if (pool.length) {
       var matched = pool.filter(function (e) { return cardMatches(e, opts.kind, answers.topics); });
       // 相談テーマに合う人がいないときは、テーマの条件だけ外して制度種別（kind）の
       // 一致は維持したまま広げる。助成金の相談なのに補助金専門の人まで出す、
       // というズレを起こさないため。それでもゼロなら最後に全件を出す。
-      var toShow = matched;
-      var widened = false;
+      toShow = matched;
       if (!toShow.length) {
         toShow = pool.filter(function (e) { return cardMatches(e, opts.kind, []); });
         widened = toShow.length > 0;
       }
-      if (!toShow.length) {
-        toShow = pool;
-        widened = true;
-      }
+      if (!toShow.length) { toShow = pool; widened = true; }
+    }
+
+    // (3) 送信（この内容を送る）。本文のすぐ下に置き、
+    //     ボタン→送信先を選ぶ→確認→送信、の順で進む。
+    panel.appendChild(buildSendSection(toShow, getMessage));
+
+    // (4) 相談先の一覧
+    if (!pool.length) {
+      var preparing = document.createElement('div');
+      preparing.className = 'consult-preparing';
+      preparing.textContent = '提携専門家は現在準備中です。上の本文をコピーして、顧問の専門家や知り合いの窓口にご相談ください。';
+      panel.appendChild(preparing);
+    } else {
       if (widened) {
         var fallbackNote = document.createElement('p');
         fallbackNote.className = 'consult-lead';
@@ -680,9 +966,36 @@
       var cards = document.createElement('div');
       cards.className = 'consult-cards';
       toShow.forEach(function (expert) {
-        cards.appendChild(renderCard(expert, templateText, answers.contacts));
+        cards.appendChild(renderCard(expert, getMessage, answers.contacts));
       });
       panel.appendChild(cards);
+    }
+
+    // (5) 相談前に用意するものの案内（本人指示で最下部へ移動）。
+    //     複数テーマを選べるので、重複を除いてまとめる。
+    var prepareItems = [];
+    (answers.topics || []).forEach(function (id) {
+      var t = findTopic(id);
+      if (!t || !t.prepare) return;
+      t.prepare.forEach(function (item) {
+        if (prepareItems.indexOf(item) === -1) prepareItems.push(item);
+      });
+    });
+    if (prepareItems.length) {
+      var prep = document.createElement('div');
+      prep.className = 'consult-prepare';
+      var prepTtl = document.createElement('div');
+      prepTtl.className = 'consult-prepare-ttl';
+      prepTtl.textContent = '相談前に手元にあるとスムーズなもの';
+      prep.appendChild(prepTtl);
+      var ul = document.createElement('ul');
+      prepareItems.forEach(function (item) {
+        var li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      prep.appendChild(ul);
+      panel.appendChild(prep);
     }
 
     var disclaimer = document.createElement('p');
