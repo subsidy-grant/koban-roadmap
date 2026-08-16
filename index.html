@@ -6882,6 +6882,18 @@
     return Math.round((d - today) / 86400000);
   }
 
+  // 制度側の要件が、このサイトの読者（中小・小規模事業者）の規模とかけ離れていて、
+  // 受付中に戻っても申請資格が無いもの。件数だけ増えて選択肢にならないため一覧から外す
+  // （2026-08-17、本人判断）。「受付が終わっているから」ではなく「規模が合わないから」
+  // 外すので、終了していても規模が合う制度（ものづくり補助金等）は残る。
+  // ここに足すときは、上限額の大きさではなく“申請要件”で判断すること。
+  // 上限1億円でも下限30万円で小規模でも使える制度（shoene_hikaseki）は外さない。
+  var OUT_OF_SCALE_PROGRAM_KEYS = {
+    // 売上高10億円以上100億円未満・投資額1億円以上が申請要件。多店舗展開チェーン向けで、
+    // このサイトの読者は要件を満たさない（制度自身のscale欄にもその旨を明記している）
+    seichou_kasokuka: true
+  };
+
   // 表示中の業種・地域で「使える可能性がある」制度キーの一覧
   function getUsableProgramKeys() {
     var ind = INDUSTRIES[currentIndustry];
@@ -6889,6 +6901,7 @@
     return getAvailablePrograms(currentIndustry).filter(function (k) {
       if (!PROGRAMS[k] || seen[k]) return false;
       seen[k] = true;
+      if (OUT_OF_SCALE_PROGRAM_KEYS[k]) return false;
       if (!programFitsIndustry(k)) return false;
       return computeEligibility(k, currentEmployeeCount, currentCapitalYen, ind) !== 'ng';
     });
