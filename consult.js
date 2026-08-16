@@ -67,6 +67,11 @@
     '.consult-tmpl-wrap { margin-bottom: 1rem; }' +
     '.consult-tmpl-label { font-size: 0.78rem; font-weight: 700; color: var(--ink-faint);' +
     '  letter-spacing: 0.02em; margin-bottom: 0.3rem; }' +
+    '.consult-profile-note { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.7rem;' +
+    '  font-size: 0.78rem; color: var(--ink-soft); background: var(--sage-wash);' +
+    '  border-radius: var(--radius-sm); padding: 0.5rem 0.7rem; margin-bottom: 0.45rem; }' +
+    '.consult-profile-note.is-empty { background: var(--accent-wash); }' +
+    '.consult-profile-note a { color: var(--accent); }' +
     '.consult-tmpl { width: 100%; box-sizing: border-box; resize: vertical; min-height: 7.5em;' +
     '  font: inherit; font-size: 0.82rem; line-height: 1.6; color: var(--ink);' +
     '  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm);' +
@@ -128,6 +133,69 @@
     return null;
   }
 
+  // 会社情報（profile.html で登録したもの）を読む。company_data.js を読み込んでいない
+  // ページや、未登録の端末では null を返す。localStorage の中身をそのまま使うだけで、
+  // このサイトから外部へ送ることはない（送るのは利用者自身がボタンを押したときの
+  // LINE/メールアプリ経由のみ）。
+  //
+  // KOBAN_COMPANY.getCurrent() は未登録端末に空の「会社1」を書き込む副作用がある
+  // （旧形式からの移行処理を兼ねているため）。相談パネルを開いただけで書き込みたく
+  // ないので、ここでは localStorage を直接読むだけにする。キー名は company_data.js
+  // と揃えること（あちらを変えたらここも変える）。
+  function getCompany() {
+    try {
+      var raw = localStorage.getItem('koban_companies');
+      if (!raw) return null;
+      var list = JSON.parse(raw);
+      if (!list || !list.length) return null;
+      var id = null;
+      try { id = JSON.parse(localStorage.getItem('koban_currentCompanyId')); } catch (e) { id = null; }
+      var found = null;
+      if (id) {
+        found = list.filter(function (c) { return c && c.id === id; })[0] || null;
+      }
+      return found || list[0] || null;
+    } catch (e) { return null; }
+  }
+
+  function val(company, key) {
+    if (!company) return '';
+    var v = company[key];
+    return (v == null) ? '' : String(v).trim();
+  }
+
+  // 会社情報のうち、相談の初回連絡で相手に伝わっていると話が早い項目だけを組み立てる。
+  // 1つも埋まっていなければ null を返し、呼び出し側で「登録すると自動で入ります」の
+  // 案内に切り替える。
+  function buildCompanyBlock(company) {
+    if (!company) return null;
+    var name = val(company, 'name');
+    var person = val(company, 'staff') || val(company, 'rep');
+    var tel = val(company, 'staffTel') || val(company, 'tel');
+    var mail = val(company, 'mail');
+    var addr = val(company, 'addr');
+    var industry = val(company, 'industry');
+    var employees = val(company, 'employees');
+
+    var contactLines = [];
+    if (name) contactLines.push('事業者名：' + name);
+    if (person) contactLines.push('ご担当：' + person);
+    if (tel) contactLines.push('電話：' + tel);
+    if (mail) contactLines.push('メール：' + mail);
+
+    var bizLines = [];
+    if (addr) bizLines.push('所在地：' + addr);
+    if (industry) bizLines.push('業種：' + industry);
+    // 会社情報の従業員数は数字だけで保存されていることがある（入力欄が numeric のため）。
+    // 数字だけなら「人」を付けて読める文にする。
+    if (employees) {
+      bizLines.push('従業員数：' + (/^\d+$/.test(employees) ? employees + '人' : employees));
+    }
+
+    if (!contactLines.length && !bizLines.length) return null;
+    return { contact: contactLines, biz: bizLines };
+  }
+
   // answers.topics / answers.contacts は配列、answers.stage は単一の文字列。
   function buildTemplateText(opts, answers) {
     answers = answers || {};
@@ -158,8 +226,27 @@
         return CONTACT_LABEL[c] || c;
       }).join('・'));
     }
+    // 会社情報が登録されていれば連絡先と事業の概要を添える。
+    // 未登録なら書式だけ残し、利用者が手で埋められるようにする。
+    var block = buildCompanyBlock(getCompany());
     lines.push('');
-    lines.push('（補足があればこちらにご記入ください）');
+    lines.push('【ご連絡先】');
+    if (block && block.contact.length) {
+      block.contact.forEach(function (l) { lines.push(l); });
+    } else {
+      lines.push('事業者名：');
+      lines.push('ご担当：');
+      lines.push('電話：');
+      lines.push('メール：');
+    }
+    if (block && block.biz.length) {
+      lines.push('');
+      lines.push('【事業の概要】');
+      block.biz.forEach(function (l) { lines.push(l); });
+    }
+    // 自由記入欄は本文のいちばん最後に置く（間に定型が挟まると書きにくいため）
+    lines.push('');
+    lines.push('（ご質問・補足があればこちらにご記入ください）');
     return lines.join('\n');
   }
 
@@ -520,14 +607,41 @@
       panel.appendChild(prep);
     }
 
-    // (1) ひな形文の具体化
+    // (1) ひな形文の具体化。会社情報が登録されていれば連絡先が自動で入る。
     var templateText = buildTemplateText(opts, answers);
+    var company = getCompany();
+    var companyBlock = buildCompanyBlock(company);
+
+    var profileNote = document.createElement('div');
+    profileNote.className = 'consult-profile-note';
+    if (companyBlock) {
+      // company_data.js の displayLabel と同じ規則（事業者名があればそれ、無ければ label）
+      var label = val(company, 'name') || val(company, 'label') || '登録済みの会社';
+      var okText = document.createElement('span');
+      okText.textContent = '会社情報「' + label + '」の連絡先をひな形に入れました。';
+      profileNote.appendChild(okText);
+      var editLink = document.createElement('a');
+      editLink.href = 'profile.html';
+      editLink.textContent = '会社情報を変える';
+      profileNote.appendChild(editLink);
+    } else {
+      profileNote.classList.add('is-empty');
+      var msg = document.createElement('span');
+      msg.textContent = '会社情報を登録しておくと、連絡先が自動で入ります。';
+      profileNote.appendChild(msg);
+      var regLink = document.createElement('a');
+      regLink.href = 'profile_edit.html';
+      regLink.textContent = '会社情報を登録する';
+      profileNote.appendChild(regLink);
+    }
+
     var tmplWrap = document.createElement('div');
     tmplWrap.className = 'consult-tmpl-wrap';
     var tmplLabel = document.createElement('div');
     tmplLabel.className = 'consult-tmpl-label';
     tmplLabel.textContent = '相談メッセージのひな形';
     tmplWrap.appendChild(tmplLabel);
+    tmplWrap.appendChild(profileNote);
     var tmplBox = document.createElement('textarea');
     tmplBox.className = 'consult-tmpl';
     tmplBox.readOnly = true;
