@@ -68,12 +68,28 @@ CSS = """
   .sub { color:var(--ink-soft); font-size:0.9rem; }
   .back { font-size:0.85rem; }
   a { color:var(--accent); }
-  .tabs { display:flex; flex-wrap:wrap; gap:0.5rem; margin:1.5rem 0 0; }
-  .tabs button { font:inherit; font-size:0.86rem; font-weight:600; padding:0.45rem 1rem;
-    border:1px solid var(--line); border-radius:100px; background:var(--paper-raised);
-    color:var(--ink-soft); cursor:pointer; }
-  .tabs button.active { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
-  .tabs button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  /* 業種の選択。以前は横並びのボタン(.tabs)だったが、「探す」ページ(index.html)と
+     同じプルダウンに統一した（本人指示、2026-08-16）。見た目も.hero-industryに合わせる。 */
+  .ind-picker { background:var(--accent-wash); border:1px solid var(--accent-soft);
+    border-radius:var(--radius-md); padding:1rem 1.1rem; margin:1.2rem 0 0;
+    display:flex; flex-wrap:wrap; align-items:center; gap:0.7rem 1.1rem; }
+  .ind-picker-lead { margin:0; font-size:0.96rem; color:var(--ink); flex:1 1 240px; }
+  .ind-picker select {
+    font:inherit; font-size:1rem; font-weight:600; min-height:2.9rem;
+    padding:0.5rem 2.2rem 0.5rem 0.8rem; border:1px solid var(--line); border-radius:6px;
+    background:var(--paper-raised) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%234d6a8a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.7rem center;
+    background-size:1rem; color:var(--ink); appearance:none; -webkit-appearance:none; cursor:pointer;
+    flex:1 1 260px; max-width:360px;
+  }
+  /* 夜間は地と枠のコントラストが落ちて入力欄に見えにくいので、枠だけ一段強める */
+  @media (prefers-color-scheme: dark) { .ind-picker select { border-color:var(--accent-soft); } }
+  :root[data-theme="dark"] .ind-picker select { border-color:var(--accent-soft); }
+  .ind-picker select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  @media (max-width:480px) { .ind-picker select { max-width:none; width:100%; } }
+  /* ページ末尾に置く但し書き（もとはタイトル直下にあった長文、2026-08-16に移動） */
+  .lede-foot { margin-top:2.5rem; padding-top:1.2rem; border-top:1px solid var(--line);
+    color:var(--ink-soft); font-size:0.9rem; }
   section.ind { display:none; margin-top:1.5rem; }
   section.ind.active { display:block; }
   .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0.9rem; }
@@ -179,16 +195,19 @@ def main():
     parts.append('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>')
     parts.append('<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">')
     parts.append("<style>" + CSS + "</style></head><body><main>")
-    parts.append('<p class="back"><a href="index.html">← ロードマップ本体へ</a></p>')
+    # 「← ロードマップ本体へ」は2026-08-16に削除（本人指示）。下部タブバーの
+    # 「探す」から戻れるため、ページ上部のリンクは重複していた。
     parts.append("<h1>業種別・改善計画 厳選10選</h1>")
-    parts.append('<p class="sub">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業・飲食業・宿泊業・製造業・不動産業・教育業は各1000案からのPDCA評価、あわせて6業種×100施策のスコアリングと突き合わせて選定）。'
-                 "各案には <strong>A4×10ページの事業計画書</strong>（Excel版つき）が付属します。"
-                 "<strong>試作プロトタイプ</strong>は美容業・飲食業で公開中、他の業種は準備中です。</p>")
 
-    parts.append('<div class="tabs" role="tablist">')
-    for i, ik in enumerate(INDUSTRY_ORDER):
-        cls = ' class="active"' if i == 0 else ""
-        parts.append(f'<button{cls} data-ind="{ik}" onclick="showInd(\'{ik}\')">{esc(labels[ik])}</button>')
+    # 業種の選択。タイトル直下に置き、index.htmlと同じプルダウン形式にする
+    # （本人指示、2026-08-16。以前は6個の横並びボタンだった）。
+    parts.append('<div class="ind-picker">')
+    parts.append('<p class="ind-picker-lead"><strong>業種</strong>を選んでください。</p>')
+    parts.append('<label for="indSelect" class="sr-only">業種</label>')
+    parts.append('<select id="indSelect" onchange="showInd(this.value)">')
+    for ik in INDUSTRY_ORDER:
+        parts.append(f'<option value="{ik}">{esc(labels[ik])}</option>')
+    parts.append("</select>")
     parts.append("</div>")
 
     for i, ik in enumerate(INDUSTRY_ORDER):
@@ -262,17 +281,25 @@ def main():
                          'を公開しています。</div>')
         parts.append("</section>")
 
+    # このページの選定方法の但し書き。もとはタイトル直下にあったが、先に中身（カード）を
+    # 見せたいので末尾へ移した（本人指示、2026-08-16）。
+    parts.append('<p class="lede-foot">業種ごとに費用対効果・業務改善効率の高い10案を厳選（美容業・飲食業・宿泊業・製造業・不動産業・教育業は各1000案からのPDCA評価、あわせて6業種×100施策のスコアリングと突き合わせて選定）。'
+                 "各案には <strong>A4×10ページの事業計画書</strong>（Excel版つき）が付属します。"
+                 "<strong>試作プロトタイプ</strong>は美容業・飲食業で公開中、他の業種は準備中です。</p>")
     parts.append('<p class="note">本コンテンツは公開情報に基づくモデルケースの試算・提案であり、個別事業者への効果や補助金の採択を保証するものではありません。'
                  "申請にあたっては必ず各制度の公式サイト・公募要領をご確認ください。</p>")
     parts.append("""
 <script>
   // 業種の選択は index.html と共通の localStorage キーで受け渡す（2026-08-16）。
-  // 優先順位: URLの?industry= > 前回このサイトで選んだ業種 > 既定(先頭タブ)。
+  // 優先順位: URLの?industry= > 前回このサイトで選んだ業種 > 既定(先頭)。
   // URLで来た場合は、次にどのページへ移動しても同じ業種が続くよう保存もしておく。
   var KOBAN_INDUSTRY_KEY = 'koban_industry';
   function showInd(key) {
     document.querySelectorAll('section.ind').forEach(function (s) { s.classList.toggle('active', s.id === 'ind-' + key); });
-    document.querySelectorAll('.tabs button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-ind') === key); });
+    // プルダウンから呼ばれたときは既に選択済みだが、URL・localStorage由来で
+    // 呼ばれたときは表示を合わせる必要がある
+    var sel = document.getElementById('indSelect');
+    if (sel && sel.value !== key) sel.value = key;
     try { localStorage.setItem(KOBAN_INDUSTRY_KEY, key); } catch (e) {}
   }
   (function () {

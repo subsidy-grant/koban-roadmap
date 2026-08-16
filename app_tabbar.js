@@ -12,11 +12,12 @@
   // 電球＝改善のアイデア。他の4つと同じ角丸スクエア＋太めアウトラインのトーンに揃える（2026-08-16）
   var ICON_BULB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M12 7.2c-2.2 0-3.8 1.7-3.8 3.7 0 1.3.6 2.2 1.5 3 .4.4.6.9.6 1.4v.4h3.4v-.4c0-.5.2-1 .6-1.4.9-.8 1.5-1.7 1.5-3 0-2-1.6-3.7-3.8-3.7z" stroke-linecap="round"/><line x1="10.5" y1="17.7" x2="13.5" y2="17.7" stroke-linecap="round"/></svg>';
 
+  // 「改善計画」は右から2番目（会社情報の左隣）に置く。本人指示、2026-08-16。
   var TABS = [
     { href: 'index.html', match: /^(|index\.html)$/, icon: ICON_SEARCH, label: '探す' },
-    { href: 'improvement.html', match: /^improvement\.html$/, icon: ICON_BULB, label: '改善計画' },
     { href: 'documents.html', match: /^documents\.html$/, icon: ICON_DOCS, label: '書類準備' },
     { href: 'applications.html', match: /^applications\.html$/, icon: ICON_CHECK, label: '申請進捗' },
+    { href: 'improvement.html', match: /^improvement\.html$/, icon: ICON_BULB, label: '改善計画' },
     { href: 'profile.html', match: /^profile(_edit|_status)?\.html$/, icon: ICON_BUILDING, label: '会社情報' }
   ];
 
