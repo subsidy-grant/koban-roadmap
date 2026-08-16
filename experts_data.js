@@ -72,25 +72,43 @@ window.KOBAN_CONSULT_STAGES = [
 window.KOBAN_EXPERTS = {
   updated: '2026-08-17',
   status: 'preparing', // 'preparing'（提携準備中）| 'open'（受付中）
+  // ⚠️ いま入っている2件は動作確認用のサンプルで、実在の専門家ではない。
+    //    提携が決まったら、この2件を実データで置き換えること
+    //    （name を実名に、連絡先を本物に、note の但し書きを消す）。
+    //    連絡先は届かないダミーのアドレス・番号にしてあり、押しても誰にも繋がらない。
   experts: [
-    // 提携が決まるまで空。上のコメントの手順に従って追加する。
-    // {
-    //   id: 'sr-001',
-    //   name: '○○ ○○',
-    //   title: '社会保険労務士',
-    //   qualification: 'sharoushi', // sharoushi | shindanshi | gyoseishoshi | zeirishi
-    //   kinds: ['josei'],           // 対応する制度種別: 'josei'(雇用系助成金) / 'hojo'(補助金)
-    //   topics: ['wage', 'which'],  // 対応できる相談テーマ（KOBAN_CONSULT_TOPICS の id）。
-    //                               // 省略すると資格から自動判定される
-    //   areas: ['東京都', '神奈川県'], // 空配列=全国対応。表示のみで絞り込みには使わない
-    //   tags: ['雇用関係助成金', '就業規則'],
-    //   line_oa_id: '',             // 例 '@xxxxx'。空ならLINEボタンを出さない
-    //   email: '',                  // 空ならメールボタンを出さない
-    //   tel: '',                    // 例 '03-0000-0000'。空なら電話ボタンを出さない
-    //   tel_hours: '',              // 任意。例 '平日9:00〜18:00'。電話ボタンの補足に出る
-    //   accepting: true,            // false で「現在受付を停止しています」表示
-    //   note: '初回相談30分無料'     // 任意
-    // }
+    {
+      id: 'sample-sharoushi',
+      name: '（サンプル・実在しません）',
+      title: '社会保険労務士',
+      qualification: 'sharoushi', // sharoushi | shindanshi | gyoseishoshi | zeirishi
+      kinds: ['josei'],           // 対応する制度種別: 'josei'(雇用系助成金) / 'hojo'(補助金)
+      topics: ['wage', 'which', 'after'], // 対応できる相談テーマ（KOBAN_CONSULT_TOPICS の id）
+      areas: ['全国対応'],         // 空配列=全国対応。表示のみで絞り込みには使わない
+      tags: ['雇用関係助成金', '就業規則', '賃金設計'],
+      line_oa_id: '@sample-sr',   // 空ならLINEボタンを出さない
+      email: 'sample-sr@example.com', // 空ならメールボタンを出さない
+      tel: '03-0000-0000',        // 空なら電話ボタンを出さない
+      tel_hours: '平日9:00〜18:00',
+      accepting: true,            // false で「現在受付を停止しています」表示
+      note: '動作確認用のサンプルです。提携先が決まりしだい実際の専門家に差し替えます'
+    },
+    {
+      id: 'sample-shindanshi',
+      name: '（サンプル・実在しません）',
+      title: '中小企業診断士',
+      qualification: 'shindanshi',
+      kinds: ['hojo'],
+      topics: ['plan', 'docs', 'which', 'after'],
+      areas: ['全国対応'],
+      tags: ['補助金申請支援', '事業計画', '採択後の手続き'],
+      line_oa_id: '@sample-sd',
+      email: 'sample-sd@example.com',
+      tel: '03-0000-1111',
+      tel_hours: '平日10:00〜19:00',
+      accepting: true,
+      note: '動作確認用のサンプルです。提携先が決まりしだい実際の専門家に差し替えます'
+    }
   ],
   // レイアウト検証専用のダミーデータ。URLに ?expertdemo=1 を付けたときだけ表示される。
   // 実在しない旨を name に明記すること。

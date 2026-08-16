@@ -56,10 +56,10 @@
     '.consult-actions-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }' +
     /* ---- 結果画面 ---- */
     '.consult-back { appearance: none; background: none; border: none; font: inherit;' +
-    '  font-size: 0.8rem; color: var(--accent); cursor: pointer; min-height: 2.75rem;' +
-    '  padding: 0 0.2rem; text-decoration: underline; }' +
+    '  font-size: 0.82rem; color: var(--accent); cursor: pointer; min-height: 2.75rem;' +
+    '  padding: 0 0.2rem; text-decoration: underline; margin-top: 0.6rem; }' +
     '.consult-prepare { background: var(--sage-wash); border-radius: var(--radius-sm);' +
-    '  padding: 0.75rem 0.9rem; margin-bottom: 1rem; }' +
+    '  padding: 0.85rem 0.95rem; margin: 1.2rem 0; }' +
     '.consult-prepare-ttl { font-size: 0.82rem; font-weight: 700; color: var(--sage-ink, var(--ink));' +
     '  margin-bottom: 0.35rem; }' +
     '.consult-prepare ul { margin: 0; padding-left: 1.2rem; font-size: 0.82rem; color: var(--ink-soft); }' +
@@ -83,6 +83,7 @@
     '  background: var(--paper-raised); border: 1px solid var(--accent); border-radius: var(--radius-sm);' +
     '  padding: 0.7rem 0.8rem; }' +
     '.consult-tmpl-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }' +
+    '.consult-edit-hint { font-size: 0.78rem; color: var(--ink-faint); margin: 0.5rem 0 0; }' +
     '.consult-copy-btn { appearance: none; font: inherit; font-size: 0.82rem;' +
     '  cursor: pointer; min-height: 2.75rem; padding: 0 1rem; border-radius: var(--radius-sm);' +
     '  border: 1px solid var(--accent); color: var(--accent); background: var(--paper-raised); }' +
@@ -126,8 +127,9 @@
     '  color: var(--rust); background: var(--rust-wash); border-radius: 100px;' +
     '  padding: 0.1rem 0.55rem; margin-left: 0.4rem; vertical-align: middle; }' +
     '.consult-preparing { background: var(--accent-wash); border-radius: var(--radius-sm);' +
-    '  padding: 0.8rem 0.9rem; font-size: 0.85rem; color: var(--ink-soft); }' +
-    '.consult-cards { display: grid; gap: 0.7rem; }' +
+    '  padding: 0.8rem 0.9rem; font-size: 0.85rem; color: var(--ink-soft);' +
+    '  margin: 1rem 0; }' +
+    '.consult-cards { display: grid; gap: 0.7rem; margin: 1rem 0; }' +
     '.consult-card { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0.8rem 0.9rem; }' +
     '.consult-card-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.15rem; }' +
     '.consult-card-tags { font-size: 0.76rem; color: var(--ink-faint); margin-bottom: 0.5rem; }' +
@@ -289,9 +291,9 @@
       lines.push('【事業の概要】');
       block.biz.forEach(function (l) { lines.push(l); });
     }
-    // 自由記入欄は本文のいちばん最後に置く（間に定型が挟まると書きにくいため）
-    lines.push('');
-    lines.push('（ご質問・補足があればこちらにご記入ください）');
+    // 自由記入の案内は本文に混ぜず、画面側（枠の外）に出す。
+    // そのまま送られると相手に「（ご記入ください）」が届いてしまうため
+    // （本人指示 2026-08-17）。
     return lines.join('\n');
   }
 
@@ -824,19 +826,6 @@
     var useDemo = /(^|[?&])expertdemo=1(&|$)/.test(location.search);
     var pool = (data.experts && data.experts.length) ? data.experts : (useDemo ? (data.demo || []) : []);
 
-    var backBtn = document.createElement('button');
-    backBtn.type = 'button';
-    backBtn.className = 'consult-back';
-    backBtn.textContent = '← 相談内容を選び直す';
-    backBtn.addEventListener('click', onBack);
-    panel.appendChild(backBtn);
-
-    var privacy = document.createElement('p');
-    privacy.className = 'consult-privacy';
-    privacy.textContent = '下の一覧にあるボタンは、LINE・メール・電話のアプリを開くだけです。'
-      + 'このサイトから相談内容が送信されることはありません。';
-    panel.appendChild(privacy);
-
     // (1) ひな形文の具体化。会社情報が登録されていれば連絡先が自動で入る。
     var templateText = buildTemplateText(opts, answers);
     var company = getCompany();
@@ -923,6 +912,13 @@
     tmplBtns.appendChild(editBtn);
     tmplBtns.appendChild(buildCopyButton(function () { return messageText; }));
     tmplWrap.appendChild(tmplBtns);
+
+    // 自由記入の案内。本文に混ぜるとそのまま相手に届いてしまうので枠の外に出す
+    var editHint = document.createElement('p');
+    editHint.className = 'consult-edit-hint';
+    editHint.textContent = '（ご質問・補足があれば内容を編集ボタンから追記してください）';
+    tmplWrap.appendChild(editHint);
+
     panel.appendChild(tmplWrap);
 
     // 送信ボタンなどから常に最新の本文を読むための入口
@@ -1002,6 +998,15 @@
     disclaimer.className = 'consult-disclaimer';
     disclaimer.textContent = '相談の受付可否・費用は各専門家に直接ご確認ください。書類の作成・提出の代行は行いません。';
     panel.appendChild(disclaimer);
+
+    // 相談内容を選び直す導線。画面上部からは外したが、選び直せないと詰むので
+    // いちばん下に控えめに置く（本人指示 2026-08-17、上部の文言は削除）。
+    var backBtn = document.createElement('button');
+    backBtn.type = 'button';
+    backBtn.className = 'consult-back';
+    backBtn.textContent = '相談内容を選び直す';
+    backBtn.addEventListener('click', onBack);
+    panel.appendChild(backBtn);
   }
 
   function mount(container, opts) {
