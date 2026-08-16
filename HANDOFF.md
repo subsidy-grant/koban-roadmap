@@ -1,12 +1,36 @@
 # 引き継ぎ
 
-## 次の安全なアクション（最新・2026-08-17 第19セッション、⑦の組み直し＋採択基準ページの全面改修。すべてpush・デプロイ済み）
+## 次の安全なアクション（最新・2026-08-17 第20セッション、専門家相談機能の新規実装。すべてpush・デプロイ済み）
 
 **次の安全なアクションは、本人からの次の指示を待つこと。** 積み残しの技術タスクはない。
-本セッションで第18セッションからの持ち越し（⑦美容業の制度組み直し）を完了し、
-そのあと本人指示で採択基準ページ（criteria.html）を4回にわたり改修した。
+本セッションでは専門家相談機能をゼロから実装し、9コミットをpush・デプロイ済み
+（`7ba3309`〜`b9f91e7`）。**05:11時点のローカルHEADとorigin/mainはともに `b9f91e7` で一致、
+作業ツリーはクリーン。**
 
-### 再開者が仮定してはいけないこと
+本人が明示的に「まだ作らない」と判断したものが2つある（下記「未着手の範囲」参照）。
+これらを気を利かせて実装しないこと。
+
+### 再開者が仮定してはいけないこと（第20セッション分を先頭に追加）
+
+- **「相談機能に載っている専門家2人は実在する」と仮定しないこと（最重要）。**
+  `experts_data.js` の `experts` 配列にある社労士・診断士の2件は**動作確認用のサンプルで
+  実在しない**。連絡先も届かないダミー（`sample-sr@example.com` / `03-0000-0000` 等）。
+  提携先が決まったらこの2件を実データで置き換える。ファイル冒頭に注意書きあり。
+  **提携先はまだ1人も決まっていない**
+- **「相談ページの送信ボタンは実際に送信する」と仮定しないこと。** 「LINEで送信」
+  「メールで送信」は**動きだけのダミー**。押すと送信先選択→確認→「送信しました
+  （画面上の動作確認のみ）」まで進むが、何も送られない。本物の連絡手段は専門家カード内の
+  「LINEで相談する / メールで相談する / 電話する」（mailto: と LINE ディープリンク）。
+  本番化するときは `consult.js` の `doSend()` を差し替える
+- **「consult.js は company_data.js の API を使っている」と仮定しないこと。**
+  `KOBAN_COMPANY.getCurrent()` は未登録端末に空の「会社1」を書き込む副作用がある
+  （旧形式からの移行処理を兼ねているため）。相談パネルを開いただけで書き込みたくないので、
+  **consult.js は localStorage を直接読んでいる**（キー `koban_companies` /
+  `koban_currentCompanyId`）。**company_data.js のキー名を変えたら consult.js も直すこと**
+- **「申請進捗ページは消した」と仮定しないこと。** 2026-08-17に**タブバーから外しただけ**で、
+  `applications.html` は存在し機能する。`documents.html`（様式準備の完了時）と
+  `profile_status.html` から個別にリンクしている。タブバーは5枠固定で、外した枠に
+  「相談」を入れた
 
 - **「ものづくり補助金は現役の制度」と仮定しないこと（重要）。** 第23次で新規公募が終了して
   いる。旧サイト（portal.monodukuri-hojo.jp）に終了告知が出ていないため見落としやすいが、
@@ -34,6 +58,143 @@
   insetが常に0のため）ので、PCブラウザの確認だけでは気づけない
 - **「加点は多いほど採択率が上がる」と仮定しないこと。** 公式データでは3個までが急伸し
   4個以降は頭打ち。かつ公表は第16次で更新停止しており、直近回や後継制度には当てはまらない
+
+---
+
+## 2026-08-17（第20セッション）専門家相談機能の新規実装
+
+### 1. 現在の目標
+
+「制度を知る」で止まっていたサイトに「活用する」への橋を架けること。制度詳細に
+「専門家に相談」ボタンを置き、提携専門家（社労士・診断士等）へ1タップで相談依頼を
+送れるようにする、という本人の要望から開始。セッション途中で本人から追加指示が
+7回入り、そのつど実装・検証・pushを繰り返した。
+
+### 2. 変更点（すべてコミット・push・デプロイ確認済み）
+
+**新規ファイル4つ**
+- `experts_data.js` — 専門家データ。`window.KOBAN_EXPERTS`（status / experts / demo）と、
+  相談テーマ定義 `KOBAN_CONSULT_TOPICS`（6テーマ、各テーマに対応資格と準備物）、
+  段階定義 `KOBAN_CONSULT_STAGES`（4段階）
+- `consult.js` — 相談パネルの自己完結モジュール。`app_tabbar.js` と同じくCSS・マークアップとも
+  JSが注入する。`window.KOBAN_CONSULT.mount(container, {programKey, programName, kind, topic})`
+- `consult.html` — 相談専用ページ（タブバーの「相談」の遷移先）
+- `LEGAL_NOTES.md` — 法的方針の恒久メモ（後述）
+
+**変更ファイル4つ**
+- `program.html` — `.pt-actions` に「専門家に相談する」ボタン、`#consultPanel`、script2本、
+  render()末尾で `currentProgramKey`/`currentProgram` を保持、印刷除外に `#consultPanel` 追加
+- `criteria.html` — 297行目付近「社会保険労務士にご相談ください」をリンク化し、
+  `kind:'josei'` でパネルを開く
+- `app_tabbar.js` — 「申請進捗」を外し「相談」を右から2番目に追加（5枠維持）。
+  吹き出しアイコン `ICON_CHAT` を新設
+- `sw.js` — v8→v19。CORE_ASSETS に `consult.html`/`consult.js`/`experts_data.js` を追加。
+  `experts_data.js` は FRESH_FIRST に入れた（提携決定後の差し替えを push だけで反映するため）
+
+**実装した機能**
+- 相談導線3か所：制度詳細（program.html）／採択基準（criteria.html）／タブの「相談」
+- 3問アンケートを1問ずつ表示（Q1相談テーマ＝複数選択・必須、Q2段階＝単一・任意、
+  Q3連絡方法＝LINE/メール/電話の複数選択・任意）。答えた問いは畳んで上に残り「変更」で戻れる
+- 回答の使い道3つ：(a)専門家の絞り込み (b)メッセージ本文の生成 (c)準備物の案内
+- 会社情報（profile.html登録分）から連絡先・事業概要を本文に自動挿入
+- メッセージ本文は固定表示（全文が一目で見える）＋「内容を編集する」で textarea に切替
+- 送信ボタン（ダミー）：送信先選択→確認→完了表示。破線枠＋「準備中」バッジで仮と分かる見た目
+
+**外部状態の変更**
+- なし（DB・API・課金なし。localStorage への書き込みもしていない）
+
+### 3. 検証済みの証拠
+
+すべて Playwright（実ブラウザ Chromium）で確認。**05:11時点で本番URLに反映済みを確認**。
+
+| 確認したこと | 方法・結果 | 時刻 |
+|---|---|---|
+| 本番のキャッシュ名 | `curl https://subsidy-grant.github.io/koban-roadmap/sw.js` → `koban-roadmap-v19` | 05:11 |
+| 本番のconsult.html | curl → HTTP 200 | 05:11 |
+| 最新デプロイ | `gh run list` → conclusion:success, headSha:`b9f91e7`（19:58Z作成） | 05:11 |
+| ローカル/リモート同期 | `git rev-parse HEAD` と `origin/main` がともに `b9f91e7` | 05:11 |
+| 作業ツリー | `git status --short` が空 | 05:11 |
+| 専門家の絞り込み | career(josei)×wage→社労士のみ／ai(hojo)×plan→診断士のみ／助成金×診断士向けテーマ→社労士（種別を維持したまま広げる） | 実装時 |
+| ひな形の生成 | 3起動元（相談ページ／制度詳細／採択基準）で本文を出力しファイルに保存して目視 | 実装時 |
+| 会社情報の自動挿入 | localStorageに投入→再読込→本文に反映を確認。未登録時は空欄書式＋登録リンク | 実装時 |
+| localStorageへの書き込み | 未登録端末で相談パネルを開いた後 `koban_companies` が null のままであることを確認 | 実装時 |
+| 送信フロー | LINE/メール両方で 選択→確認→完了 を通し、候補が1人なら自動選択・2人なら未選択を確認 | 実装時 |
+| 全ページ回帰 | 8ページ（index/documents/improvement/consult/profile/criteria/program/applications）でJSエラー0、タブ5枚 | 実装時 |
+| モバイル | 375px幅で横あふれ0、タップ領域44px以上、本文の見切れなし（scrollHeight==clientHeight） | 実装時 |
+| 印刷 | `emulate_media(print)` で `#consultPanel` と `.pt-actions` が display:none | 実装時 |
+
+### 4. 一次情報の取り直しコマンド
+
+```sh
+# 本番に何が出ているか（キャッシュ名・機能の有無）
+curl -s https://subsidy-grant.github.io/koban-roadmap/sw.js | grep -o "koban-roadmap-v[0-9]*"
+curl -s https://subsidy-grant.github.io/koban-roadmap/experts_data.js | grep -c "sample-sharoushi"
+
+# デプロイ状況（ローカルのコミットと headSha が一致しているかを見る）
+gh run list --repo subsidy-grant/koban-roadmap --limit 3 --json status,conclusion,headSha,createdAt
+
+# ローカルとリモートのズレ
+git -C /d/Claudecode/koban-roadmap rev-parse HEAD origin/main
+
+# 相談機能を実ブラウザで触る（サンプル専門家は expertdemo なしでも出る）
+cd /d/Claudecode/koban-roadmap && python -m http.server 8123
+# → http://localhost:8123/consult.html
+```
+
+### 5. 未着手の範囲（本人が明示的に「やらない」と判断したもの）
+
+- **メール送信基盤（1ボタンで実送信）** — 調査だけ実施。**本人が「送信基盤はまだ入れません」と
+  明言**。推奨案は Google Apps Script を中継役にし、宛先アドレスではなく専門家ID
+  （`sr-001` 等）を送る方式（GAS側の対応表に無いIDは拒否＝踏み台化しない）。
+  Netlify Forms はサイト移転が必要、Vercel Hobby は非商用限定で規約違反、Resend は
+  `github.io` でドメイン認証不可、MailChannels/SendGrid は無料枠終了、というのが脱落理由
+- **専門家の登録・管理画面** — **本人が「まだ作らない」と明言**。当面は
+  `experts_data.js` を直接編集する運用。静的サイトなので管理画面から本番に保存する仕組みは
+  作れず、作るなら「入力補助ツール（コードを生成してコピー）」が現実的、という整理まで
+- **サイト内メッセージ機能** — 設計案の資料のみ作成（実装なし）。
+  https://claude.ai/code/artifact/0e9ce86a-fe40-441f-8654-568015ec786a
+- **index.html への相談導線** — タブバーから行けるので今回は触っていない
+- **joseikin-navi への横展開** — そもそも joseikin-navi 自体を削除したので該当なし
+
+### 6. 不確実な点・リスク
+
+- **サンプル専門家2件が本番に出ている。** 「（サンプル・実在しません）」と明記し連絡先も
+  ダミーだが、**一般利用者が見て混乱する可能性はある**。本人の指示で入れたもの。
+  提携先が決まるまでの暫定状態であることを忘れないこと
+- **送信ボタンがダミーのまま本番にある。** 「準備中」バッジと破線枠、完了画面の
+  「実際にはまだ送信されません」で示しているが、押した人が送れたと誤解するリスクはゼロではない
+- **GASのCORS挙動は未検証。** 調査エージェントの実測（`script.google.com` は
+  `Access-Control-Allow-Origin` を返さないので `Content-Type: text/plain` にして
+  単純リクエストにする）はGoogle公式ドキュメントに記載がない。実装時に実ブラウザで要検証
+- **送信基盤の費用・無料枠は着手時に再確認が必要。** 調査は 2026-08-17 時点のもので、
+  各社の料金・無料枠は変わる
+- **`--sage-ink` は program.html と consult.html に未定義。** consult.js は
+  `var(--sage-ink, var(--ink))` とフォールバック付きで参照しているので動くが、
+  criteria.html と index.html にしか定義がないことは把握しておくこと
+
+### 7. 触ってはいけない領域
+
+- **`page_data.js` / `sim_data.js` は生成物。** 手編集しない。制度データを直すときは
+  `index.html` の PROGRAMS を直して `_tools/build_page_data.py` を流す
+- **`trig_01Vbn8wKa1hdiWyr1DS1ciYo`（koban-roadmap 週次自動更新）は enabled:true で稼働中。**
+  05:11時点で `last_fired_at` 2026-08-16T13:01Z、`next_run_at` 2026-08-23T13:00Z。
+  今回のセッションでは触っていない。止めないこと
+- **`applications.html` を削除しないこと。** タブから外れただけで現役
+- **提携が決まっていない専門家を `experts` に実名で書かないこと。** `LEGAL_NOTES.md` の方針
+
+### 8. 最後の判断・関門
+
+- 直前の判断：本人の「また相談します」でセッションを閉じる流れだったが、`/handoff` の
+  指示を受けて引き継ぎを作成した
+- 本人確認待ちの事項：**なし**。未着手3件はいずれも本人が明示的に「やらない」と判断済みで、
+  待ちの状態ではない
+- 本セッションで削除したもの（第19セッションからの変更）：
+  **`D:\Claudecode\joseikin-navi` と `D:\Claudecode\hojosei-concierge` をフォルダごと削除**
+  （本人指示）。両方とも未コミット変更なしを確認してから削除。hojosei-concierge の
+  `.dev.vars` に実際のAnthropic APIキーがあったが `.gitignore` 対象でgit履歴にも含まれず、
+  フォルダ削除でローカルからは消滅。**GitHub側にリポジトリが残っている場合の secrets は未確認**。
+  joseikin-navi の週次トリガー `trig_01NR6Zudgzk6v1wzC5wPDZza` は削除前から enabled:false
+  だったものを再度 disable 済み（05:11時点で enabled:false を確認）
 
 ---
 
