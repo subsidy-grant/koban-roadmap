@@ -106,6 +106,39 @@
   @media (max-width: 640px) { .src-list { columns: 1; } }
   .note { font-size: 0.78rem; color: var(--ink-faint); margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 
+  /* スマホでは表を横スクロールさせず、1行＝1カードの縦積みに組み替える
+     （2026-08-16、本人指示）。table に min-width:680px があるため、この幅では
+     どうしても横スクロールが必要になっていた。
+     各 td の data-label を見出しとして左に出し、値を右に置く2段組みにする。 */
+  @media (max-width: 640px) {
+    .twrap { overflow-x: visible; border: none; background: none; box-shadow: none; }
+    table.stackable { min-width: 0; display: block; font-size: 0.88rem; }
+    table.stackable thead { position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    table.stackable tbody, table.stackable tr, table.stackable td { display: block; width: 100%; }
+    table.stackable tr {
+      background: var(--paper-raised); border: 1px solid var(--line);
+      border-radius: var(--radius-md); margin-bottom: 0.7rem; padding: 0.2rem 0;
+      box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+    }
+    table.stackable tr:last-child { margin-bottom: 0; }
+    table.stackable td { border-bottom: 1px dashed var(--line); padding: 0.55rem 0.9rem; }
+    table.stackable tr td:last-child { border-bottom: none; }
+    table.stackable td::before {
+      content: attr(data-label);
+      display: block; font-size: 0.72rem; font-weight: 700;
+      color: var(--ink-faint); letter-spacing: 0.04em; margin-bottom: 0.15rem;
+    }
+    /* 1列目は行の見出しなので、ラベルを出さずに大きく見せる */
+    table.stackable tr td:first-child {
+      background: var(--accent-wash); border-radius: var(--radius-sm);
+      margin: 0.35rem 0.5rem; padding: 0.5rem 0.7rem; border-bottom: none;
+      font-size: 0.95rem;
+    }
+    table.stackable tr td:first-child::before { display: none; }
+    td.tag { white-space: normal; }
+  }
+
   /* 公開版の可読性・操作性の下限（2026-07-29／本体 index.html と同じ方針）
      利用者に50〜80代を想定し、リンク等の当たり判定を44px以上にする。
      文章中に挟まるリンクは行を崩すため対象外（WCAGでも文中リンクは例外）。 */
@@ -135,14 +168,13 @@
   }
 </style></head><body><main>
 
-<p class="back"><a href="index.html">← ロードマップ本体へ戻る</a></p>
+<!-- 「← ロードマップ本体へ戻る」は2026-08-16に削除（本人指示）。
+     下部タブバー（app_tabbar.js）から各ページへ移動できるため重複していた。 -->
 <h1>採択基準・返還基準 調査ノート</h1>
 <p class="sub">各補助金・助成金の公式な公募要領・交付規程・審査基準を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を整理しました。個社の年商・決算まで含む実例を大量収集する調査ではなく、公式文書ベースで再現性のある基準を抽出しています。</p>
 
-<div class="disclaimer">
-<strong>このページの性質について</strong><br>
-補助金の個社別の詳細な財務データ（年商・決算内容等）は公開されていないため、実在企業の大量サンプル分析はできません。ここでは公式の公募要領・交付規程・会計検査院報告など一次情報から、審査項目・加点項目・返還事由の「型」を抽出しています。制度は毎年改定されるため、実際の申請前には必ず各制度の最新の公式サイトをご確認ください。
-</div>
+<!-- 「このページの性質について」は2026-08-16にページ下部（出典一覧の後ろ）へ移動した
+     （本人指示）。冒頭で断り書きを読ませるより、先に中身を見せる並びにする。 -->
 
 <div class="stat-grid">
   <div class="stat"><div class="n">4区分</div><div class="t">競争審査型の評価軸（適格性・技術面・計画面・政策面）</div></div>
@@ -153,13 +185,13 @@
 
 <h2>採択基準：競争審査型のフレームワーク</h2>
 <p class="sub">小規模事業者持続化補助金・中小企業省力化投資補助金（一般型）・新事業進出／ものづくり補助金など、審査員による点数評価がある制度はほぼ共通してこの4区分で評価されています。</p>
-<div class="twrap"><table>
+<div class="twrap"><table class="stackable">
 <thead><tr><th>区分</th><th>評価される内容</th></tr></thead>
 <tbody>
-<tr><td><strong>①適格性</strong></td><td>対象者・対象経費・必須要件を満たしているかの形式確認。ここで不備があると内容審査に進めない</td></tr>
-<tr><td><strong>②技術・事業面</strong></td><td>課題分析の的確さ、解決策の妥当性と独自性、投資回収期間の短さ、付加価値額の年平均成長率目標の高さ</td></tr>
-<tr><td><strong>③計画面</strong></td><td>実施体制（人員・財務状況）の妥当性、スケジュールの実現可能性、賃上げ目標の水準と達成見込み、会社全体への波及効果</td></tr>
-<tr><td><strong>④政策面</strong></td><td>地域経済への波及効果、国の政策アジェンダ（DX・GX・事業承継・輸出拡大等）との合致度</td></tr>
+<tr><td data-label="区分"><strong>①適格性</strong></td><td data-label="評価される内容">対象者・対象経費・必須要件を満たしているかの形式確認。ここで不備があると内容審査に進めない</td></tr>
+<tr><td data-label="区分"><strong>②技術・事業面</strong></td><td data-label="評価される内容">課題分析の的確さ、解決策の妥当性と独自性、投資回収期間の短さ、付加価値額の年平均成長率目標の高さ</td></tr>
+<tr><td data-label="区分"><strong>③計画面</strong></td><td data-label="評価される内容">実施体制（人員・財務状況）の妥当性、スケジュールの実現可能性、賃上げ目標の水準と達成見込み、会社全体への波及効果</td></tr>
+<tr><td data-label="区分"><strong>④政策面</strong></td><td data-label="評価される内容">地域経済への波及効果、国の政策アジェンダ（DX・GX・事業承継・輸出拡大等）との合致度</td></tr>
 </tbody>
 </table></div>
 
@@ -173,34 +205,34 @@
 <p class="sub">ものづくり補助金では加点項目が15個公表されており、<strong>4個以上を獲得すると採択率が大きく上がる傾向</strong>が指摘されています。ただし加点はあくまで補助的な要素で、事業計画そのものの具体性・実現可能性が評価の中心です。</p>
 
 <h2>制度別サマリー</h2>
-<div class="twrap"><table>
+<div class="twrap"><table class="stackable">
 <thead><tr><th>制度</th><th>審査方式</th><th>主な評価軸・加点</th><th>出典</th></tr></thead>
 <tbody>
-<tr><td>小規模事業者持続化補助金</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>経営計画の定量的目標設定、赤字賃上げ加点・健康経営優良法人加点等（加点は最大2つまで選択可）</td><td><a href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">中小企業庁 公募要領 ↗</a></td></tr>
-<tr><td>中小企業省力化投資補助金＜一般型＞</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>省力化指数、投資回収期間、賃上げ目標の水準と実現可能性、賃上げ加点・えるぼし/くるみん認定等</td><td><a href="https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf" target="_blank" rel="noopener noreferrer">公募要領（一般型）↗</a></td></tr>
-<tr><td>新事業進出・ものづくり補助金</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>事業化点・技術点・政策点。加点項目15個（経営革新計画、DX認定、パートナーシップ構築宣言等）</td><td><a href="https://www.sme-support.co.jp/column/p1352/" target="_blank" rel="noopener noreferrer">加点項目一覧の解説 ↗</a></td></tr>
-<tr><td>業務改善助成金</td><td class="tag"><span class="pill requirement">要件充足型</span></td><td>事業場内最低賃金50円以上引上げ等の数値要件クリアが前提。競争選抜ではない</td><td><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページ ↗</a></td></tr>
-<tr><td>キャリアアップ助成金</td><td class="tag"><span class="pill requirement">要件充足型</span></td><td>正社員転換後の賃金3%以上引上げ等、要件を満たせば原則支給</td><td><a href="https://hojyokin-portal.jp/columns/career-up_summary" target="_blank" rel="noopener noreferrer">全コース解説 ↗</a></td></tr>
-<tr><td>人材開発支援助成金</td><td class="tag"><span class="pill requirement">要件充足型</span></td><td>10時間以上の訓練実施等の要件クリア。事業展開等リスキリング支援コースは中小企業助成率75%</td><td><a href="https://www.gov-online.go.jp/article/202302/entry-9899.html" target="_blank" rel="noopener noreferrer">政府広報オンライン ↗</a></td></tr>
-<tr><td>デジタル化・AI導入補助金</td><td class="tag"><span class="pill requirement">要件充足型</span></td><td>中小企業者基準内であれば規模を問わず対象。効果の定量的な説明力が採択事例で目立つ</td><td><a href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）↗</a></td></tr>
-<tr><td>飲食業労働生産性向上支援補助金</td><td class="tag"><span class="pill unclear">審査詳細非公表</span></td><td>調理・接客・店舗管理いずれかでの人手不足解消の根拠が重要と推測される</td><td><a href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページ ↗</a></td></tr>
-<tr><td>観光地・観光産業省力化投資補助事業</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>DMO・自治体等との地域連携が必須要件。配点は非公表</td><td><a href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイト ↗</a></td></tr>
-<tr><td>空き家対策モデル事業</td><td class="tag"><span class="pill competitive">競争審査型（提案公募）</span></td><td>先進性、他地域への波及可能性。令和8年度は36件採択</td><td><a href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページ ↗</a></td></tr>
-<tr><td>【東京都】創業助成事業</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>経費項目ごとの積算根拠、市場調査に基づく事業計画の具体性が重要と推測される</td><td><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション ↗</a></td></tr>
-<tr><td>【東京都】中小企業デジタル導入促進補助事業</td><td class="tag"><span class="pill requirement">要件充足型</span></td><td>対象経費の範囲内での予算先着的な運用と推測される</td><td><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
-<tr><td>【東京都】創意工夫チャレンジ促進事業</td><td class="tag"><span class="pill competitive">競争審査型</span></td><td>直近決算の業績悪化要件＋事業計画の業績改善への説得力</td><td><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
+<tr><td data-label="制度">小規模事業者持続化補助金</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">経営計画の定量的目標設定、赤字賃上げ加点・健康経営優良法人加点等（加点は最大2つまで選択可）</td><td data-label="出典"><a href="https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html" target="_blank" rel="noopener noreferrer">中小企業庁 公募要領 ↗</a></td></tr>
+<tr><td data-label="制度">中小企業省力化投資補助金＜一般型＞</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">省力化指数、投資回収期間、賃上げ目標の水準と実現可能性、賃上げ加点・えるぼし/くるみん認定等</td><td data-label="出典"><a href="https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf" target="_blank" rel="noopener noreferrer">公募要領（一般型）↗</a></td></tr>
+<tr><td data-label="制度">新事業進出・ものづくり補助金</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">事業化点・技術点・政策点。加点項目15個（経営革新計画、DX認定、パートナーシップ構築宣言等）</td><td data-label="出典"><a href="https://www.sme-support.co.jp/column/p1352/" target="_blank" rel="noopener noreferrer">加点項目一覧の解説 ↗</a></td></tr>
+<tr><td data-label="制度">業務改善助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">事業場内最低賃金50円以上引上げ等の数値要件クリアが前提。競争選抜ではない</td><td data-label="出典"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener noreferrer">厚生労働省 公式ページ ↗</a></td></tr>
+<tr><td data-label="制度">キャリアアップ助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">正社員転換後の賃金3%以上引上げ等、要件を満たせば原則支給</td><td data-label="出典"><a href="https://hojyokin-portal.jp/columns/career-up_summary" target="_blank" rel="noopener noreferrer">全コース解説 ↗</a></td></tr>
+<tr><td data-label="制度">人材開発支援助成金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">10時間以上の訓練実施等の要件クリア。事業展開等リスキリング支援コースは中小企業助成率75%</td><td data-label="出典"><a href="https://www.gov-online.go.jp/article/202302/entry-9899.html" target="_blank" rel="noopener noreferrer">政府広報オンライン ↗</a></td></tr>
+<tr><td data-label="制度">デジタル化・AI導入補助金</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">中小企業者基準内であれば規模を問わず対象。効果の定量的な説明力が採択事例で目立つ</td><td data-label="出典"><a href="https://it-shien.smrj.go.jp/applicant/subsidy/normal/" target="_blank" rel="noopener noreferrer">公式サイト（通常枠）↗</a></td></tr>
+<tr><td data-label="制度">飲食業労働生産性向上支援補助金</td><td class="tag" data-label="審査方式"><span class="pill unclear">審査詳細非公表</span></td><td data-label="主な評価軸・加点">調理・接客・店舗管理いずれかでの人手不足解消の根拠が重要と推測される</td><td data-label="出典"><a href="https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html" target="_blank" rel="noopener noreferrer">農林水産省 公式ページ ↗</a></td></tr>
+<tr><td data-label="制度">観光地・観光産業省力化投資補助事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">DMO・自治体等との地域連携が必須要件。配点は非公表</td><td data-label="出典"><a href="https://kanko-jinzai.go.jp/" target="_blank" rel="noopener noreferrer">観光庁 特設サイト ↗</a></td></tr>
+<tr><td data-label="制度">空き家対策モデル事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型（提案公募）</span></td><td data-label="主な評価軸・加点">先進性、他地域への波及可能性。令和8年度は36件採択</td><td data-label="出典"><a href="https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html" target="_blank" rel="noopener noreferrer">国土交通省 公式ページ ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】創業助成事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">経費項目ごとの積算根拠、市場調査に基づく事業計画の具体性が重要と推測される</td><td data-label="出典"><a href="https://startup-station.jp/m2/services/sogyokassei/" target="_blank" rel="noopener noreferrer">TOKYO創業ステーション ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】中小企業デジタル導入促進補助事業</td><td class="tag" data-label="審査方式"><span class="pill requirement">要件充足型</span></td><td data-label="主な評価軸・加点">対象経費の範囲内での予算先着的な運用と推測される</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
+<tr><td data-label="制度">【東京都】創意工夫チャレンジ促進事業</td><td class="tag" data-label="審査方式"><span class="pill competitive">競争審査型</span></td><td data-label="主な評価軸・加点">直近決算の業績悪化要件＋事業計画の業績改善への説得力</td><td data-label="出典"><a href="https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社 ↗</a></td></tr>
 </tbody>
 </table></div>
 
 <h2>返還基準：発生パターンの整理</h2>
-<div class="twrap"><table>
+<div class="twrap"><table class="stackable">
 <thead><tr><th>パターン</th><th>主な該当制度</th><th>内容</th></tr></thead>
 <tbody>
-<tr><td><strong>目標未達型</strong></td><td>ものづくり補助金／デジタル化・AI導入補助金／業務改善助成金</td><td>賃上げ目標が未達の場合、未達年度に応じ段階的に返還（例：1年目未達で全額、2年目2/3、3年目1/3）。天災等やむを得ない事情があれば免除されることがある</td></tr>
-<tr><td><strong>収益納付型</strong></td><td>ものづくり補助金等</td><td>補助事業により自己負担額を超える利益が生じた場合、超過分の一部を国に納付</td></tr>
-<tr><td><strong>実態乖離型</strong></td><td>業務改善助成金／キャリアアップ助成金／省力化投資補助金</td><td>賃金台帳・出勤簿等の実地調査で「賃上げをしていない」「解雇した」等が判明すると不支給・返還。業務改善助成金は支給後6か月以内の解雇・賃下げも返還事由</td></tr>
-<tr><td><strong>重複・詐称型</strong></td><td>小規模事業者持続化補助金／キャリアアップ助成金／人材開発支援助成金</td><td>既採択事業との重複受給、実質的な第三者による事業実施、訓練実態のない書類のみの整備</td></tr>
-<tr><td><strong>組織的スキーム型</strong></td><td>デジタル化・AI導入補助金／人材開発支援助成金</td><td>ITベンダーや訓練会社が主導するキックバック・実質無料化スキーム。会計検査院の抽出調査や労働局の一斉確認で複数事業者がまとめて発覚しやすい</td></tr>
+<tr><td data-label="パターン"><strong>目標未達型</strong></td><td data-label="主な該当制度">ものづくり補助金／デジタル化・AI導入補助金／業務改善助成金</td><td data-label="内容">賃上げ目標が未達の場合、未達年度に応じ段階的に返還（例：1年目未達で全額、2年目2/3、3年目1/3）。天災等やむを得ない事情があれば免除されることがある</td></tr>
+<tr><td data-label="パターン"><strong>収益納付型</strong></td><td data-label="主な該当制度">ものづくり補助金等</td><td data-label="内容">補助事業により自己負担額を超える利益が生じた場合、超過分の一部を国に納付</td></tr>
+<tr><td data-label="パターン"><strong>実態乖離型</strong></td><td data-label="主な該当制度">業務改善助成金／キャリアアップ助成金／省力化投資補助金</td><td data-label="内容">賃金台帳・出勤簿等の実地調査で「賃上げをしていない」「解雇した」等が判明すると不支給・返還。業務改善助成金は支給後6か月以内の解雇・賃下げも返還事由</td></tr>
+<tr><td data-label="パターン"><strong>重複・詐称型</strong></td><td data-label="主な該当制度">小規模事業者持続化補助金／キャリアアップ助成金／人材開発支援助成金</td><td data-label="内容">既採択事業との重複受給、実質的な第三者による事業実施、訓練実態のない書類のみの整備</td></tr>
+<tr><td data-label="パターン"><strong>組織的スキーム型</strong></td><td data-label="主な該当制度">デジタル化・AI導入補助金／人材開発支援助成金</td><td data-label="内容">ITベンダーや訓練会社が主導するキックバック・実質無料化スキーム。会計検査院の抽出調査や労働局の一斉確認で複数事業者がまとめて発覚しやすい</td></tr>
 </tbody>
 </table></div>
 
@@ -246,6 +278,11 @@
 <li><a href="https://it-shien.smrj.go.jp/applicant/example/" target="_blank" rel="noopener noreferrer">ITツール活用事例（デジタル化・AI導入補助金公式サイト）</a></li>
 <li><a href="https://hojyokin-portal.jp/columns/huseihanrei" target="_blank" rel="noopener noreferrer">助成金・補助金 不正受給の判例まとめ</a></li>
 </ul>
+
+<div class="disclaimer">
+<strong>このページの性質について</strong><br>
+補助金の個社別の詳細な財務データ（年商・決算内容等）は公開されていないため、実在企業の大量サンプル分析はできません。ここでは公式の公募要領・交付規程・会計検査院報告など一次情報から、審査項目・加点項目・返還事由の「型」を抽出しています。制度は毎年改定されるため、実際の申請前には必ず各制度の最新の公式サイトをご確認ください。
+</div>
 
 <p class="note">本ページの内容は公式資料・報道時点の情報に基づく調査ノートであり、随時制度改定が行われます。実際の申請にあたっては、各制度の最新の公募要領・交付規程を必ず確認してください。</p>
 
