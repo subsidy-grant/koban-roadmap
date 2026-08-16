@@ -244,38 +244,62 @@
   }
 
   // answers.topics / answers.contacts は配列、answers.stage は単一の文字列。
+  //
+  // 本文の構成（本人指示 2026-08-17）：
+  //   挨拶 → 【検討中の制度】→ アンケート回答（【】見出し付き）→ 【事業の概要】
+  //   → 【ご連絡先】（最後）
+  // アンケートのどの問いへの答えかが読んで分かるよう、見出しは【】で揃え、
+  // ブロックごとに空行を入れる。
   function buildTemplateText(opts, answers) {
     answers = answers || {};
     var topicIds = answers.topics || [];
     var lines = ['はじめまして。「補助金活用 業務改善ロードマップ」を見てご連絡しました。'];
+
     if (opts.programName) {
-      lines.push('検討中の制度：' + opts.programName);
+      lines.push('');
+      lines.push('【検討中の制度】');
+      lines.push(opts.programName);
       if (opts.programKey) {
         lines.push(location.origin + location.pathname.replace(/[^/]*$/, '') +
           'program.html?key=' + encodeURIComponent(opts.programKey));
       }
     }
+
     var labels = topicIds.map(function (id) {
       var t = findTopic(id);
       return t ? t.label : '';
     }).filter(function (s) { return s && s.indexOf('その他') !== 0; });
+    lines.push('');
+    lines.push('【相談したいこと】');
     if (labels.length) {
-      lines.push('相談したいこと：');
       labels.forEach(function (l) { lines.push('・' + l); });
     } else {
-      lines.push('相談したいこと：' + (opts.topic || '（ここにご記入ください）'));
+      lines.push(opts.topic || '（ここにご記入ください）');
     }
+
     var stage = answers.stage ? findStage(answers.stage) : null;
-    if (stage) lines.push('いまの状況：' + stage.label);
+    if (stage) {
+      lines.push('');
+      lines.push('【いまの状況】');
+      lines.push(stage.label);
+    }
+
     var contacts = answers.contacts || [];
     if (contacts.length) {
-      lines.push('希望の連絡方法：' + contacts.map(function (c) {
-        return CONTACT_LABEL[c] || c;
-      }).join('・'));
+      lines.push('');
+      lines.push('【希望の連絡方法】');
+      lines.push(contacts.map(function (c) { return CONTACT_LABEL[c] || c; }).join('・'));
     }
-    // 会社情報が登録されていれば連絡先と事業の概要を添える。
-    // 未登録なら書式だけ残し、利用者が手で埋められるようにする。
+
+    // 会社情報が登録されていれば事業の概要と連絡先を添える。
+    // 未登録なら連絡先の書式だけ残し、利用者が手で埋められるようにする。
+    // 連絡先は本文のいちばん最後（本人指示 2026-08-17）。
     var block = buildCompanyBlock(getCompany());
+    if (block && block.biz.length) {
+      lines.push('');
+      lines.push('【事業の概要】');
+      block.biz.forEach(function (l) { lines.push(l); });
+    }
     lines.push('');
     lines.push('【ご連絡先】');
     if (block && block.contact.length) {
@@ -285,11 +309,6 @@
       lines.push('ご担当：');
       lines.push('電話：');
       lines.push('メール：');
-    }
-    if (block && block.biz.length) {
-      lines.push('');
-      lines.push('【事業の概要】');
-      block.biz.forEach(function (l) { lines.push(l); });
     }
     // 自由記入の案内は本文に混ぜず、画面側（枠の外）に出す。
     // そのまま送られると相手に「（ご記入ください）」が届いてしまうため
@@ -996,7 +1015,7 @@
 
     var disclaimer = document.createElement('p');
     disclaimer.className = 'consult-disclaimer';
-    disclaimer.textContent = '相談の受付可否・費用は各専門家に直接ご確認ください。書類の作成・提出の代行は行いません。';
+    disclaimer.textContent = '相談の受付可否・費用は各専門家に直接ご確認ください。';
     panel.appendChild(disclaimer);
 
     // 相談内容を選び直す導線。画面上部からは外したが、選び直せないと詰むので
