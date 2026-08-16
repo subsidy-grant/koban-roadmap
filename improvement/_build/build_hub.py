@@ -205,10 +205,16 @@ def main():
                 # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
-                if pl.get("icon"):
+                # 実写の写真を最優先（2026-08-02、本人指示でアイコン絵文字から差し替え）。
+                # 写真が無い案だけ絵文字アイコンで代替する。
+                # 2026-08-16に修正: iconとimageが両方あるとき、iconを先にチェックして
+                # imageが一度も使われない逆順のバグがあった（写真が10件とも設定済みなのに
+                # 絵文字しか出ていなかった）。embed_hub_cards.py(旧・index.html埋め込み版)
+                # では正しくimage優先だったので、それに合わせた。
+                if pl.get("image"):
+                    parts.append(f'<div class="thumb"><img src="{LINK_PREFIX}{ik}/{pl["image"]}" alt="" loading="lazy" width="640" height="360"></div>')
+                elif pl.get("icon"):
                     parts.append(f'<div class="thumb"><div class="thumb-icon">{pl["icon"]}</div></div>')
-                elif pl.get("image"):
-                    parts.append(f'<div class="thumb"><img src="{LINK_PREFIX}{ik}/{pl["image"]}" alt="" loading="lazy"></div>')
                 else:
                     parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
@@ -229,7 +235,17 @@ def main():
                 # 無いのにリンクを出すと404になるので、実ファイルの有無で出し分ける。
                 proto_file = f'proto-{no:02d}-{pl["slug"]}.html'
                 parts.append('<div class="card">')
-                parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
+                # 実写の写真を最優先（2026-08-02、本人指示で絵文字から差し替え）。
+                # plans/*.json は build_plan_data.py の生成物で直接編集できないため、
+                # improvement/{ik}/img10/plan-NN.jpg が実在するかで出し分ける。
+                # 2026-08-16に修正: build_hub.pyにはこの分岐自体が無く、写真が
+                # 60枚（5業種×10件）とも一度も使われず絵文字のままだった。
+                # embed_hub_cards.py(旧・index.html埋め込み版)の実装に合わせた。
+                img_file = os.path.join(IMPROVEMENT, ik, "img10", f"plan-{no:02d}.jpg")
+                if os.path.exists(img_file):
+                    parts.append(f'<div class="thumb"><img src="{LINK_PREFIX}{ik}/img10/plan-{no:02d}.jpg" alt="" loading="lazy" width="640" height="360"></div>')
+                else:
+                    parts.append(f'<div class="thumb"><div class="thumb-icon">{category_icon(pl["category"]["name"])}</div></div>')
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')
