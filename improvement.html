@@ -84,7 +84,26 @@
   .card .no { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
   .card .ttl { font-weight:600; font-size:0.95rem; line-height:1.5; }
   .card .meta { font-size:0.76rem; color:var(--ink-faint); }
-  .card .links { margin-top:auto; padding-top:0.6rem; display:flex; gap:1rem; font-size:0.82rem; }
+  /* カード下部のリンク（2026-08-16、絵文字から案9「大きめアイコン」に変更・説明文なし）。
+     縦に2本並べ、行全体を押せるようにする。青＝事業計画書、緑＝プロトタイプで役割を色分け。 */
+  .card .links { margin-top:auto; padding-top:0.6rem; display:flex; flex-direction:column;
+    gap:0.6rem; font-size:0.82rem; }
+  .card .links a { gap:0.6rem; width:100%; padding:0.5rem 0.7rem; border-radius:var(--radius-sm);
+    background:var(--accent-wash); color:var(--ink); align-items:center; text-decoration:none; }
+  .card .links a.proto { background:var(--sage-wash); }
+  .card .links a:hover { text-decoration:none; filter:brightness(0.97); }
+  .card .links .ic { flex:none; width:34px; height:34px; border-radius:8px;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--accent); color:var(--on-accent); }
+  /* アイコン地は白抜きSVGを載せるので、--sage をそのまま使うとライトで4.31:1しか出ず、
+     青側(6.68:1)と比べて弱い。ライトのみ一段暗くして揃える（--sage 自体は他ページ共用なので触らない）。
+     ダークの --sage(#3fd6ac) は10.23:1あるので上書きしない。 */
+  .card .links a.proto .ic { background:#0b7a61; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .card .links a.proto .ic { background:var(--sage); }
+  }
+  :root[data-theme="dark"] .card .links a.proto .ic { background:var(--sage); }
+  .card .links svg { width:19px; height:19px; }
   .pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:var(--radius-md);
     padding:2rem; text-align:center; color:var(--ink-faint); font-size:0.9rem; }
   .note { font-size:0.78rem; color:var(--ink-faint); margin-top:2.5rem; }
@@ -131,70 +150,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">美容室向けAI多言語ブログ自動投稿(10言語SEO/MEO)</div>
 <div class="meta">多言語・インバウンド｜概算 180万円（補助率3/4）｜業務改善助成金</div>
-<div class="links"><a href="improvement/beauty/plan-01.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-01-ai-multilingual-blog.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-01-ai-multilingual-blog.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">美容室向けAI電話予約自動応対</div>
 <div class="meta">予約最適化｜概算 320万円（補助率1/2）｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/beauty/plan-02.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-02-ai-phone-reservation.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-02-ai-phone-reservation.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">美容室向けAIカウンセリング&amp;施術提案カルテ</div>
 <div class="meta">顧客カルテ・CRM｜概算 290万円（補助率1/2）｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/beauty/plan-03.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-03-ai-counseling-karte.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-03-ai-counseling-karte.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">美容室向け口コミAI自動返信&amp;MEO改善</div>
 <div class="meta">MEO・口コミ｜概算 150万円（補助率3/4）｜業務改善助成金</div>
-<div class="links"><a href="improvement/beauty/plan-04.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-04-ai-meo-review.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-04-ai-meo-review.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">美容室向け施術動画ショートAI自動編集</div>
 <div class="meta">SNS自動化｜概算 160万円（補助率3/4）｜業務改善助成金</div>
-<div class="links"><a href="improvement/beauty/plan-05.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-05-ai-short-video.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-05-ai-short-video.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">美容室向け薬剤・材料AI自動発注</div>
 <div class="meta">在庫・発注｜概算 240万円（補助率1/2）｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/beauty/plan-06.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-06-ai-auto-order.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-06-ai-auto-order.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">美容室向けAIシフト自動作成&amp;労務アラート</div>
 <div class="meta">シフト・労務｜概算 210万円（補助率1/2）｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/beauty/plan-07.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-07-ai-shift-romu.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-07-ai-shift-romu.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">美容室向け技術教育動画AI自動生成</div>
 <div class="meta">教育・技術伝承｜概算 170万円（補助率3/4）｜業務改善助成金</div>
-<div class="links"><a href="improvement/beauty/plan-08.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-08-ai-training-video.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-08-ai-training-video.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">美容室向けレジ締め・記帳AI自動化</div>
 <div class="meta">会計・バックオフィス｜概算 200万円（補助率1/2）｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/beauty/plan-09.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-09-ai-accounting.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-09-ai-accounting.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/beauty/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">美容室向けリピート予測&amp;AI再来店フォロー</div>
 <div class="meta">リピート促進｜概算 150万円（補助率3/4）｜業務改善助成金</div>
-<div class="links"><a href="improvement/beauty/plan-10.html">📄 事業計画書（A4×10p）</a><a href="improvement/beauty/proto-10-ai-repeat-follow.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/beauty/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/beauty/proto-10-ai-repeat-follow.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 </div>
 </section>
@@ -205,70 +224,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">モバイルオーダー（セルフオーダー）システム導入によるホール業務の省力化と客単価向上</div>
 <div class="meta">01 モバイルオーダー・キャッシュレス決済｜概算 45万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/food/plan-01.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-01-mobile-order.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-01-mobile-order.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">AI需要予測による自動発注システム導入で食材廃棄ロスと欠品を同時に削減</div>
 <div class="meta">02 食品ロス削減・在庫発注管理｜概算 27万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/food/plan-02.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-02-ai-demand-forecast.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-02-ai-demand-forecast.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">飲食店向け予約管理システム導入によるノーショー対策と予約業務の効率化</div>
 <div class="meta">03 予約・顧客管理DX｜概算 40万円/年間｜小規模事業者持続化補助金</div>
-<div class="links"><a href="improvement/food/plan-03.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-03-reservation-system.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-03-reservation-system.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">配膳・下膳ロボット導入によるホール業務の省人化と提供スピードの向上</div>
 <div class="meta">04 厨房設備・調理効率化(省力化機器)｜概算 60万円/初年度｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/food/plan-04.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-04-delivery-robot.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-04-delivery-robot.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">業務用スチームコンベクションオーブン導入による仕込み時間短縮と賃上げの同時実現</div>
 <div class="meta">04 厨房設備・調理効率化(省力化機器)｜概算 100万円/初期投資｜業務改善助成金</div>
-<div class="links"><a href="improvement/food/plan-05.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-05-steam-convection-oven.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-05-steam-convection-oven.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">キッチンディスプレイシステム(KDS)導入による厨房伝達の正確化と提供スピード向上</div>
 <div class="meta">01 モバイルオーダー・キャッシュレス決済｜概算 20万円/初期投資｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/food/plan-06.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-06-kitchen-display.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-06-kitchen-display.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">空気清浄・換気システム導入による衛生対策の強化と厨房環境の改善</div>
 <div class="meta">07 衛生管理・HACCP対応｜概算 25万円/初期投資｜業務改善助成金</div>
-<div class="links"><a href="improvement/food/plan-07.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-07-ventilation-system.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-07-ventilation-system.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">クラウド勤怠・シフト管理システム導入によるバックオフィス業務の削減</div>
 <div class="meta">08 バックオフィス効率化｜概算 33万円/年間｜飲食業労働生産性向上支援補助金</div>
-<div class="links"><a href="improvement/food/plan-08.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-08-cloud-shift-attendance.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-08-cloud-shift-attendance.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">LED照明への切替による電気料金削減と厨房環境の改善</div>
 <div class="meta">09 店舗環境・省エネ｜概算 60万円/初期投資｜業務改善助成金</div>
-<div class="links"><a href="improvement/food/plan-09.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-09-led-energy-saving.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-09-led-energy-saving.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/food/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">給与計算システムの自動化によるアルバイト多数店舗の労務事務削減</div>
 <div class="meta">08 バックオフィス効率化｜概算 42万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/food/plan-10.html">📄 事業計画書（A4×10p）</a><a href="improvement/food/proto-10-payroll-automation.html">🖥 プロトタイプ</a></div>
+<div class="links"><a href="improvement/food/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a><a class="proto" href="improvement/food/proto-10-payroll-automation.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.8"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg></span>プロトタイプ</a></div>
 </div>
 </div>
 </section>
@@ -279,70 +298,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">セルフチェックイン機の導入によるフロント業務の省力化と深夜帯の負担軽減</div>
 <div class="meta">02 フロント・チェックイン自動化｜概算 158万円/年間｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/lodging/plan-01.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">サイトコントローラーとPMS連携による予約一元管理とダブルブッキング防止</div>
 <div class="meta">01 予約・OTA連携DX｜概算 84万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/lodging/plan-02.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">清掃進捗管理システムの導入による客室ステータス共有と清掃待ちの解消</div>
 <div class="meta">04 客室清掃・リネン管理効率化｜概算 84万円/年間｜観光庁 省力化投資補助事業</div>
-<div class="links"><a href="improvement/lodging/plan-03.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">多言語AIチャットボットの設置による外国人宿泊客への24時間対応</div>
 <div class="meta">03 多言語・インバウンド対応｜概算 97万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/lodging/plan-04.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">ダイナミックプライシングAIの導入による稼働率の平準化と客室単価の最適化</div>
 <div class="meta">01 予約・OTA連携DX｜概算 56万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/lodging/plan-05.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">業務用清掃ロボットの導入によるパブリック空間の床清掃自動化</div>
 <div class="meta">04 客室清掃・リネン管理効率化｜概算 100万円/年間｜観光庁 省力化投資補助事業</div>
-<div class="links"><a href="improvement/lodging/plan-06.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">配膳・下膳ロボットの導入による朝食会場オペレーションの省力化</div>
 <div class="meta">07 レストラン・館内設備の効率化｜概算 170万円/年間｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/lodging/plan-07.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">シフト自動作成・勤怠クラウドの導入による労務管理の省力化と賃上げ原資の確保</div>
 <div class="meta">09 バックオフィス効率化｜概算 52万円/年間｜業務改善助成金</div>
-<div class="links"><a href="improvement/lodging/plan-08.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">高効率空調・給湯設備への更新による光熱費削減と客室快適性の向上</div>
 <div class="meta">10 省エネ・施設環境整備｜概算 338万円/年間｜業務改善助成金</div>
-<div class="links"><a href="improvement/lodging/plan-09.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/lodging/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">口コミAI自動返信の導入によるOTA・Google評価の改善と返信業務の省力化</div>
 <div class="meta">06 集客・口コミマーケティング｜概算 60万円/年間｜小規模事業者持続化補助金</div>
-<div class="links"><a href="improvement/lodging/plan-10.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/lodging/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 </div>
 </section>
@@ -353,70 +372,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">後付けIoTセンサーによる設備稼働の見える化とチョコ停の自動記録</div>
 <div class="meta">02 IoT・センサー活用による設備稼働監視｜概算 120万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-01.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">AI画像認識による外観検査の自動化と全数検査体制への移行</div>
 <div class="meta">04 品質管理・検査工程の自動化｜概算 350万円/設備一式｜新事業進出・ものづくり商業サービス補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-02.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">協働ロボットによる機械テンディングの自動化と夜間無人運転の実現</div>
 <div class="meta">03 産業用ロボット・協働ロボット導入｜概算 590万円/設備一式(初期投資)｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-03.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">生産管理システムのクラウド化による受注から出荷までの一元管理</div>
 <div class="meta">01 生産管理・見える化DX｜概算 90万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-04.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">AI見積の導入による図面からの自動見積と回答リードタイムの短縮</div>
 <div class="meta">09 営業・販路開拓DX｜概算 42万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-05.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">振動・電流センサーによる設備の異常予兆検知と予防保全から予知保全への移行</div>
 <div class="meta">02 IoT・センサー活用による設備稼働監視｜概算 90万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-06.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">AGV/AMRによる工程間搬送の自動化と運搬待ちの解消</div>
 <div class="meta">03 産業用ロボット・協働ロボット導入｜概算 610万円/設備一式(初期投資)｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-07.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">熟練技能の動画マニュアル化による技能伝承と教育期間の短縮</div>
 <div class="meta">06 技能伝承・技術教育のデジタル化｜概算 90万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-08.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">高効率コンプレッサーへの更新とエア漏れ対策による電力コストの削減</div>
 <div class="meta">08 省エネ・設備更新｜概算 450万円/設備一式(初期投資)｜業務改善助成金</div>
-<div class="links"><a href="improvement/manufacturing/plan-09.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/manufacturing/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">加工技術PRサイトと事例ページの刷新による新規取引先の開拓</div>
 <div class="meta">09 営業・販路開拓DX｜概算 60万円/年間｜小規模事業者持続化補助金</div>
-<div class="links"><a href="improvement/manufacturing/plan-10.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/manufacturing/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 </div>
 </section>
@@ -427,70 +446,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">電子契約とIT重説の一体導入による契約手続きの非対面化</div>
 <div class="meta">01 電子契約・IT重説導入｜概算 45万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-01.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">スマートロック導入によるセルフ内見の実現と鍵管理業務の削減</div>
 <div class="meta">04 スマートロック・無人内見IoT化｜概算 70万円/年間｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/realestate/plan-02.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">反響対応のAI自動一次返信による初動スピードの改善と対応漏れの防止</div>
 <div class="meta">02 物件情報・顧客管理DX｜概算 60万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-03.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">VR内見とパノラマ物件ページの整備による遠方顧客の取り込み</div>
 <div class="meta">03 内見・VR案内効率化｜概算 55万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-04.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">入居者対応AIチャットの導入による24時間受付と一次対応の自動化</div>
 <div class="meta">05 賃貸管理・入居者対応DX｜概算 65万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-05.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">AI価格査定・物件マッチングの導入による査定書作成の自動化</div>
 <div class="meta">02 物件情報・顧客管理DX｜概算 44万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-06.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">レンタル在庫のQR管理による貸出・返却の記録自動化と延滞の防止</div>
 <div class="meta">10 物品賃貸業務・在庫管理DX｜概算 48万円/年間｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/realestate/plan-07.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">オーナー向け資産管理ポータルの整備による収支報告の自動化</div>
 <div class="meta">05 賃貸管理・入居者対応DX｜概算 48万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/realestate/plan-08.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">宅地建物取引士の資格取得支援による重説対応の内製化と人材定着</div>
 <div class="meta">09 人材育成・定着支援｜概算 55万円/年間｜人材開発支援助成金</div>
-<div class="links"><a href="improvement/realestate/plan-09.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/realestate/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">クラウド会計と勤怠・給与連携によるバックオフィスの省力化と賃上げ原資の確保</div>
 <div class="meta">07 入出金・会計バックオフィス効率化｜概算 40万円/年間｜業務改善助成金</div>
-<div class="links"><a href="improvement/realestate/plan-10.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/realestate/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 </div>
 </section>
@@ -501,70 +520,70 @@
 <div class="no">PLAN 01</div>
 <div class="ttl">生徒管理システムの導入による出欠・成績・面談記録の一元化</div>
 <div class="meta">01 生徒・保護者管理システム構築｜概算 45万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/education/plan-01.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-01.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-02.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 02</div>
 <div class="ttl">入退室管理システムの導入による保護者への自動通知と安全確認の確実化</div>
 <div class="meta">02 入退室管理・安全対策｜概算 70万円/年間｜中小企業省力化投資補助金</div>
-<div class="links"><a href="improvement/education/plan-02.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-02.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-03.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 03</div>
 <div class="ttl">授業料の口座振替・オンライン決済導入による集金業務と未収金の削減</div>
 <div class="meta">03 決済・会計管理効率化｜概算 40万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/education/plan-03.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-03.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-04.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 04</div>
 <div class="ttl">授業予約・振替のオンライン化による日程調整の自動化</div>
 <div class="meta">01 生徒・保護者管理システム構築｜概算 34万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/education/plan-04.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-04.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-05.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 05</div>
 <div class="ttl">AI学習分析による個別カリキュラムの自動生成と指導方針の共有</div>
 <div class="meta">06 成績・学習データ分析とAI活用｜概算 55万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/education/plan-05.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-05.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-06.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 06</div>
 <div class="ttl">生徒レベル別教材の自動選定によるプリント作成業務の削減</div>
 <div class="meta">07 教材・カリキュラム管理DX｜概算 65万円/年間｜デジタル化・AI導入補助金</div>
-<div class="links"><a href="improvement/education/plan-06.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-06.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-07.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 07</div>
 <div class="ttl">体験授業申込ランディングページの新設とWeb広告の運用改善</div>
 <div class="meta">05 集客・入塾促進マーケティング｜概算 90万円/年間｜小規模事業者持続化補助金</div>
-<div class="links"><a href="improvement/education/plan-07.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-07.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-08.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 08</div>
 <div class="ttl">オンラインコースの開設による商圏の拡大と欠席時の学習機会の確保</div>
 <div class="meta">04 オンライン授業・映像教材DX｜概算 68万円/年間｜小規模事業者持続化補助金</div>
-<div class="links"><a href="improvement/education/plan-08.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-08.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-09.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 09</div>
 <div class="ttl">講師シフト・給与計算のクラウド化による労務事務の省力化と賃上げ原資の確保</div>
 <div class="meta">08 バックオフィス効率化｜概算 38万円/年間｜業務改善助成金</div>
-<div class="links"><a href="improvement/education/plan-09.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-09.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 <div class="card">
 <div class="thumb"><img src="improvement/education/img10/plan-10.jpg" alt="" loading="lazy" width="640" height="360"></div>
 <div class="no">PLAN 10</div>
 <div class="ttl">新人講師向け指導マニュアルと研修動画の整備による授業品質の標準化</div>
 <div class="meta">09 講師採用・育成・研修体制｜概算 80万円/年間｜人材開発支援助成金</div>
-<div class="links"><a href="improvement/education/plan-10.html">📄 事業計画書（A4×10p）</a></div>
+<div class="links"><a href="improvement/education/plan-10.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/><path d="M14 3v4.5h4.5"/></svg></span>事業計画書（A4×10p）</a></div>
 </div>
 </div>
 </section>

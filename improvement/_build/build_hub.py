@@ -102,7 +102,26 @@ CSS = """
   .card .no { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.05em; }
   .card .ttl { font-weight:600; font-size:0.95rem; line-height:1.5; }
   .card .meta { font-size:0.76rem; color:var(--ink-faint); }
-  .card .links { margin-top:auto; padding-top:0.6rem; display:flex; gap:1rem; font-size:0.82rem; }
+  /* カード下部のリンク（2026-08-16、絵文字から案9「大きめアイコン」に変更・説明文なし）。
+     縦に2本並べ、行全体を押せるようにする。青＝事業計画書、緑＝プロトタイプで役割を色分け。 */
+  .card .links { margin-top:auto; padding-top:0.6rem; display:flex; flex-direction:column;
+    gap:0.6rem; font-size:0.82rem; }
+  .card .links a { gap:0.6rem; width:100%; padding:0.5rem 0.7rem; border-radius:var(--radius-sm);
+    background:var(--accent-wash); color:var(--ink); align-items:center; text-decoration:none; }
+  .card .links a.proto { background:var(--sage-wash); }
+  .card .links a:hover { text-decoration:none; filter:brightness(0.97); }
+  .card .links .ic { flex:none; width:34px; height:34px; border-radius:8px;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--accent); color:var(--on-accent); }
+  /* アイコン地は白抜きSVGを載せるので、--sage をそのまま使うとライトで4.31:1しか出ず、
+     青側(6.68:1)と比べて弱い。ライトのみ一段暗くして揃える（--sage 自体は他ページ共用なので触らない）。
+     ダークの --sage(#3fd6ac) は10.23:1あるので上書きしない。 */
+  .card .links a.proto .ic { background:#0b7a61; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .card .links a.proto .ic { background:var(--sage); }
+  }
+  :root[data-theme="dark"] .card .links a.proto .ic { background:var(--sage); }
+  .card .links svg { width:19px; height:19px; }
   .pending { background:var(--paper-raised); border:1px dashed var(--line); border-radius:var(--radius-md);
     padding:2rem; text-align:center; color:var(--ink-faint); font-size:0.9rem; }
   .note { font-size:0.78rem; color:var(--ink-faint); margin-top:2.5rem; }
@@ -137,6 +156,28 @@ ICON_RULES = [
     (("経営", "分析", "多店舗"), "📊"), (("物販", "EC"), "🛍️"), (("価格"), "💰"),
     (("インバウンド", "多言語"), "🌐"), (("リピート",), "🔁"),
 ]
+
+
+# カード下部リンクのアイコン（2026-08-16、絵文字から差し替え）。
+# 端末による絵文字の見た目の差をなくすため、インラインSVGで持つ。
+SVG_DOC = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" '
+           'stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'
+           '<path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5z"/>'
+           '<path d="M14 3v4.5h4.5"/></svg>')
+SVG_PROTO = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" '
+             'stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'
+             '<rect x="3" y="4.5" width="18" height="12" rx="1.8"/>'
+             '<line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16.5" x2="12" y2="20"/></svg>')
+
+
+def plan_links_html(href_plan, href_proto):
+    """カード下部の2本のリンク。プロトタイプが未整備の業種では第2引数に None が来る。"""
+    html = (f'<div class="links"><a href="{href_plan}">'
+            f'<span class="ic">{SVG_DOC}</span>事業計画書（A4×10p）</a>')
+    if href_proto:
+        html += (f'<a class="proto" href="{href_proto}">'
+                 f'<span class="ic">{SVG_PROTO}</span>プロトタイプ</a>')
+    return html + "</div>"
 
 
 def category_icon(text):
@@ -239,10 +280,9 @@ def main():
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"])}｜概算 {esc(pl["investmentTotal"])}（補助率{esc(pl["rate"])}）｜{esc(prog)}</div>')
-                proto_link = (f'<a href="{LINK_PREFIX}{ik}/{proto_file}">🖥 プロトタイプ</a>'
-                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
-                parts.append(f'<div class="links"><a href="{LINK_PREFIX}{ik}/plan-{no:02d}.html">📄 事業計画書（A4×10p）</a>'
-                             f'{proto_link}</div>')
+                proto_href = (f'{LINK_PREFIX}{ik}/{proto_file}'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else None)
+                parts.append(plan_links_html(f'{LINK_PREFIX}{ik}/plan-{no:02d}.html', proto_href))
                 parts.append("</div>")
             parts.append("</div>")
         elif ik in plans:
@@ -268,10 +308,9 @@ def main():
                 parts.append(f'<div class="no">PLAN {no:02d}</div>')
                 parts.append(f'<div class="ttl">{esc(pl["title"])}</div>')
                 parts.append(f'<div class="meta">{esc(pl["category"]["name"])}｜概算 {pl["investment"]["total"]}{esc(pl["investment"]["unit"])}｜{esc(prog)}</div>')
-                proto_link = (f'<a href="{LINK_PREFIX}{ik}/{proto_file}">🖥 プロトタイプ</a>'
-                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else "")
-                parts.append(f'<div class="links"><a href="{LINK_PREFIX}{ik}/plan-{no:02d}.html">📄 事業計画書（A4×10p）</a>'
-                             f'{proto_link}</div>')
+                proto_href = (f'{LINK_PREFIX}{ik}/{proto_file}'
+                              if os.path.exists(os.path.join(IMPROVEMENT, ik, proto_file)) else None)
+                parts.append(plan_links_html(f'{LINK_PREFIX}{ik}/plan-{no:02d}.html', proto_href))
                 parts.append("</div>")
             parts.append("</div>")
         else:
