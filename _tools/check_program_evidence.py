@@ -117,6 +117,23 @@ def extract_fallback(path):
     return "", ""
 
 
+def vertical_ratio(text):
+    """1〜2文字しかない行の比率。縦組みPDFの検出に使う。
+
+    縦書きのPDFは1文字ずつ改行されて抽出されるため、キーワード検索が
+    必ず0ヒットになる。しかも日本語比率は正常に見えるので、文字化けの
+    検査をすり抜けて「証拠が無い＝josei」と誤判定する。
+    横須賀市ICT支援のチラシが実例で、実在する「審査会にて承認」を
+    検出できず josei と誤判定した（2026-08-17）。
+    実測：正常なPDFは 0.02〜0.13、この縦組みチラシは 0.40〜0.67。
+    """
+    lines = [l for l in text.split("\n") if l.strip()]
+    if not lines:
+        return 0.0
+    short = [l for l in lines if len(l.strip()) <= 2]
+    return len(short) / len(lines)
+
+
 def japanese_ratio(text):
     """日本語文字の比率。文字化けの検出に使う"""
     if not text:
@@ -204,6 +221,17 @@ def report(src):
         print("       指しているか確認する。他制度との重複受給の制限（『〜の採択を")
         print("       受けていないこと』）や、経費名（『審査請求料』）で当たることがある")
     else:
+        vr = vertical_ratio(full)
+        if vr >= 0.25:
+            # 縦組みは日本語比率が正常に見えるので、文字化けの検査をすり抜ける。
+            # ここで止めないと「証拠なし＝josei」と誤判定する（横須賀市ICTで実際に誤った）
+            print("\n  ★ 縦組みPDFの疑い（1〜2文字だけの行が %d%%）。" % round(vr * 100))
+            print("     **この0ヒットは信用できない。** 縦書きは1文字ずつ改行されて")
+            print("     抽出されるため、キーワード検索は必ず0ヒットになる。")
+            print("     日本語比率が正常でも関係ない。全文を目視すること。")
+            print("     実例：横須賀市ICT支援のチラシは、実在する『審査会にて承認』を")
+            print("     検出できず josei と誤判定した（2026-08-17）")
+            return False
         print("\n  ■ hojo の証拠は見つからなかった → josei と判定してよい")
         print("     （日本語比率 %.2f で抽出は生きているので、0ヒットは信用できる）" % ratio)
         # ただし「読んでいる文書が公募要領ではない」場合も0件になる。中小企業成長
