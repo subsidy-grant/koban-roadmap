@@ -9,7 +9,7 @@
     cd /d/Claudecode/koban-roadmap
     python _tools/apply_palette.py program.html criteria.html consult.html \
         documents.html profile.html profile_edit.html applications.html \
-        profile_status.html improvement.html
+        improvement.html
 
 このスクリプトだけでは足りず、実際に手当てが要ったこと（新規ページを
 作るときも同じ罠がある）:

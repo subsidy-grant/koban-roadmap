@@ -19,7 +19,7 @@ from playwright.sync_api import sync_playwright
 BASE = "https://subsidy-grant.github.io/koban-roadmap/"
 PAGES = ["index.html", "program.html", "criteria.html", "consult.html",
          "documents.html", "profile.html", "profile_edit.html",
-         "applications.html", "profile_status.html", "improvement.html"]
+         "applications.html", "improvement.html"]
 
 NEW_LIGHT_PAPER = "#e8e0d2"
 OLD = {"#eaf1fb", "#081422", "#16283d", "#0c2036", "#a9c2e0", "#0057c2"}

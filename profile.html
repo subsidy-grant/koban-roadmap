@@ -289,10 +289,13 @@
         <span class="cs-action-body"><span class="cs-action-lead">プロフィール編集</span>
         <span class="cs-action-sub">選んだ会社の情報を入力・修正します</span></span>
       </a>
-      <a href="profile_status.html" class="cs-action-card" id="csStatusBtn">
+      <!-- 2026-08-17、リンク先を profile_status.html から applications.html へ。
+           「現在の申請状況」は同じ一覧を読み取り専用で出すだけの重複ページで、
+           初見では申請進捗ページとの区別が付かなかったため統合した。 -->
+      <a href="applications.html" class="cs-action-card" id="csStatusBtn">
         <span class="cs-action-icon ci-sage" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l2 2 4-4"/></svg></span>
-        <span class="cs-action-body"><span class="cs-action-lead">現在の申請状況</span>
-        <span class="cs-action-sub" id="csStatusSub">申請の件数と進み具合を見ます</span></span>
+        <span class="cs-action-body"><span class="cs-action-lead">申請の進み具合</span>
+        <span class="cs-action-sub" id="csStatusSub">申請の件数と進み具合を見る・追加する</span></span>
       </a>
       <button type="button" class="cs-action-card" id="csMemoBtn">
         <span class="cs-action-icon ci-rust" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M6.5 3.5c-1 0-1.5.6-1.5 1.5v14c0 .9.5 1.5 1.5 1.5h11c1 0 1.5-.6 1.5-1.5V8.5c-2-.3-3.5-2-3.8-4H6.5z"/><line x1="8.5" y1="12.5" x2="15.5" y2="12.5"/><line x1="8.5" y1="16" x2="13" y2="16"/></svg></span>

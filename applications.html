@@ -99,6 +99,10 @@
   main { max-width: 780px; margin: 0 auto; padding: 2.5rem 1.1rem 1.5rem; }
   a { color: var(--accent); }
 
+  /* 2026-08-17、会社情報からこのページへ入るようになったため戻り導線を追加。
+     profile_edit.html / 旧 profile_status.html と同じ意匠に揃える。 */
+  .back-link { display: inline-block; font-size: 0.88rem; margin-bottom: 0.8rem; }
+  .list-note { margin: 0.7rem 0 0; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7; }
   h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 1.4rem; max-width: 62ch; }
 
@@ -249,6 +253,7 @@
 </head>
 <body>
 <main>
+  <a href="profile.html" class="back-link">← 会社情報 に戻る</a>
   <h1>申請の進み具合</h1>
 
   <div class="new-app">
@@ -373,7 +378,11 @@
         '<span class="lbl">取り寄せ書類</span></span>' +
         '<button type="button" class="app-item-del" data-id="' + esc(a.id) + '" aria-label="この申請を削除">✕</button>' +
         '</li>';
-    }).join('') + '</ul>';
+    }).join('') + '</ul>' +
+      // 「N / M」が何の件数かを取り違えられないようにする。旧 profile_status.html に
+      // 書かれていた注意書きを、統合にあたってこちらへ移した（2026-08-17）。
+      '<p class="list-note">この「◯／◯」は<strong>取り寄せが必要な証明書</strong>のうち、チェックを付けた件数です。' +
+      '様式の記入がどこまで進んだかを表すものではありません。様式は<a href="documents.html">申請書類の準備ページ</a>で記入します。</p>';
     box.innerHTML = html;
     box.querySelectorAll('.app-item-main').forEach(function (b) {
       b.addEventListener('click', function () { selectApp(b.getAttribute('data-id')); });

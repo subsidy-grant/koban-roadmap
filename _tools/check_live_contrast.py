@@ -29,7 +29,7 @@ from playwright.sync_api import sync_playwright
 BASE = "https://subsidy-grant.github.io/koban-roadmap/"
 PAGES = ["index.html", "program.html?key=career", "criteria.html", "consult.html",
          "documents.html", "profile.html", "profile_edit.html",
-         "applications.html", "profile_status.html", "improvement.html"]
+         "applications.html", "improvement.html"]
 
 JS = r"""
 () => {

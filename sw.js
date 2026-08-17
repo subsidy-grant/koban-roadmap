@@ -10,7 +10,10 @@
 //   page_data.js・sim_data.js（制度の金額・締切など鮮度が重要）
 //     → network-first。速いオンライン時は最新を待つが、
 //       1.5秒でネットワークが返ってこなければキャッシュ優先で表示を進める。
-var CACHE_NAME = 'koban-roadmap-v19';
+// v20: profile_status.html を applications.html に統合して削除（2026-08-17）。
+// CORE_ASSETS に消えたファイルを残すと cache.addAll がまとめて失敗し、
+// Service Worker のインストール自体がこけるため、必ず一覧から外して版を上げる。
+var CACHE_NAME = 'koban-roadmap-v20';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -21,7 +24,6 @@ var CORE_ASSETS = [
   './criteria.html',
   './profile.html',
   './profile_edit.html',
-  './profile_status.html',
   './consult.html',
   './common_docs.js',
   './company_data.js',
