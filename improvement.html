@@ -76,10 +76,14 @@
   a { color:var(--accent); }
   /* 業種の選択。以前は横並びのボタン(.tabs)だったが、「探す」ページ(index.html)と
      同じプルダウンに統一した（本人指示、2026-08-16）。見た目も.hero-industryに合わせる。 */
-  /* 地はサンドで通し、ここだけ青地にすると帯だけが浮いて見える（2026-08-17）。
-     沈めた面＋罫線で「入力する場所」を示す。色ではなく面の深さで区別する。
-     index.html の .hero-industry と同じ考え方。 */
-  .ind-picker { background:var(--paper-sunken); border:1px solid var(--line-strong);
+  /* 沈めた面(--paper-sunken)にしていたが、サンド地との差が1.34しかなく
+     背景と同系色に見えた（本人指摘 2026-08-17）。独立したカードなので
+     白地＋影＋左の色帯で浮かせる。
+     （index.html の .hero-industry はページ幅いっぱいの帯でカードではないため、
+      あちらは沈めたまま。役割が違うので揃えない） */
+  .ind-picker { background:var(--paper-raised); border:1px solid var(--line);
+    border-left:5px solid var(--accent);
+    box-shadow:var(--shadow-card);
     border-radius:var(--radius-md); padding:1rem 1.1rem; margin:1.2rem 0 0;
     display:flex; flex-wrap:wrap; align-items:center; gap:0.7rem 1.1rem; }
   .ind-picker-lead { margin:0; font-size:0.96rem; color:var(--ink); flex:1 1 240px; }

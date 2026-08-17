@@ -159,8 +159,10 @@
      375px幅で5列の<table>が横スクロールを要していたため、書類1件=1カードの
      縦積みに変更。third（他の人に頼む書類）は表の橙色行と同じ意味を保つ。 */
   .tbl-wrap { display: flex; flex-direction: column; gap: 0.7rem; }
+  /* 地の上に直接並ぶカード。影が無いと面として浮かない（2026-08-17） */
   .common-doc-card { border: 1px solid var(--line); border-radius: var(--radius-md, 10px);
-    background: var(--paper-raised); padding: 0.8rem 0.9rem; }
+    background: var(--paper-raised); padding: 0.8rem 0.9rem;
+    box-shadow: var(--shadow-card); }
   .common-doc-card.third { background: var(--rust-wash); border-color: var(--rust-ink); }
   .cd-head { font-weight: 700; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap;
     align-items: center; gap: 0.4rem; }
@@ -364,7 +366,11 @@
   .af-summary::-webkit-details-marker { display: none; }
 
 
+  /* 地の上に直接置かれるので、影が無いと面として浮かない
+     （本人指摘「カードが背景と同系色」の同型、2026-08-17）。
+     色は注意を示す意味を持つので変えず、影だけ足して他のカードと立体感を揃える。 */
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
+    box-shadow: var(--shadow-card);
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
   /* .warn の地は --rust-wash なので、文字は濃い側の --rust-ink を使う */
   .warn strong { color: var(--rust-ink); }
@@ -375,7 +381,8 @@
   /* 地が --rust-wash（下の行）なので、文字は濃い側の --rust-ink にする */
   .fold.must-check-fold > summary { color: var(--rust-ink);
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; font-size: 1.05rem; }
-  .fold.must-check-fold { border-color: var(--rust-ink); background: var(--rust-wash); }
+  .fold.must-check-fold { border-color: var(--rust-ink); background: var(--rust-wash);
+    box-shadow: var(--shadow-card); }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
 

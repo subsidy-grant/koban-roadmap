@@ -102,10 +102,14 @@
   h1 { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.6; text-wrap: balance; }
   .lede { color: var(--ink-soft); font-size: 0.98rem; margin: 0 0 0.4rem; max-width: 62ch; }
   .back-link { display: inline-block; font-size: 0.88rem; margin-bottom: 0.8rem; }
-  /* サンド地の上に青地(--accent-wash)を敷くと地との差が1.12しかなく面が沈む
-     （実測、2026-08-17）。沈めた面＋左の帯にして、色ではなく面の深さで区別する。 */
-  .editing-note { background: var(--paper-sunken); border: 1px solid var(--line-strong);
+  /* いちど --accent-wash（薄い青）、次に --paper-sunken（沈めた面）にしたが、
+     どちらもサンド地との差が 1.12 / 1.34 しかなく「背景と同系色」に見えた
+     （本人指摘 2026-08-17）。カードなので沈めるのをやめ、
+     他のカードと同じ白地にして影で浮かせる。地との差は 1.31 だが、
+     影と左の色帯が付くぶん面としてはっきり分かれる。 */
+  .editing-note { background: var(--paper-raised); border: 1px solid var(--line);
     border-left: 5px solid var(--accent); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
     padding: 0.7rem 1rem; font-size: 0.9rem; color: var(--ink);
     margin-bottom: 1.2rem; }
   .editing-note strong { color: var(--accent); }

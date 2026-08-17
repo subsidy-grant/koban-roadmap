@@ -83,10 +83,12 @@
   .sub { color: var(--ink-soft); font-size: 0.92rem; font-style: italic; max-width: 68ch; }
   .back { font-size: 0.85rem; margin-bottom: 1.2rem; }
   a { color: var(--accent); }
-  /* サンド地の上に青地(--accent-wash)を敷くと地との差が1.12しかなく面が沈む
-     （実測、2026-08-17）。沈めた面＋左の帯にして、色ではなく面の深さで区別する。 */
-  .disclaimer { background: var(--paper-sunken); border: 1px solid var(--line-strong);
+  /* いちど --accent-wash、次に --paper-sunken にしたが、どちらもサンド地との差が
+     1.12 / 1.34 しかなく「背景と同系色」に見えた（本人指摘 2026-08-17）。
+     カードなので沈めるのをやめ、白地＋影＋左の色帯で浮かせる。 */
+  .disclaimer { background: var(--paper-raised); border: 1px solid var(--line);
     border-left: 5px solid var(--accent); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
     padding: 1rem 1.2rem; font-size: 0.86rem; color: var(--ink-soft); margin-top: 1.4rem; }
   .disclaimer strong { color: var(--ink); }
   /* 落とし穴の注意喚起（2026-08-17）。読者が知らずに踏むと実害が出る論点に使う。
@@ -214,8 +216,20 @@
       overscroll-behavior: contain; box-shadow: var(--shadow-card-strong); }
     /* 目次を開いている間、本文側を押したら閉じられるように覆いを敷く */
     .toc-scrim { position: fixed; inset: 0; z-index: 28; background: rgba(0,0,0,0.28);
-      border: none; padding: 0; margin: 0; }
+      border: none; padding: 0; margin: 0;
+      /* 覆いの上でのスクロールを背後の本文へ伝えない */
+      overscroll-behavior: contain; touch-action: none; }
   }
+  /* 目次を開いている間は、背後の本文をスクロールさせない。
+     これが無いと、目次が固定されたまま後ろだけが流れて重なって見える
+     （本人指摘 2026-08-17「目次を開きながらスクロールすると重なる」）。
+     position:fixed で止めると読んでいた位置が先頭に飛ぶので、
+     JS側で今の位置を top に移して固定し、閉じるときに戻す。 */
+  body.toc-open { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
+  /* body を fixed にすると position:sticky の基準が失われ、追従バーが
+     ページ上部の元の位置に留まって目次の途中に食い込む（実測 2026-08-17）。
+     開いている間はバーも画面上部へ固定する。 */
+  body.toc-open .toc-bar { position: fixed; top: 0; left: 0; right: 0; margin: 0; }
   @media (prefers-reduced-motion: reduce) {
     .toc-bar-chev, .toc-bar-progress > i { transition: none; }
   }
@@ -634,14 +648,34 @@
        素直に開くと、下の方を読んでいるときは目次が画面外にあるため
        「押したのに何も出ない」ように見えた（実測 2026-08-17）。 */
     var scrim = null;
+    var lockedY = 0;   // 目次を開いたときのスクロール位置
+
+    /* 開いている間、背後の本文をスクロールさせない。
+       これが無いと目次だけが固定されて後ろが流れ、重なって見える
+       （本人指摘 2026-08-17）。body を fixed にすると位置が先頭へ飛ぶので、
+       今の位置を top に移してから固定し、閉じるときに元へ戻す。 */
+    function lockScroll() {
+      lockedY = window.scrollY || document.documentElement.scrollTop || 0;
+      document.body.style.top = (-lockedY) + 'px';
+      document.body.classList.add('toc-open');
+    }
+    function unlockScroll() {
+      if (!document.body.classList.contains('toc-open')) return;
+      document.body.classList.remove('toc-open');
+      document.body.style.top = '';
+      window.scrollTo(0, lockedY);
+    }
+
     function closeToc() {
       nav.classList.add('is-collapsed');
       nav.classList.remove('is-floating');
       bar.classList.remove('is-open');
       barBtn.setAttribute('aria-expanded', 'false');
       if (scrim) { scrim.remove(); scrim = null; }
+      unlockScroll();
     }
     function openToc() {
+      lockScroll();
       nav.classList.remove('is-collapsed');
       nav.classList.add('is-floating');
       bar.classList.add('is-open');
@@ -663,9 +697,21 @@
       if (e.key === 'Escape' && !nav.classList.contains('is-collapsed') && isNarrow()) closeToc();
     });
 
-    // 目次の項目を押したら閉じて、飛んだ先の本文を見せる
+    /* 目次の項目を押したら閉じて、飛んだ先の本文を見せる。
+       ここで closeToc() をそのまま呼ぶと、元の位置へ戻す window.scrollTo と
+       アンカー移動がぶつかって飛び先がずれる。閉じる処理はするが
+       「元の位置へ戻す」だけは行わず、ブラウザのアンカー移動に任せる。 */
     links.forEach(function (a) {
-      a.addEventListener('click', function () { if (isNarrow()) closeToc(); });
+      a.addEventListener('click', function () {
+        if (!isNarrow()) return;
+        document.body.classList.remove('toc-open');
+        document.body.style.top = '';
+        nav.classList.add('is-collapsed');
+        nav.classList.remove('is-floating');
+        bar.classList.remove('is-open');
+        barBtn.setAttribute('aria-expanded', 'false');
+        if (scrim) { scrim.remove(); scrim = null; }
+      });
     });
 
     /* 画面幅が変わったときの整合。狭い画面では畳んだ状態から始め、
