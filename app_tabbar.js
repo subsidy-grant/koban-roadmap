@@ -13,13 +13,16 @@
   // 吹き出し＝専門家への相談。既存4アイコンと同じ角丸スクエア＋太めアウトラインのトーン（2026-08-17）
   var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M7 9.5h10M7 13h6.5" stroke-linecap="round"/><path d="M8.2 16.3H8l-1.6 2v-2.3A2.3 2.3 0 0 1 8.5 13.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  // 「改善計画」は本人指示（2026-08-16）で会社情報の左隣に固定。
+  // 「使い道の例」（旧ラベル「改善計画」）は本人指示（2026-08-16）で会社情報の左隣に固定。
+  // 2026-08-17にラベルを改称：中身は業種別の使い道プラン集（概算金額・補助率つき）なのに、
+  // 「改善計画」だと初見の経営者に何のページか伝わらなかったため。
+  // ページ本文や improvement/ 配下の「改善計画10選」という呼称は資料名として残している。
   // 「申請進捗」は2026-08-17に固定タブから外した（profile_status.html/documents.htmlから
   // 個別に遷移できるため、5枠目を「相談」に譲った）。「相談」は右から2番目（本人指示、2026-08-17）。
   var TABS = [
     { href: 'index.html', match: /^(|index\.html)$/, icon: ICON_SEARCH, label: '探す' },
     { href: 'documents.html', match: /^documents\.html$/, icon: ICON_DOCS, label: '書類準備' },
-    { href: 'improvement.html', match: /^improvement\.html$/, icon: ICON_BULB, label: '改善計画' },
+    { href: 'improvement.html', match: /^improvement\.html$/, icon: ICON_BULB, label: '使い道の例' },
     { href: 'consult.html', match: /^consult\.html$/, icon: ICON_CHAT, label: '相談' },
     { href: 'profile.html', match: /^profile(_edit|_status)?\.html$/, icon: ICON_BUILDING, label: '会社情報' }
   ];
