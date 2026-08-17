@@ -152,7 +152,17 @@ def collect_targets(index_html_path, extra_html_paths):
                 add(lm.group(1), names[key], "program")
 
     # PROGRAM_DOCS: 公式ポータルと様式ファイル
-    docs = _block(idx, "var PROGRAM_DOCS =")
+    # 2026-08-05（commit 76a9ca1）に index.html から program_docs_data.js へ
+    # 分離された。ここが index.html だけを見ていたため 2026-08-17 の実行が
+    # ValueError で落ち、「リンク切れ」の通知だけが飛んだ（実際にはリンクは
+    # 無事で、様式1017件の確認が丸ごと素通りしていた）。分離先を先に探し、
+    # 無ければ従来どおり index.html を見る。
+    docs_src = idx
+    docs_js = os.path.join(os.path.dirname(index_html_path), "program_docs_data.js")
+    if "var PROGRAM_DOCS =" not in idx and os.path.exists(docs_js):
+        with open(docs_js, encoding="utf-8") as f:
+            docs_src = f.read()
+    docs = _block(docs_src, "var PROGRAM_DOCS =")
     for m in re.finditer(r'\n    ([A-Za-z0-9_]+): \{(.*?)\n    \}', docs, re.S):
         key, body = m.group(1), m.group(2)
         pname = names.get(key, key)
