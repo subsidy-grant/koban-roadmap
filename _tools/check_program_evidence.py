@@ -84,6 +84,39 @@ def extract(path):
     return pages
 
 
+def extract_fallback(path):
+    """pypdf が文字化けするPDFを、別の実装で取り直す。
+
+    川口市の企業立地補助金パンフレットのように、pypdf・pdfminer・pymupdf が
+    そろって化けるのに pdftotext なら正常に読めるPDFが実在する（2026-08-17）。
+    フォント埋め込みの都合で、実装ごとに得手不得手があるため順に試す。
+    """
+    # 1) pdftotext（poppler）。上記の実例で唯一成功した
+    try:
+        import subprocess
+
+        out = subprocess.run(
+            ["pdftotext", "-enc", "UTF-8", str(path), "-"],
+            capture_output=True, timeout=120,
+        )
+        if out.returncode == 0:
+            text = out.stdout.decode("utf-8", "replace")
+            if japanese_ratio(text) >= 0.3:
+                return text, "pdftotext"
+    except Exception:
+        pass
+    # 2) pdfminer.six
+    try:
+        from pdfminer.high_level import extract_text as _mine
+
+        text = _mine(str(path)) or ""
+        if japanese_ratio(text) >= 0.3:
+            return text, "pdfminer"
+    except Exception:
+        pass
+    return "", ""
+
+
 def japanese_ratio(text):
     """日本語文字の比率。文字化けの検出に使う"""
     if not text:
@@ -113,13 +146,24 @@ def report(src):
 
     ratio = japanese_ratio(full)
     img_only = [i + 1 for i, (t, n) in enumerate(pages) if len(t.strip()) < 20 and n]
+    how = "pypdf"
 
-    print("  ページ %d / 抽出文字 %d / 日本語比率 %.2f" % (len(pages), len(full), ratio))
+    # pypdf が化けたら別実装で取り直す。ここで諦めると「読めていない」が
+    # 「証拠が無い」に化けて、josei と誤判定する
+    if ratio < 0.3:
+        text, how = extract_fallback(path)
+        if text:
+            full = text
+            flat = re.sub(r"\s+", " ", full)
+            ratio = japanese_ratio(full)
+
+    print("  ページ %d / 抽出文字 %d / 日本語比率 %.2f（%s）"
+          % (len(pages), len(full), ratio, how or "抽出できず"))
 
     if ratio < 0.3:
         print("  ★ 文字化けの疑い。**この検索結果は証拠として使えない**")
         print("     0ヒットは『証拠が無い』ではなく『読めていない』可能性が高い。")
-        print("     pdfminer.six で取り直すか、ページ画像を目視すること。")
+        print("     pdftotext・pdfminer でも復元できなかった。ページ画像を目視すること。")
         return False
     if img_only:
         print("  ※ 画像のみのページ: %s" % img_only)
