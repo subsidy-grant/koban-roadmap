@@ -202,17 +202,45 @@
     .toolbar{display:none}
     .mobile-note{display:none}
     .sheets{overflow:visible}
-    /* ★ 印刷時だけ高さの固定(min-height:297mm)を外し、中身なりの高さにする。
-       297mm固定のままだと用紙(A4=297mm)と寸分たがわぬ高さになり、余裕が
-       実測0.9mm(10ページ目)しかなかった。この状態で印刷ダイアログの倍率が
-       100%を1%でも超えると全ページが上下2枚に割れ、10ページが22ページになる
-       （110%で22ページになることを2026-07-31に実測）。倍率はブラウザ側の設定
-       なのでCSSでは強制できないため、こちらが用紙いっぱいを使うのをやめて
-       逃げ幅を作る。中身の実高さは243〜296mmなので、切れは発生しない。
+    /* ★ 印刷時の高さは 280mm に「固定」する。min-height ではなく height。
+       improvement/_build/build_plans.py と必ず揃えること。
+
+       なぜ297mmでないか：用紙(A4=297mm)と寸分たがわぬ高さだと余裕が実測0.9mm
+       しかなく、印刷ダイアログの倍率が100%を1%でも超えると全ページが上下2枚に
+       割れて10ページが22ページになる（110%で22ページを2026-07-31に実測）。
+       倍率はブラウザ側の設定でCSSからは強制できないので、17mmの逃げ幅を作る。
+
+       なぜ height:auto でないか：2026-07-31〜08-17は auto にしていたが、
+       中身の量がページごとに違うため印刷時の高さが261〜309mmとばらつき（実測47mm）、
+       (1)10ページ目が297mmを超えて改ページが起きる (2).rail(左の青い帯)が
+       top:0/bottom:0 でページ高さに追従するため、棒の長さがページごとに変わって
+       仕上がりが不揃いに見える、という2つの不具合が出ていた（2026-08-17に実測）。
+       高さを固定すれば両方とも消える。
+
        page-break-after で1枚ずつ改ページするのは変わらないため、
        「1ページ＝1枚」は保たれる。 */
-    .page{margin:0;box-shadow:none;page-break-after:always;min-height:0;height:auto}
+    .page{margin:0;box-shadow:none;page-break-after:always;
+      min-height:0;height:280mm}
     .page:last-child{page-break-after:auto}
+    /* ★ 高さを280mmに固定すると、中身が最も多いページ（実測でp10、次いでp4/p5）が
+       はみ出す。文章を削るのではなく、印刷時だけ余白を詰めて吸収する。
+       画面表示はこれまでどおり（このブロックは print のときだけ効く）。
+       2026-08-17の実測では、これで最大はみ出し19.3mm→0.0mm、
+       はみ出すページ3→0になった。文言・情報量には一切手を付けていない。
+       数値を緩めると再びはみ出すので、verify.py を通してから変えること。
+       build_plans.py と必ず揃えること。 */
+    .pbody{min-height:0}
+    .pbody h3{margin:6px 0 3px}
+    .pbody .note{margin-top:3px}
+    .pbody .callout{margin:5px 0}
+    .pbody .split{margin:1px 0}
+    .data td,.data th{padding-top:2px;padding-bottom:2px}
+    /* 表紙(1ページ目)は hero が大きいぶん詰まりやすい。
+       education/plan-09 の表紙だけ 5.1mm はみ出していたので、
+       表紙特有の3要素も同時に詰める（2026-08-17実測） */
+    .pbody .hero{margin-bottom:4px}
+    .pbody .tiles{margin:4px 0 2px}
+    .pbody .head-strip{margin:5px 0 3px}
   }
 
   /* 狭い画面向け(build_plans.py と同じ方針。あちらと必ず揃えること)
