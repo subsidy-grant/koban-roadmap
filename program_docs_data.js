@@ -1836,38 +1836,38 @@
     },
     saitama_fujimi_challenge: {
       checked: '2026-07-31',
-      portal: { label: '富士見市 公式ページ', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.html' },
+      portal: { label: '富士見市 公式ページ', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.html' },
       note: '公式ページの区分に沿って並べています。同じ様式のPDF版も公式ページにあります。',
       groups: [
         { phase: '申請の前に読む', items: [
-          { name: '令和8年度中小企業チャレンジ支援事業補助金パンフレット', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R8panfu2.pdf', type: 'PDF', size: '420KB' }
+          { name: '令和8年度中小企業チャレンジ支援事業補助金パンフレット', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R8panfu2.pdf', type: 'PDF', size: '420KB' }
         ] },
         { phase: '交付申請', items: [
-          { name: '申請書（様式第1号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/1-sinseisho.docx', type: 'Word', size: '24KB' },
-          { name: '申請書【経営革新事業】（様式第1号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-1-2sinseisho.docx', type: 'Word', size: '23KB' },
-          { name: '事業計画書【経営改善事業】（様式第2号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-1jigyoukeikakusho.docx', type: 'Word', size: '19KB' },
-          { name: '事業計画書【研究開発事業】（様式第2号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-2jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
-          { name: '事業計画書【人材育成事業】（様式第2号の3）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-3jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
-          { name: '事業計画書【販路開拓事業】（様式第2号の4）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-4jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
-          { name: '事業計画書【デジタル・トランスフォーメーション化事業】（様式第2号の5）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-5jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
-          { name: '事業計画書【設備導入事業】（様式第2号の6）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-2-6jigyoukeikakusho.docx', type: 'Word', size: '22KB' },
-          { name: '収支予算書（様式第3号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-3shuusiyosan.docx', type: 'Word', size: '20KB' },
-          { name: '収支決算書（様式第11号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-11syusikeltusan.docx', type: 'Word', size: '20KB' },
-          { name: '店舗所有者の同意書', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/14sankouyousiki.docx', type: 'Word', size: '17KB' }
+          { name: '申請書（様式第1号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/1-sinseisho.docx', type: 'Word', size: '24KB' },
+          { name: '申請書【経営革新事業】（様式第1号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-1-2sinseisho.docx', type: 'Word', size: '23KB' },
+          { name: '事業計画書【経営改善事業】（様式第2号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-1jigyoukeikakusho.docx', type: 'Word', size: '19KB' },
+          { name: '事業計画書【研究開発事業】（様式第2号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-2jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
+          { name: '事業計画書【人材育成事業】（様式第2号の3）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-3jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
+          { name: '事業計画書【販路開拓事業】（様式第2号の4）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-4jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
+          { name: '事業計画書【デジタル・トランスフォーメーション化事業】（様式第2号の5）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-5jigyoukeikakusho.docx', type: 'Word', size: '21KB' },
+          { name: '事業計画書【設備導入事業】（様式第2号の6）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-6jigyoukeikakusho.docx', type: 'Word', size: '22KB' },
+          { name: '収支予算書（様式第3号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-3shuusiyosan.docx', type: 'Word', size: '20KB' },
+          { name: '収支決算書（様式第11号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-11syusikeltusan.docx', type: 'Word', size: '20KB' },
+          { name: '店舗所有者の同意書', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/14sankouyousiki.docx', type: 'Word', size: '17KB' }
         ] },
         { phase: '計画を変えるとき', items: [
-          { name: '富士見市中小企業チャレンジ支援事業補助金変更承認申請書（様式第4号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-4henkoushounin.docx', type: 'Word', size: '21KB' },
-          { name: '富士見市中小企業チャレンジ支援事業補助金中止（廃止）承認申請書（様式第5号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-5tyuusihaisishouninsinsei.docx', type: 'Word', size: '21KB' }
+          { name: '富士見市中小企業チャレンジ支援事業補助金変更承認申請書（様式第4号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-4henkoushounin.docx', type: 'Word', size: '21KB' },
+          { name: '富士見市中小企業チャレンジ支援事業補助金中止（廃止）承認申請書（様式第5号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-5tyuusihaisishouninsinsei.docx', type: 'Word', size: '21KB' }
         ] },
         { phase: '実績報告（事業が終わったあと）', items: [
-          { name: '富士見市中小企業チャレンジ支援事業補助金実績報告書（様式第9号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-9jiltusekihoukokusyo.docx', type: 'Word', size: '21KB' },
-          { name: '事業報告書【経営改善事業】（様式第10号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-1jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
-          { name: '事業報告書【研究開発事業】（様式第10号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-2jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
-          { name: '事業報告書【人材育成事業】（様式第10号の3）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-3jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
-          { name: '事業報告書【販路開拓事業】（様式第10号の4）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-4jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
-          { name: '事業報告書【デジタル・トランスフォーメーション化事業】（様式第10号の5）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-5jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
-          { name: '事業報告書【設備導入事業】（様式第10号の6）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-10-6jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
-          { name: '富士見市中小企業チャレンジ支援事業補助金交付請求書（様式第13号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R7-13seikyusho.docx', type: 'Word', size: '21KB' }
+          { name: '富士見市中小企業チャレンジ支援事業補助金実績報告書（様式第9号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-9jiltusekihoukokusyo.docx', type: 'Word', size: '21KB' },
+          { name: '事業報告書【経営改善事業】（様式第10号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-1jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
+          { name: '事業報告書【研究開発事業】（様式第10号の2）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-2jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
+          { name: '事業報告書【人材育成事業】（様式第10号の3）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-3jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
+          { name: '事業報告書【販路開拓事業】（様式第10号の4）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-4jigyouhoukokusho.docx', type: 'Word', size: '20KB' },
+          { name: '事業報告書【デジタル・トランスフォーメーション化事業】（様式第10号の5）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-5jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
+          { name: '事業報告書【設備導入事業】（様式第10号の6）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-6jigyouhoukokusho.docx', type: 'Word', size: '23KB' },
+          { name: '富士見市中小企業チャレンジ支援事業補助金交付請求書（様式第13号）', url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-13seikyusho.docx', type: 'Word', size: '21KB' }
         ] }
       ]
     },
@@ -2141,7 +2141,9 @@
           { name: '（様式第1号-2）収支予算（決算）書', url: 'https://www.pref.tochigi.lg.jp/f06/documents/y1-2_syushiyosansyo_chinagekankyouseibihojokin.docx', type: 'Word', size: '33KB' },
           { name: '（様式第1号-3）誓約書', url: 'https://www.pref.tochigi.lg.jp/f06/documents/y1-3_seiyakusyo_chinagekankyouseibihojokin.docx', type: 'Word', size: '32KB' },
           { name: '（様式第6号）財産処分承認申請書', url: 'https://www.pref.tochigi.lg.jp/f06/documents/y6_zaisansyobunsyouninshinseisyo_chinagekankyouseibihojokin.docx', type: 'Word', size: '36KB' },
-          { name: '記入例➀（別記様式第1号、様式第1号1-3）交付申請書等', url: 'https://www.pref.tochigi.lg.jp/f06/documents/r8kinyuurei1_kouhushinseisyo.pdf', type: 'PDF', size: '360KB' },
+          // 記入例➀（r8kinyuurei1_kouhushinseisyo.pdf）は 2026-08-17 の全数リンク確認で
+          // 404 になっており、栃木県の現行ページからも消えている（記入例②③④のみ掲載）。
+          // 存在しないファイルへ誘導しないため取り下げた。県が再掲したら戻すこと。
           { name: 'とちぎ賃上げ環境整備促進補助金問合せ／事前相談様式', url: 'https://www.pref.tochigi.lg.jp/f06/documents/20260612133609.xlsx', type: 'Excel', size: '221KB' }
         ] },
         { phase: '計画を変えるとき', items: [

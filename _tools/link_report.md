@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-17 22:18**（JST）
+- 確認時刻：**2026-08-18 02:22**（JST）
 - 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **24件**／🔵 新規（今回から監視） **3件**／✅ 変化なし **1138件**
+🔴 リンク切れ（要修正） **24件**／✅ 変化なし **1141件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -83,19 +83,7 @@
   - https://www.pref.tochigi.lg.jp/f06/documents/r8kinyuurei1_kouhushinseisyo.pdf
   - HTTP 404（ページが無い）
 
-## 🔵 新規（今回から監視）
-
-- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係）**
-  - https://www.city.suginami.tokyo.jp/documents/25089/digital_seikyu.xlsx
-  - 今回から確認対象
-- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係）**
-  - https://www.city.suginami.tokyo.jp/documents/25089/digital_zissekihoukoku.docx
-  - 今回から確認対象
-- **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
-  - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
-  - 今回から確認対象
-
-## ✅ 変化なし（1138件）
+## ✅ 変化なし（1141件）
 
 <details><summary>一覧を開く</summary>
 
@@ -844,6 +832,8 @@
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業計画書（第2号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_keikaku.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成申請書（第1号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_shinsei.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業計画（変更・取下げ）申請書（第6号様式第9条関係） — https://www.city.suginami.tokyo.jp/documents/25089/digital_henkotorisage_word.docx
+- 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係） — https://www.city.suginami.tokyo.jp/documents/25089/digital_seikyu.xlsx
+- 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係） — https://www.city.suginami.tokyo.jp/documents/25089/digital_zissekihoukoku.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／【記入例】杉並区中小企業等デジタル化推進事業計画書（第2号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/kinyurei_keikakusyo.pdf
 - 中小企業等デジタル化推進事業助成（杉並区）／中小企業等デジタル化推進事業助成（杉並区）／杉並区 公式ページ — https://www.city.suginami.tokyo.jp/s121/news/25089.html
 - 墨田区デジタル技術活用支援補助金（墨田区）／交付申請書（第1号様式） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/01_yohiki.docx
@@ -1047,6 +1037,7 @@
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高総利益率） — https://www.mhlw.go.jp/content/11200000/001692000.docx
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高営業利益率） — https://www.mhlw.go.jp/content/11200000/001692001.docx
 - （出典・参考リンク） — https://www.mhlw.go.jp/content/11200000/001693416.pdf
+- 業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール — https://www.mhlw.go.jp/content/11200000/001733987.xlsx
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-2号 事業所確認票 — https://www.mhlw.go.jp/content/11600000/001469245.xlsx
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／チェックリスト（計画届関係） — https://www.mhlw.go.jp/content/11600000/001678209.xlsx
 - 特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／様式第3号 第1期共通申請書 — https://www.mhlw.go.jp/content/11600000/001679117.xlsx
