@@ -679,7 +679,11 @@
   .basics-fold { border: 1px solid var(--line); border-radius: 10px;
     background: var(--paper-raised); overflow: hidden; }
   .basics-fold > summary { padding: 0.75rem 1rem; font-size: 0.94rem; font-weight: 700;
-    cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+    cursor: pointer; min-height: 44px; display: flex; align-items: center;
+    gap: 0.5rem; list-style: none; }
+  /* 既定の三角マーカーを消す。消さないとJSが入れるシェブロンと二重に出る */
+  .basics-fold > summary::-webkit-details-marker { display: none; }
+  .basics-fold > summary::marker { content: ""; }
   .basics-fold-body { padding: 0 1rem 0.9rem; font-size: 0.9rem; line-height: 1.85; }
   .basics-fold-body p { margin: 0 0 0.8rem; }
   .basics-src { color: var(--ink-faint); font-size: 0.82rem; line-height: 1.7; }
@@ -883,20 +887,28 @@
   footer .fold > summary::-webkit-details-marker { display: none; }
   /* 開閉アイコンは.sec-chevronと完全同一のSVG実装に統一する（2026-08-16、本人指摘で修正）。
      JSでsummary末尾に<span class="fold-chevron">を注入する。 */
-  footer .fold-chevron {
+  /* 2026-08-17、03「はじめての方へ」の .basics-fold にも同じアイコンを出すため、
+     footer 限定だったセレクタを両方に広げた（同じ意匠を二重に書かない）。 */
+  footer .fold-chevron, .basics-fold .fold-chevron {
     flex: none; margin-left: auto; margin-right: 0; width: 30px; height: 30px; border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
     transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   }
-  footer .fold-chevron svg { width: 16px; height: 16px; }
-  footer details[open] > summary .fold-chevron {
+  footer .fold-chevron svg, .basics-fold .fold-chevron svg { width: 16px; height: 16px; }
+  footer details[open] > summary .fold-chevron,
+  .basics-fold[open] > summary .fold-chevron {
     transform: rotate(180deg);
     background: var(--accent); border-color: var(--accent); color: #fff;
   }
-  @media (prefers-reduced-motion: reduce) { footer .fold-chevron { transition: none; } }
-  @media (hover: hover) { footer .fold > summary:hover { background: var(--accent-wash); } }
-  footer .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) {
+    footer .fold-chevron, .basics-fold .fold-chevron { transition: none; }
+  }
+  @media (hover: hover) {
+    footer .fold > summary:hover, .basics-fold > summary:hover { background: var(--accent-wash); }
+  }
+  footer .fold > summary:focus-visible,
+  .basics-fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   ::selection { background: var(--accent-soft); }
 
@@ -7345,9 +7357,8 @@
   //
   // 見出しだけだと中に何があるか分からないので、1行の手がかりを添える。
   // セクションを増やしたらここにも1行足すこと（無くても動くが説明が出ない）。
-  var SECTION_HINT = {
-    howto: '下のメニューの使う順番と、入力した情報の保存先'
-  };
+  // 04に付けていたヒント1行は2026-08-17に削除（本人指示）。見出しだけで足りていた。
+  var SECTION_HINT = {};
 
   // 既定はすべて閉じる（本人指示 2026-08-02「デフォルトの設定は常にコンパクトに」）。
   // 02に業種・地域・従業員数の選択欄が入っているので、閉じている間は何も選べない。
@@ -7558,9 +7569,11 @@
   refreshPublicViews();
   initToTop();
 
-  // footerの免責事項<details class="fold">に、.sec-chevronと同じSVG開閉アイコンを注入する
-  // （2026-08-16、本人指摘で他の.fold実装（documents.html/profile.html）とあわせて修正）。
-  document.querySelectorAll('footer .fold > summary').forEach(function (s) {
+  // footerの免責事項<details class="fold">と、03「はじめての方へ」の
+  // <details class="basics-fold">に、.sec-chevronと同じSVG開閉アイコンを注入する
+  // （2026-08-16、本人指摘で他の.fold実装（documents.html/profile.html）とあわせて修正。
+  //  2026-08-17、開けることが分からないという指摘を受けて .basics-fold も対象に追加）。
+  document.querySelectorAll('footer .fold > summary, .basics-fold > summary').forEach(function (s) {
     if (s.querySelector('.fold-chevron')) return;
     var chev = document.createElement('span');
     chev.className = 'fold-chevron';
