@@ -654,6 +654,28 @@
   a.sec-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (max-width: 560px) { a.sec-cta { max-width: none; font-size: 1rem; } }
 
+  /* ---------- 04 このサイト・アプリの使い方（2026-08-17追加） ---------- */
+  /* 下部タブの並び＝申請の流れ、という対応が一目で分かるように、
+     タブ名をそのままバッジにして縦に並べる。 */
+  .howto-steps { list-style: none; margin: 0 0 1.2rem; padding: 0; counter-reset: howto; }
+  .howto-steps li { display: flex; gap: 0.7rem; align-items: flex-start;
+    padding: 0.7rem 0; border-top: 1px solid var(--line); }
+  .howto-steps li:first-child { border-top: 0; padding-top: 0; }
+  .howto-n { flex: none; min-width: 5.4rem; text-align: center;
+    font-size: 0.82rem; font-weight: 700; line-height: 1.5;
+    color: var(--accent); background: var(--accent-wash);
+    border: 1px solid var(--accent-soft); border-radius: 999px;
+    padding: 0.25rem 0.5rem; margin-top: 0.1rem; }
+  .howto-body { display: block; font-size: 0.95rem; line-height: 1.7; }
+  .howto-body strong { display: block; }
+  .howto-sub { display: block; color: var(--ink-faint); font-size: 0.9rem; margin-top: 0.15rem; }
+  .howto-note { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.9rem;
+    line-height: 1.8; color: var(--ink-soft); }
+  @media (max-width: 560px) {
+    .howto-n { min-width: 4.9rem; font-size: 0.78rem; }
+  }
+
   /* ---------- Simulator ---------- */
   .sim-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
   @media (max-width: 860px) { .sim-grid { grid-template-columns: 1fr 1fr; } }
@@ -1624,6 +1646,49 @@
     <p style="margin-bottom:0.9rem;"><a class="sec-cta" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
     <p class="section-sub">補助金は申し込めば必ずもらえるものではなく、審査を通った人だけが受け取れます。この審査に通ることを<strong>採択</strong>といいます。また、受け取ったあとでも決まりを守れないと<strong>返還</strong>（お金を返すこと）を求められることがあります。</p>
     <p class="section-sub">各制度の公式な募集要項（公募要領）・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
+  </section>
+
+  <!-- 04「このサイト・アプリの使い方」（2026-08-17追加）。
+       初見では下部タブの5つが何をする場所か分からず、どの順で使うのかも
+       伝わっていなかった。既定は閉じる（main > section は JS が自動で
+       アコーディオン化する。SECTION_HINT に1行足すと閉じたままでも中身が伝わる）。 -->
+  <section id="howto">
+    <div class="section-head"><span class="section-no jp-serif">04</span><h2>このサイト・アプリの使い方</h2></div>
+
+    <p class="section-sub" style="margin-bottom:1rem;">画面の下にあるメニューの5つが、そのまま申請の流れになっています。上から順に使ってください。</p>
+
+    <ol class="howto-steps">
+      <li>
+        <span class="howto-n">探す</span>
+        <span class="howto-body"><strong>使える制度を見つける</strong>
+        <span class="howto-sub">業種・地域・従業員数を選ぶと、条件に合う制度だけに絞り込まれます。まずここから始めてください。</span></span>
+      </li>
+      <li>
+        <span class="howto-n">書類準備</span>
+        <span class="howto-body"><strong>様式に会社情報を自動で入れる</strong>
+        <span class="howto-sub">制度を選ぶと、その制度に必要な書類の一覧が出ます。Word・Excelの様式には、登録した会社情報が自動で入った状態でダウンロードできます。</span></span>
+      </li>
+      <li>
+        <span class="howto-n">使い道の例</span>
+        <span class="howto-body"><strong>補助金で何ができるかを見る</strong>
+        <span class="howto-sub">業種ごとに10案、おおよその金額・補助率つきで載せています。何に使えるか思いつかないときに。</span></span>
+      </li>
+      <li>
+        <span class="howto-n">相談</span>
+        <span class="howto-body"><strong>専門家に聞く準備をする</strong>
+        <span class="howto-sub">相談したいことを選ぶと、どの専門家が適任か・当日までに用意しておく書類が分かります。</span></span>
+      </li>
+      <li>
+        <span class="howto-n">会社情報</span>
+        <span class="howto-body"><strong>一度入れれば、あとは使い回せる</strong>
+        <span class="howto-sub">会社名・住所・従業員数などを1回だけ入力します。ここから「申請の進み具合」も開けます。</span></span>
+      </li>
+    </ol>
+
+    <div class="howto-note">
+      <p style="margin:0 0 0.5rem;"><strong>入力した情報はこの端末の中だけに保存されます。</strong>会員登録もログインも不要で、こちらのサーバーには一切送られません。そのかわり、<strong>別の端末やブラウザからは見えません</strong>し、ブラウザの履歴やデータを消すと入力内容も消えます。</p>
+      <p style="margin:0;">スマホの場合、ブラウザのメニューから<strong>「ホーム画面に追加」</strong>を選ぶと、アプリのように開けます。一度開いたページはインターネットにつながっていなくても見られます。</p>
+    </div>
   </section>
 
 
@@ -7178,7 +7243,9 @@
   //
   // 見出しだけだと中に何があるか分からないので、1行の手がかりを添える。
   // セクションを増やしたらここにも1行足すこと（無くても動くが説明が出ない）。
-  var SECTION_HINT = {};
+  var SECTION_HINT = {
+    howto: '下のメニューの使う順番と、入力した情報の保存先'
+  };
 
   // 既定はすべて閉じる（本人指示 2026-08-02「デフォルトの設定は常にコンパクトに」）。
   // 02に業種・地域・従業員数の選択欄が入っているので、閉じている間は何も選べない。
