@@ -347,7 +347,15 @@
 
   /* ---------- 印刷（この制度の詳細を、開いた状態で出す） ---------- */
   @media print {
-    body > *:not(#programArticle) { display: none !important; }
+    /* ★ ここは body 直下ではなく main を残す。
+       以前は body > *:not(#programArticle) で「#programArticle 以外を全部隠す」と
+       書いていたが、#programArticle は <main> の中にあって body 直下ではないため、
+       この指定は <main> ごと消していた＝印刷すると中身が白紙になっていた
+       （2026-08-17に実機の印刷プレビューで発覚。ヘッダーとフッターのURLだけが
+       出て本文が無い状態）。子孫セレクタで正しく指定し直す。
+       body直下の要素を隠すときは、必ず main を除外すること。 */
+    body > *:not(main) { display: none !important; }
+    main > *:not(#programArticle) { display: none !important; }
     #programArticle { padding: 0; }
     .pt-actions, #consultPanel, .pd-item .pd-toggle, .pd-fold > summary::after { display: none !important; }
   }

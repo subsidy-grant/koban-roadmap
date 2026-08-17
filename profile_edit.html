@@ -143,9 +143,9 @@
   #companyForm.mode-review .wz-progress,
   #companyForm.mode-review .wz-nav { display: none; }
 
-  .wz-review-toggle { display: none; }
-  #companyForm.mode-review .wz-review-toggle { display: block; margin-bottom: 0.8rem; }
-  #companyForm.mode-review #wzSteps.wz-collapsed { display: none; }
+  /* .wz-review-toggle と #wzSteps.wz-collapsed の指定はここにあったが、
+     「まとめて確認・修正する」を押したら入力欄をそのまま開くようにしたため
+     不要になり削除した（2026-08-17、本人指示） */
 
   #companyForm.mode-wizard .wz-steps { border: 0; border-radius: 0; overflow: visible; background: transparent; }
   #companyForm.mode-wizard .wz-steps .fstep { display: none; }
@@ -520,9 +520,9 @@
         '<button type="button" class="wz-modebtn" id="wzModeBtn"></button>' +
       '</div>' +
       '<div class="wz-progress-track"><span class="wz-progress-fill" id="wzProgressFill"></span></div>' +
-      '<div class="wz-review-toggle">' +
-        '<button type="button" class="btn ghost" id="wzReviewOpenBtn" aria-expanded="false" aria-controls="wzSteps">入力した会社情報を開いて確認・修正する</button>' +
-      '</div>' +
+      // 「入力した会社情報を開いて確認・修正する」ボタンはここにあったが、
+      // 「まとめて確認・修正する」を押した人にもう1回ボタンを押させるだけ
+      // だったので削除した（2026-08-17、本人指示）。開閉は wzSetMode が行う。
       '<div class="wz-steps form-grid" id="wzSteps">' + stepsHtml + '</div>' +
       '<div class="wz-nav" id="wzNav">' +
         '<button type="button" class="btn ghost" id="wzBackBtn">← 戻る</button>' +
@@ -684,17 +684,6 @@
       syncIndustryPickers();
     })();
 
-    var reviewOpenBtn = document.getElementById('wzReviewOpenBtn');
-    if (reviewOpenBtn) {
-      reviewOpenBtn.addEventListener('click', function () {
-        var steps = document.getElementById('wzSteps');
-        var willOpen = steps.classList.contains('wz-collapsed');
-        steps.classList.toggle('wz-collapsed', !willOpen);
-        reviewOpenBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        reviewOpenBtn.textContent = willOpen ? '入力した会社情報を閉じる' : '入力した会社情報を開いて確認・修正する';
-      });
-    }
-
     document.getElementById('wzBackBtn').addEventListener('click', function () {
       clearTimeout(wzAdvTimer);
       wzShowStep(wzIdx - 1);
@@ -768,14 +757,13 @@
     if (btn) btn.textContent = mode === 'wizard' ? 'まとめて確認・修正する' : '質問形式で1つずつ答える';
     if (mode === 'wizard') wzShowStep(wzIdx);
     if (mode === 'review') {
-      // まとめて確認・修正の一覧は、開くたびに既定で閉じた状態に戻す
+      // 「まとめて確認・修正する」を押したら、そのまま入力欄を開く。
+      // 以前はここで wz-collapsed を付けて閉じた状態にし、さらに
+      // 「入力した会社情報を開いて確認・修正する」をもう一度押させていたが、
+      // まとめて直したくて押した人にボタンをもう1つ挟むだけだったので
+      // やめた（2026-08-17、本人指示）。
       var steps = document.getElementById('wzSteps');
-      if (steps) steps.classList.add('wz-collapsed');
-      var openBtn = document.getElementById('wzReviewOpenBtn');
-      if (openBtn) {
-        openBtn.setAttribute('aria-expanded', 'false');
-        openBtn.textContent = '入力した会社情報を開いて確認・修正する';
-      }
+      if (steps) steps.classList.remove('wz-collapsed');
     }
   }
   function wzFirstIncompleteIdx() {
