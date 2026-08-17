@@ -278,6 +278,18 @@
     border-left: 3px solid var(--accent);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: 0.35rem 0.6rem; }
+  /* 制度を選ぶ前は手順2〜4がまだ作れない（選んだ制度に応じてその場で組み立てるため）。
+     何も出さないと「手順1 →（無番のカード）→ 手順5」に見えて番号が飛んだと受け取られるので、
+     2026-08-17から未選択のあいだは、これから出てくる手順を淡い予告として置いている。 */
+  .step-preview { background: var(--paper-raised); border: 1px dashed var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1.2rem; }
+  .step-preview-lead { margin: 0 0 0.7rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .step-preview ol { margin: 0; padding-left: 0; list-style: none; }
+  .step-preview li { display: flex; gap: 0.6rem; align-items: baseline;
+    font-size: 0.9rem; color: var(--ink-soft); padding: 0.3rem 0; }
+  .step-preview .n { flex: none; font-weight: 700; color: var(--ink-faint);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 999px;
+    min-width: 1.9rem; text-align: center; padding: 0.05rem 0.35rem; font-size: 0.82rem; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #afProgram { width: 100%; }
   .af-filter { margin-bottom: 0.7rem; }
@@ -4550,7 +4562,18 @@
     var sel = document.getElementById('afProgram');
     if (!box || !sel) return;
     var key = sel.value;
-    if (!key) { box.innerHTML = ''; return; }
+    // 制度が未選択のあいだは手順2〜4を組み立てられない（必要な書類が制度ごとに違うため）。
+    // ただし空にすると番号が1から5へ飛んだように見えるので、これから何が出るかを予告する。
+    if (!key) {
+      box.innerHTML = '<div class="step-preview">' +
+        '<p class="step-preview-lead">上で<strong>制度を選ぶと</strong>、ここに手順2〜4が出てきます。</p>' +
+        '<ol>' +
+        '<li><span class="n">手順2</span><span>その制度に必要な書類の一覧</span></li>' +
+        '<li><span class="n">手順3</span><span>選んだ様式に会社情報を入れる</span></li>' +
+        '<li><span class="n">手順4</span><span>まとめてダウンロード</span></li>' +
+        '</ol></div>';
+      return;
+    }
     var items = formItems(key);
     var fill = items.filter(function (it) { return it.fillable; });
     var nW = fill.filter(function (it) { return it.type === 'Word'; }).length;
