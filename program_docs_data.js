@@ -238,7 +238,7 @@
       groups: [
         { phase: '交付申請', items: [
           { name: '様式第1号 交付申請書', url: 'https://www.mhlw.go.jp/content/11200000/001691199.docx', type: 'Word', size: '51KB' },
-          { name: '申請書等 簡易作成ツール', url: 'https://www.mhlw.go.jp/content/11200000/001693661.xlsx', type: 'Excel', size: '178KB' },
+          { name: '申請書等 簡易作成ツール', url: 'https://www.mhlw.go.jp/content/11200000/001733987.xlsx', type: 'Excel', size: '178KB' },
           { name: '物価高騰等要件に係る申出書（売上高総利益率）', url: 'https://www.mhlw.go.jp/content/11200000/001692000.docx', type: 'Word', size: '44KB' },
           { name: '物価高騰等要件に係る申出書（売上高営業利益率）', url: 'https://www.mhlw.go.jp/content/11200000/001692001.docx', type: 'Word', size: '44KB' }
         ] },
@@ -2443,8 +2443,8 @@
           { name: '杉並区中小企業等デジタル化推進事業計画（変更・取下げ）申請書（第6号様式第9条関係）', url: 'https://www.city.suginami.tokyo.jp/documents/25089/digital_henkotorisage_word.docx', type: 'Word', size: '25KB' }
         ] },
         { phase: '実績報告（事業が終わったあと）', items: [
-          { name: '杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係）', url: 'https://www.city.suginami.tokyo.jp/documents/25089/degital_hokoku.docx', type: 'Word', size: '26KB' },
-          { name: '杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係）', url: 'https://www.city.suginami.tokyo.jp/documents/25089/degital_seikyu_excel_1.xlsx', type: 'Excel', size: '14KB' }
+          { name: '杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係）', url: 'https://www.city.suginami.tokyo.jp/documents/25089/digital_zissekihoukoku.docx', type: 'Word', size: '26KB' },
+          { name: '杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係）', url: 'https://www.city.suginami.tokyo.jp/documents/25089/digital_seikyu.xlsx', type: 'Excel', size: '14KB' }
         ] }
       ]
     }
