@@ -75,10 +75,19 @@
     padding: 0.15rem 0.6rem; margin-bottom: 0.6rem;
   }
   .pill-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+  /* 制度名バッジは必ず1行にする（2026-08-18、本人指示）。
+     スマホ幅では制度名が長く、実測で390pxで21件・320pxで48件が2行以上に
+     なっていた（最長 tokyo_soui は3行）。折り返すとバッジの角丸が崩れ、
+     直下の h1 と二重に長文が並んで読みづらい。
+     1行に収める手段は fitPill()（JS）が文字サイズの段階的な縮小で行う。
+     下限まで縮めても収まらない場合だけ ellipsis で省略する（下記）。 */
   .pill {
     display: inline-block; font-size: 0.82rem; padding: 0.18rem 0.6rem;
-    border-radius: 100px; white-space: normal; font-weight: 600;
+    border-radius: 100px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%;
   }
+  .pill-row { min-width: 0; }
   /* 制度の種別バッジ。地(サンド)の上に直接載るため、wash地だけだと輪郭が
      出ない（実測 2026-08-17：cat-josei-wash と地の差は1.07しかない）。
      文字色は足りている（5.11）ので、枠線で輪郭を作って形を見せる。 */
@@ -103,20 +112,9 @@
   .pt-kind.hojo { background: var(--cat-hojo); color: var(--on-accent); }
   .pt-kind.josei { background: var(--cat-josei); color: var(--on-accent); }
   .pt-kind.other { background: var(--ink-soft); color: var(--on-accent); }
-  .pt-kind-why { color: var(--ink-soft); }
-  /* 一次情報が取れず判定を確定できていない制度に出す但し書き。事故防止の枠とは
-     別の色にして、「制度の注意」ではなく「こちらの確認が未了」だと区別させる。 */
-  .pt-kind-unverified {
-    margin-top: 0.4rem; padding: 0.5rem 0.7rem;
-    background: var(--paper-raised); border-radius: 6px;
-    border-left: 3px dashed var(--ink-soft); color: var(--ink);
-  }
-  /* 事故防止の2点。読み飛ばされると実害が出るので、地から浮かせて枠で囲む。 */
-  .pt-kind-warn {
-    margin-top: 0.4rem; padding: 0.5rem 0.7rem;
-    background: var(--paper-raised); border-radius: 6px;
-    border-left: 3px solid var(--rust); color: var(--ink);
-  }
+  /* 旧 .pt-kind-why / .pt-kind-unverified / .pt-kind-warn は 2026-08-18 に削除した。
+     制度名の下に積んでいた3ブロックを「留意事項」へまとめたため（本人指示）。
+     現在この行より上に残るのは相談先バッジだけ。 */
 
   h1.pt-name {
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
@@ -495,6 +493,15 @@
         <summary><h2>留意事項</h2><span class="pd-fold-hint">申請前に確認しておきたい注意点</span></summary>
         <div class="pd-fold-body">
           <ul class="item-list">
+            <!-- 2026-08-18（本人指示）: 制度名の下に3行で出していた
+                 「審査の性格」「予算枠の注記」「未確認の但し書き」「事故防止の2点」を
+                 ここへまとめた。見出し直下に注意書きが積み上がって本文が押し下げられ、
+                 スマホでは制度名を見る前に4ブロック読まされる状態になっていたため。
+                 相談先バッジ（誰に相談するか）は行動を決める情報なので上に残す。
+                 中身は render() が制度ごとに差し替える。 -->
+            <li id="ptKindItem" style="display:none;"></li>
+            <li id="ptUnverifiedItem" style="display:none;"></li>
+            <li id="ptWarnItem"></li>
             <li id="ptNoteItem" style="display:none;"></li>
             <li>同一の経費に対して複数の制度から重複して受給することはできません。分類ごとに最も適合する制度を選び、経費区分を分けて申請する必要があります</li>
             <li>業務改善助成金・キャリアアップ助成金は賃金引き上げの実施が前提条件で、事前の計画届出が必要な場合があります</li>
@@ -3216,6 +3223,47 @@
     simRenderResult();
   }
 
+  // 制度名バッジを1行に収める（2026-08-18、本人指示）。
+  //
+  // スマホ幅では制度名が長く、実測で 390px で21件・320px で48件が2行以上に
+  // なっていた（最長 tokyo_soui「経営力強化に向けた創意工夫チャレンジ促進事業
+  //（業務改善コース）（東京都・東京都中小企業振興公社）」は3行）。
+  //
+  // 文字サイズを段階的に落として収める。CSS の clamp や単純な比率計算では
+  // なく実測ループにしたのは、日本語は文字ごとに幅が違い（全角・半角・括弧）、
+  // 計算で出した比率が実際の折り返しと合わないため。
+  //
+  // ★下限 0.62rem を切ってまで縮めない。中高年・非IT利用者が主な読み手で
+  //   （CLAUDE.md のデザイン方針）、読めない文字を出すくらいなら末尾を
+  //   省略するほうがよい。下限でも収まらないときは CSS の text-overflow が
+  //   「…」で省略する。制度名のフルテキストは直下の h1 に必ず出ているので、
+  //   ここで省略されても情報は失われない。
+  var PILL_MAX_REM = 0.82;   // 通常時（CSSの既定値と揃える）
+  var PILL_MIN_REM = 0.62;   // これ以上は小さくしない
+  var PILL_STEP_REM = 0.02;
+  function fitPill(el) {
+    if (!el) return;
+    el.style.fontSize = '';
+    // 折り返しは CSS 側で nowrap にしてあるので、はみ出しは scrollWidth で見る
+    var size = PILL_MAX_REM;
+    var guard = 0;
+    while (el.scrollWidth > el.clientWidth && size > PILL_MIN_REM && guard < 40) {
+      size = Math.round((size - PILL_STEP_REM) * 1000) / 1000;
+      el.style.fontSize = size + 'rem';
+      guard++;
+    }
+    // 下限でも収まらなかったことを、後から見て分かるようにしておく
+    el.title = (el.scrollWidth > el.clientWidth) ? el.textContent : '';
+  }
+  // 端末の回転・ウィンドウ幅の変更でも1行を保つ。連続発火するのでまとめる。
+  var pillFitTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(pillFitTimer);
+    pillFitTimer = setTimeout(function () {
+      fitPill(document.getElementById('ptPill'));
+    }, 120);
+  });
+
   function render() {
     var params = new URLSearchParams(location.search);
     var key = params.get('key') || '';
@@ -3234,7 +3282,7 @@
     var kind = pillClass(p.name, key);
 
     var pill = document.getElementById('ptPill');
-    if (pill) { pill.className = 'pill ' + kind; pill.textContent = p.name; }
+    if (pill) { pill.className = 'pill ' + kind; pill.textContent = p.name; fitPill(pill); }
 
     // 制度の性質を、色分けではなく言葉で出す。色の意味は初見には伝わらない。
     // 主役は「誰に相談すればいいか」。制度が何と呼ばれているかは行動を変えないが、
@@ -3253,39 +3301,9 @@
       line1.appendChild(badge);
       kindRow.appendChild(line1);
 
-      var why = document.createElement('div');
-      why.className = 'pt-kind-why';
-      why.textContent = meta.why;
-      // 助成金だと「条件を満たせば大丈夫」と読まれるが、予算枠のある制度では
-      // 満たしても受けられないことがある（相模原の省エネ設備は予算超過日の申請が抽選、
-      // 業務改善助成金も予算の範囲内で募集を終了する）。該当する制度は128件中7件で、
-      // schedule/note に記載はあるものの読み飛ばされうるので、ここでも一言添える。
-      // 種別ではなく制度データから判定するので、制度が増減しても正しく動く。
-      if (kind === 'josei' && programHasBudgetCap(p)) {
-        why.textContent += '。ただしこの制度は予算の上限があり、条件を満たしても受けられないことがあります（下の「受付時期」を確認してください）';
-      }
-      kindRow.appendChild(why);
-
-      // 一次情報で確定できていない制度は、そのことを画面に出す。表示中の種別は
-      // 名称からの推定にすぎず、上の「相談先」「審査の性格」も推定に乗っている。
-      // 黙って断定すると、利用者は確認済みの126件と区別できない。
-      if (PROGRAM_TYPE_UNVERIFIED[key]) {
-        var unv = document.createElement('div');
-        unv.className = 'pt-kind-unverified';
-        unv.textContent = '※ この制度は、上の判定を一次情報で確認できていません（'
-          + PROGRAM_TYPE_UNVERIFIED[key] + '）。'
-          + '審査の有無や選ばれ方は、申し込む前に窓口へ直接お問い合わせください。';
-        kindRow.appendChild(unv);
-      }
-
-      // 種別を問わず必ず出す2点。補助金・助成金で最も多い事故がこの2つで、
-      // どちらも制度ごとの調査を要さず全制度で成り立つ（社労士レビュー 2026-08-17）。
-      var warn = document.createElement('div');
-      warn.className = 'pt-kind-warn';
-      warn.textContent = '申し込む前に必ず: ①発注・契約は「交付決定」の通知が届いてから。'
-        + '先に注文すると条件を満たしていても対象外になります ②お金は後払いです。'
-        + '費用はいったん全額を自分で払い、報告と審査のあとに振り込まれます';
-      kindRow.appendChild(warn);
+      // 説明文・未確認の但し書き・事故防止の2点は、ここではなく「留意事項」へ
+      // まとめた（2026-08-18、本人指示）。上に残すのは相談先バッジだけ。
+      // 中身の生成は下の fillNotes() が行う。
     }
 
     var areaTag = document.getElementById('ptAreaTag');
@@ -3309,7 +3327,55 @@
 
     initSim(key, p);
 
-    // 制度固有の注意（p.note）は、独立表示をやめて留意事項リストの先頭に差し込む
+    // 制度名の下に出していた3行を「留意事項」へまとめる（2026-08-18、本人指示）。
+    // 上に残すのは相談先バッジのみ。順序は「この制度の話 → 全制度共通の話」。
+    var kindMeta = KIND_LABEL[kind] || KIND_LABEL.other;
+
+    // ① 審査の性格（＋予算枠のある制度はその注記）
+    var kindItemEl = document.getElementById('ptKindItem');
+    if (kindItemEl) {
+      var kindText = kindMeta.why;
+      // 助成金だと「条件を満たせば大丈夫」と読まれるが、予算枠のある制度では
+      // 満たしても受けられないことがある（相模原の省エネ設備は予算超過日の申請が抽選、
+      // 業務改善助成金も予算の範囲内で募集を終了する）。該当は128件中7件で、
+      // schedule/note に記載はあるものの読み飛ばされうるので、ここでも一言添える。
+      // 種別ではなく制度データから判定するので、制度が増減しても正しく動く。
+      if (kind === 'josei' && programHasBudgetCap(p)) {
+        kindText += '。ただしこの制度は予算の上限があり、条件を満たしても受けられないことがあります（上の「受付期間・次回締切」を確認してください）';
+      }
+      kindItemEl.style.display = '';
+      kindItemEl.innerHTML = '<strong>選ばれ方：</strong>' + esc(kindText);
+    }
+
+    // ② 一次情報で確定できていない制度は、そのことを出す。表示中の種別は名称からの
+    //    推定にすぎない。黙って断定すると、確認済みの126件と区別が付かない。
+    var unvItemEl = document.getElementById('ptUnverifiedItem');
+    if (unvItemEl) {
+      if (PROGRAM_TYPE_UNVERIFIED[key]) {
+        unvItemEl.style.display = '';
+        unvItemEl.innerHTML = '<strong>この判定は未確認です：</strong>'
+          + esc(PROGRAM_TYPE_UNVERIFIED[key])
+          + '。審査の有無や選ばれ方は、申し込む前に窓口へ直接お問い合わせください';
+      } else {
+        unvItemEl.style.display = 'none';
+      }
+    }
+
+    // ③ 種別を問わず必ず出す2点。補助金・助成金で最も多い事故がこの2つで、
+    //    どちらも制度ごとの調査を要さず全制度で成り立つ（社労士レビュー 2026-08-17）。
+    //    留意事項は既定で閉じているため、ここは reqHL の赤太字で目を引かせる。
+    //    simMark() は esc() を内包しつつ [[ ]] を赤太字にする（データ側にHTMLを
+    //    書いても効かない安全側の実装）。見出しの<strong>だけ外側で足す。
+    var warnItemEl = document.getElementById('ptWarnItem');
+    if (warnItemEl) {
+      warnItemEl.innerHTML = '<strong>申し込む前に必ず：</strong>' + simMark(
+        '①発注・契約は[[「交付決定」の通知が届いてから]]。'
+        + '先に注文すると条件を満たしていても対象外になります　'
+        + '②[[お金は後払い]]です。費用はいったん全額を自分で払い、'
+        + '報告と審査のあとに振り込まれます');
+    }
+
+    // 制度固有の注意（p.note）は、独立表示をやめて留意事項リストに差し込む
     // （2026-08-13、本人指示）。留意事項セクション自体は他の開閉カードと同じく
     // 既定で閉じる（2026-08-13、本人指示で自動展開をやめた）。
     var noteItemEl = document.getElementById('ptNoteItem');

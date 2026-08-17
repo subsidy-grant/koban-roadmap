@@ -1,15 +1,24 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-18 02:45**（JST）
-- 確認したURL：**1164件**
+- 確認時刻：**2026-08-18 04:44**（JST）
+- 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔵 新規（今回から監視） **23件**／✅ 変化なし **1141件**
+🔵 新規（今回から監視） **28件**／✅ 変化なし **1137件**
 
 ## 🔵 新規（今回から監視）
 
+- **新規ビジネスチャレンジ補助事業（練馬区）**
+  - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
+  - 今回から確認対象
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
+  - 今回から確認対象
+- **足利市地域産業振興奨励事業補助**
+  - https://www.city.ashikaga.tochigi.jp/industory/000058/000305/000701/p008322.html
+  - 今回から確認対象
 - **富士見市中小企業チャレンジ支援事業補助金／申請書（様式第1号）**
   - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/1-sinseisho.docx
   - 今回から確認対象
@@ -79,8 +88,14 @@
 - **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金／富士見市 公式ページ**
   - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.html
   - 今回から確認対象
+- **高崎市中小企業等機械設備導入支援助成金**
+  - https://www.city.takasaki.gunma.jp/page/3420.html
+  - 今回から確認対象
+- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
+  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
+  - 今回から確認対象
 
-## ✅ 変化なし（1141件）
+## ✅ 変化なし（1137件）
 
 <details><summary>一覧を開く</summary>
 
@@ -354,7 +369,6 @@
 - 上尾市SDGs・DX推進補助金（DX部門）／交付申請の様式 ※記入例はこちら Word版&nbsp; — https://www.city.ageo.lg.jp/uploaded/attachment/119069.docx
 - 上尾市SDGs・DX推進補助金（DX部門）／上尾市ＳＤＧｓ・ＤＸ推進補助金交付要領 — https://www.city.ageo.lg.jp/uploaded/attachment/119071.pdf
 - 商業・サービス業事業継続力強化支援事業補助金（荒川区） — https://www.city.arakawa.tokyo.jp/a020/jigyousha/jigyouunei/r4hojyo.html
-- 足利市地域産業振興奨励事業補助 — https://www.city.ashikaga.tochigi.jp/industory/000058/000303/p002695.html
 - 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）／収支決算書 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/balance_robot.doc
 - 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）／関連ファイル 内訳書 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/breakdown_robot.doc
 - 厚木市中小企業設備投資促進事業補助金／役員等氏名一覧表 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/capitalinvestmentListofnamesofofficers2026.docx
@@ -415,7 +429,6 @@
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／助成金交付申請書兼請求書（様式1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業計画書（別紙2） — https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／デジタル技術活用促進助成事業・DX導入（江戸川区）／江戸川区 公式ページ — https://www.city.edogawa.tokyo.jp/e093/shigotosangyo/jigyosha_oen/sangyo_jigyosya/jyosei/seisanseikojo/dounyu.html
-- 府中市小規模事業者等チャレンジ支援事業補助金（府中市） — https://www.city.fuchu.tokyo.jp/jigyosha/keesha/kigyo/tyushokigyoshienn/hanrokaitaku.html
 - 経営力強化補助金・事業継続事業（八王子市）／経営力強化補助金・事業継続事業（八王子市）／八王子市 公式ページ — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku.html
 - 経営力強化補助金・事業継続事業（八王子市）／令和8年度 経営力強化補助金交付要綱 — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/R8youkou.pdf
 - 経営力強化補助金・事業継続事業（八王子市）／【第5-2号様式】実績報告書 記入例 — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekikinyuurei.pdf
@@ -723,7 +736,6 @@
 - 茂原市中小事業者サポート補助金／収支決算書 — https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/32_kessan.docx
 - 茂原市中小事業者サポート補助金／商店会団体への加入確認書 — https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/33_syotenkaikanyukakuninsyo.docx
 - 茂原市中小事業者サポート補助金／茂原市中小事業者サポート補助金交付請求書 — https://www.city.mobara.chiba.jp/cmsfiles/contents/0000007/7102/41_seikyu.docx
-- 新規ビジネスチャレンジ補助事業（練馬区） — https://www.city.nerima.tokyo.jp/kusei/sangyo/jigyosha/bizichalle.html
 - 新座市中小企業者IT・DX導入費補助金／新座市中小企業者IT・DX導入費補助金／新座市 公式ページ — https://www.city.niiza.lg.jp/site/business-support/itdx.html
 - 新座市中小企業者IT・DX導入費補助金／新座市中小企業者IT・DX導入費補助金交付申請書 （別ウィンドウ・Wordファイル・24KB） — https://www.city.niiza.lg.jp/uploaded/attachment/49309.docx
 - 新座市中小企業者IT・DX導入費補助金／こちら （別ウィンドウ・PDFファイル・499KB） — https://www.city.niiza.lg.jp/uploaded/attachment/49311.pdf
@@ -849,7 +861,6 @@
 - 墨田区デジタル技術活用支援補助金（墨田区）／補助金申請経費内訳書（税込表示） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeikomi.xlsx
 - 墨田区デジタル技術活用支援補助金（墨田区）／補助金申請経費内訳書（税抜表示） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeinuki.xlsx
 - 墨田区デジタル技術活用支援補助金（墨田区）／墨田区デジタル技術活用支援補助金（墨田区）／墨田区 公式ページ — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.html
-- 高崎市中小企業等機械設備導入支援助成金 — https://www.city.takasaki.gunma.jp/
 - 館山市市内事業者デジタル化トライアル補助金／第1号様式 — https://www.city.tateyama.chiba.jp/files/300385841.docx
 - 館山市市内事業者デジタル化トライアル補助金／第2号様式 — https://www.city.tateyama.chiba.jp/files/300385842.docx
 - 館山市市内事業者デジタル化トライアル補助金／第4号様式 — https://www.city.tateyama.chiba.jp/files/300385844.pdf
