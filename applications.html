@@ -204,6 +204,28 @@
     margin: 1rem 0 0.3rem; background: var(--accent-wash);
     border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: 0.35rem 0.6rem; }
+  /* ---- 審査に通ったあと（採択後）のチェック。2026-08-17追加 ---- */
+  .after-card { margin-top: 1rem; }
+  .after-ttl { margin: 0 0 0.4rem; font-size: 1.05rem; font-weight: 700; }
+  .after-lead { margin: 0 0 0.9rem; font-size: 0.9rem; line-height: 1.8; color: var(--ink-soft); }
+  .after-phase { font-size: 0.86rem; color: var(--rust-ink); font-weight: 700;
+    margin: 1rem 0 0.3rem; background: var(--rust-wash);
+    border-left: 3px solid var(--rust); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0.35rem 0.6rem; }
+  ul.after-list { list-style: none; margin: 0; padding: 0; }
+  .after-item { border-bottom: 1px dashed var(--line); }
+  .after-item:last-child { border-bottom: 0; }
+  .after-item label { display: flex; align-items: flex-start; gap: 0.6rem;
+    padding: 0.6rem 0.2rem; cursor: pointer; min-height: 44px; }
+  .after-item input[type="checkbox"] { width: 22px; height: 22px; margin-top: 0.2rem; flex: none;
+    accent-color: var(--sage); }
+  .after-body { display: block; }
+  .after-item-ttl { display: block; font-size: 0.94rem; font-weight: 700; line-height: 1.6; }
+  .after-why { display: block; margin-top: 0.2rem; font-size: 0.84rem; line-height: 1.75;
+    color: var(--ink-faint); }
+  .after-item.is-done .after-item-ttl { color: var(--ink-faint); text-decoration: line-through; }
+  .after-src { margin: 1rem 0 0; font-size: 0.8rem; line-height: 1.7; color: var(--ink-faint); }
+
   ul.checks { list-style: none; margin: 0; padding: 0; }
   ul.checks li { border-bottom: 1px dashed var(--line); }
   ul.checks li:last-child { border-bottom: 0; }
@@ -287,6 +309,21 @@
       <div class="prog"><i id="appDetailBar" style="width:0%;"></i></div>
       <div id="appDetailChecks"></div>
     </div>
+
+    <!-- 審査に通ったあと（採択後）にやること。2026-08-17追加。
+         それまで申請までしか扱っておらず、返還・不支給の多くが採択後の
+         手続きで起きているのに、その段階の機能がどこにも無かった。
+         ここに載せるのは補助金等適正化法に根拠があり原則すべての補助金に
+         共通するものだけ。相見積の基準額のような制度ごとに違う数値は
+         書かない（ものづくりは単価税抜50万円以上・2社以上／持続化は発注
+         総額税込100万円超・2者以上と、税抜税込も単価総額も社数も違う。
+         いずれも2026-08-17に各手引きのPDF原文で確認）。 -->
+    <div class="pcard after-card">
+      <p class="after-ttl">審査に通ったあとにやること</p>
+      <p class="after-lead">補助金は<strong>申請より、通ったあとのほうが落とし穴が多い</strong>制度です。下は制度を問わず共通するものだけを並べています。<strong>金額や期限は制度ごとに違うので、必ずその制度の「補助事業の手引き」で確認してください。</strong></p>
+      <div id="afterChecks"></div>
+      <p class="after-src">根拠：補助金等に係る予算の執行の適正化に関する法律、ものづくり補助金【補助事業の手引き】19次締切版、小規模事業者持続化補助金【補助事業の手引き】第16回（いずれも2026年8月17日に原文で確認）。制度は改定されるため、実際の手続きは各制度の最新の公式情報でご確認ください。</p>
+    </div>
     <p style="margin-top:1rem;font-size:0.9rem;color:var(--ink-soft);">
       制度ごとに必要な書類は違います。<strong>最終確認は必ず各制度の「公募要領」の提出書類一覧で行ってください。</strong>ここに無い書類を求められることもあります。様式そのものは<a href="documents.html">申請書類の準備ページ</a>で選んで記入します。
     </p>
@@ -338,6 +375,84 @@
   }
   function findApp(id) { return apps.filter(function (a) { return a.id === id; })[0] || null; }
   function saveApps() { save(K_APPS, apps); }
+
+  // ---------- 審査に通ったあと（採択後）のチェック ----------
+  // 収録の基準：補助金等適正化法に根拠があり、原則すべての補助金に共通するもの。
+  // 制度ごとに閾値が違うもの（相見積の基準額・実績報告の最終期限・事業化状況
+  // 報告の年数など）は、ここに数値を書かず「その制度の手引きで確認」に寄せる。
+  // ハードコードすると必ず腐り、しかも間違いに気づけないため。
+  var AFTER_STEPS = [
+    { phase: '交付決定のあと（お金を使う前）', items: [
+      { id: 'a1', ttl: '交付決定通知書が届いてから発注する',
+        why: '「採択されました」の知らせだけで注文すると、その経費は全額が対象外になります。採択通知は「補助対象経費を承認した」ものではありません。口頭やメールでの発注の意思表示も発注とみなされることがあります。' },
+      { id: 'a2', ttl: '交付決定通知書の金額を、申請額と見比べる',
+        why: '申請したときの希望額より減っていることがあります。実際に受け取る額は、ここからさらに減ることもあります。' },
+      { id: 'a3', ttl: 'この事業のお金だけを、帳簿で分けて記録する',
+        why: '他の売上・支出と区分できない経費は対象外になります。' }
+    ] },
+    { phase: '事業をやっている間', items: [
+      { id: 'b1', ttl: '決められた金額以上の発注では、相見積を取る',
+        why: '基準額と必要な社数は制度ごとに違います（税抜か税込か、単価か総額かも違います）。中古品はより厳しい扱いになる制度があります。その制度の手引きで必ず確認してください。' },
+      { id: 'b2', ttl: '見積書に「一式」とだけ書かせない',
+        why: '複数の項目が含まれる場合は内訳の明示が必要です。見積書の有効期限切れにも注意してください。' },
+      { id: 'b3', ttl: '領収書の但し書きを「お品代」にしない',
+        why: '「お品代」「商品代」ではなく、具体的な品名の記載が必要です。' },
+      { id: 'b4', ttl: '支払いは、事業の期間内に引き落としまで終える',
+        why: '銀行から実際にお金が出るところまでが期間内である必要があります。クレジットカード払いは引き落としが翌月以降になり、期限を超えがちです。' },
+      { id: 'b5', ttl: '計画を変えるときは、先に事務局の承認をもらう',
+        why: '経費の内容・配分の変更、中止や廃止は事前の承認が必要です。先に変えてしまうと対象外になります。' }
+    ] },
+    { phase: '事業が終わったあと（ここを落とすと入金されません）', items: [
+      { id: 'c1', ttl: '期限内に実績報告を出す',
+        why: '出さないと交付決定そのものが取り消されます（＝1円も入りません）。期限は「事業完了から◯日」と「最終提出期限」の早いほうであることが多く、制度ごとに違います。' },
+      { id: 'c2', ttl: '補助金は後払いだと理解して、資金を用意しておく',
+        why: '先に全額を自己資金で払い、あとから戻ってくる仕組みです。先にもらう（概算払い）は認められていません。設備100万円ならいったん100万円の現金が要ります。' },
+      { id: 'c3', ttl: '実績報告とは別に、精算払請求書を出す',
+        why: '金額が確定したあとの請求手続きです。これを出さないと、交付決定を取り消されることがあります。見落としが多い手続きです。' }
+    ] },
+    { phase: '受け取ったあと（数年続きます）', items: [
+      { id: 'd1', ttl: '書類を5年間保管する',
+        why: '会計検査院の実地検査が入ることがあります。検査を拒んだり嘘の答弁をすると罰金の対象です。' },
+      { id: 'd2', ttl: '高額な設備を、勝手に売る・捨てる・担保に入れない',
+        why: '一定金額以上で買った機械等は「処分制限財産」になり、決められた期間は事務局の事前承認なしに処分できません。閉店・移転・内装のやり直し・リースへの切替も処分にあたることがあります。無断で処分すると交付取消と加算金つきの返還になります。対象になる金額と期間は制度・品目ごとに違います。' },
+      { id: 'd3', ttl: '事業化状況の報告を、決められた回数ぶん出す',
+        why: '終わったつもりで放置されがちですが、未提出だと新しい補助金に申請できなくなるなどの制約があります。報告の年数・回数は制度ごとに違います。' },
+      { id: 'd4', ttl: '賃上げを約束した場合、達成できているか毎年確かめる',
+        why: '未達だと返還を求められます。判定の仕方は要件ごとに違い、最終年度に1回だけ見るものと、毎年見るものがあります。' },
+      { id: 'd5', ttl: '受け取った補助金を、収入として申告する',
+        why: '補助金には税金がかかります（法人税・所得税の課税対象。消費税は対象外）。「もらったお金だから非課税」は誤りです。設備の取得に充てた分は圧縮記帳で課税を繰り延べられる場合があります。扱いは税理士にご確認ください。' }
+    ] }
+  ];
+
+  function renderAfterChecks() {
+    var box = document.getElementById('afterChecks');
+    if (!box) return;
+    var app = apps.filter(function (a) { return a.id === currentId; })[0];
+    if (!app) { box.innerHTML = ''; return; }
+    if (!app.after) app.after = {};
+    box.innerHTML = AFTER_STEPS.map(function (g) {
+      return '<p class="after-phase">' + esc(g.phase) + '</p>' +
+        '<ul class="after-list">' + g.items.map(function (it) {
+          var on = app.after[it.id] ? ' checked' : '';
+          return '<li class="after-item' + (on ? ' is-done' : '') + '">' +
+            '<label><input type="checkbox" class="after-cb" data-id="' + esc(it.id) + '"' + on + '>' +
+            '<span class="after-body"><span class="after-item-ttl">' + esc(it.ttl) + '</span>' +
+            '<span class="after-why">' + esc(it.why) + '</span></span></label></li>';
+        }).join('') + '</ul>';
+    }).join('');
+    box.querySelectorAll('.after-cb').forEach(function (cb) {
+      cb.addEventListener('change', function () {
+        var a = apps.filter(function (x) { return x.id === currentId; })[0];
+        if (!a) return;
+        if (!a.after) a.after = {};
+        if (cb.checked) a.after[cb.getAttribute('data-id')] = 1;
+        else delete a.after[cb.getAttribute('data-id')];
+        saveApps();
+        var li = cb.closest('.after-item');
+        if (li) li.classList.toggle('is-done', cb.checked);
+      });
+    });
+  }
 
   function fillProgramSelect(sel) {
     var keys = Object.keys(D.programs || {}).sort(function (a, b) {
@@ -447,6 +562,9 @@
     var doneList = document.getElementById('appDetailDone');
     var barEl = document.getElementById('appDetailBar');
     var checksEl = document.getElementById('appDetailChecks');
+    // 採択後チェックは取り寄せ書類の有無と関係なく常に出す。
+    // 下の !items.length で早期returnする経路があるので、その前に呼ぶこと。
+    renderAfterChecks();
     if (!items.length) {
       doneList.textContent = '';
       barEl.style.width = '0%';
