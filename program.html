@@ -92,13 +92,11 @@
      名称に「助成金」とあるのに実質は補助金、という制度が確定済み31件の
      全件で起きているため、バッジだけだと「名前と違う」と読まれる。
      判定の理由を一言添えて、食い違いの説明までを1セットにする。 */
-  .pt-kind-row {
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
-    margin-bottom: 0.7rem; font-size: 0.82rem; line-height: 1.5;
-  }
+  .pt-kind-row { margin-bottom: 0.8rem; font-size: 0.82rem; line-height: 1.6; }
+  .pt-kind-line { margin-bottom: 0.3rem; }
   .pt-kind {
-    display: inline-block; font-weight: 700; padding: 0.1rem 0.5rem;
-    border-radius: 4px; white-space: nowrap;
+    display: inline-block; font-weight: 700; padding: 0.12rem 0.55rem;
+    border-radius: 4px;
   }
   /* 文字色は --on-accent（昼=白／夜=地の濃色）。夜間の cat-hojo/cat-josei は
      明るい色なので、白のままだとボタンで起きたのと同じ低コントラストになる。 */
@@ -106,6 +104,12 @@
   .pt-kind.josei { background: var(--cat-josei); color: var(--on-accent); }
   .pt-kind.other { background: var(--ink-soft); color: var(--on-accent); }
   .pt-kind-why { color: var(--ink-soft); }
+  /* 事故防止の2点。読み飛ばされると実害が出るので、地から浮かせて枠で囲む。 */
+  .pt-kind-warn {
+    margin-top: 0.4rem; padding: 0.5rem 0.7rem;
+    background: var(--paper-raised); border-radius: 6px;
+    border-left: 3px solid var(--rust); color: var(--ink);
+  }
 
   h1.pt-name {
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
@@ -553,12 +557,30 @@
     // high confidence のみ登録。名称は全て「補助金」だが、審査が申請内容の適否確認に
     // とどまり事業計画の優劣で順位付けしないため実質は助成金、というものが11件中9件。
     // 判定はいずれも「随時審査」「先着順」「適否を決定」「不交付決定通知書」等の明文による。
-    kanagawa_atsugi_setsubi: 'josei', kanagawa_digital: 'josei',
+    kanagawa_atsugi_setsubi: 'josei',
     kanagawa_hiratsuka_datsutanso: 'josei', kanagawa_hiratsuka_dx: 'josei',
     kanagawa_kamakura_digital: 'josei', kanagawa_kamakura_kankyo: 'josei',
     kanagawa_kamakura_ritchi: 'josei', kanagawa_kawasaki_seicho: 'josei',
     kanagawa_sagamihara_shoene: 'josei', kanagawa_yokosuka_seisansei: 'josei',
     kanagawa_zama_renewal: 'josei'
+    // kanagawa_digital は一度 josei として登録したが、2026-08-17の専門家レビューで
+    // 誤りと判明したため撤回した（名称どおり hojo なので登録不要）。公募要領 p.7 の
+    // 「申請は先着順で受け付け、予算額に達した時点で受付を終了します」だけを見て
+    // 判定したが、同じ要領の p.15 に「補助金の採択審査は…審査の観点に基づき審査を
+    // 行った上で」「それ以外の事業者には不交付決定通知書を送付します」があり、
+    // 審査の観点には「営業利益率が向上する計画であると認められるか」「総合評価」、
+    // さらに加点項目（パートナーシップ構築宣言）まであった。
+    //
+    // ここから得た教訓を、以降の判定基準にする：
+    //   × 「予算の範囲内において」は判別に使えない。競争型の要綱にも必ず入る定型句
+    //   × 「先着順」も使えない。受付の締め方の話で、受付後の審査の性質は語らない
+    //     （この制度が実例。先着順と採択審査は同一文書内に同居する）
+    //   × 「審査し、適否を決定」も使えない。要件審査と競争審査の両方を含む定型句
+    //   ○ hojo の積極的証拠を探し、無ければ josei と判定する。決定的なのは4つ：
+    //     ①審査の観点/項目の表に「妥当性」「総合評価」など程度を測る語がある
+    //     ②加点項目がある（相対比較の道具なので単独で決定的）
+    //     ③不備以外の理由で不採択・不交付がありうると書かれている
+    //     ④採択率・採択件数・採択公表への言及がある
     // 名称どおりで登録不要だったもの（＝名称マッチのフォールバックで正しく hojo になる）:
     //   kanagawa_ayase_kyojinka（診断士審査・配点表・採択回数による減点あり）
     //   kanagawa_ayase_shogyo（「申請内容によっては採択されない場合があります」と明記）
@@ -580,32 +602,47 @@
     if (t.indexOf('補助') !== -1) return 'hojo';
     return 'other';
   }
-  // 種別バッジに出す語と、そう判定した理由の一言。
-  // 補助金＝事業計画を比べる競争的な審査があり、要件を満たしても落ちうる。
-  // 助成金＝審査は要件の適否確認にとどまり、優劣で順位付けされない。
-  // この違いが申請の心づもりを変えるので、名称ではなく実質のほうを画面に出す。
+  // 種別バッジ。出すのは「誰に相談すればいいか」と「審査の性格」の2つだけ。
   //
-  // ここに書けるのは「審査の性格」だけで、受付方式（先着順か締切一括か）や
-  // 予算枠の有無を書いてはいけない。種別が同じでも制度ごとに違うため。
-  // 実際、一度「予算の上限があり、先着順で受付が終わることがあります」と
-  // 助成金側に書いて本番に出したが、これは神奈川の自治体制度（先着終了・
-  // 相模原の省エネ設備は抽選まである）の性質を全josei制度に一律で当てはめた
+  // 当初は「この制度は補助金／助成金」という種別の語を主役にしていたが、
+  // 2026-08-17の社労士レビューで、その見せ方に2つの問題が判明したため組み替えた。
+  //
+  //  1. 「名称は助成金ですが実態は補助金です」という書き方は、自治体が名称を
+  //     誤っていると非難しているように読める。しかし補助金適正化法第2条には
+  //     「助成金」の定義自体が無く、補助金と助成金を区別する条文も無い。
+  //     さらに同法は国の交付分のみが対象で、市の制度は適用外。つまり自治体は
+  //     何も間違えておらず、誤っていたのは「名称から性質が決まるはず」という
+  //     こちらの前提のほうだった。
+  //  2. 種別の語そのものは、読み手（美容室の経営者など）の行動を変えない。
+  //     知りたいのは「専門家に相談すべきか、誰に相談するか」であって、
+  //     制度が何と呼ばれているかではない。本人の判断で相談先を主役にした。
+  //
+  // ここに書けるのは審査の性格までで、受付方式（先着順か締切一括か）や予算枠の
+  // 有無は書いてはいけない。種別が同じでも制度ごとに違うため。実際、一度
+  // 「予算の上限があり、先着順で受付が終わることがあります」と助成金側に書いて
+  // 本番に出したが、これは神奈川の自治体制度の性質を全josei制度へ一律に当てはめた
   // もので、キャリアアップ助成金など厚労省の雇用関係助成金20件に事実と異なる
-  // 表示を出していた（2026-08-17に本番で実測し撤回）。受付方式は制度ごとの
-  // schedule/note 欄で個別に伝える。
+  // 表示を出していた（2026-08-17に本番で実測し撤回）。制度ごとの事情は note 欄で伝える。
+  //
+  // 相談先の書き分けは SIM_COMMON_NOTES（program.html:1763）と揃えている。
+  // 社労士法第2条の独占業務は書類の作成・提出代行・事務代理。
   var KIND_LABEL = {
-    hojo:  { name: '補助金',  why: '事業計画の審査があり、要件を満たしても採択されないことがあります' },
-    josei: { name: '助成金',  why: '決められた要件を満たしているかどうかで決まり、事業計画の内容で他の申請者と比べられることはありません' },
-    other: { name: '種別未確定', why: '一次情報での確認が済んでいません' }
+    hojo: {
+      name: '補助金タイプ',
+      who: '商工会・商工会議所か、認定経営革新等支援機関',
+      why: '事業計画を審査して選ぶ制度です。条件を満たしても選ばれないことがあります'
+    },
+    josei: {
+      name: '助成金タイプ',
+      who: '社会保険労務士か、管轄の労働局',
+      why: '決められた条件に当てはまるかどうかで決まり、事業計画の内容で他社と比べられることはありません'
+    },
+    other: {
+      name: '種別未確定',
+      who: '商工会・商工会議所',
+      why: '審査の進め方を一次情報で確認できていません'
+    }
   };
-  // 名称の語（助成金／補助金）と実質判定が食い違う制度がある。
-  // 食い違うときだけ、その旨を明示する（黙って違う語を出すと誤記に見える）。
-  function kindMismatch(name, kind) {
-    var t = String(name || '');
-    if (kind === 'hojo'  && t.indexOf('助成') !== -1) return '名称は「助成金」ですが、運用の実態は補助金です';
-    if (kind === 'josei' && t.indexOf('補助') !== -1) return '名称は「補助金」ですが、運用の実態は助成金です';
-    return '';
-  }
   // 都道府県コードの日本語表示。index.html側の一覧(6都県)と同じ範囲だけを持つ、
   // 単なるコード→表示名の対応表（内容データではないため複製の対象にしていない）
   var PREFECTURE_LABEL_JA = {
@@ -2843,21 +2880,36 @@
     var pill = document.getElementById('ptPill');
     if (pill) { pill.className = 'pill ' + kind; pill.textContent = p.name; }
 
-    // 種別（補助金／助成金）を語として出す。色分けだけでは初見に伝わらない。
+    // 制度の性質を、色分けではなく言葉で出す。色の意味は初見には伝わらない。
+    // 主役は「誰に相談すればいいか」。制度が何と呼ばれているかは行動を変えないが、
+    // 相談先は変える（本人の判断 2026-08-17）。
     var kindRow = document.getElementById('ptKindRow');
     if (kindRow) {
       var meta = KIND_LABEL[kind] || KIND_LABEL.other;
-      var mismatch = kindMismatch(p.name, kind);
-      kindRow.style.display = 'flex';
+      kindRow.style.display = 'block';
       kindRow.textContent = '';
+
+      var line1 = document.createElement('div');
+      line1.className = 'pt-kind-line';
       var badge = document.createElement('span');
       badge.className = 'pt-kind ' + kind;
-      badge.textContent = 'この制度は' + meta.name;
-      kindRow.appendChild(badge);
-      var why = document.createElement('span');
+      badge.textContent = '相談先: ' + meta.who;
+      line1.appendChild(badge);
+      kindRow.appendChild(line1);
+
+      var why = document.createElement('div');
       why.className = 'pt-kind-why';
-      why.textContent = mismatch ? mismatch + '。' + meta.why : meta.why;
+      why.textContent = meta.why;
       kindRow.appendChild(why);
+
+      // 種別を問わず必ず出す2点。補助金・助成金で最も多い事故がこの2つで、
+      // どちらも制度ごとの調査を要さず全制度で成り立つ（社労士レビュー 2026-08-17）。
+      var warn = document.createElement('div');
+      warn.className = 'pt-kind-warn';
+      warn.textContent = '申し込む前に必ず: ①発注・契約は「交付決定」の通知が届いてから。'
+        + '先に注文すると条件を満たしていても対象外になります ②お金は後払いです。'
+        + '費用はいったん全額を自分で払い、報告と審査のあとに振り込まれます';
+      kindRow.appendChild(warn);
     }
 
     var areaTag = document.getElementById('ptAreaTag');
