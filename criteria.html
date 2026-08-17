@@ -114,44 +114,162 @@
   .box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.1rem 1.3rem; margin-top: 1rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
 
-  /* 目次（2026-08-17、本人指示）。長いページなので冒頭に置き、
-     各見出しへアンカーで飛べるようにする。スマホでは1列。 */
+  /* ---- 目次 ----
+     2026-08-17、本人指示「縦に長いのでスクロール中も目次が表示されるように」。
+     このページは実測で PC 9.4画面ぶん・スマホ 26.4画面ぶんあり、
+     冒頭に置いた目次は一度スクロールすると二度と見えず、
+     「今どこを読んでいるか」が分からなくなっていた。
+
+     PC   … 本文の左に貼り付けて常時表示し、読んでいる項目を色で示す
+     スマホ … 画面上部に細いバーで「現在の項目名」を出し、タップで開く
+     どちらも IntersectionObserver で現在地を .is-current で示す。 */
+
+  /* PCのみ2カラム。980pxの本文＋240pxの目次で1260px必要なので、
+     それを確保できる幅から段組みにする（それ未満は従来どおり1カラム）。 */
+  @media (min-width: 1120px) {
+    main { max-width: 1280px; display: grid; grid-template-columns: 236px minmax(0, 1fr);
+      column-gap: 2.4rem; align-items: start; }
+    /* 目次以外は右カラムへ。目次だけ左カラムの先頭に置く */
+    main > *:not(.toc) { grid-column: 2; }
+    .toc { grid-column: 1; grid-row: 1 / span 999; position: sticky; top: 1.2rem;
+      margin-top: 0.3rem; max-height: calc(100vh - 2.4rem); overflow-y: auto;
+      overscroll-behavior: contain; }
+  }
+
   .toc { background: var(--paper-raised); border: 1px solid var(--line);
     border-radius: var(--radius-md); padding: 1.1rem 1.3rem; margin-top: 1.4rem;
-    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+    box-shadow: var(--shadow-card); }
   .toc-ttl { font-size: 0.78rem; font-weight: 700; color: var(--ink-faint);
     letter-spacing: 0.06em; margin-bottom: 0.6rem; }
-  /* 項目が6つなので2列（3列だと1列2項目になり視線が横に流れて読みにくい）。
-     auto-fit + minmax(240px) だと幅876pxのPCで3列になってしまうため、
-     2列を明示して幅の狭い端末だけ1列へ落とす。 */
+  /* 2カラムのときは縦1列、1カラムのときは横2列（従来どおり）。 */
   .toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc;
     display: grid; grid-template-columns: 1fr 1fr; gap: 0.15rem 1.4rem; }
   @media (max-width: 560px) { .toc ol { grid-template-columns: 1fr; } }
+  @media (min-width: 1120px) { .toc ol { grid-template-columns: 1fr; gap: 0.1rem; } }
   .toc li { counter-increment: toc; }
   .toc > ol > li > a { font-weight: 700; }
   .toc a { display: flex; align-items: baseline; gap: 0.5rem;
     padding: 0.5rem 0.2rem; text-decoration: none; color: var(--ink);
-    border-bottom: 1px solid transparent; }
-  .toc a:hover, .toc a:focus-visible { color: var(--accent); border-bottom-color: var(--accent-soft); }
+    border-bottom: 1px solid transparent; border-radius: var(--radius-sm); }
+  /* :hover は「マウスがある端末」に限る。スマホでは指を離しても貼り付いて
+     押していない項目が現在地に見える（本人指摘 2026-08-17）。 */
+  @media (hover: hover) {
+    .toc a:hover { color: var(--accent); border-bottom-color: var(--accent-soft); }
+  }
+  .toc a:focus-visible { color: var(--accent); border-bottom-color: var(--accent-soft); }
   .toc > ol > li > a::before {
     content: counter(toc, decimal-leading-zero);
     font-family: "M PLUS Rounded 1c","Noto Sans JP",sans-serif;
     font-size: 0.8rem; font-weight: 700; color: var(--accent);
     font-variant-numeric: tabular-nums; flex: none; }
+  /* いま読んでいる項目。色だけでなく左の帯と地の濃さでも示す
+     （色覚に依らず分かるようにする） */
+  .toc a.is-current { background: var(--paper-sunken); color: var(--accent);
+    font-weight: 700; box-shadow: inset 3px 0 0 var(--accent); }
+  .toc ol ol a.is-current { font-weight: 700; }
   /* 第2階層（h3への直リンク）は字下げして小さく */
   .toc ol ol { display: block; margin: 0 0 0 1.5rem; }
   .toc ol ol a { font-size: 0.84rem; font-weight: 400; color: var(--ink-soft);
     padding: 0.35rem 0.2rem; }
   .toc ol ol a::before { content: "└"; color: var(--ink-faint); flex: none; font-size: 0.75rem; }
-  /* アンカーで飛んだとき、見出しが上端に張り付かないよう余白を確保 */
+
+  /* ---- スマホ／タブレット用の追従バー ----
+     画面上部に固定し、いま読んでいる項目名と読み進み具合を出す。
+     押すと目次が開く。PCでは目次自体が常時見えているので出さない。 */
+  .toc-bar { display: none; }
+  @media (max-width: 1119px) {
+    .toc-bar { display: block; position: sticky; top: 0; z-index: 30;
+      margin: 0 -1.5rem 0.4rem; background: var(--paper-raised);
+      border-bottom: 1px solid var(--line-strong); box-shadow: var(--shadow-card); }
+    .toc-bar-btn { width: 100%; font: inherit; text-align: left; cursor: pointer;
+      appearance: none; -webkit-appearance: none; background: none; border: none;
+      color: var(--ink); display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 1.5rem; min-height: 44px; }
+    .toc-bar-no { font-family: "M PLUS Rounded 1c","Noto Sans JP",sans-serif;
+      font-size: 0.78rem; font-weight: 700; color: var(--accent);
+      font-variant-numeric: tabular-nums; flex: none; }
+    .toc-bar-ttl { font-size: 0.9rem; font-weight: 700; flex: 1 1 auto;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .toc-bar-chev { flex: none; width: 26px; height: 26px; border-radius: 7px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--paper); border: 1px solid var(--line); color: var(--ink-faint);
+      transition: transform 0.18s ease; }
+    .toc-bar.is-open .toc-bar-chev { transform: rotate(180deg); }
+    .toc-bar-chev svg { width: 15px; height: 15px; }
+    /* 読み進み具合。ページ全体のどこにいるかを1本の線で示す */
+    .toc-bar-progress { height: 3px; background: var(--paper-sunken); }
+    .toc-bar-progress > i { display: block; height: 100%; width: 0;
+      background: var(--accent); transition: width 0.1s linear; }
+
+    .toc { margin-top: 0.9rem; }
+    /* 畳んでいるときは出さない */
+    .toc.is-collapsed { display: none; }
+    /* バーから開いたときは、ページ冒頭ではなく「バーの真下」にその場で出す。
+       目次はページ先頭にあるので、下の方を読んでいるときに素直に開くと
+       画面外で「押したのに何も出ない」ように見えた（実測 2026-08-17）。
+       読んでいた位置を動かさずに選べるようにする。 */
+    .toc.is-floating { position: fixed; left: 0; right: 0; top: 50px; z-index: 29;
+      margin: 0; border-radius: 0; border-left: none; border-right: none;
+      max-height: calc(100vh - 50px - 4.6rem); overflow-y: auto;
+      overscroll-behavior: contain; box-shadow: var(--shadow-card-strong); }
+    /* 目次を開いている間、本文側を押したら閉じられるように覆いを敷く */
+    .toc-scrim { position: fixed; inset: 0; z-index: 28; background: rgba(0,0,0,0.28);
+      border: none; padding: 0; margin: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toc-bar-chev, .toc-bar-progress > i { transition: none; }
+  }
+
+  /* 読み上げ専用（画面には出さないが、支援技術には読ませる） */
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* アンカーで飛んだとき、見出しが追従バーの裏に隠れないよう余白を確保。
+     バーの高さ（約50px）＋少しの余裕を見る。 */
   h2[id], h3[id] { scroll-margin-top: 1rem; }
+  @media (max-width: 1119px) { h2[id], h3[id] { scroll-margin-top: 4.2rem; } }
   .twrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-raised);
-    margin-top: 0.9rem; box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
-  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 680px; }
-  th { text-align: left; font-size: 0.7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--accent-wash); }
+    margin-top: 0.9rem; box-shadow: var(--shadow-card); }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82rem; min-width: 680px; }
+
+  /* 列名を画面上部に貼り付けて、長い表の途中でも「この列が何か」が分かるようにする
+     （本人指示 2026-08-17）。いちばん長い表は高さ1993px＝画面2.2個ぶんあり、
+     スクロールすると列名が流れて何の列か分からなくなっていた。
+
+     ここは素直に thead th { position: sticky } と書くだけでは効かない。
+     親の .twrap に overflow-x:auto があると overflow-y も auto 扱いになり、
+     .twrap 自身（高さ219px、縦スクロールしない）が sticky の基準になるため。
+     実測で幅900px以上では横スクロールは不要（scrollWidth == clientWidth）と
+     分かったので、その幅では overflow を切って基準をページ側に戻す。
+     狭い画面は下の @media で1行1カードに組み替わり、各項目に見出しが付くので
+     そもそも列ヘッダーが要らない。 */
+  @media (min-width: 641px) {
+    .twrap { overflow: visible; }
+    thead th { position: sticky; z-index: 2; top: 0; }
+  }
+  /* タブレット幅では上の .toc-bar（約50px）が固定されているので、その下へ。
+     入れ子の @media は対応差があるので範囲指定で書く。 */
+  @media (min-width: 641px) and (max-width: 1119px) {
+    thead th { top: 50px; }
+  }
+  /* border-collapse: separate にしたので、角丸からセルの地がはみ出さないよう
+     先頭行・最終行の角を落とす */
+  thead tr:first-child th:first-child { border-top-left-radius: var(--radius-md); }
+  thead tr:first-child th:last-child { border-top-right-radius: var(--radius-md); }
+  th { text-align: left; font-size: 0.72rem; color: var(--ink-soft); letter-spacing: 0.04em;
+    padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--line-strong); white-space: nowrap;
+    background: var(--paper-sunken); font-weight: 700; }
   td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
+  /* 1列目は制度名・パターン名。狭いと「業務改善助成金」が2行、
+     「【東京都】中小企業デジタル導入促進補助事業」が4行に割れて読みづらかった
+     （実測 2026-08-17）。行の見出しなので幅を確保し、太字にして視線の起点にする。 */
+  tbody td:first-child { font-weight: 700; color: var(--ink); min-width: 11rem; }
+  /* 行をまたいで目で追えるように、1行おきにごく薄く敷く */
+  tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--paper-sunken) 38%, transparent); }
+  @supports not (color: color-mix(in srgb, red 50%, blue)) {
+    tbody tr:nth-child(even) td { background: var(--paper); }
+  }
   /* 審査方式バッジ自体は折り返さないが、下に添えた採択率の内訳（.rd）は
      折り返させたいので、nowrap はバッジだけに掛ける（2026-08-16） */
   td.tag { white-space: normal; }
@@ -259,7 +377,24 @@
 <h1>採択基準・返還基準 調査ノート</h1>
 <p class="sub">各補助金・助成金の公式な公募要領・交付規程・審査基準を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を整理しました。個社の年商・決算まで含む実例を大量収集する調査ではなく、公式文書ベースで再現性のある基準を抽出しています。</p>
 
-<nav class="toc" aria-labelledby="tocTitle">
+<!-- スクロール中も現在地が分かるようにする追従バー（本人指示 2026-08-17）。
+     PCでは左の目次が常時見えるのでCSSで隠し、スマホ・タブレットだけ出す。
+     JSが動かない場合に「押せるのに何も起きないバー」が残らないよう、
+     hidden を付けておいてJS側で外す。 -->
+<div class="toc-bar" id="tocBar" hidden>
+  <button type="button" class="toc-bar-btn" id="tocBarBtn" aria-expanded="false" aria-controls="tocNav">
+    <span class="toc-bar-no" id="tocBarNo">01</span>
+    <span class="toc-bar-ttl" id="tocBarTtl">数字で見る採択と返還</span>
+    <span class="toc-bar-chev" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"/></svg>
+    </span>
+    <span class="sr-only">目次を開く</span>
+  </button>
+  <div class="toc-bar-progress" aria-hidden="true"><i id="tocBarFill"></i></div>
+</div>
+
+<nav class="toc" id="tocNav" aria-labelledby="tocTitle">
   <div class="toc-ttl" id="tocTitle">このページの内容</div>
   <ol>
     <li><a href="#numbers">数字で見る採択と返還</a></li>
@@ -460,6 +595,151 @@
 </main><script src="experts_data.js"></script>
 <script src="consult.js"></script>
 <script>
+/* 目次の追従と現在地の表示（本人指示 2026-08-17）。
+   このページは実測でPC 9.4画面・スマホ 26.4画面ぶんあり、
+   冒頭の目次は一度スクロールすると見えず現在地が分からなかった。
+
+   やっていること:
+     1. 読んでいるセクションを目次側に .is-current で示す
+     2. スマホの追従バーに現在のセクション名と読み進み具合を出す
+     3. バーを押すと目次を開閉する
+   JSが動かなくても、目次は従来どおりページ冒頭のリンク集として機能する。 */
+(function () {
+  'use strict';
+
+  var nav = document.getElementById('tocNav');
+  var bar = document.getElementById('tocBar');
+  if (!nav) return;
+
+  // 目次のリンクと、その飛び先の見出しを対応づける
+  var links = [].slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var items = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if (target) items.push({ a: a, el: target, id: id });
+  });
+  if (!items.length) return;
+
+  // 追従バーは、対応する見出しが見つかってから出す（JS前提の部品なので）
+  var barBtn = document.getElementById('tocBarBtn');
+  var barNo = document.getElementById('tocBarNo');
+  var barTtl = document.getElementById('tocBarTtl');
+  var barFill = document.getElementById('tocBarFill');
+  var isNarrow = function () { return window.matchMedia('(max-width: 1119px)').matches; };
+
+  if (bar && barBtn) {
+    bar.hidden = false;
+    /* 開閉。ページ冒頭まで戻さず、バーの真下にその場で出す（.is-floating）。
+       素直に開くと、下の方を読んでいるときは目次が画面外にあるため
+       「押したのに何も出ない」ように見えた（実測 2026-08-17）。 */
+    var scrim = null;
+    function closeToc() {
+      nav.classList.add('is-collapsed');
+      nav.classList.remove('is-floating');
+      bar.classList.remove('is-open');
+      barBtn.setAttribute('aria-expanded', 'false');
+      if (scrim) { scrim.remove(); scrim = null; }
+    }
+    function openToc() {
+      nav.classList.remove('is-collapsed');
+      nav.classList.add('is-floating');
+      bar.classList.add('is-open');
+      barBtn.setAttribute('aria-expanded', 'true');
+      if (!scrim) {
+        scrim = document.createElement('button');
+        scrim.type = 'button';
+        scrim.className = 'toc-scrim';
+        scrim.setAttribute('aria-label', '目次を閉じる');
+        scrim.addEventListener('click', closeToc);
+        document.body.appendChild(scrim);
+      }
+    }
+    barBtn.addEventListener('click', function () {
+      if (nav.classList.contains('is-collapsed')) openToc(); else closeToc();
+    });
+    // Escでも閉じられるようにする
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !nav.classList.contains('is-collapsed') && isNarrow()) closeToc();
+    });
+
+    // 目次の項目を押したら閉じて、飛んだ先の本文を見せる
+    links.forEach(function (a) {
+      a.addEventListener('click', function () { if (isNarrow()) closeToc(); });
+    });
+
+    /* 画面幅が変わったときの整合。狭い画面では畳んだ状態から始め、
+       PC幅では目次を常時表示に戻す（浮かせた状態と覆いを残さない）。 */
+    var applyWidth = function () {
+      if (isNarrow()) {
+        if (!nav.classList.contains('is-floating')) nav.classList.add('is-collapsed');
+      } else {
+        closeToc();                       // 覆いと .is-floating を確実に外す
+        nav.classList.remove('is-collapsed');  // PCでは常時表示
+      }
+    };
+    applyWidth();
+    window.addEventListener('resize', applyWidth);
+  }
+
+  // 番号は目次の第1階層の並び順（01,02,…）。第2階層は親の番号を引き継ぐ。
+  var topLinks = [].slice.call(nav.querySelectorAll(':scope > ol > li > a'));
+  function labelFor(item) {
+    var li = item.a.closest('li');
+    var topLi = li;
+    while (topLi && topLi.parentElement && topLi.parentElement.parentElement !== nav) {
+      topLi = topLi.parentElement.closest('li');
+    }
+    var topA = topLi ? topLi.querySelector(':scope > a') : null;
+    var idx = topA ? topLinks.indexOf(topA) + 1 : 0;
+    return {
+      no: idx > 0 ? ('0' + idx).slice(-2) : '',
+      ttl: (item.a.textContent || '').trim()
+    };
+  }
+
+  var current = null;
+  function setCurrent(item) {
+    if (!item || current === item) return;
+    current = item;
+    items.forEach(function (x) { x.a.classList.toggle('is-current', x === item); });
+    if (barNo && barTtl) {
+      var lb = labelFor(item);
+      barNo.textContent = lb.no;
+      barTtl.textContent = lb.ttl;
+    }
+  }
+
+  /* 現在地の判定。IntersectionObserver だけだと「画面内に複数の見出しがある」
+     「どの見出しも画面外（節の本文の途中を読んでいる）」で決まらないので、
+     スクロール位置から「直前に通過した見出し」を選ぶ方式にする。
+     こちらは節の途中でも必ず1つに定まる。 */
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var line = window.scrollY + (isNarrow() ? 70 : 20); // 判定線（バーの下）
+    var found = items[0];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].el.getBoundingClientRect().top + window.scrollY <= line) found = items[i];
+    }
+    setCurrent(found);
+
+    if (barFill) {
+      var de = document.documentElement;
+      var max = de.scrollHeight - window.innerHeight;
+      var p = max > 0 ? (window.scrollY / max) : 0;
+      barFill.style.width = Math.max(0, Math.min(1, p)) * 100 + '%';
+    }
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
 (function () {
   'use strict';
   var link = document.getElementById('criteriaConsultLink');

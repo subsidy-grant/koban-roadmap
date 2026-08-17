@@ -153,7 +153,13 @@
   .wz-modebtn { border: 1px solid var(--line); background: var(--paper-raised); color: var(--accent);
     font: inherit; font-size: 0.85rem; border-radius: var(--radius-md); padding: 0.5rem 0.9rem;
     min-height: 44px; cursor: pointer; }
-  .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
+  /* :hover は「マウスがある端末」に限る。スマホでは指を離しても hover が
+     貼り付き、押していないのに選択中に見える（本人指摘 2026-08-17）。
+     とくに .ent-btn は選択済み(.is-sel)と hover が同じ見た目なので、
+     残ると「その選択肢を選んだ」と誤解させる。 */
+  @media (hover: hover) {
+    .wz-modebtn:hover { background: var(--accent-wash); border-color: var(--accent); }
+  }
   .wz-progress-track { height: 6px; background: var(--paper); border: 1px solid var(--line);
     border-radius: 999px; overflow: hidden; margin: 0 0 1rem; }
   .wz-progress-fill { display: block; height: 100%; width: 0; background: var(--accent);
@@ -201,7 +207,10 @@
   .ent-btn { flex: 1 1 9rem; min-height: 64px; font: inherit; font-size: 1.02rem; font-weight: 700;
     border: 2px solid var(--line); border-radius: 10px; background: var(--paper-raised);
     color: var(--ink); cursor: pointer; }
-  .ent-btn:hover { border-color: var(--accent); background: var(--accent-wash); }
+  @media (hover: hover) {
+    .ent-btn:hover { border-color: var(--accent); background: var(--accent-wash); }
+  }
+  /* こちらは実際に選んだ状態なので、タッチでも出したままにする */
   .ent-btn.is-sel { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); }
 
   .slider-wrap { display: none; margin-top: 0.7rem; }

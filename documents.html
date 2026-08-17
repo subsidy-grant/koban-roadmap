@@ -231,7 +231,12 @@
   .cp-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 0.7rem; }
   .cp-chip { font: inherit; font-size: 0.86rem; border: 1px solid var(--line); border-radius: 999px;
     padding: 0.4rem 0.9rem; min-height: 40px; background: var(--paper); color: var(--ink-soft); cursor: pointer; }
-  .cp-chip:hover { border-color: var(--accent); background: var(--accent-wash); }
+  /* :hover は「マウスがある端末」に限る。スマホでは指を離しても hover が
+     貼り付き、選んでいないチップが選択中(.is-current)に見える
+     （本人指摘 2026-08-17、profile.html の開閉見出しと同じ型）。 */
+  @media (hover: hover) {
+    .cp-chip:hover { border-color: var(--accent); background: var(--accent-wash); }
+  }
   .cp-chip.is-current { border-color: var(--accent); background: var(--accent-wash); color: var(--accent); font-weight: 700; }
 
   /* ---- 様式へのドロップ（02） ----
@@ -388,7 +393,9 @@
     background: var(--accent); border-color: var(--accent); color: #fff;
   }
   @media (prefers-reduced-motion: reduce) { .fold-chevron { transition: none; } }
-  .fold > summary:hover { background: var(--accent-wash); }
+  @media (hover: hover) {
+    .fold > summary:hover { background: var(--accent-wash); }
+  }
   .fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .fold-body { padding: 0 1rem 1rem; }
 

@@ -347,9 +347,13 @@
     text-decoration: none;
   }
   .pt-btn.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-btn); }
-  .pt-btn.primary:hover, .pt-btn.primary:focus-visible { opacity: 0.88; }
+  /* :hover は「マウスがある端末」に限る。スマホでは指を離しても hover が
+     貼り付いたまま残る（本人指摘 2026-08-17）。:focus-visible は外に残す。 */
+  @media (hover: hover) { .pt-btn.primary:hover { opacity: 0.88; } }
+  .pt-btn.primary:focus-visible { opacity: 0.88; }
   .pt-btn.ghost { border: 1px solid var(--accent); color: var(--accent); }
-  .pt-btn.ghost:hover, .pt-btn.ghost:focus-visible { background: var(--accent-wash); }
+  @media (hover: hover) { .pt-btn.ghost:hover { background: var(--accent-wash); } }
+  .pt-btn.ghost:focus-visible { background: var(--accent-wash); }
   button.pt-btn.ghost { appearance: none; background: var(--paper-raised); border: 1px solid var(--accent);
     font: inherit; cursor: pointer; box-shadow: var(--shadow-btn); }
 
