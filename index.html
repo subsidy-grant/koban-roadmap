@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0057c2">
+<meta name="theme-color" content="#1544c4">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
@@ -39,31 +39,36 @@
          オレンジ = 注意（締切・残日数・要件の警告）
          ミント   = 状態（対象・受付中）。カテゴリではなく状態にだけ使う
        この3つ以外の色は増やさない。増やすと「どれを見ればいいか」が消える。 */
-    --paper: #eaf1fb;
+    --paper: #e8e0d2;
     --paper-raised: #ffffff;
-    --ink: #0c2036;
-    --ink-soft: #3a5170;
-    --ink-faint: #4d6a8a;
-    --accent: #0057c2;
-    --accent-soft: #bcd7f7;
-    --accent-wash: #e2edfb;
+    --ink: #1b1a17;
+    --ink-soft: #4f4a43;
+    --ink-faint: #5d574f;
+    --accent: #1544c4;
+    --accent-soft: #a9c1f3;
+    --accent-wash: #e7eefc;
     --on-accent: #ffffff;      /* コバルトベタの上に置く文字色 */
-    --sage: #0d8a6e;
-    --sage-wash: #dcf5ee;
-    --rust: #d84315;
-    --rust-wash: #fde3d6;
+    --sage: #0a6d50;
+    --sage-wash: #d6f0e4;
+    --rust: #c93c07;
+    --rust-wash: #fde3d4;
     /* wash地の上に文字を載せるとき用の濃い版。--sage/--rustをそのまま載せると
        同系色どうしで3.7:1前後まで落ちWCAG AAを割るため（2026-08-16実測）。
        夜間は地が暗いので、逆に明るい--sage/--rustをそのまま使う。 */
-    --sage-ink: #096b54;
-    --rust-ink: #ad3210;
-    --cat-hojo: #0057c2;
-    --cat-hojo-wash: #e2edfb;
-    --cat-josei: #b25400;
-    --cat-josei-wash: #fdead2;
-    --cat-other-wash: #e6ecf5;
-    --line: #a9c2e0;
-    --shadow: rgba(12, 32, 54, 0.12);
+    --sage-ink: #075740;
+    --rust-ink: #a02f05;
+    --cat-hojo: #1544c4;
+    --cat-hojo-wash: #e7eefc;
+    --cat-josei: #9a4a06;
+    --cat-josei-wash: #f7e6cd;
+    --cat-other-wash: #ddd3c1;
+    --line: #cdc0aa;
+    --shadow: rgba(60, 46, 26, 0.16);
+    /* カードの階層を影で作る（2026-08-17）。重要度の高い面ほど強い影 */
+    --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
+    --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
+    --paper-sunken: #dcd2c0;
+    --line-strong: #b3a48b;
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
@@ -72,13 +77,13 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #081422;
-      --paper-raised: #16283d;
-      --ink: #eaf1fb;
-      --ink-soft: #b7cbe4;
-      --ink-faint: #93abc9;
-      --accent: #5b9df5;
-      --accent-soft: #1c3454;
+      --paper: #0e0c0a;
+      --paper-raised: #2d2720;
+      --ink: #f4eee3;
+      --ink-soft: #cabfad;
+      --ink-faint: #ab9f8c;
+      --accent: #8fb2ff;
+      --accent-soft: #26385e;
       --accent-wash: #142640;
       --sage: #3fd6ac;
       --sage-wash: #0f2b24;
@@ -87,26 +92,30 @@
       /* 夜間は地が暗いので、明るい側の色をそのまま文字に使う（実測で6.6:1以上） */
       --sage-ink: #3fd6ac;
       --rust-ink: #ff8a5c;
-      --cat-hojo: #5b9df5;
+      --cat-hojo: #8fb2ff;
       --cat-hojo-wash: #142640;
       --cat-josei: #e5a850;
       --cat-josei-wash: #2c2110;
       --cat-other-wash: #1c2a3c;
       --line: #385578;
-      --shadow: rgba(0, 0, 0, 0.5);
+      --shadow: rgba(0, 0, 0, 0.55);
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
+      --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
+      --paper-sunken: #1a1712;
+      --line-strong: #6d5e49;
     }
   }
 
   :root[data-theme="dark"] {
     /* 夜間モードも同じ3色の役割（コバルト=案内／オレンジ=注意／ミント=状態）を保つ。
        暗い地では彩度をそのまま使うと沈むので、明度を上げた同系色に置き換える。 */
-    --paper: #081422;
-    --paper-raised: #16283d;
-    --ink: #eaf1fb;
-    --ink-soft: #b7cbe4;
-    --ink-faint: #93abc9;
-    --accent: #5b9df5;
-    --accent-soft: #1c3454;
+    --paper: #0e0c0a;
+    --paper-raised: #2d2720;
+    --ink: #f4eee3;
+    --ink-soft: #cabfad;
+    --ink-faint: #ab9f8c;
+    --accent: #8fb2ff;
+    --accent-soft: #26385e;
     --accent-wash: #142640;
     --on-accent: #08121e;      /* 夜間はコバルトが明るいので、白ではなく地の色を載せる */
     --sage: #3fd6ac;
@@ -116,40 +125,49 @@
     /* 夜間は地が暗いので、明るい側の色をそのまま文字に使う（実測で6.6:1以上） */
     --sage-ink: #3fd6ac;
     --rust-ink: #ff8a5c;
-    --cat-hojo: #5b9df5;
+    --cat-hojo: #8fb2ff;
     --cat-hojo-wash: #142640;
     --cat-josei: #e5a850;
     --cat-josei-wash: #2c2110;
     --cat-other-wash: #1c2a3c;
     --line: #385578;
-    --shadow: rgba(0, 0, 0, 0.5);
+    --shadow: rgba(0, 0, 0, 0.55);
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
+      --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
+      --paper-sunken: #1a1712;
+      --line-strong: #6d5e49;
   }
 
   :root[data-theme="light"] {
-    --paper: #eaf1fb;
+    --paper: #e8e0d2;
     --paper-raised: #ffffff;
-    --ink: #0c2036;
-    --ink-soft: #3a5170;
-    --ink-faint: #4d6a8a;
-    --accent: #0057c2;
-    --accent-soft: #bcd7f7;
-    --accent-wash: #e2edfb;
-    --sage: #0d8a6e;
-    --sage-wash: #dcf5ee;
-    --rust: #d84315;
-    --rust-wash: #fde3d6;
+    --ink: #1b1a17;
+    --ink-soft: #4f4a43;
+    --ink-faint: #5d574f;
+    --accent: #1544c4;
+    --accent-soft: #a9c1f3;
+    --accent-wash: #e7eefc;
+    --sage: #0a6d50;
+    --sage-wash: #d6f0e4;
+    --rust: #c93c07;
+    --rust-wash: #fde3d4;
     /* wash地の上に文字を載せるとき用の濃い版。--sage/--rustをそのまま載せると
        同系色どうしで3.7:1前後まで落ちWCAG AAを割るため（2026-08-16実測）。
        夜間は地が暗いので、逆に明るい--sage/--rustをそのまま使う。 */
-    --sage-ink: #096b54;
-    --rust-ink: #ad3210;
-    --cat-hojo: #0057c2;
-    --cat-hojo-wash: #e2edfb;
-    --cat-josei: #b25400;
-    --cat-josei-wash: #fdead2;
-    --cat-other-wash: #e6ecf5;
-    --line: #a9c2e0;
-    --shadow: rgba(12, 32, 54, 0.12);
+    --sage-ink: #075740;
+    --rust-ink: #a02f05;
+    --cat-hojo: #1544c4;
+    --cat-hojo-wash: #e7eefc;
+    --cat-josei: #9a4a06;
+    --cat-josei-wash: #f7e6cd;
+    --cat-other-wash: #ddd3c1;
+    --line: #cdc0aa;
+    --shadow: rgba(60, 46, 26, 0.16);
+    /* カードの階層を影で作る（2026-08-17）。重要度の高い面ほど強い影 */
+    --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
+    --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
+    --paper-sunken: #dcd2c0;
+    --line-strong: #b3a48b;
   }
 
   * { box-sizing: border-box; }
@@ -230,9 +248,12 @@
      「説明を読む前に入力を求める形が重い」という指摘で02の節へ移した経緯がある
      （下の #conditions 内のコメント参照）。今回はその逆で、業種だけを冒頭に
      戻す指示。地域・従業員数は02に残すため、3問ブロックの再現はしない。 */
+  /* 地はサンドで通し、ここだけ青地にすると帯だけが浮いて見える（2026-08-17）。
+     沈めた面＋上下の罫線で「入力する場所」を示す。色ではなく面の深さで区別する。 */
   .hero-industry {
-    background: var(--accent-wash);
-    border-bottom: 1px solid var(--accent-soft);
+    background: var(--paper-sunken);
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
   }
   .hero-industry-inner {
     max-width: 880px; margin: 0 auto; padding: 1.1rem 1.5rem;
@@ -366,7 +387,7 @@
   .picker {
     background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius-md);
     padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.6rem;
-    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+    box-shadow: var(--shadow-card);
   }
   .picker label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-faint); display: block; margin-bottom: 0.55rem; }
   .picker select {
@@ -419,7 +440,7 @@
   /* 2026-08-13：背景色が地色と同じ(--paper)のため、影のみで境界を作る（design.md参照） */
   .pd-item {
     border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.85rem; background: var(--paper-raised);
-    box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow);
+    box-shadow: var(--shadow-card);
   }
   .pd-item .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); margin-bottom: 0.3rem; }
   .pd-item .v { font-size: 0.92rem; line-height: 1.6; }
@@ -1319,18 +1340,21 @@
   .section-head.is-toggle { display: block; margin: 0; }
   .sec-h2 { margin: 0; }
   /* 閉じている状態でも「押せる見出しである」ことを色で示す。
-     一度は地を--accent-washにしたが、ページ背景の--paper(#eaf1fb)と
-     --accent-wash(#e2edfb)はRGB差が8/4/0しかなく、カードが背景に溶けて見えた
+     一度は地を--accent-washにしたが、ページ背景の--paper(#e8e0d2)と
+     --accent-wash(#e7eefc)はRGB差が8/4/0しかなく、カードが背景に溶けて見えた
      （本人指摘、2026-08-16）。地は白に戻し、左の帯と影で浮かせる。 */
   .sec-toggle {
     appearance: none; -webkit-appearance: none;
     width: 100%; font: inherit; text-align: left; cursor: pointer;
     display: flex; align-items: flex-start; gap: 1rem;
     min-height: 4.4rem; padding: 1.25rem 1.35rem;
-    border: 1px solid var(--accent-soft); border-radius: 10px;
-    border-left: 5px solid var(--accent);
+    /* 2026-08-17：地と同系色でカードが沈む・強弱が出ないという指摘を受け、
+       (1)左の色帯を太くして種類を一目で示す (2)影を強くして地から浮かせる
+       の2本立てにした。色の差だけに頼らず、面の深さでも区別できるようにする。 */
+    border: 1px solid var(--line); border-radius: 12px;
+    border-left: 8px solid var(--accent);
     background: var(--paper-raised); color: var(--ink);
-    box-shadow: var(--shadow-btn);
+    box-shadow: var(--shadow-card-strong);
   }
   .sec-toggle:hover { border-color: var(--accent); border-left-color: var(--accent);
     background: var(--accent-wash); }
