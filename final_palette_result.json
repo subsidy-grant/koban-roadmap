@@ -1,0 +1,42 @@
+{
+ "light": {
+  "paper": "#e8e0d2",
+  "paperRaised": "#ffffff",
+  "paperSunken": "#dcd2c0",
+  "ink": "#1b1a17",
+  "inkSoft": "#4f4a43",
+  "inkFaint": "#5d574f",
+  "accent": "#1544c4",
+  "accentSoft": "#a9c1f3",
+  "accentWash": "#e7eefc",
+  "sage": "#0a6d50",
+  "sageWash": "#d6f0e4",
+  "sageInk": "#075740",
+  "rust": "#c93c07",
+  "rustWash": "#fde3d4",
+  "rustInk": "#a02f05",
+  "line": "#cdc0aa",
+  "lineStrong": "#b3a48b"
+ },
+ "dark": {
+  "paper": "#0e0c0a",
+  "paperRaised": "#2d2720",
+  "paperSunken": "#1a1712",
+  "ink": "#f4eee3",
+  "inkSoft": "#cabfad",
+  "inkFaint": "#ab9f8c",
+  "accent": "#8fb2ff",
+  "accentSoft": "#26385e",
+  "accentWash": "#1c2639",
+  "sage": "#35b985",
+  "sageWash": "#0f3226",
+  "sageInk": "#35b985",
+  "rust": "#ff8438",
+  "rustWash": "#3d1d0e",
+  "rustInk": "#ff8438",
+  "line": "#5a4d3b",
+  "lineStrong": "#6d5e49"
+ },
+ "ng_light": 0,
+ "ng_dark": 0
+}

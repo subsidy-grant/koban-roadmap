@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0057c2">
+<meta name="theme-color" content="#1544c4">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="補助金ロードマップ">
@@ -28,21 +28,25 @@
      申請様式そのものが下線と枠でできているので、入力欄も同じ作りにして
      「いま帳票を書いている」感覚のまま操作できるようにしている。 */
   :root {
-    --paper: #eaf1fb;
+    --paper: #e8e0d2;
     --paper-raised: #ffffff;
-    --ink: #0c2036;
-    --ink-soft: #3a5170;
-    --ink-faint: #4d6a8a;
-    --accent: #0057c2;
-    --accent-soft: #bcd7f7;
-    --accent-wash: #e2edfb;
+    --ink: #1b1a17;
+    --ink-soft: #4f4a43;
+    --ink-faint: #5d574f;
+    --accent: #1544c4;
+    --accent-soft: #a9c1f3;
+    --accent-wash: #e7eefc;
     --on-accent: #ffffff;
-    --sage: #0d8a6e;
-    --sage-wash: #dcf5ee;
-    --rust: #d84315;
-    --rust-wash: #fde3d6;
-    --line: #a9c2e0;
-    --shadow: rgba(12, 32, 54, 0.12);
+    --sage: #0a6d50;
+    --sage-wash: #d6f0e4;
+    --rust: #c93c07;
+    --rust-wash: #fde3d4;
+    --line: #cdc0aa;
+    --shadow: rgba(60, 46, 26, 0.16);
+    --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
+    --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
+    --paper-sunken: #dcd2c0;
+    --line-strong: #b3a48b;
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
@@ -50,23 +54,35 @@
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #081422; --paper-raised: #16283d; --ink: #eaf1fb; --ink-soft: #b7cbe4;
-      --ink-faint: #93abc9; --accent: #5b9df5; --accent-soft: #1c3454; --accent-wash: #142640;
+      --paper: #0e0c0a; --paper-raised: #2d2720; --ink: #f4eee3; --ink-soft: #cabfad;
+      --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
       --on-accent: #0d1218; --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c;
       --rust-wash: #33200f; --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
+    --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
+    --paper-sunken: #1a1712;
+    --line-strong: #6d5e49;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #081422; --paper-raised: #16283d; --ink: #eaf1fb; --ink-soft: #b7cbe4;
-    --ink-faint: #93abc9; --accent: #5b9df5; --accent-soft: #1c3454; --accent-wash: #142640;
+    --paper: #0e0c0a; --paper-raised: #2d2720; --ink: #f4eee3; --ink-soft: #cabfad;
+    --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
     --on-accent: #0d1218; --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c;
     --rust-wash: #33200f; --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
+    --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
+    --paper-sunken: #1a1712;
+    --line-strong: #6d5e49;
   }
   :root[data-theme="light"] {
-    --paper: #eaf1fb; --paper-raised: #ffffff; --ink: #0c2036; --ink-soft: #3a5170;
-    --ink-faint: #4d6a8a; --accent: #0057c2; --accent-soft: #bcd7f7; --accent-wash: #e2edfb;
-    --on-accent: #ffffff; --sage: #0d8a6e; --sage-wash: #dcf5ee; --rust: #d84315;
-    --rust-wash: #fde3d6; --line: #a9c2e0; --shadow: rgba(12, 32, 54, 0.12);
+    --paper: #e8e0d2; --paper-raised: #ffffff; --ink: #1b1a17; --ink-soft: #4f4a43;
+    --ink-faint: #5d574f; --accent: #1544c4; --accent-soft: #a9c1f3; --accent-wash: #e7eefc;
+    --on-accent: #ffffff; --sage: #0a6d50; --sage-wash: #d6f0e4; --rust: #c93c07;
+    --rust-wash: #fde3d4; --line: #cdc0aa; --shadow: rgba(60, 46, 26, 0.16);
+    --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
+    --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
+    --paper-sunken: #dcd2c0;
+    --line-strong: #b3a48b;
   }
 
   * { box-sizing: border-box; }
