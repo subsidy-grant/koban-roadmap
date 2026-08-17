@@ -104,6 +104,13 @@
   .pt-kind.josei { background: var(--cat-josei); color: var(--on-accent); }
   .pt-kind.other { background: var(--ink-soft); color: var(--on-accent); }
   .pt-kind-why { color: var(--ink-soft); }
+  /* 一次情報が取れず判定を確定できていない制度に出す但し書き。事故防止の枠とは
+     別の色にして、「制度の注意」ではなく「こちらの確認が未了」だと区別させる。 */
+  .pt-kind-unverified {
+    margin-top: 0.4rem; padding: 0.5rem 0.7rem;
+    background: var(--paper-raised); border-radius: 6px;
+    border-left: 3px dashed var(--ink-soft); color: var(--ink);
+  }
   /* 事故防止の2点。読み飛ばされると実害が出るので、地から浮かせて枠で囲む。 */
   .pt-kind-warn {
     margin-top: 0.4rem; padding: 0.5rem 0.7rem;
@@ -777,6 +784,27 @@
     tochigi_ashikaga_shinko: 'hojo'
     // seichou_kasokuka（中小企業成長加速化補助金）は3次公募の公募要領が未公開のため
     // 判定を保留した。過去回で暫定判定せず、公開されてから確認すること。
+  };
+  // 一次情報で確定できなかった制度。表示している種別は「名称マッチによる推定」で
+  // あって確認結果ではないため、その旨を画面に出す（黙って断定しない）。
+  //
+  // この2件はどちらも横須賀市で、固有の交付要綱が市サイト・例規集とも未掲載。
+  // 市のページとチラシに審査の存在を示す記述はあるが、不採択がありうるか、
+  // 採択枠があるかまでは書かれておらず、Webから確定する手段が無い。
+  // 確定には市・商工会議所への電話照会が要るが、これは本人（サイト運営者）が
+  // 行う（2026-08-18の本人指示。こちらから事業者へ架電はしない）。
+  // 照会の連絡先と聞くべき論点は HANDOFF.md「残り2件」に記載している。
+  //
+  // 確定したら、この表から消して PROGRAM_TYPE_OVERRIDE か
+  // PROGRAM_TYPE_CONFIRMED_AS_IS のどちらかへ移すこと。
+  // _tools/check_program_type.py のカバレッジ計算はこの表を見ていない
+  // （未確認は「override にも CONFIRMED にも無い」ことで数えられる）ため、
+  // ここへ足しても未確認件数は変わらない。
+  var PROGRAM_TYPE_UNVERIFIED = {
+    kanagawa_yokosuka_ict: '市のチラシに「審査会にて事業計画を承認」とありますが、'
+      + '不採択がありうるかは書かれておらず、交付要綱が公開されていません',
+    kanagawa_yokosuka_senshinteki: '市のページに「事業計画の内容を審査した上で'
+      + '補助対象企業を決定」とありますが、固有の交付要綱が公開されていません'
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
@@ -3113,6 +3141,18 @@
         why.textContent += '。ただしこの制度は予算の上限があり、条件を満たしても受けられないことがあります（下の「受付時期」を確認してください）';
       }
       kindRow.appendChild(why);
+
+      // 一次情報で確定できていない制度は、そのことを画面に出す。表示中の種別は
+      // 名称からの推定にすぎず、上の「相談先」「審査の性格」も推定に乗っている。
+      // 黙って断定すると、利用者は確認済みの126件と区別できない。
+      if (PROGRAM_TYPE_UNVERIFIED[key]) {
+        var unv = document.createElement('div');
+        unv.className = 'pt-kind-unverified';
+        unv.textContent = '※ この制度は、上の判定を一次情報で確認できていません（'
+          + PROGRAM_TYPE_UNVERIFIED[key] + '）。'
+          + '審査の有無や選ばれ方は、申し込む前に窓口へ直接お問い合わせください。';
+        kindRow.appendChild(unv);
+      }
 
       // 種別を問わず必ず出す2点。補助金・助成金で最も多い事故がこの2つで、
       // どちらも制度ごとの調査を要さず全制度で成り立つ（社労士レビュー 2026-08-17）。
