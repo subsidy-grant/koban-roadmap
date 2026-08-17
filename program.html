@@ -29,7 +29,7 @@
     --line: #cdc0aa; --shadow: rgba(60, 46, 26, 0.16);
     --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
     --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
-    --paper-sunken: #dcd2c0;
+    --paper-sunken: #d0c2a8;
     --line-strong: #b3a48b;
     --radius-sm: 6px;
     --radius-md: 10px;
@@ -40,6 +40,11 @@
     :root {
       --paper: #0e0c0a; --paper-raised: #2d2720; --ink: #f4eee3; --ink-soft: #cabfad;
       --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
+      /* 夜間はコバルトが明るいので、その上に置く文字は白ではなく地の色にする。
+         これが抜けていたため「次の質問へ」「公式ページを見る」のボタンが
+         明るい青地に白文字となり、コントラスト2.10しか出ていなかった
+         （実測 2026-08-17。基準4.5、ほぼ読めない状態）。 */
+      --on-accent: #08121e;
       --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c; --rust-wash: #33200f;
       --cat-hojo: #8fb2ff; --cat-hojo-wash: #142640; --cat-josei: #e5a850; --cat-josei-wash: #2c2110;
       --cat-other-wash: #1c2a3c;
@@ -70,9 +75,12 @@
     display: inline-block; font-size: 0.82rem; padding: 0.18rem 0.6rem;
     border-radius: 100px; white-space: normal; font-weight: 600;
   }
-  .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid transparent; }
-  .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid transparent; }
-  .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid transparent; font-weight: 500; }
+  /* 制度の種別バッジ。地(サンド)の上に直接載るため、wash地だけだと輪郭が
+     出ない（実測 2026-08-17：cat-josei-wash と地の差は1.07しかない）。
+     文字色は足りている（5.11）ので、枠線で輪郭を作って形を見せる。 */
+  .pill.hojo { background: var(--cat-hojo-wash); color: var(--cat-hojo); border: 1px solid var(--cat-hojo); }
+  .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid var(--cat-josei); }
+  .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid var(--line-strong); font-weight: 500; }
 
   h1.pt-name {
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
@@ -141,8 +149,14 @@
   .pd-item > .v { padding: 0 0.9rem 0.85rem; font-size: 0.95rem; line-height: 1.65; }
   .pd-item > .v .sub { display: block; font-size: 0.8rem; font-style: italic; color: var(--ink-faint); margin-top: 0.2rem; }
   .pd-item-wide { grid-column: 1 / -1; }
-  /* side-stripeをやめてヘアライン枠+薄い背景色に統一（2026-08-13、design.md参照） */
-  .pd-item-key { border: 1px solid var(--hl); background: var(--hl-wash); box-shadow: 0 1px 3px var(--shadow), 0 1px 2px var(--shadow); }
+  /* 補助率・上限額・締切という「いちばん見せたい3つ」。
+     2026-08-13にヘアライン枠＋薄い背景色にしていたが、サンド地に変えた結果、
+     この3つだけが地に沈んで通常カードより弱く見えていた
+     （実測 2026-08-17：強調カード1.125/1.068 に対し、通常の白カードは1.311）。
+     地は白カードと同じにして浮かせ、強調は「上辺の色帯＋色枠＋強い影」で出す。
+     色の面で目立たせるのをやめ、面の深さで階層を作る。 */
+  .pd-item-key { border: 1px solid var(--hl); background: var(--paper-raised);
+    border-top: 4px solid var(--hl); box-shadow: var(--shadow-card-strong); }
   .pd-item-key .k { color: var(--hl); font-weight: 700; }
   .pd-item-rate { --hl: var(--accent); --hl-wash: var(--accent-wash); }
   .pd-item-amount { --hl: var(--accent); --hl-wash: var(--accent-wash); }
@@ -229,18 +243,28 @@
   .sim-check input { width: 1.4rem; height: 1.4rem; margin-top: 0.15rem; flex: none; accent-color: var(--accent); }
   .sim-check .req-strong { color: var(--rust); font-weight: 700; }
   .sim-result { margin-top: 1.2rem; }
-  .sim-panel { border-radius: var(--radius-md); padding: 1.2rem 1.3rem; }
-  .sim-panel.ok { background: var(--sage-wash); border: 1px solid var(--sage); }
-  .sim-panel.info { background: var(--accent-wash); border: 1px solid var(--accent); }
-  .sim-panel.alert { background: var(--rust-wash); border: 1px solid var(--rust); }
+  /* 試算の結果パネル。地に直接置かれるので、wash系（薄い色地）だと沈む。
+     実測（2026-08-17）では地(#e8e0d2)に対して
+       sage-wash 1.089 / accent-wash 1.125 / rust-wash 1.068
+     といずれも1.30を割り、色の種類に関係なく面が分離しなかった。
+     地は白カードと同じにして浮かせ、種類は左の色帯と枠で示す。 */
+  .sim-panel { border-radius: var(--radius-md); padding: 1.2rem 1.3rem;
+    background: var(--paper-raised); box-shadow: var(--shadow-card); }
+  .sim-panel.ok { border: 1px solid var(--sage); border-left: 5px solid var(--sage); }
+  .sim-panel.info { border: 1px solid var(--accent); border-left: 5px solid var(--accent); }
+  .sim-panel.alert { border: 1px solid var(--rust); border-left: 5px solid var(--rust); }
   .sim-panel.alert .sim-headline { color: var(--rust); }
   /* 受付が終わっている・まだ始まっていない制度は、金額より先に上に出す */
   .sim-status {
     border-radius: var(--radius-md); padding: 0.7rem 1rem; margin-bottom: 0.8rem;
     font-size: 0.88rem; font-weight: 700; line-height: 1.7;
   }
-  .sim-status.alert { background: var(--rust-wash); border: 1px solid var(--rust); color: var(--rust); }
-  .sim-status.info { background: var(--accent-wash); border: 1px solid var(--accent); color: var(--accent); }
+  /* 上と同じ理由で、地は白カードに揃えて左の色帯で種類を示す。
+     文字色は wash 地ではなく白地に載るので、濃い側のトークンを使う。 */
+  .sim-status.alert { background: var(--paper-raised); border: 1px solid var(--rust);
+    border-left: 5px solid var(--rust); color: var(--rust-ink, var(--rust)); box-shadow: var(--shadow-card); }
+  .sim-status.info { background: var(--paper-raised); border: 1px solid var(--accent);
+    border-left: 5px solid var(--accent); color: var(--accent); box-shadow: var(--shadow-card); }
   /* そのほかの条件（既定は閉じる）。8項目グリッドと同じ素の<details> */
   .sim-more { margin-top: 0.7rem; font-size: 0.86rem; }
   .sim-more > summary {
