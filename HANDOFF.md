@@ -1,46 +1,65 @@
 # 引き継ぎ
 
-## 次の安全なアクション（最新・2026-08-17 第21セッション、配色刷新の途中。**未完了あり**）
+## 次の安全なアクション（最新・2026-08-17 第22セッション、配色刷新は**完了**）
 
-**次にやること: 配色刷新の残り9ファイルへの展開。** 手順は
-`_tools/apply_palette.py` の先頭コメントに全部書いてある。
+**配色の展開は終わっている。次にやるべき決まった作業は無い。**
+新しい指示を待つか、下の「残っている宿題」から選ぶ。
+
+**19:03時点でローカルHEADとorigin/mainはともに `77cbed9` で一致、作業ツリーはクリーン。**
+
+### 配色刷新は全10ページで完了・本番反映済み（第22セッション）
+
+前セッションで index.html だけ新配色にして中断していたぶんを、残り9ページへ展開した。
+**混在は解消している。**
+
+本番（live URL）を実ブラウザで直接開いた結果 — **2026-08-17 19:01:37 時点**:
+
+| 確認項目 | 結果 |
+|---|---|
+| 10ページすべて `--paper: #e8e0d2`（新配色） | OK |
+| `--paper-sunken` / `--line-strong` / `--shadow-card` | 全ページ入っている |
+| カード/地のコントラスト | 1.311（基準 1.30） |
+| 旧配色の残存 | 0 |
+| JSエラー | 0 |
+
+ローカルでは **OSライト/ダーク × 手動テーマ(未設定/light/dark) × 10ページ = 52通り**で
+NG 0件（375px横あふれ0も含む）。
+
+**再確認したくなったらこの1コマンドで取り直せる**（伝聞ではなく一次情報が取れる）:
 
 ```sh
 cd /d/Claudecode/koban-roadmap
-python _tools/apply_palette.py program.html criteria.html consult.html \
-    documents.html profile.html profile_edit.html applications.html \
-    profile_status.html improvement.html
+python _tools/check_live_palette.py
+```
+Playwright が無い環境なら、最低限の確認だけなら:
+```sh
+curl -s https://subsidy-grant.github.io/koban-roadmap/criteria.html | grep -o -- "--paper: #[0-9a-f]*" | head -1
+# → --paper: #e8e0d2 なら新配色が本番に出ている
 ```
 
-**18:40時点でローカルHEADとorigin/mainはともに `29568e4` で一致、作業ツリーはクリーン。**
-本番にも反映済み（`--paper: #e8e0d2` を live URL で確認）。
+### 第22セッションで分かった、前の引き継ぎが間違っていたこと
 
-### ⚠ いまサイトは配色が混在している（最重要）
+- **「各ファイルに :root が4ブロックある」は誤り。** `program.html` と `consult.html` は
+  **2ブロックしかない**。この2ページは `data-theme` 属性に非対応で、OSの
+  `prefers-color-scheme` にだけ従う（配色刷新以前からの既存挙動で、バグではない）。
+  ダークモード切替ボタンを作るときはこの2ページに手当てが要る
+- **「`--accent-wash` を地に使っている箇所を直す」を全部やるのは誤り。**
+  白カードの上に載る `--accent-wash`（バッジ・ホバー・選択状態）は問題ない。
+  実ブラウザで「祖先をたどった実効背景」との比を測ったところ、**本当に沈んでいたのは
+  3箇所だけ**だった（criteria `.disclaimer` / profile_edit `.editing-note` /
+  improvement `.ind-picker`、いずれも 1.12）。推測で広く塗り替えないこと
+- **grep だけでは旧色を掃討しきれない。** select の矢印がインラインSVGの中に
+  `stroke="%234d6a8a"` と **URLエンコードで**旧色を直書きしていた。
+  `grep -o "%23[0-9a-fA-F]\{6\}"` で洗い出すこと（`%23` = `#`）
 
-**index.html だけが新配色（サンド地）で、他の9ページは旧配色（水色地）のまま。**
-タブを移動すると地の色が変わる。これは作業途中だからで、バグではない。
-本人は「このまま進める」と判断済みなので、**次のセッションで残り9ファイルへ展開すること。**
+### 再開者が仮定してはいけないこと（配色まわり）
 
-対象9ファイル: program / criteria / consult / documents / profile / profile_edit /
-applications / profile_status / improvement
-
-### 再開者が仮定してはいけないこと（第21セッション分）
-
-- **「apply_palette.py を流せば終わり」と仮定しないこと。** スクリプトが入れない
-  手当てが4点ある（`_tools/apply_palette.py` 先頭コメントに列挙）。とくに:
-  - `--shadow-card` / `--shadow-card-strong` / `--paper-sunken` / `--line-strong` は
-    **スクリプトでは入らない**。index.html の `:root` 4ブロックを見て手で足す
-  - `--accent-wash` を「地」に使っている箇所は、サンド地の中で青帯だけが浮く。
-    index.html では `.hero-industry` がこれで、`--paper-sunken` + 罫線に変えた
-  - 影の色 `rgba(12, 32, 54, ...)` は旧配色の青ベース。サンドに合わないので
-    `rgba(60, 46, 26, ...)` 系へ
-- **「トークンは1箇所」と仮定しないこと。** 各ファイルに **4ブロック**ある
-  （`:root` / `@media dark` / `[data-theme=dark]` / `[data-theme=light]`）。
-  ライト2・ダーク2で、**4つとも直さないと手動テーマ切替で旧配色が出る**
 - **`--ink` のダーク値 `#eaf1fb` は旧ライトの `--paper` と同じ値**。単純な文字列置換だと
   取り違える。apply_palette.py は `--ink:` を狙って先に処理してから他をやる（順序が重要）
 - **「配色の判断は好みの問題」と仮定しないこと。** 採用値は13パターンを数値検証して
   選んでいる。触るときは `python _tools/check_palette.py` を流して **NG 0件**を保つ
+- **`_tools/apply_palette.py` はもう流す必要がない**（全ページ適用済み。再実行しても
+  旧値が無いので0件になるだけで無害）。新しいページを作ったときの参考として残してある
 
 ### この配色にした理由（数値）
 
@@ -59,6 +78,18 @@ applications / profile_status / improvement
 強弱は本人指示で**影と色帯の両方**でつけた:
 - `--shadow-card` / `--shadow-card-strong` の2段を新設し、重要なカードほど強く浮かす
 - `.sec-toggle` の左の色帯を 5px → 8px に太く
+
+### 第22セッションの変更内容（`77cbed9`、push・デプロイ済み）
+
+- 9ファイルの全 `:root` ブロックを新配色へ（325箇所）
+- `--shadow-card` / `--shadow-card-strong` / `--paper-sunken` / `--line-strong` を
+  全32ブロックへ追加
+- 旧配色の青ベースの影 `rgba(12,32,54,0.12)` → `rgba(60,46,26,0.16)`（16箇所）
+- インラインSVG（selectの矢印）の旧色を `%23887d63` に統一
+  （program.html の `%23767d8a`、index.html の `%235a6478`）
+- 地に沈んでいた3箇所を `--paper-sunken` + `--line-strong` + 左帯へ
+  （criteria `.disclaimer` / profile_edit `.editing-note` / improvement `.ind-picker`）
+- `final_palette_result.json`（採用値の控え）をリポジトリに追加
 
 ### 第21セッションで直した他の不具合（すべてpush・デプロイ済み）
 

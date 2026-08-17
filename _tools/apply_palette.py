@@ -1,24 +1,41 @@
 # -*- coding: utf-8 -*-
 """新配色（サンド地＋白カード）を全ファイルの全ブロックへ機械的に適用する。
 
-2026-08-17作成。index.html には適用済み（commit f1fba31）。
-**残り9ファイルが未適用**なので、次に触るときはこれを流す：
+2026-08-17作成。**全10ページへの適用は完了している**（index.html は f1fba31、
+残り9ページは 77cbed9）。もう流す必要はない。**再実行しても無害だが**
+（旧値がもう無いので置換0件になる）、新しいページを作ったときの参考として残す。
 
+適用したときのコマンド:
     cd /d/Claudecode/koban-roadmap
     python _tools/apply_palette.py program.html criteria.html consult.html \
         documents.html profile.html profile_edit.html applications.html \
         profile_status.html improvement.html
 
-流したあとに必ずやること（index.html で実際に必要だった手当て）:
- 1. --shadow / --shadow-card / --shadow-card-strong / --paper-sunken /
-    --line-strong はこのスクリプトでは入らない。index.html の :root 4ブロックを
-    見て同じものを手で足す（ライト2・ダーク2の計4箇所）
- 2. --accent-wash を「地」に使っている箇所を探す。サンド地の中で青帯だけが
-    浮くので --paper-sunken + --line-strong に変える
-    （index.html では .hero-industry がこれだった）
- 3. 影の色が rgba(12,32,54,...) のまま残っていないか grep する。旧配色の青ベース
-    なのでサンド地に合わない。rgba(60,46,26,...) 系へ
- 4. 実ブラウザで JSエラー0・375px横あふれ0・カード/地のコントラスト>=1.30 を確認
+このスクリプトだけでは足りず、実際に手当てが要ったこと（新規ページを
+作るときも同じ罠がある）:
+ 1. --shadow-card / --shadow-card-strong / --paper-sunken / --line-strong は
+    「旧値→新値」の対応表に無いので入らない。:root の全ブロックへ手で足す
+ 2. --accent-wash を「地」に使っている箇所は、サンド地との差が 1.12 しかなく
+    面が沈む（実測）。--paper-sunken + --line-strong + 左帯に変える。
+    ただし白カードの上に載る --accent-wash（バッジ・ホバー・選択状態）は
+    そのままでよい。**推測で全部変えないこと。** 実ブラウザで
+    「祖先をたどった実効背景」との比を測り、1.30未満だけを直す
+    → 実際に該当したのは3箇所だけだった：
+       criteria.html .disclaimer / profile_edit.html .editing-note /
+       improvement.html .ind-picker（index.html は .hero-industry）
+ 3. 影の色 rgba(12,32,54,...) は旧配色の青ベースでサンド地に合わない
+    → rgba(60,46,26,0.16) へ（16箇所あった）
+ 4. **インラインSVGの色は grep に引っかからない。** select の矢印が
+    url('data:image/svg+xml...stroke="%234d6a8a"') のように %23 エンコードで
+    旧色を直書きしていた。`grep -o "%23[0-9a-fA-F]\{6\}"` で洗い出す
+ 5. 実ブラウザで JSエラー0・375px横あふれ0・カード/地のコントラスト>=1.30 を確認
+
+:root ブロックの数はページによって違う（4つとは限らない）:
+  - 4ブロック … :root / @media dark / [data-theme=dark] / [data-theme=light]
+  - 2ブロック … program.html と consult.html。**data-theme 属性に非対応**で、
+    OSの prefers-color-scheme にだけ従う（配色刷新以前からの既存挙動）
+  - improvement.html の @media ブロックは1行に詰まっていて
+    `--shadow: ...; }` が行末で閉じるため、行単位の正規表現では拾えない
 
 ライト値・ダーク値のどちらに置換するかは「元の値」で判定する。
 同じトークン名がライト2ブロック・ダーク2ブロックにあり、行の見た目では

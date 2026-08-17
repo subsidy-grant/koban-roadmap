@@ -1,0 +1,4 @@
+# 実行のたびに上書きされる中間結果。中身は毎回作り直せるので追跡しない。
+_tools/verify_live.json
+__pycache__/
+*.pyc
