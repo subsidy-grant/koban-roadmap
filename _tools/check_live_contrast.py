@@ -68,10 +68,15 @@ JS = r"""
                                       t:(el.textContent||'').trim().slice(0,24)});
       }
     }
+    /* 面が地から分離して見えるか。
+       影があれば浮くので分離できているとみなす（2026-08-17に基準を改めた。
+       それ以前は「枠があればOK」としていたが、本人が指摘した .editing-note は
+       枠があっても「背景と同系色」に見えていたため、枠は根拠にしない）。 */
     if (own && own.a>=0.99 && r.width*r.height>=20000) {
       const bh=behind(el), ratio=cr(own,bh);
       const diff=Math.abs(own.r-bh.r)+Math.abs(own.g-bh.g)+Math.abs(own.b-bh.b);
-      if (ratio<1.30 && diff>6) sunk.push({sel:name(el), cr:+ratio.toFixed(3)});
+      const hasShadow = cs.boxShadow && cs.boxShadow!=='none';
+      if (ratio<1.30 && diff>6 && !hasShadow) sunk.push({sel:name(el), cr:+ratio.toFixed(3)});
     }
   }
   const dedup=(a,k)=>{const m={};a.forEach(x=>{if(!m[x[k]])m[x[k]]=x;});return Object.values(m);};
