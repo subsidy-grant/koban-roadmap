@@ -548,7 +548,30 @@
     tokyo_toshima_keiei: 'josei', tokyo_meguro_shoryokuka: 'josei',
     kanagawa_yokohama_shoene: 'hojo', kanagawa_yokohama_monozukuri: 'hojo',
     // 2026-08-13 全数監査 第4弾（前回confidence medium/unknownだった11件の再調査）で確定した名実不一致3件
-    tochigi_nikko_lease: 'josei', kanagawa_yokohama_led: 'hojo', saitama_iruma_shinko: 'hojo'
+    tochigi_nikko_lease: 'josei', kanagawa_yokohama_led: 'hojo', saitama_iruma_shinko: 'hojo',
+    // 2026-08-17 全数監査 第5弾（神奈川の未確認18件）。要綱・募集要領の条文を直接引用できた
+    // high confidence のみ登録。名称は全て「補助金」だが、審査が申請内容の適否確認に
+    // とどまり事業計画の優劣で順位付けしないため実質は助成金、というものが11件中9件。
+    // 判定はいずれも「随時審査」「先着順」「適否を決定」「不交付決定通知書」等の明文による。
+    kanagawa_atsugi_setsubi: 'josei', kanagawa_digital: 'josei',
+    kanagawa_hiratsuka_datsutanso: 'josei', kanagawa_hiratsuka_dx: 'josei',
+    kanagawa_kamakura_digital: 'josei', kanagawa_kamakura_kankyo: 'josei',
+    kanagawa_kamakura_ritchi: 'josei', kanagawa_kawasaki_seicho: 'josei',
+    kanagawa_sagamihara_shoene: 'josei', kanagawa_yokosuka_seisansei: 'josei',
+    kanagawa_zama_renewal: 'josei'
+    // 名称どおりで登録不要だったもの（＝名称マッチのフォールバックで正しく hojo になる）:
+    //   kanagawa_ayase_kyojinka（診断士審査・配点表・採択回数による減点あり）
+    //   kanagawa_ayase_shogyo（「申請内容によっては採択されない場合があります」と明記）
+    //   kanagawa_seisansei（「すべての申請が交付決定されるわけではありません」と明記）
+    // 確信度 medium のため保留し、次回再調査するもの（第4弾と同じ運用）:
+    //   kanagawa_atsugi_it（要領に審査基準・採択の語が無く josei 推定だが、評価項目の
+    //     記載自体が無いため断定できない）
+    //   kanagawa_yokosuka_ict（「審査会にて事業計画を承認」から hojo 推定。不採択の
+    //     明文が無く、要綱が市サイト未掲載）
+    //   kanagawa_yokosuka_senshinteki（「事業計画の内容を審査した上で補助対象企業を
+    //     決定」から hojo 推定。固有の交付要綱が例規集にも未掲載）
+    //   kanagawa_yugawara_shukuhaku（宿泊税の特別徴収義務者への費用補填で josei 推定。
+    //     固有の交付要綱が町サイト・例規集とも未掲載）
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
@@ -558,12 +581,18 @@
     return 'other';
   }
   // 種別バッジに出す語と、そう判定した理由の一言。
-  // 補助金＝予算枠を取り合う競争的審査があり、要件を満たしても落ちうる。
-  // 助成金＝要件を満たせば原則もらえる。この違いが申請の心づもりを変えるので、
-  // 名称ではなく実質のほうを画面に出す。
+  // 補助金＝事業計画を比べる競争的な審査があり、要件を満たしても落ちうる。
+  // 助成金＝審査は要件の適否確認にとどまり、優劣で順位付けされない。
+  // この違いが申請の心づもりを変えるので、名称ではなく実質のほうを画面に出す。
+  //
+  // 助成金側を「要件を満たせば受給できます」と断定しないのは、そう書けない
+  // 制度が実在するため（2026-08-17の一次情報調査で判明）。助成金と判定した
+  // ものでも、先着順で予算に達すれば受付終了になり、相模原市の省エネ設備
+  // （kanagawa_sagamihara_shoene）に至っては予算超過日の申請は抽選になる。
+  // 要件充足＝受給ではないので、断定は避けて「順位付けはされない」に留める。
   var KIND_LABEL = {
-    hojo:  { name: '補助金',  why: '審査があり、要件を満たしても採択されないことがあります' },
-    josei: { name: '助成金',  why: '要件を満たせば原則として受給できます' },
+    hojo:  { name: '補助金',  why: '事業計画の審査があり、要件を満たしても採択されないことがあります' },
+    josei: { name: '助成金',  why: '要件を満たすかどうかの確認が中心で、事業計画の優劣は問われません。ただし予算の上限があり、先着順で受付が終わることがあります' },
     other: { name: '種別未確定', why: '一次情報での確認が済んでいません' }
   };
   // 名称の語（助成金／補助金）と実質判定が食い違う制度がある。
