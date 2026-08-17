@@ -363,7 +363,8 @@
     font-size: 0.85rem; color: var(--accent); text-decoration: none;
     border-bottom: 1px solid var(--accent-soft);
   }
-  a.src-link:hover, a.src-link:focus-visible { border-bottom-color: var(--accent); }
+  @media (hover: hover) { a.src-link:hover { border-bottom-color: var(--accent); } }
+  a.src-link:focus-visible { border-bottom-color: var(--accent); }
 
   .pt-actions {
     display: flex; flex-wrap: wrap; gap: 0.7rem 1.3rem; align-items: center;

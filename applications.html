@@ -118,7 +118,9 @@
   .pcard-head h3 { margin: 0; }
   .pcard-close { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
     border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
-  .pcard-close:hover { border-color: var(--rust); color: var(--rust); }
+  /* :hover は「マウスがある端末」に限る。スマホでは指を離しても枠と文字が
+     赤いまま残り、押していないのに削除待ちのように見える（2026-08-17）。 */
+  @media (hover: hover) { .pcard-close:hover { border-color: var(--rust); color: var(--rust); } }
   .btn-link { display: inline-block; padding: 0.5rem 0.9rem; border: 1px solid var(--accent);
     border-radius: var(--radius-md); background: var(--accent-wash); color: var(--accent);
     font-weight: 700; font-size: 0.86rem; text-decoration: none; min-height: 44px;
@@ -155,7 +157,7 @@
   .app-item-prog .lbl { display: block; font-size: 0.68rem; color: var(--ink-faint); }
   .app-item-del { flex: none; background: none; border: 1px solid var(--line); color: var(--ink-faint);
     border-radius: 6px; min-height: 40px; min-width: 40px; font-size: 0.85rem; cursor: pointer; }
-  .app-item-del:hover { border-color: var(--rust); color: var(--rust); }
+  @media (hover: hover) { .app-item-del:hover { border-color: var(--rust); color: var(--rust); } }
 
   /* ---- 新規作成フォーム ---- */
   .new-app { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; margin-bottom: 1.6rem; }
