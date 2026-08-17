@@ -105,8 +105,16 @@ def main():
     print(f"  名称『助成』→ josei だけ : {len(by_name['josei']):3d} 件  ← 未確認")
     print(f"  判別不能(other)          : {len(unknown):3d} 件"
           + ("  ★画面で無彩色ピルになる" if unknown else ""))
-    print(f"\n★ 未確認の合計: {len(unconfirmed)} 件 / 全 {len(progs)} 件")
-    print(f"   うち 自治体・公社: {len(local)} 件 / 国・全国系: {len(national)} 件")
+    if unconfirmed:
+        print(f"\n★ 未確認の合計: {len(unconfirmed)} 件 / 全 {len(progs)} 件")
+        print(f"   うち 自治体・公社: {len(local)} 件 / 国・全国系: {len(national)} 件")
+    else:
+        # 全数監査が完了した状態。ただしこれは「今この瞬間の128件を見た」という意味で、
+        # 週次の自動更新（trig_01Vbn8wKa1hdiWyr1DS1ciYo）が page_data.js を書き換えて
+        # 制度が増えれば、その分がまた未確認として出てくる。0件は維持するものであって
+        # 一度達成したら終わりではない。
+        print(f"\n✅ 未確認 0 件。全 {len(progs)} 件すべて一次情報で確認済み")
+        print("   ※ 制度が追加されると未確認が復活する。週次更新のあとは再実行すること")
 
     if local:
         from collections import Counter
@@ -132,6 +140,17 @@ def main():
         for k, n, v in bad:
             print(f"    {k}: 名称『{n}』に対し記録は {v}")
         ghost = ghost or bad
+
+    # override は「名称マッチでは間違うから上書きする」ためのもの。名称マッチと
+    # 同じ結果になるなら、制度名が改称されて一致するようになった可能性がある
+    # （＝実質が変わっていないか確認が要る）。放置すると override が形骸化する。
+    redundant = [(k, n, v) for k, n, v in confirmed if name_class(n) == v]
+    if redundant:
+        print("\n★ override が名称マッチと同じ結果になっている（制度名が変わった可能性）")
+        for k, n, v in redundant:
+            print(f"    {k}: 名称『{n}』は名称マッチでも {v} になる")
+        print("    → 実質が変わっていないか確認し、問題なければ")
+        print("       PROGRAM_TYPE_CONFIRMED_AS_IS へ移すこと")
 
     mismatch = [(k, n, v) for k, n, v in confirmed if name_class(n) != v]
     print(f"\n--- override のうち名称と判定が食い違うもの: {len(mismatch)} 件 ---")

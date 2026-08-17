@@ -612,7 +612,16 @@
     gunma_ota_dx: 'josei', gunma_tsumagoi_uriage: 'josei',
     chiba_choshi_ritchi: 'josei', chiba_kimitsu_seisansei: 'josei',
     chiba_matsudo_dx: 'josei', chiba_minamiboso_digital: 'josei',
-    chiba_mobara_support: 'josei', chiba_tateyama_digital: 'josei'
+    chiba_mobara_support: 'josei', chiba_tateyama_digital: 'josei',
+    // 2026-08-17 第9弾（国・全国系）。過去の引き継ぎにあった「国の制度は名実が
+    // 一致しているはず」という仮説は、ほぼ裏付けられた（18件中17件が名称どおりで、
+    // 不一致はこの1件だけ）。自治体は不一致が多数派だったのと対照的。
+    kanko_shoryokuka: 'josei'
+    // 観光庁の省力化投資は名称が「補助事業」だが実質は josei。採択・加点・評価・
+    // 妥当のいずれも0回で、選定は「優先事項A/Bの該当・非該当で4階層を作り、
+    // 同順位内は申請の早い順」という機械的ルール。優先事項を加点と読み違えないこと
+    // （加点はスコアを足して総合点で順位を決める道具だが、これは階層を作るだけで
+    // 階層内の順序は評価ではなく申請時刻）。なお対象は宿泊施設で美容室には使えない。
     // 前橋DX・太田DXは josei だが、いずれも予算超過時は抽選（要件を満たしても
     // 受給できない）。両方とも schedule に記載があり programHasBudgetCap() が拾う。
     // 確信度 medium が3件:
@@ -708,8 +717,39 @@
                                        // ただし省エネ枠は要件確認型で、枠により性質が違う（noteに明記）
     gunma_takasaki_lease: 'josei',     // 名称が「助成金」で判定も josei。助成額が計算式で
                                        // 機械的に確定し、要件は全てYes/No判定
-    chiba_seicho4: 'hojo'              // 「総合的な評価が高いものから順に、予算の範囲内で採択」、
+    chiba_seicho4: 'hojo',             // 「総合的な評価が高いものから順に、予算の範囲内で採択」、
                                        // 審査の観点6項目、加点（経営革新計画）、「不採択となる場合があります」
+    // 2026-08-17 第9弾（国・全国系）。名称どおりで正しかった17件。
+    // 国の補助金は外部審査委員会・加点・口頭審査を持つものが多く、自治体とは設計が違う。
+    ai: 'hojo',                // 外部審査委員会、審査項目表、「採択・不採択に関わらず不採択理由は開示しない」
+    food_labor: 'hojo',        // 別紙に9項目の審査基準表、⑨は明示的に「ポイント加算項目」
+    jigyou_shoukei_ma: 'hojo', // 「15.2. 加点事由について」の独立節、審査委員会、賃上げ加点未達は減点
+    jizoku: 'hojo',            // 「審査の観点」に基づき審査委員会、「不採択になる場合があります」
+    monodukuri: 'hojo',        // 外部有識者の審査委員会＋口頭審査、再生事業者加点
+    shoene_hikaseki: 'hojo',   // 外部審査委員会で「総合的な評価を行い、採択事業者を決定」。
+                               // カタログ登録製品から選ぶ設計だが、それは対象設備の限定であって
+                               // 採否は総合評価で決まる（登録製品を選べば必ず通るわけではない）
+    shoryokuka: 'hojo',        // 「より優れた事業計画書を提出した者を…採択」、加点、口頭審査
+    // 厚労省の雇用関係助成金。いずれも競争的採択は無く要件充足型
+    career: 'josei', career_kaitei: 'josei', career_kyotsu: 'josei',
+    career_shogai: 'josei', career_shoyo: 'josei', career_tanjikan: 'josei',
+    kaizen: 'josei', hatarakikata: 'josei',
+    jinzai: 'josei', jinzai_kakuho: 'josei',
+    ryouritsu_daitai: 'josei', ryouritsu_funin: 'josei', ryouritsu_ikuji: 'josei',
+    ryouritsu_juunan: 'josei', ryouritsu_kaigo: 'josei', ryouritsu_shusseiji: 'josei',
+    chiiki_koyou_kaihatsu: 'josei', koyou_65sai: 'josei',
+    tokutei_kyufu: 'josei', trial_koyou: 'josei'
+    // 「助成金は要件を満たせば受けられる」が全部に当てはまるわけではない。
+    // 予算枠で受付が止まるものが3つあり、いずれも「予告なく」と明記されている：
+    //   kaizen（業務改善）「申請期間内に募集を終了する場合があります」
+    //   hatarakikata（働き方改革）「予算額に制約されるため…予告なく受付を締め切る」
+    //   koyou_65sai（65歳超継続雇用促進コース）「四半期ごとの予算額上限の超過が
+    //     予見される場合等に、予告なく支給申請の受付を停止する場合があります」
+    // 3件とも note/schedule に記載があり programHasBudgetCap() が拾う。
+    // 逆に career 6コース・両立支援6コース・jinzai 系・地域雇用・特定求職者・
+    // トライアルは、全文検索で予算枠の記載が0件であることを確認済み（無いことの確認）。
+    // seichou_kasokuka（中小企業成長加速化補助金）は3次公募の公募要領が未公開のため
+    // 判定を保留した。過去回で暫定判定せず、公開されてから確認すること。
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
@@ -722,9 +762,22 @@
   // 制度データの文面から判定する。先着終了・抽選・予算枠は種別では決まらず制度ごとに
   // 違うため、KIND_LABEL の固定文言ではなくここで個別に見る。該当は128件中7件
   // （相模原の省エネ設備は予算超過日の申請が抽選、業務改善助成金も予算の範囲内で募集終了）。
+  // 「枠が埋まると受けられない」制度かどうかを制度データの文面から拾う。
+  //
+  // 言い回しは制度ごとにばらばらなので、完全一致の列挙では追いつかない。実際に
+  // 「抽選|先着|予算に達|予算額に達|なくなり次第|予算の範囲」の列挙で始めたところ
+  // 17件を取りこぼしていた（2026-08-17に全128件で実測）。取りこぼした実例：
+  //   働き方改革推進支援助成金「国の予算額に制約されるため…予告なく受付を締め切る」
+  //   デジタル化・AI導入補助金「予算上限到達次第終了」
+  //   観光庁の省力化投資「予算に限りがあるため下位の順位は受けられないことがある」
+  // そこで語の列挙をやめ、「枠を表す語（抽選/先着/予算）」と「打ち切りを表す語」の
+  // 共起で判定する形にした。新しい言い回しが来ても拾える。
+  //
+  // 拾いすぎても「予算の上限があり…受付時期を確認してください」と出るだけで害は
+  // 小さいが、取りこぼすと「条件を満たせば受けられる」と誤読させる。安全側に倒す。
   function programHasBudgetCap(p) {
     var blob = [p.schedule, p.note, p.acceptance, p.continuity].join(' ');
-    return /抽選|先着|予算に達|予算額に達|なくなり次第|予算の範囲/.test(blob);
+    return /抽選|先着|予算/.test(blob) && /達し|達した|上限|制約|限り|なくな|終了|締め切|締切/.test(blob);
   }
   // 種別バッジ。出すのは「誰に相談すればいいか」と「審査の性格」の2つだけ。
   //
