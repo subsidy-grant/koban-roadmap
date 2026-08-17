@@ -32,7 +32,7 @@ window.KOBAN_CONSULT_TOPICS = [
   },
   {
     id: 'plan',
-    label: '採択される事業計画の作り方',
+    label: '審査に通る事業計画の作り方',
     qualifications: ['shindanshi'],
     prepare: ['導入したい設備・サービスの見積書', '直近2期分の決算書', '現在の課題を書き出したメモ']
   },
@@ -50,7 +50,8 @@ window.KOBAN_CONSULT_TOPICS = [
   },
   {
     id: 'after',
-    label: '採択後の手続き・実績報告',
+    // 「採択」「実績報告」は補助金の専門用語なので、選択肢の中で短く言い換える（2026-08-17）
+    label: '審査に通ったあとの手続き（採択後・実績報告）',
     qualifications: ['shindanshi', 'sharoushi'],
     prepare: ['交付決定通知書', '補助事業に使った経費の領収書・契約書', '実績報告の様式']
   },
@@ -67,7 +68,7 @@ window.KOBAN_CONSULT_STAGES = [
   { id: 'research', label: 'まず情報を集めている' },
   { id: 'preparing', label: '申請に向けて準備している' },
   { id: 'deadline', label: '締切が近く急いでいる' },
-  { id: 'applied', label: '申請済み・採択後の相談' }
+  { id: 'applied', label: '申請済み・審査に通ったあとの相談' }
 ];
 window.KOBAN_EXPERTS = {
   updated: '2026-08-17',

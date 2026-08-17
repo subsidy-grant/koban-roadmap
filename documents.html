@@ -487,7 +487,9 @@
       <p class="step-ttl">手順1　制度を選ぶ</p>
       <div class="af-filter">
         <label for="afFilterText">制度名で絞り込む</label>
-        <input type="search" id="afFilterText" placeholder="例：持続化、キャリアアップ、川口" autocomplete="off">
+        <!-- 2026-08-17、例を制度の略称（持続化・キャリアアップ）から、初見でも意味の分かる
+             語に変えた。略称は制度を知っている人にしか通じず、検索の手がかりにならないため。 -->
+        <input type="search" id="afFilterText" placeholder="例：小規模事業者、正社員、川口市" autocomplete="off">
         <div class="af-tools" id="afKindRow">
           <button type="button" data-kind="all" class="active">すべて</button>
           <button type="button" data-kind="national">国の制度</button>
