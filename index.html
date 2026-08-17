@@ -553,7 +553,7 @@
   .cond-card-prefecture .cond-head { position: relative; }
   .cond-card-prefecture-tag {
     display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
-    color: var(--sage); background: var(--sage-wash); border-radius: 100px;
+    color: var(--sage-ink); background: var(--sage-wash); border-radius: 100px;
     padding: 0.15rem 0.6rem; margin-bottom: 0.5rem;
   }
 
@@ -615,8 +615,8 @@
     padding: 0.2rem 0.6rem; border-radius: 100px;
     margin-left: 0.6rem;
   }
-  .elig-badge.ok { background: var(--sage-wash); color: var(--sage); }
-  .elig-badge.ng { background: var(--rust-wash); color: var(--rust); }
+  .elig-badge.ok { background: var(--sage-wash); color: var(--sage-ink); }
+  .elig-badge.ng { background: var(--rust-wash); color: var(--rust-ink); }
   .elig-badge.warn { background: var(--accent-wash); color: var(--accent); }
 
   .effect-box { margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px dashed var(--line); }
@@ -1084,12 +1084,12 @@
   /* 今すぐ出せる＝ミント。同系色を重ねると薄い地の上で文字が沈むため、
      この2状態だけ文字を濃い側に落としてコントラストを確保する（2026-08-16実測、
      --sage/--rustのままだと3.7:1前後でWCAG AA 4.5:1に届かなかった）。 */
-  .timetable .tt-state.is-open { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage); }
+  .timetable .tt-state.is-open { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage-ink); }
   /* 次に出せる見込み＝コバルト（案内） */
   .timetable .tt-state.is-next { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
   /* もう出せない・まだ出せない＝橙（注意） */
   .timetable .tt-state.is-closed,
-  .timetable .tt-state.is-before { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust); }
+  .timetable .tt-state.is-before { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust-ink); }
 
   .timetable .tt-nm {
     font-size: 1rem; font-weight: 700; line-height: 1.55;

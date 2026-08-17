@@ -41,6 +41,8 @@
     --sage-wash: #d6f0e4;
     --rust: #c93c07;
     --rust-wash: #fde3d4;
+    --sage-ink: #075740;
+    --rust-ink: #a02f05;
     --line: #cdc0aa;
     --shadow: rgba(60, 46, 26, 0.16);
     --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
@@ -58,6 +60,8 @@
       --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
       --on-accent: #0d1218; --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c;
       --rust-wash: #33200f; --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+    --sage-ink: #3fd6ac;
+    --rust-ink: #ff8a5c;
     --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
     --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
     --paper-sunken: #1a1712;
@@ -69,6 +73,8 @@
     --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
     --on-accent: #0d1218; --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c;
     --rust-wash: #33200f; --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+    --sage-ink: #3fd6ac;
+    --rust-ink: #ff8a5c;
     --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
     --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
     --paper-sunken: #1a1712;
@@ -79,6 +85,8 @@
     --ink-faint: #5d574f; --accent: #1544c4; --accent-soft: #a9c1f3; --accent-wash: #e7eefc;
     --on-accent: #ffffff; --sage: #0a6d50; --sage-wash: #d6f0e4; --rust: #c93c07;
     --rust-wash: #fde3d4; --line: #cdc0aa; --shadow: rgba(60, 46, 26, 0.16);
+    --sage-ink: #075740;
+    --rust-ink: #a02f05;
     --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
     --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
     --paper-sunken: #d0c2a8;
@@ -153,7 +161,7 @@
   .tbl-wrap { display: flex; flex-direction: column; gap: 0.7rem; }
   .common-doc-card { border: 1px solid var(--line); border-radius: var(--radius-md, 10px);
     background: var(--paper-raised); padding: 0.8rem 0.9rem; }
-  .common-doc-card.third { background: var(--rust-wash); border-color: var(--rust); }
+  .common-doc-card.third { background: var(--rust-wash); border-color: var(--rust-ink); }
   .cd-head { font-weight: 700; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap;
     align-items: center; gap: 0.4rem; }
   .cd-doc { font-size: 0.95rem; }
@@ -170,11 +178,14 @@
   /* 誰に要る書類かの印。色は既存の3色の役割どおり（緑=状態・青=案内・橙=注意） */
   .who { display: inline-block; font-size: 0.76rem; line-height: 1.5; border-radius: 4px;
     padding: 0.05rem 0.4rem; white-space: nowrap; border: 1px solid; }
-  .who-sage { background: var(--sage-wash); color: var(--sage); border-color: var(--sage); }
+  .who-sage { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage-ink); }
   .who-accent { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
-  .who-rust { background: var(--rust-wash); color: var(--rust); border-color: var(--rust); }
+  .who-rust { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust-ink); }
+  /* wash地（.who-rust バッジの隣）に載るので、濃い側の --rust-ink を使う。
+     --rust をそのまま載せるとライトで4.14しか出ずWCAG AA(4.5)を割る
+     （実測 2026-08-17）。 */
   .must-mark { display: inline-block; font-size: 0.72rem; font-weight: 700; margin-left: 0.35rem;
-    color: var(--rust); }
+    color: var(--rust-ink); }
   .must-mark.cond { color: var(--ink-faint); font-weight: 400; }
   .src-note { font-size: 0.84rem; font-style: italic; color: var(--ink-faint); margin-top: 0.8rem; }
 
@@ -185,8 +196,8 @@
   .pcard .meta { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 0.5rem; }
   .deadline { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px;
     font-size: 0.85rem; font-variant-numeric: tabular-nums; }
-  .deadline.near { background: var(--rust-wash); color: var(--rust); border: 1px solid var(--rust); }
-  .deadline.ok { background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage); }
+  .deadline.near { background: var(--rust-wash); color: var(--rust-ink); border: 1px solid var(--rust); }
+  .deadline.ok { background: var(--sage-wash); color: var(--sage-ink); border: 1px solid var(--sage); }
   .deadline.none { background: var(--paper); color: var(--ink-faint); border: 1px solid var(--line); }
 
   /* ---- チェックリスト ---- */
@@ -224,7 +235,7 @@
   /* ---- 手順3の直前に置く、会社情報の状態表示・切替（profile.htmlへ01を移した後の橋渡し） ---- */
   .company-picker { background: var(--paper-raised); border: 1px solid var(--line);
     border-radius: var(--radius-md); padding: 0.9rem 1rem; margin: 1rem 0; }
-  .company-picker.is-warn { border-color: var(--rust); background: var(--rust-wash); }
+  .company-picker.is-warn { border-color: var(--rust-ink); background: var(--rust-wash); }
   .cp-warn { margin: 0 0 0.7rem; font-size: 0.92rem; color: var(--rust); }
   .cp-current { margin: 0 0 0.6rem; font-size: 0.92rem; color: var(--ink-soft); }
   .cp-current strong { color: var(--ink); }
@@ -287,8 +298,8 @@
   .fr-block[hidden] { display: none; }
   /* 「記入できた」と「入れられなかった」が同じ見た目だと、どちらの一覧を見ているか
      分からなかった（2026-08-16）。手を動かす必要がある方＝橙、済んだ方＝ミント。 */
-  #frFail { background: var(--rust-wash); border-color: var(--rust); border-left: 5px solid var(--rust); }
-  #frDone { background: var(--sage-wash); border-color: var(--sage); border-left: 5px solid var(--sage); }
+  #frFail { background: var(--rust-wash); border-color: var(--rust-ink); border-left: 5px solid var(--rust); }
+  #frDone { background: var(--sage-wash); border-color: var(--sage-ink); border-left: 5px solid var(--sage); }
   #frFail > .fr-ttl { color: var(--rust); }
   #frDone > .fr-ttl { color: var(--sage); }
   .fr-ttl { margin: 0 0 0.3rem; font-weight: 700; font-size: 1rem; }
@@ -332,9 +343,9 @@
     font-size: 0.72rem; font-weight: 700; border: 1px solid var(--line); border-radius: 999px;
     padding: 0.15rem 0.6rem 0.15rem 0.4rem; white-space: normal; line-height: 1.35; }
   .gt-badge svg { flex: none; width: 15px; height: 15px; }
-  .gt-b-ok { color: var(--sage); border-color: var(--sage); background: var(--sage-wash); }
+  .gt-b-ok { color: var(--sage-ink); border-color: var(--sage-ink); background: var(--sage-wash); }
   .gt-b-na { color: var(--ink-faint); border-color: var(--line); background: var(--paper); }
-  .gt-b-warn { color: var(--rust); border-color: var(--rust); background: var(--rust-wash); }
+  .gt-b-warn { color: var(--rust-ink); border-color: var(--rust-ink); background: var(--rust-wash); }
   .af-na-link { font-size: 0.82rem; white-space: nowrap; }
   /* 選んだ制度の書類についての前置き（docs.note / docs.portal / docs.checked）。
      「受付は終了しています」「取組を始める前に計画書の提出が必要です」のように、
@@ -355,14 +366,16 @@
 
   .warn { background: var(--rust-wash); border: 1px solid var(--rust); border-radius: 10px;
     padding: 0.9rem 1.1rem; font-size: 0.92rem; margin: 1rem 0; }
-  .warn strong { color: var(--rust); }
+  /* .warn の地は --rust-wash なので、文字は濃い側の --rust-ink を使う */
+  .warn strong { color: var(--rust-ink); }
   /* 提出前の確認をお願いする注意書き。読み飛ばされないよう、
      見出しは明朝化+サイズアップで、まわりの説明文と見分けられるようにする
      （2026-08-13、side-stripeをやめてタイポグラフィで強調。design.md参照） */
   .must-check span { display: block; font-size: 0.88rem; color: var(--ink); line-height: 1.7; }
-  .fold.must-check-fold > summary { color: var(--rust);
+  /* 地が --rust-wash（下の行）なので、文字は濃い側の --rust-ink にする */
+  .fold.must-check-fold > summary { color: var(--rust-ink);
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; font-size: 1.05rem; }
-  .fold.must-check-fold { border-color: var(--rust); background: var(--rust-wash); }
+  .fold.must-check-fold { border-color: var(--rust-ink); background: var(--rust-wash); }
   .empty { color: var(--ink-soft); font-size: 0.93rem; background: var(--paper-raised);
     border: 1px dashed var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
 
