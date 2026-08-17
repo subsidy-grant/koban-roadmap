@@ -169,19 +169,40 @@ def report(src):
         print("  ※ 画像のみのページ: %s" % img_only)
         print("     様式が画像PDFのことがある。埋め込み画像を抽出して目視すること")
 
+    # 文字間に空白を挟む組版（「三 鷹 商 工 会 中 小 企 業」）のPDFが実在し、
+    # 素の検索では「審査」「採択」を取りこぼす。三鷹商工会の交付要綱が実例
+    # （2026-08-17）。文字化けと同じで、0ヒットが「証拠が無い」に化ける。
+    # 空白を全部落とした版でも探し、そちらでだけ当たったら警告する。
+    packed = re.sub(r"\s+", "", full)
+
     hits = []
     for word, why in EVIDENCE:
         n = flat.count(word)
+        n_packed = packed.count(word)
         if n:
             hits.append((word, why, n))
+        elif n_packed:
+            hits.append((word, why + "【空白除去後に検出】", n_packed))
+
+    spaced = [w for w, _, _ in hits if packed.count(w) > flat.count(w)]
+    if spaced:
+        print("\n  ※ 文字間に空白を挟む組版のPDF。素の検索では取りこぼす")
+        print("     （空白除去後にだけ当たった語: %s）" % "／".join(spaced))
 
     if hits:
-        print("\n  ■ hojo（競争的採択）の証拠が見つかった:")
+        print("\n  ■ hojo（競争的採択）の証拠『候補』が見つかった:")
         for word, why, n in hits:
             print("    %s（%d回） … %s" % (word, n, why))
             for m in list(re.finditer(re.escape(word), flat))[:2]:
                 s = flat[max(0, m.start() - 50):m.start() + 60].strip()
                 print("        …%s…" % s)
+        # ヒットしただけで hojo と決めない。語は同じでも意味が違う実例が続けて2件出た。
+        #   世田谷区: 「（他制度の）採択を受けていないこと」＝重複受給の制限であって
+        #             この制度自身の選考ではない（2026-08-17）
+        #   目黒区等: 「書類審査」が不備確認の意味（→検出語から外した）
+        print("\n    ※ 上の前後の文を必ず読むこと。その語が**この制度自身の選考**を")
+        print("       指しているか確認する。他制度との重複受給の制限（『〜の採択を")
+        print("       受けていないこと』）や、経費名（『審査請求料』）で当たることがある")
     else:
         print("\n  ■ hojo の証拠は見つからなかった → josei と判定してよい")
         print("     （日本語比率 %.2f で抽出は生きているので、0ヒットは信用できる）" % ratio)

@@ -592,7 +592,24 @@
     saitama_fujimi_challenge: 'josei', saitama_higashimatsuyama_ganbaru: 'josei',
     saitama_kawaguchi_dx: 'josei', saitama_kazo_keieikakushin: 'josei',
     saitama_koshigaya_setsubi: 'josei', saitama_misato_ganbaro: 'josei',
-    saitama_niiza_itdx: 'josei', saitama_toda_dx: 'josei'
+    saitama_niiza_itdx: 'josei', saitama_toda_dx: 'josei',
+    // 2026-08-17 第7弾（東京の未確認14件）。14件中10件が名称「補助金」だが実質は助成金。
+    // hojo だった4件（練馬・足立・府中・八王子）は CONFIRMED_AS_IS に記録した。
+    // 府中は市のページに審査の記述が無く、実施主体のむさし府中商工会議所のサイトまで
+    // 辿って初めて審査委員会・採択公表が判明した。入口のページだけ見ると誤判定する。
+    tokyo_digital: 'josei', tokyo_arakawa_jizoku: 'josei',
+    tokyo_bunkyo_seisansei: 'josei', tokyo_katsushika_digital: 'josei',
+    tokyo_minato_software: 'josei', tokyo_mitaka_sangyo: 'josei',
+    tokyo_nakano_keieiryoku: 'josei', tokyo_setagaya_keiei: 'josei',
+    tokyo_sumida_digital: 'josei', tokyo_nishitokyo_dx: 'josei'
+    // このうち確信度 medium が3件:
+    //   tokyo_digital（審査は要件適合の3項目のみで加点・不採択とも0ヒット。ただし
+    //     公社は採択件数を非公表運用することがあり、要項の記述だけでは断定しきれない。
+    //     第2回募集の要項が令和8年9月頃に出るので、そこで再確認すること）
+    //   tokyo_nishitokyo_dx（独立した募集要項PDFが無く、市HPとチラシのみ。商工会の
+    //     「事前審査」は導入目的と効果の確認で、比較して順位付けする工程ではない）
+    //   tokyo_mitaka_sangyo（要綱に選抜基準は無いが、商工会ページの「優先的に採択」が
+    //     処理順序の意味であることは文脈からの判断。予算逼迫時の運用は未確認）
     // このうち確信度 medium が4件ある。いずれも「hojo の証拠が公開情報に無い」ことに
     // よる josei で、「競争が無いと確認できた」ではない。担当課への照会で確定する:
     //   saitama_fujimi_challenge（パンフレットが簡潔で、審査の観点を書いた別紙の
@@ -655,7 +672,15 @@
                                        // 事業計画の実現妥当性、定量的な効果が不明確など」
     saitama_tokorozawa_monozukuri: 'hojo',  // 経済波及性・事業発展性・実現可能性で審査＋加点5項目、
                                             // 過去3年の交付実績は減点
-    saitama_tokorozawa_toshigata: 'hojo'    // 書類審査＋プレゼンテーション審査の2段階で最大5者を選定
+    saitama_tokorozawa_toshigata: 'hojo',   // 書類審査＋プレゼンテーション審査の2段階で最大5者を選定
+    // 2026-08-17 第7弾（東京14件）。hojo は4件で、いずれも審査委員会か加点を持つ
+    tokyo_nerima_challenge: 'hojo',    // 実施要綱 別表第2に評価項目/審査基準/重点項目、
+                                       // 不採択決定通知書、採択予定各期15件、採択事業者を公表
+    tokyo_adachi_kaizen: 'hojo',       // 「区内事業者から購入した場合…審査時の加点対象」、
+                                       // 審査員は中小企業診断士、評価項目に「妥当性はどうか」
+    tokyo_fuchu_hanro: 'hojo',         // 「有識者等により構成される審査委員会において行います」。
+                                       // 市ページには記述が無く、むさし府中商工会議所側に要領がある
+    tokyo_hachioji_keizoku: 'hojo'     // 「審査の結果、不採択になる場合があります」と明記
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
