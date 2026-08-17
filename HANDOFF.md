@@ -19,6 +19,35 @@ python -X utf8 _tools/check_program_type.py     # カバレッジ（未確認が
 
 **同期状態**: 本セッションの変更はすべて push 済み。ハッシュは上のコマンドで取り直すこと。
 
+### ⚠ 最後のコミットのデプロイが失敗したまま残っている（対応は次セッションへ）
+
+**サイトの表示には影響しない。慌てて直さなくてよい。**
+
+2026-08-17 18:31 UTC、この HANDOFF.md を更新したコミット（`9b108ea`）のデプロイが
+**GitHub Pages 側の 503 で失敗**した。同時刻に GitHub 全体が Partial System Outage で、
+インシデントが investigating の状態だった。エラーは以下：
+
+```
+Failed to create deployment (status: 503) with build version 9b108ea...
+Server error, is githubstatus.com reporting a Pages outage?
+```
+
+**自分側のコードの問題ではない。** 同じ障害はこのセッション中に2回起きており、
+1回目は空コミットで新しい実行を起こしたら成功した（`gh run rerun --failed` は
+同じく503で失敗したので、空コミットのほうが有効）。
+
+**サイト本体への影響が無いことは実物で確認済み**（2026-08-17 18:33:52 UTC に本番を
+実ブラウザで観測。栃木・神奈川・国の判定と予算枠の注記がすべて最新で出ている）。
+失敗したのは HANDOFF.md だけのコミットで、表示に使うファイルは1つも含まれていない。
+
+再開時の手順：
+1. `gh run list --limit 3` で最新の状態を見る（障害が収まっていれば放置でも
+   次のコミットのデプロイで一緒に反映される）
+2. 単独で直すなら `git commit --allow-empty` で空コミットを作って push する
+3. `curl -s https://www.githubstatus.com/api/v2/summary.json` で Pages の状態を
+   確認できる。ただしコンポーネント表示が operational でも実際は503が返ることが
+   あったので（このセッションで実測）、表示ではなく実際のデプロイ結果で判断すること
+
 ---
 
 ## 2026-08-17 第25セッション（本人指示2点＋全数監査の完了）
