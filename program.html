@@ -86,6 +86,27 @@
   .pill.josei { background: var(--cat-josei-wash); color: var(--cat-josei); border: 1px solid var(--cat-josei); }
   .pill.other { background: var(--cat-other-wash); color: var(--ink-soft); border: 1px solid var(--line-strong); font-weight: 500; }
 
+  /* 種別バッジ。従来は色分けだけで「補助金」「助成金」の語が画面に一度も
+     出ていなかった（実測 2026-08-17：全ページで該当文言0件）。色の意味は
+     初見には伝わらないので、語そのものを出す。
+     名称に「助成金」とあるのに実質は補助金、という制度が確定済み31件の
+     全件で起きているため、バッジだけだと「名前と違う」と読まれる。
+     判定の理由を一言添えて、食い違いの説明までを1セットにする。 */
+  .pt-kind-row {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+    margin-bottom: 0.7rem; font-size: 0.82rem; line-height: 1.5;
+  }
+  .pt-kind {
+    display: inline-block; font-weight: 700; padding: 0.1rem 0.5rem;
+    border-radius: 4px; white-space: nowrap;
+  }
+  /* 文字色は --on-accent（昼=白／夜=地の濃色）。夜間の cat-hojo/cat-josei は
+     明るい色なので、白のままだとボタンで起きたのと同じ低コントラストになる。 */
+  .pt-kind.hojo { background: var(--cat-hojo); color: var(--on-accent); }
+  .pt-kind.josei { background: var(--cat-josei); color: var(--on-accent); }
+  .pt-kind.other { background: var(--ink-soft); color: var(--on-accent); }
+  .pt-kind-why { color: var(--ink-soft); }
+
   h1.pt-name {
     font-family: "M PLUS Rounded 1c", "Noto Sans JP","BIZ UDPGothic","BIZ UDGothic","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
     font-weight: 600; font-size: clamp(1.35rem, 3.4vw, 1.9rem);
@@ -434,6 +455,7 @@
   <article id="programArticle">
     <div class="area-tag" id="ptAreaTag" style="display:none;"></div>
     <div class="pill-row"><span class="pill" id="ptPill"></span></div>
+    <div class="pt-kind-row" id="ptKindRow" style="display:none;"></div>
     <h1 class="pt-name" id="ptName"><span class="pt-loading">読み込み中…</span></h1>
 
     <div class="pd-grid" id="ptGrid"></div>
@@ -534,6 +556,23 @@
     if (t.indexOf('助成') !== -1) return 'josei';
     if (t.indexOf('補助') !== -1) return 'hojo';
     return 'other';
+  }
+  // 種別バッジに出す語と、そう判定した理由の一言。
+  // 補助金＝予算枠を取り合う競争的審査があり、要件を満たしても落ちうる。
+  // 助成金＝要件を満たせば原則もらえる。この違いが申請の心づもりを変えるので、
+  // 名称ではなく実質のほうを画面に出す。
+  var KIND_LABEL = {
+    hojo:  { name: '補助金',  why: '審査があり、要件を満たしても採択されないことがあります' },
+    josei: { name: '助成金',  why: '要件を満たせば原則として受給できます' },
+    other: { name: '種別未確定', why: '一次情報での確認が済んでいません' }
+  };
+  // 名称の語（助成金／補助金）と実質判定が食い違う制度がある。
+  // 食い違うときだけ、その旨を明示する（黙って違う語を出すと誤記に見える）。
+  function kindMismatch(name, kind) {
+    var t = String(name || '');
+    if (kind === 'hojo'  && t.indexOf('助成') !== -1) return '名称は「助成金」ですが、運用の実態は補助金です';
+    if (kind === 'josei' && t.indexOf('補助') !== -1) return '名称は「補助金」ですが、運用の実態は助成金です';
+    return '';
   }
   // 都道府県コードの日本語表示。index.html側の一覧(6都県)と同じ範囲だけを持つ、
   // 単なるコード→表示名の対応表（内容データではないため複製の対象にしていない）
@@ -2767,8 +2806,27 @@
 
     document.title = p.name + '｜補助金活用 業務改善ロードマップ';
 
+    var kind = pillClass(p.name, key);
+
     var pill = document.getElementById('ptPill');
-    if (pill) { pill.className = 'pill ' + pillClass(p.name, key); pill.textContent = p.name; }
+    if (pill) { pill.className = 'pill ' + kind; pill.textContent = p.name; }
+
+    // 種別（補助金／助成金）を語として出す。色分けだけでは初見に伝わらない。
+    var kindRow = document.getElementById('ptKindRow');
+    if (kindRow) {
+      var meta = KIND_LABEL[kind] || KIND_LABEL.other;
+      var mismatch = kindMismatch(p.name, kind);
+      kindRow.style.display = 'flex';
+      kindRow.textContent = '';
+      var badge = document.createElement('span');
+      badge.className = 'pt-kind ' + kind;
+      badge.textContent = 'この制度は' + meta.name;
+      kindRow.appendChild(badge);
+      var why = document.createElement('span');
+      why.className = 'pt-kind-why';
+      why.textContent = mismatch ? mismatch + '。' + meta.why : meta.why;
+      kindRow.appendChild(why);
+    }
 
     var areaTag = document.getElementById('ptAreaTag');
     if (areaTag) {
