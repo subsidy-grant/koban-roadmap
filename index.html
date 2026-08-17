@@ -654,6 +654,36 @@
   a.sec-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (max-width: 560px) { a.sec-cta { max-width: none; font-size: 1rem; } }
 
+  /* ---------- 03 はじめての方へ（2026-08-17追加） ---------- */
+  .basics-grid { display: grid; gap: 0.8rem; margin-bottom: 1rem; }
+  @media (min-width: 720px) { .basics-grid { grid-template-columns: 1fr 1fr; } }
+  .basics-card { background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; }
+  .basics-ttl { margin: 0 0 0.5rem; font-size: 1.02rem; font-weight: 700; color: var(--accent); }
+  .basics-ttl span { display: block; font-size: 0.8rem; font-weight: 400; color: var(--ink-faint); margin-top: 0.1rem; }
+  .basics-card ul { margin: 0; padding-left: 1.15rem; font-size: 0.92rem; line-height: 1.8; }
+  /* 注意書きは他ページの .warn と同じ作りに揃える（地は --rust-wash、
+     その上に載る強調文字は濃い側の --rust-ink。ダークでも両方定義済み）。 */
+  .basics-warn { background: var(--rust-wash); border: 1px solid var(--rust);
+    border-radius: 10px; box-shadow: var(--shadow-card);
+    padding: 0.9rem 1.1rem; margin-bottom: 1.4rem;
+    font-size: 0.92rem; line-height: 1.8; color: var(--ink); }
+  .basics-warn strong { color: var(--rust-ink); }
+  .basics-h3 { font-size: 1.05rem; margin: 0 0 0.3rem; }
+  .twrap-basics { overflow-x: auto; margin-bottom: 1rem; }
+  .basics-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  .basics-table th, .basics-table td { border: 1px solid var(--line); padding: 0.55rem 0.7rem;
+    text-align: left; vertical-align: top; line-height: 1.7; }
+  .basics-table th { background: var(--accent-wash); color: var(--accent); font-size: 0.88rem; }
+  .bt-note { display: block; font-size: 0.8rem; color: var(--ink-faint); margin-top: 0.15rem; }
+  .basics-fold { border: 1px solid var(--line); border-radius: 10px;
+    background: var(--paper-raised); overflow: hidden; }
+  .basics-fold > summary { padding: 0.75rem 1rem; font-size: 0.94rem; font-weight: 700;
+    cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+  .basics-fold-body { padding: 0 1rem 0.9rem; font-size: 0.9rem; line-height: 1.85; }
+  .basics-fold-body p { margin: 0 0 0.8rem; }
+  .basics-src { color: var(--ink-faint); font-size: 0.82rem; line-height: 1.7; }
+
   /* ---------- 04 このサイト・アプリの使い方（2026-08-17追加） ---------- */
   /* 下部タブの並び＝申請の流れ、という対応が一目で分かるように、
      タブ名をそのままバッジにして縦に並べる。 */
@@ -1646,6 +1676,78 @@
     <p style="margin-bottom:0.9rem;"><a class="sec-cta" href="criteria.html">採択基準・返還基準 調査ノートを見る ↗</a></p>
     <p class="section-sub">補助金は申し込めば必ずもらえるものではなく、審査を通った人だけが受け取れます。この審査に通ることを<strong>採択</strong>といいます。また、受け取ったあとでも決まりを守れないと<strong>返還</strong>（お金を返すこと）を求められることがあります。</p>
     <p class="section-sub">各制度の公式な募集要項（公募要領）・交付規程・会計検査院報告等を横断的に読み込み、「何が評価されて採択されるか」「何をすると返還を求められるか」を制度別に整理しました。財務健全性や政策トレンドとの合致など、採点シミュレーターには反映していない追加の判断要素も掲載しています。</p>
+  </section>
+
+  <!-- 03「はじめての方へ」（2026-08-17追加）。
+       補助金と助成金の違い、それを扱う士業の違いを説明する。
+       士業の業務範囲は法律で定まっており、誤った案内は実害があるため、
+       記述は e-Gov の現行条文と行政資料に基づく（2026-08-17確認、出典は本文に明記）。
+       特に次の3点は監修で「書いてはいけない」と判明したので触らないこと：
+        ・「助成金は要件を満たせば必ずもらえる」…不支給要件12項目と予算制約があるため誤り
+        ・「補助金は社労士の独占業務でないから代行してよい」…ものづくり補助金は
+          代理申請の機能自体が無く、申請者本人の申請と認められないと不採択
+        ・10人未満事業場の就業規則作成が社労士の独占業務か…見解が分かれ未確認。断定しない -->
+  <section id="basics">
+    <div class="section-head"><span class="section-no jp-serif">03</span><h2>はじめての方へ</h2></div>
+
+    <p class="section-sub" style="margin-bottom:1rem;">「補助金」と「助成金」は、法律できっちり分かれた言葉ではありません。ただ実務では、次のように使い分けられています。</p>
+
+    <div class="basics-grid">
+      <div class="basics-card">
+        <p class="basics-ttl">助成金<span>主に厚生労働省</span></p>
+        <ul>
+          <li>財源は、事業主が納めている<strong>雇用保険料</strong></li>
+          <li>他社と競う審査（点数をつけて上位を選ぶ形）は<strong>原則ありません</strong></li>
+          <li>通年で受け付けているものが多く、計画を立てやすい</li>
+        </ul>
+      </div>
+      <div class="basics-card">
+        <p class="basics-ttl">補助金<span>主に経済産業省・中小企業庁</span></p>
+        <ul>
+          <li>財源は<strong>税金</strong>で、件数の枠が予算で決まっています</li>
+          <li>公募期間が決まっていて、<strong>事業計画の中身を審査</strong>して選ばれます</li>
+          <li>要件を満たしていても<strong>選ばれないことがあります</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="basics-warn">
+      <p style="margin:0 0 0.5rem;"><strong>「助成金は要件を満たせば必ずもらえる」は正確ではありません。</strong></p>
+      <p style="margin:0;">要件を満たしていても受け取れない<strong>不支給要件</strong>が別に定められています。たとえば、前年度より前の<strong>労働保険料を納めていない</strong>、申請日の前日から<strong>過去1年間に労働関係法令の違反</strong>があった、といった場合です。また予算に限りがあるため、通年受付でも<strong>年度の途中で受付が終わることがあります</strong>。制度の内容も毎年度見直されます。</p>
+    </div>
+
+    <h3 class="basics-h3">誰に頼めばいいか</h3>
+    <p class="section-sub" style="margin-top:0;">大事なのは資格の格ではなく、<strong>その手続きが法律でどの資格に限定されているか</strong>です。</p>
+
+    <div class="twrap-basics">
+      <table class="basics-table">
+        <thead><tr><th>やりたいこと</th><th>主な相談先</th></tr></thead>
+        <tbody>
+          <tr><td>雇用に関わる助成金の申請書の作成・提出代行</td><td><strong>社会保険労務士</strong><span class="bt-note">法律でここに限定されています</span></td></tr>
+          <tr><td>就業規則・賃金台帳など労務書類の作成</td><td><strong>社会保険労務士</strong><span class="bt-note">同上</span></td></tr>
+          <tr><td>補助金の事業計画の中身を一緒に練る</td><td>中小企業診断士、認定経営革新等支援機関など<span class="bt-note">法律上の限定はありません</span></td></tr>
+          <tr><td>営業許可などの許認可の書類</td><td>行政書士</td></tr>
+          <tr><td>受け取ったあとの税金の処理</td><td>税理士</td></tr>
+          <tr><td>労使のトラブルが起きている</td><td>弁護士</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <details class="basics-fold">
+      <summary>よくある誤解（申請の前に読んでください）</summary>
+      <div class="basics-fold-body">
+        <p><strong>「助成金も補助金も、業者に丸投げできる」</strong><br>
+        雇用に関わる助成金は、<strong>報酬を得て申請書の作成や提出代行ができるのは社会保険労務士だけ</strong>です（社会保険労務士法27条。違反は同法32条の2により1年以下の拘禁刑または100万円以下の罰金）。</p>
+        <p>補助金はさらに注意が必要です。<strong>社労士の独占業務でないことは、代行してよいという意味ではありません。</strong>ものづくり補助金の公募要領（第23次）は、電子申請システムに<strong>代理申請の機能を用意しておらず</strong>、正当な理由なく申請者自身による申請と認められない場合は<strong>不採択</strong>とする、と明記しています。専門家は「一緒に考える人」であって「代わりに申請する人」ではありません。</p>
+        <p><strong>「支援を受けたことは黙っていればいい」</strong><br>
+        逆です。ものづくり補助金では、外部の支援を受けている場合に<strong>支援者の名称・支援内容・報酬・契約期間の申告が必須</strong>で、申告がないと虚偽として不採択・採択取消・返還・公表の対象になります。<strong>支援を受けること自体は問題なく、隠すことが問題です。</strong></p>
+        <p><strong>「不正受給は、頼んだ専門家の責任」</strong><br>
+        厚生労働省の資料では、<strong>従業員や社会保険労務士が不正行為を行った場合も不正受給に該当</strong>するとされ、返還・延滞金・不正受給額の20%相当額の請求・5年間の受給停止・事業主名の公表という不利益は<strong>事業主が負います</strong>。専門家選びそのものがリスク管理です。</p>
+        <p><strong>「書類は専門家が持っていてくれる」</strong><br>
+        支給申請書や添付書類は、<strong>支給決定日の翌日から5年間、事業主が保存する義務</strong>があります。専門家に依頼した場合も、提出した書類の原本または写しを必ず受け取ってください。</p>
+        <p class="basics-src">出典：社会保険労務士法・行政書士法・税理士法・中小企業支援法（e-Gov法令検索の現行条文）／厚生労働省「雇用・労働分野の助成金のご案内」／ものづくり補助金 公募要領（第23次公募）。いずれも2026年8月17日確認。制度は改定されるため、実際の申請前には各制度の最新の公式情報をご確認ください。</p>
+      </div>
+    </details>
   </section>
 
   <!-- 04「このサイト・アプリの使い方」（2026-08-17追加）。
