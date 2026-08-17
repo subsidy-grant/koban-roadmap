@@ -34,6 +34,7 @@
 """
 import re
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -142,12 +143,51 @@ def japanese_ratio(text):
     return ja / len(text)
 
 
+def encode_url(url):
+    """URLに含まれる日本語などの非ASCII文字をパーセントエンコードする。
+
+    自治体のPDFはファイル名が日本語のことがあり（実例:
+    「R08.04.01_ICT活用等生産性向上支援事業要綱.pdf」「デジタル化・データ利活用
+    推進助成金交付要綱（令和8年4月1日～）.pdf」）、素のまま urlopen に渡すと
+    UnicodeEncodeError: 'ascii' codec can't encode で**取得自体が失敗する**。
+
+    これを放置すると危険なのは、失敗が「証拠が取れなかった」ではなく
+    「証拠が無い＝josei」として扱われかねないため。文字化けの偽陰性と同じ構造の
+    罠で、2026-08-18の洗い直しで実際に2件（千葉市ICT・板橋区デジタル化）で発生した。
+
+    ホスト名はIDNA、パス・クエリはUTF-8のパーセントエンコードで送る。
+    既にエンコード済みの %xx は二重エンコードしない（safe に % を含める）。
+    """
+    parts = urllib.parse.urlsplit(url)
+    try:
+        host = parts.hostname.encode("idna").decode("ascii") if parts.hostname else ""
+    except UnicodeError:
+        host = parts.hostname or ""
+    netloc = host
+    if parts.port:
+        netloc = f"{netloc}:{parts.port}"
+    if parts.username:
+        cred = parts.username + (f":{parts.password}" if parts.password else "")
+        netloc = f"{cred}@{netloc}"
+    return urllib.parse.urlunsplit((
+        parts.scheme,
+        netloc,
+        urllib.parse.quote(parts.path, safe="/%"),
+        urllib.parse.quote(parts.query, safe="=&%?+"),
+        urllib.parse.quote(parts.fragment, safe="%"),
+    ))
+
+
 def fetch(src):
     """URLならダウンロードして一時ファイルに、ローカルパスならそのまま返す"""
     if not src.startswith("http"):
         return Path(src)
+    url = encode_url(src)
+    if url != src:
+        print("  [注] URLに非ASCII文字があるためエンコードして取得します")
+        print("       ", url)
     dest = Path("_evidence_tmp.pdf")
-    req = urllib.request.Request(src, headers={"User-Agent": "Mozilla/5.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=60) as res, dest.open("wb") as fh:
         fh.write(res.read())
     return dest

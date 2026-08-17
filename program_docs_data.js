@@ -179,9 +179,14 @@
     tokyo_sogyo: {
       checked: '2026-07-31',
       portal: { label: 'TOKYO創業ステーション 公式ページ', url: 'https://startup-station.jp/m2/services/sogyokassei/' },
-      note: '申請書はZIP（圧縮ファイル）でまとめて配布されています。パソコンでダウンロードし、展開してからお使いください。様式集は採択されたあとに使うものです。',
+      note: '申請書はZIP（圧縮ファイル）でまとめて配布されています。パソコンでダウンロードし、展開してからお使いください。様式集は採択されたあとに使うものです。募集要領は90ページと大きいので、まずチラシで全体像をつかんでから読むのがおすすめです。',
       groups: [
+        // 募集要領本体は公式ページに直リンクが無く（チラシと申請書ZIPのみ）、
+        // 2026-08-18の制度種別の洗い直しで探し直して見つけた。審査方法（書類審査
+        // →面接審査→総合審査会）が書かれているのはこの本体だけなので、チラシでは
+        // 制度の性質が判断できない。90ページ・8.6MB（2026-08-18に実測）。
         { phase: '申請の前に読む', items: [
+          { name: '募集要領（令和8年度第2回）', url: 'https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf', type: 'PDF', size: '8.6MB' },
           { name: '募集案内チラシ', url: 'https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf', type: 'PDF', size: '250KB' }
         ] },
         { phase: '交付申請', items: [
