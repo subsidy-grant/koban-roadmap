@@ -616,6 +616,22 @@
     //   kanagawa_yugawara_shukuhaku（宿泊税の特別徴収義務者への費用補填で josei 推定。
     //     固有の交付要綱が町サイト・例規集とも未掲載）
   };
+  // 一次情報で確認した結果、名称どおりで正しかった制度。
+  // override には入らない（名称マッチのフォールバックで正しく判定される）が、
+  // 「確認済み」と「未確認」を区別するために記録しておく。これが無いと、
+  // カバレッジを数えたときに確認済みのものが未確認に混ざり、同じ調査を繰り返す。
+  // 表示には一切使わない。_tools/check_program_type.py が読んで数える。
+  var PROGRAM_TYPE_CONFIRMED_AS_IS = {
+    // 2026-08-17 第5弾（神奈川18件）
+    kanagawa_ayase_kyojinka: 'hojo',   // 診断士審査・配点表・採択回数による減点
+    kanagawa_ayase_shogyo: 'hojo',     // 「申請内容によっては採択されない場合があります」
+    kanagawa_seisansei: 'hojo',        // 「すべての申請が交付決定されるわけではありません」
+    kanagawa_digital: 'hojo',          // 採択審査・審査の観点・加点（一度josei登録したが撤回）
+    // 2026-08-17 第6弾（埼玉16件）。県・政令市の3件はいずれも4条件すべてに該当した
+    saitama_dx: 'hojo',                // 審査の視点・加点9項目・「先着順ではありません」
+    saitama_shoryokuka: 'hojo',        // 同上。ただし併設の専門家派遣（140件枠）だけは先着順
+    saitama_saitama_dx: 'hojo'         // 審査委員会・採択件数20件程度・加点・「不採択になることがあります」
+  };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
     var t = String(text || '');

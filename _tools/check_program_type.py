@@ -37,6 +37,19 @@ def load_override():
     return dict(re.findall(r"(\w+):\s*'(hojo|josei)'", m.group(1)))
 
 
+def load_confirmed_as_is():
+    """program.html から PROGRAM_TYPE_CONFIRMED_AS_IS を読む。
+
+    一次情報で確認した結果、名称どおりで正しかった制度。override には入らないが
+    「確認済み」であり、未確認と混ぜて数えると同じ調査を繰り返すことになる。
+    """
+    html = (ROOT / "program.html").read_text(encoding="utf-8")
+    m = re.search(r"var PROGRAM_TYPE_CONFIRMED_AS_IS = \{(.*?)\n  \};", html, re.S)
+    if not m:
+        return {}
+    return dict(re.findall(r"(\w+):\s*'(hojo|josei)'", m.group(1)))
+
+
 def load_programs():
     """page_data.js から制度一覧を読む。
 
@@ -60,13 +73,17 @@ def name_class(name):
 
 def main():
     ov = load_override()
+    as_is = load_confirmed_as_is()
     progs = load_programs()
 
-    confirmed, by_name, unknown = [], {"hojo": [], "josei": []}, []
+    confirmed, as_is_hit, by_name, unknown = [], [], {"hojo": [], "josei": []}, []
     for key, val in progs.items():
         name = (val or {}).get("name", "") if isinstance(val, dict) else ""
         if key in ov:
             confirmed.append((key, name, ov[key]))
+            continue
+        if key in as_is:
+            as_is_hit.append((key, name, as_is[key]))
             continue
         cls = name_class(name)
         if cls == "other":
@@ -79,9 +96,11 @@ def main():
     national = [(k, n) for k, n in unconfirmed if not any(k.startswith(p + "_") for p in PREF)]
 
     print(f"制度データ: {len(progs)} 件（page_data.js）")
-    print(f"override  : {len(ov)} 件（program.html）\n")
+    print(f"override  : {len(ov)} 件（program.html）")
+    print(f"名称どおり確認済: {len(as_is)} 件（program.html）\n")
     print("--- 判定の内訳 ---")
-    print(f"  一次情報で確定済み       : {len(confirmed):3d} 件")
+    print(f"  一次情報で確定済み       : {len(confirmed) + len(as_is_hit):3d} 件"
+          f"（override {len(confirmed)} + 名称どおり {len(as_is_hit)}）")
     print(f"  名称『補助』→ hojo だけ  : {len(by_name['hojo']):3d} 件  ← 未確認")
     print(f"  名称『助成』→ josei だけ : {len(by_name['josei']):3d} 件  ← 未確認")
     print(f"  判別不能(other)          : {len(unknown):3d} 件"
@@ -102,8 +121,17 @@ def main():
             print(f"    {k}: {n}")
 
     ghost = [k for k in ov if k not in progs]
-    print("\n--- override の腐り（実データに無いキーを指している） ---")
+    ghost += [k for k in as_is if k not in progs]
+    print("\n--- 記録の腐り（実データに無いキーを指している） ---")
     print("    " + (", ".join(ghost) if ghost else "なし"))
+
+    # 名称どおり確認済のはずが、名称と食い違っている＝記録の付け間違い
+    bad = [(k, n, v) for k, n, v in as_is_hit if name_class(n) != v]
+    if bad:
+        print("\n★ PROGRAM_TYPE_CONFIRMED_AS_IS の記録が名称と食い違う（override へ移すべき）")
+        for k, n, v in bad:
+            print(f"    {k}: 名称『{n}』に対し記録は {v}")
+        ghost = ghost or bad
 
     mismatch = [(k, n, v) for k, n, v in confirmed if name_class(n) != v]
     print(f"\n--- override のうち名称と判定が食い違うもの: {len(mismatch)} 件 ---")
