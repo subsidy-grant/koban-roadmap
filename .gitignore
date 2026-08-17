@@ -3,3 +3,4 @@ _tools/verify_live.json
 _tools/live_contrast.json
 __pycache__/
 *.pyc
+_evidence_tmp.pdf
