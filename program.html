@@ -601,7 +601,27 @@
     tokyo_bunkyo_seisansei: 'josei', tokyo_katsushika_digital: 'josei',
     tokyo_minato_software: 'josei', tokyo_mitaka_sangyo: 'josei',
     tokyo_nakano_keieiryoku: 'josei', tokyo_setagaya_keiei: 'josei',
-    tokyo_sumida_digital: 'josei', tokyo_nishitokyo_dx: 'josei'
+    tokyo_sumida_digital: 'josei', tokyo_nishitokyo_dx: 'josei',
+    // 2026-08-17 第8弾（群馬9件・千葉7件）。16件中12件が名称「補助金」だが実質は助成金。
+    // hojo だった3件（伊勢崎・前橋設備投資・千葉県成長促進）は CONFIRMED_AS_IS に記録。
+    // 千葉県成長促進は4条件すべてに該当し、「総合的な評価が高いものから順に、予算の
+    // 範囲内で採択」と順位付けを明記していた。「予算の範囲内」は単独では判別力ゼロだが、
+    // この形で評価順と結合しているときは競争型の証拠になる。
+    gunma_maebashi_dx: 'josei', gunma_midori_renewal: 'josei',
+    gunma_minakami_tenpo: 'josei', gunma_nakanojo_keizoku: 'josei',
+    gunma_ota_dx: 'josei', gunma_tsumagoi_uriage: 'josei',
+    chiba_choshi_ritchi: 'josei', chiba_kimitsu_seisansei: 'josei',
+    chiba_matsudo_dx: 'josei', chiba_minamiboso_digital: 'josei',
+    chiba_mobara_support: 'josei', chiba_tateyama_digital: 'josei'
+    // 前橋DX・太田DXは josei だが、いずれも予算超過時は抽選（要件を満たしても
+    // 受給できない）。両方とも schedule に記載があり programHasBudgetCap() が拾う。
+    // 確信度 medium が3件:
+    //   chiba_mobara_support（市サイトに要綱・募集要領が無く、実体は例規データベース側。
+    //     商工会議所の事前相談で実質的な絞り込みがあるかは要綱からは分からない）
+    //   chiba_tateyama_digital（申請要領のp.18が画像のみ。位置と構成から様式と推定できるが
+    //     目視していない）
+    //   gunma_maebashi_dx（要項の実体は公開抽選。入口ページの「順次審査しております」
+    //     だけ読むと審査型に見えるので、判定は要項側を採った）
     // このうち確信度 medium が3件:
     //   tokyo_digital（審査は要件適合の3項目のみで加点・不採択とも0ヒット。ただし
     //     公社は採択件数を非公表運用することがあり、要項の記述だけでは断定しきれない。
@@ -680,7 +700,16 @@
                                        // 審査員は中小企業診断士、評価項目に「妥当性はどうか」
     tokyo_fuchu_hanro: 'hojo',         // 「有識者等により構成される審査委員会において行います」。
                                        // 市ページには記述が無く、むさし府中商工会議所側に要領がある
-    tokyo_hachioji_keizoku: 'hojo'     // 「審査の結果、不採択になる場合があります」と明記
+    tokyo_hachioji_keizoku: 'hojo',    // 「審査の結果、不採択になる場合があります」と明記
+    // 2026-08-17 第8弾（群馬・千葉）
+    gunma_isesaki_shokibo: 'hojo',     // 審査の観点（事業の必要性/計画の適切性/創意工夫/
+                                       // 事業効果/地域課題への適応性）、「不採択となる場合があります」
+    gunma_maebashi_setsubi: 'hojo',    // 生産性向上枠は「審査項目で採点を行い、予算額の範囲で採択」。
+                                       // ただし省エネ枠は要件確認型で、枠により性質が違う（noteに明記）
+    gunma_takasaki_lease: 'josei',     // 名称が「助成金」で判定も josei。助成額が計算式で
+                                       // 機械的に確定し、要件は全てYes/No判定
+    chiba_seicho4: 'hojo'              // 「総合的な評価が高いものから順に、予算の範囲内で採択」、
+                                       // 審査の観点6項目、加点（経営革新計画）、「不採択となる場合があります」
   };
   function pillClass(text, key) {
     if (key && PROGRAM_TYPE_OVERRIDE[key]) return PROGRAM_TYPE_OVERRIDE[key];
