@@ -1,34 +1,34 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-10 14:16**（JST）
-- 確認したURL：**1112件**
+- 確認時刻：**2026-08-17 13:29**（JST）
+- 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 接続できない（目視が要る） **3件**／🔵 新規（今回から監視） **19件**／✅ 変化なし **1089件**
+🔴 リンク切れ（要修正） **3件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🔵 新規（今回から監視） **60件**／✅ 変化なし **1101件**
+
+## 🔴 リンク切れ（要修正）
+
+- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係）**
+  - https://www.city.suginami.tokyo.jp/documents/25089/degital_hokoku.docx
+  - HTTP 404（ページが無い）
+- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係）**
+  - https://www.city.suginami.tokyo.jp/documents/25089/degital_seikyu_excel_1.xlsx
+  - HTTP 404（ページが無い）
+- **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
+  - https://www.mhlw.go.jp/content/11200000/001693661.xlsx
+  - HTTP 404（ページが無い）
 
 ## 🟠 中身が差し替わった可能性（最新版か確認）
 
-- **埼玉県中小企業DX導入支援補助金／その他のFAQはこちら**
-  - https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/03_埼玉県中小企業ＤＸ導入支援補助金Ｑ＆Ａ.pdf
-  - サイズが 413860 → 419372 に変化（差し替えの可能性）
-
-## 🟡 接続できない（目視が要る）
-
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/officeDocument/2006/relationships
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /officeDocument/2006/rela
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/spreadsheetml/2006/main
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /spreadsheetml/2006/main 
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/wordprocessingml/2006/main
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /wordprocessingml/2006/ma
+- **新事業進出・ものづくり商業サービス補助金／第1回 公募要領**
+  - https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
+  - サイズが 1866312 → 1899560 に変化（差し替えの可能性）
 
 ## 🔵 新規（今回から監視）
 
-19件（一覧は _tools/link_report.md）
+60件（一覧は _tools/link_report.md）
 
 ---
 

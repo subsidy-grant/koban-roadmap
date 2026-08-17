@@ -1,92 +1,215 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-10 14:16**（JST）
-- 確認したURL：**1112件**
+- 確認時刻：**2026-08-17 13:29**（JST）
+- 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 接続できない（目視が要る） **3件**／🔵 新規（今回から監視） **19件**／✅ 変化なし **1089件**
+🔴 リンク切れ（要修正） **3件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🔵 新規（今回から監視） **60件**／✅ 変化なし **1101件**
+
+## 🔴 リンク切れ（要修正）
+
+- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係）**
+  - https://www.city.suginami.tokyo.jp/documents/25089/degital_hokoku.docx
+  - HTTP 404（ページが無い）
+- **中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係）**
+  - https://www.city.suginami.tokyo.jp/documents/25089/degital_seikyu_excel_1.xlsx
+  - HTTP 404（ページが無い）
+- **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
+  - https://www.mhlw.go.jp/content/11200000/001693661.xlsx
+  - HTTP 404（ページが無い）
 
 ## 🟠 中身が差し替わった可能性（最新版か確認）
 
-- **埼玉県中小企業DX導入支援補助金／その他のFAQはこちら**
-  - https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/03_埼玉県中小企業ＤＸ導入支援補助金Ｑ＆Ａ.pdf
-  - サイズが 413860 → 419372 に変化（差し替えの可能性）
-
-## 🟡 接続できない（目視が要る）
-
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/officeDocument/2006/relationships
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /officeDocument/2006/rela
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/spreadsheetml/2006/main
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /spreadsheetml/2006/main 
-- **（出典・参考リンク）**
-  - http://schemas.openxmlformats.org/wordprocessingml/2006/main
-  - ConnectionError: HTTPConnectionPool(host='schemas.openxmlformats.org', port=80): Max retries exceeded with url: /wordprocessingml/2006/ma
+- **新事業進出・ものづくり商業サービス補助金／第1回 公募要領**
+  - https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
+  - サイズが 1866312 → 1899560 に変化（差し替えの可能性）
 
 ## 🔵 新規（今回から監視）
 
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食店の未来を変える 自動化・省力化ガイドブック（補助対象事業はこれに沿った内容であることが必要）**
-  - https://jmac-foods.com/app/wp-content/uploads/2026/03/syoryokuka-3.pdf
+- **（出典・参考リンク）**
+  - https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=M+PLUS+Rounded+1c:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;600;700&display=swap
   - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／実施規程・様式・別表（ZIP／交付申請と実施結果報告で使います）**
-  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%8E%A8%E9%80%B2%E7%B7%8A%E6%80%A5%E5%AF%BE%E7%AD%96%E4%BA%8B%E6%A5%AD_%E5%AE%9F%E6%96%BD%E8%A6%8F%E7%A8%8B%E3%80%81%E6%A7%98%E5%BC%8F%E3%80%81%E5%88%A5%E8%A1%A8.zip
-  - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募要領・様式一式（ZIP）**
-  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E8%A6%81%E9%A0%98%E3%80%81%E6%A7%98%E5%BC%8F%E4%B8%80%E5%BC%8F.zip
-  - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募パンフレット（2ページ・全体像とよくある質問）**
-  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E3%83%91%E3%83%B3%E3%83%95%E3%83%AC%E3%83%83%E3%83%88.pdf
-  - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／Q&Aセミナー資料（36ページ・補助額の例や事業の流れが図で分かる）**
-  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_QA%E3%82%BB%E3%83%9F%E3%83%8A%E3%83%BC%E8%B3%87%E6%96%99.pdf
-  - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／事務局（日本能率協会コンサルティング）ご案内ページ／（出典・参考リンク）**
-  - https://jmac-foods.com/news/2722/
-  - 今回から確認対象
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト**
-  - https://tokyo-shuekiryoku-kyoka.jp/
-  - 今回から確認対象
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
-  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
-  - 今回から確認対象
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
-  - 今回から確認対象
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+- **中小企業成長加速化補助金（中小企業庁）**
+  - https://growth-100-oku.smrj.go.jp/
   - 今回から確認対象
 - **（出典・参考リンク）**
-  - https://www.hellowork.mhlw.go.jp/info/industry_list02.html
+  - https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／農林水産省 令和7年度補正 飲食業労働生産性向上推進緊急対策事業（事務局を選ぶ公募）**
-  - https://www.maff.go.jp/j/supply/hozyo/kanbo/251217_040-1.html
+- **（出典・参考リンク）**
+  - https://images.unsplash.com/photo-1716191299980-a6e8827ba10b?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／食品産業省力化投資促進緊急対策事業補助金交付等要綱（案）**
-  - https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/251217_040-1-4.pdf
+- **（出典・参考リンク）**
+  - https://images.unsplash.com/photo-1741880893442-66f56ad8f3a4?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／募集要領／（出典・参考リンク）**
-  - https://www.mlit.go.jp/jutakukentiku/house/content/001997003.pdf
+- **（出典・参考リンク）**
+  - https://images.unsplash.com/photo-1753057471379-29e65b6d7d62?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／別添資料 経費の内訳費目について**
-  - https://www.mlit.go.jp/jutakukentiku/house/content/001997004.pdf
+- **（出典・参考リンク）**
+  - https://images.unsplash.com/photo-1754033210534-07871295dd2c?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／応募様式7**
-  - https://www.mlit.go.jp/jutakukentiku/house/content/001997008.pptx
+- **（出典・参考リンク）**
+  - https://images.unsplash.com/photo-1758448500688-3ababa93fd67?fm=jpg&q=70&w=1200&auto=format&fit=crop
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／応募様式8**
-  - https://www.mlit.go.jp/jutakukentiku/house/content/001997009.docx
+- **（出典・参考リンク）**
+  - https://mirasapo-plus.go.jp/infomation/15578/
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／応募様式1-6**
-  - https://www.mlit.go.jp/jutakukentiku/house/content/001997012.xlsx
+- **（出典・参考リンク）**
+  - https://mirasapo-plus.go.jp/infomation/31612/
   - 今回から確認対象
-- **空き家対策モデル事業（国土交通省）／空き家対策モデル事業（国土交通省）／国土交通省 令和8年度の募集ページ／（出典・参考リンク）**
-  - https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html
+- **（出典・参考リンク）**
+  - https://mirasapo-plus.go.jp/infomation/33237/
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://portal.monodukuri-hojo.jp/dataportal.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://portal.monodukuri-hojo.jp/saitaku.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://report.jbaudit.go.jp/
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://report.jbaudit.go.jp/org/r05/2023-r05-0485-0.htm
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://report.jbaudit.go.jp/org/r06/2024-r06-0134-0.htm
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://report.jbaudit.go.jp/org/r06/2024-r06-0464-0.htm
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://report.jbaudit.go.jp/org/r06/2024-r06-0466-0.htm
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://shinjigyou-shinshutsu.smrj.go.jp/results
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://shoryokuka.smrj.go.jp/ippan/grant_adoption/
+  - 今回から確認対象
+- **事業承継・M&A補助金・専門家活用枠（中小企業庁）／事業承継・M&A補助金・専門家活用枠（中小企業庁）／事業承継・M&A補助金 公式サイト**
+  - https://shoukei-mahojokin.go.jp/
+  - 今回から確認対象
+- **事業承継・M&A補助金・専門家活用枠（中小企業庁）／パンフレット（15次公募）**
+  - https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/a4_pamphlet_15-experts.pdf
+  - 今回から確認対象
+- **事業承継・M&A補助金・専門家活用枠（中小企業庁）／必要書類チェックリスト（買い手・売り手支援類型）**
+  - https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/check-list_experts.xlsx
+  - 今回から確認対象
+- **事業承継・M&A補助金・専門家活用枠（中小企業庁）／専門家活用枠 公募要領（買い手支援類型・売り手支援類型）**
+  - https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/requirements_experts_15.pdf
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://subsidy-grant.github.io/koban-roadmap/improvement.html
+  - 今回から確認対象
+- **省エネルギー投資促進による省エネ・非化石転換補助金（設備単位型・従来枠）（資源エネルギー庁・SII）**
+  - https://syouenehojyokin.sii.or.jp/
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／65歳超継続雇用促進コース 支給申請の手引き**
+  - https://www.jeed.go.jp/elderly/subsidy/q2k4vk000001h38d-att/f41obh0000005nna.pdf
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／独立行政法人 高齢・障害・求職者雇用支援機構（JEED）65歳超継続雇用促進コース 様式ダウンロード**
+  - https://www.jeed.go.jp/elderly/subsidy/subsidy_keizoku_yousiki07.html
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／記入例 65歳超継続雇用促進コース申請書類**
+  - https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/s8vmin00000026wm.pdf
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／継続様式第2号（1）支給申請書**
+  - https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s1r.xlsx
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／共通要領様式第1号 支給要件確認申立書**
+  - https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s3r.docx
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/260326_040-1-1.pdf
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／トライアル雇用実施計画書（共通様式第1号）**
+  - https://www.mhlw.go.jp/content/001688684.xlsx
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／トライアル雇用対象者確認票**
+  - https://www.mhlw.go.jp/content/001688687.xlsx
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／支給要件確認申立書**
+  - https://www.mhlw.go.jp/content/001688701.docx
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／トライアル雇用結果報告書兼支給申請書（共通様式第2号）**
+  - https://www.mhlw.go.jp/content/001688704.xlsx
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／支給要領**
+  - https://www.mhlw.go.jp/content/001688848.pdf
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mhlw.go.jp/content/11200000/001693416.pdf
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-2号 事業所確認票**
+  - https://www.mhlw.go.jp/content/11600000/001469245.xlsx
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／チェックリスト（計画届関係）**
+  - https://www.mhlw.go.jp/content/11600000/001678209.xlsx
+  - 今回から確認対象
+- **特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／様式第3号 第1期共通申請書**
+  - https://www.mhlw.go.jp/content/11600000/001679117.xlsx
+  - 今回から確認対象
+- **特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／様式第4号 第2〜6期支給申請書**
+  - https://www.mhlw.go.jp/content/11600000/001679130.xlsx
+  - 今回から確認対象
+- **特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／支給要領**
+  - https://www.mhlw.go.jp/content/11600000/001684363.pdf
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-1号 雇用管理制度等整備計画書**
+  - https://www.mhlw.go.jp/content/11600000/001688291.docx
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-6号 支給申請書**
+  - https://www.mhlw.go.jp/content/11600000/001688295.docx
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mhlw.go.jp/content/11600000/001688318.pdf
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／人材確保等支援助成金のご案内（雇用管理制度・雇用環境整備助成コース）**
+  - https://www.mhlw.go.jp/content/11600000/001688568.pdf
+  - 今回から確認対象
+- **特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／パンフレット（事業主向け）**
+  - https://www.mhlw.go.jp/content/11600000/001690059.pdf
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mhlw.go.jp/content/11801000/001660535.pdf
+  - 今回から確認対象
+- **地域雇用開発助成金（厚生労働省）**
+  - https://www.mhlw.go.jp/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/chiiki_koyou.html
+  - 今回から確認対象
+- **人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／厚生労働省 公式ページ（雇用管理制度・雇用環境整備助成コース）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000199292_00005.html
+  - 今回から確認対象
+- **65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/jigyounushi/page09_00001.html
+  - 今回から確認対象
+- **特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／厚生労働省 公式ページ（中高年層安定雇用支援コース）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/chuukou.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/pageL07.html
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou.html
+  - 今回から確認対象
+- **トライアル雇用助成金（一般トライアルコース）（厚生労働省）／厚生労働省 公式ページ（申請様式ダウンロード）**
+  - https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou_dl.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mlit.go.jp/kankocho/kobo06_00082.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.mlit.go.jp/report/press/house03_hh_000275.html
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.nta.go.jp/law/tsutatsu/kihon/hojin/10/10_02.htm
+  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2202.htm
   - 今回から確認対象
 
-## ✅ 変化なし（1089件）
+## ✅ 変化なし（1101件）
 
 <details><summary>一覧を開く</summary>
 
@@ -96,9 +219,8 @@
 - 埼玉県中小企業DX導入支援補助金／実施計画書（事業者名）v2（08/06/08 差替） — https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/02-1_【様式9】実施計画書（事業者名）v2.xlsx
 - 埼玉県中小企業DX導入支援補助金／納税状況等確認システムによる納税情報の確認に関する同意書 — https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/02-6_【その他様式】納税状況等確認システムによる納税情報の確認に関する同意書_.xlsx
 - 埼玉県中小企業DX導入支援補助金／補助事業の手引き — https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/02_埼玉県中小企業ＤＸ導入支援補助金公募要領（7月1日～）.pdf
+- 埼玉県中小企業DX導入支援補助金／その他のFAQはこちら — https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/03_埼玉県中小企業ＤＸ導入支援補助金Ｑ＆Ａ.pdf
 - 埼玉県中小企業DX導入支援補助金／電子申請マニュアル (新しいタブで開きます) — https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/埼玉県中小企業DX導入支援補助金_電子申請マニュアル20260701.pdf
-- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap
-- （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap
 - （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap
 - （出典・参考リンク） — https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap
 - （出典・参考リンク） — https://hojyokin-portal.jp/columns/career-up_summary
@@ -119,6 +241,12 @@
 - デジタル化・データ利活用推進助成金（板橋区）／交付要綱（令和8年4月1日～） — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf
 - デジタル化・データ利活用推進助成金（板橋区）／実施要領（令和8年度） — https://itabashi-kohsha.com/cms-data/file/common/令和8年度デジタル化・データ利活用推進助成金_実施要領（令和８年４月１日～）.pdf
 - デジタル化・データ利活用推進助成金（板橋区）／デジタル化・データ利活用推進助成金（板橋区）／板橋区産業振興公社 公式ページ — https://itabashi-kohsha.com/subsidies/hruq3mhmotj1aane.html
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食店の未来を変える 自動化・省力化ガイドブック（補助対象事業はこれに沿った内容であることが必要） — https://jmac-foods.com/app/wp-content/uploads/2026/03/syoryokuka-3.pdf
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／実施規程・様式・別表（ZIP／交付申請と実施結果報告で使います） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%8E%A8%E9%80%B2%E7%B7%8A%E6%80%A5%E5%AF%BE%E7%AD%96%E4%BA%8B%E6%A5%AD_%E5%AE%9F%E6%96%BD%E8%A6%8F%E7%A8%8B%E3%80%81%E6%A7%98%E5%BC%8F%E3%80%81%E5%88%A5%E8%A1%A8.zip
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募要領・様式一式（ZIP） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E8%A6%81%E9%A0%98%E3%80%81%E6%A7%98%E5%BC%8F%E4%B8%80%E5%BC%8F.zip
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募パンフレット（2ページ・全体像とよくある質問） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E3%83%91%E3%83%B3%E3%83%95%E3%83%AC%E3%83%83%E3%83%88.pdf
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／Q&Aセミナー資料（36ページ・補助額の例や事業の流れが図で分かる） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_QA%E3%82%BB%E3%83%9F%E3%83%8A%E3%83%BC%E8%B3%87%E6%96%99.pdf
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／事務局（日本能率協会コンサルティング）ご案内ページ／（出典・参考リンク） — https://jmac-foods.com/news/2722/
 - 観光地・観光産業における省力化投資補助事業（観光庁）／（出典・参考リンク） — https://kanko-jinzai.go.jp/
 - 観光地・観光産業における省力化投資補助事業（観光庁）／資料ダウンロード（公式） — https://kanko-jinzai.go.jp/document/
 - 観光地・観光産業における省力化投資補助事業（観光庁）／省力化投資に係るアンケート（下書き用フォーマット） — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260306_keikaku_ank.xlsx
@@ -248,7 +376,6 @@
 - デジタル技術活用推進助成・ソフトウェア（品川区）／募集要項 — https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/R8-bosyuyoko_DIGITAL_SUBSIDY_SOFT_0527.pdf
 - デジタル技術活用推進助成・ソフトウェア（品川区）／第1号様式（別紙）資金計画等（ソフトウェア） — https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/第1号様式（別紙）-資金計画等（ソフトウェア）_0528.xls
 - 新事業進出・ものづくり商業サービス補助金 — https://shinjigyou-monodukuri.smrj.go.jp/
-- 新事業進出・ものづくり商業サービス補助金／第1回 公募要領 — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
 - 新事業進出・ものづくり商業サービス補助金／参考様式 労働者名簿 — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_employee_list.xlsx
 - 新事業進出・ものづくり商業サービス補助金／リース取引に係る宣誓書（リース会社と共同申請する場合） — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_finance_lease_declaration.docx
 - 新事業進出・ものづくり商業サービス補助金／金融機関による確認書（金融機関等から資金提供を受ける場合） — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_financial_institution_confirmation.docx
@@ -285,6 +412,10 @@
 - 経営基盤強化支援（台東区）／支払い方法別 必要書類 — https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf
 - 経営基盤強化支援（台東区）／変更承認申請書 — https://taito-sangyo.jp/src/wp-content/uploads/2026/03/経営基盤_変更届.doc
 - 経営基盤強化支援（台東区）／経営基盤強化支援 チラシ（令和8年度） — https://taito-sangyo.jp/src/wp-content/uploads/2026/07/R8keieikiban-1.pdf
+- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト — https://tokyo-shuekiryoku-kyoka.jp/
+- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項 — https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版） — https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版） — https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／誓約書（様式第１－４号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-3_誓約書（様式1-3）.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／ICT活用生産性向上・事業変革促進支援事業助成金交付申請書（様式第１－１号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-4_タイプA申請書_ICT活用等生産性向上支援事業様式1-1.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／実施要綱 — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/R08.04.01_ICT活用等生産性向上支援事業要綱.pdf
@@ -820,9 +951,7 @@
 - 袖ケ浦市企業振興条例奨励金／申請書 様式 — https://www.city.sodegaura.lg.jp/uploaded/attachment/42977.docx
 - 袖ケ浦市企業振興条例奨励金／中小企業の定義 — https://www.city.sodegaura.lg.jp/uploaded/attachment/7322.pdf
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業募集チラシ — https://www.city.suginami.tokyo.jp/documents/25089/chirashi_degital.pdf
-- 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成実績報告書（第8号様式第10条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_hokoku.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業計画書（第2号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_keikaku.docx
-- 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成請求書兼口座振替依頼書（第10号様式第12条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_seikyu_excel_1.xlsx
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業助成申請書（第1号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/degital_shinsei.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／杉並区中小企業等デジタル化推進事業計画（変更・取下げ）申請書（第6号様式第9条関係） — https://www.city.suginami.tokyo.jp/documents/25089/digital_henkotorisage_word.docx
 - 中小企業等デジタル化推進事業助成（杉並区）／【記入例】杉並区中小企業等デジタル化推進事業計画書（第2号様式第6条関係） — https://www.city.suginami.tokyo.jp/documents/25089/kinyurei_keikakusyo.pdf
@@ -975,8 +1104,9 @@
 - 座間市店舗リニューアル等補助金／座間市中小企業産業振興支援事業補助金交付要綱 — https://www.city.zama.kanagawa.jp/_res/projects/default_project/_page_/001/003/455/zamasityuusyoukigyouyoukou.pdf
 - 座間市店舗リニューアル等補助金／座間市店舗リニューアル等補助金／座間市 公式ページ — https://www.city.zama.kanagawa.jp/sangyo/sougyou/shogyo/1003455.html
 - （出典・参考リンク） — https://www.gov-online.go.jp/article/202302/entry-9899.html
-- （出典・参考リンク） — https://www.jfc.go.jp/n/findings/shihyou_kekka_m_index.html
-- （出典・参考リンク） — https://www.maff.go.jp/j/supply/hozyo/kanbo/260326_040-1.html
+- （出典・参考リンク） — https://www.hellowork.mhlw.go.jp/info/industry_list02.html
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／農林水産省 令和7年度補正 飲食業労働生産性向上推進緊急対策事業（事務局を選ぶ公募） — https://www.maff.go.jp/j/supply/hozyo/kanbo/251217_040-1.html
+- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／食品産業省力化投資促進緊急対策事業補助金交付等要綱（案） — https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/251217_040-1-4.pdf
 - 両立支援等助成金（介護離職防止支援コース）／参考様式（介護休業等の取得・利用方針の周知 書式例） — https://www.mhlw.go.jp/content/001096371.docx
 - 両立支援等助成金（不妊治療及び女性の健康課題対応両立支援コース）／【不妊治療】様式第1号①② 支給申請書（.xls形式） — https://www.mhlw.go.jp/content/001470798.xls
 - 両立支援等助成金（不妊治療及び女性の健康課題対応両立支援コース）／【不妊治療】様式第1号③ 提出を省略する書類（.doc形式） — https://www.mhlw.go.jp/content/001470800.doc
@@ -1015,7 +1145,6 @@
 - 業務改善助成金（2026年度／50・70・90円コース）／様式第12号 消費税及び地方消費税に係る仕入控除税額報告書 — https://www.mhlw.go.jp/content/11200000/001691206.docx
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高総利益率） — https://www.mhlw.go.jp/content/11200000/001692000.docx
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高営業利益率） — https://www.mhlw.go.jp/content/11200000/001692001.docx
-- 業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール — https://www.mhlw.go.jp/content/11200000/001693661.xlsx
 - キャリアアップ助成金（賃金規定等改定コース）／共通要領様式第1号 支給要件確認申立書／キャリアアップ助成金（賃金規定等共通化コース）／共通要領様式第1号 支給要件確認申立書／キャリアアップ助成金（短時間労働者労働時間延長支援コース）／共通要領様式第1号 支給要件確認申立書／キャリアアップ助成金（障害者正社員化コース）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（育児休業等支援コース）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（出生時両立支援コース／子育てパパ支援助成金）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（介護離職防止支援コース）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（柔軟な働き方選択制度等支援コース）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（育休中等業務代替支援コース）／共通要領様式第1号 支給要件確認申立書／両立支援等助成金（不妊治療及び女性の健康課題対応両立支援コース）／共通要領様式第1号 支給要件確認申立書 — https://www.mhlw.go.jp/content/11600000/001681582.docx
 - キャリアアップ助成金（賞与・退職金制度導入コース）／様式第4号 事業所確認票／キャリアアップ助成金（賃金規定等改定コース）／様式第4号 事業所確認票／キャリアアップ助成金（賃金規定等共通化コース）／様式第4号 事業所確認票／キャリアアップ助成金（短時間労働者労働時間延長支援コース）／様式第4号 事業所確認票／キャリアアップ助成金（障害者正社員化コース）／様式第4号 事業所確認票 — https://www.mhlw.go.jp/content/11650000/001083034.docx
 - キャリアアップ助成金（賞与・退職金制度導入コース）／申立書（就業規則の届出義務が無い場合の例示様式）／キャリアアップ助成金（賃金規定等改定コース）／申立書（就業規則の届出義務が無い場合の例示様式）／キャリアアップ助成金（賃金規定等共通化コース）／申立書（就業規則の届出義務が無い場合の例示様式）／キャリアアップ助成金（短時間労働者労働時間延長支援コース）／申立書（就業規則の届出義務が無い場合の例示様式）／キャリアアップ助成金（障害者正社員化コース）／申立書（就業規則の届出義務が無い場合の例示様式） — https://www.mhlw.go.jp/content/11650000/001083042.docx
@@ -1054,6 +1183,12 @@
 - キャリアアップ助成金（障害者正社員化コース） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/shougaishakoyou/index_00004.html
 - キャリアアップ助成金（正社員化コース）／キャリアアップ助成金（賞与・退職金制度導入コース）／キャリアアップ助成金（賃金規定等改定コース）／キャリアアップ助成金（賃金規定等共通化コース）／キャリアアップ助成金（短時間労働者労働時間延長支援コース） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html
 - 業務改善助成金（2026年度／50・70・90円コース）／業務改善助成金（2026年度／50・70・90円コース）／厚生労働省 公式ページ／（出典・参考リンク） — https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html
+- 空き家対策モデル事業（国土交通省）／募集要領／（出典・参考リンク） — https://www.mlit.go.jp/jutakukentiku/house/content/001997003.pdf
+- 空き家対策モデル事業（国土交通省）／別添資料 経費の内訳費目について — https://www.mlit.go.jp/jutakukentiku/house/content/001997004.pdf
+- 空き家対策モデル事業（国土交通省）／応募様式7 — https://www.mlit.go.jp/jutakukentiku/house/content/001997008.pptx
+- 空き家対策モデル事業（国土交通省）／応募様式8 — https://www.mlit.go.jp/jutakukentiku/house/content/001997009.docx
+- 空き家対策モデル事業（国土交通省）／応募様式1-6 — https://www.mlit.go.jp/jutakukentiku/house/content/001997012.xlsx
+- 空き家対策モデル事業（国土交通省）／空き家対策モデル事業（国土交通省）／国土交通省 令和8年度の募集ページ／（出典・参考リンク） — https://www.mlit.go.jp/jutakukentiku/house/jutakukentiku_house_fr3_000070.html
 - 千葉県中小企業成長促進補助金（第4弾） — https://www.pref.chiba.lg.jp/keisei/zaisei/chiba-seichohojyo4.html
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／神奈川県小規模事業者デジタル化支援推進事業費補助金／神奈川県 公式ページ — https://www.pref.kanagawa.jp/docs/m2w/shokibo_digital/r8.html
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／キ.登録事項変更届 — https://www.pref.kanagawa.jp/documents/128140/henkoutodoke.docx
