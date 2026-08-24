@@ -1,101 +1,26 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-18 04:44**（JST）
+- 確認時刻：**2026-08-24 09:54**（JST）
 - 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔵 新規（今回から監視） **28件**／✅ 変化なし **1137件**
+🔴 リンク切れ（要修正） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1163件**
 
-## 🔵 新規（今回から監視）
+## 🔴 リンク切れ（要修正）
+
+- **松戸市中小企業デジタル化チャレンジ補助金／R8 デジタル化チャレンジ補助金申請要領**
+  - https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf
+  - HTTP 404（ページが無い）
+
+## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
-  - 今回から確認対象
-- **創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回）**
-  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
-  - 今回から確認対象
-- **足利市地域産業振興奨励事業補助**
-  - https://www.city.ashikaga.tochigi.jp/industory/000058/000305/000701/p008322.html
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／申請書（様式第1号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/1-sinseisho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／店舗所有者の同意書**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/14sankouyousiki.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／申請書【経営革新事業】（様式第1号の2）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-1-2sinseisho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【経営改善事業】（様式第10号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-1jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【研究開発事業】（様式第10号の2）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-2jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【人材育成事業】（様式第10号の3）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-3jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【販路開拓事業】（様式第10号の4）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-4jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【デジタル・トランスフォーメーション化事業】（様式第10号の5）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-5jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業報告書【設備導入事業】（様式第10号の6）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-6jigyouhoukokusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／収支決算書（様式第11号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-11syusikeltusan.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金交付請求書（様式第13号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-13seikyusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【経営改善事業】（様式第2号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-1jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【研究開発事業】（様式第2号の2）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-2jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【人材育成事業】（様式第2号の3）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-3jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【販路開拓事業】（様式第2号の4）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-4jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【デジタル・トランスフォーメーション化事業】（様式第2号の5）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-5jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／事業計画書【設備導入事業】（様式第2号の6）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-6jigyoukeikakusho.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／収支予算書（様式第3号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-3shuusiyosan.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金変更承認申請書（様式第4号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-4henkoushounin.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金中止（廃止）承認申請書（様式第5号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-5tyuusihaisishouninsinsei.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金実績報告書（様式第9号）**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-9jiltusekihoukokusyo.docx
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／令和8年度中小企業チャレンジ支援事業補助金パンフレット**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R8panfu2.pdf
-  - 今回から確認対象
-- **富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金／富士見市 公式ページ**
-  - https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.html
-  - 今回から確認対象
-- **高崎市中小企業等機械設備導入支援助成金**
-  - https://www.city.takasaki.gunma.jp/page/3420.html
-  - 今回から確認対象
-- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
-  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
-  - 今回から確認対象
+  - HTTP 403（自動アクセスを拒否。目視で確認が要る）
 
-## ✅ 変化なし（1137件）
+## ✅ 変化なし（1163件）
 
 <details><summary>一覧を開く</summary>
 
@@ -313,6 +238,7 @@
 - 事業承継・M&A補助金・専門家活用枠（中小企業庁）／専門家活用枠 公募要領（買い手支援類型・売り手支援類型） — https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/requirements_experts_15.pdf
 - （出典・参考リンク） — https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
 - 創業助成事業（東京都・東京都中小企業振興公社）／創業助成事業（東京都・東京都中小企業振興公社）／TOKYO創業ステーション 公式ページ／（出典・参考リンク） — https://startup-station.jp/m2/services/sogyokassei/
+- 創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回） — https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
 - 創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP） — https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
 - 創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ — https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/
@@ -369,6 +295,7 @@
 - 上尾市SDGs・DX推進補助金（DX部門）／交付申請の様式 ※記入例はこちら Word版&nbsp; — https://www.city.ageo.lg.jp/uploaded/attachment/119069.docx
 - 上尾市SDGs・DX推進補助金（DX部門）／上尾市ＳＤＧｓ・ＤＸ推進補助金交付要領 — https://www.city.ageo.lg.jp/uploaded/attachment/119071.pdf
 - 商業・サービス業事業継続力強化支援事業補助金（荒川区） — https://www.city.arakawa.tokyo.jp/a020/jigyousha/jigyouunei/r4hojyo.html
+- 足利市地域産業振興奨励事業補助 — https://www.city.ashikaga.tochigi.jp/industory/000058/000305/000701/p008322.html
 - 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）／収支決算書 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/balance_robot.doc
 - 厚木市IT・IoT導入補助金（ロボット関連産業等促進事業補助金）／関連ファイル 内訳書 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/breakdown_robot.doc
 - 厚木市中小企業設備投資促進事業補助金／役員等氏名一覧表 — https://www.city.atsugi.kanagawa.jp/material/files/group/44/capitalinvestmentListofnamesofofficers2026.docx
@@ -429,6 +356,29 @@
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／助成金交付申請書兼請求書（様式1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業計画書（別紙2） — https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／デジタル技術活用促進助成事業・DX導入（江戸川区）／江戸川区 公式ページ — https://www.city.edogawa.tokyo.jp/e093/shigotosangyo/jigyosha_oen/sangyo_jigyosya/jyosei/seisanseikojo/dounyu.html
+- 富士見市中小企業チャレンジ支援事業補助金／申請書（様式第1号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/1-sinseisho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／店舗所有者の同意書 — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/14sankouyousiki.docx
+- 富士見市中小企業チャレンジ支援事業補助金／申請書【経営革新事業】（様式第1号の2） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-1-2sinseisho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【経営改善事業】（様式第10号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-1jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【研究開発事業】（様式第10号の2） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-2jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【人材育成事業】（様式第10号の3） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-3jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【販路開拓事業】（様式第10号の4） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-4jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【デジタル・トランスフォーメーション化事業】（様式第10号の5） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-5jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業報告書【設備導入事業】（様式第10号の6） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-10-6jigyouhoukokusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／収支決算書（様式第11号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-11syusikeltusan.docx
+- 富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金交付請求書（様式第13号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-13seikyusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【経営改善事業】（様式第2号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-1jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【研究開発事業】（様式第2号の2） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-2jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【人材育成事業】（様式第2号の3） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-3jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【販路開拓事業】（様式第2号の4） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-4jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【デジタル・トランスフォーメーション化事業】（様式第2号の5） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-5jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／事業計画書【設備導入事業】（様式第2号の6） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-2-6jigyoukeikakusho.docx
+- 富士見市中小企業チャレンジ支援事業補助金／収支予算書（様式第3号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-3shuusiyosan.docx
+- 富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金変更承認申請書（様式第4号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-4henkoushounin.docx
+- 富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金中止（廃止）承認申請書（様式第5号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-5tyuusihaisishouninsinsei.docx
+- 富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金実績報告書（様式第9号） — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R7-9jiltusekihoukokusyo.docx
+- 富士見市中小企業チャレンジ支援事業補助金／令和8年度中小企業チャレンジ支援事業補助金パンフレット — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R8panfu2.pdf
+- 富士見市中小企業チャレンジ支援事業補助金／富士見市中小企業チャレンジ支援事業補助金／富士見市 公式ページ — https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.html
 - 経営力強化補助金・事業継続事業（八王子市）／経営力強化補助金・事業継続事業（八王子市）／八王子市 公式ページ — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku.html
 - 経営力強化補助金・事業継続事業（八王子市）／令和8年度 経営力強化補助金交付要綱 — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/R8youkou.pdf
 - 経営力強化補助金・事業継続事業（八王子市）／【第5-2号様式】実績報告書 記入例 — https://www.city.hachioji.tokyo.jp/kurashi/sangyo/001/j-keizoku_d/fil/jissekikinyuurei.pdf
@@ -694,7 +644,6 @@
 - 松戸市中小企業デジタル化チャレンジ補助金／報告時に必要な書類 別紙1_経費内訳書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx
 - 松戸市中小企業デジタル化チャレンジ補助金／別紙5_事業完了後経過報告書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/bessi5.docx
 - 松戸市中小企業デジタル化チャレンジ補助金／申請時に必要な書類 理由書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/dejiriyuusho.docx
-- 松戸市中小企業デジタル化チャレンジ補助金／R8 デジタル化チャレンジ補助金申請要領 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf
 - 松戸市中小企業デジタル化チャレンジ補助金／債権者登録申出書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/saikennsyatouroku.pdf
 - 松戸市中小企業デジタル化チャレンジ補助金／松戸市中小企業デジタル化チャレンジ補助金／松戸市 公式ページ — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.html
 - めぐろ中小企業省力化投資補助金（目黒区）／申請の手引き — https://www.city.meguro.tokyo.jp/documents/19335/r8tebiki.pdf
@@ -861,6 +810,7 @@
 - 墨田区デジタル技術活用支援補助金（墨田区）／補助金申請経費内訳書（税込表示） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeikomi.xlsx
 - 墨田区デジタル技術活用支援補助金（墨田区）／補助金申請経費内訳書（税抜表示） — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.files/uchiwakesho_zeinuki.xlsx
 - 墨田区デジタル技術活用支援補助金（墨田区）／墨田区デジタル技術活用支援補助金（墨田区）／墨田区 公式ページ — https://www.city.sumida.lg.jp/sangyo_jigyosya/sangyo/hojokin_joseikin/smddigital.html
+- 高崎市中小企業等機械設備導入支援助成金 — https://www.city.takasaki.gunma.jp/page/3420.html
 - 館山市市内事業者デジタル化トライアル補助金／第1号様式 — https://www.city.tateyama.chiba.jp/files/300385841.docx
 - 館山市市内事業者デジタル化トライアル補助金／第2号様式 — https://www.city.tateyama.chiba.jp/files/300385842.docx
 - 館山市市内事業者デジタル化トライアル補助金／第4号様式 — https://www.city.tateyama.chiba.jp/files/300385844.pdf
@@ -1197,6 +1147,7 @@
 - さいたま市DX推進補助金／さいたま市DX推進補助金交付申請書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/zaidan-dx-Subsidy-shinseisyo.docx
 - さいたま市DX推進補助金／さいたま市DX補助金 結果報告兼補助金請求書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/結果報告兼補助金請求書.docx
 - さいたま市DX推進補助金／さいたま市DX推進補助金／さいたま市産業創造財団 公式ページ — https://www.sozo-saitama.or.jp/topic/dx-subsidy/
+- 府中市小規模事業者等チャレンジ支援事業補助金（府中市） — https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請マニュアル — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8_digital-tool_sinnsei_manual.pdf
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／【令和8年度第1回版】募集要項 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf
