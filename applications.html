@@ -153,6 +153,15 @@
     text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
   .app-item-name { font-weight: 700; font-size: 1rem; display: block; }
   .app-item-meta { font-size: 0.82rem; color: var(--ink-soft); display: block; margin-top: 0.15rem; }
+  /* 担当・支給予定月のバッジ（2026-08-23、会議で出た要望を受けて追加）。
+     支給予定月は実日付を根拠に比較できるが、標準審査期間のデータが無いため
+     「経過期間からの自動判定」ではなく「ユーザー入力の予定月 vs 今日」の比較にとどめる。 */
+  .app-item-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+  .badge-assignee, .badge-payout { display: inline-block; font-size: 0.76rem; line-height: 1.5;
+    border-radius: 4px; padding: 0.05rem 0.4rem; white-space: nowrap; border: 1px solid; }
+  .badge-assignee { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
+  .badge-payout { background: var(--paper); color: var(--ink-soft); border-color: var(--line); }
+  .badge-payout.is-overdue { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust-ink); }
   .app-item-prog { flex: none; text-align: right; font-size: 0.85rem; color: var(--ink-soft);
     font-variant-numeric: tabular-nums; min-width: 4.6rem; line-height: 1.4; }
   .app-item-prog .n { font-weight: 700; color: var(--accent); }
@@ -305,6 +314,18 @@
       <select id="appDetailProgram" style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius: var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;margin-bottom:0.8rem;">
         <option value="">制度を選ぶと、必要な書類だけに絞られます</option>
       </select>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.8rem;">
+        <div style="flex:1 1 12rem;">
+          <label for="appDetailAssignee" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">担当（任意）</label>
+          <input type="text" id="appDetailAssignee" placeholder="例：自分、顧問社労士"
+            style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;box-sizing:border-box;">
+        </div>
+        <div style="flex:1 1 10rem;">
+          <label for="appDetailPayout" style="display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:0.3rem;">支給予定月（任意）</label>
+          <input type="month" id="appDetailPayout"
+            style="width:100%;font:inherit;font-size:0.95rem;padding:0.5rem 0.6rem;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--paper-raised);color:var(--ink);min-height:44px;box-sizing:border-box;">
+        </div>
+      </div>
       <p class="meta" id="appDetailDone"></p>
       <div class="prog"><i id="appDetailBar" style="width:0%;"></i></div>
       <div id="appDetailChecks"></div>
@@ -466,6 +487,15 @@
     });
   }
 
+  // 支給予定月（YYYY-MM）が今日より過去かどうか。標準審査期間のデータが無いため
+  // 「経過期間からの自動判定」ではなく、ユーザーが入力した予定月と今日の比較にとどめる。
+  function isPayoutOverdue(expectedPayoutMonth) {
+    if (!expectedPayoutMonth) return false;
+    var now = new Date();
+    var curYm = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    return expectedPayoutMonth < curYm;
+  }
+
   function progressOf(app) {
     var items = COMMON_DOCS.filter(function (c) { return docApplies(c, app.programKey); });
     var done = items.filter(function (c) { return app.done && app.done[c.id]; }).length;
@@ -485,9 +515,17 @@
       //   手つかず＝灰／進行中＝コバルト／完了＝ミント
       var stateCls = (p.total > 0 && p.done >= p.total) ? ' is-done'
                    : (p.done > 0 ? ' is-doing' : ' is-todo');
+      var overdue = isPayoutOverdue(a.expectedPayoutMonth);
+      var badges = '';
+      if (a.assignee) badges += '<span class="badge-assignee">担当：' + esc(a.assignee) + '</span>';
+      if (a.expectedPayoutMonth) {
+        badges += '<span class="badge-payout' + (overdue ? ' is-overdue' : '') + '">' +
+          (overdue ? '予定月超過：' : '支給予定：') + esc(a.expectedPayoutMonth) + '</span>';
+      }
       return '<li class="app-item' + stateCls + (a.id === currentId ? ' is-current' : '') + '">' +
         '<button type="button" class="app-item-main" data-id="' + esc(a.id) + '">' +
         '<span class="app-item-name">' + esc(a.name) + '</span>' +
+        (badges ? '<span class="app-item-badges">' + badges + '</span>' : '') +
         '</button>' +
         '<span class="app-item-prog"><span class="n">' + p.done + ' / ' + p.total + '</span>' +
         '<span class="lbl">取り寄せ書類</span></span>' +
@@ -552,6 +590,8 @@
     document.getElementById('appDetailName').textContent = a.name;
     var sel = document.getElementById('appDetailProgram');
     sel.value = a.programKey || '';
+    document.getElementById('appDetailAssignee').value = a.assignee || '';
+    document.getElementById('appDetailPayout').value = a.expectedPayoutMonth || '';
 
     var key = a.programKey || '';
     var items = COMMON_DOCS.filter(function (c) { return docApplies(c, key); });
@@ -669,7 +709,7 @@
     var programKey = progEl.value;
     if (!programKey) return;
     var name = (D.programs[programKey] || {}).name || programKey;
-    var a = { id: nextId(), name: name, programKey: programKey, createdAt: seq, done: {} };
+    var a = { id: nextId(), name: name, programKey: programKey, createdAt: seq, done: {}, assignee: '', expectedPayoutMonth: '' };
     apps.push(a);
     saveApps();
     document.getElementById('newAppProgramSearch').value = '';
@@ -689,6 +729,22 @@
     saveApps();
     renderAppList();
     renderDetail();
+  });
+
+  document.getElementById('appDetailAssignee').addEventListener('change', function () {
+    var a = findApp(currentId);
+    if (!a) return;
+    a.assignee = this.value.trim();
+    saveApps();
+    renderAppList();
+  });
+
+  document.getElementById('appDetailPayout').addEventListener('change', function () {
+    var a = findApp(currentId);
+    if (!a) return;
+    a.expectedPayoutMonth = this.value;
+    saveApps();
+    renderAppList();
   });
 
   // documents.html から ?p=制度キー で来たとき、その制度の申請が既にあれば選ぶ、
