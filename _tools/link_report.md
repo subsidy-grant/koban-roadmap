@@ -1,26 +1,50 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-24 09:54**（JST）
+- 確認時刻：**2026-08-31 11:43**（JST）
 - 確認したURL：**1165件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1163件**
+🔴 リンク切れ（要修正） **4件**／🔴 前は開けたのに開けなくなった（要修正） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **4件**／✅ 変化なし **1156件**
 
 ## 🔴 リンク切れ（要修正）
 
+- **（出典・参考リンク）**
+  - https://mirasapo-plus.go.jp/infomation/33237/
+  - HTTP 404（ページが無い）
+- **松戸市中小企業デジタル化チャレンジ補助金／事前相談時に必要な書類 別紙1_経費内訳書**
+  - https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeihi.xlsx
+  - HTTP 404（ページが無い）
+- **松戸市中小企業デジタル化チャレンジ補助金／報告時に必要な書類 別紙1_経費内訳書**
+  - https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx
+  - HTTP 404（ページが無い）
 - **松戸市中小企業デジタル化チャレンジ補助金／R8 デジタル化チャレンジ補助金申請要領**
   - https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf
   - HTTP 404（ページが無い）
 
-## 🟡 自動確認を拒否（目視が要る）
+## 🔴 前は開けたのに開けなくなった（要修正）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
-  - HTTP 403（自動アクセスを拒否。目視で確認が要る）
+  - HTTP 403。2026-08-18 04:44 には開けていた（2回続けて失敗）
 
-## ✅ 変化なし（1163件）
+## 🟠 中身が差し替わった可能性（最新版か確認）
+
+- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠）**
+  - https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
+  - サイズが 1153682 → 1157303 に変化（差し替えの可能性）
+- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル**
+  - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+  - サイズが 14835722 → 12052751 に変化（差し替えの可能性）
+- **新事業進出・ものづくり商業サービス補助金／第1回 公募要領**
+  - https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
+  - サイズが 1899560 → 1903738 に変化（差し替えの可能性）
+- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／農林水産省 令和7年度補正 飲食業労働生産性向上推進緊急対策事業（事務局を選ぶ公募）**
+  - https://www.maff.go.jp/j/supply/hozyo/kanbo/251217_040-1.html
+  - サイズが 41986 → 41912 に変化（差し替えの可能性）
+
+## ✅ 変化なし（1156件）
 
 <details><summary>一覧を開く</summary>
 
@@ -52,9 +76,7 @@
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠） — https://it-shien.smrj.go.jp/applicant/subsidy/normal/
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／資料ダウンロード（公式） — https://it-shien.smrj.go.jp/download/
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付規程（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf
-- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
-- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／請求・支払内訳シート — https://it-shien.smrj.go.jp/pdf/it2026_seikyushiharaiuchiwake_jisseki.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／申請様式一式 — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／交付要綱（令和8年4月1日～） — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf
@@ -111,7 +133,6 @@
 - （出典・参考リンク） — https://mirasapo-plus.go.jp/infomation/15578/
 - （出典・参考リンク） — https://mirasapo-plus.go.jp/infomation/29995/
 - （出典・参考リンク） — https://mirasapo-plus.go.jp/infomation/31612/
-- （出典・参考リンク） — https://mirasapo-plus.go.jp/infomation/33237/
 - （出典・参考リンク） — https://monoken.yamazen.co.jp/blog/articles/subsidy/planbase/manufacturing-subsidy-examples-2025
 - （出典・参考リンク） — https://official.jizokukanb.com/ichiran
 - （出典・参考リンク） — https://portal.monodukuri-hojo.jp/dataportal.html
@@ -205,7 +226,6 @@
 - デジタル技術活用推進助成・ソフトウェア（品川区）／募集要項 — https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/R8-bosyuyoko_DIGITAL_SUBSIDY_SOFT_0527.pdf
 - デジタル技術活用推進助成・ソフトウェア（品川区）／第1号様式（別紙）資金計画等（ソフトウェア） — https://shinagawa-dx-digital.com/wp-content/uploads/2026/05/第1号様式（別紙）-資金計画等（ソフトウェア）_0528.xls
 - 新事業進出・ものづくり商業サービス補助金 — https://shinjigyou-monodukuri.smrj.go.jp/
-- 新事業進出・ものづくり商業サービス補助金／第1回 公募要領 — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_application_guidelines_01.pdf
 - 新事業進出・ものづくり商業サービス補助金／参考様式 労働者名簿 — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_employee_list.xlsx
 - 新事業進出・ものづくり商業サービス補助金／リース取引に係る宣誓書（リース会社と共同申請する場合） — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_finance_lease_declaration.docx
 - 新事業進出・ものづくり商業サービス補助金／金融機関による確認書（金融機関等から資金提供を受ける場合） — https://shinjigyou-monodukuri.smrj.go.jp/assets/documents/shinmono_financial_institution_confirmation.docx
@@ -638,10 +658,8 @@
 - 松戸市中小企業デジタル化チャレンジ補助金／3号様式_実績報告書（記入例含む） — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_3gou.doc
 - 松戸市中小企業デジタル化チャレンジ補助金／5号様式_交付請求書（記入要領入り） — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_5gou.doc
 - 松戸市中小企業デジタル化チャレンジ補助金／別紙4_事業決算報告書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7besshidejihoukoku.docx
-- 松戸市中小企業デジタル化チャレンジ補助金／事前相談時に必要な書類 別紙1_経費内訳書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeihi.xlsx
 - 松戸市中小企業デジタル化チャレンジ補助金／別紙2_事業計画書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeikakusho.docx
 - 松戸市中小企業デジタル化チャレンジ補助金／別紙3_誓約書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R8dejiseiyakusho.docx
-- 松戸市中小企業デジタル化チャレンジ補助金／報告時に必要な書類 別紙1_経費内訳書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx
 - 松戸市中小企業デジタル化チャレンジ補助金／別紙5_事業完了後経過報告書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/bessi5.docx
 - 松戸市中小企業デジタル化チャレンジ補助金／申請時に必要な書類 理由書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/dejiriyuusho.docx
 - 松戸市中小企業デジタル化チャレンジ補助金／債権者登録申出書 — https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/saikennsyatouroku.pdf
@@ -948,7 +966,6 @@
 - 65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／記入例 65歳超継続雇用促進コース申請書類 — https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/s8vmin00000026wm.pdf
 - 65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／継続様式第2号（1）支給申請書 — https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s1r.xlsx
 - 65歳超雇用推進助成金（厚生労働省・高齢障害求職者雇用支援機構）／共通要領様式第1号 支給要件確認申立書 — https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s3r.docx
-- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／農林水産省 令和7年度補正 飲食業労働生産性向上推進緊急対策事業（事務局を選ぶ公募） — https://www.maff.go.jp/j/supply/hozyo/kanbo/251217_040-1.html
 - 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／食品産業省力化投資促進緊急対策事業補助金交付等要綱（案） — https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/251217_040-1-4.pdf
 - （出典・参考リンク） — https://www.maff.go.jp/j/supply/hozyo/kanbo/attach/pdf/260326_040-1-1.pdf
 - 両立支援等助成金（介護離職防止支援コース）／参考様式（介護休業等の取得・利用方針の周知 書式例） — https://www.mhlw.go.jp/content/001096371.docx
