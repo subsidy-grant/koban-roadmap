@@ -1,6 +1,6 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-08-18 02:59**（JST）
+- 確認時刻：**2026-08-31 19:09**（JST）
 - 確認したURL：**1件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
@@ -10,7 +10,7 @@
 
 ## 🔵 新規（今回から監視）
 
-- **高崎市中小企業等機械設備導入支援助成金**
-  - https://www.city.takasaki.gunma.jp/page/3420.html
+- **（出典・参考リンク）**
+  - https://it-shien.smrj.go.jp/download/grantdecision_list/
   - 今回から確認対象
 

@@ -351,6 +351,19 @@
    "method": "HEAD",
    "status": 200
   },
+  "https://it-shien.smrj.go.jp/download/grantdecision_list/": {
+   "checked": "2026-08-31 19:09",
+   "content_length": "72082",
+   "content_type": "text/html",
+   "encoding": "identity",
+   "fail_streak": 0,
+   "final_url": "https://it-shien.smrj.go.jp/download/grantdecision_list/",
+   "first_seen": "2026-08-31 19:09",
+   "last_modified": "Mon, 31 Aug 2026 01:58:04 GMT",
+   "last_ok": "2026-08-31 19:09",
+   "method": "HEAD",
+   "status": 200
+  },
   "https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf": {
    "checked": "2026-08-31 11:43",
    "content_length": "464850",
@@ -1131,19 +1144,6 @@
    "method": "HEAD",
    "status": 200
   },
-  "https://mirasapo-plus.go.jp/infomation/33237/": {
-   "checked": "2026-08-31 11:43",
-   "content_length": null,
-   "content_type": "text/html",
-   "encoding": "identity",
-   "fail_streak": 1,
-   "final_url": "https://mirasapo-plus.go.jp/infomation/33237/",
-   "first_seen": "2026-08-17 13:29",
-   "last_modified": null,
-   "last_ok": "2026-08-24 09:54",
-   "method": "HEAD",
-   "status": 404
-  },
   "https://monoken.yamazen.co.jp/blog/articles/subsidy/planbase/manufacturing-subsidy-examples-2025": {
    "checked": "2026-08-31 11:43",
    "content_length": "164009",
@@ -1158,17 +1158,17 @@
    "status": 200
   },
   "https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge": {
-   "checked": "2026-08-31 11:43",
-   "content_length": "520",
+   "checked": "2026-08-31 19:08",
+   "content_length": "59225",
    "content_type": "text/html",
    "encoding": "identity",
-   "fail_streak": 2,
+   "fail_streak": 0,
    "final_url": "https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge",
    "first_seen": "2026-08-18 04:44",
-   "last_modified": null,
-   "last_ok": "2026-08-18 04:44",
-   "method": "GET",
-   "status": 403
+   "last_modified": "Wed, 20 May 2026 00:20:02 GMT",
+   "last_ok": "2026-08-31 19:08",
+   "method": "HEAD",
+   "status": 200
   },
   "https://official.jizokukanb.com/ichiran": {
    "checked": "2026-08-31 11:43",
@@ -7931,7 +7931,7 @@
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/DEJIJIZENSOUDANr6.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "52658",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -7939,12 +7939,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/DEJIJIZENSOUDANr6.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Thu, 19 Sep 2024 07:48:05 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_1gou.doc": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "39936",
    "content_type": "application/msword",
    "encoding": "identity",
@@ -7952,12 +7952,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_1gou.doc",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Tue, 03 Jun 2025 00:26:58 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_3gou.doc": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "43008",
    "content_type": "application/msword",
    "encoding": "identity",
@@ -7965,12 +7965,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_3gou.doc",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Tue, 03 Jun 2025 00:28:27 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_5gou.doc": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "37888",
    "content_type": "application/msword",
    "encoding": "identity",
@@ -7978,12 +7978,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_5gou.doc",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Tue, 03 Jun 2025 00:37:09 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7besshidejihoukoku.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "38560",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -7991,25 +7991,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7besshidejihoukoku.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Thu, 03 Jul 2025 03:15:30 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
-  "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeihi.xlsx": {
-   "checked": "2026-08-31 11:43",
-   "content_length": "11146",
-   "content_type": "text/html",
-   "encoding": "identity",
-   "fail_streak": 1,
-   "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeihi.xlsx",
-   "first_seen": "2026-07-31 14:39",
-   "last_modified": "Wed, 05 Jun 2024 06:56:04 GMT",
-   "last_ok": "2026-08-24 09:54",
-   "method": "HEAD",
-   "status": 404
-  },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeikakusho.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "50719",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -8017,12 +8004,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeikakusho.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Mon, 16 Jun 2025 02:05:31 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R8dejiseiyakusho.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "27119",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -8030,25 +8017,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R8dejiseiyakusho.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Thu, 02 Apr 2026 05:23:29 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
-  "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx": {
-   "checked": "2026-08-31 11:43",
-   "content_length": "11146",
-   "content_type": "text/html",
-   "encoding": "identity",
-   "fail_streak": 1,
-   "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx",
-   "first_seen": "2026-07-31 14:39",
-   "last_modified": "Wed, 05 Jun 2024 06:56:04 GMT",
-   "last_ok": "2026-08-24 09:54",
-   "method": "HEAD",
-   "status": 404
-  },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/bessi5.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "37631",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -8056,12 +8030,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/bessi5.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Tue, 11 Apr 2023 07:48:02 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/dejiriyuusho.docx": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "20638",
    "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
    "encoding": "identity",
@@ -8069,25 +8043,38 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/dejiriyuusho.docx",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Thu, 20 Jun 2024 00:44:45 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
-  "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf": {
-   "checked": "2026-08-31 11:43",
-   "content_length": "11146",
-   "content_type": "text/html",
+  "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8deji.xlsx": {
+   "checked": "2026-08-31 19:09",
+   "content_length": "17703",
+   "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
    "encoding": "identity",
-   "fail_streak": 2,
-   "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf",
-   "first_seen": "2026-07-31 14:39",
-   "last_modified": "Wed, 05 Jun 2024 06:56:04 GMT",
-   "last_ok": "2026-08-18 04:44",
+   "fail_streak": 0,
+   "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8deji.xlsx",
+   "first_seen": "2026-08-31 19:09",
+   "last_modified": "Wed, 26 Aug 2026 00:24:46 GMT",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
-   "status": 404
+   "status": 200
+  },
+  "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf": {
+   "checked": "2026-08-31 19:09",
+   "content_length": "546095",
+   "content_type": "application/pdf",
+   "encoding": "identity",
+   "fail_streak": 0,
+   "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf",
+   "first_seen": "2026-08-31 19:09",
+   "last_modified": "Wed, 19 Aug 2026 01:25:46 GMT",
+   "last_ok": "2026-08-31 19:09",
+   "method": "HEAD",
+   "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/saikennsyatouroku.pdf": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "24705",
    "content_type": "application/pdf",
    "encoding": "identity",
@@ -8095,12 +8082,12 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/saikennsyatouroku.pdf",
    "first_seen": "2026-07-31 14:39",
    "last_modified": "Fri, 16 Jul 2021 02:56:58 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
   "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.html": {
-   "checked": "2026-08-31 11:43",
+   "checked": "2026-08-31 19:09",
    "content_length": "44361",
    "content_type": "text/html",
    "encoding": "identity",
@@ -8108,7 +8095,7 @@
    "final_url": "https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.html",
    "first_seen": "2026-07-31 13:19",
    "last_modified": "Sun, 30 Aug 2026 18:01:30 GMT",
-   "last_ok": "2026-08-31 11:43",
+   "last_ok": "2026-08-31 19:09",
    "method": "HEAD",
    "status": 200
   },
@@ -15146,5 +15133,5 @@
    "status": 200
   }
  },
- "generated": "2026-08-31 11:43"
+ "generated": "2026-08-31 19:09"
 }

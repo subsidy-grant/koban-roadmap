@@ -267,8 +267,16 @@ def classify(url, t, now, prev):
     if st in (404, 410):
         return "dead", "HTTP %d（ページが無い）" % st
     if st in (401, 403, 429):
-        return _regressed("HTTP %d" % st) or \
-            ("blocked", "HTTP %d（自動アクセスを拒否。目視で確認が要る）" % st)
+        # 403は「ページが消えた」ではなく「この経路からのアクセスを断られた」。
+        # GitHub Actions のIPだけを弾く自治体系サイトがある（練馬産業振興公社で実測、
+        # 2026-08-31：Actionsからは403／日本の一般回線からはUAを問わず200）。
+        # ここを要対応へ格上げすると、生きているページで毎週赤くなり狼少年になる。
+        # 前に開けていた事実は文面に残したうえで、判定は目視待ちに留める。
+        if prev and prev.get("last_ok") and prev.get("fail_streak", 0) >= 1:
+            return "blocked", ("HTTP %d（自動アクセスを拒否）。%s には開けていた。"
+                               "経路の問題かページの消滅か、目視で確認が要る"
+                               % (st, prev["last_ok"]))
+        return "blocked", "HTTP %d（自動アクセスを拒否。目視で確認が要る）" % st
     if st >= 500:
         return _regressed("HTTP %d" % st) or \
             ("server_error", "HTTP %d（サーバー側の障害の可能性）" % st)
