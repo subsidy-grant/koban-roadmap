@@ -991,12 +991,12 @@
       note: '公式ページの区分に沿って並べています。',
       groups: [
         { phase: '申請の前に読む', items: [
-          { name: 'R8 デジタル化チャレンジ補助金申請要領', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf', type: 'PDF', size: '536KB' },
+          { name: 'R8 デジタル化チャレンジ補助金申請要領', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf', type: 'PDF', size: '536KB' },
           { name: '5号様式_交付請求書（記入要領入り）', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_5gou.doc', type: 'Word', size: '37KB' }
         ] },
         { phase: '交付申請', items: [
           { name: '事前相談書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/DEJIJIZENSOUDANr6.docx', type: 'Word', size: '51KB' },
-          { name: '事前相談時に必要な書類 別紙1_経費内訳書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeihi.xlsx', type: 'Excel', size: '17KB' },
+          { name: '事前相談時に必要な書類 別紙1_経費内訳書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8deji.xlsx', type: 'Excel', size: '17KB' },
           { name: '1号様式_交付申請書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_1gou.doc', type: 'Word', size: '39KB' },
           { name: '別紙2_事業計画書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7dejikeikakusho.docx', type: 'Word', size: '50KB' },
           { name: '別紙3_誓約書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R8dejiseiyakusho.docx', type: 'Word', size: '26KB' },
@@ -1004,7 +1004,7 @@
           { name: '申請時に必要な書類 理由書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/dejiriyuusho.docx', type: 'Word', size: '20KB' }
         ] },
         { phase: '実績報告（事業が終わったあと）', items: [
-          { name: '報告時に必要な書類 別紙1_経費内訳書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/besshi1R6dejibesshir.xlsx', type: 'Excel', size: '17KB' },
+          { name: '報告時に必要な書類 別紙1_経費内訳書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8deji.xlsx', type: 'Excel', size: '17KB' },
           { name: '3号様式_実績報告書（記入例含む）', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_3gou.doc', type: 'Word', size: '42KB' },
           { name: '別紙4_事業決算報告書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7besshidejihoukoku.docx', type: 'Word', size: '38KB' },
           { name: '別紙5_事業完了後経過報告書', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/bessi5.docx', type: 'Word', size: '37KB' }

@@ -7681,7 +7681,7 @@ window.KOBAN_SIM = {
       kind: 'hojo',
       source: {
         label: '令和8年度松戸市中小企業デジタル化チャレンジ補助金 申請要領',
-        url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8youryo.pdf',
+        url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf',
         checked: '2026-08-06 JST'
       },
       review: {
