@@ -36,11 +36,21 @@ cases = [
     ("404はいつでもリンク切れ", T_PROG, {"status": 404},
      {"last_ok": "2026-07-24 09:00", "fail_streak": 0}, "dead"),
 
-    # 差し替え検出は様式ファイルだけ。取り方が揃っているときだけ比べる
-    ("様式のサイズ変化", T_FILE,
-     {"status": 200, "content_length": "999", "method": "HEAD", "encoding": "identity",
+    # 差し替え検出は様式ファイルだけ。取り方が揃っているときだけ比べる。
+    # 数バイトの差では報告しない（2026-09-01 に公募要領が7バイト違うだけで赤くなった）。
+    # 差し替えとみなすのは 1%以上かつ1KB以上動いたときだけ。
+    ("様式のサイズ変化（1%以上かつ1KB以上）", T_FILE,
+     {"status": 200, "content_length": "102000", "method": "HEAD", "encoding": "identity",
       "content_type": "application/msword"},
-     {"content_length": "500", "method": "HEAD", "encoding": "identity"}, "changed"),
+     {"content_length": "100000", "method": "HEAD", "encoding": "identity"}, "changed"),
+    ("様式のサイズ変化が数バイトなら無視", T_FILE,
+     {"status": 200, "content_length": "1157296", "method": "HEAD", "encoding": "identity",
+      "content_type": "application/msword"},
+     {"content_length": "1157303", "method": "HEAD", "encoding": "identity"}, "ok"),
+    ("様式のサイズ変化が1%未満なら無視", T_FILE,
+     {"status": 200, "content_length": "100400000", "method": "HEAD", "encoding": "identity",
+      "content_type": "application/msword"},
+     {"content_length": "100000000", "method": "HEAD", "encoding": "identity"}, "ok"),
     ("様式・取り方が違えば比べない", T_FILE,
      {"status": 200, "content_length": "999", "method": "GET", "encoding": "identity",
       "content_type": "application/msword"},

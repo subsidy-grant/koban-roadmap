@@ -309,7 +309,13 @@ def classify(url, t, now, prev):
         pl, nl = prev.get("content_length"), now.get("content_length")
         pm, nm = prev.get("last_modified"), now.get("last_modified")
         if same_way and pl and nl and pl != nl:
-            return "changed", "サイズが %s → %s に変化（差し替えの可能性）" % (pl, nl)
+            # 数バイトの差で報告しない。2026-09-01 に公募要領が7バイト違うだけで
+            # 赤くなった。体裁の微修正でも数値は動くので、差し替えとみなすのは
+            # 1%以上かつ1KB以上動いたときだけにする。
+            gap = abs(int(nl) - int(pl))
+            if gap >= 1024 and gap >= int(pl) * 0.01:
+                return "changed", "サイズが %s → %s に変化（差し替えの可能性）" % (pl, nl)
+            return "ok", ""
         # 更新日時だけで判断しない。理由（どちらも 2026-07-31 実測）:
         #   八王子市: 2ファイルの更新日時が互いに入れ替わって返ってきた（7分差）。
         #             負荷分散でmtimeの違うサーバーに当たるため
@@ -363,8 +369,13 @@ SEVERITY = [
     ("new",           "🔵 新規（今回から監視）"),
     ("ok",            "✅ 変化なし"),
 ]
-NEEDS_FIX = {"dead", "regressed", "type_mismatch", "moved", "changed"}
-NEEDS_EYE = {"server_error", "blocked", "error"}
+# 赤（終了コード1）にするのは「利用者がその資料にたどり着けない」ものだけに絞る。
+# moved / changed を赤に含めていた頃は、公的機関のPDFが微修正されるたびに赤くなり、
+# 2026-08 には5週続けて赤いまま見落とされた。実際に中身を開いて確かめたところ、
+# 差し替えが起きてもURLは最新版を指しており、利用者は正しい資料に到達できていた。
+# 差し替え・移転は黄（終了コード2）に置き、Issueには載せて気づけるようにする。
+NEEDS_FIX = {"dead", "regressed", "type_mismatch"}
+NEEDS_EYE = {"server_error", "blocked", "error", "moved", "changed"}
 
 
 def build_summary(verdicts, prev, stamp):
