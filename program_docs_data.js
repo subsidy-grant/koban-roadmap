@@ -134,7 +134,7 @@
       note: '65歳超継続雇用促進コースの様式です。定年引上げ・廃止・継続雇用制度導入の内容と対象被保険者数により支給額が異なるため、募集要項で該当する内容を先にご確認ください。',
       groups: [
         { phase: '申請の前に読む', items: [
-          { name: '65歳超継続雇用促進コース 支給申請の手引き', url: 'https://www.jeed.go.jp/elderly/subsidy/q2k4vk000001h38d-att/f41obh0000005nna.pdf', type: 'PDF', size: '1.2MB' }
+          { name: '65歳超継続雇用促進コース 支給申請の手引き', url: 'https://www.jeed.go.jp/elderly/subsidy/q2k4vk000001h38d-att/f41obh0000005nna.pdf', type: 'PDF', size: '5.3MB' }
         ] },
         { phase: '支給申請', items: [
           { name: '継続様式第2号（1）支給申請書', url: 'https://www.jeed.go.jp/elderly/subsidy/v1tt1c0000000ryq-att/v1tt1c0000000s1r.xlsx', type: 'Excel', size: '88KB' },
@@ -217,7 +217,7 @@
           { name: '交付規程（通常枠）', url: 'https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf', type: 'PDF', size: '454KB' }
         ] },
         { phase: '交付申請', items: [
-          { name: '交付申請マニュアル', url: 'https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf', type: 'PDF', size: '14.1MB' }
+          { name: '交付申請マニュアル', url: 'https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf', type: 'PDF', size: '11.5MB' }
         ] },
         { phase: '事業実績報告（採択後）', items: [
           { name: '事業実績報告マニュアル', url: 'https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf', type: 'PDF', size: '10.0MB' },
@@ -243,7 +243,7 @@
       groups: [
         { phase: '交付申請', items: [
           { name: '様式第1号 交付申請書', url: 'https://www.mhlw.go.jp/content/11200000/001691199.docx', type: 'Word', size: '51KB' },
-          { name: '申請書等 簡易作成ツール', url: 'https://www.mhlw.go.jp/content/11200000/001733987.xlsx', type: 'Excel', size: '178KB' },
+          { name: '申請書等 簡易作成ツール', url: 'https://www.mhlw.go.jp/content/11200000/001733987.xlsx', type: 'Excel', size: '180KB' },
           { name: '物価高騰等要件に係る申出書（売上高総利益率）', url: 'https://www.mhlw.go.jp/content/11200000/001692000.docx', type: 'Word', size: '44KB' },
           { name: '物価高騰等要件に係る申出書（売上高営業利益率）', url: 'https://www.mhlw.go.jp/content/11200000/001692001.docx', type: 'Word', size: '44KB' }
         ] },
@@ -991,7 +991,7 @@
       note: '公式ページの区分に沿って並べています。',
       groups: [
         { phase: '申請の前に読む', items: [
-          { name: 'R8 デジタル化チャレンジ補助金申請要領', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf', type: 'PDF', size: '536KB' },
+          { name: 'R8 デジタル化チャレンジ補助金申請要領', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/r8dejinew.pdf', type: 'PDF', size: '533KB' },
           { name: '5号様式_交付請求書（記入要領入り）', url: 'https://www.city.matsudo.chiba.jp/jigyosya/syoukougyou/dx-charenji.files/R7_5gou.doc', type: 'Word', size: '37KB' }
         ] },
         { phase: '交付申請', items: [
@@ -1831,7 +1831,7 @@
           { name: '交付要綱', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/00_埼玉県中小企業ＤＸ導入支援補助金交付要綱.pdf', type: 'PDF', size: '342KB' },
           { name: '交付要領', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/01_埼玉県中小企業ＤＸ導入支援補助金交付要領.pdf', type: 'PDF', size: '623KB' },
           { name: '補助事業の手引き', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/02_埼玉県中小企業ＤＸ導入支援補助金公募要領（7月1日～）.pdf', type: 'PDF', size: '667KB' },
-          { name: 'その他のFAQはこちら', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/03_埼玉県中小企業ＤＸ導入支援補助金Ｑ＆Ａ.pdf', type: 'PDF', size: '404KB' }
+          { name: 'その他のFAQはこちら', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/03_埼玉県中小企業ＤＸ導入支援補助金Ｑ＆Ａ.pdf', type: 'PDF', size: '410KB' }
         ] },
         { phase: '交付申請', items: [
           { name: '実施計画書（事業者名）v2（08/06/08 差替）', url: 'https://dxdounyushienhozyo.pref.saitama.lg.jp/assets/doc/02-1_【様式9】実施計画書（事業者名）v2.xlsx', type: 'Excel', size: '58KB' },
