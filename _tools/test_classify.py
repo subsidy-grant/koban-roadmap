@@ -25,8 +25,12 @@ cases = [
      {"last_ok": None, "fail_streak": 3}, "blocked"),
     ("前は開けた・1回目の403", T_PROG, {"status": 403},
      {"last_ok": "2026-07-24 09:00", "fail_streak": 0}, "blocked"),
+    # 403は「ページが消えた」ではなく「この経路から断られた」。GitHub Actions の
+    # IPだけ弾く自治体サイトがあり（練馬産業振興公社で2026-08-31に実測。Actionsからは
+    # 403、日本の一般回線からはUAを問わず200）、要対応に上げると生きたページで毎週
+    # 赤くなる。前に開けていた事実は文面に残し、判定は目視待ちに留める。
     ("前は開けた・2回続けて403", T_PROG, {"status": 403},
-     {"last_ok": "2026-07-24 09:00", "fail_streak": 1}, "regressed"),
+     {"last_ok": "2026-07-24 09:00", "fail_streak": 1}, "blocked"),
     ("前は開けた・2回続けて接続不能", T_PROG, {"status": None, "error": "Timeout"},
      {"last_ok": "2026-07-24 09:00", "fail_streak": 1}, "regressed"),
     ("404はいつでもリンク切れ", T_PROG, {"status": 404},

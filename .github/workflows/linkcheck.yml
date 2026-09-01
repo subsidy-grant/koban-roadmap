@@ -57,6 +57,16 @@ jobs:
           python3 _tools/check_links.py
           echo "code=$?" >> "$GITHUB_OUTPUT"
 
+      # check_links.py は「前回の観測との差」しか見ないため、最初に載せた時点の
+      # 表記が既に古いと永久に挙がらない。掲載値と実測値の全数突き合わせで拾う。
+      - name: 掲載サイズが実物と合っているか確かめる
+        id: docsize
+        if: always()
+        run: |
+          set +e
+          python3 _tools/check_doc_size.py
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
       - name: 結果を実行サマリーに出す
         if: always()
         run: |
@@ -64,6 +74,8 @@ jobs:
             echo "## リンク確認の結果"
             echo ""
             sed -n '1,20p' _tools/link_report_brief.md
+            echo ""
+            sed -n '1,12p' _tools/doc_size_report.md
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: レポートを成果物として残す
@@ -81,7 +93,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md page_data.js zipdata
+          git add _tools/link_status.json _tools/link_report.md _tools/link_report_brief.md _tools/doc_size_report.md page_data.js zipdata
           if git diff --cached --quiet; then
             echo "変化なし。コミットしない。"
           else
@@ -90,20 +102,33 @@ jobs:
           fi
 
       - name: 要対応ならIssueに書く
-        if: always() && steps.check.outputs.code != '0'
+        if: always() && (steps.check.outputs.code != '0' || steps.docsize.outputs.code != '0')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh label create linkcheck --description "リンク確認の自動報告" --color D93F0B 2>/dev/null || true
+
+          # 本文はリンク確認とサイズ突き合わせをまとめる
+          body=_tools/issue_body.md
+          cat _tools/link_report_brief.md > "$body"
+          if [ -f _tools/doc_size_report.md ]; then
+            printf '\n---\n\n' >> "$body"
+            cat _tools/doc_size_report.md >> "$body"
+          fi
+
+          # 件名は毎回そのときの中身にする。同じ件名が続くと通知が流されるため
+          # （2026-08 に5週続けて同じ件名で赤くなり、見落とされた）。
+          title=$(head -n 1 _tools/link_summary.txt 2>/dev/null)
+          [ -n "$title" ] || title="リンク確認：要対応の項目があります"
+
           num=$(gh issue list --label linkcheck --state open --limit 1 --json number --jq '.[0].number // empty')
           if [ -n "$num" ]; then
-            gh issue comment "$num" --body-file _tools/link_report_brief.md
-            echo "既存のIssue #$num に追記した"
+            gh issue edit "$num" --title "$title"
+            gh issue comment "$num" --body-file "$body"
+            echo "既存のIssue #$num に追記し、件名を更新した: $title"
           else
-            gh issue create \
-              --title "リンク確認：要対応の項目があります（$(date -u -d '+9 hours' '+%Y-%m-%d') 時点）" \
-              --label linkcheck \
-              --body-file _tools/link_report_brief.md
+            gh issue create --title "$title" --label linkcheck --body-file "$body"
+            echo "Issueを作成した: $title"
           fi
 
       - name: 判定を終了コードに反映する

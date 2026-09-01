@@ -4,3 +4,7 @@ _tools/live_contrast.json
 __pycache__/
 *.pyc
 _evidence_tmp.pdf
+
+# リンク確認の実行時生成物（ワークフロー内でのみ使う）
+_tools/issue_body.md
+_tools/link_summary.txt

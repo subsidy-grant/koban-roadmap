@@ -41,6 +41,7 @@ TOOLS = os.path.join(ROOT, "_tools")
 STATUS_PATH = os.path.join(TOOLS, "link_status.json")
 REPORT_PATH = os.path.join(TOOLS, "link_report.md")
 BRIEF_PATH = os.path.join(TOOLS, "link_report_brief.md")   # Issue本文用（正常分を省く）
+SUMMARY_PATH = os.path.join(TOOLS, "link_summary.txt")     # Issueの件名用（1行）
 
 # 実ブラウザ相当のUA＋こちらの素性。理由: chusho.meti.go.jp は WAF があり、
 # 素性だけのUA（koban-roadmap-linkcheck/1.0 単体）だと 403 を返す（2026-07-31 実測）。
@@ -366,6 +367,36 @@ NEEDS_FIX = {"dead", "regressed", "type_mismatch", "moved", "changed"}
 NEEDS_EYE = {"server_error", "blocked", "error"}
 
 
+def build_summary(verdicts, prev, stamp):
+    """Issueの件名に使う1行。件名だけで「何件が・いつから」分かるようにする。
+
+    通知メールの件名は GitHub 側が決めるため変えられないが、Issueの件名は変えられる。
+    2026-08 に週次が5回続けて赤くなった際、件名が毎回同じだったため5週間気づかれず、
+    通知は5回とも届いていたのに流されていた（1通はゴミ箱で未読のままだった）。
+    件数と最古の未解決日を件名に出して、見分けられるようにする。
+    """
+    urgent = [u for u, (v, _) in verdicts.items()
+              if v in ("dead", "regressed", "type_mismatch")]
+    warn = [u for u, (v, _) in verdicts.items() if v in ("moved", "changed")]
+    if not urgent and not warn:
+        return "リンク確認：要対応なし（%s 時点）" % stamp
+
+    parts = []
+    if urgent:
+        parts.append("要修正%d件" % len(urgent))
+    if warn:
+        parts.append("要確認%d件" % len(warn))
+
+    # 最後に開けていた日が最も古いものを「いつから未解決か」として出す
+    oldest = None
+    for u in urgent:
+        d = (prev.get(u) or {}).get("last_ok")
+        if d and (oldest is None or d < oldest):
+            oldest = d
+    tail = "／%s から未解決" % oldest.split(" ")[0] if oldest else ""
+    return "リンク確認：%s（%s 時点）%s" % ("・".join(parts), stamp, tail)
+
+
 def build_report(targets, results, verdicts, stamp, brief=False):
     groups = defaultdict(list)
     for u, (v, msg) in verdicts.items():
@@ -459,6 +490,9 @@ def main():
         f.write(build_report(targets, results, verdicts, stamp) + "\n")
     with open(BRIEF_PATH.replace(".md", suffix + ".md"), "w", encoding="utf-8") as f:
         f.write(build_report(targets, results, verdicts, stamp, brief=True) + "\n")
+    if not suffix:
+        with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
+            f.write(build_summary(verdicts, prev, stamp) + "\n")
 
     if not args.no_save:
         entries = dict(prev)
