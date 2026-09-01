@@ -1,29 +1,62 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-09-01 16:39**（JST）
+- 確認時刻：**2026-09-01 19:42**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🟠 中身が差し替わった可能性（最新版か確認） **2件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1161件**
+🔴 リンク切れ（要修正） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **11件**／✅ 変化なし **1151件**
 
-## 🟠 中身が差し替わった可能性（最新版か確認）
+## 🔴 リンク切れ（要修正）
 
-- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠）**
-  - https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
-  - サイズが 1157303 → 1157296 に変化（差し替えの可能性）
-- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル**
-  - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
-  - サイズが 12052751 → 12195230 に変化（差し替えの可能性）
+- **豊島区中小企業支援事業補助金・経営安定コース（豊島区）／補助金交付申請書一式**
+  - https://www.city.toshima.lg.jp/documents/3318/20260414144434.xlsx
+  - HTTP 404（ページが無い）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
-  - HTTP 403（自動アクセスを拒否。目視で確認が要る）
+  - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## ✅ 変化なし（1161件）
+## 🟡 接続できない（目視が要る）
+
+- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食店の未来を変える 自動化・省力化ガイドブック（補助対象事業はこれに沿った内容であることが必要）**
+  - https://jmac-foods.com/app/wp-content/uploads/2026/03/syoryokuka-3.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='jmac-foods.com', port=443): Max retries exceeded with url: /app/wp-content/uploads/2026/03/syo
+- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募パンフレット（2ページ・全体像とよくある質問）**
+  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E3%83%91%E3%83%B3%E3%83%95%E3%83%AC%E3%83%83%E3%83%88.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='jmac-foods.com', port=443): Max retries exceeded with url: /app/wp-content/uploads/2026/04/R7%
+- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／Q&Aセミナー資料（36ページ・補助額の例や事業の流れが図で分かる）**
+  - https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_QA%E3%82%BB%E3%83%9F%E3%83%8A%E3%83%BC%E8%B3%87%E6%96%99.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='jmac-foods.com', port=443): Max retries exceeded with url: /app/wp-content/uploads/2026/04/R7%
+- **飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／事務局（日本能率協会コンサルティング）ご案内ページ／（出典・参考リンク）**
+  - https://jmac-foods.com/news/2722/
+  - ConnectTimeout: HTTPSConnectionPool(host='jmac-foods.com', port=443): Max retries exceeded with url: /news/2722/ (Caused by ConnectTimeo
+- **観光地・観光産業における省力化投資補助事業（観光庁）／（出典・参考リンク）**
+  - https://kanko-jinzai.go.jp/
+  - ConnectTimeout: HTTPSConnectionPool(host='kanko-jinzai.go.jp', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutErro
+- **観光地・観光産業における省力化投資補助事業（観光庁）／資料ダウンロード（公式）**
+  - https://kanko-jinzai.go.jp/document/
+  - ConnectTimeout: HTTPSConnectionPool(host='kanko-jinzai.go.jp', port=443): Max retries exceeded with url: /document/ (Caused by ConnectTi
+- **観光地・観光産業における省力化投資補助事業（観光庁）／計画申請の手引き**
+  - https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_keikaku_tebiki.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='kanko-jinzai.go.jp', port=443): Max retries exceeded with url: /wp-content/uploads/2026/03/260
+- **観光地・観光産業における省力化投資補助事業（観光庁）／令和8年度実施 省力化投資補助事業 公募要領(第三版)**
+  - https://kanko-jinzai.go.jp/wp-content/uploads/2026/04/260430_guidelines.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='kanko-jinzai.go.jp', port=443): Max retries exceeded with url: /wp-content/uploads/2026/04/260
+- **中小企業ソフトウェア導入費等支援事業補助金（港区）／中小企業ソフトウェア導入費等支援事業補助金（港区）／港区立産業振興センター 公式ページ**
+  - https://minato-sansin.com/software/
+  - ConnectTimeout: HTTPSConnectionPool(host='minato-sansin.com', port=443): Max retries exceeded with url: /software/ (Caused by ConnectTim
+- **中小企業ソフトウェア導入費等支援事業補助金（港区）／提出書類確認シート**
+  - https://minato-sansin.com/wp-content/uploads/2026/04/★1-1-提出書類確認シート.docx
+  - ConnectTimeout: HTTPSConnectionPool(host='minato-sansin.com', port=443): Max retries exceeded with url: /wp-content/uploads/2026/04/%E2%
+- **中小企業ソフトウェア導入費等支援事業補助金（港区）／募集要項**
+  - https://minato-sansin.com/wp-content/uploads/2026/04/【要項】R7港区中小企業ソフトウェア導入費等支援事業補助金募集要項.pdf
+  - ConnectTimeout: HTTPSConnectionPool(host='minato-sansin.com', port=443): Max retries exceeded with url: /wp-content/uploads/2026/04/%E3%
+
+## ✅ 変化なし（1151件）
 
 <details><summary>一覧を開く</summary>
 
@@ -56,27 +89,22 @@
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／資料ダウンロード（公式） — https://it-shien.smrj.go.jp/download/
 - （出典・参考リンク） — https://it-shien.smrj.go.jp/download/grantdecision_list/
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付規程（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／請求・支払内訳シート — https://it-shien.smrj.go.jp/pdf/it2026_seikyushiharaiuchiwake_jisseki.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／申請様式一式 — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／交付要綱（令和8年4月1日～） — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf
 - デジタル化・データ利活用推進助成金（板橋区）／実施要領（令和8年度） — https://itabashi-kohsha.com/cms-data/file/common/令和8年度デジタル化・データ利活用推進助成金_実施要領（令和８年４月１日～）.pdf
 - デジタル化・データ利活用推進助成金（板橋区）／デジタル化・データ利活用推進助成金（板橋区）／板橋区産業振興公社 公式ページ — https://itabashi-kohsha.com/subsidies/hruq3mhmotj1aane.html
-- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食店の未来を変える 自動化・省力化ガイドブック（補助対象事業はこれに沿った内容であることが必要） — https://jmac-foods.com/app/wp-content/uploads/2026/03/syoryokuka-3.pdf
 - 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／実施規程・様式・別表（ZIP／交付申請と実施結果報告で使います） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%8E%A8%E9%80%B2%E7%B7%8A%E6%80%A5%E5%AF%BE%E7%AD%96%E4%BA%8B%E6%A5%AD_%E5%AE%9F%E6%96%BD%E8%A6%8F%E7%A8%8B%E3%80%81%E6%A7%98%E5%BC%8F%E3%80%81%E5%88%A5%E8%A1%A8.zip
 - 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募要領・様式一式（ZIP） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E8%A3%9C%E6%AD%A3-%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E8%A6%81%E9%A0%98%E3%80%81%E6%A7%98%E5%BC%8F%E4%B8%80%E5%BC%8F.zip
-- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／公募パンフレット（2ページ・全体像とよくある質問） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_%E5%85%AC%E5%8B%9F%E3%83%91%E3%83%B3%E3%83%95%E3%83%AC%E3%83%83%E3%83%88.pdf
-- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／Q&Aセミナー資料（36ページ・補助額の例や事業の流れが図で分かる） — https://jmac-foods.com/app/wp-content/uploads/2026/04/R7%E9%A3%B2%E9%A3%9F%E6%A5%AD%E5%8A%B4%E5%83%8D%E7%94%9F%E7%94%A3%E6%80%A7%E5%90%91%E4%B8%8A%E6%94%AF%E6%8F%B4%E8%A3%9C%E5%8A%A9%E9%87%91_QA%E3%82%BB%E3%83%9F%E3%83%8A%E3%83%BC%E8%B3%87%E6%96%99.pdf
-- 飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／飲食業労働生産性向上支援補助金（農林水産省 令和7年度補正）／事務局（日本能率協会コンサルティング）ご案内ページ／（出典・参考リンク） — https://jmac-foods.com/news/2722/
-- 観光地・観光産業における省力化投資補助事業（観光庁）／（出典・参考リンク） — https://kanko-jinzai.go.jp/
-- 観光地・観光産業における省力化投資補助事業（観光庁）／資料ダウンロード（公式） — https://kanko-jinzai.go.jp/document/
 - 観光地・観光産業における省力化投資補助事業（観光庁）／省力化投資に係るアンケート（下書き用フォーマット） — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260306_keikaku_ank.xlsx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／補助金振込先口座の変更届出 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_furikomi_henkou.xlsx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／交付申請取下げ届出書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_jisshi_torisage.docx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／設備等導入後の写真 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_kanryou_pic.xlsx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／設備等導入前の写真 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_keikaku_pic.xlsx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／業者等選定理由書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_keikaku_sentei.docx
-- 観光地・観光産業における省力化投資補助事業（観光庁）／計画申請の手引き — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_keikaku_tebiki.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／補助事業者と補助金振込先口座名義が異なる理由書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_koufu_meigi.docx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／プライバシーポリシー(個人情報の取り扱いについて) — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_privacy.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／銀行振込以外の支払いに係る理由書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/03/260318_shiharai.docx
@@ -85,7 +113,6 @@
 - 観光地・観光産業における省力化投資補助事業（観光庁）／FAQ(よくあるご質問) — https://kanko-jinzai.go.jp/wp-content/uploads/2026/04/20260409_faq.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／ベンダー向けチェックシート — https://kanko-jinzai.go.jp/wp-content/uploads/2026/04/260402_benda_check.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／「中小企業省力化投資補助金」_補助対象外リスト — https://kanko-jinzai.go.jp/wp-content/uploads/2026/04/260430_chusho_list.pdf
-- 観光地・観光産業における省力化投資補助事業（観光庁）／令和8年度実施 省力化投資補助事業 公募要領(第三版) — https://kanko-jinzai.go.jp/wp-content/uploads/2026/04/260430_guidelines.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／取得財産等管理台帳 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_daichou.xlsx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／事故報告書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_jisshi_jiko.docx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／実施状況報告書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_jisshi_joukyou.docx
@@ -96,13 +123,10 @@
 - 観光地・観光産業における省力化投資補助事業（観光庁）／事業実施・完了実績報告マニュアル — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_jisshi_manual.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／交付規程 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_koufu_kitei.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／交付申請のシステムマニュアル — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_koufu_manual.pdf
-- 中小企業ソフトウェア導入費等支援事業補助金（港区）／中小企業ソフトウェア導入費等支援事業補助金（港区）／港区立産業振興センター 公式ページ — https://minato-sansin.com/software/
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第2号様式 誓約書兼同意書 — https://minato-sansin.com/wp-content/uploads/2025/04/データ②-1-【郵送】第2号様式　誓約書兼同意書.docx
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第3号様式 収支計画書（記入例つき） — https://minato-sansin.com/wp-content/uploads/2026/04/1-3-第3号様式-収支計画書-※記入例含む.xlsx
-- 中小企業ソフトウェア導入費等支援事業補助金（港区）／提出書類確認シート — https://minato-sansin.com/wp-content/uploads/2026/04/★1-1-提出書類確認シート.docx
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第1号様式 記入例（個人用） — https://minato-sansin.com/wp-content/uploads/2026/04/★【記入例・個人】第1号様式（交付申請書）.pdf
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第1号様式 記入例（法人用） — https://minato-sansin.com/wp-content/uploads/2026/04/★【記入例・法人】第1号様式（交付申請書）.pdf
-- 中小企業ソフトウェア導入費等支援事業補助金（港区）／募集要項 — https://minato-sansin.com/wp-content/uploads/2026/04/【要項】R7港区中小企業ソフトウェア導入費等支援事業補助金募集要項.pdf
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第11号様式 記入例（個人用） — https://minato-sansin.com/wp-content/uploads/2026/04/【記入例・個人】第11号様式（実績報告書）.docx-1.pdf
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第11号様式 記入例（法人用） — https://minato-sansin.com/wp-content/uploads/2026/04/【記入例・法人】第11号様式（実績報告書）.docx-1.pdf
 - 中小企業ソフトウェア導入費等支援事業補助金（港区）／第1号様式 交付申請書 — https://minato-sansin.com/wp-content/uploads/2026/04/データ①-1-【郵送】第1号様式-交付申請書（最新）-1.docx
@@ -874,7 +898,6 @@
 - 中野区経営力強化支援事業補助金（中野区）／資料「生成AIの使用に係る経費計算方法」 — https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.files/seiseiAIkeihikeisan.pdf
 - 中野区経営力強化支援事業補助金（中野区）／中野区経営力強化支援事業補助金（中野区）／中野区 公式ページ — https://www.city.tokyo-nakano.lg.jp/jigyosha/sangyoshinko/josei/chusho_r8keieiryoku.html
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／豊島区中小企業支援事業補助金・経営安定コース（豊島区）／豊島区 公式ページ — https://www.city.toshima.lg.jp/584/machizukuri/sangyo/kigyo/019174.html
-- 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／補助金交付申請書一式 — https://www.city.toshima.lg.jp/documents/3318/20260414144434.xlsx
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／チラシ — https://www.city.toshima.lg.jp/documents/3318/20260415125508.pdf
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／申請要領 — https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
 - 大和市魅力ある個店支援事業／大和市魅力ある個店支援事業／大和市 公式ページ — https://www.city.yamato.lg.jp/gyosei/soshik/40/sangyo/shogyo/shien_seibi_todokede/23892.html
