@@ -781,7 +781,7 @@
           { name: 'チラシ', url: 'https://www.city.toshima.lg.jp/documents/3318/20260415125508.pdf', type: 'PDF', size: '936KB' }
         ] },
         { phase: '交付申請', items: [
-          { name: '補助金交付申請書一式', url: 'https://www.city.toshima.lg.jp/documents/3318/20260414144434.xlsx', type: 'Excel', size: '44KB' }
+          { name: '補助金交付申請書一式', url: 'https://www.city.toshima.lg.jp/documents/3318/20260901161020.xlsx', type: 'Excel', size: '45KB' }
         ] }
       ]
     },
