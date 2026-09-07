@@ -1,12 +1,27 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-09-01 19:53**（JST）
+- 確認時刻：**2026-09-07 11:14**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🟡 自動確認を拒否（目視が要る） **1件**／🔵 新規（今回から監視） **1件**／✅ 変化なし **1162件**
+🔴 リンク切れ（要修正） **2件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **1件**／✅ 変化なし **1159件**
+
+## 🔴 リンク切れ（要修正）
+
+- **戸田市DX推進補助金／&nbsp;経費明細表**
+  - https://www.city.toda.saitama.jp/uploaded/attachment/73668.xlsx
+  - HTTP 404（ページが無い）
+- **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
+  - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
+  - HTTP 404（ページが無い）
+
+## 🔴 ファイルの種類が変わった（要確認）
+
+- **観光地・観光産業における省力化投資補助事業（観光庁）／特定施設一覧**
+  - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
+  - PDF のはずが Content-Type が text/html
 
 ## 🟡 自動確認を拒否（目視が要る）
 
@@ -14,13 +29,13 @@
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## 🔵 新規（今回から監視）
+## 🟡 接続できない（目視が要る）
 
-- **豊島区中小企業支援事業補助金・経営安定コース（豊島区）／補助金交付申請書一式**
-  - https://www.city.toshima.lg.jp/documents/3318/20260901161020.xlsx
-  - 今回から確認対象
+- **（出典・参考リンク）**
+  - https://www.sme-support.co.jp/column/p1352/
+  - ConnectTimeout: HTTPSConnectionPool(host='www.sme-support.co.jp', port=443): Max retries exceeded with url: /column/p1352/ (Caused by Co
 
-## ✅ 変化なし（1162件）
+## ✅ 変化なし（1159件）
 
 <details><summary>一覧を開く</summary>
 
@@ -90,7 +105,6 @@
 - 観光地・観光産業における省力化投資補助事業（観光庁）／実施状況報告書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_jisshi_joukyou.docx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／財産処分承認申請書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_shobun.docx
 - 観光地・観光産業における省力化投資補助事業（観光庁）／消費税及び地方消費税の額の確定に伴う報告書 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/260624_zeihoukoku.docx
-- 観光地・観光産業における省力化投資補助事業（観光庁）／特定施設一覧 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／変更交付申請のシステムマニュアル — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_henkou_manual.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／事業実施・完了実績報告マニュアル — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_jisshi_manual.pdf
 - 観光地・観光産業における省力化投資補助事業（観光庁）／交付規程 — https://kanko-jinzai.go.jp/wp-content/uploads/2026/07/260702_koufu_kitei.pdf
@@ -822,7 +836,6 @@
 - 戸田市DX推進補助金／補助事業等実績報告書内訳調書 — https://www.city.toda.saitama.jp/uploaded/attachment/54854.docx
 - 戸田市DX推進補助金／1.交付申請時 記入例 — https://www.city.toda.saitama.jp/uploaded/attachment/66826.pdf
 - 戸田市DX推進補助金／1.交付申請時 記入例 — https://www.city.toda.saitama.jp/uploaded/attachment/73666.pdf
-- 戸田市DX推進補助金／&nbsp;経費明細表 — https://www.city.toda.saitama.jp/uploaded/attachment/73668.xlsx
 - 戸田市DX推進補助金／経営計画書兼補助対象事業計画書、経費明細表 — https://www.city.toda.saitama.jp/uploaded/attachment/73669.pdf
 - 戸田市DX推進補助金／2026年度（令和8年度）DX推進補助金チラシ — https://www.city.toda.saitama.jp/uploaded/attachment/78757.pdf
 - 戸田市DX推進補助金／経営計画書兼補助対象事業計画書 — https://www.city.toda.saitama.jp/uploaded/attachment/79249.doc
@@ -875,6 +888,7 @@
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／豊島区中小企業支援事業補助金・経営安定コース（豊島区）／豊島区 公式ページ — https://www.city.toshima.lg.jp/584/machizukuri/sangyo/kigyo/019174.html
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／チラシ — https://www.city.toshima.lg.jp/documents/3318/20260415125508.pdf
 - 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／申請要領 — https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
+- 豊島区中小企業支援事業補助金・経営安定コース（豊島区）／補助金交付申請書一式 — https://www.city.toshima.lg.jp/documents/3318/20260901161020.xlsx
 - 大和市魅力ある個店支援事業／大和市魅力ある個店支援事業／大和市 公式ページ — https://www.city.yamato.lg.jp/gyosei/soshik/40/sangyo/shogyo/shien_seibi_todokede/23892.html
 - 大和市魅力ある個店支援事業／補助事業実績報告書(規則第7号様式) — https://www.city.yamato.lg.jp/material/files/group/23/hojojigyoujissekihoukokusho.doc
 - 大和市魅力ある個店支援事業／補助事業収支決算書(規則第8号様式) — https://www.city.yamato.lg.jp/material/files/group/23/hojojigyoushuushikessannsho.doc
@@ -994,7 +1008,6 @@
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高総利益率） — https://www.mhlw.go.jp/content/11200000/001692000.docx
 - 業務改善助成金（2026年度／50・70・90円コース）／物価高騰等要件に係る申出書（売上高営業利益率） — https://www.mhlw.go.jp/content/11200000/001692001.docx
 - （出典・参考リンク） — https://www.mhlw.go.jp/content/11200000/001693416.pdf
-- 業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール — https://www.mhlw.go.jp/content/11200000/001733987.xlsx
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-2号 事業所確認票 — https://www.mhlw.go.jp/content/11600000/001469245.xlsx
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／チェックリスト（計画届関係） — https://www.mhlw.go.jp/content/11600000/001678209.xlsx
 - 特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／様式第3号 第1期共通申請書 — https://www.mhlw.go.jp/content/11600000/001679117.xlsx
@@ -1140,7 +1153,6 @@
 - とちぎ賃上げ環境整備促進補助金／（様式第6号）財産処分承認申請書 — https://www.pref.tochigi.lg.jp/f06/documents/y6_zaisansyobunsyouninshinseisyo_chinagekankyouseibihojokin.docx
 - とちぎ賃上げ環境整備促進補助金／（様式第7号）状況報告書 — https://www.pref.tochigi.lg.jp/f06/documents/y7_joukyouhoukokusyo_chinagekankyouseibihojokin.docx
 - （出典・参考リンク） — https://www.psrn.jp/topics/detail.php?id=39948
-- （出典・参考リンク） — https://www.sme-support.co.jp/column/p1352/
 - さいたま市DX推進補助金／さいたま市DX補助金 募集概要 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinflyer.pdf
 - さいたま市DX推進補助金／さいたま市DX推進補助金 公募要領 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinkouboyouryo.pdf
 - さいたま市DX推進補助金／さいたま市DX推進補助金交付申請書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/zaidan-dx-Subsidy-shinseisyo.docx
