@@ -1,11 +1,15 @@
 # 掲載サイズと実物の突き合わせ
 
 - 対象：**1016件**（size 表記のある書類）
-- 実測が台帳に無く判定できないもの：**2件**
-- ズレ：**1件**
+- 実測が台帳に無く判定できないもの：**3件**
+- ズレ：**3件**
 
 ## 表記が実物と違うもの
 
+- 掲載 **987KB** → 実物 **4KB**
+  - https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf
+- 掲載 **1.1MB** → 実物 **888KB**
+  - https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
 - 掲載 **24KB** → 実物 **16KB**
   - https://www.city.toda.saitama.jp/uploaded/attachment/73668.xlsx
 

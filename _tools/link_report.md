@@ -1,20 +1,26 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-09-07 11:14**（JST）
+- 確認時刻：**2026-09-14 11:44**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **2件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **1件**／✅ 変化なし **1159件**
+🔴 リンク切れ（要修正） **4件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1157件**
 
 ## 🔴 リンク切れ（要修正）
 
+- **葛飾区デジタル化支援事業費補助金（葛飾区）／デジタル化支援事業費補助金のご案内**
+  - https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf
+  - HTTP 404（ページが無い）
 - **戸田市DX推進補助金／&nbsp;経費明細表**
   - https://www.city.toda.saitama.jp/uploaded/attachment/73668.xlsx
   - HTTP 404（ページが無い）
 - **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
   - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
+  - HTTP 404（ページが無い）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／よくある質問（FAQ）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8gyoumu_kaizen_faq.xlsx
   - HTTP 404（ページが無い）
 
 ## 🔴 ファイルの種類が変わった（要確認）
@@ -23,19 +29,19 @@
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
 
+## 🟠 中身が差し替わった可能性（最新版か確認）
+
+- **川崎市中小企業成長環境支援補助金／令和8年度中小企業成長環境支援補助金募集要領**
+  - https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
+  - サイズが 1202704 → 909022 に変化（差し替えの可能性）
+
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## 🟡 接続できない（目視が要る）
-
-- **（出典・参考リンク）**
-  - https://www.sme-support.co.jp/column/p1352/
-  - ConnectTimeout: HTTPSConnectionPool(host='www.sme-support.co.jp', port=443): Max retries exceeded with url: /column/p1352/ (Caused by Co
-
-## ✅ 変化なし（1159件）
+## ✅ 変化なし（1157件）
 
 <details><summary>一覧を開く</summary>
 
@@ -549,7 +555,6 @@
 - 鹿沼市デジタル化推進事業補助金／補助金等交付請求書 — https://www.city.kanuma.tochigi.jp/manage/contents/upload/667ba824642f3.docx
 - 鹿沼市デジタル化推進事業補助金／同意書兼宣誓書 — https://www.city.kanuma.tochigi.jp/manage/contents/upload/674fbe245ddec.docx
 - 鹿沼市デジタル化推進事業補助金／デジタル化推進事業補助金交付要領 — https://www.city.kanuma.tochigi.jp/manage/contents/upload/69c36453d3fc4.pdf
-- 葛飾区デジタル化支援事業費補助金（葛飾区）／デジタル化支援事業費補助金のご案内 — https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf
 - 葛飾区デジタル化支援事業費補助金（葛飾区）／実績報告書（第6号様式） — https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitaljisseki2.doc
 - 葛飾区デジタル化支援事業費補助金（葛飾区）／補助金請求書（第9号様式） — https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalseikyuu.doc
 - 葛飾区デジタル化支援事業費補助金（葛飾区）／交付申請書（第1号様式）・事業計画書（第2号様式）・企業概要（第3号様式） — https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalshinsei.doc
@@ -585,7 +590,6 @@
 - 川崎市中小企業成長環境支援補助金／賃上げ方針を表明したことを証する書面（第7号様式） — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/tinagesyoumei.docx
 - 川崎市中小企業成長環境支援補助金／チェックシート — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/tyekkusi-tot.xlsx
 - 川崎市中小企業成長環境支援補助金／川崎市中小企業成長環境支援補助金交付要綱 — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youkou.pdf
-- 川崎市中小企業成長環境支援補助金／令和8年度中小企業成長環境支援補助金募集要領 — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
 - 川崎市中小企業成長環境支援補助金／事業計画変更（中止）承認申請書（第9号様式） — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/zigyoukeikakuhennkousyouninnsinnseisyo.doc
 - 川崎市中小企業成長環境支援補助金／確認書（第6号様式） — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/zigyoukeikakukakuninnsyo.docx
 - 川崎市中小企業成長環境支援補助金／事業実績報告書（第11号様式） — https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/zigyouzisseekihoukokusyo.docx
@@ -1153,6 +1157,7 @@
 - とちぎ賃上げ環境整備促進補助金／（様式第6号）財産処分承認申請書 — https://www.pref.tochigi.lg.jp/f06/documents/y6_zaisansyobunsyouninshinseisyo_chinagekankyouseibihojokin.docx
 - とちぎ賃上げ環境整備促進補助金／（様式第7号）状況報告書 — https://www.pref.tochigi.lg.jp/f06/documents/y7_joukyouhoukokusyo_chinagekankyouseibihojokin.docx
 - （出典・参考リンク） — https://www.psrn.jp/topics/detail.php?id=39948
+- （出典・参考リンク） — https://www.sme-support.co.jp/column/p1352/
 - さいたま市DX推進補助金／さいたま市DX補助金 募集概要 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinflyer.pdf
 - さいたま市DX推進補助金／さいたま市DX推進補助金 公募要領 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinkouboyouryo.pdf
 - さいたま市DX推進補助金／さいたま市DX推進補助金交付申請書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/zaidan-dx-Subsidy-shinseisyo.docx
@@ -1168,7 +1173,6 @@
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／小規模企業者に該当することの確認書 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／ツール導入にあたってのチェックシート — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digitaltool.xlsx
 - 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／よくある質問（FAQ） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8gyoumu_kaizen_faq.xlsx
 - 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／同意書（代理申請用） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_douisho.docx
 - 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／募集要項 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf
 - 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／電子申請マニュアル — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_manual_denshi_02.pdf
