@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1544c4">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="リスキリング期限管理">
+<title>リスキリング助成金 期限管理｜補助金活用 業務改善ロードマップ</title>
+<meta name="description" content="人材開発支援助成金（事業展開等リスキリング支援コース／定額制サービスによる訓練）の計画届・支給申請の期限を、複数社分まとめて自動計算します。">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDPMincho&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* 配色・書体・強調規則はサイト共通のデザインシステム（design.md 案B）に合わせる。
+     トークンの値は consult.html / program.html と同一。新規トークンは足さない。 */
+  :root {
+    --paper: #e8e0d2; --paper-raised: #ffffff; --ink: #1b1a17; --ink-soft: #4f4a43;
+    --ink-faint: #5d574f; --accent: #1544c4; --accent-soft: #a9c1f3; --accent-wash: #e7eefc;
+    --on-accent: #ffffff; --sage: #0a6d50; --sage-wash: #d6f0e4; --rust: #c93c07;
+    --rust-wash: #fde3d4; --line: #cdc0aa; --shadow: rgba(60, 46, 26, 0.16);
+    --sage-ink: #075740; --rust-ink: #a02f05;
+    --shadow-card: 0 1px 2px rgba(60,46,26,0.10), 0 4px 12px rgba(60,46,26,0.10);
+    --shadow-card-strong: 0 2px 4px rgba(60,46,26,0.12), 0 10px 26px rgba(60,46,26,0.16);
+    --paper-sunken: #d0c2a8; --line-strong: #b3a48b;
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --shadow-btn: 0 2px 4px var(--shadow);
+    --font-body: "BIZ UDPGothic","BIZ UDGothic","Noto Sans JP","Yu Gothic Medium","Yu Gothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+    --font-display: "BIZ UDPMincho","BIZ UDMincho","Yu Mincho","YuMincho","Hiragino Mincho ProN",serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0e0c0a; --paper-raised: #2d2720; --ink: #f4eee3; --ink-soft: #cabfad;
+      --ink-faint: #ab9f8c; --accent: #8fb2ff; --accent-soft: #26385e; --accent-wash: #142640;
+      --on-accent: #08121e; --sage: #3fd6ac; --sage-wash: #0f2b24; --rust: #ff8a5c;
+      --rust-wash: #33200f; --sage-ink: #3fd6ac; --rust-ink: #ff8a5c;
+      --line: #385578; --shadow: rgba(0, 0, 0, 0.5);
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.35);
+      --shadow-card-strong: 0 2px 4px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);
+      --paper-sunken: #1a1712; --line-strong: #6d5e49;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); line-height: 1.8;
+    font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 1.8rem 1.1rem 4rem; }
+  a { color: var(--accent); }
+  h1 { font-size: 1.4rem; margin: 0 0 .3rem; line-height: 1.5; }
+  h2 { font-size: 1.1rem; margin: 2.2rem 0 .8rem; padding-bottom: .35rem;
+       border-bottom: 2px solid var(--line-strong); }
+  h3 { font-size: 1rem; margin: 1.2rem 0 .5rem; }
+  .lede { color: var(--ink-soft); margin: 0 0 1.2rem; font-size: .95rem; }
+
+  /* 出典バナー：外部の状態を断定しないための表示。確認日時を必ず出す */
+  .srcbar {
+    border: 1px solid var(--line); background: var(--accent-wash);
+    border-radius: var(--radius-md); padding: .8rem 1rem; font-size: .85rem;
+    color: var(--ink-soft); margin-bottom: 1.4rem; box-shadow: var(--shadow-card);
+  }
+  .srcbar b { color: var(--ink); }
+  .srcbar .warn { color: var(--rust-ink); font-weight: 700; }
+
+  .card {
+    background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 1rem 1.05rem; margin-bottom: 1rem;
+    box-shadow: var(--shadow-card);
+  }
+  .card.sunken { background: var(--paper-sunken); }
+
+  label { display: block; font-size: .85rem; font-weight: 700; margin: .6rem 0 .2rem; }
+  input[type="text"], input[type="date"], input[type="number"], select {
+    width: 100%; padding: .55rem .6rem; font-size: 1rem; font-family: inherit;
+    color: var(--ink); background: var(--paper-raised);
+    border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 .8rem; }
+  @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+  .hint { font-size: .78rem; color: var(--ink-faint); font-style: italic; margin: .15rem 0 0; }
+
+  .btn {
+    display: inline-block; padding: .55rem 1.1rem; font-size: .95rem; font-weight: 700;
+    font-family: inherit; color: var(--on-accent); background: var(--accent);
+    border: 1px solid var(--accent); border-radius: var(--radius-md); cursor: pointer;
+    box-shadow: var(--shadow-btn); transition: transform .08s ease, filter .08s ease;
+  }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn.quiet { background: transparent; color: var(--ink-soft); border-color: var(--line-strong);
+               box-shadow: none; font-weight: 400; padding: .35rem .7rem; font-size: .85rem; }
+  .btn.danger { background: transparent; color: var(--rust-ink); border-color: var(--rust); }
+  .btn:active { transform: scale(.97); filter: brightness(.95); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+
+  /* 期限の行。強調は「色＋明朝＋サイズ」の複数軸（design.md 案B） */
+  .dl { border: 1px solid var(--line); border-radius: var(--radius-md);
+        padding: .6rem .75rem; margin: .5rem 0; box-shadow: var(--shadow-card); }
+  .dl.key { background: var(--accent-wash); }
+  .dl.due { background: var(--rust-wash); }
+  .dl .k { font-size: .82rem; font-weight: 700; color: var(--ink-soft); display: block; }
+  .dl.key .k { color: var(--accent); }
+  .dl.due .k { color: var(--rust-ink); }
+  .dl .v { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem;
+           line-height: 1.4; display: block; }
+  .dl.key .v { color: var(--accent); }
+  .dl.due .v { color: var(--rust-ink); }
+  .dl .sub { font-size: .8rem; color: var(--ink-faint); font-style: italic; }
+
+  .rest { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+  .st-over { color: var(--rust-ink); }
+  .st-soon { color: var(--rust-ink); }
+  .st-near { color: var(--accent); }
+  .st-ok   { color: var(--sage-ink); }
+  .st-done { color: var(--ink-faint); }
+
+  .pill { display: inline-block; padding: .1rem .55rem; border-radius: 100px;
+          font-size: .75rem; font-weight: 700; border: 1px solid transparent; }
+  .pill.a { background: var(--accent-wash); color: var(--accent); border-color: var(--accent-soft); }
+  .pill.r { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust); }
+  .pill.s { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage); }
+  .pill.q { background: var(--paper-sunken); color: var(--ink-soft); border-color: var(--line-strong); }
+
+  .co-head { display: flex; justify-content: space-between; align-items: flex-start; gap: .6rem;
+             flex-wrap: wrap; margin-bottom: .4rem; }
+  .co-name { font-size: 1.12rem; font-weight: 700; margin: 0; }
+  .co-meta { font-size: .8rem; color: var(--ink-faint); }
+
+  .seg { border: 1px solid var(--line); border-radius: var(--radius-md);
+         padding: .7rem .8rem; margin-top: .7rem; background: var(--paper-raised); }
+  .seg-t { font-size: .85rem; font-weight: 700; color: var(--ink-soft); margin: 0 0 .3rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th, td { border: 1px solid var(--line); padding: .4rem .5rem; text-align: left;
+           vertical-align: top; }
+  th { background: var(--paper-sunken); font-weight: 700; }
+  td.n { white-space: nowrap; }
+
+  .tl-month { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+              margin: 1.1rem 0 .3rem; color: var(--ink-soft); }
+  .tl-row { display: grid; grid-template-columns: 5.6rem 1fr auto; gap: .5rem;
+            padding: .4rem .2rem; border-bottom: 1px solid var(--line); align-items: baseline; }
+  @media (max-width: 560px) { .tl-row { grid-template-columns: 4.6rem 1fr; }
+                              .tl-row .tl-rest { grid-column: 2; } }
+  .tl-date { font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
+  .tl-what { font-size: .9rem; }
+  .tl-co { font-size: .78rem; color: var(--ink-faint); }
+  .tl-rest { font-size: .82rem; white-space: nowrap; }
+  .tl-hard .tl-what { font-weight: 700; }
+
+  details.ck { margin-top: .7rem; border: 1px solid var(--line); border-radius: var(--radius-md);
+               background: var(--paper-raised); }
+  details.ck > summary { cursor: pointer; padding: .55rem .8rem; font-size: .88rem;
+                         font-weight: 700; list-style: none; }
+  details.ck > summary::-webkit-details-marker { display: none; }
+  details.ck > summary::before { content: "▸ "; color: var(--ink-faint); }
+  details.ck[open] > summary::before { content: "▾ "; }
+  .ck-body { padding: 0 .8rem .7rem; }
+  .ck-phase { font-size: .82rem; font-weight: 700; color: var(--accent);
+              margin: .7rem 0 .25rem; }
+  .ck-item { display: flex; gap: .45rem; align-items: flex-start; font-size: .87rem;
+             padding: .12rem 0; line-height: 1.6; }
+  .ck-item input { margin-top: .42rem; flex: none; width: 1rem; height: 1rem; }
+  .ck-item.on span { color: var(--ink-faint); text-decoration: line-through; }
+  .bar { height: 7px; background: var(--paper-sunken); border-radius: 100px; overflow: hidden;
+         border: 1px solid var(--line); }
+  .bar > i { display: block; height: 100%; background: var(--sage); }
+
+  .empty { color: var(--ink-faint); font-style: italic; padding: 1.2rem 0; }
+  .trash { font-size: .85rem; }
+  .trash li { margin: .3rem 0; }
+
+  .foot { margin-top: 2.5rem; font-size: .8rem; color: var(--ink-faint); line-height: 1.8; }
+
+  @media print {
+    body { background: #fff; }
+    .noprint { display: none !important; }
+    main { max-width: none; padding: 0; }
+    .card { box-shadow: none; break-inside: avoid; }
+    details.ck { break-inside: avoid; }
+    details.ck > summary { display: none; }
+    .ck-body { padding: 0; }
+    @page { size: A4; margin: 14mm; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>リスキリング助成金　期限管理（複数社まとめて）</h1>
+<p class="lede">人材開発支援助成金／事業展開等リスキリング支援コース【定額制サービスによる訓練】。
+契約開始日を入れると、計画届の提出期限・支給申請期限・逆算のマイルストーンを自動で計算します。</p>
+
+<div class="srcbar">
+  <b>この画面の期限ルールの出所</b>：本人が撮影した紙資料「計画書提出から支給申請まで 段取りガイド&amp;チェックリスト」
+  （自称根拠＝厚生労働省 詳細パンフレット・支給要項 R8.5.14版）を 2026-09-15 に読み取ったもの。<br>
+  <span class="warn">厚労省の一次情報とはまだ突合していません。</span>
+  実際の提出前に、必ず管轄の都道府県労働局またはハローワークで最新の支給要領・パンフレットを確認してください。
+  入力したデータはこの端末のブラウザ内にだけ保存され、どこにも送信されません。
+</div>
+
+<h2 class="noprint">会社を追加する</h2>
+<div class="card noprint">
+  <div class="grid2">
+    <div>
+      <label for="f-name">会社名（必須）</label>
+      <input type="text" id="f-name" placeholder="例）株式会社○○" autocomplete="organization">
+    </div>
+    <div>
+      <label for="f-bureau">管轄の都道府県労働局</label>
+      <input type="text" id="f-bureau" placeholder="例）東京労働局">
+    </div>
+    <div>
+      <label for="f-start">定額制サービスの契約開始日（必須）</label>
+      <input type="date" id="f-start">
+      <p class="hint">＝訓練の実施期間の初日。ここから全期限が決まります。</p>
+    </div>
+    <div>
+      <label for="f-end">契約終了日</label>
+      <input type="date" id="f-end">
+      <p class="hint">空欄なら「開始日から1年間」として計算します。</p>
+    </div>
+    <div>
+      <label for="f-service">定額制サービス名</label>
+      <input type="text" id="f-service" placeholder="例）○○ラーニング 年間プラン">
+    </div>
+    <div>
+      <label for="f-n">受講予定者数</label>
+      <input type="number" id="f-n" min="0" step="1" placeholder="例）12">
+      <p class="hint">計画届に記載した人数。あとから追加はできません。</p>
+    </div>
+    <div>
+      <label for="f-size">企業区分</label>
+      <select id="f-size">
+        <option value="sme">中小企業</option>
+        <option value="large">大企業</option>
+      </select>
+      <p class="hint">経費助成率の目安表示にのみ使います。</p>
+    </div>
+    <div>
+      <label for="f-fee">年間の受講料（税抜・円）</label>
+      <input type="number" id="f-fee" min="0" step="1" placeholder="例）600000">
+      <p class="hint">概算の目安表示にのみ使います。上限額は反映していません。</p>
+    </div>
+  </div>
+  <div class="btnrow" style="margin-top:1rem">
+    <button class="btn" id="btn-add">この内容で追加する</button>
+    <button class="btn quiet" id="btn-clear">入力をクリア</button>
+  </div>
+  <p class="hint" id="addErr" style="color:var(--rust-ink);font-style:normal;font-weight:700"></p>
+</div>
+
+<h2>各社の期限</h2>
+<div class="btnrow noprint" style="margin-bottom:.8rem">
+  <button class="btn quiet" id="btn-print">この画面を印刷する</button>
+  <button class="btn quiet" id="btn-csv">CSVで書き出す</button>
+  <button class="btn quiet" id="btn-ics">カレンダー（.ics）で書き出す</button>
+  <button class="btn quiet" id="btn-json">バックアップを保存</button>
+  <button class="btn quiet" id="btn-load">バックアップを読み込む</button>
+  <input type="file" id="f-json" accept="application/json,.json" hidden>
+</div>
+<div id="list"></div>
+
+<h2>期限逆算カレンダー（全社まとめて時系列）</h2>
+<p class="hint" style="margin-top:-.4rem">★が付いた行は、過ぎると申請できなくなる厳守期限です。</p>
+<div id="timeline"></div>
+
+<div id="trashWrap" class="noprint"></div>
+
+<div class="foot">
+  <p><b>計算のしかた</b>（この画面が使っている規則）</p>
+  <ul>
+    <li>計画届の提出期限＝契約開始日の<b>1か月前の同じ日</b>（例：4/1開始→3/1）。同じ日が無い月は<b>その月の末日</b>に丸めています。<span class="pill q">要確認</span>（末日の扱いは一次情報で未確認）</li>
+    <li>支給申請の期限＝訓練終了日の翌日から2か月以内＝<b>訓練終了日の2か月後の同じ日</b>（例：3/31終了→5/31）。同じ日が無い月は末日に丸めています。</li>
+    <li>契約期間が1年を超える場合は、開始日から1年ごとに区切って、区切りごとに申請期限を出しています。2年目以降に計画届が別途必要かは<span class="pill q">要確認</span>です。</li>
+    <li>郵送は到着日が提出日になります。期限当日の消印では間に合いません。</li>
+  </ul>
+  <p>金額の目安表示は経費助成率（中小75%／大企業60%）を掛けただけのもので、<b>上限額・加算・対象外講座の除外を反映していません</b>。実際の支給額とは異なります。</p>
+</div>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'koban.reskilling.v1';
+  var state = { companies: [], trash: [] };
+
+  /* ---------- 日付ユーティリティ ---------- */
+  // すべて「日付だけ」を扱う。タイムゾーンで日がずれないよう、文字列とUTC正午で往復する。
+  function parseYmd(s) {
+    if (!s) return null;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return null;
+    var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12, 0, 0));
+    if (isNaN(d.getTime())) return null;
+    return d;
+  }
+  function ymd(d) {
+    if (!d) return '';
+    return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate());
+  }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function addDays(d, n) {
+    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + n, 12));
+  }
+  // 応当日が無い月は末日に丸める（例：3/31の1か月前→2/28）。丸めたかどうかも返す。
+  function addMonths(d, n) {
+    var y = d.getUTCFullYear(), m = d.getUTCMonth() + n, day = d.getUTCDate();
+    var last = new Date(Date.UTC(y, m + 1, 0, 12)).getUTCDate();
+    var clamped = day > last;
+    return { d: new Date(Date.UTC(y, m, clamped ? last : day, 12)), clamped: clamped };
+  }
+  var WD = ['日', '月', '火', '水', '木', '金', '土'];
+  function fmt(d) {
+    if (!d) return '—';
+    return d.getUTCFullYear() + '年' + (d.getUTCMonth() + 1) + '月' + d.getUTCDate() + '日'
+         + '（' + WD[d.getUTCDay()] + '）';
+  }
+  function fmtShort(d) {
+    return (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '（' + WD[d.getUTCDay()] + '）';
+  }
+  function today() {
+    var n = new Date();
+    return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate(), 12));
+  }
+  function diffDays(a, b) { return Math.round((b - a) / 86400000); }
+
+  /* ---------- 期限の算出 ---------- */
+  function compute(co) {
+    var start = parseYmd(co.start);
+    if (!start) return null;
+    var end = parseYmd(co.end);
+    var oneYearEnd = addDays(addMonths(start, 12).d, -1); // 開始日から1年間の最終日
+    if (!end || end > oneYearEnd) { /* 未入力／1年超は下でセグメント分割 */ }
+    var realEnd = end || oneYearEnd;
+
+    var plan = addMonths(start, -1);
+
+    // 契約期間を1年ごとに区切る（1年を超える契約は1年ごとに申請）
+    var segs = [], segStart = start, i = 0;
+    while (segStart <= realEnd && i < 12) {
+      var segEnd = addDays(addMonths(segStart, 12).d, -1);
+      if (segEnd > realEnd) segEnd = realEnd;
+      var apply = addMonths(segEnd, 2);
+      segs.push({ no: i + 1, start: segStart, end: segEnd, apply: apply.d, applyClamped: apply.clamped });
+      segStart = addDays(segEnd, 1);
+      i++;
+    }
+
+    return {
+      start: start, end: realEnd, endAssumed: !end,
+      plan: plan.d, planClamped: plan.clamped,
+      segs: segs, multi: segs.length > 1
+    };
+  }
+
+  /* ---------- マイルストーン（逆算） ---------- */
+  function milestones(co) {
+    var c = compute(co); if (!c) return [];
+    var out = [];
+    function push(d, what, hard, note) {
+      out.push({ date: d, what: what, hard: !!hard, note: note || '', co: co.name, id: co.id });
+    }
+    push(addDays(c.plan, -14), 'STEP0 前提条件を整え終える（推進者の選任・事業内職業能力開発計画の周知・様式1-3号）', false);
+    push(c.plan, '計画届（様式1-1号ほか一式）を管轄労働局へ提出', true, '契約開始日の1か月前まで。郵送は到着日が提出日');
+    push(addDays(c.start, -7), '社長通達・受講予定者へ業務命令として周知（計画届の写しを各社へ共有）', false);
+    push(c.start, '定額制サービスの契約開始／訓練開始', false);
+
+    c.segs.forEach(function (s) {
+      var tag = c.multi ? '［' + s.no + '年目］' : '';
+      push(addDays(s.end, -30), tag + '各社へ書類準備を依頼／訓練機関へ様式12号（支給申請承諾書）の記載・捺印を依頼', false, '訓練終了1か月前');
+      push(addDays(s.end, -14), tag + '受講時間10時間未満になりそうな人を最終確認し、受講を促す', false, '10時間未満は助成対象外');
+      push(s.end, tag + '訓練終了日', false);
+      push(addDays(s.end, 1), tag + '訓練機関へ修了証明・受講時間10時間以上の一覧表の発行を依頼', false, '雇用保険適用事業所ごとの被保険者を先に共有しておく');
+      push(addDays(s.end, 14), tag + '各社から書類を回収完了（不足分のフォローまで）', false);
+      push(addDays(s.end, 30), tag + '支給申請書類一式を完成させる（目標）', false, '期限の1か月前に仕上げる');
+      push(s.apply, tag + '支給申請書類一式を管轄労働局へ提出', true, '訓練終了日の翌日から2か月以内。過ぎると申請不可');
+    });
+
+    if (co.decided) {
+      var dec = parseYmd(co.decided);
+      if (dec) push(addMonths(dec, 60).d, '書類の保管義務が満了（支給決定から5年）', false, '会計検査院の検査対象になる場合あり');
+    }
+    out.sort(function (a, b) { return a.date - b.date; });
+    return out;
+  }
+
+  /* ---------- 残日数の状態 ---------- */
+  function status(d, done) {
+    if (done) return { cls: 'st-done', label: '完了' };
+    var n = diffDays(today(), d);
+    if (n < 0) return { cls: 'st-over', label: Math.abs(n) + '日超過', over: true };
+    if (n === 0) return { cls: 'st-soon', label: '本日が期限' };
+    if (n <= 7) return { cls: 'st-soon', label: 'あと' + n + '日' };
+    if (n <= 30) return { cls: 'st-near', label: 'あと' + n + '日' };
+    return { cls: 'st-ok', label: 'あと' + n + '日' };
+  }
+
+  /* ---------- チェックリスト（資料 第9章） ---------- */
+  var CHECKS = [
+    ['PHASE 0　事前準備', [
+      '職業能力開発推進者を選任した（辞令・記録あり）',
+      '事業内職業能力開発計画を策定した',
+      '事業内職業能力開発計画を全従業員に周知した（周知記録あり）',
+      '事業展開等実施計画（様式第1-3号）を作成した',
+      '定額制サービスの内容を確認した（対象外講座が全講座の5割未満）',
+      '労働保険料に未納がないことを確認した'
+    ]],
+    ['PHASE 1　計画届の提出', [
+      '訓練受講予定者を確定した（後から追加不可）',
+      '定額制サービスの契約予定日を確認した',
+      '計画届の提出期限を確認した（契約開始日の1か月前まで）',
+      '様式第1-1号「職業訓練実施計画届」を作成した',
+      '様式第1-3号「事業展開等実施計画」を作成した',
+      '様式第3-2号「対象労働者一覧（定額制サービス）」を作成した',
+      '（複数事業所の場合）事業所確認票を作成した　※様式番号は要確認',
+      '訓練機関からカリキュラム・受講案内を入手した',
+      '全書類の記載内容を最終確認した',
+      '管轄労働局へ計画届一式を提出した',
+      '労働局から受付済みの計画届（写し）を受領した',
+      '計画届の写しを各社社長・担当者に共有した'
+    ]],
+    ['PHASE 2　社内通達・準備', [
+      '各社社長へ計画届の内容と訓練期間を通知した',
+      '受講予定者に「業務命令」として訓練受講を伝達した',
+      '受講は労働時間内（所定労働時間内）に行うよう周知した',
+      '自発的な時間外受講は助成対象時間に含まれないことを説明した',
+      '10時間以上修了しない場合は助成対象外になることを説明した',
+      '受講記録の管理方法を決定した（LMSログの定期保存等）',
+      '出勤簿・賃金台帳の管理担当者を確認した',
+      '支給申請期限をカレンダーに登録した'
+    ]],
+    ['PHASE 3　訓練実施中の管理', [
+      '定額制サービスの契約を締結した（受講開始）',
+      '対象労働者の受講進捗状況を定期確認している（月1回以上推奨）',
+      '10時間未満になりそうな受講者を把握し、受講を促している',
+      '受講者が所定労働時間内に受講していることを確認している',
+      '賃金が適正に支払われていることを確認している',
+      '計画を変更する必要が生じた場合、変更届を提出した（期限内）'
+    ]],
+    ['PHASE 4　支給申請準備（訓練終了1か月前〜）', [
+      '各社に出勤簿・賃金台帳の準備を依頼した',
+      '訓練機関に修了証明・受講時間一覧表の発行を依頼した',
+      '訓練機関に様式第12号「支給申請承諾書」の記載・捺印を依頼した',
+      '受講料の領収書・振込明細を経理部門から入手した',
+      '雇用保険被保険者証の写しを各社から入手した'
+    ]],
+    ['PHASE 5　支給申請の提出', [
+      '全対象労働者の修了時間が10時間以上であることを確認した',
+      '様式第4-2号「支給申請書」を作成した',
+      '様式第8-5号「訓練実施結果報告書（定額制サービス）」を作成した',
+      '様式第12号「支給申請承諾書（訓練実施者）」を訓練機関から受領した',
+      '支給要件確認申立書（共通要領様式第1号）を作成した',
+      '様式第6-3号「定額制サービスによる訓練に関する経費助成の内訳」を作成した',
+      '全書類の記載内容を最終確認した（差し替え・訂正は原則不可）',
+      '管轄労働局へ支給申請書類一式を提出した（訓練終了日翌日から2か月以内）',
+      '支給申請書類の写しを保管した'
+    ]],
+    ['PHASE 6　支給決定後の管理', [
+      '支給決定通知書を受領・保管した',
+      '全書類を5年間保管する体制を整えた',
+      '会計検査院等の調査があった場合に協力できる状態にある'
+    ]]
+  ];
+  var CHECK_TOTAL = CHECKS.reduce(function (n, p) { return n + p[1].length; }, 0);
+
+  /* ---------- 保存・復元 ---------- */
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 保存できなくても画面は動く */ }
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      if (o && Array.isArray(o.companies)) state = { companies: o.companies, trash: o.trash || [] };
+    } catch (e) { /* 壊れていたら初期状態のまま続行 */ }
+  }
+
+  /* ---------- 描画 ---------- */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function render() {
+    renderList();
+    renderTimeline();
+    renderTrash();
+    save();
+  }
+
+  function renderList() {
+    var wrap = document.getElementById('list');
+    if (!state.companies.length) {
+      wrap.innerHTML = '<p class="empty">まだ会社が登録されていません。上の欄から追加してください。</p>';
+      return;
+    }
+    var html = '';
+    state.companies.forEach(function (co) {
+      var c = compute(co);
+      if (!c) return;
+      var done = co.done || {};
+      var planSt = status(c.plan, done.plan);
+      var nDone = 0;
+      CHECKS.forEach(function (p, pi) {
+        p[1].forEach(function (_, ii) { if (co.checks && co.checks[pi + '-' + ii]) nDone++; });
+      });
+      var pct = Math.round(nDone / CHECK_TOTAL * 100);
+
+      html += '<div class="card">';
+      html += '<div class="co-head"><div>';
+      html += '<p class="co-name">' + esc(co.name) + '</p>';
+      html += '<p class="co-meta">'
+            + (co.bureau ? esc(co.bureau) + '　' : '')
+            + (co.service ? esc(co.service) + '　' : '')
+            + (co.n ? '受講予定 ' + esc(co.n) + '名　' : '')
+            + (co.size === 'large' ? '大企業（60%）' : '中小企業（75%）')
+            + '</p></div>';
+      html += '<div class="btnrow noprint">'
+            + '<button class="btn quiet" data-edit="' + co.id + '">編集</button>'
+            + '<button class="btn quiet danger" data-del="' + co.id + '">削除</button></div>';
+      html += '</div>';
+
+      // 計画届
+      html += '<div class="dl key"><span class="k">★ 計画届の提出期限（契約開始日の1か月前）</span>'
+            + '<span class="v">' + fmt(c.plan) + '</span>'
+            + '<span class="sub">契約開始日 ' + fmt(c.start)
+            + (c.planClamped ? '／応当日が無い月のため末日に丸めています（要確認）' : '')
+            + '</span>'
+            + '<div style="margin-top:.3rem"><span class="rest ' + planSt.cls + '">' + planSt.label + '</span>'
+            + ' <label style="display:inline;font-weight:400;font-size:.82rem;margin-left:.6rem">'
+            + '<input type="checkbox" data-done="plan" data-id="' + co.id + '"' + (done.plan ? ' checked' : '') + '> 提出済み</label></div>'
+            + '</div>';
+
+      // 訓練期間
+      html += '<div class="dl"><span class="k">訓練の実施期間</span>'
+            + '<span class="v" style="font-size:1.05rem">' + fmt(c.start) + ' 〜 ' + fmt(c.end) + '</span>'
+            + (c.endAssumed ? '<span class="sub">契約終了日が未入力のため「開始日から1年間」で計算しています</span>' : '')
+            + (c.multi ? '<span class="sub">1年を超える契約のため、1年ごとに区切って申請期限を出しています</span>' : '')
+            + '</div>';
+
+      // 申請期限（セグメントごと）
+      c.segs.forEach(function (s, si) {
+        var k = 'apply' + si;
+        var st = status(s.apply, done[k]);
+        html += '<div class="dl due"><span class="k">★ 支給申請の期限'
+              + (c.multi ? '（' + s.no + '年目：' + fmtShort(s.start) + '〜' + fmtShort(s.end) + '）' : '（訓練終了日の翌日から2か月以内）')
+              + '</span>'
+              + '<span class="v">' + fmt(s.apply) + '</span>'
+              + '<span class="sub">訓練終了日 ' + fmt(s.end)
+              + (s.applyClamped ? '／応当日が無い月のため末日に丸めています' : '')
+              + '</span>'
+              + '<div style="margin-top:.3rem"><span class="rest ' + st.cls + '">' + st.label + '</span>'
+              + ' <label style="display:inline;font-weight:400;font-size:.82rem;margin-left:.6rem">'
+              + '<input type="checkbox" data-done="' + k + '" data-id="' + co.id + '"' + (done[k] ? ' checked' : '') + '> 提出済み</label></div>'
+              + '</div>';
+      });
+
+      // 概算
+      if (co.fee) {
+        var rate = co.size === 'large' ? 0.6 : 0.75;
+        html += '<p class="hint" style="font-style:normal">経費助成の<b>単純計算</b>：'
+              + Number(co.fee).toLocaleString('ja-JP') + '円 × ' + Math.round(rate * 100) + '% ＝ <b>約'
+              + Math.floor(co.fee * rate).toLocaleString('ja-JP') + '円</b>'
+              + '　<span class="pill q">上限額・加算・対象外講座の除外は未反映</span></p>';
+      }
+
+      // 支給決定日
+      html += '<div class="noprint" style="margin-top:.6rem">'
+            + '<label for="dec-' + co.id + '" style="font-size:.82rem">支給決定日（分かったら入力：保管期限を計算します）</label>'
+            + '<input type="date" id="dec-' + co.id + '" data-decided="' + co.id + '" value="' + esc(co.decided || '') + '" style="max-width:14rem">'
+            + '</div>';
+      if (co.decided && parseYmd(co.decided)) {
+        html += '<p class="hint" style="font-style:normal">書類の保管期限：<b>'
+              + fmt(addMonths(parseYmd(co.decided), 60).d) + '</b> まで（5年間）</p>';
+      }
+
+      // チェックリスト
+      html += '<details class="ck"><summary>チェックリスト　' + nDone + ' / ' + CHECK_TOTAL + '　（' + pct + '%）</summary>';
+      html += '<div class="ck-body"><div class="bar" style="margin:.2rem 0 .6rem"><i style="width:' + pct + '%"></i></div>';
+      CHECKS.forEach(function (p, pi) {
+        html += '<p class="ck-phase">' + esc(p[0]) + '</p>';
+        p[1].forEach(function (t, ii) {
+          var ck = co.checks && co.checks[pi + '-' + ii];
+          html += '<label class="ck-item' + (ck ? ' on' : '') + '">'
+                + '<input type="checkbox" data-check="' + pi + '-' + ii + '" data-id="' + co.id + '"' + (ck ? ' checked' : '') + '>'
+                + '<span>' + esc(t) + '</span></label>';
+        });
+      });
+      html += '</div></details>';
+      html += '</div>';
+    });
+    wrap.innerHTML = html;
+  }
+
+  function renderTimeline() {
+    var wrap = document.getElementById('timeline');
+    var all = [];
+    state.companies.forEach(function (co) { all = all.concat(milestones(co)); });
+    if (!all.length) {
+      wrap.innerHTML = '<p class="empty">会社を登録すると、全社分の予定が時系列で並びます。</p>';
+      return;
+    }
+    all.sort(function (a, b) { return a.date - b.date; });
+    var html = '', curMonth = '';
+    all.forEach(function (m) {
+      var mk = m.date.getUTCFullYear() + '年' + (m.date.getUTCMonth() + 1) + '月';
+      if (mk !== curMonth) { curMonth = mk; html += '<p class="tl-month">' + mk + '</p>'; }
+      var st = status(m.date, false);
+      html += '<div class="tl-row' + (m.hard ? ' tl-hard' : '') + '">'
+            + '<span class="tl-date">' + fmtShort(m.date) + '</span>'
+            + '<span class="tl-what">' + (m.hard ? '★ ' : '') + esc(m.what)
+            + '<br><span class="tl-co">' + esc(m.co) + (m.note ? '　/　' + esc(m.note) : '') + '</span></span>'
+            + '<span class="tl-rest ' + st.cls + '">' + st.label + '</span>'
+            + '</div>';
+    });
+    wrap.innerHTML = html;
+  }
+
+  function renderTrash() {
+    var wrap = document.getElementById('trashWrap');
+    if (!state.trash.length) { wrap.innerHTML = ''; return; }
+    var html = '<h2>削除フォルダ（復元できます）</h2><div class="card sunken"><ul class="trash">';
+    state.trash.forEach(function (co) {
+      html += '<li>' + esc(co.name) + '（契約開始 ' + esc(co.start) + '）'
+            + ' <button class="btn quiet" data-restore="' + co.id + '">元に戻す</button>'
+            + ' <button class="btn quiet danger" data-purge="' + co.id + '">完全に消す</button></li>';
+    });
+    html += '</ul><p class="hint">削除した会社はここに残ります。完全に消すときだけ、もう一度確認します。</p></div>';
+    wrap.innerHTML = html;
+  }
+
+  /* ---------- 入力の取り回し ---------- */
+  var editing = null;
+  function readForm() {
+    return {
+      name: document.getElementById('f-name').value.trim(),
+      bureau: document.getElementById('f-bureau').value.trim(),
+      start: document.getElementById('f-start').value,
+      end: document.getElementById('f-end').value,
+      service: document.getElementById('f-service').value.trim(),
+      n: document.getElementById('f-n').value,
+      size: document.getElementById('f-size').value,
+      fee: document.getElementById('f-fee').value
+    };
+  }
+  function clearForm() {
+    ['f-name', 'f-bureau', 'f-start', 'f-end', 'f-service', 'f-n', 'f-fee'].forEach(function (id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('f-size').value = 'sme';
+    document.getElementById('addErr').textContent = '';
+    editing = null;
+    document.getElementById('btn-add').textContent = 'この内容で追加する';
+  }
+
+  document.getElementById('btn-add').addEventListener('click', function () {
+    var v = readForm();
+    var err = document.getElementById('addErr');
+    if (!v.name) { err.textContent = '会社名を入れてください。'; return; }
+    if (!v.start || !parseYmd(v.start)) { err.textContent = '契約開始日を入れてください。'; return; }
+    if (v.end && parseYmd(v.end) && parseYmd(v.end) < parseYmd(v.start)) {
+      err.textContent = '契約終了日が契約開始日より前になっています。'; return;
+    }
+    err.textContent = '';
+    if (editing) {
+      var co = state.companies.filter(function (x) { return x.id === editing; })[0];
+      if (co) { Object.keys(v).forEach(function (k) { co[k] = v[k]; }); }
+    } else {
+      var nc = v;
+      nc.id = 'c' + Date.now() + Math.floor(Math.random() * 1000);
+      nc.checks = {}; nc.done = {}; nc.decided = '';
+      state.companies.push(nc);
+    }
+    clearForm();
+    render();
+  });
+  document.getElementById('btn-clear').addEventListener('click', clearForm);
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var id;
+    if ((id = t.getAttribute && t.getAttribute('data-edit'))) {
+      var co = state.companies.filter(function (x) { return x.id === id; })[0];
+      if (!co) return;
+      document.getElementById('f-name').value = co.name || '';
+      document.getElementById('f-bureau').value = co.bureau || '';
+      document.getElementById('f-start').value = co.start || '';
+      document.getElementById('f-end').value = co.end || '';
+      document.getElementById('f-service').value = co.service || '';
+      document.getElementById('f-n').value = co.n || '';
+      document.getElementById('f-size').value = co.size || 'sme';
+      document.getElementById('f-fee').value = co.fee || '';
+      editing = id;
+      document.getElementById('btn-add').textContent = 'この内容で更新する';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if ((id = t.getAttribute && t.getAttribute('data-del'))) {
+      var c2 = state.companies.filter(function (x) { return x.id === id; })[0];
+      if (!c2) return;
+      if (!confirm('「' + c2.name + '」を削除フォルダに移します。\n（完全には消えません。あとで元に戻せます）\n\nよろしいですか？')) return;
+      state.companies = state.companies.filter(function (x) { return x.id !== id; });
+      state.trash.push(c2);
+      render(); return;
+    }
+    if ((id = t.getAttribute && t.getAttribute('data-restore'))) {
+      var c3 = state.trash.filter(function (x) { return x.id === id; })[0];
+      if (!c3) return;
+      state.trash = state.trash.filter(function (x) { return x.id !== id; });
+      state.companies.push(c3);
+      render(); return;
+    }
+    if ((id = t.getAttribute && t.getAttribute('data-purge'))) {
+      var c4 = state.trash.filter(function (x) { return x.id === id; })[0];
+      if (!c4) return;
+      if (!confirm('「' + c4.name + '」を完全に消します。\nこの操作は元に戻せません。\n\n本当によろしいですか？')) return;
+      state.trash = state.trash.filter(function (x) { return x.id !== id; });
+      render(); return;
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    var t = e.target, id = t.getAttribute && t.getAttribute('data-id');
+    if (t.getAttribute && t.getAttribute('data-check') && id) {
+      var co = state.companies.filter(function (x) { return x.id === id; })[0];
+      if (!co) return;
+      co.checks = co.checks || {};
+      co.checks[t.getAttribute('data-check')] = t.checked;
+      render(); return;
+    }
+    if (t.getAttribute && t.getAttribute('data-done') && id) {
+      var co2 = state.companies.filter(function (x) { return x.id === id; })[0];
+      if (!co2) return;
+      co2.done = co2.done || {};
+      co2.done[t.getAttribute('data-done')] = t.checked;
+      render(); return;
+    }
+    var did = t.getAttribute && t.getAttribute('data-decided');
+    if (did) {
+      var co3 = state.companies.filter(function (x) { return x.id === did; })[0];
+      if (!co3) return;
+      co3.decided = t.value;
+      render(); return;
+    }
+  });
+
+  /* ---------- 書き出し ---------- */
+  document.getElementById('btn-print').addEventListener('click', function () {
+    document.querySelectorAll('details.ck').forEach(function (d) { d.open = true; });
+    window.print();
+  });
+
+  function download(name, text, mime) {
+    var blob = new Blob(['\ufeff' + text], { type: mime + ';charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  }
+
+  document.getElementById('btn-csv').addEventListener('click', function () {
+    if (!state.companies.length) { alert('登録されている会社がありません。'); return; }
+    var rows = [['会社名', '管轄労働局', 'サービス名', '受講予定者数', '企業区分',
+                 '契約開始日', '訓練終了日', '計画届の提出期限', '支給申請の期限', '区切り']];
+    state.companies.forEach(function (co) {
+      var c = compute(co); if (!c) return;
+      c.segs.forEach(function (s) {
+        rows.push([co.name, co.bureau || '', co.service || '', co.n || '',
+                   co.size === 'large' ? '大企業' : '中小企業',
+                   ymd(c.start), ymd(s.end), ymd(c.plan), ymd(s.apply),
+                   c.multi ? s.no + '年目' : '']);
+      });
+    });
+    var csv = rows.map(function (r) {
+      return r.map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\r\n');
+    download('リスキリング助成金_期限一覧.csv', csv, 'text/csv');
+  });
+
+  document.getElementById('btn-ics').addEventListener('click', function () {
+    var all = [];
+    state.companies.forEach(function (co) { all = all.concat(milestones(co)); });
+    if (!all.length) { alert('登録されている会社がありません。'); return; }
+    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//koban-roadmap//reskilling//JA', 'CALSCALE:GREGORIAN'];
+    all.forEach(function (m, i) {
+      var d = ymd(m.date).replace(/-/g, '');
+      var title = (m.hard ? '★' : '') + '[' + m.co + '] ' + m.what;
+      L.push('BEGIN:VEVENT');
+      L.push('UID:koban-resk-' + i + '-' + d + '@koban-roadmap');
+      L.push('DTSTAMP:' + ymd(today()).replace(/-/g, '') + 'T000000Z');
+      L.push('DTSTART;VALUE=DATE:' + d);
+      L.push('DTEND;VALUE=DATE:' + ymd(addDays(m.date, 1)).replace(/-/g, ''));
+      L.push('SUMMARY:' + icsEsc(title));
+      if (m.note) L.push('DESCRIPTION:' + icsEsc(m.note));
+      if (m.hard) { L.push('BEGIN:VALARM', 'TRIGGER:-P7D', 'ACTION:DISPLAY',
+                           'DESCRIPTION:' + icsEsc('1週間後が厳守期限です：' + title), 'END:VALARM'); }
+      L.push('END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    download('リスキリング助成金_予定.ics', L.join('\r\n'), 'text/calendar');
+  });
+  function icsEsc(s) {
+    return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+  }
+
+  document.getElementById('btn-json').addEventListener('click', function () {
+    download('リスキリング助成金_バックアップ.json', JSON.stringify(state, null, 2), 'application/json');
+  });
+  document.getElementById('btn-load').addEventListener('click', function () {
+    document.getElementById('f-json').click();
+  });
+  document.getElementById('f-json').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var o = JSON.parse(r.result);
+        if (!o || !Array.isArray(o.companies)) throw new Error('形式が違います');
+        if (state.companies.length &&
+            !confirm('いま画面にある ' + state.companies.length + ' 社のデータを、読み込んだ内容で置き換えます。よろしいですか？')) return;
+        state = { companies: o.companies, trash: o.trash || [] };
+        render();
+      } catch (err) {
+        alert('このファイルは読み込めませんでした。この画面で保存したバックアップ（.json）を選んでください。');
+      }
+      e.target.value = '';
+    };
+    r.readAsText(f);
+  });
+
+  load();
+  render();
+})();
+</script>
+</body>
+</html>
