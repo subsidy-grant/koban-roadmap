@@ -1,5 +1,5 @@
-# Hallmark · macrostructure: Manifesto(deck) · tone: brutal-coach · anchor hue: vermilion(中) on felt green
-# theme: custom (vibe: "雀卓のフェルト・象牙の牌・中の朱" · paper #0F2B23 · accent #EE5A3C · Dela Gothic One + Zen Kaku Gothic New)
+# Hallmark · macrostructure: Manifesto(deck) · tone: brutal-coach · anchor hue: vermilion(中) on kinari paper
+# theme: custom (vibe: "生成りの地・墨の文字・中の朱" · paper #F5F1E6 · accent #C23B1E · Dela Gothic One + Zen Kaku Gothic New)
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -12,15 +12,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MEDIA = os.path.join(HERE, "media")
 
 # ---- tokens ----
-PAPER = RGBColor(0x0F, 0x2B, 0x23)     # 雀卓フェルト
-PAPER2 = RGBColor(0x16, 0x3A, 0x2F)    # 一段明るいフェルト（面）
-LINE = RGBColor(0x2B, 0x55, 0x47)      # 罫
-INK = RGBColor(0xF3, 0xEE, 0xE1)       # 象牙
-MUTED = RGBColor(0xA7, 0xBC, 0xB1)     # 補助文字
-ACCENT = RGBColor(0xEE, 0x5A, 0x3C)    # 中の朱
-TILE = RGBColor(0xF6, 0xF1, 0xE4)      # 牌の面
+PAPER = RGBColor(0xF5, 0xF1, 0xE6)     # 生成り（明るい地）
+PAPER2 = RGBColor(0xE3, 0xEC, 0xE5)    # 淡いフェルト色の面
+LINE = RGBColor(0xC9, 0xC2, 0xAE)      # 罫
+INK = RGBColor(0x1B, 0x2A, 0x24)       # 墨（深緑寄り）
+MUTED = RGBColor(0x4E, 0x5F, 0x57)     # 補助文字
+ACCENT = RGBColor(0xC2, 0x3B, 0x1E)    # 中の朱
+ON_ACCENT = RGBColor(0xFF, 0xFF, 0xFF)  # 朱の上の文字
+TILE = RGBColor(0xFF, 0xFF, 0xFF)      # 牌の面
 TILE_INK = RGBColor(0x1C, 0x1F, 0x1B)  # 牌面の文字
-TILE_EDGE = RGBColor(0xC9, 0xBF, 0xA6)
+TILE_EDGE = RGBColor(0xB8, 0xAE, 0x94)
 DISPLAY = "Dela Gothic One"
 BODY = "Zen Kaku Gothic New"
 
@@ -126,13 +127,13 @@ def tiles(slide, x, y, chars, tw=0.62, th=0.84, reds=()):
 def rack(slide, x, y, img, w=6.0):
     """手牌画像を象牙の台に載せる（元画像は白牌＋灰文字なので明るい台が要る）。"""
     h = w * 120 / 620
-    rect(slide, x - 0.18, y - 0.14, w + 0.36, h + 0.28, TILE)
+    rect(slide, x - 0.18, y - 0.14, w + 0.36, h + 0.28, TILE, LINE)
     slide.shapes.add_picture(os.path.join(MEDIA, img), Inches(x), Inches(y), Inches(w), Inches(h))
     return y + h + 0.14
 
 
 def verdict(slide, x, y, label, strong):
-    fill, ink = (ACCENT, INK) if strong else (INK, PAPER)
+    fill, ink = (ACCENT, ON_ACCENT) if strong else (INK, PAPER)
     r = rect(slide, x, y, 0.2 + 0.52 * len(label), 0.72, fill)
     text(slide, x, y, 0.2 + 0.52 * len(label), 0.72, [[(label, DISPLAY, 28, ink)]],
          anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER, spacing=1.0, gap=0)
@@ -200,7 +201,8 @@ def pro_con(n, kind, sub, rows, concl, note=None):
         text(s, 0.9, y + 0.2, 5.6, 1.2, [[B(head, 21, INK, True)]] + ([[B(extra, 14, MUTED)]] if extra else []), spacing=1.4, gap=2)
         text(s, 6.8, y + 0.2, 5.6, 1.2, [[("→  ", BODY, 21, ACCENT, True), B(arrow, 19, ACCENT, True)]], spacing=1.4)
         y += 1.45
-    rect(s, 0.9, 5.2, 11.5, 1.45, INK)
+    rect(s, 0.9, 5.2, 11.5, 1.45, PAPER2)
+    rect(s, 0.9, 5.2, 0.1, 1.45, ACCENT)
     text(s, 1.25, 5.2, 1.6, 1.45, [[D("結論", 26, ACCENT)]], anchor=MSO_ANCHOR.MIDDLE)
     text(s, 2.7, 5.2, 9.5, 1.45, concl, anchor=MSO_ANCHOR.MIDDLE, spacing=1.45, gap=2)
     if note:
@@ -210,14 +212,14 @@ def pro_con(n, kind, sub, rows, concl, note=None):
 pro_con(5, "デメリット編", "鳴くと失うもの", [
     ("安全牌を持ちながらの進行が難しくなる", "守備力低下、放銃率の上昇", "Mリーガーの手牌進行をみると、安全牌を抱えて進めているのがよくわかる"),
     ("打点が上昇しづらくなる", "リーチの役と裏ドラを放棄することになる", None),
-], [[B("守備力低下に見合う打点があれば鳴いてもいいが、その判断ができないうちはデメリットが大きいので", 17, PAPER)],
+], [[B("守備力低下に見合う打点があれば鳴いてもいいが、その判断ができないうちはデメリットが大きいので", 17, INK)],
     [B("鳴くな！（あなたのことです！）", 20, ACCENT, True)]],
     "ちなみに、なぜ安全牌を持ちながら進行していくと良いのかは、また別料金。")
 
 pro_con(6, "メリット編", "面前リーチで得るもの", [
     ("他家が押し返しづらくなる", "降ろす or 回らせる → リーチ者だけが和了の抽選を受ける「一人旅」ができる", None),
     ("打点上昇が見込める", "リーチの一翻と裏ドラが捲れるだけで他家への脅威となる（ノミ手は別）", "三麻だと大抵はドラ、赤、花が絡むので満貫以上になりやすい"),
-], [[B("相手が攻めづらくなり、かつ自分の打点を上げることができる", 17, PAPER)],
+], [[B("相手が攻めづらくなり、かつ自分の打点を上げることができる", 17, INK)],
     [B("最大最強の武器がリーチ。", 22, ACCENT, True)]])
 
 # =========================================================== 07 これから
@@ -242,7 +244,7 @@ s = prs.slides.add_slide(BLANK); bg(s)
 text(s, 0.9, 0.6, 12, 0.9, [[D("それでも", 40, ACCENT)]])
 text(s, 0.9, 1.45, 12, 0.5, [[B("鳴きたい時は基準や条件を持つ（三麻と四麻でも当然変わる）", 16, MUTED)]])
 cols = [
-    ("鳴く条件", ACCENT, INK, ["跳満・満貫以上が見込めて、聴牌形も両面以上の良形で先制できるとき",
+    ("鳴く条件", ACCENT, ON_ACCENT, ["跳満・満貫以上が見込めて、聴牌形も両面以上の良形で先制できるとき",
                                "手牌の中に他家の現物が3つ以上、あるいは字牌トイツがあるとき"]),
     ("鳴かない条件", INK, PAPER, ["鳴いてもシャンテン数が上がらない、聴牌まで遠い",
                                   "鳴いても愚形（ペンチャン、カンチャン、シャンポン、単騎）が残る"]),
@@ -284,9 +286,9 @@ text(s, 0.9, 2.85, 7.2, 4.0, bullets([
 ], 16), spacing=1.5, gap=10)
 rect(s, 8.6, 2.85, 3.9, 3.8, ACCENT)
 text(s, 8.95, 3.05, 3.3, 3.4, [
-    [B("スピードと打点のバランス、待ち、親流しのメリットと比較した時に、どう考えても釣り合わない。", 15, INK)],
-    [B("少しでも頭をよぎったら", 17, INK, True)],
-    [D("死刑", 64, INK)],
+    [B("スピードと打点のバランス、待ち、親流しのメリットと比較した時に、どう考えても釣り合わない。", 15, ON_ACCENT)],
+    [B("少しでも頭をよぎったら", 17, ON_ACCENT, True)],
+    [D("死刑", 64, ON_ACCENT)],
 ], spacing=1.45, gap=6)
 folio(s, 10, "番外編")
 
@@ -330,7 +332,7 @@ def question_slide(n, qs, lead):
     s = prs.slides.add_slide(BLANK); bg(s)
     text(s, 0.9, 0.5, 8.5, 1.1, [[B("おまけ　", 18, MUTED, True), D("ポンする？しない？", 44)]], anchor=MSO_ANCHOR.MIDDLE)
     rect(s, 10.3, 0.62, 2.2, 0.85, ACCENT)
-    text(s, 10.3, 0.62, 2.2, 0.85, [[B("1問", 14, INK, True), D("30秒", 26, INK)]], anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER, spacing=1.0, gap=0)
+    text(s, 10.3, 0.62, 2.2, 0.85, [[B("1問", 14, ON_ACCENT, True), D("30秒", 26, ON_ACCENT)]], anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER, spacing=1.0, gap=0)
     text(s, 0.9, 1.5, 9, 0.4, [[B(lead, 14, MUTED)]])
     y = 2.0
     for label, meta, call, img in qs:
@@ -343,7 +345,7 @@ def question_slide(n, qs, lead):
 
 question_slide(13, [
     ("①", "三麻　東一局　西家　3巡目　35000点持ち", "東家から 東（2枚目）", "image3.png"),
-    ("②", "三麻　東三局　南家　5巡目　40000点持ち", "東家から 7索", "image2.png"),
+    ("②", "三麻　東三局　西家　5巡目　40000点持ち", "東家から 7索", "image2.png"),
 ], "全4問")
 question_slide(14, [
     ("③-1", "三麻　東三局　南家　5巡目　50000点持ち", "東家から 東（1枚目）", "image1.png"),
