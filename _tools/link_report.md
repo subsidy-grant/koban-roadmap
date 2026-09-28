@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-09-21 11:41**（JST）
+- 確認時刻：**2026-09-28 11:54**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **6件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1156件**
+🔴 リンク切れ（要修正） **6件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 移転（URLの書き換えを推奨） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1155件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -35,13 +35,19 @@
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
 
+## 🟠 移転（URLの書き換えを推奨）
+
+- **（出典・参考リンク）**
+  - https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
+  - 恒久リダイレクト → https://www.svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
+
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## ✅ 変化なし（1156件）
+## ✅ 変化なし（1155件）
 
 <details><summary>一覧を開く</summary>
 
@@ -265,7 +271,6 @@
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/documents.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/improvement.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/ogp.png
-- （出典・参考リンク） — https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
 - 省エネルギー投資促進による省エネ・非化石転換補助金（設備単位型・従来枠）（資源エネルギー庁・SII） — https://syouenehojyokin.sii.or.jp/
 - 経営基盤強化支援（台東区）／経営基盤強化支援（台東区）／台東区産業振興事業団 公式ページ — https://taito-sangyo.jp/2026/03/27/keieikiban/
 - 経営基盤強化支援（台東区）／支払い方法別 必要書類 — https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf
