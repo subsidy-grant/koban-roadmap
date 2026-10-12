@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-10-05 12:23**（JST）
+- 確認時刻：**2026-10-12 12:38**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **14件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 移転（URLの書き換えを推奨） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1146件**
+🔴 リンク切れ（要修正） **14件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 移転（URLの書き換えを推奨） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1147件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -65,19 +65,13 @@
   - https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
   - 恒久リダイレクト → https://www.svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
 
-## 🟠 中身が差し替わった可能性（最新版か確認）
-
-- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル**
-  - https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
-  - サイズが 10561548 → 11184285 に変化（差し替えの可能性）
-
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## ✅ 変化なし（1146件）
+## ✅ 変化なし（1147件）
 
 <details><summary>一覧を開く</summary>
 
@@ -111,6 +105,7 @@
 - （出典・参考リンク） — https://it-shien.smrj.go.jp/download/grantdecision_list/
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付規程（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
+- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／請求・支払内訳シート — https://it-shien.smrj.go.jp/pdf/it2026_seikyushiharaiuchiwake_jisseki.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／申請様式一式 — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx
