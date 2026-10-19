@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-10-12 12:38**（JST）
+- 確認時刻：**2026-10-19 11:42**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **14件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 移転（URLの書き換えを推奨） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1147件**
+🔴 リンク切れ（要修正） **15件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **2件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1145件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -30,6 +30,9 @@
   - HTTP 404（ページが無い）
 - **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
   - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
+  - HTTP 404（ページが無い）
+- **埼玉県中小企業省力化支援事業補助金／補助金交付要領**
+  - https://www.pref.saitama.lg.jp/documents/282419/02_kouhuyouryou4.pdf
   - HTTP 404（ページが無い）
 - **埼玉県中小企業省力化支援事業補助金／補助事業の手引き【新規導入】**
   - https://www.pref.saitama.lg.jp/documents/282419/99_tebiki_sinkidounyu.pdf
@@ -59,11 +62,14 @@
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
 
-## 🟠 移転（URLの書き換えを推奨）
+## 🟠 中身が差し替わった可能性（最新版か確認）
 
-- **（出典・参考リンク）**
-  - https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
-  - 恒久リダイレクト → https://www.svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
+- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集要項【第2回】**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
+  - サイズが 745585 → 271651 に変化（差し替えの可能性）
+- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集パンフレット【第2回】**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
+  - サイズが 683644 → 107942 に変化（差し替えの可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
@@ -71,7 +77,7 @@
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## ✅ 変化なし（1147件）
+## ✅ 変化なし（1145件）
 
 <details><summary>一覧を開く</summary>
 
@@ -295,6 +301,7 @@
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/documents.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/improvement.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/ogp.png
+- （出典・参考リンク） — https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
 - 省エネルギー投資促進による省エネ・非化石転換補助金（設備単位型・従来枠）（資源エネルギー庁・SII） — https://syouenehojyokin.sii.or.jp/
 - 経営基盤強化支援（台東区）／経営基盤強化支援（台東区）／台東区産業振興事業団 公式ページ — https://taito-sangyo.jp/2026/03/27/keieikiban/
 - 経営基盤強化支援（台東区）／支払い方法別 必要書類 — https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf
@@ -398,8 +405,6 @@
 - 海老名市中小企業振興支援事業／海老名市中小企業振興支援事業／海老名市 公式ページ — https://www.city.ebina.kanagawa.jp/guide/shoko/chusho/1003742.html
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／中小企業グループによる共同事業に係る確認書（別紙4） — https://www.city.edogawa.tokyo.jp/documents/23284/groupekakunin-r6.docx
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／中小企業グループ構成・役割確認表（別紙3） — https://www.city.edogawa.tokyo.jp/documents/23284/groupekousei-r6.xlsx
-- デジタル技術活用促進助成事業・DX導入（江戸川区）／募集要項【第2回】 — https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
-- デジタル技術活用促進助成事業・DX導入（江戸川区）／募集パンフレット【第2回】 — https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業所概要（別紙1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_jigyoujyogaiyou.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／助成金交付申請書兼請求書（様式1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業計画書（別紙2） — https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc
@@ -1148,7 +1153,6 @@
 - 埼玉県中小企業省力化支援事業補助金 — https://www.pref.saitama.lg.jp/a0805/shoryokuka/index.html
 - 埼玉県中小企業省力化支援事業補助金／埼玉県 公式ページ【新規導入】 — https://www.pref.saitama.lg.jp/a0805/shoryokuka/sinnkidounyu_20260525.html
 - 埼玉県中小企業省力化支援事業補助金／補助金交付要綱 — https://www.pref.saitama.lg.jp/documents/282419/01_kouhuyoukou.pdf
-- 埼玉県中小企業省力化支援事業補助金／補助金交付要領 — https://www.pref.saitama.lg.jp/documents/282419/02_kouhuyouryou4.pdf
 - 埼玉県中小企業省力化支援事業補助金／交付申請書（様式第1号）及び実施計画書（様式第9号）（電子申請用） — https://www.pref.saitama.lg.jp/documents/282419/03_jissikeikakusyo_sinnkidounyuu0710.xlsx
 - 埼玉県中小企業省力化支援事業補助金／交付申請時に必要な様式 記入例 — https://www.pref.saitama.lg.jp/documents/282419/04_kinyuurei_sinkidounyu0612.xlsx
 - 埼玉県中小企業省力化支援事業補助金／時間外労働時間の確認（指定様式1） — https://www.pref.saitama.lg.jp/documents/282419/05_shiteiyousiki1.xlsx

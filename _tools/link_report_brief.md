@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-10-12 12:38**（JST）
+- 確認時刻：**2026-10-19 11:42**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **14件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 移転（URLの書き換えを推奨） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1147件**
+🔴 リンク切れ（要修正） **15件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **2件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1145件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -30,6 +30,9 @@
   - HTTP 404（ページが無い）
 - **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
   - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
+  - HTTP 404（ページが無い）
+- **埼玉県中小企業省力化支援事業補助金／補助金交付要領**
+  - https://www.pref.saitama.lg.jp/documents/282419/02_kouhuyouryou4.pdf
   - HTTP 404（ページが無い）
 - **埼玉県中小企業省力化支援事業補助金／補助事業の手引き【新規導入】**
   - https://www.pref.saitama.lg.jp/documents/282419/99_tebiki_sinkidounyu.pdf
@@ -59,11 +62,14 @@
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
 
-## 🟠 移転（URLの書き換えを推奨）
+## 🟠 中身が差し替わった可能性（最新版か確認）
 
-- **（出典・参考リンク）**
-  - https://svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
-  - 恒久リダイレクト → https://www.svltd.co.jp/syouryokuka-hojo-col/detail.html?id=2186
+- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集要項【第2回】**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
+  - サイズが 745585 → 271651 に変化（差し替えの可能性）
+- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集パンフレット【第2回】**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
+  - サイズが 683644 → 107942 に変化（差し替えの可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 

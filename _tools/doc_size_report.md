@@ -2,12 +2,14 @@
 
 - 対象：**1016件**（size 表記のある書類）
 - 実測が台帳に無く判定できないもの：**6件**
-- ズレ：**11件**
+- ズレ：**14件**
 
 ## 表記が実物と違うもの
 
 - 掲載 **1.4MB** → 実物 **14KB**
   - https://www.pref.saitama.lg.jp/documents/282419/99_tebiki_sinkidounyu.pdf
+- 掲載 **1008KB** → 実物 **14KB**
+  - https://www.pref.saitama.lg.jp/documents/282419/02_kouhuyouryou4.pdf
 - 掲載 **987KB** → 実物 **4KB**
   - https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf
 - 掲載 **704KB** → 実物 **12KB**
@@ -16,6 +18,10 @@
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
 - 掲載 **690KB** → 実物 **43KB**
   - https://www.city.ayase.kanagawa.jp/material/files/group/27/nijikyoujinkanijikouboyouryou.pdf
+- 掲載 **668KB** → 実物 **105KB**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
+- 掲載 **728KB** → 実物 **265KB**
+  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
 - 掲載 **1.1MB** → 実物 **888KB**
   - https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
 - 掲載 **221KB** → 実物 **12KB**
