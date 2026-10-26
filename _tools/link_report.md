@@ -1,12 +1,12 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-10-19 11:42**（JST）
+- 確認時刻：**2026-10-26 11:37**（JST）
 - 確認したURL：**1164件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **15件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟠 中身が差し替わった可能性（最新版か確認） **2件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1145件**
+🔴 リンク切れ（要修正） **12件**／🔴 前は開けたのに開けなくなった（要修正） **4件**／🔴 ファイルの種類が変わった（要確認） **3件**／🟠 中身が差し替わった可能性（最新版か確認） **2件**／🟡 サーバー障害の可能性（次回も出たら対応） **18件**／🟡 自動確認を拒否（目視が要る） **1件**／✅ 変化なし **1124件**
 
 ## 🔴 リンク切れ（要修正）
 
@@ -31,6 +31,9 @@
 - **業務改善助成金（2026年度／50・70・90円コース）／申請書等 簡易作成ツール**
   - https://www.mhlw.go.jp/content/11200000/001733987.xlsx
   - HTTP 404（ページが無い）
+- **（出典・参考リンク）**
+  - https://www.mhlw.go.jp/content/11600000/001688318.pdf
+  - HTTP 404（ページが無い）
 - **埼玉県中小企業省力化支援事業補助金／補助金交付要領**
   - https://www.pref.saitama.lg.jp/documents/282419/02_kouhuyouryou4.pdf
   - HTTP 404（ページが無い）
@@ -43,33 +46,99 @@
 - **とちぎ賃上げ環境整備促進補助金／よくある質問**
   - https://www.pref.tochigi.lg.jp/f06/documents/r80518faq_chinagekankyouseibihojokin.pdf
   - HTTP 404（ページが無い）
+
+## 🔴 前は開けたのに開けなくなった（要修正）
+
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請マニュアル**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8_digital-tool_sinnsei_manual.pdf
-  - HTTP 404（ページが無い）
+  - HTTP 502。2026-09-28 11:54 には開けていた（2回続けて失敗）
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／【令和8年度第1回版】募集要項**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf
-  - HTTP 404（ページが無い）
+  - HTTP 502。2026-09-28 11:54 には開けていた（2回続けて失敗）
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／ツール導入にあたってのチェックシート**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digitaltool.xlsx
-  - HTTP 404（ページが無い）
+  - HTTP 502。2026-09-28 11:54 には開けていた（2回続けて失敗）
 - **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／よくある質問（FAQ）**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8gyoumu_kaizen_faq.xlsx
-  - HTTP 404（ページが無い）
+  - HTTP 502。2026-09-07 11:14 には開けていた（2回続けて失敗）
 
 ## 🔴 ファイルの種類が変わった（要確認）
 
 - **観光地・観光産業における省力化投資補助事業（観光庁）／特定施設一覧**
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
+  - PDF のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ**
+  - https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
+  - PDF のはずが Content-Type が text/html
 
 ## 🟠 中身が差し替わった可能性（最新版か確認）
 
-- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集要項【第2回】**
-  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
-  - サイズが 745585 → 271651 に変化（差し替えの可能性）
-- **デジタル技術活用促進助成事業・DX導入（江戸川区）／募集パンフレット【第2回】**
-  - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
-  - サイズが 683644 → 107942 に変化（差し替えの可能性）
+- **中小企業省力化投資補助金＜一般型＞／交付規程**
+  - https://shoryokuka.smrj.go.jp/assets/pdf/application_rules.pdf
+  - サイズが 723524 → 598384 に変化（差し替えの可能性）
+- **創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
+  - サイズが 965954 → 3170 に変化（差し替えの可能性）
+
+## 🟡 サーバー障害の可能性（次回も出たら対応）
+
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト**
+  - https://tokyo-shuekiryoku-kyoka.jp/
+  - HTTP 503（サーバー側の障害の可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
+  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+  - HTTP 503（サーバー側の障害の可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+  - HTTP 503（サーバー側の障害の可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+  - HTTP 503（サーバー側の障害の可能性）
+- **（出典・参考リンク）**
+  - https://www.psrn.jp/topics/detail.php?id=39948
+  - HTTP 503（サーバー側の障害の可能性）
+- **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
+  - HTTP 502（サーバー側の障害の可能性）
+- **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／環境負荷軽減計画書**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8kannkyoufuka_plan.xlsx
+  - HTTP 502（サーバー側の障害の可能性）
+- **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／見積限定理由書**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8mitumori_sor.docx
+  - HTTP 502（サーバー側の障害の可能性）
+- **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請時添付書類例**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf
+  - HTTP 502（サーバー側の障害の可能性）
+- **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／小規模企業者に該当することの確認書**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／同意書（代理申請用）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_douisho.docx
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／募集要項**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／電子申請マニュアル**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_manual_denshi_02.pdf
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／誓約書（反社会的勢力排除に関する誓約書）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_hansha_01.xlsx
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／誓約書（助成金申請に関する誓約書）**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_shinsei_01.xlsx
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／申請書**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_01.xlsx
+  - HTTP 502（サーバー側の障害の可能性）
+- **経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／申請書 記入例**
+  - https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_kinyuurei_01-02.xlsx
+  - HTTP 502（サーバー側の障害の可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
@@ -77,7 +146,7 @@
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
 
-## ✅ 変化なし（1145件）
+## ✅ 変化なし（1124件）
 
 <details><summary>一覧を開く</summary>
 
@@ -277,7 +346,6 @@
 - （出典・参考リンク） — https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_05.pdf
 - 中小企業省力化投資補助金＜一般型＞／公募要領（第7回公募） — https://shoryokuka.smrj.go.jp/assets/pdf/application_guidelines_ippan_07.pdf
 - 中小企業省力化投資補助金＜一般型＞／交付申請の手引き — https://shoryokuka.smrj.go.jp/assets/pdf/application_manual_ippan_05.pdf
-- 中小企業省力化投資補助金＜一般型＞／交付規程 — https://shoryokuka.smrj.go.jp/assets/pdf/application_rules.pdf
 - 中小企業省力化投資補助金＜一般型＞／電子申請マニュアル（応募申請・第7回） — https://shoryokuka.smrj.go.jp/assets/pdf/electronic_application_manual_ippan_07.pdf
 - 中小企業省力化投資補助金＜一般型＞／応募申請の手引き（第7回公募） — https://shoryokuka.smrj.go.jp/assets/pdf/oubo_manual_ippan_07.pdf
 - 中小企業省力化投資補助金＜一般型＞／事業計画書（その3） — https://shoryokuka.smrj.go.jp/assets/xls/yoshiki_business_plan_part3_ippan.xlsx
@@ -294,9 +362,6 @@
 - 事業承継・M&A補助金・専門家活用枠（中小企業庁）／専門家活用枠 公募要領（買い手支援類型・売り手支援類型） — https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/requirements_experts_15.pdf
 - （出典・参考リンク） — https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
 - 創業助成事業（東京都・東京都中小企業振興公社）／創業助成事業（東京都・東京都中小企業振興公社）／TOKYO創業ステーション 公式ページ／（出典・参考リンク） — https://startup-station.jp/m2/services/sogyokassei/
-- 創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回） — https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
-- 創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP） — https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
-- 創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ — https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/documents.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/improvement.html
@@ -307,10 +372,6 @@
 - 経営基盤強化支援（台東区）／支払い方法別 必要書類 — https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf
 - 経営基盤強化支援（台東区）／変更承認申請書 — https://taito-sangyo.jp/src/wp-content/uploads/2026/03/経営基盤_変更届.doc
 - 経営基盤強化支援（台東区）／経営基盤強化支援 チラシ（令和8年度） — https://taito-sangyo.jp/src/wp-content/uploads/2026/07/R8keieikiban-1.pdf
-- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト — https://tokyo-shuekiryoku-kyoka.jp/
-- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項 — https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
-- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版） — https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
-- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版） — https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／誓約書（様式第１－４号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-3_誓約書（様式1-3）.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／ICT活用生産性向上・事業変革促進支援事業助成金交付申請書（様式第１－１号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-4_タイプA申請書_ICT活用等生産性向上支援事業様式1-1.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／実施要綱 — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/R08.04.01_ICT活用等生産性向上支援事業要綱.pdf
@@ -405,6 +466,8 @@
 - 海老名市中小企業振興支援事業／海老名市中小企業振興支援事業／海老名市 公式ページ — https://www.city.ebina.kanagawa.jp/guide/shoko/chusho/1003742.html
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／中小企業グループによる共同事業に係る確認書（別紙4） — https://www.city.edogawa.tokyo.jp/documents/23284/groupekakunin-r6.docx
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／中小企業グループ構成・役割確認表（別紙3） — https://www.city.edogawa.tokyo.jp/documents/23284/groupekousei-r6.xlsx
+- デジタル技術活用促進助成事業・DX導入（江戸川区）／募集要項【第2回】 — https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
+- デジタル技術活用促進助成事業・DX導入（江戸川区）／募集パンフレット【第2回】 — https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業所概要（別紙1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_jigyoujyogaiyou.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／助成金交付申請書兼請求書（様式1） — https://www.city.edogawa.tokyo.jp/documents/23284/r8_sinseisyo.doc
 - デジタル技術活用促進助成事業・DX導入（江戸川区）／事業計画書（別紙2） — https://www.city.edogawa.tokyo.jp/documents/23284/zigyoukeikakusyo1.doc
@@ -1051,7 +1114,6 @@
 - 特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／支給要領 — https://www.mhlw.go.jp/content/11600000/001684363.pdf
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-1号 雇用管理制度等整備計画書 — https://www.mhlw.go.jp/content/11600000/001688291.docx
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／様式第a-6号 支給申請書 — https://www.mhlw.go.jp/content/11600000/001688295.docx
-- （出典・参考リンク） — https://www.mhlw.go.jp/content/11600000/001688318.pdf
 - 人材確保等支援助成金（雇用管理制度・雇用環境整備助成コース）（厚生労働省）／人材確保等支援助成金のご案内（雇用管理制度・雇用環境整備助成コース） — https://www.mhlw.go.jp/content/11600000/001688568.pdf
 - 特定求職者雇用開発助成金（中高年層安定雇用支援コース）（厚生労働省）／パンフレット（事業主向け） — https://www.mhlw.go.jp/content/11600000/001690059.pdf
 - キャリアアップ助成金（賞与・退職金制度導入コース）／様式第4号 事業所確認票／キャリアアップ助成金（賃金規定等改定コース）／様式第4号 事業所確認票／キャリアアップ助成金（賃金規定等共通化コース）／様式第4号 事業所確認票／キャリアアップ助成金（短時間労働者労働時間延長支援コース）／様式第4号 事業所確認票／キャリアアップ助成金（障害者正社員化コース）／様式第4号 事業所確認票 — https://www.mhlw.go.jp/content/11650000/001083034.docx
@@ -1183,7 +1245,6 @@
 - とちぎ賃上げ環境整備促進補助金／（様式第5号）消費税等仕入れ控除税額確定報告書 — https://www.pref.tochigi.lg.jp/f06/documents/y5_kakuteihoukokusyo_chinagekankyouseibihojokin.docx
 - とちぎ賃上げ環境整備促進補助金／（様式第6号）財産処分承認申請書 — https://www.pref.tochigi.lg.jp/f06/documents/y6_zaisansyobunsyouninshinseisyo_chinagekankyouseibihojokin.docx
 - とちぎ賃上げ環境整備促進補助金／（様式第7号）状況報告書 — https://www.pref.tochigi.lg.jp/f06/documents/y7_joukyouhoukokusyo_chinagekankyouseibihojokin.docx
-- （出典・参考リンク） — https://www.psrn.jp/topics/detail.php?id=39948
 - （出典・参考リンク） — https://www.sme-support.co.jp/column/p1352/
 - さいたま市DX推進補助金／さいたま市DX補助金 募集概要 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinflyer.pdf
 - さいたま市DX推進補助金／さいたま市DX推進補助金 公募要領 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/dx-suishinhojyokinkouboyouryo.pdf
@@ -1191,19 +1252,6 @@
 - さいたま市DX推進補助金／さいたま市DX補助金 結果報告兼補助金請求書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/結果報告兼補助金請求書.docx
 - さいたま市DX推進補助金／さいたま市DX推進補助金／さいたま市産業創造財団 公式ページ — https://www.sozo-saitama.or.jp/topic/dx-subsidy/
 - 府中市小規模事業者等チャレンジ支援事業補助金（府中市） — https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
-- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
-- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／環境負荷軽減計画書 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8kannkyoufuka_plan.xlsx
-- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／見積限定理由書 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8mitumori_sor.docx
-- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請時添付書類例 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf
-- 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／小規模企業者に該当することの確認書 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shoukibo_cfm.docx
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／同意書（代理申請用） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_douisho.docx
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／募集要項 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／電子申請マニュアル — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_manual_denshi_02.pdf
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／誓約書（反社会的勢力排除に関する誓約書） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_hansha_01.xlsx
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／誓約書（助成金申請に関する誓約書） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_seiyakusho_shinsei_01.xlsx
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／申請書 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_01.xlsx
-- 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）／申請書 記入例 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_kaizen_shinseisho_kinyuurei_01-02.xlsx
 - みなかみ町店舗等改築等補助金／みなかみ町店舗等改築等補助金／みなかみ町 公式ページ — https://www.town.minakami.gunma.jp/industry/hojyokin_shienseido/2019-0417-0952-72.html
 - みなかみ町店舗等改築等補助金／みなかみ町店舗等改築等補助金交付要綱 — https://www.town.minakami.gunma.jp/industry/hojyokin_shienseido/files/00_tenpotoukaitikuhozyo_youkou.pdf
 - みなかみ町店舗等改築等補助金／みなかみ町店舗等改築等補助金修繕概要書 — https://www.town.minakami.gunma.jp/industry/hojyokin_shienseido/files/20220420_syuuenngaiyousyo.doc
