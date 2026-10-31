@@ -1,12 +1,19 @@
 """採択率の調査結果（JSON）から adoption_data.js を作る。
 
 使い方:
-    python -X utf8 _tools/build_adoption_data.py 調査結果1.json [調査結果2.json ...]
+    python -X utf8 _tools/build_adoption_data.py            # 正本 _tools/adoption/rates.json から作る
+    python -X utf8 _tools/build_adoption_data.py 別の.json   # 正本以外から作る（検証用）
 
-調査結果の各要素は次の形（_tools/README 相当の説明はこのファイルが唯一の出所）:
+**採択率の正本は _tools/adoption/rates.json の1つだけ。** 週次の自動更新もここを直してから
+このスクリプトで再生成する（adoption_data.js を手で直さない）。直したあとは
+_tools/check_adoption_sync.py で、criteria.html・index.html の記載と食い違っていないかを見る。
+
+調査結果の各要素は次の形（説明はこのファイルが唯一の出所）:
     {"key": "jizoku", "status": "published|computed|none", "rate": 47.2,
      "round": "第19回", "adopted": 7819, "applied": 16576,
-     "source_url": "https://...", "checked_at": "2026-10-31", "note": "..."}
+     "source_url": "https://...", "checked_at": "2026-10-31", "note": "...",
+     "watch": "次に出る結果（週次更新が見に行くもの）",
+     "criteria_label": "criteria.html の表の制度名（その表に行がある制度だけ）"}
 
 対象は「補助金タイプ（hojo）と判定されている制度」すべて。判定は program.html の
 PROGRAM_TYPE_OVERRIDE と名称マッチから _tools/check_program_type.py と同じ規則で出す。
@@ -53,9 +60,8 @@ def load_results(paths):
 
 
 def main():
-    if len(sys.argv) < 2:
-        sys.exit(__doc__)
-    results = load_results(sys.argv[1:])
+    paths = sys.argv[1:] or [str(ROOT / "_tools" / "adoption" / "rates.json")]
+    results = load_results(paths)
     keys = hojo_keys()
     missing = [k for k in keys if k not in results]
     if missing:

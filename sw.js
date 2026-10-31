@@ -14,7 +14,7 @@
 // CORE_ASSETS に消えたファイルを残すと cache.addAll がまとめて失敗し、
 // Service Worker のインストール自体がこけるため、必ず一覧から外して版を上げる。
 // v21: 採択率データ adoption_data.js を追加（2026-10-31）。
-var CACHE_NAME = 'koban-roadmap-v21';
+var CACHE_NAME = 'koban-roadmap-v22';
 var CORE_ASSETS = [
   './',
   './index.html',
