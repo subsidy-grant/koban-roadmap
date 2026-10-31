@@ -13,7 +13,8 @@
 // v20: profile_status.html を applications.html に統合して削除（2026-08-17）。
 // CORE_ASSETS に消えたファイルを残すと cache.addAll がまとめて失敗し、
 // Service Worker のインストール自体がこけるため、必ず一覧から外して版を上げる。
-var CACHE_NAME = 'koban-roadmap-v20';
+// v21: 採択率データ adoption_data.js を追加（2026-10-31）。
+var CACHE_NAME = 'koban-roadmap-v21';
 var CORE_ASSETS = [
   './',
   './index.html',
@@ -29,6 +30,7 @@ var CORE_ASSETS = [
   './company_data.js',
   './page_data.js',
   './sim_data.js',
+  './adoption_data.js',
   './experts_data.js',
   './consult.js',
   './app_tabbar.js',
@@ -39,7 +41,7 @@ var CORE_ASSETS = [
   './icons/apple-touch-icon.png'
 ];
 // 鮮度優先（network-first + タイムアウトでキャッシュへ切替）で扱うファイル名
-var FRESH_FIRST = ['page_data.js', 'sim_data.js', 'experts_data.js'];
+var FRESH_FIRST = ['page_data.js', 'sim_data.js', 'experts_data.js', 'adoption_data.js'];
 var NETWORK_TIMEOUT_MS = 1500;
 
 self.addEventListener('install', function (e) {

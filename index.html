@@ -255,27 +255,11 @@
      戻す指示。地域・従業員数は02に残すため、3問ブロックの再現はしない。 */
   /* 地はサンドで通し、ここだけ青地にすると帯だけが浮いて見える（2026-08-17）。
      沈めた面＋上下の罫線で「入力する場所」を示す。色ではなく面の深さで区別する。 */
-  .hero-industry {
-    background: var(--paper-sunken);
-    border-top: 1px solid var(--line-strong);
-    border-bottom: 1px solid var(--line-strong);
-  }
-  .hero-industry-inner {
-    max-width: 880px; margin: 0 auto; padding: 1.1rem 1.5rem;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1.1rem;
-  }
-  .hero-industry-lead { margin: 0; font-size: 0.96rem; color: var(--ink); flex: 1 1 240px; }
-  .hero-industry select {
-    font: inherit; font-size: 1rem; font-weight: 600; min-height: 2.9rem;
-    padding: 0.5rem 2.2rem 0.5rem 0.8rem; border: 1px solid var(--line); border-radius: 6px;
-    background: var(--paper-raised) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="%23887d63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 0.7rem center;
-    background-size: 1rem; color: var(--ink); appearance: none; -webkit-appearance: none; cursor: pointer;
-    flex: 1 1 260px; max-width: 360px;
-  }
-  @media (max-width: 480px) {
-    .hero-industry-inner { padding: 1rem 1.1rem; }
-    .hero-industry select { max-width: none; width: 100%; }
-  }
+  /* 業種選択の帯(.hero-industry)は2026-10-31に撤去（全業種共通の画面にした） */
+  /* 業種専用の制度に付ける札（例：飲食店向け）。一覧の制度名の下に出す */
+  .tt-ind { display: inline-block; margin: 0.25rem 0.35rem 0 0; padding: 0.05rem 0.5rem;
+    font-size: 0.72rem; font-weight: 700; border-radius: 999px;
+    border: 1px solid var(--line-strong); color: var(--ink-soft, var(--ink)); background: var(--paper-raised); }
 
   .hero h1 {
     font-size: clamp(1.6rem, 4.2vw, 2.75rem);
@@ -1174,9 +1158,27 @@
     font-variant-numeric: tabular-nums;
   }
   .timetable .tt-v small { font-size: 0.8rem; font-weight: 400; }
+  /* 「1,000〜2,500万円」のような幅表示で単位だけが次の行に落ちないように（2026-10-31） */
+  .timetable .tt-cap .tt-v { white-space: nowrap; }
   .timetable .tt-v-na { color: var(--ink-faint); }
   /* 代表値の下に置く補足。枠やコースで変わる制度は「条件を見る」で確認してもらう */
   .timetable .tt-more { display: block; font-size: 0.78rem; color: var(--ink-faint); line-height: 1.5; }
+  /* 上限額が何を前提にした額か（従業員○人の場合、など。2026-10-31） */
+  .timetable .tt-capnote { display: block; font-size: 0.75rem; color: var(--ink-faint); line-height: 1.45; }
+
+  /* 採択率ランク（2026-10-31）。補助金タイプの制度だけに付く。
+     A＝通りやすい（ミント）／B＝コバルト／C＝狭き門（橙）／非公表＝灰の破線。
+     文字は wash 地に載るので必ず -ink 側か --accent を使う（--rust/--sage のままだと AA を割る） */
+  .rank-pill {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    font-size: 0.74rem; font-weight: 700; line-height: 1.3;
+    padding: 0.12rem 0.55rem; border-radius: 999px; border: 1px solid; white-space: nowrap;
+  }
+  .rank-pill b { font-size: 0.9rem; }
+  .rank-pill.rk-A { background: var(--sage-wash); color: var(--sage-ink); border-color: var(--sage-ink); }
+  .rank-pill.rk-B { background: var(--accent-wash); color: var(--accent); border-color: var(--accent); }
+  .rank-pill.rk-C { background: var(--rust-wash); color: var(--rust-ink); border-color: var(--rust-ink); }
+  .rank-pill.rk-none { background: var(--paper-raised); color: var(--ink-soft); border-color: var(--line-strong); border-style: dashed; font-weight: 600; }
 
   .timetable .tt-go {
     display: flex; align-items: center; justify-content: center;
@@ -1517,9 +1519,6 @@
     .hero-photo::after { background: rgba(255, 255, 255, 0.06); }
     .hero-inner { padding-bottom: 0.6rem; }
     .hero h1 { margin-top: 0.3rem; font-size: 1.5rem; line-height: 1.35; }
-    .hero-industry-inner { padding: 0.6rem 1.1rem; gap: 0.4rem 1.1rem; }
-    .hero-industry-lead { font-size: 0.9rem; }
-    .hero-industry select { min-height: 2.6rem; }
     main, .has-accordion main { padding-top: 0.9rem; padding-bottom: 0.6rem; }
     /* フッターの免責事項は閉じた状態でも145pxを占め、その大半が下部タブバーの裏に
        隠れて「見えないのに画面を押し出す」状態だった（2026-08-16実測）。
@@ -1540,7 +1539,6 @@
     .hero { padding-top: 0; padding-bottom: 0.4rem; min-height: 0; display: block; }
     .hero-inner { padding-bottom: 0.5rem; }
     .hero h1 { font-size: 1.15rem; margin-top: 0.2rem; }
-    .hero-industry-inner { padding: 0.5rem 1.1rem; }
     main, .has-accordion main { padding-top: 0.7rem; }
     .has-accordion main > section { margin-bottom: 0.5rem; }
     /* 上の 720px 側でカードを大きくしているので、縦が短い端末では
@@ -1570,20 +1568,9 @@
   </div>
 </header>
 
-<div class="hero-industry">
-  <div class="hero-industry-inner">
-    <p class="hero-industry-lead"><strong>業種</strong>を選んでください。</p>
-    <label for="industrySelectTop" class="sr-only">お店・会社の業種</label>
-    <select id="industrySelectTop" onchange="switchIndustry(this.value)">
-      <option value="beauty">美容業（美容室・サロン等）</option>
-      <option value="food">飲食業（レストラン・カフェ・居酒屋等）</option>
-      <option value="lodging">宿泊業（ホテル・旅館等）</option>
-      <option value="manufacturing">製造業（工場・ものづくり事業者等）</option>
-      <option value="realestate">不動産業、物品賃貸業</option>
-      <option value="education">教育、学習支援業（学習塾・スクール等）</option>
-    </select>
-  </div>
-</div>
+<!-- 冒頭の業種選択は2026-10-31に撤去した（本人指示「全業種使える汎用性の高いものに」）。
+     業種で人数基準が変わる判定（小規模事業者・中小企業の定義）は、甘い側に倒して
+     「△ 要確認」とし、業種専用の制度は一覧に常に出して札で示す。 -->
 
 <main>
 
@@ -1655,9 +1642,21 @@
       </div>
       <p class="sort-note" id="summarySortNote"></p>
     </div>
+    <!-- 採択率ランクでの絞り込み（2026-10-31、本人指示）。複数選べる。何も選ばなければ全件。
+         ランクは補助金タイプ（審査で選ばれる制度）にだけ付くので、絞り込むと助成金は出なくなる -->
+    <div class="sort-row" id="rankFilterRow">
+      <span class="sort-label">採択率ランクで絞る</span>
+      <div class="sort-btns">
+        <button type="button" data-rank="A" aria-pressed="false" onclick="toggleRankFilter('A')">A <small>75%以上</small></button>
+        <button type="button" data-rank="B" aria-pressed="false" onclick="toggleRankFilter('B')">B <small>50%超〜75%未満</small></button>
+        <button type="button" data-rank="C" aria-pressed="false" onclick="toggleRankFilter('C')">C <small>50%以下</small></button>
+        <button type="button" data-rank="none" aria-pressed="false" onclick="toggleRankFilter('none')">採択率非公表</button>
+      </div>
+      <p class="sort-note" id="rankFilterNote">採択率は、審査で選ばれる「補助金」だけに付けています。直近の公募回の公式発表（または公表された採択件数÷申請件数）から出しています。</p>
+    </div>
     <div class="twrap" id="condList"><div class="timetable" id="programSummary"></div></div>
     <p class="sort-note" style="margin-top:0.6rem;">選んだ都道府県・市区町村の制度が上の一覧に出ない場合、「制度が無い」のではなく「当サイトでまだ未調査」の可能性があります。<strong>未調査は制度が無いという意味ではありません。</strong>お急ぎの場合は自治体の産業振興担当窓口や商工会議所・商工会へ直接お問い合わせください。</p>
-    <p class="section-sub" style="margin-top:0.8rem;">上記の6制度は業種を問わず共通で活用できる。加えて、<strong>飲食業・宿泊業・製造業・不動産業には業種特有の制度</strong>があり、選択中の業種に該当する場合は一覧に追加表示される（教育・学習支援業については、業界特有の目立った国の制度は確認できなかった）。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
+    <p class="section-sub" style="margin-top:0.8rem;">一覧は業種を問わず表示しています。<strong>飲食店・旅館やホテルなど、特定の業種だけが使える制度</strong>には制度名の下に「飲食店向け」のような札を付けています。中小企業・小規模事業者に当たるかどうかの基準は業種によって違うため、業種しだいで対象になる場合は「△ 要確認」と表示しています。旧・中小企業新事業進出補助金（事業再構築補助金の後継）は第4回公募をもって終了し、製造業向けの後継制度「新事業進出・ものづくり商業サービス補助金」に統合された。</p>
     <p class="section-sub" style="margin-top:0.6rem;">「補助金」は予算に上限があり、審査で採択・不採択が決まります。「助成金」は競争ではなく要件を満たすことが基本ですが、<strong>労働局の審査があり、書類の不備や要件の行き違いで不支給になることがあります</strong>。業務改善助成金のように予算枠があり、締切前に受付が終わる制度もあります。「申請すれば必ずもらえる」制度ではありません。</p>
     <p class="section-sub" style="margin-top:0.6rem;">上部の「本社所在地の都道府県」で<strong>東京都</strong>を選択すると、東京都・東京都中小企業振興公社が実施する3制度が上記の一覧に追加表示されます（現時点では東京都のみ調査済みで、他の道府県は今後順次追加予定です）。</p>
   </section>
@@ -1828,6 +1827,7 @@
 <!-- 試算の定義。上限額・補助率・受付期間は、試算のある制度についてはこちらが唯一の出所。
      このページは起動時に window.KOBAN_SIM から読む（applySimNumbers）。 -->
 <script src="sim_data.js"></script>
+<script src="adoption_data.js"></script>
 <script>
   var PROGRAMS = {
     ai: {
@@ -2731,6 +2731,7 @@
   // 'ai'・'kaizen'・'shoryokuka'のFAQは、選択中の業種で実際に想定される機器・システム例に置き換えて表示する（{{EXAMPLE}}を業種別テキストに差し替え）
   var FAQ_INDUSTRY_EXAMPLES = {
     ai: {
+      all: "予約・顧客管理システム、POSレジ、会計・勤怠ソフト、生産管理システム",
       beauty: "クラウド予約管理システムや電子カルテ・顧客管理（CRM）ソフト",
       food: "モバイルオーダー・POSレジやAI需要予測・在庫管理システム",
       lodging: "サイトコントローラー・PMS（宿泊管理システム）や多言語翻訳・チャットボット",
@@ -2739,6 +2740,7 @@
       education: "生徒・保護者管理システムやオンライン授業配信システム"
     },
     kaizen: {
+      all: "業務用の機器・設備（自動調理機・配膳ロボット・生産設備・POSレジ等）",
       beauty: "施術機器（ヘッドスパチェア、カラー自動調合機等）や什器、POSレジ",
       food: "配膳・下膳ロボットやスチームコンベクションオーブン等の調理・厨房設備",
       lodging: "自動チェックイン機や清掃ロボット等の省力化設備",
@@ -2747,6 +2749,7 @@
       education: "入退室管理システムや自動清掃ロボット等の教室設備"
     },
     shoryokuka: {
+      all: "予約・在庫・生産管理などの業務システム",
       beauty: "予約管理システムやCRMソフト",
       food: "モバイルオーダーや在庫管理アプリ",
       lodging: "サイトコントローラーやPMS",
@@ -2905,7 +2908,8 @@
   function programFaqHTML(key) {
     var list = PROGRAM_FAQ[key];
     if (!list) return '';
-    var ex = FAQ_INDUSTRY_EXAMPLES[key] ? FAQ_INDUSTRY_EXAMPLES[key][currentIndustry] : null;
+    // 業種選択の撤去（2026-10-31）で、業種別の例文ではなく全業種向けの例文（all）を使う
+    var ex = FAQ_INDUSTRY_EXAMPLES[key] ? FAQ_INDUSTRY_EXAMPLES[key].all : null;
     var itemsHTML = list.map(function (item) {
       var q = ex ? item.q.replace('{{EXAMPLE}}', ex) : item.q;
       var a = ex ? item.a.replace('{{EXAMPLE}}', ex) : item.a;
@@ -6461,10 +6465,20 @@
     tokyo_soui: "【東京都】創意工夫チャレンジ促進事業・業務改善コース"
   };
 
+  // 業種専用の制度に付ける札。業種選択を撤去したので（2026-10-31）、業種専用の制度も
+  // 常に一覧に出し、誰向けの制度かをこの札で示す。札の文言は各制度の申請要件（scale）から。
+  // monodukuri は industryOnly が manufacturing だが、申請要件は全業種の中小企業者なので札を付けない。
+  var INDUSTRY_ONLY_TAG = {
+    food_labor: '飲食店向け',
+    kanko_shoryokuka: '旅館・ホテル向け',
+    akiya: '空き家対策の事業提案向け'
+  };
+
   function getAvailablePrograms(industryKey) {
     var keys = UNIVERSAL_PROGRAM_KEYS.slice();
+    // industryKey は互換のため受け取るが使わない。業種専用の制度はすべて含める
     Object.keys(PROGRAMS).forEach(function (k) {
-      if (PROGRAMS[k].industryOnly === industryKey) keys.push(k);
+      if (PROGRAMS[k].industryOnly) keys.push(k);
     });
     if (currentPrefecture && PREFECTURE_PROGRAM_KEYS[currentPrefecture]) {
       keys = keys.concat(PREFECTURE_PROGRAM_KEYS[currentPrefecture]);
@@ -6607,13 +6621,33 @@
     return 't100';
   }
 
-  function isChusho(employeeCount, capitalYen, ind) {
-    return employeeCount <= ind.smeEmployeeThreshold || capitalYen <= ind.smeCapitalThresholdYen;
+  // 業種を問わない判定に使う基準（2026-10-31、業種選択の撤去に伴い新設）。
+  // 中小企業基本法の定義は業種で違う（小規模＝商業・サービス業5人／製造業等20人、
+  // 中小企業＝従業員100〜300人・資本金5,000万〜3億円）。業種が分からないので、
+  // 全業種で満たす範囲なら「対象」、どれかの業種なら満たす範囲は「要確認」にする。
+  // 誤って「対象外」と切り捨てないため、甘い側に倒している。
+  var GENERIC_SIZE = {
+    smallBizSure: 5, smallBizMax: 20,
+    smeEmployeeSure: 50, smeEmployeeMax: 300,
+    smeCapitalSureYen: 50000000, smeCapitalMaxYen: 300000000
+  };
+
+  // 'sure' = どの業種でも中小企業 / 'maybe' = 業種によっては中小企業 / 'no' = どの業種でも外れる
+  function chushoLevel(employeeCount, capitalYen) {
+    var G = GENERIC_SIZE;
+    if (employeeCount <= G.smeEmployeeSure || capitalYen <= G.smeCapitalSureYen) return 'sure';
+    if (employeeCount <= G.smeEmployeeMax || capitalYen <= G.smeCapitalMaxYen) return 'maybe';
+    return 'no';
+  }
+  function isChusho(employeeCount, capitalYen) {
+    return chushoLevel(employeeCount, capitalYen) === 'sure';
   }
 
-  function computeEligibility(progKey, employeeCount, capitalYen, ind) {
+  function computeEligibility(progKey, employeeCount, capitalYen) {
     if (progKey === 'jizoku') {
-      return employeeCount <= ind.smallBizThreshold ? 'ok' : 'ng';
+      // 小規模事業者の人数基準は業種で5人か20人。6〜20人は業種しだい
+      if (employeeCount <= GENERIC_SIZE.smallBizSure) return 'ok';
+      return employeeCount <= GENERIC_SIZE.smallBizMax ? 'warn' : 'ng';
     }
     if (ELIG_ALWAYS_OK.indexOf(progKey) !== -1) {
       return 'ok';
@@ -6630,7 +6664,7 @@
       return 'warn';
     }
     // ai, kaizen, tokyo_digital: 中小企業者の基準（資本金または従業員数のいずれかを満たせばよい）を参照
-    return isChusho(employeeCount, capitalYen, ind) ? 'ok' : 'warn';
+    return isChusho(employeeCount, capitalYen) ? 'ok' : 'warn';
   }
 
   function updateEligibilityBadges() {
@@ -6733,6 +6767,19 @@
     runSimulation();
   }
 
+  // 業種を問わない初期描画（2026-10-31）。ヒーロー写真は業種別の6枚から、
+  // 業種を連想させないオフィスの1枚（旧・不動産業用）に固定した。
+  function initGenericView() {
+    var heroPhotoEl = document.getElementById('heroPhoto');
+    if (heroPhotoEl) heroPhotoEl.style.backgroundImage = "url('" + INDUSTRY_HERO_PHOTO.realestate + "')";
+    renderProgramSelects();
+    updateEligibilityBadges();
+    initProgramFaq();
+    runSimulation();
+  }
+
+  // 業種選択の撤去（2026-10-31）以降、どこからも呼ばれていない。
+  // 旧UIの名残りの関数群（renderRankingHTML 等）と一緒に残している。
   function switchIndustry(key) {
     currentIndustry = key;
     // improvement.html等の他ページと業種を揃えるための保存（2026-08-16）。
@@ -7144,8 +7191,77 @@
   }
   function isRegionProgram(k) { return !!(PROGRAMS[k] && (PROGRAMS[k].prefecture || PROGRAMS[k].municipality)); }
   function capManYen(k) {
-    if (k === 'shoryokuka') return SHORYOKUKA_CAP_BY_TIER[employeeCountToTier(currentEmployeeCount)] || CAP[k];
-    return CAP[k];
+    var c = capInfo(k);
+    return c ? c.hi : CAP[k];
+  }
+
+  // ---------- 検索条件で変わる上限額（2026-10-31、本人指示） ----------
+  // 全128制度について「上限額が事業者の規模で変わるか」を一次情報で調べた結果
+  // （2026-10-31）のうち、一覧の上限額と同じ単位で比べられるものだけをここに持つ。
+  // 人材開発支援・業務改善・地域雇用開発・65歳超は、規模で変わるのが一覧の上限額
+  // （年額・コース最大額など）とは別の単位の額なので、ここには入れていない。
+  //
+  // 中小企業か大企業かで額が変わる制度。sme＝中小企業の額（＝従来の表示値）、large＝大企業の額。
+  // career_tanjikan は「常時雇用30人以下＝小規模企業」が業種によらず一律で、さらに高い。
+  var SIZE_CAP = {
+    career:          { sme: 80,   large: 60 },
+    career_kaitei:   { sme: 7,    large: 4.6 },
+    career_kyotsu:   { sme: 60,   large: 45 },
+    career_shogai:   { sme: 120,  large: 90 },
+    career_shoyo:    { sme: 56.8, large: 42.6 },
+    tokutei_kyufu:   { sme: 60,   large: 50 },
+    career_tanjikan: { small: 50, smallMax: 30, sme: 40, large: 30 }
+  };
+  // 法人か個人事業主かで額が変わる制度。入力に「法人・個人」の欄が無いので、法人の額を出して注記する
+  var ENTITY_CAP_NOTE = {
+    tokyo_hamura_kiban: '法人の額（個人事業主は5万円）',
+    tokyo_nishitokyo_dx: '法人の額（個人事業主は10万円）'
+  };
+
+  // 一覧に出す上限額。{ lo, hi, note }（万円）。lo と hi が違うときは「lo〜hi」と幅で出す。
+  // note は「何を前提にした額か」。条件で変わらない制度は note が空。
+  function capInfo(k) {
+    var emp = currentEmployeeCount;
+    var lvl = chushoLevel(emp, currentCapitalYen);
+    var def = ((window.KOBAN_SIM || {}).programs || {})[k];
+    var tracks = def && def.top && def.top.tracks;
+    // 試算データが従業員規模別の上限キーを持つ制度（省力化・新事業進出ものづくり）。
+    // 枠ごとに額が違うので、この人数で選べる枠の最小〜最大を出す。
+    // 以前は省力化だけを人数で引き、ものづくりは「101人以上・新事業進出枠」の7,000万円を
+    // 誰にでも出していた（2026-10-31に判明）。
+    if (tracks) {
+      var tier = employeeCountToTier(emp);
+      var vals = (tracks.options || []).map(function (o) {
+        return o.capKeyByTier ? simCapMan(def, o.capKeyByTier[tier]) : null;
+      }).filter(function (v) { return typeof v === 'number'; });
+      if (vals.length) {
+        return { lo: Math.min.apply(null, vals), hi: Math.max.apply(null, vals),
+          note: '従業員' + emp + '人の場合' + (vals.length > 1 ? '・枠で変わる' : '') };
+      }
+    }
+    var s = SIZE_CAP[k];
+    if (s) {
+      if (s.small != null && emp <= s.smallMax) return { lo: s.small, hi: s.small, note: '小規模企業の場合' };
+      if (lvl === 'sure') return { lo: s.sme, hi: s.sme, note: '中小企業の場合' };
+      if (lvl === 'maybe') return { lo: s.large, hi: s.sme, note: '業種によって中小企業か変わる' };
+      return { lo: s.large, hi: s.large, note: '大企業の場合' };
+    }
+    // 前橋市：個人事業主50万円／小規模企業者の法人100万円／その他の法人150万円。
+    // 小規模企業者の人数基準は業種で5人か20人。一覧は法人の額を出し、個人の額を注記する
+    if (k === 'gunma_maebashi_setsubi') {
+      if (emp <= GENERIC_SIZE.smallBizSure) return { lo: 100, hi: 100, note: '法人の額（個人事業主は50万円）' };
+      if (emp <= GENERIC_SIZE.smallBizMax) return { lo: 100, hi: 150, note: '法人の額・業種で変わる（個人事業主は50万円）' };
+      return { lo: 150, hi: 150, note: '法人の額（個人事業主は50万円）' };
+    }
+    if (ENTITY_CAP_NOTE[k] && typeof CAP[k] === 'number') return { lo: CAP[k], hi: CAP[k], note: ENTITY_CAP_NOTE[k] };
+    if (typeof CAP[k] === 'number') return { lo: CAP[k], hi: CAP[k], note: '' };
+    return null;
+  }
+
+  function fmtCapMan(v) {
+    return v >= 10000
+      ? (v / 10000).toLocaleString() + '<small>億円</small>'
+      : v.toLocaleString() + '<small>万円</small>';
   }
 
   // ---------- 申請書類・様式（2026-07-31 に各制度の公式サイトから取得） ----------
@@ -7184,7 +7300,7 @@
     }
 
     el.innerHTML =
-      '<div class="dr-head">' + INDUSTRIES[currentIndustry].label + '／' + areaLabel + '／従業員' + currentEmployeeCount + '人 の場合</div>' +
+      '<div class="dr-head">' + areaLabel + '／従業員' + currentEmployeeCount + '人 の場合</div>' +
       '<div class="dr-grid">' +
         '<div class="dr-cell"><div class="dr-k">使える可能性がある制度</div>' +
           '<div class="dr-v tabular">' + keys.length + '<small> 件</small></div></div>' +
@@ -7206,11 +7322,42 @@
     });
     renderProgramSummary();
   }
+  // ---------- 採択率ランク（2026-10-31） ----------
+  // データは adoption_data.js（_tools/build_adoption_data.py で生成）。読み込めなかったときは
+  // ランクを出さないだけで、一覧そのものは止めない。
+  function rankInfo(k) {
+    var A = window.KOBAN_ADOPTION;
+    return A && typeof A.rankOf === 'function' ? A.rankOf(k) : null;
+  }
+  function rankPillHTML(k) {
+    var r = rankInfo(k);
+    if (!r) return '';
+    if (!r.rank) return '<span class="rank-pill rk-none">採択率非公表</span>';
+    return '<span class="rank-pill rk-' + r.rank + '">採択率<b>' + r.rank + '</b>' + r.rate.toFixed(1) + '%</span>';
+  }
+  var rankFilter = {};
+  function toggleRankFilter(rank) {
+    if (rankFilter[rank]) delete rankFilter[rank]; else rankFilter[rank] = true;
+    document.querySelectorAll('#rankFilterRow button').forEach(function (b) {
+      var on = !!rankFilter[b.getAttribute('data-rank')];
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    renderProgramSummary();
+  }
+  function passesRankFilter(k) {
+    var picked = Object.keys(rankFilter);
+    if (!picked.length) return true;
+    var r = rankInfo(k);
+    if (!r) return false; // 助成金タイプはランクが無いので、絞り込み中は出さない
+    return !!rankFilter[r.rank || 'none'];
+  }
+
   function renderProgramSummary() {
     var table = document.getElementById('programSummary');
     var note = document.getElementById('summarySortNote');
     if (!table) return;
-    var keys = getUsableProgramKeys();
+    var keys = getUsableProgramKeys().filter(passesRankFilter);
     var rows = keys.map(function (k, i) {
       return { key: k, order: i, due: parseNextDeadline(PROGRAMS[k].schedule), cap: capManYen(k), rate: rateValue(k) };
     });
@@ -7275,23 +7422,32 @@
           ? '<div class="tt-lim tt-lim-state"><span class="tt-state' + stCls + '">' + st + '</span></div>'
           : '<div class="tt-lim tt-lim-none"><span class="tt-days-none">期日を<br>判定できません</span></div>';
       }
-      var capCell = typeof r.cap === 'number'
-        ? (r.cap >= 10000
-            ? '<span class="tt-v">' + (r.cap / 10000).toLocaleString() + '<small>億円</small></span>'
-            : '<span class="tt-v">' + r.cap.toLocaleString() + '<small>万円</small></span>')
+      // 上限額は検索条件（従業員数・資本金）で変わる（2026-10-31）。幅があるときは「下限〜上限」、
+      // 何を前提にした額かを小さく添える
+      var ci = capInfo(r.key);
+      var capCell = ci
+        ? '<span class="tt-v">' + (ci.lo !== ci.hi
+              // 単位が同じ（万円どうし・億円どうし）なら下限の単位を省く。違えば両方に付ける
+              ? ((ci.lo >= 10000) === (ci.hi >= 10000) ? fmtCapMan(ci.lo).replace(/<small>.*<\/small>/, '') : fmtCapMan(ci.lo)) + '〜'
+              : '') + fmtCapMan(ci.hi) + '</span>' +
+          (ci.note ? '<span class="tt-capnote">' + ci.note + '</span>' : '')
         : '<span class="tt-v tt-v-na">—</span>';
       return '<div class="tt-row' + (isRegionProgram(r.key) ? ' is-region' : '') + '">' +
         limCell +
-        '<div class="tt-nm">' + p.name +
+        '<div class="tt-nm">' + p.name + rankPillHTML(r.key) +
           (isRegionProgram(r.key) ? '<span class="tt-region">この地域だけの制度</span>' : '') +
+          (INDUSTRY_ONLY_TAG[r.key] ? '<span class="tt-ind">' + INDUSTRY_ONLY_TAG[r.key] + '</span>' : '') +
           '<span class="elig-badge" id="eligBadge-' + r.key + '"></span>' +
         '</div>' +
         '<div class="tt-rate"><span class="tt-k">補助率</span><span class="tt-v">' + rateShort(r.key) + '</span>' +
           (rateHasMore(r.key) ? '<span class="tt-more">枠・条件で変動</span>' : '') + '</div>' +
         '<div class="tt-cap"><span class="tt-k">上限額</span>' + capCell + '</div>' +
-        '<a class="tt-go" href="program.html?key=' + encodeURIComponent(r.key) + '&industry=' + encodeURIComponent(currentIndustry) + '">詳しく見る</a>' +
+        '<a class="tt-go" href="program.html?key=' + encodeURIComponent(r.key) + '">詳しく見る</a>' +
         '</div>';
     }).join('');
+    if (!rows.length && Object.keys(rankFilter).length) {
+      body = '<p class="sort-note" style="padding:1rem;">選んだ採択率ランクに当てはまる制度は、いまの地域・従業員数の条件ではありません。ランクの選択を外すか、地域を変えてみてください。</p>';
+    }
     table.innerHTML =
       '<div class="tt-hdr" aria-hidden="true"><span>次の期日／残り</span><span>制度名</span>' +
         '<span>補助率</span><span>上限額</span><span></span></div>' + body;
@@ -7307,7 +7463,6 @@
   function syncURLState() {
     if (restoringState || !window.history || !window.history.replaceState) return;
     var p = new URLSearchParams();
-    if (currentIndustry && currentIndustry !== 'beauty') p.set('industry', currentIndustry);
     if (currentPrefecture) p.set('pref', currentPrefecture);
     if (currentMunicipality) p.set('muni', currentMunicipality);
     if (currentEmployeeCount !== 5) p.set('emp', String(currentEmployeeCount));
@@ -7323,8 +7478,8 @@
     var prevRestoring = restoringState;
     restoringState = true;
     try {
-      var ind = p.get('industry');
-      if (ind && INDUSTRIES[ind]) switchIndustry(ind);
+      // ?industry= は業種選択の撤去（2026-10-31）で使わなくなった。古い共有URLに
+      // 付いていても無視する（エラーにはしない）
       var pref = p.get('pref');
       if (pref && PREFECTURE_LABEL[pref]) {
         var pSel = document.getElementById('prefectureSelect');
@@ -7542,7 +7697,8 @@
     renderProgramSummary();
     syncURLState();
   }
-  ['switchIndustry', 'onPrefectureChange', 'onMunicipalityChange', 'onEmployeeCountInput'].forEach(function (name) {
+  // 資本金も中小企業の判定に効くので、一覧の描き直しの対象に入れる（2026-10-31）
+  ['onPrefectureChange', 'onMunicipalityChange', 'onEmployeeCountInput', 'onCapitalSliderInput'].forEach(function (name) {
     var original = window[name];
     if (typeof original !== 'function') return;
     window[name] = function () {
@@ -7566,15 +7722,9 @@
   initCondCardToggles();
   initProgramCourses();
   renderMunicipalitySelect();
-  // improvement.html等、他ページと業種を揃えるための復元（2026-08-16）。
-  // URLの?industry=がある場合は下のapplyURLState()が上書きするので、ここでは
-  // 「URLに無ければ前回の選択を使う」という優先順位になる。
-  var savedIndustry = 'beauty';
-  try {
-    var si = localStorage.getItem('koban_industry');
-    if (si && INDUSTRIES[si]) savedIndustry = si;
-  } catch (e) {}
-  switchIndustry(savedIndustry);
+  // 業種選択は撤去した（2026-10-31）。以前はここで前回の業種（koban_industry）を
+  // 復元して switchIndustry() を呼んでいた。業種に依らない初期描画だけを行う。
+  initGenericView();
 
   applyURLState();
 

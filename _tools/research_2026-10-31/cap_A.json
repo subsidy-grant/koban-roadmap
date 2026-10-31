@@ -1,0 +1,799 @@
+[
+ {
+  "key": "ai",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "業務プロセス数",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "上限は導入する業務プロセス数（1〜3で150万円未満／4以上で450万円）で決まり、事業者規模では変わらない（小規模事業者で変わるのは補助率のみ）"
+ },
+ {
+  "key": "akiya",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "補助上限額の定めなし（提案内容による）"
+ },
+ {
+  "key": "career",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 80,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業（中小企業以外）",
+    "max_employees": null,
+    "cap_man": 60
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "転換前の雇用形態・重点支援対象者か否か",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1人あたり。有期→正社員・重点支援対象者の値（中小80万円／大企業60万円）。重点以外は40／30、無期→正社員は重点40／30・その他20／15（サイト試算データsim_data.jsのcap.values）。1事業所あたり年20人まで 中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "career_kaitei",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 7,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業（中小企業以外）",
+    "max_employees": null,
+    "cap_man": 4.6
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "賃金規定の引上げ率",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1人あたり。引上げ率6%以上の値（中小7万／大企業4.6万）。3%以上4%未満は4／2.6、4%台5／3.3、5%台6.5／4.3（sim_data.js）。年100人まで 中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "career_kyotsu",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 60,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業（中小企業以外）",
+    "max_employees": null,
+    "cap_man": 45
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1事業所あたり1回のみの定額（中小60万／大企業45万） 中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "career_shogai",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 120,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業（中小企業以外）",
+    "max_employees": null,
+    "cap_man": 90
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "転換区分・障害の区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1人あたり。重度障害者等を有期→正社員の値（中小120万／大企業90万）。その他障害者は90／67.5、有期→無期・無期→正社員は重度60／45・その他45／33（sim_data.js）。各期は実支払賃金総額が上限 中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "career_shoyo",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 56.8,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業（中小企業以外）",
+    "max_employees": null,
+    "cap_man": 42.6
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "導入する制度（一方か両方か）",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1事業所あたり1回。賞与と退職金の両方導入の値（中小56.8万／大企業42.6万）。どちらか一方は40／30（sim_data.js） 中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "career_tanjikan",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "小規模企業（常時雇用する労働者30人以下・企業全体）",
+    "max_employees": 30,
+    "cap_man": 50
+   },
+   {
+    "label": "中小企業（小規模企業を除く）",
+    "max_employees": 100,
+    "cap_man": 40,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業",
+    "max_employees": null,
+    "cap_man": 30
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "1年目の値。2年目は25／20／15万円",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1人あたり。小規模企業の30人基準は業種によらず一律（このコースのみ）。ここでの常時雇用は2か月超・週所定がフルタイム同等の人だけを数える。中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "chiba_chiba_ict",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "助成限度額50万円で一律。「小規模型」はタイプ名で、規模で額は変わらない"
+ },
+ {
+  "key": "chiba_choshi_ritchi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "補助区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "区分（新規所有・賃借・雇用創出・通信費・再投資）ごとの上限で、事業者規模の記載なし"
+ },
+ {
+  "key": "chiba_kimitsu_seisansei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "パートナーシップ構築宣言・賃上げ",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "パートナーシップ構築宣言・賃上げの有無で100／120／150万円。規模では変わらない"
+ },
+ {
+  "key": "chiba_matsudo_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "chiba_minamiboso_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "メニュー",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "メニューで50／25万円。規模では変わらない"
+ },
+ {
+  "key": "chiba_mobara_support",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "メニュー・市内事業者への委託",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "メニュー・市内委託の有無で5〜30万円。規模では変わらない"
+ },
+ {
+  "key": "chiba_seicho4",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "中小企業者枠3,000万円（下限500万円）／小規模事業者枠500万円（下限100万円）。どちらか一方のみ申請（重複不可）",
+  "source": "https://jimukyoku.site/chiba/seichosokushin4",
+  "checked_at": "2026-10-31",
+  "note": "中小企業者枠の対象は『中小企業者等』（業種別の資本金または従業員基準以下）で小規模事業者も含まれるため、小規模事業者も3,000万円枠を選べる。小規模事業者枠は小規模事業者だけが選べる低上限・低下限の選択肢で、人数で上限が下がるわけではない。受付は2026-08-21で終了済み（同ページ）。厳密に出すなら、小規模事業者（商業・サービス5人以下、宿泊・娯楽・製造その他20人以下）に500万円の選択肢を追加表示する形"
+ },
+ {
+  "key": "chiba_sodegaura_shinko",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "奨励金の区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "区分ごとの上限（1億〜2億円）。中小企業か否かは対象となる投下固定資産額の下限（宿泊施設の新設は中小5千万円以上）に効くだけで、上限額は変わらない"
+ },
+ {
+  "key": "chiba_tateyama_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "メニュー",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "メニューで50／25万円。規模では変わらない"
+ },
+ {
+  "key": "chiiki_koyou_kaihatsu",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業事業主（初回に1/2上乗せ）",
+    "max_employees": 100,
+    "cap_man": 1200,
+    "industry_dependent": true
+   },
+   {
+    "label": "中小企業事業主以外",
+    "max_employees": null,
+    "cap_man": 800
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "1回目の額は設置・整備費（300万〜5,000万円以上の4段）×対象労働者数（3〜4／5〜9／10〜19／20人以上）の表で50万〜800万円。創業は括弧内額（2倍）。最大3回（3年）支給",
+  "source": "site_text（sim_data.jsの表-3。支給要領 https://www.mhlw.go.jp/content/11600000/001470905.pdf 0402）",
+  "checked_at": "2026-10-31",
+  "note": "中小企業事業主は初回支給時に1回目の額の1/2が上乗せ（支給要領0402、サイトnotesに記載）。tiersは表の最大値800万円（設置整備費5,000万円以上・対象労働者20人以上、創業でない）とその1.5倍。⚠サイトの上限記載『1回目で最大120万円』は試算表の最大800万円と食い違っている（120万円は5,000万円以上×3〜4人の値）。対象労働者数は会社の規模ではなく新たに雇い入れた人数。創業×中小の上乗せ順序は支給要領に明記なし。中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "food_labor",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "応募する領域数",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1領域あたり500万円で規模による差の記載なし（資本金・従業員は対象要件のみ）"
+ },
+ {
+  "key": "gunma_isesaki_shokibo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律。小規模事業者であることは対象要件"
+ },
+ {
+  "key": "gunma_maebashi_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "150万円一律"
+ },
+ {
+  "key": "gunma_maebashi_setsubi",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "小規模企業者（法人）",
+    "max_employees": 20,
+    "cap_man": 100,
+    "industry_dependent": true
+   },
+   {
+    "label": "その他法人",
+    "max_employees": null,
+    "cap_man": 150
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "生産性向上設備導入枠の値。個人事業主は人数によらず50万円（補助率1/3）。小規模企業者（法人）1/3、その他法人1/5。省エネ設備導入枠は全事業者100万円で規模差なし",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "小規模企業者の人数基準は業種で変わる（製造業その他20人以下、商業・サービス業5人以下）。max_employees=20は製造業その他の値で、美容業などサービス業は5人以下。個人か法人かの区別が必要"
+ },
+ {
+  "key": "gunma_midori_renewal",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "100万円一律"
+ },
+ {
+  "key": "gunma_minakami_tenpo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "gunma_nakanojo_keizoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "30万円一律。小規模事業者は対象要件"
+ },
+ {
+  "key": "gunma_ota_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "100万円一律"
+ },
+ {
+  "key": "gunma_takasaki_lease",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1事業者1年500万円一律"
+ },
+ {
+  "key": "gunma_tsumagoi_uriage",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "hatarakikata",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "成果目標・賃上げ加算（引上げ人数）・割増賃金率引上げ加算",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "上限は選んだ成果目標の合計で決まる。中小企業事業主であることは対象要件。常時使用30人以下で変わるのは補助率（3/4→4/5、設備導入かつ経費30万円超の場合）で上限額ではない"
+ },
+ {
+  "key": "jigyou_shoukei_ma",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "買い手・売り手支援類型とも上限600万円（DD実施で+200万円、廃業費併用+300万円、M&A不成立時は300万円）。補助率は買い手2/3、売り手は利益率低下・赤字なら2/3それ以外1/2。別に『小規模売り手支援類型』（小規模事業者の売り手向け、上限450万円・下限なし・2/3、不成立時50万円）と『買い手支援類型100億企業特例』（上限2,000万円）がある",
+  "source": "https://shoukei-mahojokin.go.jp/assets/documents/r7h/16-experts/requirements_experts_16.pdf",
+  "checked_at": "2026-10-31",
+  "note": "16次公募要領10章。通常類型の上限は事業者規模で変わらない。小規模売り手支援類型（flyer_experts_sb_16.pdf）は小規模事業者（商業・サービス5人以下、宿泊・娯楽・製造その他20人以下）向けの別類型で、上限はむしろ低い（下限なしが利点）。小規模事業者が通常の売り手支援類型を選べない旨の記載は見当たらなかったため varies=false とした。サイトの上限記載が空欄なので600万円の記載追加を推奨"
+ },
+ {
+  "key": "jinzai",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業",
+    "max_employees": 100,
+    "cap_man": 50,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業",
+    "max_employees": null,
+    "cap_man": 30
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "訓練時間で段階（10〜100h未満：中小15／大10、100〜200h未満：30／20、200h以上：50／30）。1事業所1年度1,000万円は規模共通。経費助成率・賃金助成も中小と大企業で違う",
+  "source": "site_text（sim_data.js cap.values）",
+  "checked_at": "2026-10-31",
+  "note": "1人1訓練あたりの経費助成の上限。tiersは200時間以上の値。中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "jinzai_kakuho",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "A雇用管理制度：1制度20万〜40万円、上限80万円（賃金要件達成で100万円）／B雇用環境整備（業務負担軽減機器等）：経費の1/2、上限150万円（賃金要件で187.5万円または225万円）",
+  "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000199292_00005.html",
+  "checked_at": "2026-10-31",
+  "note": "厚労省ページの受給額表に企業規模による区分なし。サイトの上限記載が空欄なので記載追加を推奨"
+ },
+ {
+  "key": "jizoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "インボイス特例・賃金引上げ特例",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "上限は特例（インボイス・賃金引上げ）で決まる。小規模事業者であることは対象要件で、人数で上限は変わらない"
+ },
+ {
+  "key": "kaizen",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "事業場規模30人未満",
+    "max_employees": 29,
+    "cap_man": 100
+   },
+   {
+    "label": "事業場規模30人以上",
+    "max_employees": null,
+    "cap_man": 90
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "tiersは90円コース・1人引上げの値。差が出るのは引上げ人数1人と2〜3人の区分だけ（50円：1人40／30・2〜3人70／40、70円：50／40・100／50、90円：100／90・240／150）。4人以上は規模差なし（90円コース8人以上450万円、特例事業者10人以上600万円）",
+  "source": "site_text（sim_data.js cap.values）",
+  "checked_at": "2026-10-31",
+  "note": "⚠判定単位は会社の従業員数ではなく『申請する事業場（店舗）』で働く人数。会社全体の人数を入れると誤る。中小企業・小規模事業者であることは対象要件"
+ },
+ {
+  "key": "kanagawa_atsugi_it",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "事業区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "事業区分で10／50万円"
+ },
+ {
+  "key": "kanagawa_atsugi_setsubi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "業種（製造業か否か）",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "製造業200万円／製造業以外100万円。業種で変わり規模では変わらない"
+ },
+ {
+  "key": "kanagawa_ayase_kyojinka",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "コース",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "コースで500／200万円"
+ },
+ {
+  "key": "kanagawa_ayase_shogyo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "事業区分・新規創業等",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "事業・新規創業等で50〜200万円"
+ },
+ {
+  "key": "kanagawa_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律。小規模事業者は対象要件"
+ },
+ {
+  "key": "kanagawa_ebina_shinko",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "15万円一律"
+ },
+ {
+  "key": "kanagawa_hiratsuka_datsutanso",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "経費規模・発注先",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "経費規模（300万円未満／以上）で50／200万円"
+ },
+ {
+  "key": "kanagawa_hiratsuka_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "200万円一律"
+ },
+ {
+  "key": "kanagawa_hiratsuka_ritchi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "累計5億円。大企業／中小企業で違うのは対象となる投資額の下限（3億円／5千万円）で、上限は変わらない"
+ },
+ {
+  "key": "kanagawa_isehara_setsubi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "kanagawa_kamakura_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "経費区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "15万円＋3万円の別枠、規模差なし"
+ },
+ {
+  "key": "kanagawa_kamakura_kankyo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "施設区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "施設区分で100〜300万円"
+ },
+ {
+  "key": "kanagawa_kamakura_ritchi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "面積・経費区分",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "リフォーム面積（100㎡未満150万円）・賃料で変わる。規模差なし"
+ },
+ {
+  "key": "kanagawa_kawasaki_seicho",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "賃上げ計画の表明",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "賃上げ申請で100→200万円。規模差なし"
+ },
+ {
+  "key": "kanagawa_sagamihara_seisansei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1,000万円一律"
+ },
+ {
+  "key": "kanagawa_sagamihara_shoene",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "100万円一律"
+ },
+ {
+  "key": "kanagawa_seisansei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "上限500万円は一律。事業者規模で変わるのは下限（中小企業者等50万円／小規模事業者37.5万円）だけ"
+ },
+ {
+  "key": "kanagawa_yamato_koten",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "kanagawa_yokohama_led",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "kanagawa_yokohama_monozukuri",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1回20万円一律（連携体）"
+ },
+ {
+  "key": "kanagawa_yokohama_shingijutsu",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1,000万円一律"
+ },
+ {
+  "key": "kanagawa_yokohama_shoene",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "100万円一律"
+ },
+ {
+  "key": "kanagawa_yokosuka_ict",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "30万円一律。小規模事業者は対象要件"
+ },
+ {
+  "key": "kanagawa_yokosuka_seisansei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "25万円一律（区分による差なしと明記）"
+ },
+ {
+  "key": "kanagawa_yokosuka_senshinteki",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "200万円一律"
+ },
+ {
+  "key": "kanagawa_yugawara_shukuhaku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "kanagawa_zama_renewal",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "50万円一律"
+ },
+ {
+  "key": "kanko_shoryokuka",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "施設数",
+  "source": "site_text",
+  "checked_at": "2026-10-31",
+  "note": "1施設1,000万円（3施設まで）。規模差の記載なし"
+ },
+ {
+  "key": "koyou_65sai",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業事業主",
+    "max_employees": 100,
+    "cap_man": 60,
+    "industry_dependent": true
+   },
+   {
+    "label": "中小企業事業主以外",
+    "max_employees": null,
+    "cap_man": 45
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "コースで構造が違う。①65歳超継続雇用促進コース：措置内容×『60歳以上の雇用保険被保険者数』（1〜3／4〜6／7〜9／10人以上）で15万〜240万円、企業規模の区分なし。②高年齢者評価制度等雇用管理改善コース：措置(1)中小60万／大45万、(1)以外30万／23万、機器導入は経費の60%／45%（経費上限50万円）。③高年齢者無期雇用転換コース：1人あたり中小40万／大30万（年10人まで）",
+  "source": "https://www.jeed.go.jp/elderly/subsidy/subsidy_hyouka.html ／ https://www.jeed.go.jp/elderly/subsidy/subsidy_muki.html ／ https://www.jeed.go.jp/elderly/subsidy/subsidy_keizoku.html",
+  "checked_at": "2026-10-31",
+  "note": "tiersは②評価制度等コースの措置(1)の値。①の人数区分は会社の従業員数ではなく60歳以上の被保険者数なので、従業員数入力では決まらない。サイトの上限記載が空欄なので記載追加を推奨。中小企業の範囲は業種で変わる（サービス業：資本金5,000万円以下または常時雇用100人以下／小売業：5,000万円以下または50人以下／卸売業：1億円以下または100人以下／製造業その他：3億円以下または300人以下）。max_employeesはサービス業（美容業）の100人を入れている。資本金基準を満たせば人数を超えても中小企業。個人事業主は人数だけで判定"
+ },
+ {
+  "key": "monodukuri",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "従業員1〜5人",
+    "max_employees": 5,
+    "cap_man": 750
+   },
+   {
+    "label": "従業員6〜20人",
+    "max_employees": 20,
+    "cap_man": 1000
+   },
+   {
+    "label": "従業員21〜50人",
+    "max_employees": 50,
+    "cap_man": 1500
+   },
+   {
+    "label": "従業員51人以上",
+    "max_employees": null,
+    "cap_man": 2500
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "革新的新製品・サービス枠・通常の値（賃上げ特例で850／1,250／2,500／3,500）。新事業進出枠・グローバル枠は1〜20人2,500／21〜50人4,000／51〜100人5,500／101人以上7,000（賃上げ特例3,000／5,000／7,000／9,000）",
+  "source": "site_text（sim_data.js cap.values、公募要領第1回1.1版）",
+  "checked_at": "2026-10-31",
+  "note": "枠によって人数の区切りが違う（革新枠は5/20/50、新事業進出・グローバル枠は20/50/100）。業種で区切りは変わらない"
+ }
+]

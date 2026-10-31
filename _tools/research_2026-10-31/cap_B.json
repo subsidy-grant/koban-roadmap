@@ -1,0 +1,718 @@
+[
+ {
+  "key": "ryouritsu_daitai",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "プラチナくるみんで割合・定額が上がる。新規雇用型は特定事業主のみ",
+  "source": "https://www.mhlw.go.jp/content/001688450.pdf",
+  "note": "支給額・上限（手当月10万/3万、新規雇用9万〜81万等）は事業主規模で変わらない（支給要領0302a〜c）。規模は新規雇用（育児休業）型の利用可否だけ（特定事業主＝資本金5,000万以下（小売・サービス）または常時雇用300人以下）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "ryouritsu_funin",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "中小企業のみが対象（対象可否の条件）。上限額は規模で変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "ryouritsu_ikuji",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "中小企業のみが対象（対象可否の条件）。上限額は規模で変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "ryouritsu_juunan",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "中小企業のみが対象（対象可否の条件）。上限額は規模で変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "ryouritsu_kaigo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "中小企業のみが対象（対象可否の条件）。上限額は規模で変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "ryouritsu_shusseiji",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "1人目/2人目以降、取得率上昇ルートかで額が変わる",
+  "source": "site_text",
+  "note": "ルートにより中小企業／特定事業主が対象（対象可否）。支給額は規模で変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_ageo_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定25万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_ageo_setsubi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "対象経費400万円超が必要",
+  "source": "https://www.city.ageo.lg.jp/page/412445.html",
+  "note": "上限1,000万円で一律。規模（サービス業10人以下等）は対象可否の条件のみ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_chichibu_reform",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定15万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://dxdounyushienhozyo.pref.saitama.lg.jp/",
+  "note": "上限300万円（補助率3/4）で一律。規模による差の記載なし。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_fujimi_challenge",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "区分により5万〜50万円",
+  "source": "site_text",
+  "note": "区分（取組内容）で上限が変わるだけで規模では変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_higashimatsuyama_ganbaru",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定30万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_iruma_shinko",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "助成率はRE100等の条件で変動",
+  "source": "https://www.city.iruma.saitama.jp/soshiki/shokokankoka/shokogyo/8923.html",
+  "note": "上限1億円（3年間合計）で一律。中小企業は従業員10人以上要件・面積要件が緩和されるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_kawaguchi_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_kawaguchi_ritchi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "補助の種類で上限が変わる",
+  "source": "https://www.city.kawaguchi.lg.jp/soshiki/01110/011/4/38246.html",
+  "note": "固定資産税相当補助 年200万×3年度、貸工場 年120万、雇用促進 1人20万・上限300万。規模による差なし。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_kazo_keieikakushin",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定100万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_koshigaya_setsubi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "市内/市外調達で補助率が変わる",
+  "source": "https://www.city.koshigaya.saitama.jp/kurashi_shisei/jigyosha/shienyushi/hojokin/koshigaya_contents_buxtukakoutou.html",
+  "note": "上限200万円で一律（市内調達2/3・市外1/2）。規模による差なし。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_misato_ganbaro",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "研究開発は50万円、それ以外30万円",
+  "source": "site_text",
+  "note": "規模では変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_niiza_itdx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定7万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_saitama_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://www.sozo-saitama.or.jp/topic/dx-subsidy/",
+  "note": "上限40万円（補助率2/3）で一律。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_saitama_setsubi",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://www.city.saitama.lg.jp/005/001/002/p123535.html",
+  "note": "中小企業・中堅企業とも上限1,000万円で一律（中堅企業は対象可否の条件）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_sayama_ritchi",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業（中小企業基本法の定義。製造業・運輸業・情報通信業は資本金3億円以下または従業員300人以下）",
+    "max_employees": 300,
+    "cap_man": null,
+    "industry_dependent": true
+   },
+   {
+    "label": "大企業",
+    "max_employees": null,
+    "cap_man": 1000
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "企業立地奨励金のみ。大企業は固定資産税等の1/3・3年間・年1,000万円限度、中小企業は1/2・5年間・上限なし。雇用促進助成金等は別（各100万〜600万）",
+  "source": "https://www.city.sayama.saitama.jp/kankou/kigyourichi/hojo/kigyourittisyoureiki.html",
+  "note": "cap_manは年額（大企業）。中小企業の判定は資本金または従業員数のどちらかを満たせばよく、従業員基準は業種で変わる（本制度の対象業種はいずれも300人）。面積要件も中小企業が緩い",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_shoryokuka",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "賃上げ要件の有無で上限・補助率が変わる",
+  "source": "https://www.pref.saitama.lg.jp/a0805/shoryokuka/index.html",
+  "note": "上限1,000万円（賃上げ要件で1,200万円）で一律。従業員数による区分なし。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_toda_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_tokorozawa_monozukuri",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "区分により30万〜150万円",
+  "source": "site_text",
+  "note": "区分（単独/連携等）で変わるだけで規模では変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "saitama_tokorozawa_toshigata",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "月10万×24か月で一律。正社員6〜20人未満は本社区分の対象可否条件。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "seichou_kasokuka",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "上限5億円で一律。規模（売上10億〜100億・中小企業者）は対象可否の条件。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "shoene_hikaseki",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "設備単位型は上限1億円で一律（大企業も対象）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "shoryokuka",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "従業員5人以下",
+    "max_employees": 5,
+    "cap_man": 750
+   },
+   {
+    "label": "従業員6〜20人",
+    "max_employees": 20,
+    "cap_man": 1500
+   },
+   {
+    "label": "従業員21〜50人",
+    "max_employees": 50,
+    "cap_man": 3000
+   },
+   {
+    "label": "従業員51〜100人",
+    "max_employees": 100,
+    "cap_man": 5000
+   },
+   {
+    "label": "従業員101人以上",
+    "max_employees": null,
+    "cap_man": 8000
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "tiersは一般型の通常値。大幅賃上げ特例で1,000万/2,000万/4,000万/6,500万/1億円。カタログ注文型は5人以下200万・6〜20人500万・21人以上1,000万（賃上げ要件で300万・750万・1,500万）",
+  "source": "site_text",
+  "note": "従業員0名は申請不可（代表者は従業員に含まない）。業種による人数区分の違いはない",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_ashikaga_shinko",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "上限100万円で一律。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_chinage",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://www.pref.tochigi.lg.jp/f06/documents/r7tochigichinagekannkyouseibihojokin_youryou.pdf",
+  "note": "補助上限200万円で一律（交付要領 別表1）。規模は中小企業事業者かどうかの対象可否のみ。複数事業場の合計も200万円が上限（FAQ問1-5）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_kanuma_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_nikko_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定20万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_nikko_lease",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://www.city.nikko.lg.jp/soshiki/6/1029/5/1/1705.html",
+  "note": "年度100万円限度で一律。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tochigi_shimotsuke_reform",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "空き店舗開業100万、既存店舗50万",
+  "source": "site_text",
+  "note": "出店区分で変わるだけで規模では変わらない。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokutei_kyufu",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "中小企業（美容業＝サービス業は資本金5,000万円以下または常時使用100人以下）",
+    "max_employees": 100,
+    "cap_man": 60,
+    "industry_dependent": true
+   },
+   {
+    "label": "中小企業以外（大企業）",
+    "max_employees": null,
+    "cap_man": 50
+   }
+  ],
+  "capital_matters": true,
+  "other_conditions": "支給対象期間はいずれも1年（6か月ごと2期、中小30万×2・大企業25万×2）。各期は支払賃金額が上限",
+  "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/chuukou.html",
+  "note": "対象労働者1人あたりの支給総額（人数に比例）。中小企業の従業員基準は業種で変わる（小売業50人、サービス業・卸売業100人、その他300人）。資本金基準を満たせば人数超でも中小企業",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_adachi_kaizen",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "区内調達250万・区外150万",
+  "source": "site_text",
+  "note": "上限は区内/区外調達で変わるだけ。従業員基準（製造業等30人以下・商業サービス業10人以下）は対象可否の条件。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_arakawa_jizoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "通常100万（賃上げで200万）／デジタル特例200万",
+  "source": "site_text",
+  "note": "枠・賃上げ要件で変わるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_bunkyo_seisansei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "通常50万（ISO14001で100万）／賃上げ枠100万",
+  "source": "site_text",
+  "note": "枠・ISO取得で変わるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "下限：通常5万・小規模企業者7.5万",
+  "source": "site_text",
+  "note": "上限150万円で一律。小規模企業者は下限が7.5万円になるだけ（上限は同じ）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_edogawa_dx",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定200万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_fuchu_hanro",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定30万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_hachioji_keizoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定100万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_hamura_kiban",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "個人事業主",
+    "max_employees": null,
+    "cap_man": 5,
+    "basis": "entity_type"
+   },
+   {
+    "label": "法人",
+    "max_employees": null,
+    "cap_man": 10,
+    "basis": "entity_type"
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "DX推進事業の値。助成金全体では法人25万・個人15万",
+  "source": "site_text",
+  "note": "法人か個人事業主かで上限が変わる（従業員数・資本金では変わらない）。max_employeesは使わず basis=entity_type で判定",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_itabashi_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "ア50万／イ250万／ウ500万",
+  "source": "site_text",
+  "note": "コースで変わるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_katsushika_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "ハードウェアは20万円まで",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_kita_itiot",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定100万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_koto_ict",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_meguro_shoryokuka",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定40万円。300人以下は対象可否の条件。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_minato_software",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定（ソフト40万＋機器20万）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_mitaka_sangyo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "成長投資支援枠300万／その他の枠は経費区分ごと30万",
+  "source": "site_text",
+  "note": "枠で変わるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_nakano_keieiryoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定20万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_nerima_challenge",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定100万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_nishitokyo_dx",
+  "varies": true,
+  "tiers": [
+   {
+    "label": "個人事業主",
+    "max_employees": null,
+    "cap_man": 10,
+    "basis": "entity_type"
+   },
+   {
+    "label": "法人",
+    "max_employees": null,
+    "cap_man": 20,
+    "basis": "entity_type"
+   }
+  ],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "法人か個人事業主かで上限が変わる（従業員数・資本金では変わらない）。max_employeesは使わず basis=entity_type で判定",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_setagaya_keiei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "販路拡大20万／生産性向上設備40万",
+  "source": "site_text",
+  "note": "メニューで変わるだけ。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_shinagawa_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定60万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_shuekiryoku",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://tokyo-shuekiryoku-kyoka.jp/",
+  "note": "助成上限300万円で一律（サイトの上限記載が空欄なので補記が必要）。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_sogyo",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "上限400万円で一律。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_soui",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/",
+  "note": "助成限度額600万円で一律。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_suginami_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_sumida_digital",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定50万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_taito_keiei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定20万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "tokyo_toshima_keiei",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "",
+  "source": "site_text",
+  "note": "固定15万円。",
+  "checked_at": "2026-10-31"
+ },
+ {
+  "key": "trial_koyou",
+  "varies": false,
+  "tiers": [],
+  "capital_matters": false,
+  "other_conditions": "人数に比例",
+  "source": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou.html",
+  "note": "1人あたり月4万円（母子家庭の母等は5万円）×最長3か月。企業規模による差なし。",
+  "checked_at": "2026-10-31"
+ }
+]
