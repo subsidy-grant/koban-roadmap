@@ -37,7 +37,8 @@ def check_generated(msgs):
         ng(msgs, "build_adoption_data.py が失敗: " + (r.stderr or r.stdout).strip())
         return
     after = (ROOT / "adoption_data.js").read_bytes()
-    if before != after:
+    # Windows の作業コピーは git が改行を CRLF にしていることがあるので、改行の違いは差と見なさない
+    if before.replace(b"\r\n", b"\n") != after.replace(b"\r\n", b"\n"):
         ng(msgs, "adoption_data.js が rates.json と合っていなかった（いま再生成した。差分をコミットすること）")
 
 
