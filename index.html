@@ -7482,7 +7482,8 @@
         '<div class="tt-rate"><span class="tt-k">補助率</span><span class="tt-v">' + rateShort(r.key) + '</span>' +
           (rateHasMore(r.key) ? '<span class="tt-more">枠・条件で変動</span>' : '') + '</div>' +
         '<div class="tt-cap"><span class="tt-k">上限額</span>' + capCell + '</div>' +
-        '<a class="tt-go" href="program.html?key=' + encodeURIComponent(r.key) + '">詳しく見る</a>' +
+        // 従業員数を渡すと、詳細ページの上限額の区分表でその人数の欄に色が付く（2026-11-01）
+        '<a class="tt-go" href="program.html?key=' + encodeURIComponent(r.key) + '&amp;emp=' + currentEmployeeCount + '">詳しく見る</a>' +
         '</div>';
     }).join('');
     if (!rows.length && Object.keys(rankFilter).length) {

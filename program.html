@@ -204,6 +204,26 @@
   }
   .num-weak { font-weight: 600; }
 
+  /* 上限額カードの区分表と原典の表の画像（2026-11-01、本人指示）。
+     表は sim_data.js の calc.cap（試算と同じ金額データ）から組む。画像は原典の切り抜きで、
+     読ませるのは表の側。320pxでも収まるよう、表は横に溢れたら枠の中だけで横にずらせる。 */
+  /* 3枚並びのカードのままだと幅が240px前後しかなく、金額の列が切れる（PCでも）。
+     区分表を持つカードは、開いたときだけ横幅いっぱいに広げる。閉じた並びは崩さない */
+  .pd-item-amount.has-cap-tbl[open] { grid-column: 1 / -1; }
+  .cap-tbl-wrap { margin-top: 0.8rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cap-tbl { border-collapse: collapse; width: 100%; font-size: 0.86rem; background: var(--paper-raised); }
+  .cap-tbl th, .cap-tbl td { border: 1px solid var(--line); padding: 0.35rem 0.5rem; text-align: center; white-space: nowrap; }
+  .cap-tbl thead th { background: var(--accent-wash); font-weight: 700; }
+  .cap-tbl tbody th { font-weight: 600; text-align: left; white-space: normal; min-width: 5.5em; }
+  .cap-tbl thead th { white-space: normal; }
+  .cap-tbl td { text-align: right; font-variant-numeric: tabular-nums; }
+  .cap-tbl tr.cap-grp th { background: var(--paper-sunken); text-align: left; font-weight: 700; }
+  .cap-tbl .is-you { background: var(--sage-wash); color: var(--sage-ink); font-weight: 700; }
+  .cap-tbl-note { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; }
+  .cap-fig { margin: 0.9rem 0 0; }
+  .cap-fig img { display: block; width: 100%; max-width: 480px; height: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; }
+  .cap-fig figcaption { margin-top: 0.4rem; font-size: 0.78rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; overflow-wrap: anywhere; }
+
   /* 詳細な試算（2026-08-05追加）。制度ごとの質問と計算ルールは sim_data.js に持ち、
      このページは「質問を並べて、答えを計算式に流し込む」だけを担う（制度ごとの
      決め打ちはコードに書かない）。入力された数値はこのページのJS変数にしか置かず、
@@ -2157,16 +2177,101 @@
     var continuityPeek = (key && CONTINUITY_SUMMARY[key]) || peekText(p.continuity);
     var ratePeek = (key && RATE_SUMMARY[key]) || esc(peekText(p.rate));
     var capPeek = (key && CAP_SUMMARY[key]) || esc(peekText(p.cap));
+    var capTbl = capTableHTML(key);
     return (
       pdItem('pd-item-wide', '事業規模・雇用要件', reqHL(p.scale), { peek: esc(scalePeek) }) +
       pdItem('', '主な対象経費', p.expense, { peek: esc(expensePeek) }) +
       pdItem('pd-item-key pd-item-rate', '補助率', numStrong(p.rate), { vClass: 'tabular', peek: numStrong(ratePeek) }) +
-      pdItem('pd-item-key pd-item-amount', '上限額', numStrong(p.cap), { vClass: 'tabular', peek: numStrong(capPeek) }) +
+      pdItem('pd-item-key pd-item-amount' + (capTbl ? ' has-cap-tbl' : ''), '上限額', numStrong(p.cap) + capTbl, { vClass: 'tabular', peek: numStrong(capPeek) }) +
       pdItem('', '賃金上昇要件', reqHL(wageNumHL(p.wage)), { peek: esc(wagePeek) }) +
       pdItem('', '採択率／支給傾向', acc.full, { vClass: 'tabular', peek: acceptancePeek }) +
       pdItem('pd-item-key pd-item-due', '受付期間・次回締切', numWeak(p.schedule), { peek: esc(schedulePeek) }) +
       pdItem('', '制度の継続性', p.continuity, { peek: esc(continuityPeek) })
     );
+  }
+
+  // 上限額カードの区分表。sim_data.js の capTable を持つ制度だけに出す。
+  // 金額は calc.cap.values（試算と同じデータ）から引くので、表と試算は食い違わない。
+  // 軸が3つ以上なら先頭の軸ごとに区切り行を入れ、残り2つを行と列にする
+  // （業務改善助成金：コースで区切り、引き上げる人数×事業場の規模）。
+  // 一覧から ?emp=人数 で来たときは、capTable.empAxes の軸でその人数に当たる欄に色を付ける。
+  function capTableHTML(key) {
+    var def = ((window.KOBAN_SIM || {}).programs || {})[key];
+    var t = def && def.capTable;
+    var cap = def && def.calc && def.calc.cap;
+    if (!t || !cap || !cap.axes || !cap.values) return '';
+    var emp = parseInt(new URLSearchParams(location.search).get('emp'), 10);
+    if (!(emp >= 1)) emp = null;
+    var used = Object.keys(cap.values).map(function (k) { return k.split('|'); });
+    var axes = cap.axes.map(function (ax, i) {
+      var levels;
+      if (ax.brackets) {
+        levels = ax.brackets.map(function (b) { return { k: b.k, t: b.t }; });
+      } else {
+        var q = (def.questions || []).filter(function (x) { return x.id === ax.q; })[0];
+        levels = ((q && q.options) || []).map(function (o) { return { k: o.v, t: o.s || o.t }; });
+      }
+      levels = levels.filter(function (l) { return used.some(function (u) { return u[i] === l.k; }); });
+      // 条件付きの区分（when。特例事業者の10人以上など）には色を付けない。人数だけでは決まらないため
+      var hit = null;
+      if (emp && ax.brackets && (t.empAxes || []).indexOf(ax.q) >= 0) {
+        var plain = ax.brackets.filter(function (b) { return !b.when; });
+        for (var j = 0; j < plain.length; j++) {
+          if (plain[j].max == null || emp <= plain[j].max) { hit = plain[j].k; break; }
+        }
+        if (!hit && plain.length) hit = plain[plain.length - 1].k;
+      }
+      return { idx: i, title: (t.axisTitles || {})[ax.q] || '', levels: levels, hit: hit };
+    });
+    if (axes.some(function (a) { return !a.levels.length; })) return '';
+    var n = axes.length;
+    var rowAx = n === 1 ? axes[0] : axes[n - 2];
+    var colAx = n === 1 ? null : axes[n - 1];
+    if (n === 2 && rowAx.levels.length < colAx.levels.length) { var sw = rowAx; rowAx = colAx; colAx = sw; }
+    var grpAxes = n >= 3 ? axes.slice(0, n - 2) : [];
+    var groups = [[]];
+    grpAxes.forEach(function (a) {
+      var next = [];
+      groups.forEach(function (g) { a.levels.forEach(function (l) { next.push(g.concat([{ ax: a, l: l }])); }); });
+      groups = next;
+    });
+    var cols = colAx ? colAx.levels : [null];
+    var anyHit = false;
+    var head = colAx
+      ? '<tr><th scope="col" rowspan="2">' + esc(rowAx.title) + '</th><th scope="colgroup" colspan="' + cols.length + '">' + esc(colAx.title) + '</th></tr>' +
+        '<tr>' + cols.map(function (c) { return '<th scope="col">' + esc(c.t) + '</th>'; }).join('') + '</tr>'
+      : '<tr><th scope="col">' + esc(rowAx.title) + '</th><th scope="col">上限額</th></tr>';
+    var body = groups.map(function (g) {
+      var grpRow = g.length
+        ? '<tr class="cap-grp"><th scope="colgroup" colspan="' + (cols.length + 1) + '">' +
+          esc(g.map(function (x) { return x.l.t; }).join('・')) + '</th></tr>'
+        : '';
+      return grpRow + rowAx.levels.map(function (r) {
+        var rowYou = rowAx.hit === r.k;
+        return '<tr><th scope="row"' + (rowYou ? ' class="is-you"' : '') + '>' + esc(r.t) + '</th>' +
+          cols.map(function (c) {
+            var parts = new Array(n);
+            g.forEach(function (x) { parts[x.ax.idx] = x.l.k; });
+            parts[rowAx.idx] = r.k;
+            if (colAx) parts[colAx.idx] = c.k;
+            var man = cap.values[parts.join('|')];
+            var you = rowYou && (!colAx || !colAx.hit || colAx.hit === c.k) && (rowAx.hit || (colAx && colAx.hit));
+            if (you) anyHit = true;
+            return '<td' + (you ? ' class="is-you"' : '') + '>' + (typeof man === 'number' ? fmtMan(man) : '—') + '</td>';
+          }).join('') + '</tr>';
+      }).join('');
+    }).join('');
+    var note = '試算と同じ金額データから作った表です。';
+    if (anyHit && t.empNote) note += String(t.empNote).replace('{n}', emp);
+    var img = t.image;
+    var fig = img && img.src
+      ? '<figure class="cap-fig"><a href="' + esc(img.src) + '" target="_blank" rel="noopener">' +
+          '<img src="' + esc(img.src) + '" width="' + (img.width || '') + '" height="' + (img.height || '') + '" alt="' + esc(img.alt || '') + '" loading="lazy" decoding="async"></a>' +
+          '<figcaption>原典の表（画像を押すと拡大します）。出典：「' + esc(img.title) + '」' + esc(img.page || '') + '（' + esc(img.publisher) + '）' +
+          '<a href="' + esc(img.url) + '" target="_blank" rel="noopener noreferrer">' + esc(img.url) + '</a> を加工して作成（表の部分を切り抜き、' + esc(img.checked) + '取得）</figcaption></figure>'
+      : '';
+    return '<div class="cap-tbl-wrap"><table class="cap-tbl"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' +
+      '<p class="cap-tbl-note">' + esc(note) + '</p>' + fig;
   }
 
   function esc(x) {
