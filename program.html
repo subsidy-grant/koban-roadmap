@@ -219,6 +219,10 @@
   .cap-tbl td { text-align: right; font-variant-numeric: tabular-nums; }
   .cap-tbl tr.cap-grp th { background: var(--paper-sunken); text-align: left; font-weight: 700; }
   .cap-tbl .is-you { background: var(--sage-wash); color: var(--sage-ink); font-weight: 700; }
+  @media (max-width: 420px) {
+    .cap-tbl { font-size: 0.78rem; }
+    .cap-tbl th, .cap-tbl td { padding: 0.3rem 0.3rem; }
+  }
   .cap-tbl-note { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; }
   .cap-fig { margin: 0.9rem 0 0; }
   .cap-fig img { display: block; width: 100%; max-width: 480px; height: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; }
@@ -2195,10 +2199,17 @@
   // 軸が3つ以上なら先頭の軸ごとに区切り行を入れ、残り2つを行と列にする
   // （業務改善助成金：コースで区切り、引き上げる人数×事業場の規模）。
   // 一覧から ?emp=人数 で来たときは、capTable.empAxes の軸でその人数に当たる欄に色を付ける。
+  // 表の金額。1億円以上は「12,000万円」ではなく「1億2,000万円」と書く（公募要領の書き方に合わせる）
+  function fmtCapCell(man) {
+    if (man < 10000) return fmtMan(man);
+    var oku = Math.floor(man / 10000), rest = Math.round((man - oku * 10000) * 10) / 10;
+    return oku + '億' + (rest ? rest.toLocaleString('ja-JP') + '万' : '') + '円';
+  }
   function capTableHTML(key) {
     var def = ((window.KOBAN_SIM || {}).programs || {})[key];
     var t = def && def.capTable;
-    var cap = def && def.calc && def.calc.cap;
+    // 人数で支給する制度（per_person）は区分表を calc.unit に持つ。形は cap と同じ
+    var cap = def && def.calc && (def.calc.cap || def.calc.unit);
     if (!t || !cap || !cap.axes || !cap.values) return '';
     var emp = parseInt(new URLSearchParams(location.search).get('emp'), 10);
     if (!(emp >= 1)) emp = null;
@@ -2240,7 +2251,7 @@
     var head = colAx
       ? '<tr><th scope="col" rowspan="2">' + esc(rowAx.title) + '</th><th scope="colgroup" colspan="' + cols.length + '">' + esc(colAx.title) + '</th></tr>' +
         '<tr>' + cols.map(function (c) { return '<th scope="col">' + esc(c.t) + '</th>'; }).join('') + '</tr>'
-      : '<tr><th scope="col">' + esc(rowAx.title) + '</th><th scope="col">上限額</th></tr>';
+      : '<tr><th scope="col">' + esc(rowAx.title) + '</th><th scope="col">' + esc(t.valueLabel || '上限額') + '</th></tr>';
     var body = groups.map(function (g) {
       var grpRow = g.length
         ? '<tr class="cap-grp"><th scope="colgroup" colspan="' + (cols.length + 1) + '">' +
@@ -2257,11 +2268,11 @@
             var man = cap.values[parts.join('|')];
             var you = rowYou && (!colAx || !colAx.hit || colAx.hit === c.k) && (rowAx.hit || (colAx && colAx.hit));
             if (you) anyHit = true;
-            return '<td' + (you ? ' class="is-you"' : '') + '>' + (typeof man === 'number' ? fmtMan(man) : '—') + '</td>';
+            return '<td' + (you ? ' class="is-you"' : '') + '>' + (typeof man === 'number' ? fmtCapCell(man) : '—') + '</td>';
           }).join('') + '</tr>';
       }).join('');
     }).join('');
-    var note = '試算と同じ金額データから作った表です。';
+    var note = '試算と同じ金額データから作った表です。' + (t.valueLabel ? '表の金額は' + t.valueLabel + 'です。' : '');
     if (anyHit && t.empNote) note += String(t.empNote).replace('{n}', emp);
     var img = t.image;
     var fig = img && img.src
