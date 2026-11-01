@@ -224,6 +224,9 @@
     .cap-tbl th, .cap-tbl td { padding: 0.3rem 0.3rem; }
   }
   .cap-tbl-note { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; }
+  .cap-origin { margin-top: 0.9rem; }
+  .cap-origin-btn { display: inline-block; padding: 0.55rem 0.9rem; min-height: 44px; box-sizing: border-box; border: 1px solid var(--accent); border-radius: var(--radius-sm); color: var(--accent); background: var(--paper-raised); font-weight: 700; font-size: 0.88rem; text-decoration: none; line-height: 1.6; }
+  .cap-origin-btn:hover { background: var(--accent-wash); }
   .cap-fig { margin: 0.9rem 0 0; }
   .cap-fig img { display: block; width: 100%; max-width: 480px; height: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; }
   .cap-fig figcaption { margin-top: 0.4rem; font-size: 0.78rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; overflow-wrap: anywhere; }
@@ -2274,15 +2277,31 @@
     }).join('');
     var note = '試算と同じ金額データから作った表です。' + (t.valueLabel ? '表の金額は' + t.valueLabel + 'です。' : '');
     if (anyHit && t.empNote) note += String(t.empNote).replace('{n}', emp);
-    var img = t.image;
-    var fig = img && img.src
-      ? '<figure class="cap-fig"><a href="' + esc(img.src) + '" target="_blank" rel="noopener">' +
-          '<img src="' + esc(img.src) + '" width="' + (img.width || '') + '" height="' + (img.height || '') + '" alt="' + esc(img.alt || '') + '" loading="lazy" decoding="async"></a>' +
-          '<figcaption>原典の表（画像を押すと拡大します）。出典：「' + esc(img.title) + '」' + esc(img.page || '') + '（' + esc(img.publisher) + '）' +
-          '<a href="' + esc(img.url) + '" target="_blank" rel="noopener noreferrer">' + esc(img.url) + '</a> を加工して作成（表の部分を切り抜き、' + esc(img.checked) + '取得）</figcaption></figure>'
-      : '';
     return '<div class="cap-tbl-wrap"><table class="cap-tbl"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' +
-      '<p class="cap-tbl-note">' + esc(note) + '</p>' + fig;
+      '<p class="cap-tbl-note">' + esc(note) + '</p>' + capOriginHTML(t.origin);
+  }
+
+  // 原典。転載が認められるもの（image あり）は切り抜きの画像を、認められないものは
+  // 原典のそのページへのリンクを出す。どちらも、押せば原典の該当ページが開く。
+  function capOriginHTML(o) {
+    if (!o || !o.url) return '';
+    var href = o.url + (o.page ? '#page=' + o.page : '');
+    var where = '「' + esc(o.label) + '」' + (o.page ? o.page + 'ページ' : '');
+    var src = '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + where + ' ↗</a>';
+    var note = o.note ? esc(o.note) + '<br>' : '';
+    var im = o.image;
+    if (im && im.src) {
+      var how = o.license === 'pdl' ? 'を加工して作成（表の部分を切り抜き）'
+        : o.license === 'kokuji' ? 'から表の部分を切り抜き（告示のため著作権の対象外）'
+        : 'から表の部分を切り抜き';
+      return '<figure class="cap-fig"><a href="' + esc(im.src) + '" target="_blank" rel="noopener">' +
+          '<img src="' + esc(im.src) + '" width="' + (im.width || '') + '" height="' + (im.height || '') + '" alt="' + esc(im.alt || '') + '" loading="lazy" decoding="async"></a>' +
+          '<figcaption>原典（画像を押すと拡大します）。' + note + '出典：' + src + how + '。' + esc(o.checked) + '取得</figcaption></figure>';
+    }
+    return '<div class="cap-origin">' +
+        '<a class="cap-origin-btn" href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">原典の表を開く' + (o.page ? '（' + o.page + 'ページ）' : '') + ' ↗</a>' +
+        '<p class="cap-tbl-note">' + note + '原典：' + where + '。原典の画像は、転載してよいことを確かめられた資料にだけ載せているため、ここではリンクで示しています（' + esc(o.checked) + '確認）。</p>' +
+      '</div>';
   }
 
   function esc(x) {

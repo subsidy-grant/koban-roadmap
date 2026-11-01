@@ -255,20 +255,24 @@ window.KOBAN_SIM = {
       //   axisTitles … 表の見出しに出す軸の名前
       //   empAxes    … 一覧から渡された従業員数で色を付ける軸（従業員数＝引き上げる人数の
       //                最大とみなす。index.html の capInfo と同じ前提）
-      //   image      … 原典の表の切り抜き。厚労省は公共データ利用規約（PDL1.0）で、
-      //                切り抜きは「加工」に当たるので「加工して作成」と出典に書く
+      //   origin     … 原典の表の場所（url・page）。転載が認められるものだけ image（切り抜き）を持つ。
+      //                license: 'pdl' … 公共データ利用規約（厚労省など）。切り抜きは「加工」なので
+      //                                 「加工して作成」と書く
+      //                         'kokuji' … 告示として出された要綱。著作権法13条で権利の目的にならない
+      //                image が無いものは、転載してよいと確かめられなかったもの（規約で無断転載を禁じている
+      //                団体と、規約ページが見つからなかった団体。2026-11-01 確認）。原典のそのページへのリンクだけを出す
       capTable: {
         axisTitles: { course: 'コース', raiseCount: '引き上げる人数', site: '事業場の規模' },
         empAxes: ['raiseCount', 'site'],
         empNote: '従業員{n}人の全員を引き上げる場合に当たる欄に色を付けています。実際に数えられるのは、雇い入れから6か月以上たち、雇用保険に入っている人だけです。',
-        image: {
-          src: 'img/cap/kaizen.png', width: 714, height: 939,
-          alt: '助成上限額の表（50円・70円・90円の各コースについて、引き上げる労働者数1人〜10人以上ごとに、事業場規模30人未満の事業者とそれ以外の事業者の上限額）',
-          title: '令和8年度業務改善助成金のご案内',
-          publisher: '厚生労働省',
-          page: 'p.2',
-          url: 'https://www.mhlw.go.jp/content/11200000/001693416.pdf',
-          checked: '2026-11-01'
+        origin: {
+          label: '令和8年度業務改善助成金のご案内（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11200000/001693416.pdf', page: 2,
+          checked: '2026-11-01', license: 'pdl',
+          image: {
+            src: 'img/cap/kaizen.png', width: 714, height: 939,
+            alt: '助成上限額の表（50円・70円・90円の各コースについて、引き上げる労働者数1人〜10人以上ごとに、事業場規模30人未満の事業者とそれ以外の事業者の上限額）'
+          }
         }
       },
       // 質問の順番は、前の答えが次の質問の前提になる順に並べている。
@@ -600,7 +604,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'process': '変える業務プロセスの数'}
+        axisTitles: {'process': '変える業務プロセスの数'},
+        origin: {
+          label: 'デジタル化・AI導入補助金2026 通常枠 公募要領（中小企業基盤整備機構）',
+          url: 'https://it-shien.smrj.go.jp/applicant/subsidy/normal/',
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -748,7 +757,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '使う特例'}
+        axisTitles: {'waku': '使う特例'},
+        origin: {
+          label: '小規模事業者持続化補助金＜一般型・通常枠＞第20回 公募要領（中小企業庁）',
+          url: 'https://www.chusho.meti.go.jp/koukai/hojyokin/kobo/2026/260527002.html',
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -1013,7 +1027,12 @@ window.KOBAN_SIM = {
       capTable: {
         axisTitles: {'ruikei': '類型', 'emp': '従業員数', 'chinage': '大幅な賃上げの特例'},
         empAxes: ['emp'],
-        empNote: '従業員{n}人の場合に当たる欄に色を付けています。'
+        empNote: '従業員{n}人の場合に当たる欄に色を付けています。',
+        origin: {
+          label: '中小企業省力化投資補助金＜一般型＞第7回 公募要領（中小企業基盤整備機構）',
+          url: 'https://shoryokuka.smrj.go.jp/ippan/',
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate',
@@ -1266,7 +1285,12 @@ window.KOBAN_SIM = {
       capTable: {
         axisTitles: {'waku': '枠', 'emp': '従業員数', 'chinage': '賃上げ特例'},
         empAxes: ['emp'],
-        empNote: '従業員{n}人の場合に当たる欄に色を付けています。'
+        empNote: '従業員{n}人の場合に当たる欄に色を付けています。',
+        origin: {
+          label: '新事業進出・ものづくり商業サービス補助金 第1回 公募要領（中小企業基盤整備機構）',
+          url: 'https://shinjigyou-monodukuri.smrj.go.jp/',
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -1422,7 +1446,14 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'invest': '設置・整備費用', 'workers': '雇い入れる対象労働者の人数', 'sougyo': '創業かどうか'},
-        valueLabel: '1回目（1年目）の支給額'
+        valueLabel: '1回目（1年目）の支給額',
+        origin: {
+          label: '雇用関係助成金支給要領 第2 各助成金別要領 6 地域雇用開発助成金（地域雇用開発コース）（令和8年4月1日改定版）',
+          url: 'https://www.mhlw.go.jp/content/11600000/001470905.pdf', page: 12,
+          checked: '2026-11-01', license: 'pdl',
+          note: '表の括弧内が、創業の場合の1回目の額です。',
+          image: { src: 'img/cap/chiiki_koyou_kaihatsu.png', width: 1087, height: 540, alt: '（表－3）設置・整備費用と対象労働者の数ごとの支給額。括弧内は創業の場合' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -1952,7 +1983,14 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'before': '転換前の雇用形態', 'juten': '重点支援対象者', 'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1人あたりの額（支給対象期の合計）',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 39,
+          checked: '2026-11-01', license: 'pdl',
+          note: '原典は支給対象期1期あたりの額です。この表の額は、重点支援対象者は2期分、それ以外は1期分を足したものです。',
+          image: { src: 'img/cap/career.png', width: 1042, height: 1349, alt: '1005 支給額（正社員化コース）の条文' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -2094,7 +2132,13 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'ritsu': '賃金規定の引上げ率', 'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1人あたりの額',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 59,
+          checked: '2026-11-01', license: 'pdl',
+          image: { src: 'img/cap/career_kaitei.png', width: 1042, height: 1502, alt: '3004 支給額（賃金規定等改定コース）の条文' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -2198,7 +2242,13 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1事業所あたりの額（1回限り）',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 64,
+          checked: '2026-11-01', license: 'pdl',
+          image: { src: 'img/cap/career_kyotsu.png', width: 1042, height: 268, alt: '4004 支給額（賃金規定等共通化コース）の条文' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -2309,7 +2359,13 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'seido': '導入する制度', 'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1事業所あたりの額（1回限り）',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 67,
+          checked: '2026-11-01', license: 'pdl',
+          image: { src: 'img/cap/career_shoyo.png', width: 1042, height: 585, alt: '5004 支給額（賞与・退職金制度導入コース）の条文' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -2419,7 +2475,13 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'year': '取組', 'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1人あたりの額',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 72,
+          checked: '2026-11-01', license: 'pdl',
+          image: { src: 'img/cap/career_tanjikan.png', width: 1042, height: 1089, alt: '6005 支給額（短時間労働者労働時間延長支援コース）の条文' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -2545,7 +2607,14 @@ window.KOBAN_SIM = {
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
         axisTitles: {'sochi': '行う転換', 'shurui': '対象になる方の区分', 'size': '企業の規模'},
-        valueLabel: '1人あたりの額'
+        valueLabel: '1人あたりの額（支給対象期の合計）',
+        origin: {
+          label: 'キャリアアップ助成金 支給要領（R8.4.8）（厚生労働省）',
+          url: 'https://www.mhlw.go.jp/content/11910500/001688259.pdf', page: 52,
+          checked: '2026-11-01', license: 'pdl',
+          note: '原典の「支給総額」が、この表の額です。',
+          image: { src: 'img/cap/career_shogai.png', width: 1042, height: 860, alt: '2005 支給額（障害者正社員化コース）の条文と表' }
+        }
       },
       calc: {
         type: 'per_person',
@@ -4070,7 +4139,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '枠', 'iso': 'ISO14001認証'}
+        axisTitles: {'waku': '枠', 'iso': 'ISO14001認証'},
+        origin: {
+          label: '文京区 令和8年度 持続可能性向上支援補助金（生産性向上設備）案内',
+          url: 'https://www.city.bunkyo.lg.jp/documents/4945/chirashi.pdf', page: 1,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -4384,7 +4458,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': 'メニュー'}
+        axisTitles: {'waku': 'メニュー'},
+        origin: {
+          label: '令和8年度世田谷区中小事業者経営支援補助金 募集要項',
+          url: 'https://www.city.setagaya.lg.jp/documents/11321/r8_youkou.pdf', page: 3,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -4671,7 +4750,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '枠', 'wage': '賃上げ要件'}
+        axisTitles: {'waku': '枠', 'wage': '賃上げ要件'},
+        origin: {
+          label: '令和8年度 荒川区商業・サービス業事業継続力強化支援事業補助金 パンフレット',
+          url: 'https://www.city.arakawa.tokyo.jp/documents/24809/shousapanfu.pdf', page: 1,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -4758,7 +4842,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'course': 'コース'}
+        axisTitles: {'course': 'コース'},
+        origin: {
+          label: 'デジタル化・データ利活用推進助成金交付要綱／実施要領（板橋区産業振興公社）',
+          url: 'https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf', page: 6,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -4876,7 +4965,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'chotatsu': '発注先'}
+        axisTitles: {'chotatsu': '発注先'},
+        origin: {
+          label: '令和8年度小規模事業者等経営改善補助金 募集案内',
+          url: 'https://www.city.adachi.tokyo.jp/documents/1324/01.pdf', page: 3,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -5102,7 +5196,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '枠'}
+        axisTitles: {'waku': '枠'},
+        origin: {
+          label: '三鷹商工会中小企業等産業活性化補助金交付要綱',
+          url: 'https://www.mitaka-s.jp/docs/2026012000010/file_contents/youkou.pdf', page: 5,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -5218,7 +5317,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'hojin': '法人・個人の別'}
+        axisTitles: {'hojin': '法人・個人の別'},
+        origin: {
+          label: '羽村市中小企業経営基盤強化助成金 制度案内（令和8年4月27日付版）',
+          url: 'https://www.city.hamura.tokyo.jp/cmsfiles/contents/0000018/18519/R8.4.27koushinnkeieikibannkyoukaR8.pdf', page: 1,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -5278,7 +5382,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'hojin': '法人・個人の別'}
+        axisTitles: {'hojin': '法人・個人の別'},
+        origin: {
+          label: '西東京市DX化推進事業補助金 チラシ・FAQ',
+          url: 'https://www.city.nishitokyo.lg.jp/kurasi/sangyou/kakushujigyou/dxkasuishin.files/r8tirashi.pdf', page: 1,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -5924,7 +6033,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'wage': '賃上げ計画の表明'}
+        axisTitles: {'wage': '賃上げ計画の表明'},
+        origin: {
+          label: '令和8年度川崎市中小企業成長環境支援補助金 募集要領',
+          url: 'https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf', page: 3,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -6152,7 +6266,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '事業区分'}
+        axisTitles: {'waku': '事業区分'},
+        origin: {
+          label: '厚木市ロボット関連産業等促進事業補助金要領',
+          url: 'https://www.city.atsugi.kanagawa.jp/material/files/group/44/roboyoryo.pdf', page: 4,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -6375,7 +6494,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '事業', 'sougyo': '新規創業等'}
+        axisTitles: {'waku': '事業', 'sougyo': '新規創業等'},
+        origin: {
+          label: '令和8年度綾瀬市商業者支援事業補助金 公募要領',
+          url: 'https://www.city.ayase.kanagawa.jp/material/files/group/27/R8kouboyoryo1.pdf', page: 3,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -6494,7 +6618,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'kubun': '経費規模と発注先'}
+        axisTitles: {'kubun': '経費規模と発注先'},
+        origin: {
+          label: '令和8年度 平塚市脱炭素設備投資促進補助金【募集要領】（第1版）',
+          url: 'https://www.city.hiratsuka.kanagawa.jp/common/200199022.pdf', page: 7,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -6929,7 +7058,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'ninte': '要件区分'}
+        axisTitles: {'ninte': '要件区分'},
+        origin: {
+          label: '埼玉県中小企業省力化支援事業補助金交付要綱（新規導入・設備更新共通）',
+          url: 'https://www.pref.saitama.lg.jp/documents/282419/01_kouhuyoukou.pdf', page: 8,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -7230,7 +7364,7 @@ window.KOBAN_SIM = {
       kind: 'hojo',
       source: {
         label: '令和8年度富士見市中小企業チャレンジ支援事業補助金パンフレット（別表①②付き）',
-        url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/tyusyoukigyoutyarenz.files/R8panfu2.pdf',
+        url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R8panfu2.pdf',
         checked: '2026-08-06 JST'
       },
       review: {
@@ -7264,7 +7398,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'kubun': '区分'}
+        axisTitles: {'kubun': '区分'},
+        origin: {
+          label: '令和8年度富士見市中小企業チャレンジ支援事業補助金パンフレット（別表①②付き）',
+          url: 'https://www.city.fujimi.saitama.jp/60jigyo/06sangyou/syoukou/jigyousya-sien/tyusyoukigyoutyarenz.files/R8panfu2.pdf', page: 4,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -7719,7 +7858,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'waku': '枠'}
+        axisTitles: {'waku': '枠'},
+        origin: {
+          label: '千葉県中小企業成長促進補助金（第4弾）公式ページ',
+          url: 'https://www.pref.chiba.lg.jp/keisei/zaisei/chiba-seichohojyo4.html',
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -7921,7 +8065,13 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'yuguu': 'パートナーシップ構築宣言・賃上げ'}
+        axisTitles: {'yuguu': 'パートナーシップ構築宣言・賃上げ'},
+        origin: {
+          label: '令和8年度物価高騰対策君津市中小企業者生産性向上補助金交付要綱（君津市告示第126号）',
+          url: 'https://www.city.kimitsu.lg.jp/uploaded/attachment/59840.pdf', page: 7,
+          checked: '2026-11-01', license: 'kokuji',
+          image: { src: 'img/cap/chiba_kimitsu_seisansei.png', width: 1024, height: 867, alt: '別表（第5条第2項）区分ごとの補助率と補助限度額' }
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -7988,7 +8138,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'menu': 'メニュー'}
+        axisTitles: {'menu': 'メニュー'},
+        origin: {
+          label: '令和8年度 館山市市内事業者デジタル化トライアル補助金－申請要領－',
+          url: 'https://www.city.tateyama.chiba.jp/files/300400786.pdf', page: 5,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -8057,7 +8212,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'menu': 'メニュー'}
+        axisTitles: {'menu': 'メニュー'},
+        origin: {
+          label: '令和8年度 南房総市市内事業者デジタル化トライアル補助金－申請要領－',
+          url: 'https://www.city.minamiboso.chiba.jp/cmsfiles/contents/0000020/20765/R8youryo.pdf', page: 5,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -8132,7 +8292,13 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'menu': 'メニュー'}
+        axisTitles: {'menu': 'メニュー'},
+        origin: {
+          label: '茂原市中小事業者サポート補助金交付要綱',
+          url: 'https://www1.g-reiki.net/city.mobara.chiba/reiki_honbun/n800RG00000781.html',
+          checked: '2026-11-01', license: 'kokuji',
+          image: { src: 'img/cap/chiba_mobara_support.png', width: 824, height: 1559, alt: '補助事業ごとの補助対象経費と補助金額の表' }
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -8396,7 +8562,12 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'kubun': '枠と事業者区分'}
+        axisTitles: {'kubun': '枠と事業者区分'},
+        origin: {
+          label: '令和8年度前橋市設備投資支援補助金交付要項（前橋市産業政策課）',
+          url: 'https://www.city.maebashi.gunma.jp/material/files/group/55/R8setubitousiyoukoukaiseiban.pdf', page: 5,
+          checked: '2026-11-01'
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
@@ -8785,7 +8956,13 @@ window.KOBAN_SIM = {
       ],
       // 詳細ページの上限額カードの区分表（2026-11-01）。中身は calc から組む（kaizen の capTable の説明を参照）
       capTable: {
-        axisTitles: {'category': '出店区分'}
+        axisTitles: {'category': '出店区分'},
+        origin: {
+          label: '下野市まちなか商店リフォーム補助金交付要綱（告示、最終改正 令和5年5月30日告示第93号）',
+          url: 'https://www.city.shimotsuke.lg.jp/manage/contents/upload/651fa3386486f.pdf', page: 7,
+          checked: '2026-11-01', license: 'kokuji',
+          image: { src: 'img/cap/tochigi_shimotsuke_reform.png', width: 955, height: 197, alt: '別表第2（第6条関係）出店区分ごとの補助率と補助限度額' }
+        }
       },
       calc: {
         type: 'expense_rate', expenseQ: 'cost',
