@@ -853,8 +853,15 @@ def check_program(key, d, program_keys, caps):
             err(key, "calc.floor は q+min か amount か amountBy のどれか1つだけを書くこと")
         if fl.get("q") is not None:
             need_q(fl.get("q"), "calc.floor.q")
-            if fl.get("min") is None:
-                err(key, "calc.floor に q があるのに min が無い")
+            if fl.get("min") is None and not fl.get("minBy"):
+                err(key, "calc.floor に q があるのに min（または minBy）が無い")
+            if fl.get("minBy"):
+                mb = fl["minBy"]
+                need_q(mb.get("q"), "calc.floor.minBy.q")
+                mq = seen.get(mb.get("q")) or {}
+                for v in [o.get("v") for o in (mq.get("options") or [])]:
+                    if v not in (mb.get("values") or {}):
+                        err(key, "calc.floor.minBy.values に '%s' が無い。この区分だけ下限が効かない" % v)
         if fl.get("amountBy"):
             ab = fl["amountBy"]
             need_q(ab.get("q"), "calc.floor.amountBy.q")

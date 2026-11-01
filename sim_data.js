@@ -46,6 +46,7 @@
 //                  上限が事実上消える（働き方改革推進支援助成金で20倍の過大になった）。
 //                  下限は floor で書く。2種類あるので取り違えないこと：
 //                    floor: { q, min, … }        … 対象経費そのものの下限（業務改善助成金の10万円）
+//                    floor: { q, minBy:{q,values} } … 対象経費の下限が区分ごとに違う場合（東京都デジタル）
 //                    floor: { amount, … }        … 補助金の額の下限（AI導入補助金の5万円）
 //                    floor: { amountBy:{q,values} } … 補助金の額の下限が枠ごとに違う場合
 //                  そもそも受けられない組み合わせは blocks: [{ when, message }] で止める
@@ -159,7 +160,9 @@ window.KOBAN_SIM = {
     //   ご案内       https://www.mhlw.go.jp/content/11200000/001693381.pdf
     //   交付要綱     https://www.mhlw.go.jp/content/11200000/001693388.pdf  ← 別表第1・第2が金額の原典
     //   交付要領     https://www.mhlw.go.jp/content/11200000/001693391.pdf  ← 別紙2（特例事業者）別紙3（対象経費）
-    //   Q&A(R8.7.7)  https://www.mhlw.go.jp/content/11200000/001719418.pdf
+    //   Q&A(R8.9.8)  https://www.mhlw.go.jp/content/11200000/001746753.pdf
+    //     （旧 R8.7.7版 001719418.pdf は削除済み。2026-11-01に差し替え。ここで引く問4〜問54は
+    //       番号・問の文とも新版で一致を確認）
     //   仕入税額控除 https://www.mhlw.go.jp/content/11200000/001693766.pdf
     //
     // 助成上限額（万円。左＝事業場規模30人未満／右＝30人以上）※交付要綱 別表第1・第2
@@ -188,7 +191,7 @@ window.KOBAN_SIM = {
       // 引用している他の一次資料のURLをここに控える（2026-08-06 4回目監査で追加確認）。
       //   交付要綱 https://www.mhlw.go.jp/content/11200000/001693388.pdf
       //   交付要領 https://www.mhlw.go.jp/content/11200000/001693391.pdf
-      //   Q&A（令和8年7月7日更新） https://www.mhlw.go.jp/content/11200000/001719418.pdf
+      //   Q&A（令和8年9月8日作成） https://www.mhlw.go.jp/content/11200000/001746753.pdf （旧7月7日版は削除済み）
       // review は記録であって、画面には出さない（program.html に描画コードを置かないこと）。
       // 実在の有資格者による監修ではないので、「社労士監修」と読める表示をしてはいけない。
       review: {
@@ -4992,21 +4995,22 @@ window.KOBAN_SIM = {
     // 葛飾区デジタル化支援事業費補助金（葛飾区）
     //
     // 出典：令和8年度デジタル化支援事業費補助事業のご案内（葛飾区）
-    //   https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf （2026-08-06 確認）
+    //   https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/digital_hojokin.pdf （2026-11-01 確認）
+    //   （旧 080501digitalannnai.pdf は削除済み。差し替え後も補助率・上限・申請期間は同じ）
     // ================================================================
     tokyo_katsushika_digital: {
       kind: 'hojo',
       source: {
         label: '令和8年度デジタル化支援事業費補助事業のご案内',
-        url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/080501digitalannnai.pdf',
-        checked: '2026-08-06 JST'
+        url: 'https://www.city.katsushika.lg.jp/_res/projects/default_project/_page_/001/032/622/digital_hojokin.pdf',
+        checked: '2026-11-01 JST'
       },
       review: {
         reviewer: 'shindanshi',
         date: '2026-08-06',
         result: '調査担当と独立検証担当が案内資料を突合し、補助率・上限額とも一致を確認'
       },
-      status: { state: 'open', text: '申請期間は2026年4月1日〜2027年2月26日必着です（2026年8月6日時点）。' },
+      status: { state: 'open', text: '申請期間は2026年4月1日〜2027年2月26日必着です（2026年11月1日時点）。' },
       intro: 'ソフトウェア・クラウドサービスの導入費や、区内店舗のキャッシュレス決済機器の導入費が対象です。申請前に区のIT相談を受け、デジタル化導入診断書の発行が必要です。',
       top: {
         rate: '1/2以内',
@@ -5464,28 +5468,32 @@ window.KOBAN_SIM = {
     // ================================================================
     // 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）
     //
-    // 出典：令和8年度 中小企業デジタル導入促進補助事業 募集要項
-    //   https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf （2026-08-06 確認）
+    // 出典：令和8年度第2回 中小企業デジタル導入促進補助事業 募集要項
+    //   https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8-2boshuuyoukou.pdf （2026-11-01 確認）
+    //   （第1回の R8boshuuyoukou.pdf は削除済み）
+    // 下限は「助成対象経費」に対するもの（第2回 5ページの図表：10万円以上、小規模企業者は7.5万円以上）。
+    // 当初「小規模企業者は補助額の下限7.5万円」と書いていたが誤り（第1回の本文も「下限額5万円」のみ）。
+    // 補助額に直すと どの区分でも5万円以上（10×1/2、7.5×2/3）。2026-11-01修正
     // ================================================================
     tokyo_digital: {
       kind: 'hojo',
       source: {
-        label: '令和8年度 中小企業デジタル導入促進補助事業 募集要項（東京都中小企業振興公社）',
-        url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8boshuuyoukou.pdf',
-        checked: '2026-08-06 JST'
+        label: '令和8年度第2回 中小企業デジタル導入促進補助事業 募集要項（東京都中小企業振興公社）',
+        url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8-2boshuuyoukou.pdf',
+        checked: '2026-11-01 JST'
       },
       review: {
         reviewer: 'shindanshi',
         date: '2026-08-06',
         result: '調査担当と独立検証担当が第1回募集要項を突合し、補助率・上限額・下限額とも一致を確認',
-        note: '令和8年度第2回の募集要項・受付日程は2026年8月6日時点で未公開のため、第1回募集要項の内容（下限額・上限額とも現状サイト記載と一致）で試算する。第2回で条件が変わる可能性がある。'
+        note: '2026-11-01に第2回募集要項へ差し替え。助成率・上限額（150万円）・経費区分ごとの上限（50万・20万・75万円）は第1回と同じ。下限を「対象経費10万円（小規模企業者7.5万円）」に訂正。'
       },
-      status: { state: 'closed', text: '第1回（2026年6月11日〜7月3日）は受付終了しています。第2回は2026年9月頃を予定と案内されていますが、2026年8月6日時点で正式な募集要項・受付日程は未公開です。' },
+      status: { state: 'open', text: '第2回の受付は2026年9月28日〜2027年1月29日です（2026年11月1日時点、受付中）。予算に達した時点で締め切られます。' },
       intro: '新たに導入するデジタルツール（ソフトウェア・クラウドサービス）本体費や、導入にかかる初期設定・カスタマイズ費が対象です。小規模企業者や環境負荷軽減ツールは補助率が優遇されます。',
       top: {
         rate: '1/2以内（小規模企業者、または環境負荷軽減に資するツール導入の場合は2/3以内）',
-        cap: '150万円（下限5万円。小規模企業者は下限7.5万円）',
-        schedule: '第2回は2026年9月頃を予定（正式日程は2026年8月6日時点で未公開）。第1回（6月11日〜7月3日）は受付終了',
+        cap: '150万円（対象経費が10万円以上、小規模企業者は7.5万円以上で申請できます）',
+        schedule: '第2回：2026年9月28日〜2027年1月29日（予算に達し次第終了）。第1回（6月11日〜7月3日）は受付終了',
         capText: '150万円'
       },
       questions: [
@@ -5495,7 +5503,7 @@ window.KOBAN_SIM = {
             { v: 'chusho', t: '中小企業者', s: '中小企業者' },
             { v: 'shokibo', t: '小規模企業者（美容業はサービス業区分、従業員5人以下が目安）', s: '小規模企業者' }
           ],
-          help: '[[小規模企業者に当たると、補助率が2/3に上がり、申請できる下限額も7.5万円に上がります]]。'
+          help: '[[小規模企業者に当たると、補助率が2/3に上がり、申請できる対象経費の下限も10万円から7.5万円に下がります]]。'
         },
         {
           id: 'kankyo', type: 'choice', label: '環境負荷軽減に資するツールの導入', def: 'no',
@@ -5518,7 +5526,7 @@ window.KOBAN_SIM = {
           values: { 'chusho|no': 1 / 2, 'chusho|yes': 2 / 3, 'shokibo|no': 2 / 3, 'shokibo|yes': 2 / 3 }
         },
         cap: { fixedMan: 150 },
-        floor: { amountBy: { q: 'kibo', values: { chusho: 5, shokibo: 7.5 } }, message: '計算した補助額が{amount}となり、この補助金の下限（{min}）に届きません。' }
+        floor: { q: 'cost', minBy: { q: 'kibo', values: { chusho: 10, shokibo: 7.5 } }, message: '対象経費が[[{min}未満]]だと申請できません（入力：{amount}）。' }
       },
       notes: [
         '[[申請時点で一般に販売されているパッケージ製品であることが要件]]で、フルカスタム開発・スクラッチ開発は対象外です。',
@@ -5533,27 +5541,28 @@ window.KOBAN_SIM = {
     // ================================================================
     // 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）（東京都・東京都中小企業振興公社）
     //
-    // 出典：令和8年度第2回 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）募集要項
-    //   https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf （2026-08-06 確認）
+    // 出典：令和8年度第3回 経営力強化に向けた創意工夫チャレンジ促進事業（業務改善コース）募集要項
+    //   https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_03.pdf （2026-11-01 確認）
+    //   （第2回の _02.pdf は削除済み。第3回も助成率2/3・限度額600万円・業績悪化要件は同じ）
     // ================================================================
     tokyo_soui: {
       kind: 'hojo',
       source: {
-        label: '令和8年度第2回 創意工夫チャレンジ促進事業（業務改善コース）募集要項（東京都中小企業振興公社）',
-        url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_02.pdf',
-        checked: '2026-08-06 JST'
+        label: '令和8年度第3回 創意工夫チャレンジ促進事業（業務改善コース）募集要項（東京都中小企業振興公社）',
+        url: 'https://www.tokyo-kosha.or.jp/support/josei/jigyo/soui-challenge/ippan/h0iqeh0000009ei1-att/R8soui-challenge_ippan_boshuyoukou_03.pdf',
+        checked: '2026-11-01 JST'
       },
       review: {
         reviewer: 'shindanshi',
         date: '2026-08-06',
         result: '調査担当と独立検証担当が募集要項を突合し、補助率・上限額とも一致を確認'
       },
-      status: { state: 'open', text: '第2回の受付は2026年8月3日9:00〜8月14日16:00です（2026年8月6日時点、受付中）。第3回は11月2日〜13日、第4回は2027年2月1日〜12日を予定しています。' },
+      status: { state: 'before', text: '第3回の受付は2026年11月2日9:00〜11月13日16:00です（2026年11月1日時点、受付開始前）。第4回は2027年2月1日〜2月12日16:00です。' },
       intro: '直近決算期の業績が悪化している事業者を対象に、原材料費・機械装置費・委託費等の経費が補助されます。',
       top: {
         rate: '2/3以内',
         cap: '600万円',
-        schedule: '第2回：2026年8月3日9:00〜8月14日16:00／第3回：11月2日〜13日／第4回：2027年2月1日〜12日',
+        schedule: '第3回：2026年11月2日9:00〜11月13日16:00／第4回：2027年2月1日〜2月12日16:00（第1回・第2回は受付終了）',
         capText: '600万円'
       },
       questions: [
@@ -5771,9 +5780,9 @@ window.KOBAN_SIM = {
     kanagawa_ayase_kyojinka: {
       kind: 'hojo',
       source: {
-        label: '令和8年度 綾瀬市中小企業強靭化推進補助金 二次公募要領',
+        label: '令和8年度 綾瀬市中小企業強靭化推進補助金 三次公募要領',
         url: 'https://www.city.ayase.kanagawa.jp/soshiki/shokosinkoka/kogyotanto/4/2905.html',
-        checked: '2026-08-06 JST'
+        checked: '2026-11-01 JST'
       },
       review: {
         reviewer: 'shindanshi',
@@ -5783,9 +5792,9 @@ window.KOBAN_SIM = {
       },
       top: {
         noTopEstimate: true,
-        rate: 'A-1・A-2・Bの全コース共通で3分の2以内',
-        cap: 'A-1・A-2コース500万円（下限250万円）／Bコース200万円（下限100万円）',
-        schedule: '事前相談：2026年7月1日〜8月17日／本申請：〜8月31日17時必着'
+        rate: '3分の2以内',
+        cap: '三次公募はBコースのみで上限150万円（取得最低額75万円）。二次公募まではA-1・A-2コース500万円もあった',
+        schedule: '三次公募：事前相談 2026年10月1日〜10月30日17時（終了）／本申請 11月13日17時必着'
       },
       reason: '[[対象者要件に「主たる業種が製造業であること」が明記]]されており、理容・美容業（サービス業）は対象外です。',
       calc: { type: 'none' }

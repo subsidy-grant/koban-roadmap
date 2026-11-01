@@ -229,6 +229,13 @@
   .cap-origin-btn:hover { background: var(--accent-wash); }
   .cap-fig { margin: 0.9rem 0 0; }
   .cap-fig img { display: block; width: 100%; max-width: 480px; height: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; }
+  .cap-zoom-view { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: var(--paper); }
+  .cap-zoom-view[hidden] { display: none; }
+  .cap-zoom-bar { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem max(16px, env(safe-area-inset-right)) 0.5rem max(16px, env(safe-area-inset-left)); padding-top: max(0.5rem, env(safe-area-inset-top)); border-bottom: 1px solid var(--line); background: var(--paper-raised); }
+  .cap-zoom-back { flex-shrink: 0; white-space: nowrap; appearance: none; min-height: 44px; min-width: 44px; padding: 0.4rem 1rem; border: 1px solid var(--accent); border-radius: var(--radius-sm); background: var(--paper-raised); color: var(--accent); font: inherit; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+  .cap-zoom-hint { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.5; }
+  .cap-zoom-body { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); }
+  .cap-zoom-body img { display: block; max-width: none; height: auto; margin: 0 auto; background: #fff; border: 1px solid var(--line); }
   .cap-fig figcaption { margin-top: 0.4rem; font-size: 0.78rem; color: var(--ink-soft); line-height: 1.6; font-weight: 400; overflow-wrap: anywhere; }
 
   /* 詳細な試算（2026-08-05追加）。制度ごとの質問と計算ルールは sim_data.js に持ち、
@@ -1136,8 +1143,8 @@
     chiiki_koyou_kaihatsu: '通年受付（対象地域限定）',
     shoene_hikaseki: '2次受付終了（従来枠は公募2回で完結）',
     tokyo_sogyo: '次回締切：10月8日',
-    tokyo_digital: '次回予定：9月頃',
-    tokyo_soui: '次回締切：8月14日',
+    tokyo_digital: '次回締切：1月29日',
+    tokyo_soui: '次回締切：11月13日',
     tokyo_shuekiryoku: '通年受付',
     tokyo_minato_software: '次回締切：1月31日',
     tokyo_bunkyo_seisansei: '次回締切：10月1日',
@@ -1208,7 +1215,7 @@
     gunma_maebashi_setsubi: '次回締切：8月28日',
     kanagawa_atsugi_setsubi: '次回締切：1月15日',
     kanagawa_yokosuka_senshinteki: '通年受付',
-    kanagawa_ayase_kyojinka: '次回締切：8月31日',
+    kanagawa_ayase_kyojinka: '次回締切：11月13日',
     gunma_ota_dx: '次回締切：12月28日',
     kanagawa_isehara_setsubi: '次回締切：12月末',
     kanagawa_kamakura_ritchi: '次回締切：2月26日',
@@ -1605,7 +1612,7 @@
     gunma_maebashi_setsubi: '資産購入費・工事費等',
     kanagawa_atsugi_setsubi: '設備本体費・付属部品費',
     kanagawa_yokosuka_senshinteki: '原材料費・機械装置費等',
-    kanagawa_ayase_kyojinka: '3コースから経費選択',
+    kanagawa_ayase_kyojinka: '三次はBコースのみ',
     gunma_ota_dx: '省力化機器・システム費',
     kanagawa_isehara_setsubi: '機械及び装置の購入費',
     kanagawa_kamakura_ritchi: '内装工事費または賃料',
@@ -2062,7 +2069,7 @@
     kaizen: '最大600万円',
     kanagawa_atsugi_it: '最大50万円',
     kanagawa_atsugi_setsubi: '最大200万円',
-    kanagawa_ayase_kyojinka: '最大500万円',
+    kanagawa_ayase_kyojinka: '上限150万円（三次）',
     kanagawa_ayase_shogyo: '最大200万円',
     kanagawa_digital: '上限50万円',
     kanagawa_ebina_shinko: '上限15万円',
@@ -2294,7 +2301,7 @@
       var how = o.license === 'pdl' ? 'を加工して作成（表の部分を切り抜き）'
         : o.license === 'kokuji' ? 'から表の部分を切り抜き（告示のため著作権の対象外）'
         : 'から表の部分を切り抜き';
-      return '<figure class="cap-fig"><a href="' + esc(im.src) + '" target="_blank" rel="noopener">' +
+      return '<figure class="cap-fig"><a class="cap-zoom" href="' + esc(im.src) + '" target="_blank" rel="noopener">' +
           '<img src="' + esc(im.src) + '" width="' + (im.width || '') + '" height="' + (im.height || '') + '" alt="' + esc(im.alt || '') + '" loading="lazy" decoding="async"></a>' +
           '<figcaption>原典（画像を押すと拡大します）。' + note + '出典：' + src + how + '。' + esc(o.checked) + '取得</figcaption></figure>';
     }
@@ -2303,6 +2310,65 @@
         '<p class="cap-tbl-note">' + note + '原典：' + where + '。原典の画像は、転載してよいことを確かめられた資料にだけ載せているため、ここではリンクで示しています（' + esc(o.checked) + '確認）。</p>' +
       '</div>';
   }
+
+  // 原典の画像の拡大表示。画像ファイルを別タブで開くと、ホーム画面に置いたアプリ等では
+  // 戻る手段がなくなるため、ページの中に重ねて出し「もどる」ボタンで閉じる。
+  // 端末の戻る操作（Androidの戻る・ブラウザの戻る）でも閉じられるよう履歴を1つ積む。
+  var capZoomView = null;
+  function capZoomEnsure() {
+    if (capZoomView) return capZoomView;
+    var v = document.createElement('div');
+    v.className = 'cap-zoom-view';
+    v.hidden = true;
+    v.setAttribute('role', 'dialog');
+    v.setAttribute('aria-modal', 'true');
+    v.setAttribute('aria-label', '原典の表の拡大');
+    v.innerHTML = '<div class="cap-zoom-bar"><button type="button" class="cap-zoom-back">← もどる</button>' +
+      '<span class="cap-zoom-hint">指で広げるとさらに拡大できます</span></div>' +
+      '<div class="cap-zoom-body"><img alt=""></div>';
+    v.querySelector('.cap-zoom-back').addEventListener('click', function () { capZoomClose(true); });
+    document.body.appendChild(v);
+    capZoomView = v;
+    return v;
+  }
+  var capZoomReturnFocus = null;
+  function capZoomOpen(link) {
+    var v = capZoomEnsure();
+    var src = link.querySelector('img');
+    var img = v.querySelector('.cap-zoom-body img');
+    img.src = link.getAttribute('href');
+    img.alt = src ? src.alt : '';
+    if (src && src.getAttribute('width')) {
+      // 画面幅に合わせ、狭い画面では読める大きさ（元画像の幅）まで広げて横になぞれるようにする
+      img.style.width = Math.min(Number(src.getAttribute('width')), Math.max(window.innerWidth - 32, 640)) + 'px';
+    }
+    v.querySelector('.cap-zoom-hint').textContent = parseFloat(img.style.width) > window.innerWidth - 32
+      ? '横になぞると表の右側も見られます' : '指で広げるとさらに拡大できます';
+    capZoomReturnFocus = link;
+    v.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    v.querySelector('.cap-zoom-body').scrollTop = 0;
+    v.querySelector('.cap-zoom-back').focus();
+    try { history.pushState({ capZoom: true }, ''); } catch (e) { /* 履歴が使えなくても「もどる」ボタンで閉じられる */ }
+  }
+  function capZoomClose(fromButton) {
+    if (!capZoomView || capZoomView.hidden) return;
+    capZoomView.hidden = true;
+    document.documentElement.style.overflow = '';
+    if (capZoomReturnFocus) capZoomReturnFocus.focus();
+    // ボタン・Escで閉じたときは、開くときに積んだ履歴を戻して数を合わせる
+    if (fromButton && history.state && history.state.capZoom) history.back();
+  }
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a.cap-zoom');
+    if (!a || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+    ev.preventDefault();
+    capZoomOpen(a);
+  });
+  window.addEventListener('popstate', function () { capZoomClose(false); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') capZoomClose(true);
+  });
 
   function esc(x) {
     return String(x == null ? '' : x)
@@ -2972,9 +3038,11 @@
     // 対象経費に下限がある制度（業務改善助成金は税抜10万円、IT導入系は補助額5万円など）。
     // 下限を割っていると金額そのものが出ないので、計算より先に見る。
     // ここを飛ばすと「4万円もらえる」と読める画面が出てしまう（実際は不支給）。
+    // minBy は区分ごとに経費の下限が違う制度用（東京都デジタルは中小10万円・小規模7.5万円）。
     var fl = c.floor;
-    if (fl && fl.q && simNum(fl.q) < fl.min) {
-      return { blocked: true, message: fl.message };
+    var flMin = fl && fl.q ? (fl.minBy ? (fl.minBy.values || {})[simVal(fl.minBy.q)] : fl.min) : null;
+    if (flMin != null && simNum(fl.q) < flMin) {
+      return { blocked: true, message: simFillTextPlain(fl.message, { min: fmtMan(flMin), amount: fmtMan(simNum(fl.q)) }) };
     }
 
     var rate = simResolveRate(c.rate);
@@ -3231,7 +3299,7 @@
     if (res.blocked) {
       box.innerHTML = simStatusHTML(simDef) + '<div class="sim-panel alert">' +
         '<div class="sim-headline">この条件では、この制度は使えません</div>' +
-        '<p style="margin:0.5rem 0 0;">' + esc(res.message) + '</p>' +
+        '<p style="margin:0.5rem 0 0;">' + simMark(res.message) + '</p>' +
         simSourceHTML(simDef) +
       '</div>';
       return;
