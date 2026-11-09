@@ -1,13 +1,15 @@
 # 掲載サイズと実物の突き合わせ
 
 - 対象：**1016件**（size 表記のある書類）
-- 実測が台帳に無く判定できないもの：**1件**
-- ズレ：**6件**
+- 実測が台帳に無く判定できないもの：**6件**
+- ズレ：**7件**
 
 ## 表記が実物と違うもの
 
 - 掲載 **11.5MB** → 実物 **13.2MB**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+- 掲載 **824KB** → 実物 **13KB**
+  - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
 - 掲載 **10.0MB** → 実物 **10.7MB**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
 - 掲載 **668KB** → 実物 **105KB**
