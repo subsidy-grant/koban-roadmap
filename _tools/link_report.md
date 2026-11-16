@@ -1,15 +1,24 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-11-09 12:58**（JST）
+- 確認時刻：**2026-11-16 13:07**（JST）
 - 確認したURL：**1166件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **3件**／🔴 ファイルの種類が変わった（要確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **4件**／✅ 変化なし **1157件**
+🔴 リンク切れ（要修正） **6件**／🔴 ファイルの種類が変わった（要確認） **71件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **1件**／✅ 変化なし **1086件**
 
 ## 🔴 リンク切れ（要修正）
 
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
+  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+  - HTTP 404（ページが無い）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+  - HTTP 404（ページが無い）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+  - HTTP 404（ページが無い）
 - **豊島区中小企業支援事業補助金・経営安定コース（豊島区）／申請要領**
   - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
   - HTTP 404（ページが無い）
@@ -25,6 +34,222 @@
 - **観光地・観光産業における省力化投資補助事業（観光庁）／特定施設一覧**
   - https://kanko-jinzai.go.jp/wp-content/uploads/2026/06/R8_tokutei_shisetsu.pdf
   - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／登録事項変更届**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/henkou.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例④（一般枠） スチームコンベクションオーブンの導入**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/insyoku.pdf?202604151025
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／実績報告チェックリスト（一般枠・グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist.xlsx?202606042134
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／実績報告チェックリスト（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist_founder.xlsx?202606081041
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例③（一般枠） 油圧シャベルの導入**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kensethugyo.pdf?202604151025
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-2 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-2.pdf?202604071954
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3.pdf?202604072015
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_founder.pdf?202604072017
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_group.pdf?202604072017
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4.pdf?202604072023
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_founder.pdf?202604072024
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_group.pdf?202604072024
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-6 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-6.pdf?202604072028
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-7 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-7.pdf?202604072031
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1.pdf?202604071953
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-2 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-2.pdf?202606052018
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3.pdf?202606052019
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_founder.pdf?202606052019
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_group.pdf?202606052018
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-4 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-4.pdf?202606052019
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-5 記載例（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-5.pdf?202606052020
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5.pdf?202606052018
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式6 記載例**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei6.pdf?202606052019
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3.pdf?202604072039
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_founder.pdf?202604072041
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_group.pdf?202604072042
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／公募要領（一般枠・グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1.pdf?202606230930
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／公募要領（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1_founder.pdf?202606230930
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／補助金交付要綱**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/koufuyoukou.pdf?202604081143
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／補助金概要チラシ**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/leaflet_seisansei.pdf?202604061449
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／電子申請マニュアル**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/manual_full.pdf?202604302032
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業収支計算書の入力シート**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/nyuryokushito.xlsx?202604091003
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例①（一般枠） 三次元測定機の導入**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/seizougyo.pdf?202604151025
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト6月公募（一般枠・グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト7月公募以降（一般枠・グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_2nd.xlsx?202606230933
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_founder.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／財産処分要領**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/syobunyouryou.pdf?202604071951
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／交付申請取下書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/torisage.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例⑤（一般枠） 工業用ミシンの導入**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youfukur.pdf?202604151025
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例②（一般枠） レーザー溶接機の導入**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/yousethukako.pdf?202604151025
+  - PDF のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-2 役員等氏名一覧表**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-2.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書6月公募（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書7月公募以降（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_2nd.docx?202606230933
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_founder.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書6月公募（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書7月公募以降（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group_2nd.docx?202606230934
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書 電子申請用（一般枠・グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi.docx?202604081200
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書 電子申請用（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi_founder.docx?202604081215
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_founder.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_group.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-5 県外調達理由書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-5.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-6 米国関税等影響理由書6月公募**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6.docx?202604071835
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-6-2 米国関税・中東情勢等影響理由書7月公募以降**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6_2nd.docx?202606230936
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1-8 事前着手届**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-8.docx?202604071940
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式1 補助金申請書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1.docx?202604071937
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_founder.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_group.xlsx?202604071835
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式2 変更承認申請書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2.docx?202604071940
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式3 中止（廃止）承認申請書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki3.docx?202604071940
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式4 実施状況報告書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki4.docx?202604071940
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-2 補助事業報告書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-2.docx?202606042135
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（一般枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3.xlsx?202606042135
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（創業者成長支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_founder.xlsx?202606042136
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（グループ化支援枠）**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_group.xlsx?202606042135
+  - Excel のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5-4 補助金取得財産管理台帳**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-4.docx?202606042136
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式5 補助金実績報告書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5.docx?202606101558
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式6 支払完了報告書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki6.docx?202606042136
+  - Word のはずが Content-Type が text/html
+- **神奈川県中小企業生産性向上促進事業費補助金／様式7 取得財産等の処分承認申請書**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki7.docx?202604071939
+  - Word のはずが Content-Type が text/html
+
+## 🟠 中身が差し替わった可能性（最新版か確認）
+
+- **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル**
+  - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+  - サイズが 13838654 → 14141165 に変化（差し替えの可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
@@ -34,20 +259,11 @@
 
 ## 🟡 接続できない（目視が要る）
 
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト**
-  - https://tokyo-shuekiryoku-kyoka.jp/
-  - SSLError: HTTPSConnectionPool(host='tokyo-shuekiryoku-kyoka.jp', port=443): Max retries exceeded with url: / (Caused by SSLError(S
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
-  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
-  - SSLError: HTTPSConnectionPool(host='tokyo-shuekiryoku-kyoka.jp', port=443): Max retries exceeded with url: /assets/pdf/application
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
-  - SSLError: HTTPSConnectionPool(host='tokyo-shuekiryoku-kyoka.jp', port=443): Max retries exceeded with url: /leaflet.pdf (Caused by
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
-  - SSLError: HTTPSConnectionPool(host='tokyo-shuekiryoku-kyoka.jp', port=443): Max retries exceeded with url: /leaflet_detailed.pdf (
+- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
+  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
+  - ConnectTimeout: HTTPSConnectionPool(host='www.tama5cci.or.jp', port=443): Max retries exceeded with url: /chamber/2026/challenge/index.h
 
-## ✅ 変化なし（1157件）
+## ✅ 変化なし（1086件）
 
 <details><summary>一覧を開く</summary>
 
@@ -82,7 +298,6 @@
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付規程（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_kitei_tsujyo.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／公募要領（通常枠） — https://it-shien.smrj.go.jp/pdf/it2026_koubo_tsujyo.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／事業実績報告マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
-- デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル — https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
 - デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／請求・支払内訳シート — https://it-shien.smrj.go.jp/pdf/it2026_seikyushiharaiuchiwake_jisseki.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／申請様式一式 — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金_申請様式一式.xlsx
 - デジタル化・データ利活用推進助成金（板橋区）／交付要綱（令和8年4月1日～） — https://itabashi-kohsha.com/cms-data/file/common/デジタル化・データ利活用推進助成金交付要綱（令和8年4月1日～）.pdf
@@ -147,76 +362,6 @@
 - 小規模事業者持続化補助金＜一般型・通常枠＞（第20回）／交付規程（2026年3月6日改定） — https://r6.jizokukahojokin.info/doc/r6_kitei_260306_ip.pdf
 - 小規模事業者持続化補助金＜一般型・通常枠＞（第20回）／公募要領（第20回・第8版） — https://r6.jizokukahojokin.info/doc/r6_koubover8_ip20.pdf
 - 神奈川県中小企業生産性向上促進事業費補助金 — https://r8seisansei.pref.kanagawa.jp/
-- 神奈川県中小企業生産性向上促進事業費補助金／登録事項変更届 — https://r8seisansei.pref.kanagawa.jp/assets/data/henkou.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例④（一般枠） スチームコンベクションオーブンの導入 — https://r8seisansei.pref.kanagawa.jp/assets/data/insyoku.pdf?202604151025
-- 神奈川県中小企業生産性向上促進事業費補助金／実績報告チェックリスト（一般枠・グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist.xlsx?202606042134
-- 神奈川県中小企業生産性向上促進事業費補助金／実績報告チェックリスト（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist_founder.xlsx?202606081041
-- 神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例③（一般枠） 油圧シャベルの導入 — https://r8seisansei.pref.kanagawa.jp/assets/data/kensethugyo.pdf?202604151025
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-2 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-2.pdf?202604071954
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3.pdf?202604072015
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_founder.pdf?202604072017
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_group.pdf?202604072017
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4.pdf?202604072023
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_founder.pdf?202604072024
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 記載例（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_group.pdf?202604072024
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-6 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-6.pdf?202604072028
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-7 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-7.pdf?202604072031
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1.pdf?202604071953
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-2 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-2.pdf?202606052018
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3.pdf?202606052019
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_founder.pdf?202606052019
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 記載例（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_group.pdf?202606052018
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-4 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-4.pdf?202606052019
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-5 記載例（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-5.pdf?202606052020
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5.pdf?202606052018
-- 神奈川県中小企業生産性向上促進事業費補助金／様式6 記載例 — https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei6.pdf?202606052019
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3.pdf?202604072039
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_founder.pdf?202604072041
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 記載例 電子申請用（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_group.pdf?202604072042
-- 神奈川県中小企業生産性向上促進事業費補助金／公募要領（一般枠・グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1.pdf?202606230930
-- 神奈川県中小企業生産性向上促進事業費補助金／公募要領（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1_founder.pdf?202606230930
-- 神奈川県中小企業生産性向上促進事業費補助金／補助金交付要綱 — https://r8seisansei.pref.kanagawa.jp/assets/data/koufuyoukou.pdf?202604081143
-- 神奈川県中小企業生産性向上促進事業費補助金／補助金概要チラシ — https://r8seisansei.pref.kanagawa.jp/assets/data/leaflet_seisansei.pdf?202604061449
-- 神奈川県中小企業生産性向上促進事業費補助金／電子申請マニュアル — https://r8seisansei.pref.kanagawa.jp/assets/data/manual_full.pdf?202604302032
-- 神奈川県中小企業生産性向上促進事業費補助金／事業収支計算書の入力シート — https://r8seisansei.pref.kanagawa.jp/assets/data/nyuryokushito.xlsx?202604091003
-- 神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例①（一般枠） 三次元測定機の導入 — https://r8seisansei.pref.kanagawa.jp/assets/data/seizougyo.pdf?202604151025
-- 神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト6月公募（一般枠・グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト7月公募以降（一般枠・グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_2nd.xlsx?202606230933
-- 神奈川県中小企業生産性向上促進事業費補助金／交付申請チェックリスト（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_founder.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／財産処分要領 — https://r8seisansei.pref.kanagawa.jp/assets/data/syobunyouryou.pdf?202604071951
-- 神奈川県中小企業生産性向上促進事業費補助金／交付申請取下書 — https://r8seisansei.pref.kanagawa.jp/assets/data/torisage.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例⑤（一般枠） 工業用ミシンの導入 — https://r8seisansei.pref.kanagawa.jp/assets/data/youfukur.pdf?202604151025
-- 神奈川県中小企業生産性向上促進事業費補助金／事業計画書の計画例②（一般枠） レーザー溶接機の導入 — https://r8seisansei.pref.kanagawa.jp/assets/data/yousethukako.pdf?202604151025
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-2 役員等氏名一覧表 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-2.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書6月公募（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書7月公募以降（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_2nd.docx?202606230933
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_founder.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書6月公募（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書7月公募以降（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group_2nd.docx?202606230934
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書 電子申請用（一般枠・グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi.docx?202604081200
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-3 補助事業計画書 電子申請用（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi_founder.docx?202604081215
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_founder.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-4 経費予算書（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_group.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-5 県外調達理由書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-5.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-6 米国関税等影響理由書6月公募 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6.docx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-6-2 米国関税・中東情勢等影響理由書7月公募以降 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6_2nd.docx?202606230936
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1-8 事前着手届 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-8.docx?202604071940
-- 神奈川県中小企業生産性向上促進事業費補助金／様式1 補助金申請書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1.docx?202604071937
-- 神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_founder.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式2-2 変更経費予算書（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_group.xlsx?202604071835
-- 神奈川県中小企業生産性向上促進事業費補助金／様式2 変更承認申請書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2.docx?202604071940
-- 神奈川県中小企業生産性向上促進事業費補助金／様式3 中止（廃止）承認申請書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki3.docx?202604071940
-- 神奈川県中小企業生産性向上促進事業費補助金／様式4 実施状況報告書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki4.docx?202604071940
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-2 補助事業報告書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-2.docx?202606042135
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（一般枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3.xlsx?202606042135
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（創業者成長支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_founder.xlsx?202606042136
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-3 経費決算書（グループ化支援枠） — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_group.xlsx?202606042135
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5-4 補助金取得財産管理台帳 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-4.docx?202606042136
-- 神奈川県中小企業生産性向上促進事業費補助金／様式5 補助金実績報告書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5.docx?202606101558
-- 神奈川県中小企業生産性向上促進事業費補助金／様式6 支払完了報告書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki6.docx?202606042136
-- 神奈川県中小企業生産性向上促進事業費補助金／様式7 取得財産等の処分承認申請書 — https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki7.docx?202604071939
 - 神奈川県中小企業生産性向上促進事業費補助金／資料ダウンロード（公式） — https://r8seisansei.pref.kanagawa.jp/download/
 - （出典・参考リンク） — https://report.jbaudit.go.jp/
 - （出典・参考リンク） — https://report.jbaudit.go.jp/org/r03/2021-r03-0120-0.htm
@@ -279,6 +424,7 @@
 - 経営基盤強化支援（台東区）／支払い方法別 必要書類 — https://taito-sangyo.jp/src/wp-content/uploads/2025/04/siharai_kogata.pdf
 - 経営基盤強化支援（台東区）／変更承認申請書 — https://taito-sangyo.jp/src/wp-content/uploads/2026/03/経営基盤_変更届.doc
 - 経営基盤強化支援（台東区）／経営基盤強化支援 チラシ（令和8年度） — https://taito-sangyo.jp/src/wp-content/uploads/2026/07/R8keieikiban-1.pdf
+- 中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業（東京都中小企業振興公社）／中小企業収益力強化サポート事業 公式サイト — https://tokyo-shuekiryoku-kyoka.jp/
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／誓約書（様式第１－４号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-3_誓約書（様式1-3）.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／ICT活用生産性向上・事業変革促進支援事業助成金交付申請書（様式第１－１号） — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/01-4_タイプA申請書_ICT活用等生産性向上支援事業様式1-1.docx
 - 千葉市ICT活用等生産性向上支援事業（タイプA：生産性向上小規模型）／実施要綱 — https://www.chibashi-sangyo.or.jp/cszwp/wp-content/uploads/R08.04.01_ICT活用等生産性向上支援事業要綱.pdf
@@ -1170,7 +1316,6 @@
 - さいたま市DX推進補助金／さいたま市DX推進補助金交付申請書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/zaidan-dx-Subsidy-shinseisyo.docx
 - さいたま市DX推進補助金／さいたま市DX補助金 結果報告兼補助金請求書 — https://www.sozo-saitama.or.jp/sozowp/wp-content/uploads/2026/03/結果報告兼補助金請求書.docx
 - さいたま市DX推進補助金／さいたま市DX推進補助金／さいたま市産業創造財団 公式ページ — https://www.sozo-saitama.or.jp/topic/dx-subsidy/
-- 府中市小規模事業者等チャレンジ支援事業補助金（府中市） — https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／東京都中小企業振興公社 公式ページ／（出典・参考リンク） — https://www.tokyo-kosha.or.jp/support/josei/jigyo/digital-tool.html
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／【令和8年度第2回版】募集要項 — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8-2boshuuyoukou.pdf
 - 中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請マニュアル — https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8-2manyuaru.pdf

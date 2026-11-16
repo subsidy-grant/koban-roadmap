@@ -1,25 +1,171 @@
 # 掲載サイズと実物の突き合わせ
 
 - 対象：**1016件**（size 表記のある書類）
-- 実測が台帳に無く判定できないもの：**6件**
-- ズレ：**7件**
+- 実測が台帳に無く判定できないもの：**3件**
+- ズレ：**80件**
 
 ## 表記が実物と違うもの
 
-- 掲載 **11.5MB** → 実物 **13.2MB**
+- 掲載 **25.2MB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/manual_full.pdf?202604302032
+- 掲載 **2.6MB** → 実物 **3KB**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+- 掲載 **11.5MB** → 実物 **13.5MB**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+- 掲載 **1.8MB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1_founder.pdf?202606230930
+- 掲載 **1.8MB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1.pdf?202606230930
+- 掲載 **1.2MB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/leaflet_seisansei.pdf?202604061449
+- 掲載 **1.2MB** → 実物 **3KB**
+  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
 - 掲載 **824KB** → 実物 **13KB**
   - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
 - 掲載 **10.0MB** → 実物 **10.7MB**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
+- 掲載 **648KB** → 実物 **3KB**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
 - 掲載 **668KB** → 実物 **105KB**
   - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
 - 掲載 **728KB** → 実物 **265KB**
   - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_boshuyoko.pdf
+- 掲載 **461KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3.pdf?202604072015
+- 掲載 **460KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_founder.pdf?202604072017
+- 掲載 **454KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-3_group.pdf?202604072017
+- 掲載 **343KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_founder.pdf?202604072041
+- 掲載 **335KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3.pdf?202604072039
+- 掲載 **324KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisaireidenshi1-3_group.pdf?202604072042
+- 掲載 **320KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/seizougyo.pdf?202604151025
+- 掲載 **297KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youfukur.pdf?202604151025
+- 掲載 **294KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/insyoku.pdf?202604151025
+- 掲載 **293KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/yousethukako.pdf?202604151025
+- 掲載 **286KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kensethugyo.pdf?202604151025
+- 掲載 **279KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/koufuyoukou.pdf?202604081143
+- 掲載 **266KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-6.pdf?202604072028
+- 掲載 **261KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/syobunyouryou.pdf?202604071951
 - 掲載 **1.1MB** → 実物 **888KB**
   - https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
+- 掲載 **167KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5.pdf?202606052018
+- 掲載 **162KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1.pdf?202604071953
+- 掲載 **141KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-4.pdf?202606052019
+- 掲載 **129KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-2.pdf?202606052018
+- 掲載 **126KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-2.pdf?202604071954
 - 掲載 **707KB** → 実物 **584KB**
   - https://shoryokuka.smrj.go.jp/assets/pdf/application_rules.pdf
+- 掲載 **114KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3.pdf?202606052019
+- 掲載 **110KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_group.pdf?202606052018
+- 掲載 **107KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4.pdf?202604072023
+- 掲載 **104KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-3_founder.pdf?202606052019
+- 掲載 **104KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-7.pdf?202604072031
+- 掲載 **104KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_group.pdf?202604072024
+- 掲載 **99KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-4_founder.pdf?202604072024
+- 掲載 **97KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-5.pdf?202606052020
+- 掲載 **89KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei6.pdf?202606052019
+- 掲載 **60KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group_2nd.docx?202606230934
+- 掲載 **60KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_group.docx?202604071835
+- 掲載 **57KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_2nd.docx?202606230933
+- 掲載 **56KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3.docx?202604071835
+- 掲載 **54KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_founder.docx?202604071835
+- 掲載 **48KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/nyuryokushito.xlsx?202604091003
+- 掲載 **32KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi_founder.docx?202604081215
+- 掲載 **31KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3denshi.docx?202604081200
+- 掲載 **30KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1.docx?202604071937
+- 掲載 **29KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2.docx?202604071940
+- 掲載 **28KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-4.docx?202606042136
+- 掲載 **28KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki4.docx?202604071940
+- 掲載 **28KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki3.docx?202604071940
+- 掲載 **28KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-8.docx?202604071940
+- 掲載 **25KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-5.docx?202604071835
+- 掲載 **24KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5.docx?202606101558
+- 掲載 **20KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki7.docx?202604071939
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_group.xlsx?202606042135
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3.xlsx?202606042135
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_group.xlsx?202604071835
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2.xlsx?202604071835
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6_2nd.docx?202606230936
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-6.docx?202604071835
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_founder.xlsx?202604071835
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist.xlsx?202604071835
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist_founder.xlsx?202606081041
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/jisseki_checklist.xlsx?202606042134
+- 掲載 **18KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/henkou.docx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-3_founder.xlsx?202606042136
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki5-2.docx?202606042135
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki2-2_founder.xlsx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_group.xlsx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4_founder.xlsx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-4.xlsx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/torisage.docx?202604071835
+- 掲載 **17KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/shinsei_checklist_2nd.xlsx?202606230933
+- 掲載 **16KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki6.docx?202606042136
+- 掲載 **11KB** → 実物 **1KB**
+  - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-2.xlsx?202604071835
 
 直しかた：`program_docs_data.js` の size を実物の値にして、
 `python3 _tools/build_page_data.py` で作り直す。
