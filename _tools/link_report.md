@@ -1,26 +1,29 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-11-16 13:07**（JST）
+- 確認時刻：**2026-11-23 14:03**（JST）
 - 確認したURL：**1166件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **6件**／🔴 ファイルの種類が変わった（要確認） **71件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **1件**／✅ 変化なし **1086件**
+🔴 リンク切れ（要修正） **7件**／🔴 前は開けたのに開けなくなった（要修正） **1件**／🔴 ファイルの種類が変わった（要確認） **73件**／🟠 中身が差し替わった可能性（最新版か確認） **5件**／🟡 自動確認を拒否（目視が要る） **2件**／✅ 変化なし **1078件**
 
 ## 🔴 リンク切れ（要修正）
 
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
-  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+- **綾瀬市中小企業強靭化推進補助金／【三次公募】R8強靭化推進補助金 手引き（公募要領）**
+  - https://www.city.ayase.kanagawa.jp/material/files/group/27/daisanjikyoujinkakouboyouryou.pdf
   - HTTP 404（ページが無い）
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+- **所沢市都市型産業等育成補助金／周知用チラシ**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8chirashi_zenki.pdf
   - HTTP 404（ページが無い）
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+- **所沢市都市型産業等育成補助金／所沢市都市型産業等育成補助金募集要領**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8youryou_zenki.docx
   - HTTP 404（ページが無い）
 - **豊島区中小企業支援事業補助金・経営安定コース（豊島区）／申請要領**
   - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
+  - HTTP 404（ページが無い）
+- **神奈川県小規模事業者デジタル化支援推進事業費補助金／イ.経費変更予算書（様式2-2）**
+  - https://www.pref.kanagawa.jp/documents/128140/r7_y2-2.xlsx
   - HTTP 404（ページが無い）
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請時添付書類例**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf
@@ -28,6 +31,12 @@
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／ツール導入にあたってのチェックシート**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digital.xlsx
   - HTTP 404（ページが無い）
+
+## 🔴 前は開けたのに開けなくなった（要修正）
+
+- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
+  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
+  - 接続できない。2026-11-09 12:58 には開けていた（2回続けて失敗）
 
 ## 🔴 ファイルの種類が変わった（要確認）
 
@@ -244,26 +253,41 @@
 - **神奈川県中小企業生産性向上促進事業費補助金／様式7 取得財産等の処分承認申請書**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki7.docx?202604071939
   - Word のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
+  - PDF のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ**
+  - https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
+  - PDF のはずが Content-Type が text/html
 
 ## 🟠 中身が差し替わった可能性（最新版か確認）
 
 - **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
-  - サイズが 13838654 → 14141165 に変化（差し替えの可能性）
+  - サイズが 14141165 → 13096982 に変化（差し替えの可能性）
+- **創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
+  - サイズが 965954 → 3526 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
+  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+  - サイズが 2814 → 1234040 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+  - サイズが 2814 → 662882 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+  - サイズが 2814 → 2715777 に変化（差し替えの可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
+- **（出典・参考リンク）**
+  - https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
+  - HTTP 403（自動アクセスを拒否。目視で確認が要る）
 
-## 🟡 接続できない（目視が要る）
-
-- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
-  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
-  - ConnectTimeout: HTTPSConnectionPool(host='www.tama5cci.or.jp', port=443): Max retries exceeded with url: /chamber/2026/challenge/index.h
-
-## ✅ 変化なし（1086件）
+## ✅ 変化なし（1078件）
 
 <details><summary>一覧を開く</summary>
 
@@ -408,12 +432,8 @@
 - 事業承継・M&A補助金・専門家活用枠（中小企業庁）／パンフレット（15次公募） — https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/a4_pamphlet_15-experts.pdf
 - 事業承継・M&A補助金・専門家活用枠（中小企業庁）／必要書類チェックリスト（買い手・売り手支援類型） — https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/check-list_experts.xlsx
 - 事業承継・M&A補助金・専門家活用枠（中小企業庁）／専門家活用枠 公募要領（買い手支援類型・売り手支援類型） — https://shoukei-mahojokin.go.jp/assets/documents/r7h/15-experts/requirements_experts_15.pdf
-- （出典・参考リンク） — https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
 - 創業助成事業（東京都・東京都中小企業振興公社）／創業助成事業（東京都・東京都中小企業振興公社）／TOKYO創業ステーション 公式ページ／（出典・参考リンク） — https://startup-station.jp/m2/services/sogyokassei/
 - （出典・参考リンク） — https://startup-station.jp/m2/services/sogyokassei/sogyojosei-saitaku/
-- 創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回） — https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
-- 創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP） — https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
-- 創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ — https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/documents.html
 - （出典・参考リンク） — https://subsidy-grant.github.io/koban-roadmap/improvement.html
@@ -487,7 +507,6 @@
 - 綾瀬市商業者支援事業補助金／綾瀬市商業者支援事業補助金チラシ — https://www.city.ayase.kanagawa.jp/material/files/group/27/R8shogochirashi.pdf
 - 綾瀬市商業者支援事業補助金／綾瀬市商業者サポートガイド — https://www.city.ayase.kanagawa.jp/material/files/group/27/R8supportguide.pdf
 - 綾瀬市商業者支援事業補助金／店舗開業補助金の流れ — https://www.city.ayase.kanagawa.jp/material/files/group/27/R8tenpokaigyonagare.pdf
-- 綾瀬市中小企業強靭化推進補助金／【三次公募】R8強靭化推進補助金 手引き（公募要領） — https://www.city.ayase.kanagawa.jp/material/files/group/27/daisanjikyoujinkakouboyouryou.pdf
 - 綾瀬市中小企業強靭化推進補助金／事前着手届（第7号様式） — https://www.city.ayase.kanagawa.jp/material/files/group/28/jizennchakushutodoke.doc
 - 綾瀬市中小企業強靭化推進補助金／事前相談シート — https://www.city.ayase.kanagawa.jp/material/files/group/28/jizensoudan.docx
 - 綾瀬市中小企業強靭化推進補助金／綾瀬市中小企業強靭化推進補助金補助事業変更（中止）承認申請書（第8号様式） — https://www.city.ayase.kanagawa.jp/material/files/group/28/kyoujinnkahennkoutodoke.doc
@@ -1023,9 +1042,7 @@
 - 所沢市地域資源活用・ものづくり総合支援補助金／記入例 交付申請書（様式第1号） — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/chiikishigen-monodukuri.files/rei_yousiki1.doc
 - 所沢市地域資源活用・ものづくり総合支援補助金／交付申請書（様式第1号） — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/chiikishigen-monodukuri.files/yousiki1.doc
 - 所沢市地域資源活用・ものづくり総合支援補助金／所沢市地域資源活用・ものづくり総合支援補助金／所沢市 公式ページ — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/chiikishigen-monodukuri.html
-- 所沢市都市型産業等育成補助金／周知用チラシ — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8chirashi_zenki.pdf
 - 所沢市都市型産業等育成補助金／様式第1号の記載例 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8kisairei.docx
-- 所沢市都市型産業等育成補助金／所沢市都市型産業等育成補助金募集要領 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8youryou_zenki.docx
 - 所沢市都市型産業等育成補助金／所沢市都市型産業等育成補助金交付申請書（様式第1号） — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/sinseisyo.docx
 - 所沢市都市型産業等育成補助金／【様式例】ア 会社概要事業計画書 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/yousikirei-a.docx
 - 所沢市都市型産業等育成補助金／【様式例】イ 誓約書 — https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/yousikirei-i.docx
@@ -1241,7 +1258,6 @@
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／事業計画例5 導入システム RPA作成ツール — https://www.pref.kanagawa.jp/documents/128140/kisairei5.pdf
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／公募要領 — https://www.pref.kanagawa.jp/documents/128140/koubooyouryou.pdf
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／補助金交付要綱 — https://www.pref.kanagawa.jp/documents/128140/kouhuyoukou.pdf
-- 神奈川県小規模事業者デジタル化支援推進事業費補助金／イ.経費変更予算書（様式2-2） — https://www.pref.kanagawa.jp/documents/128140/r7_y2-2.xlsx
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／交付申請チェックリスト — https://www.pref.kanagawa.jp/documents/128140/sinseityekku.xlsx
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／ク.交付申請取下書 — https://www.pref.kanagawa.jp/documents/128140/torisagesyo01.docx
 - 神奈川県小規模事業者デジタル化支援推進事業費補助金／支払完了報告書（様式6） — https://www.pref.kanagawa.jp/documents/128140/yosiki6kisairei.pdf

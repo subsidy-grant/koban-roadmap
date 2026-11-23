@@ -2,30 +2,30 @@
 
 - 対象：**1016件**（size 表記のある書類）
 - 実測が台帳に無く判定できないもの：**3件**
-- ズレ：**80件**
+- ズレ：**84件**
 
 ## 表記が実物と違うもの
 
 - 掲載 **25.2MB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/manual_full.pdf?202604302032
-- 掲載 **2.6MB** → 実物 **3KB**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
-- 掲載 **11.5MB** → 実物 **13.5MB**
-  - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+- 掲載 **8.6MB** → 実物 **3KB**
+  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
 - 掲載 **1.8MB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1_founder.pdf?202606230930
 - 掲載 **1.8MB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kouboyouryo1.pdf?202606230930
 - 掲載 **1.2MB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/leaflet_seisansei.pdf?202604061449
-- 掲載 **1.2MB** → 実物 **3KB**
-  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+- 掲載 **11.5MB** → 実物 **12.5MB**
+  - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
+- 掲載 **943KB** → 実物 **3KB**
+  - https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
 - 掲載 **824KB** → 実物 **13KB**
   - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
 - 掲載 **10.0MB** → 実物 **10.7MB**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_jisseki.pdf
-- 掲載 **648KB** → 実物 **3KB**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+- 掲載 **659KB** → 実物 **43KB**
+  - https://www.city.ayase.kanagawa.jp/material/files/group/27/daisanjikyoujinkakouboyouryou.pdf
 - 掲載 **668KB** → 実物 **105KB**
   - https://www.city.edogawa.tokyo.jp/documents/23284/r8_dx_chirashi.pdf
 - 掲載 **728KB** → 実物 **265KB**
@@ -58,6 +58,8 @@
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1-6.pdf?202604072028
 - 掲載 **261KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/syobunyouryou.pdf?202604071951
+- 掲載 **250KB** → 実物 **3KB**
+  - https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
 - 掲載 **1.1MB** → 実物 **888KB**
   - https://www.city.kawasaki.jp/280/cmsfiles/contents/0000186/186427/youryou.pdf
 - 掲載 **167KB** → 実物 **1KB**
@@ -66,6 +68,8 @@
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei1.pdf?202604071953
 - 掲載 **141KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-4.pdf?202606052019
+- 掲載 **147KB** → 実物 **13KB**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8chirashi_zenki.pdf
 - 掲載 **129KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/kisairei5-2.pdf?202606052018
 - 掲載 **126KB** → 実物 **1KB**
@@ -100,6 +104,8 @@
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3.docx?202604071835
 - 掲載 **54KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-3_founder.docx?202604071835
+- 掲載 **60KB** → 実物 **13KB**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8youryou_zenki.docx
 - 掲載 **48KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/nyuryokushito.xlsx?202604091003
 - 掲載 **32KB** → 実物 **1KB**
@@ -166,6 +172,8 @@
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki6.docx?202606042136
 - 掲載 **11KB** → 実物 **1KB**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki1-2.xlsx?202604071835
+- 掲載 **14KB** → 実物 **8KB**
+  - https://www.pref.kanagawa.jp/documents/128140/r7_y2-2.xlsx
 
 直しかた：`program_docs_data.js` の size を実物の値にして、
 `python3 _tools/build_page_data.py` で作り直す。

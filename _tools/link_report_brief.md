@@ -1,26 +1,29 @@
 # リンク確認レポート
 
-- 確認時刻：**2026-11-16 13:07**（JST）
+- 確認時刻：**2026-11-23 14:03**（JST）
 - 確認したURL：**1166件**
 - 出所：各URLへの実アクセス（HEAD、拒否された場合のみGET）
 
 ## 集計
 
-🔴 リンク切れ（要修正） **6件**／🔴 ファイルの種類が変わった（要確認） **71件**／🟠 中身が差し替わった可能性（最新版か確認） **1件**／🟡 自動確認を拒否（目視が要る） **1件**／🟡 接続できない（目視が要る） **1件**／✅ 変化なし **1086件**
+🔴 リンク切れ（要修正） **7件**／🔴 前は開けたのに開けなくなった（要修正） **1件**／🔴 ファイルの種類が変わった（要確認） **73件**／🟠 中身が差し替わった可能性（最新版か確認） **5件**／🟡 自動確認を拒否（目視が要る） **2件**／✅ 変化なし **1078件**
 
 ## 🔴 リンク切れ（要修正）
 
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
-  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+- **綾瀬市中小企業強靭化推進補助金／【三次公募】R8強靭化推進補助金 手引き（公募要領）**
+  - https://www.city.ayase.kanagawa.jp/material/files/group/27/daisanjikyoujinkakouboyouryou.pdf
   - HTTP 404（ページが無い）
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+- **所沢市都市型産業等育成補助金／周知用チラシ**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8chirashi_zenki.pdf
   - HTTP 404（ページが無い）
-- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
-  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+- **所沢市都市型産業等育成補助金／所沢市都市型産業等育成補助金募集要領**
+  - https://www.city.tokorozawa.saitama.jp/kurashi/shigotojyoho/sangyo/kogyo/toshigatasangyo.files/R8youryou_zenki.docx
   - HTTP 404（ページが無い）
 - **豊島区中小企業支援事業補助金・経営安定コース（豊島区）／申請要領**
   - https://www.city.toshima.lg.jp/documents/3318/20260623075350.pdf
+  - HTTP 404（ページが無い）
+- **神奈川県小規模事業者デジタル化支援推進事業費補助金／イ.経費変更予算書（様式2-2）**
+  - https://www.pref.kanagawa.jp/documents/128140/r7_y2-2.xlsx
   - HTTP 404（ページが無い）
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／申請時添付書類例**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/R8shinseisho_sample.pdf
@@ -28,6 +31,12 @@
 - **中小企業デジタル導入促進補助事業（東京都・東京都中小企業振興公社）／ツール導入にあたってのチェックシート**
   - https://www.tokyo-kosha.or.jp/support/josei/jigyo/rmepal000002z8qy-att/check_sheet_digital.xlsx
   - HTTP 404（ページが無い）
+
+## 🔴 前は開けたのに開けなくなった（要修正）
+
+- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
+  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
+  - 接続できない。2026-11-09 12:58 には開けていた（2回続けて失敗）
 
 ## 🔴 ファイルの種類が変わった（要確認）
 
@@ -244,24 +253,39 @@
 - **神奈川県中小企業生産性向上促進事業費補助金／様式7 取得財産等の処分承認申請書**
   - https://r8seisansei.pref.kanagawa.jp/assets/data/youshiki7.docx?202604071939
   - Word のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集要領（令和8年度第2回）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_bosyuyoko_sogyojosei_20260616.pdf
+  - PDF のはずが Content-Type が text/html
+- **創業助成事業（東京都・東京都中小企業振興公社）／募集案内チラシ**
+  - https://startup-station.jp/wp-content/uploads/r8_flyer_sogyojosei.pdf
+  - PDF のはずが Content-Type が text/html
 
 ## 🟠 中身が差し替わった可能性（最新版か確認）
 
 - **デジタル化・AI導入補助金2026（旧IT導入補助金／通常枠）／交付申請マニュアル**
   - https://it-shien.smrj.go.jp/pdf/it2026_manual_kofu.pdf
-  - サイズが 13838654 → 14141165 に変化（差し替えの可能性）
+  - サイズが 14141165 → 13096982 に変化（差し替えの可能性）
+- **創業助成事業（東京都・東京都中小企業振興公社）／令和8年度第2回 創業助成事業 申請書一式（ZIP）**
+  - https://startup-station.jp/wp-content/uploads/r8_2_sogyojosei_shinsei_20260616.zip
+  - サイズが 965954 → 3526 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／専門家派遣募集要項**
+  - https://tokyo-shuekiryoku-kyoka.jp/assets/pdf/application-requirements.pdf
+  - サイズが 2814 → 1234040 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（簡易版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet.pdf
+  - サイズが 2814 → 662882 に変化（差し替えの可能性）
+- **中小企業収益力強化サポート事業（東京都中小企業振興公社）／事業案内（詳細版）**
+  - https://tokyo-shuekiryoku-kyoka.jp/leaflet_detailed.pdf
+  - サイズが 2814 → 2715777 に変化（差し替えの可能性）
 
 ## 🟡 自動確認を拒否（目視が要る）
 
 - **新規ビジネスチャレンジ補助事業（練馬区）**
   - https://nerima-idc.or.jp/bsc/yuushi/hojokin.html#challenge
   - HTTP 403（自動アクセスを拒否）。2026-08-31 19:08 には開けていた。経路の問題かページの消滅か、目視で確認が要る
-
-## 🟡 接続できない（目視が要る）
-
-- **府中市小規模事業者等チャレンジ支援事業補助金（府中市）**
-  - https://www.tama5cci.or.jp/chamber/2026/challenge/index.html
-  - ConnectTimeout: HTTPSConnectionPool(host='www.tama5cci.or.jp', port=443): Max retries exceeded with url: /chamber/2026/challenge/index.h
+- **（出典・参考リンク）**
+  - https://so-labo.co.jp/hojyokin/jizokuka/basic/736/
+  - HTTP 403（自動アクセスを拒否。目視で確認が要る）
 
 ---
 
